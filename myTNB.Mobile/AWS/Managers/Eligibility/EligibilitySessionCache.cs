@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using myTNB.Mobile.AWS.Models;
 
@@ -127,6 +128,66 @@ namespace myTNB.Mobile
         public void Clear()
         {
             Data = null;
+        }
+
+        /// <summary>
+        /// Returns the list of eligible CAs in the account
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetDBRCAs()
+        {
+            List<string> caList = new List<string>();
+            try
+            {
+                DBRModel dbrContent = GetFeatureContent<DBRModel>(Features.DBR);
+                if (dbrContent != null
+                    && dbrContent.ContractAccounts != null
+                    && dbrContent.ContractAccounts.Count > 0)
+                {
+                    caList = dbrContent.ContractAccounts.Select(x => x.ContractAccount).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG]GetDBRCAs Exception: " + e.Message);
+            }
+            return caList;
+        }
+
+        /// <summary>
+        /// Detemines if CA is eligible or not
+        /// </summary>
+        /// <param name="ca"></param>
+        /// <returns></returns>
+        public bool IsCADBREligible(string ca)
+        {
+            try
+            {
+                DBRModel dbrContent = GetFeatureContent<DBRModel>(Features.DBR);
+                if (dbrContent != null
+                    && dbrContent.ContractAccounts != null
+                    && dbrContent.ContractAccounts.Count > 0)
+                {
+                    int index = dbrContent.ContractAccounts.FindIndex(x => x.ContractAccount == ca);
+                    return index > -1;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG]IsCADBREligible Exception: " + e.Message);
+            }
+            return false;
+        }
+
+        public bool IsAccountDBREligible
+        {
+            get
+            {
+                return IsFeatureEligible(Features.DBR, FeatureProperty.Enabled)
+                    && GetDBRCAs() is List<string> caList
+                    && caList != null
+                    && caList.Count > 0;
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ using myTNB.Mobile;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.DigitalBill.MVP;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -138,11 +139,11 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                                        ? LanguageManager.Language.MS
                                        : LanguageManager.Language.EN).ToString()
                                    , TextViewUtils.FontSelected
-                                   , AWSConstants.DBROriginURL
-                                   , AWSConstants.DBRRedirectURL
+                                   , AWSConstants.URLs.DBROriginURL
+                                   , AWSConstants.URLs.StartDBRRedirectURL
                                    , accnum);
 
-                tncWebView.PostUrl(AWSConstants.DBRSSOURL, GetBytes(signature, "base64"));
+                tncWebView.PostUrl(AWSConstants.URLs.DBRSSOURL, GetBytes(signature, "base64"));
             }
             catch (System.Exception e)
             {

@@ -55,6 +55,27 @@ namespace myTNB.Mobile
                 string responseString = await rawResponse.Content.ReadAsStringAsync();
                 response = JsonConvert.DeserializeObject<GetBillRenderingResponse>(responseString);
 
+                if (ca == "210007946106")
+                {
+                    response = JsonConvert.DeserializeObject<GetBillRenderingResponse>(ca_210007946106);
+                }
+                if (ca == "210008964806")
+                {
+                    response = JsonConvert.DeserializeObject<GetBillRenderingResponse>(ca_210008964806);
+                }
+                if (ca == "210019137106")
+                {
+                    response = JsonConvert.DeserializeObject<GetBillRenderingResponse>(ca_210019137106);
+                }
+                if (ca == "210033055708")
+                {
+                    response = JsonConvert.DeserializeObject<GetBillRenderingResponse>(ca_210033055708);
+                }
+                if (ca == "210124772804")
+                {
+                    response = JsonConvert.DeserializeObject<GetBillRenderingResponse>(ca_210124772804);
+                }
+
                 if (response != null
                     && response.Content != null
                     && response.StatusDetail != null
@@ -100,5 +121,11 @@ namespace myTNB.Mobile
             response.StatusDetail = AWSConstants.Services.GetBillRendering.GetStatusDetails(MobileConstants.DEFAULT);
             return response;
         }
+
+        private string ca_210007946106 = "{ \"content\": { \"caNo\": \"210007946106\", \"bpNo\": \"1100896326\", \"digitalBillEligibility\": \"X\", \"digitalBillStatus\": \"X\", \"ownerBillRenderingMethod\": \"ZV02\", \"ownerBillingEmail\": \"chris.lui@avanade.com\", \"bcRecord\": [ { \"bpNo\": \"1200000017\", \"firstName\": null, \"lastName\": null, \"renderingMethod\": \"ZNTF\", \"billingEmail\": null } ], \"isInProgress\": false, \"isUpdateCtaAllow\": true, \"isUpdateCtaOptInPaperBill\": true }, \"statusDetail\": { \"code\": \"7200\", \"title\": \"Success\", \"description\": \"Success\", \"displayMode\": null, \"ctaText\": null } }";
+        private string ca_210008964806 = "{ \"content\": { \"caNo\": \"210008964806\", \"bpNo\": \"1100896326\", \"digitalBillEligibility\": \"X\", \"digitalBillStatus\": \"X\", \"ownerBillRenderingMethod\": \"ZV03\", \"ownerBillingEmail\": \"chris.lui@avanade.com\", \"bcRecord\": [ { \"bpNo\": \"1200000017\", \"firstName\": null, \"lastName\": null, \"renderingMethod\": \"ZNTF\", \"billingEmail\": null } ], \"isInProgress\": false, \"isUpdateCtaAllow\": true, \"isUpdateCtaOptInPaperBill\": true }, \"statusDetail\": { \"code\": \"7200\", \"title\": \"Success\", \"description\": \"Success\", \"displayMode\": null, \"ctaText\": null } }";
+        private string ca_210019137106 = "{ \"content\": { \"caNo\": \"210019137106\", \"bpNo\": \"1100896326\", \"digitalBillEligibility\": \"X\", \"digitalBillStatus\": \"X\", \"ownerBillRenderingMethod\": \"ZV03\", \"ownerBillingEmail\": \"chris.lui@avanade.com\", \"bcRecord\": [ { \"bpNo\": \"1200000017\", \"firstName\": null, \"lastName\": null, \"renderingMethod\": \"ZNTF\", \"billingEmail\": null } ], \"isInProgress\": false, \"isUpdateCtaAllow\": false, \"isUpdateCtaOptInPaperBill\": true }, \"statusDetail\": { \"code\": \"7200\", \"title\": \"Success\", \"description\": \"Success\", \"displayMode\": null, \"ctaText\": null } }";
+        private string ca_210033055708 = "{ \"content\": { \"caNo\": \"210033055708\", \"bpNo\": \"1100896326\", \"digitalBillEligibility\": \"X\", \"digitalBillStatus\": \"X\", \"ownerBillRenderingMethod\": \"ZV04\", \"ownerBillingEmail\": \"chris.lui@avanade.com\", \"bcRecord\": [ { \"bpNo\": \"1200000017\", \"firstName\": null, \"lastName\": null, \"renderingMethod\": \"ZNTF\", \"billingEmail\": null } ], \"isInProgress\": false, \"isUpdateCtaAllow\": false, \"isUpdateCtaOptInPaperBill\": true }, \"statusDetail\": { \"code\": \"7200\", \"title\": \"Success\", \"description\": \"Success\", \"displayMode\": null, \"ctaText\": null } }";
+        private string ca_210124772804 = "{ \"content\": { \"caNo\": \"210124772804\", \"bpNo\": \"1100896326\", \"digitalBillEligibility\": \"X\", \"digitalBillStatus\": \"X\", \"ownerBillRenderingMethod\": \"ZV04\", \"ownerBillingEmail\": \"chris.lui@avanade.com\", \"bcRecord\": [ { \"bpNo\": \"1200000017\", \"firstName\": null, \"lastName\": null, \"renderingMethod\": \"ZNTF\", \"billingEmail\": null } ], \"isInProgress\": false, \"isUpdateCtaAllow\": true, \"isUpdateCtaOptInPaperBill\": true }, \"statusDetail\": { \"code\": \"7200\", \"title\": \"Success\", \"description\": \"Success\", \"displayMode\": null, \"ctaText\": null } }";
     }
 }

@@ -44,9 +44,7 @@ namespace myTNB.Mobile
         public async Task<GetEligibilityResponse> GetEligibility(string userID
             , string accessToken)
         {
-            userID = "0D1568D9-7770-4345-84BD-04C2C56A2069";// "46F92B0C-1DE5-45B3-A4E1-BF276C0B1E32";
-            //accessToken = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6IntcIkNoYW5uZWxcIjpcIm15VE5CX0FQSV9Nb2JpbGVcIixcIlVzZXJJZFwiOlwiMGQxNTY4ZDktNzc3MC00MzQ1LTg0YmQtMDRjMmM1NmEyMDY5XCIsXCJVc2VyTmFtZVwiOlwidGVzdGVyNS50bmJAZ21haWwuY29tXCIsXCJSb2xlSWRzXCI6WzE2XX0iLCJuYmYiOjE2MjYxNTcwOTcsImV4cCI6MTYyNjE2MDY5NywiaWF0IjoxNjI2MTU3MDk3LCJpc3MiOiJteVROQiIsImF1ZCI6Im15VE5CIEF1ZGllbmNlIn0.9tWA2PVCaJRCMcc5G2UtAzTQGj-SuIeeYD1ISm_3r5L7S41XxUipFubWpbXyVsOXqlD5338PsuMp6RqyHH4jRA";
-
+            userID = "0D1568D9-7770-4345-84BD-04C2C56A2069";
             GetEligibilityResponse response = new GetEligibilityResponse();
             try
             {
@@ -65,6 +63,7 @@ namespace myTNB.Mobile
                 }
 
                 string responseString = await rawResponse.Content.ReadAsStringAsync();
+                responseString = Stub_Eligibility_Response;
                 response = JsonConvert.DeserializeObject<GetEligibilityResponse>(responseString);
                 if (response != null
                     && response.Content != null
@@ -172,5 +171,7 @@ namespace myTNB.Mobile
             }
             return false;
         }
+
+        private string Stub_Eligibility_Response = "{ \"content\": { \"eligibileFeatures\": { \"eligibleFeatureDetails\": [{ \"feature\": \"DBR\", \"enabled\": true, \"targetGroup\": true } ] }, \"dbr\": { \"contractAccounts\": [ { \"contractAccount\": \"210007946106\", \"acted\": false, \"modifiedDate\": \"\" },{ \"contractAccount\": \"210008964806\", \"acted\": false, \"modifiedDate\": \"\" },{ \"contractAccount\": \"210019137106\", \"acted\": false, \"modifiedDate\": \"\" },{ \"contractAccount\": \"210033055708\", \"acted\": false, \"modifiedDate\": \"\" },{ \"contractAccount\": \"210124772804\", \"acted\": false, \"modifiedDate\": \"\" } ] } }, \"statusDetail\": { \"code\": \"7200\", \"title\": \"Success\", \"description\": \"Success\", \"displayMode\": null, \"ctaText\": null } }";
     }
 }
