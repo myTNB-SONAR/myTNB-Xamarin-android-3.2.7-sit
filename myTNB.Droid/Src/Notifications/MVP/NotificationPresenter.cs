@@ -524,7 +524,17 @@ namespace myTNB_Android.Src.Notifications.MVP
                                             if (UserEntity.GetActive().Email.Equals(userNotificationData.Email)
                                                 && MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
                                             {
-                                                listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                                if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+                                                {
+                                                    if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                                                    {
+                                                        listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                                }
                                             }
                                         }
                                     }

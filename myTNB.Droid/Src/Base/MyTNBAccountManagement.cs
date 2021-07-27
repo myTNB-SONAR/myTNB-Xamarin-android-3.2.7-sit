@@ -42,7 +42,7 @@ namespace myTNB_Android.Src.Base
         private bool IsEBUser = false;
         private bool IsMaybeLater = false;
         private bool IsFromApiEB = false;
-        private bool IsRepeatCall = false;
+        private bool IsOnHold = false;
 
 
         private MyTNBAccountManagement()
@@ -658,14 +658,14 @@ namespace myTNB_Android.Src.Base
             return IsFromApiEB;
         }
 
-        public void RepeatCall(bool isrepeatcall)
+        public void OnHoldWhatNew(bool isonhold)
         {
-            IsRepeatCall = isrepeatcall;
+            IsOnHold = isonhold;
         }
 
-        public bool IsRepeatCallApi()
+        public bool IsOnHoldWhatNew()
         {
-            return IsRepeatCall;
+            return IsOnHold;
         }
     }
 }

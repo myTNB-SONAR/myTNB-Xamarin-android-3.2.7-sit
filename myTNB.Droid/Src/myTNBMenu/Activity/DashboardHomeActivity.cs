@@ -1891,6 +1891,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         {
                             try
                             {
+                                MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
                                 this.mPresenter.CheckWhatsNewCache();
                             }
                             catch (Exception e)
@@ -2103,18 +2104,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                     bool flag = fragment.GetHomeTutorialCallState();
 
-                    if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
+                    if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag() || MyTNBAccountManagement.GetInstance().IsOnHoldWhatNew())
                     {
+                        MyTNBAccountManagement.GetInstance().OnHoldWhatNew(false);
+                        MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
                         flag = true;
                     }
                     else if (SetEligibleEBUser())
                     {
                         flag = false;
-                    }
-                    else if (!MyTNBAccountManagement.GetInstance().IsEBUserVerify() && flag)
-                    {
-                        flag = true;
-                    }
+                    }                    
 
                     if (flag)
                     {
@@ -2358,7 +2357,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             OnShowBCRMPopup(bcrmEntity);
                         }
                     }
-                    else
+                    else if(SetEligibleEBUser())
                     {
                         isWhatNewDialogOnHold = true;
 
@@ -2368,10 +2367,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             Handler h = new Handler();
                             Action myAction = () =>
                             {
-                                OnCheckEnergyBudgetUser();
+                                OnCheckEnergyBudgetUser(); 
                             };
                             h.PostDelayed(myAction, 15);
                         }
+                    }
+                    else
+                    {
+                        isWhatNewDialogOnHold = true;
                     }
                 }
                 else if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
@@ -2638,13 +2641,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public bool SetEligibleEBUser()
         {
-            return UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && !MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2") && this.mPresenter.GetIsWhatsNewDialogShowNeed();
+            return UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
         }
 
-        /*public bool SetEligibleEBUserExtra()
+        public bool SetEligibleEBUserExtra()
         {
-            return UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
-        }*/
+            return !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
+        }
 
         public bool CheckWhatNewPopupCount()
         {
@@ -2677,7 +2680,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void OnCheckEnergyBudgetUser()
         {
-            if (SetEligibleEBUser())
+            if (SetEligibleEBUserExtra())
             {
 
                 if (UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals(string.Empty))

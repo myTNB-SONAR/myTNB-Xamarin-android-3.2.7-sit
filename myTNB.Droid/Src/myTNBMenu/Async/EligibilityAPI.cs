@@ -115,19 +115,15 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                 {
                     if (!AccessTokenCache.Instance.HasTokenSaved(mView))
                     {
-                        string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
-
-                        if (string.IsNullOrEmpty(accessToken))      //second try
+                        //string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                        string accessToken;
+                        int i = 0;
+                        do
                         {
-                            accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty); //second try
-                        }
-
-                        if (string.IsNullOrEmpty(accessToken))     //third try
-                        {
-                            accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty); //second try
-                        }
+                            accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                            i++;
+                        } while (string.IsNullOrEmpty(accessToken) && i <= 4 );
                         AccessTokenCache.Instance.SaveAccessToken(mView, accessToken);
-
                     }
 
                     GetEligibilityResponse response = await EligibilityManager.Instance.GetEligibility(UserEntity.GetActive().UserID ?? string.Empty
@@ -147,6 +143,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                         editor.Apply();
 
                         GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
+                        FeatureInfoManager.Instance.SetData(data);
                         MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
                         //Use data or any EligibilitySessionCache functionality
                     }
@@ -162,6 +159,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                 {
                     GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
                     EligibilitySessionCache.Instance.SetData(data);
+                    FeatureInfoManager.Instance.SetData(data);
                     MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
                     //Use data or any EligibilitySessionCache functionality
                 }

@@ -272,6 +272,7 @@ namespace myTNB_Android.Src.Login.MVP
                         if (Id > 0)
                         {
                             UserEntity.UpdateDeviceId(deviceId);
+                            bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
 
                             GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
                             baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
@@ -352,8 +353,6 @@ namespace myTNB_Android.Src.Login.MVP
                                     , TextViewUtils.FontInfo
                                     , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                 AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
-
-                                bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
 
                                 if (LanguageUtil.GetAppLanguage() == "MS")
                                 {

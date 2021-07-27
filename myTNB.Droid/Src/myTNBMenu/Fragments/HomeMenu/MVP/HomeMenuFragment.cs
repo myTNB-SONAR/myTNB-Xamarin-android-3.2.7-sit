@@ -418,6 +418,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 if (resultCode == (int)Result.Ok)
                 {
+                    MyTNBAccountManagement.GetInstance().OnHoldWhatNew(true);
                     Bundle extras = data.Extras;
 
                     SMRAccount selectedAccount = JsonConvert.DeserializeObject<SMRAccount>(extras.GetString(Constants.SELECTED_ACCOUNT));
@@ -597,7 +598,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
-                //WhatNewCheckAgain();
+                WhatNewCheckAgain();
             }
             catch (System.Exception e)
             {
@@ -3412,7 +3413,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void WhatNewCheckAgain()
         {
-            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && CheckWhatNewPopupAlready())
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && MyTNBAccountManagement.GetInstance().IsOnHoldWhatNew())
             {
                 ((DashboardHomeActivity)Activity).OnCheckWhatsNewTab();
             }

@@ -44,15 +44,14 @@
     <PackageReference Include="Refit" Version="4.6.58" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="API\Managers\FeatureInfo\" />
+    <Folder Include="API\Models\Feature Info\" />
     <Folder Include="Business\Managers\" />
     <Folder Include="Resources\" />
     <Folder Include="Resources\TnC\" />
     <Folder Include="Resources\FAQ\" />
     <Folder Include="Resources\Language\" />
     <Folder Include="Resources\Country\" />
-    <Folder Include="API\" />
-    <Folder Include="API\Managers\" />
-    <Folder Include="API\Models\" />
     <Folder Include="API\Base\" />
     <Folder Include="API\Models\Application Status\" />
     <Folder Include="API\Services\" />

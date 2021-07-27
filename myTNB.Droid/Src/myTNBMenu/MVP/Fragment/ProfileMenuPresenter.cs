@@ -14,6 +14,8 @@ using Refit;
 using myTNB;
 using myTNB_Android.Src.AppLaunch.Models;
 using Android.Content;
+using myTNB.Mobile;
+using myTNB_Android.Src.DeviceCache;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -258,6 +260,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                             : LanguageManager.Language.EN);
 
                     UserSessions.RemoveEligibleData(mPref);
+                    EligibilitySessionCache.Instance.Clear();
+                    FeatureInfoManager.Instance.Clear();
+                    AccessTokenCache.Instance.ClearToken();
                     UserEntity.RemoveActive();
                     UserRegister.RemoveActive();
                     CustomerBillingAccount.RemoveActive();

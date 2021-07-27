@@ -858,6 +858,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             newAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
                             newAccount.isOwned = item.isOwned;
                             newAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
+                            newAccount.BudgetAmount = item.smartMeterCode == null ? "0" : item.BudgetAmount;
                             finalAccountList.Add(newAccount);
                         }
                     }
@@ -871,6 +872,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
                             extraAccount.isOwned = item.isOwned;
                             extraAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
+                            extraAccount.BudgetAmount = item.smartMeterCode == null ? "0" : item.BudgetAmount;
                             finalAccountList.Add(extraAccount);
                         }
                     }
