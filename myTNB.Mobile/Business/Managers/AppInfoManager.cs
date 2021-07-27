@@ -37,18 +37,6 @@ namespace myTNB
         /// <param name="appVersion">ie: 2.3.3</param>
         /// <param name="fontSize">App Font size N or L</param>
         /// <param name="language">Language Selected in the App</param>
-        public void SetUserInfos(string roleID
-            , string userID
-            , string userName
-            , Language language = Language.EN)
-        {
-            this.Language = language;
-            RoleId = roleID ?? string.Empty;
-            UserId = userID ?? string.Empty;
-            UserName = userName ?? string.Empty;
-            Lang = this.Language.ToString();
-        }
-
         public void SetUserInfo(string roleID
             , string userID
             , string userName
@@ -68,7 +56,7 @@ namespace myTNB
             ViewInfoHeader = new ViewInfoHeader
             {
                 DeviceToken = deviceToken,
-                AppVersion = appVersion,
+                AppVersion = appVersion.Replace("v", string.Empty),
                 RoleId = roleID,
                 Lang = language.ToString(),
                 FontSize = fontSize.ToUpper() == "L" ? "L" : "N"

@@ -41,8 +41,9 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 #pragma warning restore CS0618 // Type or member is obsolete
             string eligibilityTimeStamp = preferences.GetString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, string.Empty);
 
-            if (EligibilityManager.Instance.ShouldCallApi(AWSConstants.Services.GetEligibility
-               , eligibilityTimeStamp))
+           // if (EligibilityManager.Instance.ShouldCallApi(AWSConstants.Services.GetEligibility
+           //    , eligibilityTimeStamp))
+           if(true)
             {
                 if (!AccessTokenCache.Instance.HasTokenSaved(_activity))
                 {

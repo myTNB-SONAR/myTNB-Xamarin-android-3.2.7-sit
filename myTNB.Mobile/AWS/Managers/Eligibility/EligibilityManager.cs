@@ -44,12 +44,12 @@ namespace myTNB.Mobile
         public async Task<GetEligibilityResponse> GetEligibility(string userID
             , string accessToken)
         {
-            userID = "0D1568D9-7770-4345-84BD-04C2C56A2069";
+            //userID = "0D1568D9-7770-4345-84BD-04C2C56A2069";
             GetEligibilityResponse response = new GetEligibilityResponse();
             try
             {
                 IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.GetDBREligibility);
-                HttpResponseMessage rawResponse = await service.GetEligibility(userID
+                HttpResponseMessage rawResponse = await service.GetEligibility(userID.IsValid() ? userID.ToUpper() : string.Empty
                    , NetworkService.GetCancellationToken()
                    , accessToken
                    , AppInfoManager.Instance.ViewInfo);
@@ -63,7 +63,6 @@ namespace myTNB.Mobile
                 }
 
                 string responseString = await rawResponse.Content.ReadAsStringAsync();
-                responseString = Stub_Eligibility_Response;
                 response = JsonConvert.DeserializeObject<GetEligibilityResponse>(responseString);
                 if (response != null
                     && response.Content != null
@@ -89,6 +88,7 @@ namespace myTNB.Mobile
                         response.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                 }
+                Debug.WriteLine("[DEBUG] GetEligibility: " + JsonConvert.SerializeObject(response));
                 return response;
             }
             catch (ApiException apiEx)
@@ -155,7 +155,6 @@ namespace myTNB.Mobile
         public bool ShouldCallApi(string serviceName
             , string saveTimeStamp)
         {
-            return true;
             if (IsEnabled(serviceName))
             {
                 if (!saveTimeStamp.IsValid())
@@ -171,7 +170,5 @@ namespace myTNB.Mobile
             }
             return false;
         }
-
-        private string Stub_Eligibility_Response = "{ \"content\": { \"eligibileFeatures\": { \"eligibleFeatureDetails\": [{ \"feature\": \"DBR\", \"enabled\": true, \"targetGroup\": true } ] }, \"dbr\": { \"contractAccounts\": [ { \"contractAccount\": \"210007946106\", \"acted\": false, \"modifiedDate\": \"\" },{ \"contractAccount\": \"210008964806\", \"acted\": false, \"modifiedDate\": \"\" },{ \"contractAccount\": \"210019137106\", \"acted\": false, \"modifiedDate\": \"\" },{ \"contractAccount\": \"210033055708\", \"acted\": false, \"modifiedDate\": \"\" },{ \"contractAccount\": \"210124772804\", \"acted\": false, \"modifiedDate\": \"\" } ] } }, \"statusDetail\": { \"code\": \"7200\", \"title\": \"Success\", \"description\": \"Success\", \"displayMode\": null, \"ctaText\": null } }";
     }
 }

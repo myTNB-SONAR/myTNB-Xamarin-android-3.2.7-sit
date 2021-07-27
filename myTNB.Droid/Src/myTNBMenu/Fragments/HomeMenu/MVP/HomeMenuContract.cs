@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void SetNewFAQRecycleView();
             void SetMyServiceResult(List<MyService> list);
             void SetNewFAQResult(List<NewFAQ> list);
-            void SetDiscoverResult();
+            void SetDiscoverResult(bool IsAccountDBREligible);
             string GetDeviceId();
             void ShowMyServiceRetryOptions(string msg);
             void OnSavedTimeStamp(string savedTimeStamp);
@@ -90,6 +90,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void HideDiscoverViewView();
 
+            void ShowDiscoverView();
+
             bool CheckNeedHelpHide();
 
             void SetMyServiceRefreshView(string contentTxt, string buttonTxt);
@@ -121,6 +123,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetFAQTimeStamp();
             void ReadNewFAQFromCache();
             Task OnGetFAQs();
+            Task OnGetDBR();
             void LoadLocalAccounts();
 			void LoadSummaryDetailsInBatch(List<string> accountNumbers);
 

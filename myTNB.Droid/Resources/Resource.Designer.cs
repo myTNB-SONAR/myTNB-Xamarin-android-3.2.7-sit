@@ -13265,10 +13265,10 @@ namespace myTNB_Android
 			public const int SHIFT = 2131296307;
 			
 			// aapt resource value: 0x7F0904BF
-			public const int shimmerBillView = 2131297471;
+			public const int shimmerConstainer = 2131297471;
 			
 			// aapt resource value: 0x7F0904C0
-			public const int shimmerConstainer = 2131297472;
+			public const int shimmerDiscoverView = 2131297472;
 			
 			// aapt resource value: 0x7F0904C1
 			public const int shimmerFAQView = 2131297473;

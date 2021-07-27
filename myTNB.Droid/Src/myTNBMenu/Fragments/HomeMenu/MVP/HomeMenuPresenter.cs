@@ -30,6 +30,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using Android.Text;
 using Android.OS;
 using System.Globalization;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1442,6 +1443,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
             this.mView.SetMyServiceRecycleView();
             this.mView.SetNewFAQRecycleView();
+            this.mView.ShowDiscoverView();
         }
 
         public void InitiateMyServiceRefresh()
@@ -2254,6 +2256,39 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
             }, new CancellationTokenSource().Token);
         }
+        public Task OnGetDBR()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    bool IsAccountDBREligible = EligibilitySessionCache.Instance.IsAccountDBREligible;
+                    IsAccountDBREligible = true;
+                    if (IsAccountDBREligible)
+                    {
+                        this.mView.SetDiscoverResult(IsAccountDBREligible);
+                    }
+                    else
+                    {
+                        this.mView.HideDiscoverViewView();
+                    }
+                }
+                catch (Exception e)
+                {
+                    try
+                    {
+                        this.mView.HideDiscoverViewView();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, new CancellationTokenSource().Token);
+        }
 
         public void UpdateNewFAQCompleteState()
         {
@@ -2575,6 +2610,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void OnCheckToCallHomeMenuTutorial()
         {
+            isHomeMenuTutorialShown = true;
             if (isAllDone() && !isHomeMenuTutorialShown && !this.mView.OnGetIsRootTooltipShown())
             {
                 isHomeMenuTutorialShown = true;
@@ -2709,7 +2745,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 });
             }
 
-            return newList = new List<NewAppModel>();
+            return newList; 
         }
 
         private void OnCleanUpNotifications(List<SummaryDashBoardDetails> summaryDetails)

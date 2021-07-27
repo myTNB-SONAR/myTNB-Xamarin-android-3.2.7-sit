@@ -46,7 +46,7 @@
 #if DEBUG
         public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
-        public const string SitecoreURL = SitecoreSIT;
+        public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
 #elif MASTER || SIT
@@ -102,6 +102,17 @@
             public const string GetEligibilityTimeStamp = "GetEligibilityTimeStamp";
             public const string GetEligibilityData = "GetEligibilityData";
             public const string AccessToken = "AccessToken";
+        }
+
+        internal struct BillRenderingCodes
+        {
+            internal const string Owner_EBill = "ZV04";
+            internal const string Owner_EMail = "ZV03";
+            internal const string Owner_Paper = "ZV02";
+
+            internal const string BC_EBill = "ZNTF";
+            internal const string BC_EMail = "ZEML";
+            internal const string BC_Paper = "ZINV";
         }
     }
 }

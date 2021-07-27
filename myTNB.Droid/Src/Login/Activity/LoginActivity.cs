@@ -16,6 +16,7 @@ using myTNB_Android.Src.ForgetPassword.Activity;
 using myTNB_Android.Src.Login.MVP;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.RegistrationForm.Activity;
 using myTNB_Android.Src.ResetPassword.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
@@ -397,7 +398,7 @@ namespace myTNB_Android.Src.Login.Activity
         public void ShowDashboard()
         {
             // TODO : START ACTIVITY DASHBOARD
-            DashboardHomeActivity.IsFromLogin = true;
+            HomeMenuFragment.IsFromLogin = true;
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);

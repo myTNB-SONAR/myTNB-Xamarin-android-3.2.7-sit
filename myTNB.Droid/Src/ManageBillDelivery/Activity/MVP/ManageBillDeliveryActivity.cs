@@ -23,6 +23,8 @@ using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.DigitalBill.Activity;
 using Android.Preferences;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB.Mobile;
+using System.Linq;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -154,7 +156,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
             viewPager.Adapter = ManageBillDeliveryAdapter;
             UpdateAccountListIndicator();
-            dbrAccountList = this.presenter.GetEligibleDBRAccountList();
+            
 
             Bundle extras = Intent.Extras;
             digitalBillLabel.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "anotherDeliveryMethod");
@@ -480,19 +482,16 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [OnClick(Resource.Id.txt_ca_name)]
         void OnCANameFilter(object sender, EventArgs eventArgs)
         {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
+                dbrAccountList = GetEligibleDBRAccountList();
                 if (dbrAccountList != null && dbrAccountList.Count > 0)
                 {
                     this.presenter.CheckDBRAccountEligibility(dbrAccountList);
                 }
                 else
                 {
-                    Intent intent = new Intent(this, typeof(SelectDBRAccountActivity));
-                    StartActivityForResult(intent, DBR_SELECT_ACCOUNT_ACTIVITY_CODE);
+                   // Intent intent = new Intent(this, typeof(SelectDBRAccountActivity));
+                    //StartActivityForResult(intent, DBR_SELECT_ACCOUNT_ACTIVITY_CODE);
                 }
-            }
         }
 
         public void ShowDBREligibleAccountList(List<DBRAccount> dbrEligibleAccountList)
@@ -733,6 +732,52 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 });
             }
             return newList;
+        }
+        public List<DBRAccount> GetEligibleDBRAccountList()
+        {
+            List<string> dBRCAs = EligibilitySessionCache.Instance.GetDBRCAs();
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            List<CustomerBillingAccount> eligibleDBRAccountList = new List<CustomerBillingAccount>();
+            CustomerBillingAccount account = new CustomerBillingAccount();
+            List<DBRAccount> dbrEligibleAccountList = new List<DBRAccount>();
+
+            if (dBRCAs.Count > 0)
+            {
+                ShowProgressDialog();
+                foreach (var dbrca in dBRCAs)
+                {
+                    account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
+                    eligibleDBRAccountList.Add(account);
+
+                }
+
+                DBRAccount dbrEligibleAccount;
+                eligibleDBRAccountList.ForEach(account =>
+                {
+                    dbrEligibleAccount = new DBRAccount();
+                    dbrEligibleAccount.accountNumber = account.AccNum;
+                    dbrEligibleAccount.accountName = account.AccDesc;
+                    dbrEligibleAccount.accountSelected = account.IsSelected;
+                    dbrEligibleAccount.isTaggedSMR = account.IsTaggedSMR;
+                    dbrEligibleAccount.accountAddress = account.AccountStAddress.ToUpper();
+                    dbrEligibleAccount.accountOwnerName = account.OwnerName;
+                    dbrEligibleAccountList.Add(dbrEligibleAccount);
+                });
+                HideProgressDialog();
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                     .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                     .Build();
+                errorPopup.Show();
+            }
+
+
+
+            return dbrEligibleAccountList;
         }
         public int GetImageHeight()
         {

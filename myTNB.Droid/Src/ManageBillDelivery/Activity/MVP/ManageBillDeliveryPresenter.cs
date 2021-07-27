@@ -7,6 +7,8 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
+using myTNB.Mobile;
+using System.Linq;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -69,24 +71,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             throw new System.NotImplementedException();
         }
 
-        public List<DBRAccount> GetEligibleDBRAccountList()
-        {
-            List<CustomerBillingAccount> eligibleDBRAccountList = CustomerBillingAccount.List();
-            List<DBRAccount> dbrEligibleAccountList = new List<DBRAccount>();
-            DBRAccount dbrEligibleAccount;
-            eligibleDBRAccountList.ForEach(account =>
-            {
-                dbrEligibleAccount = new DBRAccount();
-                dbrEligibleAccount.accountNumber = account.AccNum;
-                dbrEligibleAccount.accountName = account.AccDesc;
-                dbrEligibleAccount.accountSelected = account.IsSelected;
-                dbrEligibleAccount.isTaggedSMR = account.IsTaggedSMR;
-                dbrEligibleAccount.accountAddress = account.AccountStAddress;
-                dbrEligibleAccount.accountOwnerName = account.OwnerName;
-                dbrEligibleAccountList.Add(dbrEligibleAccount);
-            });
-            return dbrEligibleAccountList;
-        }
+       
 
         public void InitialSetFilterName()
         {
@@ -110,7 +95,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     }
                 }
             }
-            catch (System.Exception e)
+            catch (System.Exception e)  
             {
                 Utility.LoggingNonFatalError(e);
             }

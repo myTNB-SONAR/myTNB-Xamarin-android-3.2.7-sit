@@ -50,12 +50,16 @@ using myTNB;
 using myTNB.Mobile;
 using AndroidX.ConstraintLayout.Widget;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB_Android.Src.DBR.DBRApplication.MVP;
+using System.Linq;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
     public class HomeMenuFragment : BaseFragmentCustom, HomeMenuContract.IHomeMenuView
             , ViewTreeObserver.IOnGlobalLayoutListener, View.IOnFocusChangeListener
     {
+        internal static bool IsFromLogin;
+
         [BindView(Resource.Id.newFAQShimmerView)]
         LinearLayout newFAQShimmerView;
 
@@ -245,8 +249,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.discoverTitle)]
         TextView discoverTitle;
 
-        [BindView(Resource.Id.shimmerBillView)]
-        ShimmerFrameLayout shimmerBillView;
+        [BindView(Resource.Id.shimmerDiscoverView)]
+        ShimmerFrameLayout shimmerDiscoverView;
 
         [BindView(Resource.Id.shimmerPayView)]
         ShimmerFrameLayout shimmerPayView;
@@ -254,8 +258,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.discovercontainer)]
         LinearLayout discovercontainer;
 
-        
 
+        bool IsAccountDBREligible;
         AccountsRecyclerViewAdapter accountsAdapter;
 
         private NewFAQScrollListener mListener;
@@ -408,6 +412,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+                SetupDsicoverShimmerEffect();
                 summaryNestScrollView.SmoothScrollingEnabled = true;
                 isSearchClose = true;
                 isFirstInitiate = true;
@@ -555,8 +560,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 try
                 {
                     this.SetIsClicked(true);
-                    CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-                    AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
+                    CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                    AccountData selectedAccountData = AccountData.Copy(dbrAccount, true);
                     Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                     intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
                     intent.PutExtra("Paper", "Paper");
@@ -570,6 +575,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Utility.LoggingNonFatalError(e);
                 }
             }
+        }
+        public CustomerBillingAccount GetEligibleDBRAccount()
+        {
+            List<string> dBRCAs = EligibilitySessionCache.Instance.GetDBRCAs();
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            CustomerBillingAccount account = new CustomerBillingAccount();
+
+            if (dBRCAs.Count > 0)
+            {
+                ShowProgressDialog();
+                foreach (var dbrca in dBRCAs)
+                {
+                    account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
+                    break;
+                }
+                HideProgressDialog();
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                     .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                     .Build();
+                errorPopup.Show();
+            }
+            return account;
         }
         public void SetRefreshLayoutParams()
         {
@@ -923,11 +955,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
                         if (shimmerBuilder != null)
                         {
-                            shimmerBillView.SetShimmer(shimmerBuilder?.Build());
-                            shimmerPayView.SetShimmer(shimmerBuilder?.Build());
+                            shimmerDiscoverView.SetShimmer(shimmerBuilder?.Build());
                         }
-                        shimmerBillView.StartShimmer();
-                        shimmerPayView.StartShimmer();
+                        shimmerDiscoverView.StartShimmer();
                     }
                     catch (System.Exception ex)
                     {
@@ -941,6 +971,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void SetDBRDiscoverView()
+        {
+          
+            if (IsAccountDBREligible)
+            {
+                SetupDsicoverShimmerEffect();
+            }
+            else
+            {
+                HideDiscoverViewView();
+            }
+            this.presenter.GetSavedNewFAQTimeStamp();
+        }
+        
         public void HideNewFAQ()
         {
             try
@@ -977,8 +1021,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         discoverShimmerView.Visibility = ViewStates.Gone;
                         discoverTitle.Visibility = ViewStates.Gone;
                         discoverView.Visibility = ViewStates.Gone;
-
-                        OnHideBottomView();
                     }
                     catch (System.Exception ex)
                     {
@@ -996,8 +1038,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             return newFAQTitle.Visibility == ViewStates.Gone;
         }
+        public bool CheckDBRDiscoverHide()
+        {
+           return discovercontainer.Visibility == ViewStates.Gone;
+        }
 
-        public void SetDiscoverResult()
+        public void SetDiscoverResult(bool IsAccountDBREligible)
         {
             try
             {
@@ -1005,22 +1051,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     try
                     {
-                        // Check eligibility service.
-
-                        try
+                        this.IsAccountDBREligible = IsAccountDBREligible;
+                        if(IsAccountDBREligible)
                         {
-                                shimmerBillView.StopShimmer();
-                                shimmerPayView.StopShimmer();
-                                newFAQShimmerAdapter = new NewFAQShimmerAdapter(null, this.Activity);
-                                newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
-                            }
-                            catch (System.Exception e)
-                            {
-                                Utility.LoggingNonFatalError(e);
-                            }
+                            discovercontainer.Visibility = ViewStates.Visible;
+                            shimmerDiscoverView.StopShimmer();
+                            shimmerDiscoverView.StopShimmer();
                             discoverShimmerView.Visibility = ViewStates.Gone;
                             discoverView.Visibility = ViewStates.Visible;
-                        
+                            UserEntity user = UserEntity.GetActive();
+                            int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
+
+                            if (IsFromLogin && loginCount == 1)
+                            {
+                                ShowMarketingTooltip();
+                            }
+                        }
+                        else
+                        {
+                            discovercontainer.Visibility = ViewStates.Gone;
+                        }
                     }
                     catch (System.Exception ex)
                     {
@@ -1034,6 +1084,44 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 // TODO: To Hide the FAQ
                 // HideNewFAQ();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+        public void ShowMarketingTooltip()
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                    .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
+                    .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupTitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupMessage"))
+                    .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "gotIt"))
+                    .SetCTAaction(() => { this.SetIsClicked(false); })
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupStartNow"))
+                    .SetSecondaryCTAaction(() => ShowManageBill())
+                    .Build();
+                marketingTooltip.Show();
+            }
+        }
+
+
+        public void ShowManageBill()
+        {
+            try
+            {
+                CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+                AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
+                Intent intent = new Intent(this.Activity, typeof(ManageBillDeliveryActivity));
+                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                intent.PutExtra("Paper", "Paper");
+                StartActivity(intent);
+            }
+            catch (System.Exception e)
+            {
+                Intent intent = new Intent(this.Activity, typeof(ManageBillDeliveryActivity));
+                intent.PutExtra("Paper", "Paper");
+                StartActivity(intent);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -1794,6 +1882,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 this.presenter.OnGetFAQs();
                 Utility.LoggingNonFatalError(e);
             }
+        }
+        public void ShowDiscoverView()
+        {
+            this.presenter.OnGetDBR();
         }
 
         public void ShowFAQFromHide()

@@ -61,7 +61,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         , WindowSoftInputMode = SoftInput.AdjustNothing)]
     public class DashboardHomeActivity : BaseToolbarAppCompatActivity, DashboardHomeContract.IView, ISummaryFragmentToDashBoardActivtyListener
     {
-        internal static bool IsFromLogin;
         internal readonly string TAG = typeof(DashboardHomeActivity).Name;
 
         public readonly static int PAYMENT_RESULT_CODE = 5451;
@@ -337,17 +336,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 System.Diagnostics.Debug.WriteLine("[DEBUG] Sync SR Error: " + e.Message);
             }
-            UserEntity user = UserEntity.GetActive();
-            int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
-
-            if (IsFromLogin && loginCount == 1)
-            {
-                ShowMarketingTooltip();
-            }
-
+            
             try
             {
-                new EligibilityAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
+               new EligibilityAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
             }
             catch (Exception e)
             {
@@ -872,42 +864,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public void ShowMarketingTooltip()
-        {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-                    .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
-                    .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupTitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupMessage"))
-                    .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "gotIt"))
-                    .SetCTAaction(() => { this.SetIsClicked(false); })
-                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupStartNow"))
-                    .SetSecondaryCTAaction(() => ShowManageBill())
-                    .Build();
-                marketingTooltip.Show();
-            }
-        }
-        public void ShowManageBill()
-        {
-            try
-            {
-                CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-                AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
-                Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
-                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                intent.PutExtra("Paper", "Paper");
-                StartActivity(intent);
-            }
-            catch (System.Exception e)
-            {
-                Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
-                intent.PutExtra("Paper", "Paper");
-                StartActivity(intent);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
+        
         public void ShowFeedbackMenu()
         {
             ShowBackButton(false);
@@ -2139,7 +2096,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                     bool flag = fragment.GetHomeTutorialCallState();
-
+                    flag = true;
                     if (flag)
                     {
                         this.mPresenter.SetIsWhatsNewDialogShowNeed(false);

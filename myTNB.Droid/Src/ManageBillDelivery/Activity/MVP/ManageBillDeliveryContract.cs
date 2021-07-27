@@ -30,7 +30,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         public interface IPresenter
         {
             List<ManageBillDeliveryModel> GenerateNewWalkthroughList(string currentAppNavigation);
-            List<DBRAccount> GetEligibleDBRAccountList();
             void CheckDBRAccountEligibility(List<DBRAccount> dbrAccountList);
         }
         public interface IUserActionsListener : IBasePresenter

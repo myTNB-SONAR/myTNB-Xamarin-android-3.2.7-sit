@@ -462,6 +462,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:visibility="visible"
                     android:layout_marginTop="13dp"
                     android:id="@+id/discovercontainer">
                     <TextView
@@ -480,9 +481,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
                         <com.facebook.shimmer.ShimmerFrameLayout
-                            android:id="@+id/shimmerBillView"
+                            android:id="@+id/shimmerDiscoverView"
                             android:layout_width="match_parent"
                             android:layout_height="128dp"
                             android:layout_marginRight="16dp"
@@ -524,6 +525,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
+                            android:visibility="gone"
                             android:id="@+id/discoverView"
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp">
