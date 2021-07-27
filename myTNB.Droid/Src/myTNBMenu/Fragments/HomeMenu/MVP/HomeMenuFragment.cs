@@ -52,6 +52,8 @@ using AndroidX.ConstraintLayout.Widget;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using System.Linq;
+using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile.AWS.Models;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -555,42 +557,74 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [OnClick(Resource.Id.discoverView)]
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
-            if (!this.GetIsClicked())
+                GetBillRenderingAsync();
+        }
+        private async void GetBillRenderingAsync()
+        {
+            try
             {
-                try
+                ShowProgressDialog();
+                CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
                 {
-                    this.SetIsClicked(true);
-                    CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                }
+                GetBillRenderingResponse response = await DBRManager.Instance.GetBillRendering(dbrAccount.AccNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+
+                HideProgressDialog();
+                //Nullity Check
+                if (response != null
+                   && response.StatusDetail != null
+                   && response.StatusDetail.IsSuccess)
+                {
                     AccountData selectedAccountData = AccountData.Copy(dbrAccount, true);
                     Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(response.Content));
                     intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                    intent.PutExtra("Paper", "Paper");
                     StartActivity(intent);
                 }
-                catch (System.Exception e)
+                else
                 {
-                    Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                    intent.PutExtra("Paper", "Paper");
-                    StartActivity(intent);
-                    Utility.LoggingNonFatalError(e);
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                        .SetTitle(response.StatusDetail.Title)
+                                        .SetMessage(response.StatusDetail.Message)
+                                        .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
+                                        .Build();
+                    errorPopup.Show();
                 }
+
+            }
+            catch (System.Exception e)
+            {
+                HideProgressDialog();
+                Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                intent.PutExtra("Paper", "Paper");
+                StartActivity(intent);
+                Utility.LoggingNonFatalError(e);
             }
         }
         public CustomerBillingAccount GetEligibleDBRAccount()
         {
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
             List<string> dBRCAs = EligibilitySessionCache.Instance.GetDBRCAs();
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             CustomerBillingAccount account = new CustomerBillingAccount();
-
             if (dBRCAs.Count > 0)
             {
-                ShowProgressDialog();
-                foreach (var dbrca in dBRCAs)
+                var dbrSelected = dBRCAs.Where(x => x == customerAccount.AccNum).FirstOrDefault();
+                if (dbrSelected != string.Empty)
                 {
-                    account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
-                    break;
+                    account = allAccountList.Where(x => x.AccNum == dbrSelected).FirstOrDefault();
                 }
-                HideProgressDialog();
+                if(account == null)
+                {
+                    foreach (var dbrca in dBRCAs)
+                    {
+                        account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
+                        break;
+                    }
+                }
             }
             else
             {
@@ -1114,7 +1148,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
                 Intent intent = new Intent(this.Activity, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                intent.PutExtra("Paper", "Paper");
+                intent.PutExtra("Paper", MobileEnums.DBRTypeEnum.Paper.ToString());
                 StartActivity(intent);
             }
             catch (System.Exception e)

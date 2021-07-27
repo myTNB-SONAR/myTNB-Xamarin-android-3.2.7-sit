@@ -6,14 +6,4 @@
         public string Description { set; get; }
         public string Image { set; get; }
     }
-    public enum DBRTypeEnum
-    {
-        EBill,
-        Email,
-        OptedEBill,
-        ParallelEmail,
-        Paper,
-        WhatsApp,
-        None
-    }
 }

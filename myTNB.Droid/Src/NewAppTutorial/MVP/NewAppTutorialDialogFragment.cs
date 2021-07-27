@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.ManageSupplyAccount.Activity;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.NewAppTutorial.MVP
 {
@@ -67,7 +68,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
             if (Dialog != null)
             {
-                Dialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.Transparent));
+                Dialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
                 Dialog.Window.SetDimAmount(0.0f);
                 Dialog.SetCancelable(false);
                 Dialog.SetCanceledOnTouchOutside(false);
@@ -949,19 +950,19 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     }
                     else if (this.mActivity is ManageBillDeliveryActivity)
                     {
-                        if (UserSessions.ManageBillDelivery == DBRTypeEnum.EBill)
+                        if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBill)
                         {
                             UserSessions.DoManageEBillDeliveryTutorialShown(this.mPref);
                         }
-                        else if (UserSessions.ManageBillDelivery == DBRTypeEnum.OptedEBill)
+                        else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBillWithCTA)
                         {
                             UserSessions.DoManagepoptedEBillDeliveryTutorialShown(this.mPref);
                         }
-                        else if (UserSessions.ManageBillDelivery == DBRTypeEnum.Email)
+                        else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Email)
                         {
                             UserSessions.DoManageEmailBillDeliveryTutorialShown(this.mPref);
                         }
-                        else if (UserSessions.ManageBillDelivery == DBRTypeEnum.ParallelEmail)
+                        else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EmailWithCTA)
                         {
                             UserSessions.DoManageParallelEmailBillDeliveryTutorialShown(this.mPref);
                         }
@@ -1036,19 +1037,19 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     }
                     else if (this.mActivity is ManageBillDeliveryActivity)
                     {
-                        if (UserSessions.ManageBillDelivery == DBRTypeEnum.EBill)
+                        if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBill)
                         {
                             UserSessions.DoManageEBillDeliveryTutorialShown(this.mPref);
                         }
-                        else if (UserSessions.ManageBillDelivery == DBRTypeEnum.OptedEBill)
+                        else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBillWithCTA)
                         {
                             UserSessions.DoManagepoptedEBillDeliveryTutorialShown(this.mPref);
                         }
-                        else if (UserSessions.ManageBillDelivery == DBRTypeEnum.Email)
+                        else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Email)
                         {
                             UserSessions.DoManageEmailBillDeliveryTutorialShown(this.mPref);
                         }
-                        else if (UserSessions.ManageBillDelivery == DBRTypeEnum.ParallelEmail)
+                        else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EmailWithCTA)
                         {
                             UserSessions.DoManageParallelEmailBillDeliveryTutorialShown(this.mPref);
                         }

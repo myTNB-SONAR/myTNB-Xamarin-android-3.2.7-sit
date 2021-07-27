@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.Utils
 
         private static ISharedPreferences mPreferences;
         internal static ApplicationStatusNotificationModel ApplicationStatusNotification { private set; get; }
-        public static DBRTypeEnum ManageBillDelivery { set; get; }
+        public static MobileEnums.DBRTypeEnum ManageBillDelivery { set; get; }
 
         public static void SetCurrentImageCount(ISharedPreferences prefs, int count)
         {

@@ -8,9 +8,13 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
+using myTNB.Mobile;
+using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DBR.DBRApplication.Adapter;
+using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
@@ -60,13 +64,14 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                     accountList[i].accountSelected = false;
                 }
             }
+
             UserSessions.SetRealDBREligibilityAccountList(accountList);
             Intent returnIntent = new Intent();
             returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
             SetResult(Result.Ok, returnIntent);
             Finish();
         }
-
+        
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -148,10 +153,8 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                         accountList[i].accountSelected = false;
                     }
                 }
-                Intent returnIntent = new Intent();
-                returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
-                SetResult(Result.Ok, returnIntent);
-                Finish();
+                GetBillRenderingAsync(accountList.Find(x => { return x.accountSelected; }).accountNumber);
+                
             }
         }
 
@@ -167,7 +170,47 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+        private async void GetBillRenderingAsync(string accountNumber)
+        {
+            try
+            {
+                ShowProgressDialog();
+                if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
+                }
+                GetBillRenderingResponse response = await DBRManager.Instance.GetBillRendering(accountNumber, AccessTokenCache.Instance.GetAccessToken(this));
 
+                HideProgressDialog();
+                //Nullity Check
+                if (response != null
+                   && response.StatusDetail != null
+                   && response.StatusDetail.IsSuccess)
+                {
+                    Intent returnIntent = new Intent();
+                    returnIntent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(response.Content));
+                    returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
+                    SetResult(Result.Ok, returnIntent);
+                    Finish();
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                        .SetTitle(response.StatusDetail.Title)
+                                        .SetMessage(response.StatusDetail.Message)
+                                        .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
+                                        .Build();
+                    errorPopup.Show();
+                }
+
+            }
+            catch (System.Exception e)
+            {
+                HideProgressDialog();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
         protected override void OnPause()
         {
             base.OnPause();
@@ -176,6 +219,29 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

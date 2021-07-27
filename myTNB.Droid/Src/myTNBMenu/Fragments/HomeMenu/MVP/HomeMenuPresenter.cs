@@ -2263,7 +2263,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 try
                 {
                     bool IsAccountDBREligible = EligibilitySessionCache.Instance.IsAccountDBREligible;
-                    IsAccountDBREligible = true;
                     if (IsAccountDBREligible)
                     {
                         this.mView.SetDiscoverResult(IsAccountDBREligible);

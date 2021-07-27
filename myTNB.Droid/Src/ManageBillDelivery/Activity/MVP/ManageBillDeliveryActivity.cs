@@ -25,6 +25,7 @@ using Android.Preferences;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB.Mobile;
 using System.Linq;
+using myTNB.Mobile.AWS.Models;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -121,6 +122,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.deliveryUserName)]
         TextView deliveryUserName;
 
+        GetBillRenderingModel getBillRenderingModel;
+
         ISharedPreferences mPref;
 
         //[BindView(Resource.Id.pagerLyout)]
@@ -169,7 +172,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             TextViewUtils.SetTextSize12(digitalBillLabel, deliveryUserName);
             TextViewUtils.SetTextSize16(btnStartDigitalBill, deliverigTitle, txtTitle);
             TextViewUtils.SetTextSize14(deliverigAddress, txtMessage, deliveryEmail);
-            UserEntity user = UserEntity.GetActive();
+           
             if (extras != null)
             {
                 if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
@@ -178,121 +181,14 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     txt_ca_name.Text = mSelectedAccountData.AccountNickName;
                     deliverigAddress.Text = mSelectedAccountData.AddStreet;
                 }
-                if (extras.ContainsKey("EBill"))
+                if (extras.ContainsKey("billrenderingresponse"))
                 {
-                    FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
-                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(296f) : (int)DPUtils.ConvertDPToPx(275f);
-                    applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = email_container.Visibility = deliverigTitle.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
-                    email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
-                    img_display.SetImageResource(Resource.Drawable.icons_display_digital_ebill);
-                    txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillTitle");
-                    txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillDescription"));
-                    mPref = PreferenceManager.GetDefaultSharedPreferences(this);
-                    Handler h = new Handler();
-                    Action myAction = () =>
-                    {
-                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                        if (!UserSessions.HasManageEBillDeliveryTutorialShown(this.mPref))
-                        {
-                            UserSessions.ManageBillDelivery = DBRTypeEnum.EBill;
-                            OnShowManageBillDeliveryTutorialDialog();
-                        }
-                    };
-                    h.PostDelayed(myAction, 50);
+                    getBillRenderingModel = new GetBillRenderingModel();
+                    getBillRenderingModel = JsonConvert.DeserializeObject<GetBillRenderingModel>(extras.GetString("billrenderingresponse"));
 
-                }
-                else if (extras.ContainsKey("OptedEBill"))
-                {
-                    FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
-                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(280f) : (int)DPUtils.ConvertDPToPx(265f);
-                    applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = email_container.Visibility = deliverigTitle.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
-                    email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
-                    img_display.SetImageResource(Resource.Drawable.icons_display_digital_ebill);
-                    txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillTitle");
-                    txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillDescription"));
-                    mPref = PreferenceManager.GetDefaultSharedPreferences(this);
-                    Handler h = new Handler();
-                    Action myAction = () =>
-                    {
-                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                        if (!UserSessions.HasManageOptedEBillDeliveryTutorialShown(this.mPref))
-                        {
-                            UserSessions.ManageBillDelivery = DBRTypeEnum.OptedEBill;
-                            OnShowManageBillDeliveryTutorialDialog();
-                        }
-                    };
-                    h.PostDelayed(myAction, 50);
-
-                }
-                else if (extras.ContainsKey("Email"))
-                {
-                    FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
-                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(435f) : (int)DPUtils.ConvertDPToPx(375f);
-                    applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Gone;
-                    email_layout.Visibility = email_container .Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Visible;
-                   
-                    deliveryUserName.Text = user.DisplayName + Utility.GetLocalizedLabel("ManageDigitalBillLanding", "you");
-                    deliveryEmail.Text = user.Email;
-                    img_display.SetImageResource(Resource.Drawable.display_emailbilling);
-                    txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillTitle");
-                    txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillDescription"));
-                    mPref = PreferenceManager.GetDefaultSharedPreferences(this);
-                    Handler h = new Handler();
-                    Action myAction = () =>
-                    {
-                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                        if (!UserSessions.HasManageEmailBillDeliveryTutorialShown(this.mPref))
-                        {
-                            UserSessions.ManageBillDelivery = DBRTypeEnum.Email;
-                            OnShowManageBillDeliveryTutorialDialog();
-                        }
-                    };
-                    h.PostDelayed(myAction, 50);
-                }
-                else if (extras.ContainsKey("ParallelEmail"))
-                {
-                    FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
-                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(400f) : (int)DPUtils.ConvertDPToPx(355f);
-                    applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
-                    email_layout.Visibility = email_container.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
-
-                    deliveryUserName.Text = user.DisplayName + Utility.GetLocalizedLabel("ManageDigitalBillLanding", "you");
-                    deliveryEmail.Text = user.Email;
-                    img_display.SetImageResource(Resource.Drawable.display_emailbilling);
-                    txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillTitle");
-                    txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillDescription"));
-                    mPref = PreferenceManager.GetDefaultSharedPreferences(this);
-                    Handler h = new Handler();
-                    Action myAction = () =>
-                    {
-                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                        if (!UserSessions.HasManageParallelEmailBillDeliveryTutorialShown(this.mPref))
-                        {
-                            UserSessions.ManageBillDelivery = DBRTypeEnum.ParallelEmail;
-                            OnShowManageBillDeliveryTutorialDialog();
-                        }
-                    };
-                    h.PostDelayed(myAction, 50);
-                }
-                else if (extras.ContainsKey("Paper"))
-                {
+                    GetDeliveryDisplay(getBillRenderingModel);
                     
-                    applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility  = ViewStates.Visible;
-                    email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = email_container.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
-                    UserSessions.ManageBillDelivery = DBRTypeEnum.Paper;
-                    FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
-                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 1.7)) : (int)DPUtils.ConvertDPToPx(455f);
-                    ScrollPage();
                 }
-                else if (extras.ContainsKey("WhatsApp"))
-                {
-
-                }
-                else if (extras.ContainsKey("None"))
-                {
-
-                }
-
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
                 {
                     currentAppNavigation = extras.GetString(Constants.APP_NAVIGATION_KEY);
@@ -305,6 +201,124 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             {
                 InitiateDBRRequest(mSelectedAccountData);
             };
+        }
+        public void GetDeliveryDisplay(GetBillRenderingModel getBillRenderingModel)
+        {
+            UserEntity user = UserEntity.GetActive();
+            if (getBillRenderingModel.DBRType == MobileEnums.DBRTypeEnum.EBill)
+            {
+                FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
+                layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(296f) : (int)DPUtils.ConvertDPToPx(275f);
+                applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = email_container.Visibility = deliverigTitle.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
+                email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
+                img_display.SetImageResource(Resource.Drawable.icons_display_digital_ebill);
+                txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillTitle");
+                txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillDescription"));
+                mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasManageEBillDeliveryTutorialShown(this.mPref))
+                    {
+                        UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.EBill;
+                        OnShowManageBillDeliveryTutorialDialog();
+                    }
+                };
+                h.PostDelayed(myAction, 50);
+
+            }
+            else if (getBillRenderingModel.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
+            {
+                FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
+                layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(280f) : (int)DPUtils.ConvertDPToPx(265f);
+                applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = email_container.Visibility = deliverigTitle.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
+                email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
+                img_display.SetImageResource(Resource.Drawable.icons_display_digital_ebill);
+                txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillTitle");
+                txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillDescription"));
+                mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasManageOptedEBillDeliveryTutorialShown(this.mPref))
+                    {
+                        UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.EBillWithCTA;
+                        OnShowManageBillDeliveryTutorialDialog();
+                    }
+                };
+                h.PostDelayed(myAction, 50);
+
+            }
+            else if (getBillRenderingModel.DBRType == MobileEnums.DBRTypeEnum.Email)
+            {
+                FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
+                layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(435f) : (int)DPUtils.ConvertDPToPx(375f);
+                applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Gone;
+                email_layout.Visibility = email_container.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Visible;
+
+                deliveryUserName.Text = user.DisplayName + Utility.GetLocalizedLabel("ManageDigitalBillLanding", "you");
+                deliveryEmail.Text = user.Email;
+                img_display.SetImageResource(Resource.Drawable.display_emailbilling);
+                txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillTitle");
+                txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillDescription"));
+                mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasManageEmailBillDeliveryTutorialShown(this.mPref))
+                    {
+                        UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.Email;
+                        OnShowManageBillDeliveryTutorialDialog();
+                    }
+                };
+                h.PostDelayed(myAction, 50);
+            }
+            else if (getBillRenderingModel.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
+            {
+                FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
+                layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(400f) : (int)DPUtils.ConvertDPToPx(355f);
+                applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
+                email_layout.Visibility = email_container.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
+
+                deliveryUserName.Text = user.DisplayName + Utility.GetLocalizedLabel("ManageDigitalBillLanding", "you");
+                deliveryEmail.Text = user.Email;
+                img_display.SetImageResource(Resource.Drawable.display_emailbilling);
+                txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillTitle");
+                txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillDescription"));
+                mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasManageParallelEmailBillDeliveryTutorialShown(this.mPref))
+                    {
+                        UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.EmailWithCTA;
+                        OnShowManageBillDeliveryTutorialDialog();
+                    }
+                };
+                h.PostDelayed(myAction, 50);
+            }
+            else if (getBillRenderingModel.DBRType == MobileEnums.DBRTypeEnum.Paper)
+            {
+
+                applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = ViewStates.Visible;
+                email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = email_container.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
+                UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.Paper;
+                FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
+                layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 1.7)) : (int)DPUtils.ConvertDPToPx(455f);
+                ScrollPage();
+            }
+            else if (getBillRenderingModel.DBRType == MobileEnums.DBRTypeEnum.WhatsApp)
+            {
+
+            }
+            else if (getBillRenderingModel.DBRType == MobileEnums.DBRTypeEnum.None)
+            {
+
+            }
         }
         public void InitiateDBRRequest(AccountData mSelectedAccountData)
         {
@@ -550,6 +564,12 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 {
                     NewAppTutorialUtils.ForceCloseNewAppTutorial();
                     selectedAccountNumber = data.GetStringExtra("SELECTED_ACCOUNT_NUMBER");
+                    getBillRenderingModel = new GetBillRenderingModel();
+                    getBillRenderingModel = JsonConvert.DeserializeObject<GetBillRenderingModel>(data.GetStringExtra("billrenderingresponse"));
+                    if (getBillRenderingModel != null)
+                    {
+                        GetDeliveryDisplay(getBillRenderingModel);
+                    }
                     foreach (DBRAccount account in dbrAccountList)
                     {
                         if (account.accountNumber == selectedAccountNumber)
@@ -565,12 +585,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     selectedAccountNickName = selectedEligibleAccount.accountName;
                     txt_ca_name.Text = selectedAccountNickName;
                     deliverigAddress.Text = selectedEligibleAccount.accountAddress;
-                    if (UserSessions.ManageBillDelivery == DBRTypeEnum.Paper)
-                    {
-                        FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
-                        layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 1.7)) : (int)DPUtils.ConvertDPToPx(455f);
-                       
-                    }
+                    
                     CustomerBillingAccount.RemoveSelected();
                     CustomerBillingAccount.SetSelected(selectedEligibleAccount.accountNumber);
                 }
@@ -581,7 +596,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             txt_ca_name.Text = selectedAccount.AccDesc;
             deliverigAddress.Text = selectedAccount.AccountStAddress;
-            if (UserSessions.ManageBillDelivery == DBRTypeEnum.Paper)
+            if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Paper)
             {
                 FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
                 layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 1.7)) : (int)DPUtils.ConvertDPToPx(455f);
@@ -686,7 +701,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
-            if(UserSessions.ManageBillDelivery == DBRTypeEnum.EBill)
+            if(UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBill)
             {
                 newList.Add(new NewAppModel()
                 {
@@ -698,7 +713,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     IsButtonShow = false
                 });
             }
-            else if (UserSessions.ManageBillDelivery == DBRTypeEnum.Email)
+            else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Email)
             {
                 newList.Add(new NewAppModel()
                 {
@@ -710,7 +725,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     IsButtonShow = false
                 });
             }
-            else if (UserSessions.ManageBillDelivery == DBRTypeEnum.ParallelEmail)
+            else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EmailWithCTA)
             {
                 newList.Add(new NewAppModel()
                 {
