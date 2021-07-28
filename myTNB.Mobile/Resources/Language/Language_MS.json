@@ -100,11 +100,12 @@
     "paymentPendingMsg": "Pembayaran sedang diproses",
     "processing": "sedang diproses",
     "dontShowThisAgain": "Jangan paparkan lagi",
-    "dbrPaperBill": "MS_This account is still receiving paper bills. <b>Go paperless today!</b>",
+    "dbrPaperBill": "Anda menerima Bil Bercetak untuk akaun ini. Jom paperless hari ini!",
+    "dbrPaperBillNonOwner": "Anda menerima Bil Bercetak untuk akaun ini.",
     "dbrAutoConvert": "MS_Starting <b>July 2021, paper bills will be replaced by digital bills</b>. Get a head start and go paperless today!",
-    "dbrEmail": "MS_This account is receiving bills via <b>myTNB App & Portal and email</b>.",
-    "dbrWhatsApp": "MS_This account is receiving bills via <b>myTNB App & Portal and Whatsapp</b>.",
-    "dbrViaMyTNB": "MS_This is an environmentally friendly account with <b>digital bills via myTNB!</b>"
+    "dbrEmail": "Anda menerima Bil myTNB & E-mel untuk akaun ini.",
+    "dbrWhatsApp": "Anda menerima Bil myTNB & Whatsapp untuk akaun ini.",
+    "dbrViaMyTNB": "Akaun anda adalah mesra alam dengan Bil myTNB!"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -220,10 +221,10 @@
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
     "receivedExtra": "terima lebih",
     "applicationStatus": "Status<br>Permohonan",
-    "discoverMore": "MS_Discover More",
-    "dbrReminderPopupTitle": "MS_Be the first to go paperless with myTNB Bill today!",
-    "dbrReminderPopupMessage": "MS_Make an impact today and choose to go without paper for your next bills! With myTNB, you have a better and more environmentally friendly way to receive you paperless bills digitally via App and Portal.",
-    "dbrReminderPopupStartNow": "MS_View More"
+    "discoverMore": "Terokai",
+    "dbrReminderPopupTitle": "Jom paperless dengan Bil myTNB hari ini!",
+    "dbrReminderPopupMessage": "Jadilah orang pertama yang memberi impak dengan memilih kaedah paperless untuk bil anda yang seterusnya! Dengan myTNB, anda mempunyai cara yang lebih baik dan mesra alam untuk menerima bil secara digital melalui Aplikasi & Portal myTNB.",
+    "dbrReminderPopupStartNow": "Ketahui Lanjut"
   },
   "Tabbar": {
     "home": "Utama",
@@ -393,7 +394,7 @@
   "SelectElectricityAccounts": {
     "title": "Pilih Akaun Elektrik",
     "accountsMissing": "Mengapa akaun saya tiada di sini?",
-    "dbrMissingAccountsMessage": "MS_In our push for a more sustainable future, we’re introducing this as a pilot program for Smart Meter accounts in smaller areas of Malaysia and are showing you only <b>electricity accounts that are eligible for digital bills</b>. We’re working hard for the program to expand nationwide and be available to all your other accounts soon!"
+    "dbrMissingAccountsMessage": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!"
   },
   "Usage": {
     "title": "Usage",
@@ -437,7 +438,7 @@
     "clearedBills": "Saya sudah jelaskan semua bil",
     "viewMore": "Lihat Butiran",
     "paidExtra": "Saya telah bayar ekstra",
-    "needToPay": "Jumlah Perlu Dibayar",
+    "needToPay": "Jumlah perlu dibayar",
     "by": "sebelum",
     "getBy": "dapat pada",
     "myEarnings": "Pendapatan saya",
@@ -767,8 +768,8 @@
     "removeAccount": "Alih Keluar Akaun Ini",
     "popupremoveAccountTitle": "Alih Keluar Akaun",
     "popupremoveAccountMessage": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda.",
-    "dbrManageDeliveryMethod": "MS_Manage Bill Delivery",
-    "dbrViewBillDelivery": "MS_View Bill Delivery"
+    "dbrManageDeliveryMethod": "Urus Cara Penerimaan Bil",
+    "dbrViewBillDelivery": "Cara Penerimaan Bil"
   },
   "Onboarding": {
     "letsStart": "Jom mulakan!",
@@ -1128,16 +1129,16 @@
     "applicationStatusDetailsActionOneMessage": "Ikuti status perkembangan semasa anda. Layari Portal myTNB untuk melihat maklumat penuh permohonan anda.",
     "applicationStatusDetailsActionTwoTitle": "Ketahui bila tindakan perlu diambil.",
     "applicationStatusDetailsActionTwoMessage": "Ambil tindakan yang diperlukan untuk permohonan anda dengan mudah di sini.",
-    "dbrBillTitle": "MS_Your account bill delivery method.",
-    "dbrBillMessage": "MS_View your bill delivery method here and tap to manage your preference.",
-    "manageCAManageBillDeliveryTitle": "MS_Your account bill delivery method.",
-    "manageCAManageBillDeliveryMessage": "MS_View and directly manage your bill delivery method here.",
-    "manageCAViewBillDeliveryTitle": "MS_Your account bill delivery method.",
-    "manageCAViewBillDeliveryMessage": "MS_View your bill delivery method here.",
-    "manageDeliveryMethodUpdateCTATitle": "MS_Manage your bill delivery method.",
-    "manageDeliveryMethodUpdateCTAMessage": "MS_Update your bill delivery method for this account here.",
-    "manageDeliveryMethodEmailTitle": "MS_Users with email bills.",
-    "manageDeliveryMethodEmailMessage": "MS_View account users or email recipients who are receiving monthly bills for this account."
+    "dbrBillTitle": "Cara penerimaan bil anda.",
+    "dbrBillMessage": "Semak cara penerimaan bil anda di sini dan klik untuk uruskan tetapan anda.",
+    "manageCAManageBillDeliveryTitle": "Cara penerimaan bil anda.",
+    "manageCAManageBillDeliveryMessage": "Semak dan urus cara penerimaan bil anda di sini.",
+    "manageCAViewBillDeliveryTitle": "Cara penerimaan bil akaun anda.",
+    "manageCAViewBillDeliveryMessage": "Semak cara penerimaan bil anda di sini dan klik untuk butiran lanjut.",
+    "manageDeliveryMethodUpdateCTATitle": "Uruskan cara penerimaan bil anda.",
+    "manageDeliveryMethodUpdateCTAMessage": "Kemas kini cara penerimaan bil anda untuk akaun ini di sini.",
+    "manageDeliveryMethodEmailTitle": "Penerima bil e-mel.",
+    "manageDeliveryMethodEmailMessage": "Semak penerima e-mel yang menerima bil bulanan untuk akaun ini."
   },
   "ApplicationStatusLanding": {
     "title": "Status Permohonan",
@@ -2327,15 +2328,15 @@
     ]
   },
   "ManageDigitalBillLanding": {
-    "title": "MS_Manage Bill Delivery",
-    "dbrInfoTitle0": "MS_This account is receiving myTNB Bill & Paper Bill",
-    "dbrInfoTitle1": "MS_Go green and save the trees.",
-    "dbrInfoTitle2": "MS_Fast and convenient bill viewing.",
-    "dbrInfoTitle3": "MS_Secure billing for a peace of mind.",
-    "dbrInfoDescription0": "MS_Swipe left to learn how you can benefit from going without paper bills today!",
-    "dbrInfoDescription1": "MS_Reduce paper waste and minimise your carbon footprint, and play your part in our collective move towards a sustainable future.",
-    "dbrInfoDescription2": "MS_Enjoy faster and on-the-dot delivery of your monthly electricity bills and view them directly on myTNB App & Portal, anytime, anywhere.",
-    "dbrInfoDescription3": "MS_Get your digital bills directly and securely on myTNB. No more worry about others seeing your bills, risk getting stolen or lost in the mail. ",
+    "title": "Urus Cara Penerimaan Bil",
+    "dbrInfoTitle0": "Anda menerima Bil Bercetak untuk akaun ini.",
+    "dbrInfoTitle1": "Ke arah bumi yang lebih hijau.",
+    "dbrInfoTitle2": "Paparan bil yang pantas dan mudah.",
+    "dbrInfoTitle3": "Terima bil anda dengan senang hati.",
+    "dbrInfoDescription0": "Leret ke kiri untuk mengetahui kelebihan dengan memilih kaedah 'paperless' hari ini!",
+    "dbrInfoDescription1": "Kurangkan pembaziran kertas anda dan jadilah yang pertama memberi impak di dalam usaha kolektif kita semua ke arah masa depan yang lebih mesra alam.",
+    "dbrInfoDescription2": "Alami penghantaran bil elektrik bulanan anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB, bila-bila masa dan di mana sahaja.",
+    "dbrInfoDescription3": "Dapatkan bil anda dengan terjamin di myTNB. Tidak perlu risau lagi bil anda terdedah, dicuri atau tercicir.",
     "startDigitalBillCTA": "MS_Start Digital Bill",
     "whatIfIStillWantPaperBills": "MS_What if I still want paper bills?",
     "whatIfIStillWantPaperBillsTitle": "MS_What if I still want paper bills?",
@@ -2344,20 +2345,26 @@
     "nevermind": "MS_Nevermind",
     "nonOwnerPreLaunchTitle": "MS_Your bill delivery method will be changed to myTNB digital bills soon.",
     "nonOwnerPreLaunchDescription": "<b>MS_Starting July 2021</b>, you’ll be receiving digital bills via myTNB App & Portal for this account as part of our mission to reduce paper waste.",
-    "anotherDeliveryMethod": "MS_What if I want another bill delivery method?",
-    "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "MS_What if I want another bill delivery method?",
-    "nonOwnerPreLaunchAnotherDeliveryMethodDetails": "MS_Your digital bills will always be available for viewing on myTNB. However, you can continue having email or paper bills delivered to you by contacting the account owner to update the account bill delivery method if you prefer another method.",
-    "goPaperlessCTA": "MS_Go Paperless",
-    "updateBillDeliveryMethodCTA": "MS_Update Bill Delivery Method",
-    "deliveringToTitle": "MS_Delivering to",
-    "you": "(MS_You)",
-    "eBillTitle": "MS_This is an environmentally friendly account with myTNB Bill!",
-    "emailBillTitle": "MS_This account is receiving myTNB Bill & Email Bill.",
-    "eBillDescription": "MS_You are receiving bills via App & Portal.<br>Thanks for going green!",
-    "emailBillDescription": "MS_You are receiving bills via App & Portal and to your email address."
+    "anotherDeliveryMethod": "Bagaimana jika saya mahu cara penerimaan bil lain?",
+    "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "Bagaimana jika saya mahu cara penerimaan bil lain?",
+    "nonOwnerPreLaunchAnotherDeliveryMethodDetails": "Bil anda akan sentiasa tersedia untuk dilihat di Aplikasi & Portal myTNB. Jika anda mahu cara penerimaan bil lain, anda boleh menghubungi TNB Careline di <a href=\"tel: 1300885454\">1-300-88-5454</a> atau mengunjungi Kedai Tenaga supaya kami dapat membantu anda.",
+    "goPaperlessCTA": "Jom Paperless",
+    "updateBillDeliveryMethodCTA": "Kemas Kini Cara Penerimaan Bil",
+    "deliveringToTitle": "Diterima oleh",
+    "you": "(You)",
+    "eBillTitle": "Akaun anda adalah mesra alam dengan Bil myTNB!",
+    "emailBillTitle": "Anda menerima Bil myTNB & E-mel.",
+    "eBillDescription": "Bil anda dihantar di Aplikasi & Portal myTNB. Terima kasih kerana memilih 'paperless'!",
+    "emailBillDescription": "Bil anda dihantar melalui Aplikasi & Portal myTNB dan e-mel untuk akaun ini.",
+    "updatingTitle": "Kami sedang mengemaskini cara penerimaan bil anda.",
+    "updatingDescription": "Akaun anda sedang dikemaskinikan dan dijangka mengambil masa sehingga 5 minit. Kembali semula nanti!",
+    "selectAccount": "Pilih Akaun Anda",
+    "notEligibleAccountsTitle": "Mengapa akaun saya tidak ada di sini?",
+    "notEligibleAccountsMessage": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!"
   },
   "DBRWebview": {
-    "startDigitalBill": "MS_Start Digital Bill"
+    "goPaperless": "Jom Paperless!",
+    "updateBillDelivery": "Kemas Kini Cara Penerimaan Bil"
   },
   "ServiceConfiguration": {
     "GetEligibility": {

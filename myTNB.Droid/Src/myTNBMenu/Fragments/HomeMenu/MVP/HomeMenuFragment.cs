@@ -840,6 +840,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         
         private void SetupDiscoverView()
         {
+            discoverShimmerView.Visibility = ViewStates.Gone;
             string imgsource = "discover_non_targeted";
             if (imgsource == "discover_non_targeted")
             {
@@ -1007,10 +1008,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetDBRDiscoverView()
         {
-          
+            SetupDsicoverShimmerEffect();
             if (IsAccountDBREligible)
             {
-                SetupDsicoverShimmerEffect();
+                SetDiscoverResult(IsAccountDBREligible);
             }
             else
             {
@@ -1099,6 +1100,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             if (IsFromLogin && loginCount == 1)
                             {
                                 ShowMarketingTooltip();
+                                IsFromLogin = false;
                             }
                         }
                         else
@@ -1144,18 +1146,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-                AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
-                Intent intent = new Intent(this.Activity, typeof(ManageBillDeliveryActivity));
-                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                intent.PutExtra("Paper", MobileEnums.DBRTypeEnum.Paper.ToString());
-                StartActivity(intent);
+                GetBillRenderingAsync();
             }
             catch (System.Exception e)
             {
-                Intent intent = new Intent(this.Activity, typeof(ManageBillDeliveryActivity));
-                intent.PutExtra("Paper", "Paper");
-                StartActivity(intent);
                 Utility.LoggingNonFatalError(e);
             }
         }

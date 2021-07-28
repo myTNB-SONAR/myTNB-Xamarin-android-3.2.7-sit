@@ -45,36 +45,22 @@ namespace myTNB.Mobile.AWS.Models
         {
             get
             {
-                MobileEnums.DBRTypeEnum renderingType;
-                switch (OwnerBillRenderingMethod)
+                MobileEnums.DBRTypeEnum renderingType = MobileEnums.DBRTypeEnum.None;
+                if (IsPaper)
                 {
-                    //Paper
-                    case BillRenderingCodes.Owner_Paper:
-                        {
-                            renderingType = MobileEnums.DBRTypeEnum.Paper;
-                            break;
-                        }
-                    //Email
-                    case BillRenderingCodes.Owner_EMail:
-                        {
-                            renderingType = IsUpdateCtaAllow
-                                ? MobileEnums.DBRTypeEnum.EmailWithCTA
-                                : MobileEnums.DBRTypeEnum.Email;
-                            break;
-                        }
-                    //EBill
-                    case BillRenderingCodes.Owner_EBill:
-                        {
-                            renderingType = IsUpdateCtaAllow
-                                ? MobileEnums.DBRTypeEnum.EBillWithCTA
-                                : MobileEnums.DBRTypeEnum.EBill;
-                            break;
-                        }
-                    default:
-                        {
-                            renderingType = MobileEnums.DBRTypeEnum.None;
-                            break;
-                        }
+                    renderingType = MobileEnums.DBRTypeEnum.Paper;
+                }
+                else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EMail)
+                {
+                    renderingType = IsUpdateCtaAllow
+                        ? MobileEnums.DBRTypeEnum.EmailWithCTA
+                        : MobileEnums.DBRTypeEnum.Email;
+                }
+                else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EBill)
+                {
+                    renderingType = IsUpdateCtaAllow
+                        ? MobileEnums.DBRTypeEnum.EBillWithCTA
+                        : MobileEnums.DBRTypeEnum.EBill;
                 }
                 return renderingType;
             }
@@ -88,32 +74,18 @@ namespace myTNB.Mobile.AWS.Models
         {
             get
             {
-                string message;
-                switch (OwnerBillRenderingMethod)
+                string message = string.Empty;
+                if (IsPaper)
                 {
-                    //Paper
-                    case BillRenderingCodes.Owner_Paper:
-                        {
-                            message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_PaperBill);
-                            break;
-                        }
-                    //Email
-                    case BillRenderingCodes.Owner_EMail:
-                        {
-                            message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_Email);
-                            break;
-                        }
-                    //EBill
-                    case BillRenderingCodes.Owner_EBill:
-                        {
-                            message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_EBill);
-                            break;
-                        }
-                    default:
-                        {
-                            message = string.Empty;
-                            break;
-                        }
+                    message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_PaperBill);
+                }
+                else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EMail)
+                {
+                    message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_Email);
+                }
+                else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EBill)
+                {
+                    message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_EBill);
                 }
                 return message;
             }
@@ -128,32 +100,18 @@ namespace myTNB.Mobile.AWS.Models
         {
             get
             {
-                string image;
-                switch (OwnerBillRenderingMethod)
+                string image = string.Empty;
+                if (IsPaper)
                 {
-                    //Paper
-                    case BillRenderingCodes.Owner_Paper:
-                        {
-                            image = "Icon-DBR-Paper-Bill";
-                            break;
-                        }
-                    //Email
-                    case BillRenderingCodes.Owner_EMail:
-                        {
-                            image = "Icon-DBR-EMail";
-                            break;
-                        }
-                    //EBill
-                    case BillRenderingCodes.Owner_EBill:
-                        {
-                            image = "Icon-DBR-EBill";
-                            break;
-                        }
-                    default:
-                        {
-                            image = string.Empty;
-                            break;
-                        }
+                    image = "Icon-DBR-Paper-Bill";
+                }
+                else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EMail)
+                {
+                    image = "Icon-DBR-EMail";
+                }
+                else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EBill)
+                {
+                    image = "Icon-DBR-EBill";
                 }
                 return image;
             }
@@ -166,7 +124,8 @@ namespace myTNB.Mobile.AWS.Models
             {
                 try
                 {
-                    if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EMail)
+                    if (DBRType == MobileEnums.DBRTypeEnum.Email
+                        || DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
                     {
                         List<EmailModel> emails = new List<EmailModel>
                         {
@@ -187,7 +146,9 @@ namespace myTNB.Mobile.AWS.Models
                                     {
                                         IsOwner = false,
                                         Email = BCRecord[i].BillingEmail ?? string.Empty,
-                                        Name = string.Format("{0} {1}", BCRecord[i].FirstName ?? string.Empty, BCRecord[i].LastName ?? string.Empty).Trim()
+                                        Name = string.Format("{0} {1}"
+                                            , BCRecord[i].FirstName ?? string.Empty
+                                            , BCRecord[i].LastName ?? string.Empty).Trim()
                                     });
                                 }
                             }
@@ -217,6 +178,22 @@ namespace myTNB.Mobile.AWS.Models
             }
         }
 
+        private bool IsPaper
+        {
+            get
+            {
+                if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_Paper)
+                {
+                    return true;
+                }
+                if (BCRecord != null && BCRecord.Count > 0)
+                {
+                    int index = BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_Paper);
+                    return index > -1;
+                }
+                return false;
+            }
+        }
     }
 
     public class BCRecordModel

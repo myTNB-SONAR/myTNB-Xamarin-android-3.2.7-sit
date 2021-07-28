@@ -189,5 +189,37 @@ namespace myTNB.Mobile
                     && caList.Count > 0;
             }
         }
+
+        public bool ShouldShowDBRCard(List<string> caList = null)
+        {
+            bool ismyTNBAccountEligible = IsAccountDBREligible;
+            if (GetFeatureContent<DBRModel>(Features.DBR) is DBRModel dbrList
+                && dbrList != null
+                && dbrList.ContractAccounts != null
+                && dbrList.ContractAccounts.Count > 0)
+            {
+                if (caList == null)
+                {
+                    int index = dbrList.ContractAccounts.FindIndex(x => !x.Acted);
+                    return ismyTNBAccountEligible && index > -1;
+                }
+                else
+                {
+                    for (int i = 0; i < caList.Count; i++)
+                    {
+                        ContractAccountsModel item = dbrList.ContractAccounts.Find(x => x.ContractAccount == caList[i]);
+                        if (item==null)
+                        {
+                            continue;
+                        }
+                        if (!item.Acted)
+                        {
+                            return ismyTNBAccountEligible;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
     }
 }
