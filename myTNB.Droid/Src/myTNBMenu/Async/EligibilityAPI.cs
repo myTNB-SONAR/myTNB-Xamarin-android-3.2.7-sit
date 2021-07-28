@@ -42,7 +42,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             string eligibilityTimeStamp = preferences.GetString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, string.Empty);
 
            //if (EligibilityManager.Instance.ShouldCallApi(AWSConstants.Services.GetEligibility
-           //    , eligibilityTimeStamp))
+           //   , eligibilityTimeStamp))
            if(true)
             {
                 if (!AccessTokenCache.Instance.HasTokenSaved(_activity))

@@ -16,6 +16,7 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Java.Text;
+using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
@@ -119,7 +120,14 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.digital_container)]
         LinearLayout digital_container;
 
-        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
+        [BindView(Resource.Id.bill_paperless_icon)]
+        ImageView bill_paperless_icon;
+        
+        
+
+        GetBillRenderingModel billrenderingresponse;
+
+       SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
 
         AccountChargeModel selectedAccountChargeModel;
@@ -225,6 +233,7 @@ namespace myTNB_Android.Src.Billing.MVP
             btnPayBill.Text = GetLabelByLanguage("pay");
             paperlessTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Common", "dbrPaperBill"), FromHtmlOptions.ModeLegacy);
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+            digital_container.Visibility = ViewStates.Gone;
             Bundle extras = Intent.Extras;
 
             if (extras.ContainsKey("SELECTED_ACCOUNT"))
@@ -252,6 +261,28 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 isCheckPendingPaymentNeeded = true;
                 isPendingPayment = false;
+            }
+            if (extras.ContainsKey("billrenderingresponse"))
+            {
+                billrenderingresponse = JsonConvert.DeserializeObject<GetBillRenderingModel>(extras.GetString("billrenderingresponse"));
+                if(billrenderingresponse != null)
+                {
+                    digital_container.Visibility = ViewStates.Visible;
+                    if (billrenderingresponse.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill)
+                    {
+                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
+                    }
+                    else if (billrenderingresponse.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Email)
+                    {
+                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
+                    }
+                    if (billrenderingresponse.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Paper)
+                    {
+                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_Paper_Bill);
+                    }
+
+                    paperlessTitle.Text = billrenderingresponse.SegmentMessage;
+                }
             }
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
@@ -324,10 +355,9 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             if (!this.GetIsClicked())
             {
-                this.SetIsClicked(true);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                intent.PutExtra("Email", "Email");
                 StartActivity(intent);
             }
         }

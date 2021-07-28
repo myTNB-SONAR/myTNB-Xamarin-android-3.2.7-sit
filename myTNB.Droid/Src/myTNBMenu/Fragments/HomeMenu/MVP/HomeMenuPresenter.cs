@@ -1443,7 +1443,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
             this.mView.SetMyServiceRecycleView();
             this.mView.SetNewFAQRecycleView();
-            this.mView.ShowDiscoverView();
         }
 
         public void InitiateMyServiceRefresh()
@@ -2262,7 +2261,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 try
                 {
-                    bool IsAccountDBREligible = EligibilitySessionCache.Instance.IsAccountDBREligible;
+                    bool IsAccountDBREligible = EligibilitySessionCache.Instance.ShouldShowDBRCard();
                     if (IsAccountDBREligible)
                     {
                         this.mView.SetDiscoverResult(IsAccountDBREligible);

@@ -51,6 +51,9 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile.AWS.Models;
+using System.Linq;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -515,12 +518,90 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 SupportFragmentManager.PopBackStack();
                 currentFragment = null;
             }
-            currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount);
-            SupportFragmentManager.BeginTransaction()
-                .Replace(Resource.Id.content_layout, currentFragment)
-                .CommitAllowingStateLoss();
-        }
 
+            if(EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(selectedAccount) == selectedAccount.AccountNum)
+            {
+                GetBillRenderingAsync(selectedAccount);
+            }
+            else
+            {
+                currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount);
+                SupportFragmentManager.BeginTransaction()
+                    .Replace(Resource.Id.content_layout, currentFragment)
+                    .CommitAllowingStateLoss();
+            }
+        }
+        private async void GetBillRenderingAsync(AccountData selectedAccount)
+        {
+            try
+            {
+                ShowProgressDialog();
+                GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
+                AccountData dbrAccount = selectedAccount;
+                if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
+                }
+                GetBillRenderingResponse response = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this));
+
+                HideProgressDialog();
+                //Nullity Check
+                if (response != null
+                   && response.StatusDetail != null
+                   && response.StatusDetail.IsSuccess)
+                {
+                    currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount, response.Content);
+                    SupportFragmentManager.BeginTransaction()
+                        .Replace(Resource.Id.content_layout, currentFragment)
+                        .CommitAllowingStateLoss();
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                        .SetTitle(response.StatusDetail.Title)
+                                        .SetMessage(response.StatusDetail.Message)
+                                        .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
+                                        .Build();
+                    errorPopup.Show();
+                }
+
+            }
+            catch (System.Exception e)
+            {
+                HideProgressDialog();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+        public string GetEligibleDBRAccount(AccountData selectedAccount)
+        {
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+            List<string> dBRCAs = EligibilitySessionCache.Instance.GetDBRCAs();
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            CustomerBillingAccount account = new CustomerBillingAccount();
+            string dbraccount = string.Empty;
+            if (dBRCAs.Count > 0)
+            {
+                foreach (var dbrca in dBRCAs)
+                {
+                    dbraccount = dBRCAs.Where(x => x == selectedAccount.AccountNum).FirstOrDefault();
+                    if (dbraccount != null)
+                    {
+                        return dbraccount;
+                    }
+                }
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                     .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                     .Build();
+                errorPopup.Show();
+            }
+            return dbraccount;
+        }
         public void SetToolbarTitle(int stringResourceId)
         {
             try

@@ -12,6 +12,7 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using myTNB;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -217,6 +218,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             UserEntity userEntity = UserEntity.GetActive();
             try
             {
+                EligibilitySessionCache.Instance.Clear();
                 if (userEntity != null)
                 {
                     var logoutResponse = await ServiceApiImpl.Instance.LogoutUser(new LogoutUserRequest());

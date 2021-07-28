@@ -61,6 +61,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             , ViewTreeObserver.IOnGlobalLayoutListener, View.IOnFocusChangeListener
     {
         internal static bool IsFromLogin;
+        GetBillRenderingResponse billrenderingresponse;
 
         [BindView(Resource.Id.newFAQShimmerView)]
         LinearLayout newFAQShimmerView;
@@ -425,6 +426,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 SetupNewFAQView();
                 SetupDiscoverView();
+                ShowDiscoverView();
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
@@ -551,13 +553,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 StartActivity(LaunchViewIntent);
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
         [OnClick(Resource.Id.discoverView)]
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
+            if (EligibilitySessionCache.Instance.IsAccountDBREligible)
+            {
                 GetBillRenderingAsync();
+            }
         }
         private async void GetBillRenderingAsync()
         {
@@ -570,26 +574,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
                     AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
                 }
-                GetBillRenderingResponse response = await DBRManager.Instance.GetBillRendering(dbrAccount.AccNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                billrenderingresponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
 
                 HideProgressDialog();
                 //Nullity Check
-                if (response != null
-                   && response.StatusDetail != null
-                   && response.StatusDetail.IsSuccess)
+                if (billrenderingresponse != null
+                   && billrenderingresponse.StatusDetail != null
+                   && billrenderingresponse.StatusDetail.IsSuccess)
                 {
                     AccountData selectedAccountData = AccountData.Copy(dbrAccount, true);
                     Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(response.Content));
+                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse.Content));
                     intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
                     StartActivity(intent);
                 }
                 else
                 {
                     MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                        .SetTitle(response.StatusDetail.Title)
-                                        .SetMessage(response.StatusDetail.Message)
-                                        .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
+                                        .SetTitle(billrenderingresponse.StatusDetail.Title)
+                                        .SetMessage(billrenderingresponse.StatusDetail.Message)
+                                        .SetCTALabel(billrenderingresponse.StatusDetail.PrimaryCTATitle)
                                         .Build();
                     errorPopup.Show();
                 }
@@ -597,10 +601,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.Exception e)
             {
-                HideProgressDialog();
-                Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                intent.PutExtra("Paper", "Paper");
-                StartActivity(intent);
                 Utility.LoggingNonFatalError(e);
             }
         }

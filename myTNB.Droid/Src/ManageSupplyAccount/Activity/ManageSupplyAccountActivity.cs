@@ -10,8 +10,11 @@ using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
+using myTNB.Mobile;
+using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.ManageSupplyAccount.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -22,6 +25,7 @@ using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime;
 
 namespace myTNB_Android.Src.ManageSupplyAccount.Activity
@@ -67,6 +71,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [BindView(Resource.Id.ManageBill_container)]
         LinearLayout ManageBill_container;
 
+        GetBillRenderingResponse billrenderingresponse;
+
         ISharedPreferences mPref;
 
         ManageSupplyAccountContract.IUserActionsListener userActionsListener;
@@ -92,6 +98,14 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
                         accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
 
+                        if (EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(accountData) == accountData.AccountNum)
+                        {
+                            ManageBill_container.Visibility = ViewStates.Visible;
+                        }
+                        else
+                        {
+                            ManageBill_container.Visibility = ViewStates.Gone;
+                        }
                     }
                     position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
                 }
@@ -122,7 +136,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 btnTextUpdateNickName.Text = GetLabelCommonByLanguage("update");
                 btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
                 manageBillTitle.Text = Utility.GetLocalizedLabel("ManageAccount", "dbrManageDeliveryMethod");
-
                 txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
                 this.userActionsListener.Start();
@@ -150,12 +163,18 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-                AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
-                Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
-                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                intent.PutExtra("ParallelEmail", "ParallelEmail");
-                StartActivity(intent);
+                
+                if (EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(accountData) == accountData.AccountNum)
+                {
+                    GetBillRenderingAsync(accountData);
+                }
+                else
+                {
+                    Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                    intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+                    intent.PutExtra("ParallelEmail", "ParallelEmail");
+                    StartActivity(intent);
+                }
             }
         }
         
@@ -445,6 +464,100 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             });
 
             return newList;
+        }
+        private async void GetBillRenderingAsync(AccountData selectedAccount)
+        {
+            try
+            {
+                ShowProgressDialog();
+                GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
+                AccountData dbrAccount = selectedAccount;
+                if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
+                }
+                billrenderingresponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this));
+
+                HideProgressDialog();
+                //Nullity Check
+                if (billrenderingresponse != null
+                   && billrenderingresponse.StatusDetail != null
+                   && billrenderingresponse.StatusDetail.IsSuccess)
+                {
+                    Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                    intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse.Content));
+                    StartActivity(intent);
+                }
+                else
+                {    
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                        .SetTitle(billrenderingresponse.StatusDetail.Title)
+                                        .SetMessage(billrenderingresponse.StatusDetail.Message)
+                                        .SetCTALabel(billrenderingresponse.StatusDetail.PrimaryCTATitle)
+                                        .Build();
+                    errorPopup.Show();
+                }
+
+            }
+            catch (System.Exception e)
+            {
+                HideProgressDialog();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+        public string GetEligibleDBRAccount(AccountData selectedAccount)
+        {
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+            List<string> dBRCAs = EligibilitySessionCache.Instance.GetDBRCAs();
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            CustomerBillingAccount account = new CustomerBillingAccount();
+            string dbraccount = string.Empty;
+            if (dBRCAs.Count > 0)
+            {
+                foreach (var dbrca in dBRCAs)
+                {
+                    dbraccount = dBRCAs.Where(x => x == selectedAccount.AccountNum).FirstOrDefault();
+                    if (dbraccount != null)
+                    {
+                        return dbraccount;
+                    }
+                }
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                     .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                     .Build();
+                errorPopup.Show();
+            }
+            return dbraccount;
+        }
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
         public int GetAccountLayoutHeight()
         {
