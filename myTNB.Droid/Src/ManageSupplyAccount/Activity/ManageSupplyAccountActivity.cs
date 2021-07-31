@@ -234,16 +234,19 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             base.OnResume();
             try
             {
-                Handler h = new Handler();
-                Action myAction = () =>
+                if (EligibilitySessionCache.Instance.IsAccountDBREligible)
                 {
-                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                    if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
+                    Handler h = new Handler();
+                    Action myAction = () =>
                     {
-                        OnShowManageSupplyAccountTutorialDialog();
-                    }
-                };
-                h.PostDelayed(myAction, 50);
+                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                        if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
+                        {
+                            OnShowManageSupplyAccountTutorialDialog();
+                        }
+                    };
+                    h.PostDelayed(myAction, 50);
+                }
                 FirebaseAnalyticsUtils.SetScreenName(this, "Manage Electricity Account");
             }
             catch (Exception e)

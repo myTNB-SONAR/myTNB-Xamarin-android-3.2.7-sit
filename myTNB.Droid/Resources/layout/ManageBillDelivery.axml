@@ -6,30 +6,76 @@
 	android:layout_height="match_parent"
 	android:layout_alignParentBottom="true"
 	android:layout_centerHorizontal="true"
-	android:theme="@style/Theme.Notification"
 	android:id="@+id/rootView">
 	<LinearLayout
 		android:orientation="vertical"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:theme="@style/Theme.Dashboard"
 		android:gravity="center">
 		<include
 			layout="@layout/toolbar"
 			android:id="@+id/toolbar" />
-		<TextView
-			android:id="@+id/txt_ca_name"
-			android:layout_width="wrap_content"
-			android:layout_height="30dp"
-			android:layout_marginBottom="16dp"
-			android:drawableRight="@drawable/ic_spinner_dropdown"
-			android:ellipsize="end"
-			android:gravity="center"
-			android:maxEms="20"
-			android:maxLines="1"
-			android:text=""
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:textColor="@color/white"
-			android:textSize="12dp" />
+		<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+			android:background="@color/white">
+		<LinearLayout
+					android:id="@+id/selectAccountContainer"
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:layout_marginBottom="16dp"
+					android:layout_marginTop="16dp">
+					<TextView
+						android:text="SELECT YOUR ACCOUNT"
+						android:layout_width="wrap_content"
+						android:layout_height="17dp"
+						android:id="@+id/txtSelectedAccountTitle"
+						android:gravity="center_horizontal"
+						android:textSize="12dp"
+						android:textColor="#a6a6a6"/>
+
+			<LinearLayout
+                android:id="@+id/ManageBill_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:background="@color/white">
+					<TextView
+						android:id="@+id/txt_ca_name"
+						android:layout_width="0dp"
+						android:layout_weight="1"
+						android:layout_height="wrap_content"
+						android:textColor="#49494a"
+						android:textSize="16dp"
+						android:drawablePadding="4dp"
+						android:drawableRight="@drawable/ic_action_dropdown1"/>
+					<ImageView
+                    android:id="@+id/ic_ca_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/ic_form_info"/>
+
+				</LinearLayout>
+			<View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:paddingBottom="16dp"
+                android:background="@color/platinumGrey"/>
+
+			
+				
+			</LinearLayout>
+		</LinearLayout>
+		<View
+						android:layout_width="fill_parent"
+						android:layout_height="16dp"
+						android:background="@color/lightGrey" />
 		<LinearLayout
 			android:id="@+id/layout_api_refresh"
 			android:visibility="gone"

@@ -122,6 +122,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.deliveryUserName)]
         TextView deliveryUserName;
 
+        [BindView(Resource.Id.ic_ca_info)]
+        ImageView ic_ca_info;
+
+        
+
         GetBillRenderingModel getBillRenderingModel;
 
         ISharedPreferences mPref;
@@ -209,8 +214,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             {
                 FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                 layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(296f) : (int)DPUtils.ConvertDPToPx(275f);
-                applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = email_container.Visibility = deliverigTitle.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
-                email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
+                applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = email_container.Visibility = deliverigTitle.Visibility = btnUpdateDigitalBillLayout.Visibility  = ViewStates.Gone;
+                email_layout.Visibility = digitalBillLabelLayout.Visibility = digitalBillLabelContainer.Visibility = ViewStates.Visible;
                 img_display.SetImageResource(Resource.Drawable.icons_display_digital_ebill);
                 txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillTitle");
                 txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillDescription"));
@@ -232,7 +237,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             {
                 FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                 layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(280f) : (int)DPUtils.ConvertDPToPx(265f);
-                applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = email_container.Visibility = deliverigTitle.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
+                applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = email_container.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = deliverigTitle.Visibility = ViewStates.Gone;
                 email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
                 img_display.SetImageResource(Resource.Drawable.icons_display_digital_ebill);
                 txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillTitle");
@@ -281,7 +286,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                 layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(400f) : (int)DPUtils.ConvertDPToPx(355f);
                 applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
-                email_layout.Visibility = email_container.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
+                email_layout.Visibility = email_container.Visibility = deliverigTitle.Visibility= btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
 
                 deliveryUserName.Text = user.DisplayName + Utility.GetLocalizedLabel("ManageDigitalBillLanding", "you");
                 deliveryEmail.Text = user.Email;
@@ -520,7 +525,20 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             ShowManageBillDeliveryPopup();
         }
-
+        [OnClick(Resource.Id.ic_ca_info)]
+        void OnTap_Show_ic_ca_info_Popupooltip(object sender, EventArgs eventArgs)
+        {
+            Show_ic_ca_infoPopup();
+        }
+        public void Show_ic_ca_infoPopup()
+        {
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                   .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "notEligibleAccountsTitle"))
+                   .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "notEligibleAccountsMessage"))
+                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                   .SetCTAaction(() => { this.SetIsClicked(false); })
+                   .Build().Show();
+        }
         public void ShowManageBillDeliveryPopups()
         {
             MyTNBAppToolTipBuilder dbrTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
@@ -585,9 +603,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     selectedAccountNickName = selectedEligibleAccount.accountName;
                     txt_ca_name.Text = selectedAccountNickName;
                     deliverigAddress.Text = selectedEligibleAccount.accountAddress;
-                    
-                    CustomerBillingAccount.RemoveSelected();
-                    CustomerBillingAccount.SetSelected(selectedEligibleAccount.accountNumber);
                 }
             }
             base.OnActivityResult(requestCode, resultCode, data);
