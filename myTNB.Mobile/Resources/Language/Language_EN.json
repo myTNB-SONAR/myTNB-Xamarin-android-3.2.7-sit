@@ -1134,7 +1134,7 @@
     "manageCAManageBillDeliveryTitle": "Your account bill delivery method.",
     "manageCAManageBillDeliveryMessage": "View and directly manage your bill delivery method here.",
     "manageCAViewBillDeliveryTitle": "Your account bill delivery method.",
-    "manageCAViewBillDeliveryMessage": "View your bill delivery method here and tap for more details.",
+    "manageCAViewBillDeliveryMessage": "View your bill delivery method here.",
     "manageDeliveryMethodUpdateCTATitle": "Manage your bill delivery method.",
     "manageDeliveryMethodUpdateCTAMessage": "Update your bill delivery method for this account here.",
     "manageDeliveryMethodEmailTitle": "Recipient(s) of email bills.",
@@ -2368,7 +2368,9 @@
     "updatingDescription": "It may take up to 5 minutes to reflect the changes on your myTNB account and you won’t be able to view it during this time. Check back later!",
     "selectAccount": "Select Your Account",
     "notEligibleAccountsTitle": "Why are some of my accounts not here?",
-    "notEligibleAccountsMessage": "We're introducing this as a pilot program for Smart Meter accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We’re working hard towards expanding it nationwide, so it'll be available to all your other accounts soon! Please stay tuned!"
+    "notEligibleAccountsMessage": "We're introducing this as a pilot program for Smart Meter accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We’re working hard towards expanding it nationwide, so it'll be available to all your other accounts soon! Please stay tuned!",
+    "nonOwnerPaperTitle": "You’re receiving Paper Bill for this account.",
+    "nonOwnerPaperMessage": "Your bills are being delivered to its premises address."
   },
   "DBRWebview": {
     "goPaperless": "Jom Paperless!",

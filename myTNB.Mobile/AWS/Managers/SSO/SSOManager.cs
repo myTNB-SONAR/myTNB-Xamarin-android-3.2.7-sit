@@ -58,7 +58,7 @@ namespace myTNB.Mobile
                     RedirectUrl = redirectURL,
                     CaNo = CANumber
                 };
-
+                Debug.WriteLine("[DEBUG] SSO ssoModel: " + JsonConvert.SerializeObject(ssoModel));
                 string signature = SecurityManager.Instance.AES256_Encrypt(AWSConstants.SaltKey
                     , AWSConstants.PassPhrase
                     , JsonConvert.SerializeObject(ssoModel));

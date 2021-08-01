@@ -17,7 +17,7 @@
         private const string PaperBillOptInRedirectURL_PROD = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/PaperBill/OptIn";
         private const string DBRSSOURL_PROD = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/Sso?s={0}";
 
-        internal const int TimeOut = 30000;
+        internal const int TimeOut = 10000;
 
         internal const string Channel = "myTNB_API_Mobile";
         internal static int RoleID = 16;
@@ -69,8 +69,8 @@
 #else
         internal const string Environment = PROD;
         internal const string XAPIKey = XAPIKey_PROD;
-        public const string SaltKey = SaltKeyPROD;
-        public const string PassPhrase = PassphrasePROD;
+        public const string SaltKey = SaltKey_PROD;
+        public const string PassPhrase = Passphrase_PROD;
 #endif
 
         //Headers

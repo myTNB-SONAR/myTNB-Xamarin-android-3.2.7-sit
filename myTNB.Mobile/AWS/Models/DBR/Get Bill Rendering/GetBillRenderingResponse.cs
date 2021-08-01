@@ -30,6 +30,12 @@ namespace myTNB.Mobile.AWS.Models
         public string OwnerBillingEmail { set; get; }
         [JsonProperty("bcRecord")]
         public List<BCRecordModel> BCRecord { set; get; }
+        [JsonProperty("isOwnerPostalBill")]
+        public bool IsOwnerPostalBill { set; get; }
+        [JsonProperty("ownerPostalAddress")]
+        public string OwnerPostalAddress { set; get; }
+        [JsonProperty("ownerPostalAddressDetail")]
+        public PostalAddressModel OwnerPostalAddressDetail { set; get; }
         [JsonProperty("isInProgress")]
         public bool IsInProgress { set; get; }
         [JsonProperty("isUpdateCtaAllow")]
@@ -218,6 +224,28 @@ namespace myTNB.Mobile.AWS.Models
         public string OwnerBillingEmail { set; get; }
         [JsonProperty("bcRecord")]
         public List<BCRecordModel> BCRecord { set; get; }
+        [JsonProperty("isOwnerPostalBill")]
+        public bool IsOwnerPostalBill { set; get; }
+        [JsonProperty("ownerPostalAddressDetail")]
+        public PostalAddressModel OwnerPostalAddressDetail { set; get; }
+    }
+
+    public class PostalAddressModel
+    {
+        [JsonProperty("houseNo")]
+        public string HouseNo { get; set; }
+        [JsonProperty("street")]
+        public string Street { get; set; }
+        [JsonProperty("district")]
+        public string District { get; set; }
+        [JsonProperty("postalCode")]
+        public string PostalCode { get; set; }
+        [JsonProperty("city")]
+        public string City { get; set; }
+        [JsonProperty("region")]
+        public string Region { get; set; }
+        [JsonProperty("country")]
+        public string Country { get; set; }
     }
 
     public class EmailModel

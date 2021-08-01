@@ -1134,7 +1134,7 @@
     "manageCAManageBillDeliveryTitle": "Cara penerimaan bil anda.",
     "manageCAManageBillDeliveryMessage": "Semak dan urus cara penerimaan bil anda di sini.",
     "manageCAViewBillDeliveryTitle": "Cara penerimaan bil akaun anda.",
-    "manageCAViewBillDeliveryMessage": "Semak cara penerimaan bil anda di sini dan klik untuk butiran lanjut.",
+    "manageCAViewBillDeliveryMessage": "Semak cara penerimaan bil anda di sini.",
     "manageDeliveryMethodUpdateCTATitle": "Uruskan cara penerimaan bil anda.",
     "manageDeliveryMethodUpdateCTAMessage": "Kemas kini cara penerimaan bil anda untuk akaun ini di sini.",
     "manageDeliveryMethodEmailTitle": "Penerima bil e-mel.",
@@ -2360,7 +2360,9 @@
     "updatingDescription": "Akaun anda sedang dikemaskinikan dan dijangka mengambil masa sehingga 5 minit. Kembali semula nanti!",
     "selectAccount": "Pilih Akaun Anda",
     "notEligibleAccountsTitle": "Mengapa akaun saya tidak ada di sini?",
-    "notEligibleAccountsMessage": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!"
+    "notEligibleAccountsMessage": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
+    "nonOwnerPaperTitle": "Anda menerima Bil Bercetak untuk akaun ini.",
+    "nonOwnerPaperMessage": "Bil anda dihantar ke alamat premis akaun ini."
   },
   "DBRWebview": {
     "goPaperless": "Jom Paperless!",

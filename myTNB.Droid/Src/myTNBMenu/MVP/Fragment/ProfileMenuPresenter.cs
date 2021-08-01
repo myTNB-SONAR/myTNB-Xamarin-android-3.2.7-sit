@@ -252,6 +252,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     SummaryDashBoardAccountEntity.RemoveAll();
                     SelectBillsEntity.RemoveAll();
                     LanguageUtil.SetIsLanguageChanged(false);
+                    UserLoginCountEntity.RemoveAll();
+
                     this.mView.ShowLogout();
                 }
             }

@@ -237,5 +237,17 @@ namespace myTNB_Android.Src.Database.Model
             }
             return count;
         }
+        public static void RemoveAll()
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM UserLoginCountEntity");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+        }
     }
 }

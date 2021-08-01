@@ -190,6 +190,11 @@ namespace myTNB.Mobile
             }
         }
 
+        /// <summary>
+        /// Determines if DBR Card should be displayed or not.
+        /// </summary>
+        /// <param name="caList">list of CA for payment</param>
+        /// <returns></returns>
         public bool ShouldShowDBRCard(List<string> caList = null)
         {
             bool ismyTNBAccountEligible = IsAccountDBREligible;
@@ -208,7 +213,7 @@ namespace myTNB.Mobile
                     for (int i = 0; i < caList.Count; i++)
                     {
                         ContractAccountsModel item = dbrList.ContractAccounts.Find(x => x.ContractAccount == caList[i]);
-                        if (item==null)
+                        if (item == null)
                         {
                             continue;
                         }

@@ -92,6 +92,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.digitalBillLabelContainer)]
         LinearLayout digitalBillLabelContainer;
 
+        [BindView(Resource.Id.selectAccountContainer)]
+        LinearLayout selectAccountContainer;
+
         [BindView(Resource.Id.digitalBillLabelLayout)]
         LinearLayout digitalBillLabelLayout;
 
@@ -260,8 +263,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             {
                 FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                 layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(435f) : (int)DPUtils.ConvertDPToPx(375f);
-                applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Gone;
-                email_layout.Visibility = email_container.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Visible;
+                applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = btnUpdateDigitalBillLayout.Visibility = deliverigAddress.Visibility = ViewStates.Gone;
+                email_layout.Visibility = email_container.Visibility = digitalBillLabelLayout.Visibility = digitalBillLabelContainer.Visibility = deliverigTitle.Visibility = ViewStates.Visible;
 
                 deliveryUserName.Text = user.DisplayName + Utility.GetLocalizedLabel("ManageDigitalBillLanding", "you");
                 deliveryEmail.Text = user.Email;
@@ -716,7 +719,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
-            if(UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBill)
+            if(UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBillWithCTA)
             {
                 newList.Add(new NewAppModel()
                 {
@@ -830,5 +833,10 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             return btnUpdateDigitalBillLayout.Height;
         }
+        public int GetSelectAccountContainerHeight()
+        {
+            return selectAccountContainer.Height;
+        }
+        
     }
 }
