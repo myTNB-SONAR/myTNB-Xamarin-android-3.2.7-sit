@@ -326,6 +326,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                     DeviceIdNew = this.mView.GetDeviceId()
                                                 }, CancellationTokenSourceWrapper.GetToken());
                                             }
+                                            MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
                                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                                             this.mView.ShowDashboard();

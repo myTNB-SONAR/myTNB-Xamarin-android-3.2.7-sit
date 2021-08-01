@@ -517,7 +517,17 @@ namespace myTNB_Android.Src.Notifications.MVP
                                     {
                                         if (userNotificationData.ODNBatchSubcategory == "ODNAsBATCH")
                                         {
-                                            listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                            if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+                                            {
+                                                if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                                                {
+                                                    listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                                }
+                                            }
+                                            else
+                                            {
+                                                listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                            }
                                         }
                                         else
                                         {

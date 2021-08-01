@@ -336,14 +336,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 System.Diagnostics.Debug.WriteLine("[DEBUG] Sync SR Error: " + e.Message);
             }
 
-            /*try
+            try
             {
-                new EligibilityAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
+                this.mPresenter.GetNotificationTypesList();
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("[DEBUG] EligibilityAPI Error: " + e.Message);
-            }*/
+                System.Diagnostics.Debug.WriteLine("[DEBUG] GetNotificationTypesList Error: " + e.Message);
+            }
         }
 
         private async void RouteToApplicationLanding()
@@ -2363,13 +2363,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         if (MyTNBAccountManagement.GetInstance().IsFromLoginPage())
                         {
-                            MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
-                            Handler h = new Handler();
+                            OnCheckEnergyBudgetUser();
+
+                            /*Handler h = new Handler();
                             Action myAction = () =>
                             {
-                                OnCheckEnergyBudgetUser(); 
                             };
-                            h.PostDelayed(myAction, 15);
+                            h.PostDelayed(myAction, 15);*/
                         }
                     }
                     else
@@ -2383,12 +2383,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 else if (SetEligibleEBUser())
                 {
-                    Handler h = new Handler();
-                    Action myAction = () =>
+                    if (MyTNBAccountManagement.GetInstance().IsFromLoginPage())
                     {
                         OnCheckEnergyBudgetUser();
+                    }
+                    /*Handler h = new Handler();
+                    Action myAction = () =>
+                    {
                     };
-                    h.PostDelayed(myAction, 15);
+                    h.PostDelayed(myAction, 15);*/
                 }
             }
             catch (Exception e)

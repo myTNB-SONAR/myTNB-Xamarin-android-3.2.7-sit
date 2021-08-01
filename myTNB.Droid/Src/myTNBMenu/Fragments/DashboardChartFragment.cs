@@ -678,6 +678,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private bool mIsPendingPayment = false;
 
+        private bool isEBUser = false;
+
         private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
         private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
@@ -834,6 +836,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 selectedSMHistoryData = null;
                 txtRefreshMsg = Utility.GetLocalizedCommonLabel("refreshDescription");
                 txtBtnRefreshTitle = Utility.GetLocalizedCommonLabel("refreshNow");
+            }
+
+            if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            {
+                isEBUser = true;
             }
 
             errorMSG = "";
@@ -1681,7 +1688,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
                         rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.silverChalice)));
                         imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle_disable);
-                        energyBudgetMDMSContainer.Visibility = ViewStates.Visible;
+                        if (isEBUser)
+                        {
+                            energyBudgetMDMSContainer.Visibility = ViewStates.Visible;
+                        }
                     }
                     else
                     {
@@ -7766,11 +7776,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             //isHaveEnergyBudget = false;
                                             smStatisticContainer.Visibility = ViewStates.Invisible;
                                         }
-                                        else if (energyBudgetMDMSContainer.Visibility == ViewStates.Visible && GetIsMDMSDown())
+                                        else if (energyBudgetMDMSContainer.Visibility == ViewStates.Visible && GetIsMDMSDown() && isEBUser)
                                         {
-                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
-                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
+                                            rootView.SetBackgroundResource(0);
+                                            scrollViewContent.SetBackgroundResource(0);
+                                            dashboard_bottom_view.SetBackgroundResource(0);
                                             try
                                             {
                                                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -7932,7 +7942,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             EnableSetEnergyBudgetButton();
                                         }*/
                                     }
-                                    else if (energyBudgetMDMSContainer.Visibility == ViewStates.Invisible && GetIsMDMSDown())
+                                    else if (energyBudgetMDMSContainer.Visibility == ViewStates.Invisible && GetIsMDMSDown() && isEBUser)
                                     {
                                         rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
                                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
@@ -8258,7 +8268,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         DashboardCustomScrolling(0);
                                         smStatisticContainer.Visibility = ViewStates.Invisible;
                                     }
-                                    else if (energyBudgetMDMSContainer.Visibility == ViewStates.Gone && GetIsMDMSDown())
+                                    else if (energyBudgetMDMSContainer.Visibility == ViewStates.Gone && GetIsMDMSDown() && isEBUser)
                                     {
                                         rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
                                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
@@ -8455,7 +8465,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             smStatisticContainer.Visibility = ViewStates.Visible;
                                             //layoutunderCardview.Visibility = ViewStates.Invisible;
                                         }
-                                        else if (energyBudgetMDMSContainer.Visibility == ViewStates.Invisible && GetIsMDMSDown())
+                                        else if (energyBudgetMDMSContainer.Visibility == ViewStates.Invisible && GetIsMDMSDown() && isEBUser)
                                         {
                                              rootView.SetBackgroundResource(0);
                                              scrollViewContent.SetBackgroundResource(0);
@@ -9228,9 +9238,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 energyBudgetMDMSContainer.Visibility = ViewStates.Gone;
                 if (GetIsMDMSDown())
                 {
-                    rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                    /*rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
                     scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
-                    dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
+                    dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);*/
+                    rootView.SetBackgroundResource(0);
+                    scrollViewContent.SetBackgroundResource(0);
+                    dashboard_bottom_view.SetBackgroundResource(0);
                     try
                     {
                         ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -9242,7 +9255,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                     SetISMDMSDown(true);
                     requireScroll = true;
-                    energyBudgetMDMSContainer.Visibility = ViewStates.Visible;
+                    if (isEBUser)
+                    {
+                        energyBudgetMDMSContainer.Visibility = ViewStates.Visible;
+                    }
                 }
             }
             else

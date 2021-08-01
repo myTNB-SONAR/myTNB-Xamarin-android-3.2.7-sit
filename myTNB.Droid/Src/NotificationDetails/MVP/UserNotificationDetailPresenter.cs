@@ -260,9 +260,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 }
                 notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_NICKNAME_PATTERN, accountName);
 
-                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+                if (notificationDetailMessage.Contains(Constants.ACCOUNT_PROFILENAME_PATTERN))
                 {
                     notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
+                }
+                if (notificationDetailMessage.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
+                {
                     notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + accountName + "\"");
                 }
 

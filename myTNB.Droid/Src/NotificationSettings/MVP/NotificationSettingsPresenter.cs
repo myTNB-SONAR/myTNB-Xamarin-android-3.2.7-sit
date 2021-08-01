@@ -1,4 +1,5 @@
 ﻿using Android.Text;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
@@ -159,22 +160,18 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                     }
                 }
 
-                //EnergyBudget if smart meter not exist remove energy budget notification
-                if (smartmeterAccounts.Count == 0)
+                foreach (UserNotificationTypesEntity type in typesList)
                 {
-                    foreach (UserNotificationTypesEntity type in typesList)
+                    if (type.ShowInPreference)
                     {
-                        if (type.ShowInPreference && type.MasterId != "1000020")
+                        if (type.MasterId == "1000020")
                         {
-                            typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                            if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                            {
+                                typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                            }
                         }
-                    }
-                }
-                else
-                {
-                    foreach (UserNotificationTypesEntity type in typesList)
-                    {
-                        if (type.ShowInPreference)
+                        else
                         {
                             typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
                         }
