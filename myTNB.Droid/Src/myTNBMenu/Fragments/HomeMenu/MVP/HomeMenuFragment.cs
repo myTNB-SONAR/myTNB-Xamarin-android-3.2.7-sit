@@ -425,7 +425,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetupNewFAQView();
-                SetupDiscoverView();
                 ShowDiscoverView();
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
@@ -1089,6 +1088,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.IsAccountDBREligible = IsAccountDBREligible;
                         if(IsAccountDBREligible)
                         {
+
+                            SetupDiscoverView();
                             discovercontainer.Visibility = ViewStates.Visible;
                             shimmerDiscoverView.StopShimmer();
                             shimmerDiscoverView.StopShimmer();
@@ -1913,7 +1914,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         }
         public void ShowDiscoverView()
         {
-            this.presenter.OnGetDBR();
+            Activity.RunOnUiThread(() =>
+            {
+                try
+                {
+                    this.presenter.OnGetDBR();
+                }
+                catch (System.Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
+            });
+           
         }
 
         public void ShowFAQFromHide()

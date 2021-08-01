@@ -1283,6 +1283,147 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             innerTopLayout.RequestLayout();
                         }
                     }
+                    else if (list.Count == 2)
+                    {
+                        if (position == 0)
+                        {
+                            float h1 = 55f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                            int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight();
+                            int checkPoint = (int)DPUtils.ConvertDPToPx(200f);
+                            if (model.DisplayMode == "Extra")
+                            {
+                                middleHeight = (int)DPUtils.ConvertDPToPx(265f);
+                                checkPoint = (int)DPUtils.ConvertDPToPx(180f);
+                            }
+
+                            if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
+                            {
+                                if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                                {
+                                    topHeight -= (int)DPUtils.ConvertDPToPx(15f);
+                                }
+                            }
+
+                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            topLayoutParam.Height = topHeight;
+                            topLayout.RequestLayout();
+                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            middleLayoutParam.Height = middleHeight;
+                            middleLayout.RequestLayout();
+                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                            highlightedLeftLayout.RequestLayout();
+                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                            highlightedLayout.RequestLayout();
+                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                            highlightedRightLayout.RequestLayout();
+                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                            bottomLayout.RequestLayout();
+
+                            LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(40f);
+                            innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                            innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                            innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
+                            innerUpperBottomLayout.RequestLayout();
+
+                            LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                            innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                            innerTxtBtnBottomLayout.RequestLayout();
+                        }
+                        else
+                        {
+                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight() + (TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(85f) : (int)DPUtils.ConvertDPToPx(75f));
+                            int middleHeight = (int)DPUtils.ConvertDPToPx(130f);
+
+
+                            if (model.ItemCount == 0)
+                            {
+                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
+                                {
+                                    if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
+                                    {
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(90f);
+                                        topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
+                                    }
+                                }
+                            }
+                            else if (model.ItemCount == 1)
+                            {
+                                middleHeight = (int)DPUtils.ConvertDPToPx(130f);
+
+                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
+                                {
+                                    if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
+                                    {
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(100f);
+                                        if (model.DisplayMode == "Extra")
+                                        {
+                                            bottomHeight = (int)DPUtils.ConvertDPToPx(85f);
+                                        }
+                                        topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
+                                    }
+                                }
+                            }
+                            else if (model.ItemCount == 2)
+                            {
+                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
+                                {
+                                    if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
+                                    {
+                                        int bottomHeight = (int)DPUtils.ConvertDPToPx(100f);
+                                        if (model.DisplayMode == "Extra")
+                                        {
+                                            bottomHeight = (int)DPUtils.ConvertDPToPx(85f);
+                                        }
+                                        topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
+                                {
+                                    if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
+                                    {
+                                        float h2 = TextViewUtils.IsLargeFonts ? 20f : 20f;
+                                        int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)) + (int)DPUtils.ConvertDPToPx(h2);
+                                        topHeight = (topHeight + +((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight()) - diff;
+                                    }
+                                }
+                            }
+
+                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            topLayoutParam.Height = topHeight;
+                            topLayout.RequestLayout();
+                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            middleLayoutParam.Height = middleHeight;
+                            middleLayout.RequestLayout();
+                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                            highlightedLeftLayout.RequestLayout();
+                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                            highlightedLayout.RequestLayout();
+                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                            highlightedRightLayout.RequestLayout();
+                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                            bottomLayout.RequestLayout();
+
+                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(200f);
+                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                            innerTopLayout.RequestLayout();
+                        }
+                    }
                     else
                     {
                         if (position == 0)
@@ -2387,7 +2528,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 innerTopLayout.RequestLayout();
 
             }
-            else if (this.mContext is ManageBillDeliveryActivity)
+            else if (EligibilitySessionCache.Instance.IsAccountDBREligible && this.mContext is ManageBillDeliveryActivity)
             {
                 int middleHeight = 0;
                 int topHeight = 0;
@@ -2520,8 +2661,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         innerTopLayout.RequestLayout();
                     }
                 }
-                
-
             }
             container.AddView(rootView);
             return rootView;

@@ -28,6 +28,7 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
         List<DBRAccount> accountList = new List<DBRAccount>();
         private SelectAccountAdapter selectAccountAdapter;
         const string PAGE_ID = "SelectElectricityAccounts";
+        string selectedAccountNumber;
 
         [BindView(Resource.Id.account_list_view)]
         ListView accountDBRList;
@@ -89,6 +90,19 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                     Utility.LoggingNonFatalError(e);
                 }
             }
+            if (extras != null && extras.ContainsKey("SELECTED_ACCOUNT_NUMBER"))
+            {
+                try
+                {
+                    selectedAccountNumber = JsonConvert.DeserializeObject<string>(extras.GetString("SELECTED_ACCOUNT_NUMBER"));
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+            
+
             if (accountList != null && accountList.Count > 0)
             {
                 if (CustomerBillingAccount.HasSelected())

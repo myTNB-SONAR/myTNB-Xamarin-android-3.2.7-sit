@@ -140,16 +140,19 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
                 this.userActionsListener.Start();
                 mPref = PreferenceManager.GetDefaultSharedPreferences(this);
-                Handler h = new Handler();
-                Action myAction = () =>
+                if (EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(accountData) == accountData.AccountNum)
                 {
-                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                    if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
+                    Handler h = new Handler();
+                    Action myAction = () =>
                     {
-                        OnShowManageSupplyAccountTutorialDialog();
-                    }
-                };
-                h.PostDelayed(myAction, 50);
+                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                        if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
+                        {
+                            OnShowManageSupplyAccountTutorialDialog();
+                        }
+                    };
+                    h.PostDelayed(myAction, 50);
+                }
             }
             catch (Exception e)
             {
@@ -160,11 +163,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [OnClick(Resource.Id.ManageBill_container)]
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                
-                if (EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(accountData) == accountData.AccountNum)
+            if (EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(accountData) == accountData.AccountNum)
                 {
                     GetBillRenderingAsync(accountData);
                 }
@@ -175,7 +174,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     intent.PutExtra("ParallelEmail", "ParallelEmail");
                     StartActivity(intent);
                 }
-            }
         }
         
 
@@ -234,7 +232,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             base.OnResume();
             try
             {
-                if (EligibilitySessionCache.Instance.IsAccountDBREligible)
+                if (EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(accountData) == accountData.AccountNum)
                 {
                     Handler h = new Handler();
                     Action myAction = () =>
