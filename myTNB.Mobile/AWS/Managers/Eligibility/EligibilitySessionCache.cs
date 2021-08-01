@@ -226,5 +226,15 @@ namespace myTNB.Mobile
             }
             return false;
         }
+
+        /// <summary>
+        /// Determines if DBR Card should be displayed or not.
+        /// </summary>
+        /// <param name="ca">For single CA Use</param>
+        /// <returns></returns>
+        public bool ShouldShowDBRCard(string ca)
+        {
+            return ShouldShowDBRCard(new List<string> { ca });
+        }
     }
 }

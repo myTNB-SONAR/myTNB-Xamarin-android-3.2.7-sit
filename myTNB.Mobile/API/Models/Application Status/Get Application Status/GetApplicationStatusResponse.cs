@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Newtonsoft.Json;
@@ -87,6 +88,23 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
         public string snNo { set; get; }
 
         public bool? hasInvoiceAttachment { set; get; } = false;
+
+        [JsonIgnore]
+        public bool dbrEnabled
+        {
+            get
+            {
+                try
+                {
+                    return EligibilitySessionCache.Instance.ShouldShowDBRCard(caNo ?? string.Empty);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("[DEBUG] dbrEnabled Error: " + e.Message);
+                }
+                return false;
+            }
+        }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
