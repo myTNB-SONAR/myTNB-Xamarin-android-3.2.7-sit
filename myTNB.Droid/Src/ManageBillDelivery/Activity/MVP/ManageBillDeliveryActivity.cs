@@ -346,8 +346,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     {
                         FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
                         layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 1.7)) : (int)DPUtils.ConvertDPToPx(455f);
-                        applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility =  email_container.Visibility = deliverigTitle.Visibility = btnUpdateDigitalBillLayout.Visibility = digitalBillLabelLayout.Visibility = digitalBillLabelContainer.Visibility = ViewStates.Gone;
-                        email_layout.Visibility = deliverigAddress.Visibility = ViewStates.Visible;
+                        applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility  = btnUpdateDigitalBillLayout.Visibility = digitalBillLabelLayout.Visibility = digitalBillLabelContainer.Visibility = ViewStates.Gone;
+                        email_layout.Visibility = deliverigAddress.Visibility = email_container.Visibility = deliverigTitle.Visibility = ViewStates.Visible;
                         img_display.SetImageResource(Resource.Drawable.manage_bill_delivery_3);
                         txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "updatingTitle");
                         txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "updatingDescription"));
