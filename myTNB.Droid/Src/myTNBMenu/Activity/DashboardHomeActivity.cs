@@ -519,7 +519,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 currentFragment = null;
             }
 
-            if(EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(selectedAccount) == selectedAccount.AccountNum)
+            if(EligibilitySessionCache.Instance.IsAccountDBREligible)
             {
                 GetBillRenderingAsync(selectedAccount);
             }
@@ -544,14 +544,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
                 }
                 GetBillRenderingResponse response = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this));
-
+                bool _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccountNum);
                 HideProgressDialog();
                 //Nullity Check
                 if (response != null
                    && response.StatusDetail != null
                    && response.StatusDetail.IsSuccess)
                 {
-                    currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount, response.Content);
+                    currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount, response.Content, _isOwner);
                     SupportFragmentManager.BeginTransaction()
                         .Replace(Resource.Id.content_layout, currentFragment)
                         .CommitAllowingStateLoss();
