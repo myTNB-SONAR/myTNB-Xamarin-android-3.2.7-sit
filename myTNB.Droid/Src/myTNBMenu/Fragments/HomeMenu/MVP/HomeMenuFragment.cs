@@ -1098,7 +1098,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             UserEntity user = UserEntity.GetActive();
                             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
 
-                            if (IsFromLogin && loginCount == 1)
+                            if (IsFromLogin && loginCount == 1 && EligibilitySessionCache.Instance.ShouldShowDBRCard())
                             {
                                 ShowMarketingTooltip();
                                 IsFromLogin = false;
