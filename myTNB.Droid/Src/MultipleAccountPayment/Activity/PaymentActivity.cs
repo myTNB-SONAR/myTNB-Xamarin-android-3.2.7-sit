@@ -400,6 +400,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                //intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
                 intent.PutExtra("OptedEBill", "OptedEBill");
                 StartActivity(intent);
             }

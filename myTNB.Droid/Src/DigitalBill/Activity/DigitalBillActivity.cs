@@ -13,6 +13,7 @@ using Java.IO;
 using Java.Lang;
 using myTNB;
 using myTNB.Mobile;
+using myTNB.Mobile.AWS.Models;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
@@ -37,7 +38,8 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         private static Snackbar mErrorMessageSnackBar;
         public AccountData mSelectedAccountData;
         private static FrameLayout mainView;
-
+        GetBillRenderingModel getBillRenderingModel;
+        
         WebView tncWebView;
 
         const string PAGE_ID = "ManageDigitalBillLanding";
@@ -104,7 +106,11 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 {
                     mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
                 }
-
+                if ((extras != null) && extras.ContainsKey("billrenderingresponse"))
+                {
+                    getBillRenderingModel = JsonConvert.DeserializeObject<GetBillRenderingModel>(extras.GetString("billrenderingresponse"));
+                }
+               
                 mPresenter = new DigitalBillPresenter(this);
 
                 tncWebView = FindViewById<WebView>(Resource.Id.tncWebView);
@@ -124,9 +130,6 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             try
             {
-                //string HTMLText = "<html>" + "<body><b>MicroSite</b><br/><br/></body>" +
-               //     "<input type='button' value='Back to DBR' class='remove_this' onclick='mytnbapp://action=startDigitalBilling'>"+
-               // "</html>";
                 UserEntity user = UserEntity.GetActive();
                 string accnum = mSelectedAccountData.AccountNum;
                 string myTNBAccountName = user?.DisplayName ?? string.Empty;
@@ -140,7 +143,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                                        : LanguageManager.Language.EN).ToString()
                                    , TextViewUtils.FontSelected
                                    , AWSConstants.URLs.DBROriginURL
-                                   , AWSConstants.URLs.StartDBRRedirectURL
+                                   , getBillRenderingModel.RedirectURL
                                    , accnum);
 
                 tncWebView.PostUrl(AWSConstants.URLs.DBRSSOURL, GetBytes(signature, "base64"));
@@ -218,6 +221,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                //intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
                 intent.PutExtra("Paper", "Paper");
                 StartActivity(intent);
             }

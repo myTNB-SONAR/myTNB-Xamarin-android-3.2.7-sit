@@ -299,6 +299,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private bool isInitiate = false;
 
+        bool _isOwner;
         HomeMenuContract.IHomeMenuPresenter presenter;
         ISummaryFragmentToDashBoardActivtyListener mCallBack;
 
@@ -568,6 +569,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 ShowProgressDialog();
                 CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccNum);
                 if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
                 {
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
@@ -585,6 +587,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                     intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse.Content));
                     intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
                     StartActivity(intent);
                 }
                 else

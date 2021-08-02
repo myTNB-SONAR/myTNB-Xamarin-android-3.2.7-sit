@@ -263,22 +263,29 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                     layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(280f) : (int)DPUtils.ConvertDPToPx(265f);
                     applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = email_container.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = deliverigTitle.Visibility = ViewStates.Gone;
-                    email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
+                    email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = ic_ca_info.Visibility = ViewStates.Visible;
                     img_display.SetImageResource(Resource.Drawable.icons_display_digital_ebill);
                     txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillTitle");
                     txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillDescription"));
                     mPref = PreferenceManager.GetDefaultSharedPreferences(this);
-                    Handler h = new Handler();
-                    Action myAction = () =>
+                    if (_isOwner)
                     {
-                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                        if (!UserSessions.HasManageOptedEBillDeliveryTutorialShown(this.mPref))
+                        Handler h = new Handler();
+                        Action myAction = () =>
                         {
-                            UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.EBillWithCTA;
-                            OnShowManageBillDeliveryTutorialDialog();
-                        }
-                    };
-                    h.PostDelayed(myAction, 50);
+                            NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                            if (!UserSessions.HasManageOptedEBillDeliveryTutorialShown(this.mPref))
+                            {
+                                UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.EBillWithCTA;
+                                OnShowManageBillDeliveryTutorialDialog();
+                            }
+                        };
+                        h.PostDelayed(myAction, 50);
+                    }
+                    else
+                    {
+                        btnUpdateDigitalBillLayout.Visibility = ic_ca_info.Visibility = ViewStates.Gone;
+                    }
 
                 }
                 else if (getBillRenderingModel.DBRType == MobileEnums.DBRTypeEnum.Email)
@@ -311,7 +318,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                     layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(400f) : (int)DPUtils.ConvertDPToPx(355f);
                     applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
-                    email_layout.Visibility = email_container.Visibility = deliverigTitle.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
+                    email_layout.Visibility = email_container.Visibility = deliverigTitle.Visibility = btnUpdateDigitalBillLayout.Visibility = ic_ca_info.Visibility = ViewStates.Visible;
 
                     deliveryUserName.Text = user.DisplayName + Utility.GetLocalizedLabel("ManageDigitalBillLanding", "you");
                     deliveryEmail.Text = user.Email;
@@ -319,23 +326,30 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillTitle");
                     txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillDescription"));
                     mPref = PreferenceManager.GetDefaultSharedPreferences(this);
-                    Handler h = new Handler();
-                    Action myAction = () =>
+                    if (_isOwner)
                     {
-                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                        if (!UserSessions.HasManageParallelEmailBillDeliveryTutorialShown(this.mPref))
+                        Handler h = new Handler();
+                        Action myAction = () =>
                         {
-                            UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.EmailWithCTA;
-                            OnShowManageBillDeliveryTutorialDialog();
-                        }
-                    };
-                    h.PostDelayed(myAction, 50);
+                            NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                            if (!UserSessions.HasManageParallelEmailBillDeliveryTutorialShown(this.mPref))
+                            {
+                                UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.EmailWithCTA;
+                                OnShowManageBillDeliveryTutorialDialog();
+                            }
+                        };
+                        h.PostDelayed(myAction, 50);
+                    }
+                    else
+                    {
+                        btnUpdateDigitalBillLayout.Visibility = ic_ca_info.Visibility = ViewStates.Gone;
+                    }
                 }
                 else if (getBillRenderingModel.DBRType == MobileEnums.DBRTypeEnum.Paper)
                 {
                     if (_isOwner)
                     {
-                        applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = ViewStates.Visible;
+                        ic_ca_info.Visibility = applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = ViewStates.Visible;
                         email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = email_container.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
                         UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.Paper;
                         FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
@@ -346,11 +360,19 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     {
                         FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
                         layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 1.7)) : (int)DPUtils.ConvertDPToPx(455f);
-                        applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility  = btnUpdateDigitalBillLayout.Visibility = digitalBillLabelLayout.Visibility = digitalBillLabelContainer.Visibility = ViewStates.Gone;
-                        email_layout.Visibility = deliverigAddress.Visibility = email_container.Visibility = deliverigTitle.Visibility = ViewStates.Visible;
+                        ic_ca_info.Visibility = applicationIndicator.Visibility =
+                            btnStartDigitalBillLayout.Visibility =
+                            applicationIndicator.Visibility =
+                            indicatorContainer.Visibility =
+                            viewPager.Visibility  =
+                            btnUpdateDigitalBillLayout.Visibility =
+                            digitalBillLabelLayout.Visibility =
+                            digitalBillLabelContainer.Visibility =
+                            email_container.Visibility = ViewStates.Gone;
+                        email_layout.Visibility = deliverigAddress.Visibility = deliverigTitle.Visibility = ViewStates.Visible;
                         img_display.SetImageResource(Resource.Drawable.manage_bill_delivery_3);
-                        txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "updatingTitle");
-                        txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "updatingDescription"));
+                        txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle0");
+                        txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription0"));
                     }
                 }
                 else if (getBillRenderingModel.DBRType == MobileEnums.DBRTypeEnum.WhatsApp)
@@ -362,11 +384,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
                 }
             }
-            if(!_isOwner)
-            {
-                btnUpdateDigitalBillLayout.Visibility = ViewStates.Gone;
-                applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = ViewStates.Gone;
-            }
         }
         public void InitiateDBRRequest(AccountData mSelectedAccountData)
         {
@@ -374,6 +391,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             {
                 Intent intent = new Intent(this, typeof(DigitalBillActivity));
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+                intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(getBillRenderingModel));
                 StartActivity(intent);
             }
             catch (Exception e)

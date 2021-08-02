@@ -16,6 +16,7 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Java.Text;
+using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -122,8 +123,9 @@ namespace myTNB_Android.Src.Billing.MVP
 
         [BindView(Resource.Id.bill_paperless_icon)]
         ImageView bill_paperless_icon;
-        
-        
+
+        bool _isOwner;
+
 
         GetBillRenderingModel billrenderingresponse;
 
@@ -318,6 +320,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 topLayout.Visibility = ViewStates.Invisible;
                 this.billingDetailsPresenter.ShowBillDetails(selectedAccountData, isCheckPendingPaymentNeeded);
             }
+            
             ShowGoPapperless();
         }
 
@@ -355,9 +358,11 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             if (!this.GetIsClicked())
             {
+                _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(selectedAccountData.AccountNum);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
                 StartActivity(intent);
             }
         }

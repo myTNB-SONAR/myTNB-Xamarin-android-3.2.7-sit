@@ -35,6 +35,7 @@ namespace myTNB_Android.Src.MyTNBService.Request
             public string AccountOwnerName { get; set; }
             public string AccountNo { get; set; }
             public string AccountAmount { get; set; }
+            public bool dbrEnabled { get; set; }
         }
 
         public class AccountPayment

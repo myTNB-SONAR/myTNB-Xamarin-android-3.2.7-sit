@@ -77,7 +77,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
         ManageSupplyAccountContract.IUserActionsListener userActionsListener;
         ManageSupplyAccountPresenter mPresenter;
-
+        bool _isOwner;
         MaterialDialog progress;
 
         const string PAGE_ID = "ManageAccount";
@@ -108,6 +108,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         }
                     }
                     position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
+                    _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(accountData.AccountNum);
                 }
 
 
@@ -172,7 +173,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                     intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
                     intent.PutExtra("ParallelEmail", "ParallelEmail");
-                    StartActivity(intent);
+                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
+                StartActivity(intent);
                 }
         }
         
@@ -489,6 +491,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                     intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                     intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse.Content));
+                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
                     StartActivity(intent);
                 }
                 else

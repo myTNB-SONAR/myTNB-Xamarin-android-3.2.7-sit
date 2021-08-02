@@ -518,6 +518,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private bool isBackendTariffDisabled = false;
 
         private static bool isREAccount = false;
+        bool _isOwner;
 
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy", LocaleUtils.GetDefaultLocale());
@@ -4859,10 +4860,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     GetBillRenderingAsync(selectedAccount);
                 }
                 else
-                { 
+                {
+                    _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(selectedAccount.AccountNum);
                     Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
                     intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
                     intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
+                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
                     StartActivity(intent);
                 }
 
@@ -5075,6 +5078,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse.Content));
                     intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
                     intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
+                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
                     StartActivity(intent);
                 }
                 else
@@ -9137,7 +9141,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
                 intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(accountData));
                 intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
-                StartActivity(intent);
+                intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
+            StartActivity(intent);
         }
 
         private class OnBarChartTouchLister : BarLineChartTouchListener
