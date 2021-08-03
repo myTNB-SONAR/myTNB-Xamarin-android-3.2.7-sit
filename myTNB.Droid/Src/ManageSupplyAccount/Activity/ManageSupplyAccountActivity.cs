@@ -25,14 +25,13 @@ using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime;
 
 namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 {
     [Activity(Label = "@string/manage_supply_account_activity_title"
-    , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.ManageSupplyAccount")]
+        , ScreenOrientation = ScreenOrientation.Portrait
+        , Theme = "@style/Theme.ManageSupplyAccount")]
     public class ManageSupplyAccountActivity : BaseActivityCustom, ManageSupplyAccountContract.IView
     {
         [BindView(Resource.Id.rootView)]
@@ -56,9 +55,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [BindView(Resource.Id.btnRemoveAccount)]
         Button btnRemoveAccount;
 
-        AccountData accountData;
-        int position;
-
         [BindView(Resource.Id.manageBillTitle)]
         TextView manageBillTitle;
 
@@ -71,16 +67,20 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [BindView(Resource.Id.ManageBill_container)]
         LinearLayout ManageBill_container;
 
-        GetBillRenderingResponse billrenderingresponse;
-
         ISharedPreferences mPref;
 
         ManageSupplyAccountContract.IUserActionsListener userActionsListener;
         ManageSupplyAccountPresenter mPresenter;
-        bool _isOwner;
         MaterialDialog progress;
 
         const string PAGE_ID = "ManageAccount";
+
+        private AccountData accountData;
+        private int position;
+        private Snackbar mCancelledExceptionSnackBar;
+        private Snackbar mApiExcecptionSnackBar;
+        private GetBillRenderingResponse _billRenderingResponse;
+        private bool _isOwner;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -95,22 +95,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 {
                     if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                     {
-                        //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
                         accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-
-                        if (EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(accountData) == accountData.AccountNum)
-                        {
-                            ManageBill_container.Visibility = ViewStates.Visible;
-                        }
-                        else
-                        {
-                            ManageBill_container.Visibility = ViewStates.Gone;
-                        }
                     }
                     position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
                     _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(accountData.AccountNum);
                 }
-
 
                 progress = new MaterialDialog.Builder(this)
                     .Title(Resource.String.manage_supply_account_remove_progress_title)
@@ -136,24 +125,17 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 txtInputLayoutNickName.Hint = GetLabelCommonByLanguage("acctNickname");
                 btnTextUpdateNickName.Text = GetLabelCommonByLanguage("update");
                 btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
-                manageBillTitle.Text = Utility.GetLocalizedLabel("ManageAccount", "dbrManageDeliveryMethod");
                 txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
                 this.userActionsListener.Start();
                 mPref = PreferenceManager.GetDefaultSharedPreferences(this);
-                if (EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(accountData) == accountData.AccountNum)
+
+                bool isDBREnabled = EligibilitySessionCache.Instance.IsAccountDBREligible;
+                if (isDBREnabled)
                 {
-                    Handler h = new Handler();
-                    Action myAction = () =>
-                    {
-                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                        if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
-                        {
-                            OnShowManageSupplyAccountTutorialDialog();
-                        }
-                    };
-                    h.PostDelayed(myAction, 50);
+                    GetBillRenderingAsync(accountData);
                 }
+
             }
             catch (Exception e)
             {
@@ -161,23 +143,17 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             }
         }
 
+
         [OnClick(Resource.Id.ManageBill_container)]
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
-            if (EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(accountData) == accountData.AccountNum)
-                {
-                    GetBillRenderingAsync(accountData);
-                }
-                else
-                {
-                    Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
-                    intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-                    intent.PutExtra("ParallelEmail", "ParallelEmail");
-                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
-                StartActivity(intent);
-                }
+            Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+            intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            intent.PutExtra("ParallelEmail", "ParallelEmail");
+            intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
+            intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(_billRenderingResponse));
+            StartActivity(intent);
         }
-        
 
         [OnClick(Resource.Id.btnTextUpdateNickName)]
         void OnClickUpdateNickname(object sender, EventArgs eventArgs)
@@ -234,19 +210,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             base.OnResume();
             try
             {
-                if (EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(accountData) == accountData.AccountNum)
-                {
-                    Handler h = new Handler();
-                    Action myAction = () =>
-                    {
-                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                        if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
-                        {
-                            OnShowManageSupplyAccountTutorialDialog();
-                        }
-                    };
-                    h.PostDelayed(myAction, 50);
-                }
                 FirebaseAnalyticsUtils.SetScreenName(this, "Manage Electricity Account");
             }
             catch (Exception e)
@@ -333,7 +296,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             }
         }
 
-        private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
         {
             if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
@@ -355,7 +317,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
         }
 
-        private Snackbar mApiExcecptionSnackBar;
         public void ShowRetryOptionsApiException(ApiException apiException)
         {
             if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
@@ -468,6 +429,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
             return newList;
         }
+
         private async void GetBillRenderingAsync(AccountData selectedAccount)
         {
             try
@@ -475,35 +437,39 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 ShowProgressDialog();
                 GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                 AccountData dbrAccount = selectedAccount;
+                _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(selectedAccount.AccountNum);
+
                 if (!AccessTokenCache.Instance.HasTokenSaved(this))
                 {
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
                     AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
                 }
-                billrenderingresponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this));
+                _billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this));
 
-                HideProgressDialog();
                 //Nullity Check
-                if (billrenderingresponse != null
-                   && billrenderingresponse.StatusDetail != null
-                   && billrenderingresponse.StatusDetail.IsSuccess)
+                if (_billRenderingResponse != null
+                    && _billRenderingResponse.StatusDetail != null
+                    && _billRenderingResponse.StatusDetail.IsSuccess
+                    && _billRenderingResponse.Content != null
+                    && _billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
                 {
-                    Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
-                    intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse.Content));
-                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
-                    StartActivity(intent);
-                }
-                else
-                {    
-                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                        .SetTitle(billrenderingresponse.StatusDetail.Title)
-                                        .SetMessage(billrenderingresponse.StatusDetail.Message)
-                                        .SetCTALabel(billrenderingresponse.StatusDetail.PrimaryCTATitle)
-                                        .Build();
-                    errorPopup.Show();
-                }
+                    manageBillTitle.Text = Utility.GetLocalizedLabel("ManageAccount", _isOwner
+                        ? "dbrManageDeliveryMethod"
+                        : "dbrViewBillDelivery");
+                    ManageBill_container.Visibility = ViewStates.Visible;
 
+                    Handler handler = new Handler();
+                    Action myAction = () =>
+                    {
+                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                        if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
+                        {
+                            OnShowManageSupplyAccountTutorialDialog();
+                        }
+                    };
+                    handler.PostDelayed(myAction, 50);
+                }
+                HideProgressDialog();
             }
             catch (System.Exception e)
             {
@@ -511,35 +477,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public string GetEligibleDBRAccount(AccountData selectedAccount)
-        {
-            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-            List<string> dBRCAs = EligibilitySessionCache.Instance.GetDBRCAs();
-            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
-            CustomerBillingAccount account = new CustomerBillingAccount();
-            string dbraccount = string.Empty;
-            if (dBRCAs.Count > 0)
-            {
-                foreach (var dbrca in dBRCAs)
-                {
-                    dbraccount = dBRCAs.Where(x => x == selectedAccount.AccountNum).FirstOrDefault();
-                    if (dbraccount != null)
-                    {
-                        return dbraccount;
-                    }
-                }
-            }
-            else
-            {
-                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                     .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
-                                    .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
-                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
-                     .Build();
-                errorPopup.Show();
-            }
-            return dbraccount;
-        }
+
         public void ShowProgressDialog()
         {
             try
@@ -583,6 +521,5 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             int height = ManageBill_container.Width;
             return height;
         }
-
     }
 }
