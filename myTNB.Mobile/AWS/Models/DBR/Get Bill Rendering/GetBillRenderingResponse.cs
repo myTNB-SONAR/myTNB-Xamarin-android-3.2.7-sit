@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using static myTNB.Mobile.AWSConstants;
 using static myTNB.Mobile.MobileConstants;
@@ -52,6 +53,10 @@ namespace myTNB.Mobile.AWS.Models
             get
             {
                 MobileEnums.DBRTypeEnum renderingType = MobileEnums.DBRTypeEnum.None;
+                if (!DigitalBillEligibility.IsValid())
+                {
+                    return renderingType;
+                }
                 if (IsPaper)
                 {
                     renderingType = MobileEnums.DBRTypeEnum.Paper;

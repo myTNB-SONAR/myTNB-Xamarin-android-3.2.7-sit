@@ -98,7 +98,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                     }
                     position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
-                    _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(accountData.AccountNum);
+                    _isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(accountData.AccountNum);
                 }
 
                 progress = new MaterialDialog.Builder(this)
@@ -437,7 +437,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 ShowProgressDialog();
                 GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                 AccountData dbrAccount = selectedAccount;
-                _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(selectedAccount.AccountNum);
+                _isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(selectedAccount.AccountNum);
 
                 if (!AccessTokenCache.Instance.HasTokenSaved(this))
                 {

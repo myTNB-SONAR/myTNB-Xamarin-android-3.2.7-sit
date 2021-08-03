@@ -2372,6 +2372,10 @@
     "GetEligibility": {
       "enabled": true,
       "callInterval": 480
+    },
+    "ForceHideDBRBanner": false,
+    "GetBillRendering": {
+      "enabled": true
     }
   }
 }

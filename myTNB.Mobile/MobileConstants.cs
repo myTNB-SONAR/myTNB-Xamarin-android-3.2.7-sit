@@ -114,5 +114,10 @@
             internal const string BC_EMail = "ZEML";
             internal const string BC_Paper = "ZINV";
         }
+
+        public struct PushNotificationTypes
+        {
+            public const string DBR_Owner = "DBROWNER";
+        }
     }
 }

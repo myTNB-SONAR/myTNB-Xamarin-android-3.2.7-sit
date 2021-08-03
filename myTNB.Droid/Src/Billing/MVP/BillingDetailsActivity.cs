@@ -358,7 +358,8 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             if (!this.GetIsClicked())
             {
-                _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(selectedAccountData.AccountNum);
+                _isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(selectedAccountData.AccountNum);
+               
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));

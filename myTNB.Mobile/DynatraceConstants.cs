@@ -12,5 +12,10 @@
         public const string SITECORE_REFER_ONLINE = "sitecore_refer_online";
         public const string SITECORE_REFER_LOCAL = "sitecore_refer_local";
         public const string HOMEPOPUP_WHATSNEWCLICKED = "WhatsNewClicked";
+
+        public struct DBR
+        {
+
+        }
     }
 }

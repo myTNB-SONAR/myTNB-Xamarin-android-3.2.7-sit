@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using myTNB.Mobile.AWS.Models;
+using Newtonsoft.Json.Linq;
 
 namespace myTNB.Mobile
 {
@@ -197,6 +198,13 @@ namespace myTNB.Mobile
         /// <returns></returns>
         public bool ShouldShowDBRCard(List<string> caList = null)
         {
+            if (LanguageManager.Instance.GetServiceConfig("ServiceConfiguration", "ForceHideDBRBanner") is JToken config
+                && config != null
+                && config.ToObject<bool>() is bool isForceHide
+                && isForceHide)
+            {
+                return false;
+            }
             bool ismyTNBAccountEligible = IsAccountDBREligible;
             if (GetFeatureContent<DBRModel>(Features.DBR) is DBRModel dbrList
                 && dbrList != null
@@ -235,6 +243,25 @@ namespace myTNB.Mobile
         public bool ShouldShowDBRCard(string ca)
         {
             return ShouldShowDBRCard(new List<string> { ca });
+        }
+
+        /// <summary>
+        /// Determines if the Owner/Tenant tag should be from Eligibility or from device cache.
+        /// </summary>
+        public bool IsDBROTTagFromCache
+        {
+            get
+            {
+                try
+                {
+                    return !IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("[DEBUG]IsDBROTTagFromCache Exception: " + e.Message);
+                }
+                return false;
+            }
         }
     }
 }

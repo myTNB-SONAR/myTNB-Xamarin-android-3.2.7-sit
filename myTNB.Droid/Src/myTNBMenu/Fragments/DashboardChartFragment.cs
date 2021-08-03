@@ -4861,7 +4861,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
-                    _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(selectedAccount.AccountNum);
+                    _isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(selectedAccount.AccountNum);
                     Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
                     intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
                     intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
