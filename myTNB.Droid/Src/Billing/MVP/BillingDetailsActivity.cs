@@ -127,7 +127,7 @@ namespace myTNB_Android.Src.Billing.MVP
         bool _isOwner;
 
 
-        GetBillRenderingModel billrenderingresponse;
+        GetBillRenderingResponse billrenderingresponse;
 
        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
@@ -266,24 +266,24 @@ namespace myTNB_Android.Src.Billing.MVP
             }
             if (extras.ContainsKey("billrenderingresponse"))
             {
-                billrenderingresponse = JsonConvert.DeserializeObject<GetBillRenderingModel>(extras.GetString("billrenderingresponse"));
+                billrenderingresponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
                 if(billrenderingresponse != null)
                 {
                     digital_container.Visibility = ViewStates.Visible;
-                    if (billrenderingresponse.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill)
+                    if (billrenderingresponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill)
                     {
                         bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
                     }
-                    else if (billrenderingresponse.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Email)
+                    else if (billrenderingresponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Email)
                     {
                         bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
                     }
-                    if (billrenderingresponse.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Paper)
+                    if (billrenderingresponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Paper)
                     {
                         bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_Paper_Bill);
                     }
 
-                    paperlessTitle.Text = billrenderingresponse.SegmentMessage;
+                    paperlessTitle.Text = billrenderingresponse.Content.SegmentMessage;
                 }
             }
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);

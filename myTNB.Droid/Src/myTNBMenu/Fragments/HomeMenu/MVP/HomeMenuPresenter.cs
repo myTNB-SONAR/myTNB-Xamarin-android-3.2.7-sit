@@ -31,6 +31,7 @@ using Android.Text;
 using Android.OS;
 using System.Globalization;
 using myTNB.Mobile;
+using myTNB_Android.Src.myTNBMenu.Async;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {

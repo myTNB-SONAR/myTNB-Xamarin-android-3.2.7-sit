@@ -38,7 +38,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         private static Snackbar mErrorMessageSnackBar;
         public AccountData mSelectedAccountData;
         private static FrameLayout mainView;
-        GetBillRenderingModel getBillRenderingModel;
+        GetBillRenderingResponse getBillRenderingModel;
         
         WebView tncWebView;
 
@@ -108,7 +108,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 }
                 if ((extras != null) && extras.ContainsKey("billrenderingresponse"))
                 {
-                    getBillRenderingModel = JsonConvert.DeserializeObject<GetBillRenderingModel>(extras.GetString("billrenderingresponse"));
+                    getBillRenderingModel = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
                 }
                
                 mPresenter = new DigitalBillPresenter(this);
@@ -143,7 +143,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                                        : LanguageManager.Language.EN).ToString()
                                    , TextViewUtils.FontSelected
                                    , AWSConstants.URLs.DBROriginURL
-                                   , getBillRenderingModel.RedirectURL
+                                   , getBillRenderingModel.Content.RedirectURL
                                    , accnum);
 
                 tncWebView.PostUrl(AWSConstants.URLs.DBRSSOURL, GetBytes(signature, "base64"));

@@ -357,6 +357,18 @@
 						android:layout_height="wrap_content"
 						android:textSize="12dp"
 						android:textColor="#49494a"/>
+						<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="left"
+						android:textSize="14dp"
+						android:visibility="gone"
+						android:background="@color/white"
+						android:layout_marginTop="16dp"
+						android:layout_marginBottom="16dp"
+						android:textColor="#49494a"
+						android:id="@+id/TenantDeliverigAddress"
+						android:text="UI-No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"/>
 				</LinearLayout>
 				</LinearLayout>
 				</LinearLayout>

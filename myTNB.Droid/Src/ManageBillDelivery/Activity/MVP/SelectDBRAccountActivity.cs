@@ -107,8 +107,7 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
             {
                 if (CustomerBillingAccount.HasSelected())
                 {
-                    CustomerBillingAccount selectedAccount = CustomerBillingAccount.GetSelected();
-                    int index = accountList.FindIndex(x => x.accountNumber == selectedAccount.AccNum);
+                    int index = accountList.FindIndex(x => x.accountNumber == selectedAccountNumber);
                     if (index != -1)
                     {
                         accountList[index].accountSelected = true;
@@ -203,7 +202,7 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                    && response.StatusDetail.IsSuccess)
                 {
                     Intent returnIntent = new Intent();
-                    returnIntent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(response.Content));
+                    returnIntent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(response));
                     returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
                     SetResult(Result.Ok, returnIntent);
                     Finish();

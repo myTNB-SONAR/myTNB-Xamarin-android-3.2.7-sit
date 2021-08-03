@@ -5075,7 +5075,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
 
                     Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
-                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse.Content));
+                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
                     intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
                     intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
                     intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));

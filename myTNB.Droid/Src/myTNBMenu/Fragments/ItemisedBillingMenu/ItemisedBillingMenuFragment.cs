@@ -33,6 +33,8 @@ using myTNB_Android.Src.ManageBillDelivery.MVP;
 using Android.Text;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile;
+using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
@@ -159,7 +161,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         ItemisedBillingMenuPresenter mPresenter;
         AccountData mSelectedAccountData;
 
-        GetBillRenderingModel billrenderingresponse;
+        GetBillRenderingResponse billrenderingresponse;
 
         List<AccountChargeModel> selectedAccountChargesModelList;
         List<Item> itemFilterList = new List<Item>();
@@ -195,14 +197,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
             {
                 mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
-            }
-            if(extras.ContainsKey("billrenderingresponse"))
-            {
-                billrenderingresponse = JsonConvert.DeserializeObject<GetBillRenderingModel>(extras.GetString("billrenderingresponse"));
-            }
-            if(extras.ContainsKey("_isOwner"))
-            {
-                _isOwner = JsonConvert.DeserializeObject<bool>(extras.GetString("_isOwner"));
+                if (EligibilitySessionCache.Instance.IsAccountDBREligible)
+                {
+                    GetBillRenderingAsync(mSelectedAccountData);
+                }
             }
         }
 
@@ -444,7 +442,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
-        internal static ItemisedBillingMenuFragment NewInstance(AccountData selectedAccount, GetBillRenderingModel billRenderingModel = null,bool _isOwner = false)
+        internal static ItemisedBillingMenuFragment NewInstance(AccountData selectedAccount, GetBillRenderingResponse billRenderingModel = null,bool _isOwner = false)
         {
             ItemisedBillingMenuFragment billsMenuFragment = new ItemisedBillingMenuFragment();
             Bundle args = new Bundle();
@@ -482,36 +480,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 , accountSelection, accountSelectionRefresh, btnChargeRefresh, btnBillingHistoryRefresh, btnRefresh);
             TextViewUtils.SetTextSize36(itemisedBillingInfoAmount);
             RenderUI();
-
+            
             mPresenter.GetBillingHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
             digital_container.Visibility = ViewStates.Gone;
-            if (billrenderingresponse != null)
-            {
-                if (billrenderingresponse.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.None)
-                {
-                    digital_container.Visibility = ViewStates.Gone;
-                    isDBRAccount = false;
-                }
-                else
-                {
-                    isDBRAccount = true;
-                    digital_container.Visibility = ViewStates.Visible;
-                    if (billrenderingresponse.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill)
-                    {
-                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
-                    }
-                    else if (billrenderingresponse.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Email)
-                    {
-                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
-                    }
-                    if (billrenderingresponse.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Paper)
-                    {
-                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_Paper_Bill);
-                    }
-                    paperlessTitle.Text = billrenderingresponse.SegmentMessage;
-                }
-            }
+
             
+
             try
             {
                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
@@ -546,6 +520,65 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 accountSelection.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 accountSelectionRefresh.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            }
+        }
+     
+        private async void GetBillRenderingAsync(AccountData selectedAccount)
+        {
+            try
+            {
+                Activity.RunOnUiThread(async () =>
+                {
+                    try
+                    {
+                        GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
+                        AccountData dbrAccount = selectedAccount;
+                        if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                        {
+                            string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                            AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                        }
+                         billrenderingresponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                       
+                        _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccountNum);
+
+                        if (billrenderingresponse != null)
+                        {
+                            if (billrenderingresponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.None)
+                            {
+                                digital_container.Visibility = ViewStates.Gone;
+                                isDBRAccount = false;
+                            }
+                            else
+                            {
+                                isDBRAccount = true;
+                                digital_container.Visibility = ViewStates.Visible;
+                                if (billrenderingresponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill)
+                                {
+                                    bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
+                                }
+                                else if (billrenderingresponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Email)
+                                {
+                                    bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
+                                }
+                                if (billrenderingresponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Paper)
+                                {
+                                    bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
+                                }
+                                paperlessTitle.Text = billrenderingresponse.Content.SegmentMessage;
+                            }
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+               
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
         public int GetItemisedBillingHeaderImageHeight()

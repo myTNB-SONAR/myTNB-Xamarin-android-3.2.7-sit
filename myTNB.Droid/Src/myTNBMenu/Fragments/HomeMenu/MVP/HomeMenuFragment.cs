@@ -585,7 +585,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     AccountData selectedAccountData = AccountData.Copy(dbrAccount, true);
                     Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse.Content));
+                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
                     intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
                     intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
                     StartActivity(intent);
