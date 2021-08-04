@@ -42,7 +42,7 @@
                 android:id="@+id/ManageBill_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:orientation="horizontal"
                 android:background="@color/white">
 					<TextView
@@ -330,39 +330,26 @@
 					android:id="@+id/email_container"
 					android:layout_below="@+id/email_layout"
 					android:layout_width="match_parent"
-					android:layout_height="72dp"
-					android:paddingLeft="16dp"
-					android:paddingRight="26dp"
+					android:layout_height="wrap_content"
+					
 					android:orientation="vertical"
 					android:gravity="center_vertical"
 					android:layout_gravity="center_vertical"
 					android:background="@color/white"
 					android:clickable="true">
-					<TextView
-						android:id="@+id/deliveryEmail"
-						android:text="UI-adam.hussein@gmail.com"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:gravity="left"
-						android:layout_gravity="left"
-						android:layout_marginBottom="4dp"
-						android:textSize="14dp"
-						android:textColor="#49494a"/>
-					<TextView
-						android:id="@+id/deliveryUserName"
-						android:layout_width="wrap_content"
-						android:gravity="left"
-						android:layout_gravity="left"
-						android:text="UI-Adam Hussein (You)"
-						android:layout_height="wrap_content"
-						android:textSize="12dp"
-						android:textColor="#49494a"/>
+					<androidx.recyclerview.widget.RecyclerView
+							android:id="@+id/manageBillDeliveryEmailRecyclerView"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:visibility="visible" />
 						<TextView
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:gravity="left"
+						android:paddingLeft="16dp"
+						android:paddingRight="16dp"
 						android:textSize="14dp"
-						android:visibility="gone"
+						android:visibility="visible"
 						android:background="@color/white"
 						android:layout_marginTop="16dp"
 						android:layout_marginBottom="16dp"
