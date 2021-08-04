@@ -585,11 +585,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                    && billRenderingResponse.Content != null
                    && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
                 {
-                    AccountData selectedAccountData = AccountData.Copy(dbrAccount, true);
                     Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billRenderingResponse));
-                    intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
+                    intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                    intent.PutExtra("accountNumber", dbrAccount.AccNum);
+                    intent.PutExtra("isOwner", _isOwner);
                     StartActivity(intent);
                 }
                 else

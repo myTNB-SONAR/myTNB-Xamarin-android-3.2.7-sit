@@ -127,7 +127,7 @@ namespace myTNB_Android.Src.Billing.MVP
         bool _isOwner;
 
 
-        GetBillRenderingResponse billrenderingresponse;
+        GetBillRenderingResponse billRenderingResponse;
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
@@ -266,24 +266,24 @@ namespace myTNB_Android.Src.Billing.MVP
             }
             if (extras.ContainsKey("billrenderingresponse"))
             {
-                billrenderingresponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
-                if (billrenderingresponse != null)
+                billRenderingResponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
+                if (billRenderingResponse != null)
                 {
                     digital_container.Visibility = ViewStates.Visible;
-                    if (billrenderingresponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill)
+                    if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill)
                     {
                         bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
                     }
-                    else if (billrenderingresponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Email)
+                    else if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Email)
                     {
                         bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
                     }
-                    if (billrenderingresponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Paper)
+                    if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Paper)
                     {
                         bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_Paper_Bill);
                     }
 
-                    paperlessTitle.Text = billrenderingresponse.Content.SegmentMessage;
+                    paperlessTitle.Text = billRenderingResponse.Content.SegmentMessage;
                 }
             }
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -362,9 +362,9 @@ namespace myTNB_Android.Src.Billing.MVP
                     ? selectedAccountData.IsOwner
                     : DBRUtility.Instance.IsCADBREligible(selectedAccountData.AccountNum);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
-                intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
-                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
+                intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                intent.PutExtra("accountNumber", selectedAccountData.AccountNum);
+                intent.PutExtra("isOwner", _isOwner);
                 StartActivity(intent);
             }
         }

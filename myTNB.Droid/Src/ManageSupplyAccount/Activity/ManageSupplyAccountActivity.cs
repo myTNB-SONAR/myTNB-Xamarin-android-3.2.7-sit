@@ -150,10 +150,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
             Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
-            intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            intent.PutExtra("ParallelEmail", "ParallelEmail");
-            intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
-            intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(_billRenderingResponse));
+            intent.PutExtra("isOwner", _isOwner);
+            intent.PutExtra("accountNumber", accountData.AccountNum);
+            intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(_billRenderingResponse));
             StartActivity(intent);
         }
 

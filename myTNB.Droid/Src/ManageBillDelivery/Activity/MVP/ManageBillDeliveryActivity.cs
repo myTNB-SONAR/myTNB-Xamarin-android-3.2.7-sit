@@ -18,15 +18,12 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MultipleAccountPayment.Fragment;
-using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.DigitalBill.Activity;
 using Android.Preferences;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB.Mobile;
 using System.Linq;
 using myTNB.Mobile.AWS.Models;
-using AndroidX.Core.Text;
 using myTNB_Android.Src.ManageBillDelivery.ManageBillDeliveryEmailList.Adapter;
 using AndroidX.RecyclerView.Widget;
 
@@ -36,7 +33,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.Notification")]
-    public class ManageBillDeliveryActivity : BaseActivityCustom, ViewPager.IOnPageChangeListener, ManageBillDeliveryContract.IView
+    public class ManageBillDeliveryActivity : BaseActivityCustom
+        , ViewPager.IOnPageChangeListener
+        , ManageBillDeliveryContract.IView
     {
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -125,41 +124,33 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.txtMessage)]
         TextView txtMessage;
 
-       
-
         [BindView(Resource.Id.ic_ca_info)]
         ImageView ic_ca_info;
 
         [BindView(Resource.Id.txtSelectedAccountTitle)]
         TextView txtSelectedAccountTitle;
 
-        ManageBillDeliveryEmailListAdapter manageBillDeliveryEmailListAdapter;
-
         [BindView(Resource.Id.manageBillDeliveryEmailRecyclerView)]
         RecyclerView manageBillDeliveryEmailRecyclerView;
 
-        GetBillRenderingResponse getBillRenderingModel;
-        RecyclerView.LayoutManager layoutManager;
-        ISharedPreferences mPref;
-        internal bool _isOwner { get; set; }
-        //[BindView(Resource.Id.pagerLyout)]
-        //LinearLayout pagerLyout;
-
-
-        ManageBillDeliveryContract.IUserActionsListener userActionsListener;
-
+        private const string PAGE_ID = "ManageDigitalBillLanding";
+        private const string SELECTED_ACCOUNT_KEY = ".selectedAccount";
+        private ManageBillDeliveryEmailListAdapter manageBillDeliveryEmailListAdapter;
+        private GetBillRenderingResponse getBillRenderingModel;
+        private RecyclerView.LayoutManager layoutManager;
+        private ISharedPreferences mPref;
+        private bool _isOwner { get; set; }
+        private ManageBillDeliveryContract.IUserActionsListener userActionsListener;
         private List<DBRAccount> dbrAccountList = new List<DBRAccount>();
-        const string PAGE_ID = "ManageDigitalBillLanding";
-        const string SELECTED_ACCOUNT_KEY = ".selectedAccount";
         public readonly static int DBR_SELECT_ACCOUNT_ACTIVITY_CODE = 8798;
         private string selectedAccountNumber;
         private DBRAccount selectedEligibleAccount;
         private string selectedAccountNickName;
-        AccountData mSelectedAccountData;
-
-        ManageBillDeliveryPresenter presenter;
-        ManageBillDeliveryAdapter ManageBillDeliveryAdapter;
-        string currentAppNavigation;
+        private AccountData mSelectedAccountData;
+        private ManageBillDeliveryPresenter presenter;
+        private ManageBillDeliveryAdapter ManageBillDeliveryAdapter;
+        private string currentAppNavigation;
+        private string _accountNumber = string.Empty;
 
         //========================================== FORM LIFECYCLE ==================================================================================
 
@@ -175,8 +166,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
             viewPager.Adapter = ManageBillDeliveryAdapter;
             UpdateAccountListIndicator();
-            
-
             Bundle extras = Intent.Extras;
             digitalBillLabel.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "anotherDeliveryMethod");
             btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "startDigitalBillCTA");
@@ -193,24 +182,28 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             manageBillDeliveryEmailRecyclerView.SetLayoutManager(layoutManager);
             if (extras != null)
             {
-                if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
+                if (extras.ContainsKey("accountNumber"))
                 {
-                    mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
-                    txt_ca_name.Text = mSelectedAccountData.AccountNickName;
-                    deliverigAddress.Text = mSelectedAccountData.AddStreet;
-                    TenantDeliverigAddress.Text = mSelectedAccountData.AddStreet;
-                    selectedAccountNumber = mSelectedAccountData.AccountNum;
+                    _accountNumber = extras.GetString("accountNumber");
+                    List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+                    int accountIndex = allAccountList.FindIndex(x => x.AccNum == _accountNumber);
+                    if (accountIndex > -1)
+                    {
+                        mSelectedAccountData = AccountData.Copy(allAccountList[accountIndex], true);
+                        txt_ca_name.Text = mSelectedAccountData.AccountNickName;
+                        deliverigAddress.Text = mSelectedAccountData.AddStreet;
+                        TenantDeliverigAddress.Text = mSelectedAccountData.AddStreet;
+                        selectedAccountNumber = mSelectedAccountData.AccountNum;
+                    }
                 }
-                if (extras.ContainsKey("_isOwner"))
+                if (extras.ContainsKey("isOwner"))
                 {
-                    _isOwner = JsonConvert.DeserializeObject<bool>(extras.GetString("_isOwner"));
+                    _isOwner = extras.GetBoolean("isOwner");
                 }
-                if (extras.ContainsKey("billrenderingresponse"))
+                if (extras.ContainsKey("billRenderingResponse"))
                 {
-                    GetBillRenderingResponse getBillRenderingModel = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
-
+                    GetBillRenderingResponse getBillRenderingModel = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billRenderingResponse"));
                     GetDeliveryDisplay(getBillRenderingModel);
-                    
                 }
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
                 {
@@ -219,7 +212,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     viewPager.Adapter = ManageBillDeliveryAdapter;
                     UpdateAccountListIndicator();
                 }
-                
             }
             btnStartDigitalBill.Click += delegate
             {
@@ -313,19 +305,19 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
                     //deliveryUserName.Text = user.DisplayName + Utility.GetLocalizedLabel("ManageDigitalBillLanding", "you");
 
-                    foreach(var email in getBillRenderingModel.Content.EmailList)
+                    foreach (var email in getBillRenderingModel.Content.EmailList)
                     {
-                        
+
                     }
                     manageBillDeliveryEmailListAdapter = new ManageBillDeliveryEmailListAdapter(this, getBillRenderingModel.Content.EmailList);
                     //manageBillDeliveryEmailListAdapter.Clear();
                     //manageBillDeliveryEmailListAdapter.UpdateAddList(getBillRenderingModel.Content.EmailList);
-                   
+
                     manageBillDeliveryEmailRecyclerView.SetAdapter(manageBillDeliveryEmailListAdapter);
-                    string test=  "This is <font color='red'>simple</font>.";
+                    string test = "This is <font color='red'>simple</font>.";
                     test = "<hr style = height:1px;color:#333;background-color:#333; />";
 
-                     //deliveryEmail.Text = Html.FromHtml(user.Email + "<br><hr style = height:10px; color:#333;background-color:#333; />" + user.Email + "<br><hr style = height:10px; color:#333;background-color:#333; />"+  user.Email,FromHtmlOptions.ModeLegacy).ToString();
+                    //deliveryEmail.Text = Html.FromHtml(user.Email + "<br><hr style = height:10px; color:#333;background-color:#333; />" + user.Email + "<br><hr style = height:10px; color:#333;background-color:#333; />"+  user.Email,FromHtmlOptions.ModeLegacy).ToString();
                     img_display.SetImageResource(Resource.Drawable.display_emailbilling);
                     txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillTitle");
                     txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillDescription"));
@@ -380,7 +372,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     }
                     else
                     {
-                       
+
                         btnUpdateDigitalBillLayout.Visibility = digitalBillLabelContainer.Visibility = ic_ca_info.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
                     }
                 }
@@ -599,16 +591,16 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [OnClick(Resource.Id.txt_ca_name)]
         void OnCANameFilter(object sender, EventArgs eventArgs)
         {
-                dbrAccountList = GetEligibleDBRAccountList();
-                if (dbrAccountList != null && dbrAccountList.Count > 0)
-                {
-                    this.presenter.CheckDBRAccountEligibility(dbrAccountList);
-                }
-                else
-                {
-                   // Intent intent = new Intent(this, typeof(SelectDBRAccountActivity));
-                    //StartActivityForResult(intent, DBR_SELECT_ACCOUNT_ACTIVITY_CODE);
-                }
+            dbrAccountList = GetEligibleDBRAccountList();
+            if (dbrAccountList != null && dbrAccountList.Count > 0)
+            {
+                this.presenter.CheckDBRAccountEligibility(dbrAccountList);
+            }
+            else
+            {
+                // Intent intent = new Intent(this, typeof(SelectDBRAccountActivity));
+                //StartActivityForResult(intent, DBR_SELECT_ACCOUNT_ACTIVITY_CODE);
+            }
         }
 
         public void ShowDBREligibleAccountList(List<DBRAccount> dbrEligibleAccountList)
@@ -664,7 +656,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                    .SetCTAaction(() => { this.SetIsClicked(false); })
                    .Build().Show();
         }
-       
+
         public void ShowSelectSupplyAccount()
         {
             this.SetIsClicked(true);
@@ -715,7 +707,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             {
                 FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
                 layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 1.7)) : (int)DPUtils.ConvertDPToPx(455f);
-                
+
             }
         }
 
@@ -816,7 +808,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
-            if(UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBillWithCTA)
+            if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBillWithCTA)
             {
                 newList.Add(new NewAppModel()
                 {
@@ -921,7 +913,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             return digitalBillLabelContainer.Height;
         }
-        
+
         public int GetviewPagerHeight()
         {
             return viewPagerLyout.Height;
@@ -934,6 +926,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             return selectAccountContainer.Height;
         }
-        
+
     }
 }
