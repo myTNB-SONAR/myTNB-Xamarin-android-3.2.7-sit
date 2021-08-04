@@ -4,10 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
-
-using Android.Text;
-using Android.Text.Method;
-using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -21,7 +17,6 @@ using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.NotificationDetails.MVP;

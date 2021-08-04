@@ -200,7 +200,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                     paymentItemAccountPayment.AccountOwnerName = customerBillingAccount.OwnerName;
                                     paymentItemAccountPayment.AccountNo = chargeModel.ContractAccount;
                                     paymentItemAccountPayment.AccountAmount = item.amount.ToString(currCult);
-                                    paymentItemAccountPayment.dbrEnabled = EligibilitySessionCache.Instance.ShouldShowDBRCard(chargeModel.ContractAccount ?? string.Empty);
+                                    paymentItemAccountPayment.dbrEnabled = DBRUtility.Instance.ShouldShowDBRCard(chargeModel.ContractAccount ?? string.Empty);
 
                                     List<AccountPayment> accountPaymentList = new List<AccountPayment>();
                                     chargeModel.MandatoryCharges.ChargeModelList.ForEach(charge =>
@@ -219,7 +219,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                     payItem.AccountOwnerName = customerBillingAccount.OwnerName;
                                     payItem.AccountNo = chargeModel.ContractAccount;
                                     payItem.AccountAmount = item.amount.ToString(currCult);
-                                    payItem.dbrEnabled = EligibilitySessionCache.Instance.ShouldShowDBRCard(chargeModel.ContractAccount ?? string.Empty);
+                                    payItem.dbrEnabled = DBRUtility.Instance.ShouldShowDBRCard(chargeModel.ContractAccount ?? string.Empty);
                                     selectedPaymentItemList.Add(payItem);
                                 }
                             }

@@ -558,7 +558,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [OnClick(Resource.Id.discoverView)]
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
-            if (EligibilitySessionCache.Instance.IsAccountDBREligible)
+            if (DBRUtility.Instance.IsAccountDBREligible)
             {
                 GetBillRenderingAsync();
             }
@@ -570,7 +570,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ShowProgressDialog();
                 CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
                 //_isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccNum);
-                _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccNum);
+                _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount.AccNum);
                 if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
                 {
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
@@ -610,7 +610,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public CustomerBillingAccount GetEligibleDBRAccount()
         {
             CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-            List<string> dBRCAs = EligibilitySessionCache.Instance.GetDBRCAs();
+            List<string> dBRCAs = DBRUtility.Instance.GetDBRCAs();
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             CustomerBillingAccount account = new CustomerBillingAccount();
             if (dBRCAs.Count > 0)
@@ -620,7 +620,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     account = allAccountList.Where(x => x.AccNum == dbrSelected).FirstOrDefault();
                 }
-                if(account == null)
+                if (account == null)
                 {
                     foreach (var dbrca in dBRCAs)
                     {
@@ -839,36 +839,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             LinearSnapHelper shimmerSnapHelper = new LinearSnapHelper();
             shimmerSnapHelper.AttachToRecyclerView(newFAQShimmerList);
         }
-        
-        
+
+
         private void SetupDiscoverView()
         {
-            discoverShimmerView.Visibility = ViewStates.Gone;
-            string imgsource = "discover_non_targeted";
-            if (imgsource == "discover_non_targeted")
+            discoverView.Visibility = ViewStates.Visible;
+            discoverView.SetBackgroundResource(LanguageUtil.GetAppLanguage() == "MS"
+                ? Resource.Drawable.banner_home_voluntary_ms
+                : Resource.Drawable.banner_home_voluntary_en);
+
+            LinearLayout.LayoutParams layout = discoverView.LayoutParameters as LinearLayout.LayoutParams;
+            int imgWidth = GetDeviceHorizontalScaleInPixel(0.917f);
+            float heightRatio = 55f / 128f;
+            int imgHeight = (int)(imgWidth * (heightRatio));
+            if (layout != null)
             {
-                discoverView.Visibility = ViewStates.Visible;
-                discoverView.SetBackgroundResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.discover_non_targeted_bm : Resource.Drawable.discover_non_targeted_en);
-
-                LinearLayout.LayoutParams layout = discoverView.LayoutParameters as LinearLayout.LayoutParams;
-
-                int imgWidth = GetDeviceHorizontalScaleInPixel(0.917f);
-                float heightRatio = 55f / 128f;
-                int imgHeight = (int)(imgWidth * (heightRatio));
                 layout.Width = imgWidth;
                 layout.Height = imgHeight;
-            }
-            else if (imgsource == "discover_targeted")
-            {
-                discoverView.Visibility = ViewStates.Visible;
-                img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.discover_targeted_bm : Resource.Drawable.discover_targeted_en);
-
-            }
-            else 
-            {
-                discoverView.Visibility = ViewStates.Visible;
-                img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.discover_post_conversion_bm : Resource.Drawable.discover_post_conversion_en);
-                
             }
         }
 
@@ -1022,7 +1009,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             this.presenter.GetSavedNewFAQTimeStamp();
         }
-        
+
         public void HideNewFAQ()
         {
             try
@@ -1078,7 +1065,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         }
         public bool CheckDBRDiscoverHide()
         {
-           return discovercontainer.Visibility == ViewStates.Gone;
+            return discovercontainer.Visibility == ViewStates.Gone;
         }
 
         public void SetDiscoverResult(bool IsAccountDBREligible)
@@ -1090,7 +1077,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     try
                     {
                         this.IsAccountDBREligible = IsAccountDBREligible;
-                        if(IsAccountDBREligible)
+                        if (IsAccountDBREligible)
                         {
 
                             SetupDiscoverView();
@@ -1102,7 +1089,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             UserEntity user = UserEntity.GetActive();
                             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
 
-                            if (IsFromLogin && loginCount == 1 && EligibilitySessionCache.Instance.ShouldShowDBRCard())
+                            if (IsFromLogin && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeDBRCard)
                             {
                                 ShowMarketingTooltip();
                                 IsFromLogin = false;
@@ -1354,7 +1341,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     TextViewUtils.SetTextSize14(discoverTitle);
                 }
-                
+
                 TextViewUtils.SetMuseoSans500Typeface(searchText, discoverTitle);
                 discoverTitle.Text = Utility.GetLocalizedLabel("DashboardHome", "discoverMore");
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
@@ -1929,7 +1916,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Utility.LoggingNonFatalError(ex);
                 }
             });
-           
+
         }
 
         public void ShowFAQFromHide()
@@ -3036,7 +3023,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             return discovercontainer.Height;
         }
-        
+
         public void ResetNewFAQScroll()
         {
             try

@@ -1,20 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Base.Adapter;
 using CheeseBind;
-
 using myTNB_Android.Src.Utils;
-
 using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Notifications.MVP;
@@ -136,6 +128,19 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID))
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_payment_success));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DBR_PAPER))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.icons_form_paper_bill));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DBR_EMAIL))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.icons_display_email));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DBR_EBILL)
+                    || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DBR_EMAIL_REMOVED))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.icons_display_digital_bill));
                 }
                 else
                 {

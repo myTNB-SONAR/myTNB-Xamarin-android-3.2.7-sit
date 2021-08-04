@@ -197,7 +197,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
             {
                 mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
-                if (EligibilitySessionCache.Instance.IsAccountDBREligible)
+                if (DBRUtility.Instance.IsAccountDBREligible)
                 {
                     GetBillRenderingAsync(mSelectedAccountData);
                 }
@@ -540,8 +540,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         }
                          billrenderingresponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
                        
-                        //_isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccountNum);
-                        _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccountNum);
+                        _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
+                            ? selectedAccount.IsOwner
+                            : DBRUtility.Instance.IsCADBREligible(dbrAccount.AccountNum);
 
                         if (billrenderingresponse != null)
                         {

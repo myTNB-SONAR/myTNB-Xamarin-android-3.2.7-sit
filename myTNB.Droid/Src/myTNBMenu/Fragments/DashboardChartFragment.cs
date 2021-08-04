@@ -4855,14 +4855,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 this.SetIsClicked(true);
                 isGoToBillingDetail = true;
 
-                if(EligibilitySessionCache.Instance.IsAccountDBREligible && GetEligibleDBRAccount(selectedAccount) == selectedAccount.AccountNum)
+                if(DBRUtility.Instance.IsAccountDBREligible && GetEligibleDBRAccount(selectedAccount) == selectedAccount.AccountNum)
                 {
                     GetBillRenderingAsync(selectedAccount);
                 }
                 else
                 {
-                    //_isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(selectedAccount.AccountNum);
-                    _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(selectedAccount.AccountNum);
+                    //_isOwner = DBRUtility.Instance.IsDBROTTagFromCache ? false : DBRUtility.Instance.IsCADBREligible(selectedAccount.AccountNum);
+                    _isOwner = DBRUtility.Instance.IsCADBREligible(selectedAccount.AccountNum);
                     Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
                     intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
                     intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
@@ -5101,7 +5101,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public string GetEligibleDBRAccount(AccountData selectedAccount)
         {
             CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-            List<string> dBRCAs = EligibilitySessionCache.Instance.GetDBRCAs();
+            List<string> dBRCAs = DBRUtility.Instance.GetDBRCAs();
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             CustomerBillingAccount account = new CustomerBillingAccount();
             string dbraccount = string.Empty;

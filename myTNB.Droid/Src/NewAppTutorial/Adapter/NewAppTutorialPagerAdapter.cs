@@ -1540,7 +1540,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
-                        else if (EligibilitySessionCache.Instance.IsAccountDBREligible && position == 3)
+                        else if (DBRUtility.Instance.IsAccountDBREligible && position == 3)
                         {
                             int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(95f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight() - (int)DPUtils.ConvertDPToPx(5f);
@@ -2528,7 +2528,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 innerTopLayout.RequestLayout();
 
             }
-            else if (EligibilitySessionCache.Instance.IsAccountDBREligible && this.mContext is ManageBillDeliveryActivity)
+            else if (DBRUtility.Instance.IsAccountDBREligible && this.mContext is ManageBillDeliveryActivity)
             {
                 int middleHeight = 0;
                 int topHeight = 0;

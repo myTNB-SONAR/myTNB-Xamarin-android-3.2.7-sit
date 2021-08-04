@@ -865,7 +865,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         }
         public List<DBRAccount> GetEligibleDBRAccountList()
         {
-            List<string> dBRCAs = EligibilitySessionCache.Instance.GetDBRCAs();
+            List<string> dBRCAs = DBRUtility.Instance.GetDBRCAs();
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             List<CustomerBillingAccount> eligibleDBRAccountList = new List<CustomerBillingAccount>();
             CustomerBillingAccount account = new CustomerBillingAccount();

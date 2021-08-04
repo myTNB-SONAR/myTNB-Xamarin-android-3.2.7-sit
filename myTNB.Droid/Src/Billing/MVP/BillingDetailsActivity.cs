@@ -129,7 +129,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
         GetBillRenderingResponse billrenderingresponse;
 
-       SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
 
         AccountChargeModel selectedAccountChargeModel;
@@ -267,7 +267,7 @@ namespace myTNB_Android.Src.Billing.MVP
             if (extras.ContainsKey("billrenderingresponse"))
             {
                 billrenderingresponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
-                if(billrenderingresponse != null)
+                if (billrenderingresponse != null)
                 {
                     digital_container.Visibility = ViewStates.Visible;
                     if (billrenderingresponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill)
@@ -320,14 +320,14 @@ namespace myTNB_Android.Src.Billing.MVP
                 topLayout.Visibility = ViewStates.Invisible;
                 this.billingDetailsPresenter.ShowBillDetails(selectedAccountData, isCheckPendingPaymentNeeded);
             }
-            
+
             ShowGoPapperless();
         }
 
         private void ShowGoPapperless()
         {
             string ebilltype = "NonTargted";
-            if(ebilltype == "NonTargted")
+            if (ebilltype == "NonTargted")
             {
 
             }
@@ -358,8 +358,9 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             if (!this.GetIsClicked())
             {
-                //_isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(selectedAccountData.AccountNum);
-                _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(selectedAccountData.AccountNum);
+                _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
+                    ? selectedAccountData.IsOwner
+                    : DBRUtility.Instance.IsCADBREligible(selectedAccountData.AccountNum);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
@@ -778,7 +779,7 @@ namespace myTNB_Android.Src.Billing.MVP
             Handler h = new Handler();
             Action myAction = () =>
             {
-                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.billingDetailsPresenter.OnGeneraNewAppTutorialList(),true);
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.billingDetailsPresenter.OnGeneraNewAppTutorialList(), true);
             };
             h.PostDelayed(myAction, 100);
         }
