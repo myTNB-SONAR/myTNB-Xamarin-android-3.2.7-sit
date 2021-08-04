@@ -6904,6 +6904,11 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+        <AndroidResource Include="Resources\layout\ManageBillDeliveryEmailGroupItemLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ManageBillDelivery\Adapter\ManageBillDeliveryEmailListAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
