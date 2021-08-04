@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Preferences;
 using Android.Text;
 using Android.Util;
 using Android.Views;
@@ -216,6 +217,24 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 GenerateCallUsCardLayout();
                 GenerateCheckStatusCardLayout();
                 GenerateFeedbackCardLayout();
+
+                ISharedPreferences preferences = PreferenceManager.GetDefaultSharedPreferences(this);
+                ISharedPreferencesEditor editor = preferences.Edit();
+                editor.Remove("SyncSRAPIKey");
+                editor.Remove(MobileConstants.SharePreferenceKey.AccessToken);
+                editor.Remove(MobileConstants.SharePreferenceKey.GetEligibilityData);
+                editor.Remove(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp);
+
+                //For Testing
+                editor.Remove("hasHomeTutorialShown");
+                editor.Remove("hasItemizedBillingNMSMTutorialShown");
+                editor.Remove("hasItemizedBillingRETutorialShown");
+                editor.Remove("hasManageSupplyAccountTutorialShown");
+                editor.Remove("hasManageEBillDeliveryTutorialShown");
+                editor.Remove("hasManageOptedEBillDeliveryTutorialShown");
+                editor.Remove("hasManageEmailBillDeliveryTutorialShown");
+                editor.Remove("hasManageParallelEmailBillDeliveryTutorialShown");
+                editor.Apply();
             }
             catch (Exception ex)
             {
