@@ -216,6 +216,22 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             }
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_DBR_PAPER:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_dbr_banner_paper;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_DBR_EMAIL:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_dbr_banner_email;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_DBR_EBILL:
+                    case Constants.BCRM_NOTIFICATION_DBR_EMAIL_REMOVED:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_dbr_banner_ebill;
+                            break;
+                        }
                     default:
                         imageResourceBanner = Resource.Drawable.notification_generic_banner;
                         break;
@@ -360,7 +376,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(httpClient);
 
 #else
-            var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
+                var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
                 SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(new myTNB_Android.Src.myTNBMenu.Requests.SMRAccountActivityInfoRequest()
@@ -574,7 +590,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             {
                 GetPaymentReceiptResponse result = await ServiceApiImpl.Instance.GetPaymentReceipt(new GetPaymentReceiptRequest(selectedAccountNumber, detailedInfoNumber, isOwnedAccount, showAllReceipt),
                     CancellationTokenSourceWrapper.GetTokenWithDelay(Constants.PAYMENT_RECEIPT_TIMEOUT));
-                
+
                 if (result.IsSuccessResponse())
                 {
                     this.mView.ShowPaymentReceipt(result);
