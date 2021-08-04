@@ -569,7 +569,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 ShowProgressDialog();
                 CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
-                _isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccNum);
+                //_isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccNum);
+                _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccNum);
                 if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
                 {
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);

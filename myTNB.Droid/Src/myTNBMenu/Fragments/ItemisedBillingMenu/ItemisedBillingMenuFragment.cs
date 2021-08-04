@@ -540,7 +540,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         }
                          billrenderingresponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
                        
-                        _isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccountNum);
+                        //_isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccountNum);
+                        _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccountNum);
 
                         if (billrenderingresponse != null)
                         {
