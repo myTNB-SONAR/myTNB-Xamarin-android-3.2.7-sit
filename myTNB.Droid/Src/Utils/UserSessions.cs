@@ -10,7 +10,6 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using Newtonsoft.Json;
-using myTNB_Android.Src.ManageBillDelivery.MVP;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -101,12 +100,15 @@ namespace myTNB_Android.Src.Utils
             }
         }
 
-        internal static string DBROwnerNotificationCA { set; get; } = string.Empty;
+        internal static string DBROwnerNotificationAccountNumber { set; get; } = string.Empty;
 
         public static void RemoveNotificationSession(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.Remove("hasNotification").Remove("notificationEmail").Apply();
+            editor.Remove("hasNotification")
+                .Remove("notificationEmail")
+                .Remove("notificationType")
+                .Apply();
         }
 
         public static bool HasSkipped(ISharedPreferences prefs)
@@ -367,13 +369,13 @@ namespace myTNB_Android.Src.Utils
         {
             return prefs.GetBoolean("hasManageParallelEmailBillDeliveryTutorialShown", false);
         }
-        
+
         public static bool HasManageSupplyAccountTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasManageSupplyAccountTutorialShown", false);
         }
 
-       
+
         public static bool HasSMRMeterHistoryTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasSMRMeterHistoryTutorialShown", false);

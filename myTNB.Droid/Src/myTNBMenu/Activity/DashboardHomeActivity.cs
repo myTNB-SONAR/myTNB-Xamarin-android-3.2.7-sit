@@ -50,10 +50,6 @@ using myTNB;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile;
 using myTNB_Android.Src.myTNBMenu.Async;
-using myTNB_Android.Src.ManageBillDelivery.MVP;
-using myTNB_Android.Src.DeviceCache;
-using myTNB.Mobile.AWS.Models;
-using System.Linq;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -339,10 +335,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 System.Diagnostics.Debug.WriteLine("[DEBUG] Sync SR Error: " + e.Message);
             }
-            
+
             try
             {
-               new EligibilityAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
+                new EligibilityAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
             }
             catch (Exception e)
             {
@@ -519,13 +515,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 SupportFragmentManager.PopBackStack();
                 currentFragment = null;
             }
-                currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount);
-                SupportFragmentManager.BeginTransaction()
-                    .Replace(Resource.Id.content_layout, currentFragment)
-                    .CommitAllowingStateLoss();
+            currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount);
+            SupportFragmentManager.BeginTransaction()
+                .Replace(Resource.Id.content_layout, currentFragment)
+                .CommitAllowingStateLoss();
         }
-        
-       
+
+
         public void SetToolbarTitle(int stringResourceId)
         {
             try
@@ -869,7 +865,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        
+
         public void ShowFeedbackMenu()
         {
             ShowBackButton(false);

@@ -37,14 +37,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         , ViewPager.IOnPageChangeListener
         , ManageBillDeliveryContract.IView
     {
-        [BindView(Resource.Id.rootView)]
-        CoordinatorLayout rootView;
-
         [BindView(Resource.Id.txt_ca_name)]
         TextView txt_ca_name;
-
-        [BindView(Resource.Id.selectAllCheckBox)]
-        CheckBox selectAllCheckboxButton;
 
         [BindView(Resource.Id.btnRefresh)]
         Button btnNewRefresh;
@@ -72,9 +66,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         [BindView(Resource.Id.btnStartDigitalBillLayout)]
         LinearLayout btnStartDigitalBillLayout;
-
-        [BindView(Resource.Id.applicationIndicatorLayout)]
-        LinearLayout applicationIndicatorLayout;
 
         [BindView(Resource.Id.email_layout)]
         LinearLayout email_layout;
@@ -134,7 +125,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         RecyclerView manageBillDeliveryEmailRecyclerView;
 
         private const string PAGE_ID = "ManageDigitalBillLanding";
-        private const string SELECTED_ACCOUNT_KEY = ".selectedAccount";
         private ManageBillDeliveryEmailListAdapter manageBillDeliveryEmailListAdapter;
         private GetBillRenderingResponse getBillRenderingModel;
         private RecyclerView.LayoutManager layoutManager;
@@ -218,6 +208,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 InitiateDBRRequest(mSelectedAccountData);
             };
         }
+
         public void GetDeliveryDisplay(GetBillRenderingResponse getBillRenderingModel)
         {
             UserEntity user = UserEntity.GetActive();
@@ -235,7 +226,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 {
                     digitalBillLabelContainer.Visibility = ic_ca_info.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
                 }
-
             }
             else
             {
@@ -414,6 +404,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 }
             }
         }
+
         public void InitiateDBRRequest(AccountData mSelectedAccountData)
         {
             try
@@ -429,6 +420,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         public void ScrollPage()
         {
             System.Timers.Timer? timer = new System.Timers.Timer

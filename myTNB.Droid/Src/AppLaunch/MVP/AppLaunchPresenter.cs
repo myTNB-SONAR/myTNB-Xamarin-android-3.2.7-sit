@@ -32,12 +32,9 @@ using myTNB_Android.Src.MyTNBService.Request;
 using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponse;
 using myTNB;
 using Firebase.Iid;
-using System.Net.Http;
-using DynatraceAndroid;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
-
     public class AppLaunchPresenter : AppLaunchContract.IUserActionsListener
     {
         private AppLaunchContract.IView mView;
@@ -64,8 +61,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             this.mView.ShowWalkThrough();
         }
-
-
 
         /// <summary>
         /// Load accounts from API
@@ -283,13 +278,18 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             && "APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper())
                                             && UserSessions.ApplicationStatusNotification != null)
                                         {
+                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                                             this.mView.ShowApplicationStatusDetails();
+                                            UserSessions.RemoveNotificationSession(mSharedPref);
+
                                         }
-                                        /*else if (UserSessions.GetNotificationType(mSharedPref) != null
+                                        else if (UserSessions.GetNotificationType(mSharedPref) != null
                                            && "DBROWNER".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper()))
                                         {
-                                            this.mView.OnShowManageBillDDelivery();
-                                        }*/
+                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
+                                            this.mView.OnShowManageBillDelivery();
+                                            UserSessions.RemoveNotificationSession(mSharedPref);
+                                        }
                                         else if (hasNotification && (isODNType || isLoggedInEmail))
                                         {
                                             UserSessions.RemoveNotificationSession(mSharedPref);
@@ -488,8 +488,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 }
             });
         }
-
-
 
         public void GetSavedTimeStamp()
         {
@@ -796,8 +794,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-
 
         public void OnGetAppLaunchTimeStamp()
         {

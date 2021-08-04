@@ -27,7 +27,6 @@ using myTNB_Android.Src.Base;
 using Android.Text;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using Android.Runtime;
-using Android.Util;
 using Android.Views.Animations;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
@@ -50,15 +49,16 @@ using myTNB;
 using myTNB.Mobile;
 using AndroidX.ConstraintLayout.Widget;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
-using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using System.Linq;
 using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile.AWS.Models;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
-    public class HomeMenuFragment : BaseFragmentCustom, HomeMenuContract.IHomeMenuView
-            , ViewTreeObserver.IOnGlobalLayoutListener, View.IOnFocusChangeListener
+    public class HomeMenuFragment : BaseFragmentCustom
+        , HomeMenuContract.IHomeMenuView
+        , ViewTreeObserver.IOnGlobalLayoutListener
+        , View.IOnFocusChangeListener
     {
         internal static bool IsFromLogin;
         GetBillRenderingResponse billRenderingResponse;
@@ -80,7 +80,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.newFAQContainer)]
         LinearLayout newFAQContainer;
-
 
         [BindView(Resource.Id.myServiceShimmerView)]
         LinearLayout myServiceShimmerView;
@@ -260,7 +259,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.discovercontainer)]
         LinearLayout discovercontainer;
-
 
         bool IsAccountDBREligible;
         AccountsRecyclerViewAdapter accountsAdapter;
