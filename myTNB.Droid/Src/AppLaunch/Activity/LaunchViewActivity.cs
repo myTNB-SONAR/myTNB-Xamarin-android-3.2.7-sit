@@ -41,6 +41,9 @@ using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using Newtonsoft.Json;
 using Firebase.Iid;
+using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB.Mobile.AWS.Models;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -102,7 +105,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-
+#pragma warning disable CS0618 // Type or member is obsolete
             try
             {
                 if (Intent != null && Intent.Extras != null)
@@ -123,6 +126,11 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                 ? Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_System)
                                 : string.Empty;
                             UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
+                        }
+                        else if (notifType.ToUpper() == "DBROWNER")
+                        {
+                            string accountNumber = Intent.Extras.GetString("AccountNumber");
+                            UserSessions.DBROwnerNotificationCA = accountNumber ?? string.Empty;
                         }
                         else
                         {
@@ -154,7 +162,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         public bool IsActive()
@@ -340,6 +348,63 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 ShowDashboard();
             }
+        }
+
+        public async void OnShowManageBillDDelivery()
+        {
+            if (string.IsNullOrEmpty(UserSessions.DBROwnerNotificationCA)
+                || string.IsNullOrWhiteSpace(UserSessions.DBROwnerNotificationCA))
+            {
+                return;
+            }
+
+            try
+            {
+                ShowProgressDialog();
+
+
+                /*
+                ShowProgressDialog();
+                CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                //_isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccNum);
+                _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount.AccNum);
+                if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
+                }
+                GetBillRenderingResponse? billrenderingresponse = await DBRManager.Instance.GetBillRendering(UserSessions.DBROwnerNotificationCA
+                    , AccessTokenCache.Instance.GetAccessToken(this));
+
+                HideProgressDialog();
+                //Nullity Check
+                if (billrenderingresponse != null
+                   && billrenderingresponse.StatusDetail != null
+                   && billrenderingresponse.StatusDetail.IsSuccess)
+                {
+                    AccountData selectedAccountData = AccountData.Copy(dbrAccount, true);
+                    Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
+                    intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
+                    StartActivity(intent);
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(billrenderingresponse.StatusDetail.Title)
+                        .SetMessage(billrenderingresponse.StatusDetail.Message)
+                        .SetCTALabel(billrenderingresponse.StatusDetail.PrimaryCTATitle)
+                        .Build();
+                    errorPopup.Show();
+                }
+                */
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
         }
 
         public void ShowPreLogin()
@@ -831,7 +896,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 };
 
                 if (IsActive())
+                {
                     appUpdateDialog.Show();
+                }
             }
             catch (Exception e)
             {

@@ -285,6 +285,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         {
                                             this.mView.ShowApplicationStatusDetails();
                                         }
+                                        /*else if (UserSessions.GetNotificationType(mSharedPref) != null
+                                           && "DBROWNER".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper()))
+                                        {
+                                            this.mView.OnShowManageBillDDelivery();
+                                        }*/
                                         else if (hasNotification && (isODNType || isLoggedInEmail))
                                         {
                                             UserSessions.RemoveNotificationSession(mSharedPref);
@@ -294,7 +299,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         }
                                         else
                                         {
-                                            if (!UserSessions.IsDeviceIdUpdated(mSharedPref) || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
+                                            if (!UserSessions.IsDeviceIdUpdated(mSharedPref)
+                                                || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
                                             {
                                                 //If DeviceId is not the same with the saved, call UpdateAppUserDevice service.
                                                 var updateAppDeviceResponse = await updateAppUserDeviceApi.UpdateAppUserDevice(new UpdateAppUserDeviceRequest()

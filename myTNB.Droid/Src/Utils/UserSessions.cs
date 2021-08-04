@@ -101,6 +101,8 @@ namespace myTNB_Android.Src.Utils
             }
         }
 
+        internal static string DBROwnerNotificationCA { set; get; } = string.Empty;
+
         public static void RemoveNotificationSession(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();

@@ -61,7 +61,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             , ViewTreeObserver.IOnGlobalLayoutListener, View.IOnFocusChangeListener
     {
         internal static bool IsFromLogin;
-        GetBillRenderingResponse billrenderingresponse;
+        GetBillRenderingResponse billRenderingResponse;
 
         [BindView(Resource.Id.newFAQShimmerView)]
         LinearLayout newFAQShimmerView;
@@ -576,17 +576,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
                     AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
                 }
-                billrenderingresponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
 
-                HideProgressDialog();
                 //Nullity Check
-                if (billrenderingresponse != null
-                   && billrenderingresponse.StatusDetail != null
-                   && billrenderingresponse.StatusDetail.IsSuccess)
+                if (billRenderingResponse != null
+                   && billRenderingResponse.StatusDetail != null
+                   && billRenderingResponse.StatusDetail.IsSuccess
+                   && billRenderingResponse.Content != null
+                   && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
                 {
                     AccountData selectedAccountData = AccountData.Copy(dbrAccount, true);
                     Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
+                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billRenderingResponse));
                     intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
                     intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
                     StartActivity(intent);
@@ -594,12 +595,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else
                 {
                     MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                        .SetTitle(billrenderingresponse.StatusDetail.Title)
-                                        .SetMessage(billrenderingresponse.StatusDetail.Message)
-                                        .SetCTALabel(billrenderingresponse.StatusDetail.PrimaryCTATitle)
-                                        .Build();
+                        .SetTitle(billRenderingResponse?.StatusDetail?.Title ?? string.Empty)
+                        .SetMessage(billRenderingResponse?.StatusDetail?.Message ?? string.Empty)
+                        .SetCTALabel(billRenderingResponse?.StatusDetail?.PrimaryCTATitle ?? string.Empty)
+                        .Build();
                     errorPopup.Show();
                 }
+                HideProgressDialog();
 
             }
             catch (System.Exception e)
