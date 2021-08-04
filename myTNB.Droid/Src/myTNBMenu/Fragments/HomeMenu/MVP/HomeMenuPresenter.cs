@@ -2262,7 +2262,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 try
                 {
-                    bool IsAccountDBREligible = EligibilitySessionCache.Instance.ShouldShowDBRCard();
+                    bool IsAccountDBREligible = DBRUtility.Instance.ShouldShowHomeDBRCard;
                     if (IsAccountDBREligible)
                     {
                         this.mView.SetDiscoverResult(IsAccountDBREligible);

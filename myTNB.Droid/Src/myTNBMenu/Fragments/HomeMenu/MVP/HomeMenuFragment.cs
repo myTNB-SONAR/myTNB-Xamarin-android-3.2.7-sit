@@ -558,7 +558,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [OnClick(Resource.Id.discoverView)]
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
-            if (EligibilitySessionCache.Instance.IsAccountDBREligible)
+            if (DBRUtility.Instance.IsAccountDBREligible)
             {
                 GetBillRenderingAsync();
             }
@@ -570,7 +570,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ShowProgressDialog();
                 CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
                 //_isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccNum);
-                _isOwner = EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccNum);
+                _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount.AccNum);
                 if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
                 {
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
@@ -610,7 +610,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public CustomerBillingAccount GetEligibleDBRAccount()
         {
             CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-            List<string> dBRCAs = EligibilitySessionCache.Instance.GetDBRCAs();
+            List<string> dBRCAs = DBRUtility.Instance.GetDBRCAs();
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             CustomerBillingAccount account = new CustomerBillingAccount();
             if (dBRCAs.Count > 0)
@@ -1102,7 +1102,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             UserEntity user = UserEntity.GetActive();
                             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
 
-                            if (IsFromLogin && loginCount == 1 && EligibilitySessionCache.Instance.ShouldShowDBRCard())
+                            if (IsFromLogin && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeDBRCard)
                             {
                                 ShowMarketingTooltip();
                                 IsFromLogin = false;

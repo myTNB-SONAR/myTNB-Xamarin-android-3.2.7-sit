@@ -96,7 +96,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
             {
                 try
                 {
-                    return EligibilitySessionCache.Instance.ShouldShowDBRCard(caNo ?? string.Empty);
+                    return DBRUtility.Instance.ShouldShowDBRCard(caNo ?? string.Empty);
                 }
                 catch (Exception e)
                 {

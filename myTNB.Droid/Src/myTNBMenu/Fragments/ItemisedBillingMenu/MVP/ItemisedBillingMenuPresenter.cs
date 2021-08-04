@@ -755,7 +755,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     DisplayMode = DisplayMode,
                     IsButtonShow = false
                 });
-                if (EligibilitySessionCache.Instance.IsAccountDBREligible)
+                if (DBRUtility.Instance.IsAccountDBREligible)
                 {
                     newList.Add(new NewAppModel()
                     {
