@@ -6909,6 +6909,7 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\ManageBillDelivery\Adapter\ManageBillDeliveryEmailListAdapter.cs" />
+    <Compile Include="Src\Utils\DynatraceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
