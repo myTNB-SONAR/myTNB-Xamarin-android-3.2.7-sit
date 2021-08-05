@@ -447,7 +447,10 @@
     "tariffLegendNote": "Nota: Blok berwarna di atas mewakili kadar elektrik anda. Untuk melihat pecahan terperinci, sila rujuk bil anda.",
     "prevReadingEmptyTitle": "Maaf, kami tidak dapat melakukan tindakan ini sekarang.",
     "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda.",
-    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
+    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+    //added by yana
+    "accountTypeDialogTitle": "Lihat akaun eleketrik ini di Portal myTNB untuk pengalaman yang lebih baik!",
+    "accountTypeDialogMessage": "Anda boleh log masuk ke portal menggunakan maklumat log masuk yang sama dan nikmati akses penuh untuk akaun tersebut."
   },
   "Bills": {
     "title": "Bil",

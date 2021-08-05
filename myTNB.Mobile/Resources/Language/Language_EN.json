@@ -447,7 +447,10 @@
     "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.",
     "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
     "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.",
-    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while."
+    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
+    //added by yana
+    "accountTypeDialogTitle": "View this electricity account on myTNB Portal for better experience!",
+    "accountTypeDialogMessage": "You can log in to the portal using the same log in details and enjoy full access to the account."
   },
   "Bills": {
     "title": "Bills",

@@ -115,6 +115,9 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(btnNext);
 
+                TextViewUtils.SetTextSize18(txtTitleRegister, btnNext);
+                TextViewUtils.SetTextSize16(txtEmailReg, txtPasswordReg, txtBodyRegister);
+
                 txtTitleRegister.Text = Utility.GetLocalizedLabel("RegisterNew", "etitleRegister");
                 txtBodyRegister.Text = Utility.GetLocalizedLabel("RegisterNew", "ebodyRegister");
                 textInputLayoutEmailReg.Hint = Utility.GetLocalizedLabel("Common", "emailAddress");

@@ -173,8 +173,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtEmptyManageAccess);
                 TextViewUtils.SetMuseoSans500Typeface(txtManageAccessTitle, btnAddUser, btnRemoveAccess, btnAddAccessUser, btnCancelRemoveAccess, btnRemoveSelectedAccessUser);
 
-                TextViewUtils.SetTextSize12(txtEmptyManageAccess);
-                TextViewUtils.SetTextSize14(txtManageAccessTitle, btnAddUser, btnRemoveAccess, btnAddAccessUser, btnCancelRemoveAccess, btnRemoveSelectedAccessUser);
+                TextViewUtils.SetTextSize14(txtEmptyManageAccess);
+                TextViewUtils.SetTextSize16(txtManageAccessTitle, btnAddUser, btnRemoveAccess, btnAddAccessUser, btnCancelRemoveAccess, btnRemoveSelectedAccessUser);
                 
                 adapter = new ManageAccessAdapter(this, false);
                 adapterDelete = new ManageAccessDeleteAdapter(this, false);

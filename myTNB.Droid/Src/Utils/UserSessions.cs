@@ -7,6 +7,7 @@ using Java.Util;
 using myTNB.Mobile;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using Newtonsoft.Json;
 
@@ -606,6 +607,25 @@ namespace myTNB_Android.Src.Utils
                 selectAccountList = JsonConvert.DeserializeObject<List<CustomerBillingAccount>>(accountList);
             }
             return selectAccountList;
+        }
+
+        internal static void SetCommercialList(List<AccountData> Accounts)                 //for Commercial dialog
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(Accounts);
+            editor.PutString("COMMERCIAL_ACCOUNT_LIST", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<AccountData> GetCommercialList()                                  //for Commercial dialog
+        {
+            string accountList = mPreferences.GetString("COMMERCIAL_ACCOUNT_LIST", null);
+            List<AccountData> selectCommercialAccountList = new List<AccountData>();
+            if (accountList != null)
+            {
+                selectCommercialAccountList = JsonConvert.DeserializeObject<List<AccountData>>(accountList);
+            }
+            return selectCommercialAccountList;
         }
 
         public static void SetSMRAccountList(List<SMRAccount> sMRAccounts)

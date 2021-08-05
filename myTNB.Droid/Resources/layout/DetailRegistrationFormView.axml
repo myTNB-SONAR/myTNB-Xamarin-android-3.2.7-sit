@@ -97,8 +97,7 @@
                             android:drawableLeft="@drawable/placeholder_name"
                             android:id="@+id/txtFullName"
                             android:digits="@string/name_validation_digits"
-                            android:maxLines="1"
-                            android:inputType="textPersonName|textCapWords" />
+                            android:maxLines="1"/>
                     </com.google.android.material.textfield.TextInputLayout>
                     <TextView
                     android:text="@string/add_account_form_account_type"
@@ -140,8 +139,7 @@
                             android:drawablePadding="6dp"
                             android:drawableLeft="@drawable/placeholder_account_no"
                             android:maxLines="1"
-                            android:digits="@string/name_validation_digits"
-                            android:inputType="textPersonName|textCapWords" />
+                            android:digits="@string/name_validation_digits"/>
                     </com.google.android.material.textfield.TextInputLayout>
                     <LinearLayout
                         android:id="@+id/mobileNumberFieldContainer"
@@ -196,7 +194,7 @@
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:paddingBottom="15dp"
-                    android:background="@color/white">
+                    android:background="@android:color/white">
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

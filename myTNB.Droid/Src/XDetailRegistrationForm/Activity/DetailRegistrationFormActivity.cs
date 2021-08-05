@@ -168,6 +168,10 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRegister);
 
+
+                TextViewUtils.SetTextSize18(txtTitleRegister, btnRegister);
+                TextViewUtils.SetTextSize16(txtAccountType, identityType, txtFullName, txtICNumber, txtTermsConditions, txtBodyRegister);
+
                 txtTitleRegister.Text = Utility.GetLocalizedLabel("OneLastThing", "dtitleRegister");
                 txtBodyRegister.Text = Utility.GetLocalizedLabel("OneLastThing", "dbodyRegister");
                 txtAccountType.Text = Utility.GetLocalizedLabel("OneLastThing", "idtypeTitle").ToUpper();
