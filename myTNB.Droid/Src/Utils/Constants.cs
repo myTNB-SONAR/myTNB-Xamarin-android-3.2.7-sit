@@ -310,6 +310,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_100 = "CEP TH";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_TC = "CEP TC";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_RC = "CEP RC";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_NEWS = "98";
 
         public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
 
@@ -409,5 +410,27 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string DYNA_SITECORE_REFFER_LOCAL = "sitecore_refer_local";
         internal static readonly string DYNA_SITECORE_REFFER_ONLINE = "sitecore_refer_online";
         internal static readonly string DYNA_WHATS_NEW_DEFAULT = "WhatsNewClicked";
+
+
+#if MASTER || SIT || DEBUG
+        internal static readonly string EB_in_app_notification = "EB_in_app_notification_SIT";
+        internal static readonly string EB_initiate_Later = "EB_initiate_Later_SIT";
+        internal static readonly string EB_initiate_Start = "EB_initiate_Start_SIT";
+        internal static readonly string EB_start = "EB_start_SIT";
+        internal static readonly string EB_setup_success = "EB_setup_success_SIT";
+        internal static readonly string EB_edit_budget = "EB_edit_budget_SIT";
+        internal static readonly string EB_tooltip = "EB_tooltip_SIT";
+        internal static readonly string EB_view_tips = "EB_view_tips_SIT";
+#else
+        internal static readonly string EB_in_app_notification = "EB_in_app_notification";
+        internal static readonly string EB_initiate_Later = "EB_initiate_Later";
+        internal static readonly string EB_initiate_Start = "EB_initiate_Start";
+        internal static readonly string EB_start = "EB_start";
+        internal static readonly string EB_setup_success = "EB_setup_success";
+        internal static readonly string EB_edit_budget = "EB_edit_budget";
+        internal static readonly string EB_tooltip = "EB_tooltip";
+        internal static readonly string EB_view_tips = "EB_view_tips";
+#endif
+
     }
 }

@@ -2363,13 +2363,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         if (MyTNBAccountManagement.GetInstance().IsFromLoginPage())
                         {
-                            OnCheckEnergyBudgetUser();
-
-                            /*Handler h = new Handler();
+                            Handler h = new Handler();
                             Action myAction = () =>
                             {
+                                OnCheckEnergyBudgetUser();
                             };
-                            h.PostDelayed(myAction, 15);*/
+                            h.PostDelayed(myAction, 5);
                         }
                     }
                     else
@@ -2385,13 +2384,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     if (MyTNBAccountManagement.GetInstance().IsFromLoginPage())
                     {
-                        OnCheckEnergyBudgetUser();
-                    }
-                    /*Handler h = new Handler();
-                    Action myAction = () =>
-                    {
-                    };
-                    h.PostDelayed(myAction, 15);*/
+                        Handler h = new Handler();
+                        Action myAction = () =>
+                        {
+                            OnCheckEnergyBudgetUser();
+                        };
+                        h.PostDelayed(myAction, 5);
+                    }                    
                 }
             }
             catch (Exception e)

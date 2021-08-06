@@ -11,9 +11,11 @@ using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.EBPopupScreen.MVP;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.EBPopupScreen.Activity
@@ -49,13 +51,7 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
         [BindView(Resource.Id.txtSavingbudget)]
         TextView txtSavingbudget;
 
-        private string fromLogin = string.Empty;
-
-        private string fromDiscoverMore = string.Empty;
-
-        private bool isLogin = false;
-
-        private bool isDiscoverMore = false;
+        private bool gotEB = false;
 
         internal static readonly int SELECT_SM_POPUP_REQUEST_CODE = 8810;
 
@@ -66,20 +62,6 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
             base.OnCreate(savedInstanceState);
             try
             {
-                Bundle extras = Intent.Extras;
-
-                if (extras != null)
-                {
-                    if (extras.ContainsKey("fromLogin"))
-                    {
-                        fromLogin = extras.GetString("fromLogin");
-                    }
-                    else if (extras.ContainsKey("fromDashboard"))
-                    {
-                        isDiscoverMore = true;
-                    }
-                }
-
                 mPresenter = new EBPopupScreenPresenter(this);
                 TextViewUtils.SetMuseoSans500Typeface(txtTitlePopupEB, txtThreeStep, txtSetbudget, txtMonitor, txtSavingbudget);
                 TextViewUtils.SetMuseoSans500Typeface(btnGetStarted, btnMaybeLater);
@@ -111,7 +93,22 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
                 string combineAgainSavings = string.Join(" ", OneWordSavings);
                 txtSavingbudget.TextFormatted = GetFormattedText(combineAgainSavings);
 
-                if (isDiscoverMore)
+                if (UserSessions.GetEnergyBudgetList().Count > 0)
+                {
+                    List<SMRAccount> list = UserSessions.GetEnergyBudgetList();
+                    foreach (SMRAccount smrAccount in list)
+                    {
+                        if (smrAccount.BudgetAmount != null)
+                        {
+                            if (smrAccount.BudgetAmount != "0")
+                            {
+                                gotEB = true;
+                            }
+                        }
+                    }
+                }
+
+                if (gotEB)
                 {
                     btnGetStarted.Text = Utility.GetLocalizedLabel("EnergyBudgetPopup", "txtViewmybudget");
                 }
@@ -132,8 +129,8 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
             try
             {
                 UserSessions.DoSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this));
-                CustomClassAnalytics.SetScreenNameDynaTrace("EB_initiate_Start");
-                FirebaseAnalyticsUtils.SetScreenName(this, "EB_initiate_Start");
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_initiate_Start);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_initiate_Start);
                 Intent result = new Intent();
                 result.PutExtra("EBList", "EBList");
                 SetResult(Result.Ok, result);
@@ -150,8 +147,8 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
         {
             try
             {
-                CustomClassAnalytics.SetScreenNameDynaTrace("EB_initiate_Later");
-                FirebaseAnalyticsUtils.SetScreenName(this, "EB_initiate_Later");
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_initiate_Later);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_initiate_Later);
                 Intent result = new Intent();
                 result.PutExtra("MaybeLater", "MaybeLater");
                 SetResult(Result.Ok, result);

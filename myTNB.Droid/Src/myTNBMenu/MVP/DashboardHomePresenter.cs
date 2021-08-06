@@ -211,6 +211,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                         {
                                             smUsageHistoryResponse = storedSMData;
                                         }
+
+                                        if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                                        {
+                                            smUsageHistoryResponse = null;
+                                        }
+
                                         LoadSMUsageHistory(selectedAccount);
                                     }
                                     else
@@ -757,6 +763,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     else
                                     {
                                         smUsageHistoryResponse = storedSMData;
+                                    }
+
+                                    if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                                    {
+                                        smUsageHistoryResponse = null;
                                     }
 
                                     LoadSMUsageHistory(selected);

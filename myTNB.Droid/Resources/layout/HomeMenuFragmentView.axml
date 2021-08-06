@@ -506,16 +506,17 @@
                           android:id="@+id/newDiscoverMoreShimmerTxtLayout">
                             <TextView
                                 android:id="@+id/txtTitleDiscoverMore"
+                                android:layout_toLeftOf="@+id/txtDate"
                                 android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:textColor="@color/powerBlue"
                                 android:text="TNB Energy Night Run"
+                                android:layout_alignParentLeft="true"
                                 android:textSize="12dp"
                                 android:layout_centerVertical="true"
                                 android:ellipsize="marquee"
                                 android:singleLine="true"
-                                android:lineSpacingExtra="2dp"
-                                android:layout_marginRight="98dp"/>
+                                android:lineSpacingExtra="2dp"/>
                             <TextView
                                 android:id="@+id/txtDate"
                                 android:layout_height="wrap_content"
@@ -527,6 +528,7 @@
                                 android:layout_alignParentRight="true"
                                 android:singleLine="true"
                                 android:lineSpacingExtra="2dp"
+                                android:layout_marginLeft="4dp"
                                 android:layout_marginRight="28dp"/>
                             <ImageView
                                 android:id="@+id/whatsNewUnreadImg"

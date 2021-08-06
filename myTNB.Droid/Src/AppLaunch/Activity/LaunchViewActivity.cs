@@ -566,11 +566,20 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         public void ShowNotificationDetails()
         { 
             var usrsession = UserSessions.Notification;
-            mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);
+            mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);            
         }
 
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details)
         {
+            try
+            {
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_in_app_notification);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_in_app_notification);
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
             isAppLaunchDone = true;
             Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));

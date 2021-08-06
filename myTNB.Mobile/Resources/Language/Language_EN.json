@@ -446,7 +446,7 @@
     "editEnergyButton": "Edit Budget",
     "setEnergyButton": "Set Now",
     "saveEnergyButton": "Save New Budget",
-    "toastSaveBudgetuccessfull": "You've successfully set your monthly budget!",
+    "toastSaveBudgetuccessfull": "You've successfully saved your monthly budget!",
     "myUsageSoFar": "My usage so far",
     "disconnectedEnergyBudget": "Uh-oh, looks like your Energy Budget have been unplugged. Refresh to stay plugged in!",
     "refreshNowEnergyBudgetButton": "Refresh Now",
@@ -599,7 +599,8 @@
     //EnergyBudget
     "viewBudget": "View Budget",
     "viewTips":"View Tips",
-    "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks"
+    "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks",
+    "EnergyBudgetTitle": "Energy Budget"
   },
   "AddAccount": {
     "title": "Add Electricity Account",

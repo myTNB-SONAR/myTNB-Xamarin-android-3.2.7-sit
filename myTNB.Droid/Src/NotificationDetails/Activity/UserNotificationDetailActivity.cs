@@ -200,6 +200,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     notificationMainLayout.SetBackgroundColor(Color.ParseColor("#ffffff"));
                 }
 
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100
+                        || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_TC || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_RC)
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "EnergyBudgetTitle"));
+                }
+
                 if (pushFromDashboard)
                 {
                     mPresenter.OnShowNotificationDetails(Notification.Type, Notification.EventId, Notification.RequestTransId);
@@ -230,7 +236,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     ctaComponent.Visibility = ViewStates.Visible;
 
                     notificationDetailBannerImg.SetImageResource(detailModel.imageResourceBanner);
+
                     notificationDetailTitle.Text = detailModel.title;
+
                     notificationDetailMessage.TextFormatted = GetFormattedText(detailModel.message);
 
                     if (detailModel.message != null)
@@ -398,8 +406,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         public void ViewTips()
         {
-            CustomClassAnalytics.SetScreenNameDynaTrace("EB_view_tips");
-            FirebaseAnalyticsUtils.SetScreenName(this, "EB_view_tips");
+            CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_tips);
+            FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_tips);
             Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
             webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("PushNotificationDetails", "viewTipsURL"));
             webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("PushNotificationList", "title"));

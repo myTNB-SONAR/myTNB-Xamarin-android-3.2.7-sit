@@ -1392,13 +1392,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     string amount = energyBudgetRMinput.Text;
                     int saveamount = Convert.ToInt32(amount);
-                    if (setBtn && !saveamount.Equals(0))
-                    {
-                        EnableSetEnergyBudgetButton();
-                        editBudget = false;
-                        setEnergyBudgetlayout = false;
-                    }
-                    else if (editBtn && !saveBtn)
+                    if ((setBtn && !saveamount.Equals(0)) || (editBtn && !saveBtn))
                     {
                         EnableSetEnergyBudgetButton();
                         editBudget = false;
@@ -1472,8 +1466,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
                 {
-                    CustomClassAnalytics.SetScreenNameDynaTrace("EB_tooltip");
-                    FirebaseAnalyticsUtils.SetFragmentScreenName(this, "EB_tooltip");
+                    CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_tooltip);
+                    FirebaseAnalyticsUtils.SetFragmentScreenName(this, Constants.EB_tooltip);
 
                     MyTNBAppToolTipBuilder eppTooltip2 = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                         .SetTitle(Utility.GetLocalizedLabel("Usage", "whyIsAmountDiff"))
@@ -5202,33 +5196,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             if (!this.GetIsClicked())
             {
-                CustomClassAnalytics.SetScreenNameDynaTrace("EB_edit_budget");
-                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "EB_edit_budget");
                 this.SetIsClicked(true);
                 editBudget = true;
                 saveBtn = false;
                 editBtn = true;
                 setEnergyBudgetlayout = true;
-                energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
-                energyBudgetRMinput.Enabled = true;
-                energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(8) });
-                energyBudgetRMinput.RequestFocus();
-                ShowHideKeyboard(energyBudgetRMinput, true);
-                energyBudgetRMinput.Text = "";
-                btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "saveEnergyButton");
-                DisableSetEnergyBudgetButton();
-                energyBudgetRMinput.TextChanged += EnergyBudgetRMinput_TextChanged;
-                LayoutbtnEditBudget.Visibility = ViewStates.Gone;
-                energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
-                smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
-                btnSetNewBudget.Visibility = ViewStates.Visible;
-                smStatisticTooltip.Visibility = ViewStates.Gone;
-                OuterlayoutHorizontolBar.Visibility = ViewStates.Gone;
-                isChangeVirtualHeightNeed = true;
-                SetVirtualHeightParams(6f);
+                HideAndDisable();
                 try
                 {
                     FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Set New Budget Buttom Clicked");
+                    CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_edit_budget);
+                    FirebaseAnalyticsUtils.SetFragmentScreenName(this, Constants.EB_edit_budget);
                 }
                 catch (System.Exception ne)
                 {
@@ -5247,34 +5225,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 this.SetIsClicked(false);
                 if (!this.GetIsClicked() && btnSetNewBudget.Text == Utility.GetLocalizedLabel("Usage", "setEnergyButton"))
                 {
-                    CustomClassAnalytics.SetScreenNameDynaTrace("EB_start");
-                    FirebaseAnalyticsUtils.SetFragmentScreenName(this, "EB_start");
                     this.SetIsClicked(true);
                     editBudget = true;
                     setBtn = true;
-                    energyBudgetRMinput.Enabled = true;
                     energyBudgetbodytxt.Visibility = ViewStates.Gone;
-                    layEnergyBudgetRMtxt.Visibility = ViewStates.Visible;
-                    LayoutbtnEditBudget.Visibility = ViewStates.Gone;
-                    energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
-                    smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
-                    btnSetNewBudget.Visibility = ViewStates.Visible;
-                    smStatisticTooltip.Visibility = ViewStates.Gone;
-                    energyBudgetRMinput.Text = "";
-                    btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "saveEnergyButton");
+                    layEnergyBudgetRMtxt.Visibility = ViewStates.Visible;                   
                     energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "myMonthlyBudget");
                     energyBudgetAccountStatusText.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.charcoalGrey));
-                    energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(8) });
-                    energyBudgetRMinput.RequestFocus();
-                    ShowHideKeyboard(energyBudgetRMinput, true);
-                    energyBudgetRMinput.TextChanged += EnergyBudgetRMinput_TextChanged;
-                    DisableSetEnergyBudgetButton();
-                    isChangeVirtualHeightNeed = true;
-                    OuterlayoutHorizontolBar.Visibility = ViewStates.Gone;
-                    SetVirtualHeightParams(6f);
+                    HideAndDisable();
                     try
                     {
                         FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Set New Budget Buttom Clicked");
+                        CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_start);
+                        FirebaseAnalyticsUtils.SetFragmentScreenName(this, Constants.EB_start);
                     }
                     catch (System.Exception ne)
                     {
@@ -5285,8 +5248,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (!GetIsMDMSDown())
                     {
-                        CustomClassAnalytics.SetScreenNameDynaTrace("EB_setup_success");
-                        FirebaseAnalyticsUtils.SetFragmentScreenName(this, "EB_setup_success");
+                        CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_setup_success);
+                        FirebaseAnalyticsUtils.SetFragmentScreenName(this, Constants.EB_setup_success);
                         this.SetIsClicked(true);
                         setEnergyBudgetlayout = false;
                         setBtn = false;
@@ -5322,6 +5285,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(ne);
             }
+        }
+
+        public void HideAndDisable()
+        {
+            energyBudgetRMinput.Enabled = true;
+            LayoutbtnEditBudget.Visibility = ViewStates.Gone;
+            energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
+            smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
+            btnSetNewBudget.Visibility = ViewStates.Visible;
+            smStatisticTooltip.Visibility = ViewStates.Gone;
+            energyBudgetRMinput.Text = "";
+            btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "saveEnergyButton");
+            energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(8) });
+            energyBudgetRMinput.Focusable = true;
+            energyBudgetRMinput.FocusableInTouchMode = true;
+            energyBudgetRMinput.RequestFocus();
+            ShowHideKeyboard(energyBudgetRMinput, true);
+            energyBudgetRMinput.TextChanged += EnergyBudgetRMinput_TextChanged;
+            DisableSetEnergyBudgetButton();
+            isChangeVirtualHeightNeed = true;
+            OuterlayoutHorizontolBar.Visibility = ViewStates.Gone;
+            SetVirtualHeightParams(6f);
         }
 
         public void UpdateEnergyBudgetLocal(string EBInput, string AccNum)

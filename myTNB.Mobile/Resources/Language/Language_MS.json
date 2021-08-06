@@ -599,7 +599,8 @@
     //EnergyBudget
     "viewBudget": "Paparkan Budget",
     "viewTips": "Rujuk Tips",
-    "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks"
+    "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks",
+    "EnergyBudgetTitle": "Energy Budget"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
