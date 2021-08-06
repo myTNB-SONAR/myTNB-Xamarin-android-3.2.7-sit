@@ -2337,6 +2337,7 @@
   },
   "ManageDigitalBillLanding": {
     "title": "Manage Bill Delivery",
+    "dbrViewBillDelivery": "View Bill Delivery",
     "dbrInfoTitle0": "You’re receiving Paper Bill for this account.",
     "dbrInfoTitle1": "A step towards a greener earth.",
     "dbrInfoTitle2": "Fast and convenient bill viewing.",

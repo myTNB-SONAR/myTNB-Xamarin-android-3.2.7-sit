@@ -205,6 +205,23 @@ namespace myTNB.Mobile.AWS.Models
                 return false;
             }
         }
+
+        [JsonIgnore]
+        public bool IsPaperAndEmail
+        {
+            get
+            {
+                if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EMail)
+                {
+                    if (BCRecord != null && BCRecord.Count > 0)
+                    {
+                        int index = BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_Paper);
+                        return index > -1;
+                    }
+                }
+                return false;
+            }
+        }
     }
 
     public class BCRecordModel

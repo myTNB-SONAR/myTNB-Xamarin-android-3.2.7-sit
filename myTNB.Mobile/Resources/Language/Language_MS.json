@@ -2329,6 +2329,7 @@
   },
   "ManageDigitalBillLanding": {
     "title": "Urus Cara Penerimaan Bil",
+    "dbrViewBillDelivery": "Cara Penerimaan Bil",
     "dbrInfoTitle0": "Anda menerima Bil Bercetak untuk akaun ini.",
     "dbrInfoTitle1": "Ke arah bumi yang lebih hijau.",
     "dbrInfoTitle2": "Paparan bil yang pantas dan mudah.",
