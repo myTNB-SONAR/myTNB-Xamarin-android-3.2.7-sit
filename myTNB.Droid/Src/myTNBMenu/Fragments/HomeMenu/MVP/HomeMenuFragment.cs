@@ -414,17 +414,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
-                SetupDsicoverShimmerEffect();
                 summaryNestScrollView.SmoothScrollingEnabled = true;
                 isSearchClose = true;
                 isFirstInitiate = true;
                 accountGreetingName.Text = this.presenter.GetAccountDisplay() + "!";
+                SetupDsicoverShimmerEffect();
                 SetNotificationIndicator();
                 SetAccountsRecyclerView();
                 SetAccountActionHeader();
                 SetupMyServiceView();
+                SetDBRDiscoverView();
                 SetupNewFAQView();
-                ShowDiscoverView();
+                
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
@@ -964,7 +965,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        private void SetupDsicoverShimmerEffect()
+        public void SetupDsicoverShimmerEffect()
         {
             try
             {
@@ -972,16 +973,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     try
                     {
-                        discoverTitle.Visibility = ViewStates.Visible;
-
-                        discoverShimmerView.Visibility = ViewStates.Visible;
-                        discoverView.Visibility = ViewStates.Gone;
-                        var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
-                        if (shimmerBuilder != null)
+                        bool IsAccountDBREligible = DBRUtility.Instance.ShouldShowHomeDBRCard;
+                        if (IsAccountDBREligible)
                         {
-                            shimmerDiscoverView.SetShimmer(shimmerBuilder?.Build());
+                            this.presenter.OnGetDBR(IsAccountDBREligible);
                         }
-                        shimmerDiscoverView.StartShimmer();
                     }
                     catch (System.Exception ex)
                     {
@@ -997,14 +993,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetDBRDiscoverView()
         {
-            SetupDsicoverShimmerEffect();
             if (IsAccountDBREligible)
             {
                 SetDiscoverResult(IsAccountDBREligible);
             }
             else
             {
-                HideDiscoverViewView();
+                //HideDiscoverViewView();
             }
             this.presenter.GetSavedNewFAQTimeStamp();
         }
@@ -1902,13 +1897,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public void ShowDiscoverView()
+        public void ShowDiscoverView(bool IsAccountDBREligible)
         {
             Activity.RunOnUiThread(() =>
             {
                 try
                 {
-                    this.presenter.OnGetDBR();
+                    this.presenter.OnGetDBR(IsAccountDBREligible);
                 }
                 catch (System.Exception ex)
                 {

@@ -90,7 +90,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void HideDiscoverViewView();
 
-            void ShowDiscoverView();
+            void ShowDiscoverView(bool IsAccountDBREligible);
 
             bool CheckNeedHelpHide();
 
@@ -123,7 +123,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetFAQTimeStamp();
             void ReadNewFAQFromCache();
             Task OnGetFAQs();
-            Task OnGetDBR();
+            Task OnGetDBR(bool isDBR);
             void LoadLocalAccounts();
 			void LoadSummaryDetailsInBatch(List<string> accountNumbers);
 

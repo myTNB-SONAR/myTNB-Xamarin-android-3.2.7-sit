@@ -69,6 +69,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
                     //Use data or any EligibilitySessionCache functionality
                 }
+                bool IsAccountDBREligible = DBRUtility.Instance.ShouldShowHomeDBRCard;
+                _activity.ShowHomeDBRCard(IsAccountDBREligible);
             }
             else if (EligibilityManager.Instance.IsEnabled(AWSConstants.Services.GetEligibility)
                 && preferences.GetString(MobileConstants.SharePreferenceKey.GetEligibilityData, string.Empty) is string encryptedData
@@ -77,8 +79,14 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             {
                 GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
                 EligibilitySessionCache.Instance.SetData(data);
-
+                bool IsAccountDBREligible = DBRUtility.Instance.ShouldShowHomeDBRCard;
+                _activity.ShowHomeDBRCard(IsAccountDBREligible);
                 //Use data or any EligibilitySessionCache functionality
+            }
+           else
+            {
+                bool IsAccountDBREligible = DBRUtility.Instance.ShouldShowHomeDBRCard;
+                _activity.ShowHomeDBRCard(IsAccountDBREligible);
             }
         }
     }

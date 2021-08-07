@@ -2256,13 +2256,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
             }, new CancellationTokenSource().Token);
         }
-        public Task OnGetDBR()
+        public Task OnGetDBR(bool IsAccountDBREligible)
         {
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    bool IsAccountDBREligible = DBRUtility.Instance.ShouldShowHomeDBRCard;
                     if (IsAccountDBREligible)
                     {
                         this.mView.SetDiscoverResult(IsAccountDBREligible);

@@ -344,6 +344,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 System.Diagnostics.Debug.WriteLine("[DEBUG] EligibilityAPI Error: " + e.Message);
             }
+            
         }
 
 
@@ -1436,14 +1437,37 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             SupportFragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, currentFragment)
                            .CommitAllowingStateLoss();
-
+            
             if (isWhatNewDialogOnHold)
             {
                 isWhatNewDialogOnHold = false;
                 OnCheckWhatsNewTab();
             }
         }
+        public void ShowHomeDBRCard(bool IsAccountDBREligible)
+        {
+            this.RunOnUiThread(() =>
+            {
+                try
+                {
+                    if (currentFragment != null)
+                    {
+                        if (currentFragment.GetType() == typeof(HomeMenuFragment))
+                        {
+                            HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
 
+                            fragment.ShowDiscoverView(IsAccountDBREligible);
+                        }
+                    }
+
+                }
+                catch (System.Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
+            });
+        }
+             
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);
