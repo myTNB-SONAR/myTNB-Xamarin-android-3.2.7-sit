@@ -100,12 +100,12 @@
     "paymentPendingMsg": "My payment is being processed",
     "processing": "Processing",
     "dontShowThisAgain": "Don't show this again",
-    "dbrPaperBill": "You’re receiving Paper Bill for this account. Jom paperless today!",
+    "dbrPaperBill": "You’re receiving <b>Paper Bill</b> for this account. <b>Jom paperless today!</b>",
     "dbrPaperBillNonOwner": "You’re receiving Paper Bill for this account.",
     "dbrAutoConvert": "Starting <b>July 2021, paper bills will be replaced by digital bills</b>. Get a head start and go paperless today!",
-    "dbrEmail": "You’re receiving myTNB & Email Bills for this account.",
-    "dbrWhatsApp": "You’re receiving myTNB & Whatsapp Bills for this account.",
-    "dbrViaMyTNB": "Your account is environmentally friendly with myTNB Bill!"
+    "dbrEmail": "You’re receiving <b>myTNB & Email Bills</b> for this account.",
+    "dbrWhatsApp": "You’re receiving <b>myTNB & Whatsapp Bills</b> for this account.",
+    "dbrViaMyTNB": "Your account is environmentally friendly with <b>myTNB Bill!</b>"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",

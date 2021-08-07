@@ -192,7 +192,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 }
                 if (extras.ContainsKey("billRenderingResponse"))
                 {
-                    GetBillRenderingResponse getBillRenderingModel = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billRenderingResponse"));
+                    getBillRenderingModel = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billRenderingResponse"));
                     GetDeliveryDisplay(getBillRenderingModel);
                 }
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))

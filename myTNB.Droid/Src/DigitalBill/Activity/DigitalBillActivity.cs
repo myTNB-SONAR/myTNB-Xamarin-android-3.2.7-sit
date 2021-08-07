@@ -38,7 +38,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         private static Snackbar mErrorMessageSnackBar;
         public AccountData mSelectedAccountData;
         private static FrameLayout mainView;
-        GetBillRenderingResponse getBillRenderingModel;
+        GetBillRenderingResponse BillRendering;
         
         WebView tncWebView;
 
@@ -108,7 +108,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 }
                 if ((extras != null) && extras.ContainsKey("billrenderingresponse"))
                 {
-                    getBillRenderingModel = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
+                    BillRendering = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
                 }
                
                 mPresenter = new DigitalBillPresenter(this);
@@ -143,7 +143,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                                        : LanguageManager.Language.EN).ToString()
                                    , TextViewUtils.FontSelected
                                    , AWSConstants.URLs.DBROriginURL
-                                   , getBillRenderingModel.Content.RedirectURL
+                                   , BillRendering.Content.RedirectURL
                                    , accnum);
 
                 tncWebView.PostUrl(AWSConstants.URLs.DBRSSOURL, GetBytes(signature, "base64"));
@@ -222,7 +222,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(getBillRenderingModel));
+                intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(BillRendering));
                 intent.PutExtra("_isOwner", JsonConvert.SerializeObject(DBRUtility.Instance.IsCADBREligible(selectedAccountData.AccountNum)));
                 StartActivity(intent);
             }

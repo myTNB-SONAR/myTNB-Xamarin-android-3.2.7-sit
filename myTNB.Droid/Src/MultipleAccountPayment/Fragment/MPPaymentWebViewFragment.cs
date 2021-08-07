@@ -371,7 +371,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     else if (url.Contains("mytnbapp://action=startDigitalBilling"))
                     {
                         isRedirected = true;
-                        mActivity.GetBillRenderingAsync();
+                        mActivity.GetBillRenderingAsync(summaryDashBoardRequest);
                     }
                     else
                     {

@@ -394,19 +394,19 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     break;
             }
         }
-        public async void GetBillRenderingAsync()
+        public async void GetBillRenderingAsync(SummaryDashBordRequest summaryDashBoardRequest)
         {
             try
             {
                 ShowProgressDialog();
-                CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
-                _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount.AccNum);
+                string dbrAccount = GetEligibleDBRAccount(summaryDashBoardRequest);
+                _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount);
                 if (!AccessTokenCache.Instance.HasTokenSaved(this))
                 {
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
                     AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
                 }
-                billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccNum, AccessTokenCache.Instance.GetAccessToken(this));
+                billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount, AccessTokenCache.Instance.GetAccessToken(this));
 
                 //Nullity Check
                 if (billRenderingResponse != null
@@ -417,7 +417,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 {
                     Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                     intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
-                    intent.PutExtra("accountNumber", dbrAccount.AccNum);
+                    intent.PutExtra("accountNumber", dbrAccount);
                     intent.PutExtra("isOwner", _isOwner);
                     StartActivity(intent);
                 }
@@ -438,27 +438,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public CustomerBillingAccount GetEligibleDBRAccount()
+        public string GetEligibleDBRAccount(SummaryDashBordRequest summaryDashBoardRequest)
         {
-            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
             List<string> dBRCAs = DBRUtility.Instance.GetDBRCAs();
-            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
-            CustomerBillingAccount account = new CustomerBillingAccount();
+            string account = string.Empty;
             if (dBRCAs.Count > 0)
             {
-                var dbrSelected = dBRCAs.Where(x => x == customerAccount.AccNum).FirstOrDefault();
-                if (dbrSelected != string.Empty)
-                {
-                    account = allAccountList.Where(x => x.AccNum == dbrSelected).FirstOrDefault();
-                }
-                if (account == null)
-                {
-                    foreach (var dbrca in dBRCAs)
+                    foreach (var paymentCa in summaryDashBoardRequest.AccNum)
                     {
-                        account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
+                        account = dBRCAs.Where(x => x == paymentCa).FirstOrDefault();
                         break;
                     }
-                }
             }
             else
             {
