@@ -13,10 +13,12 @@ using myTNB.Mobile;
 using myTNB.Mobile.API.DisplayModel.Scheduler;
 using myTNB.Mobile.API.Managers.Scheduler;
 using myTNB.Mobile.API.Models.ApplicationStatus;
+using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.MultipleAccountPayment.Fragment;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
@@ -58,7 +60,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private string StatusId = string.Empty;
         private string StatusCode = string.Empty;
         internal GetApplicationStatusDisplay ApplicationDetailDisplay;
-
+        private GetBillRenderingResponse billRenderingResponse;
+        private bool _isOwner;
         public bool paymentReceiptGenerated = false;
 
         public override int ResourceId()
@@ -391,24 +394,82 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     break;
             }
         }
-        public async void OnManageBillDelivery()
+        public async void GetBillRenderingAsync()
         {
-            ShowProgressDialog();
             try
             {
-                CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-                AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
-                Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
-                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                //intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
-                intent.PutExtra("OptedEBill", "OptedEBill");
-                StartActivity(intent);
+                ShowProgressDialog();
+                CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount.AccNum);
+                if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
+                }
+                billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccNum, AccessTokenCache.Instance.GetAccessToken(this));
+
+                //Nullity Check
+                if (billRenderingResponse != null
+                   && billRenderingResponse.StatusDetail != null
+                   && billRenderingResponse.StatusDetail.IsSuccess
+                   && billRenderingResponse.Content != null
+                   && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
+                {
+                    Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                    intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                    intent.PutExtra("accountNumber", dbrAccount.AccNum);
+                    intent.PutExtra("isOwner", _isOwner);
+                    StartActivity(intent);
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(billRenderingResponse?.StatusDetail?.Title ?? string.Empty)
+                        .SetMessage(billRenderingResponse?.StatusDetail?.Message ?? string.Empty)
+                        .SetCTALabel(billRenderingResponse?.StatusDetail?.PrimaryCTATitle ?? string.Empty)
+                        .Build();
+                    errorPopup.Show();
+                }
+                HideProgressDialog();
+
             }
-            catch (System.Exception ne)
+            catch (System.Exception e)
             {
-                Utility.LoggingNonFatalError(ne);
+                Utility.LoggingNonFatalError(e);
             }
-            HideProgressDialog();
+        }
+        public CustomerBillingAccount GetEligibleDBRAccount()
+        {
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+            List<string> dBRCAs = DBRUtility.Instance.GetDBRCAs();
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            CustomerBillingAccount account = new CustomerBillingAccount();
+            if (dBRCAs.Count > 0)
+            {
+                var dbrSelected = dBRCAs.Where(x => x == customerAccount.AccNum).FirstOrDefault();
+                if (dbrSelected != string.Empty)
+                {
+                    account = allAccountList.Where(x => x.AccNum == dbrSelected).FirstOrDefault();
+                }
+                if (account == null)
+                {
+                    foreach (var dbrca in dBRCAs)
+                    {
+                        account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                     .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                     .Build();
+                errorPopup.Show();
+            }
+            return account;
         }
         public async void OnSetAppointment()
         {

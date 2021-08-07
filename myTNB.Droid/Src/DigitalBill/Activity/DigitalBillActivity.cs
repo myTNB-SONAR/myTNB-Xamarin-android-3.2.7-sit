@@ -217,12 +217,13 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             ShowProgressDialog();
             try
             {
+                
                 CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
                 AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                //intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
-                intent.PutExtra("Paper", "Paper");
+                intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(getBillRenderingModel));
+                intent.PutExtra("_isOwner", JsonConvert.SerializeObject(DBRUtility.Instance.IsCADBREligible(selectedAccountData.AccountNum)));
                 StartActivity(intent);
             }
             catch (System.Exception ne)
