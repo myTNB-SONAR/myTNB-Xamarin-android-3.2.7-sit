@@ -394,12 +394,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     break;
             }
         }
-        public async void GetBillRenderingAsync(SummaryDashBordRequest summaryDashBoardRequest)
+        public async void GetBillRenderingAsync()
         {
             try
             {
                 ShowProgressDialog();
-                string dbrAccount = GetEligibleDBRAccount(summaryDashBoardRequest);
+                string dbrAccount = GetEligibleDBRAccount();
                 _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount);
                 if (!AccessTokenCache.Instance.HasTokenSaved(this))
                 {
@@ -438,27 +438,19 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public string GetEligibleDBRAccount(SummaryDashBordRequest summaryDashBoardRequest)
+        public string GetEligibleDBRAccount()
         {
             List<string> dBRCAs = DBRUtility.Instance.GetDBRCAs();
             string account = string.Empty;
             if (dBRCAs.Count > 0)
             {
-                    foreach (var paymentCa in summaryDashBoardRequest.AccNum)
+                    foreach (var paymentCa in accounts)
                     {
-                        account = dBRCAs.Where(x => x == paymentCa).FirstOrDefault();
+                        account = dBRCAs.Where(x => x == paymentCa.accountNumber).FirstOrDefault();
                         break;
                     }
             }
-            else
-            {
-                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                     .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
-                                    .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
-                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
-                     .Build();
-                errorPopup.Show();
-            }
+           
             return account;
         }
         public async void OnSetAppointment()
