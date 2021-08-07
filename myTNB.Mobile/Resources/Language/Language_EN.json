@@ -2285,7 +2285,7 @@
             "type": "none"
           }
         ],
-        "GetEligibility": [
+        "Eligibility": [
           {
             "code": "7200",
             "title": "",
@@ -2307,7 +2307,40 @@
             "type": "none"
           }
         ],
-        "GetBillRendering": [
+        "BillRendering": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "MultiBillRendering": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "InstallationDetails": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "MultiInstallationDetails": [
           {
             "code": "7200",
             "title": "",
@@ -2364,7 +2397,7 @@
     "eBillTitle": "Your account is environmentally friendly with myTNB Bill!",
     "emailBillTitle": "You’re receiving myTNB & Email Bills.",
     "eBillDescription": "Your bills are being delivered on myTNB App & Portal. Thank you for going paperless!",
-    "emailBillDescription": "Your bills are being delivered on App & Portal and email for this account.",
+    "emailBillDescription": "Your bills are being delivered on myTNB App & Portal and email for this account.",
     "updatingTitle": "We’re currently updating your bill delivery method.",
     "updatingDescription": "It may take up to 5 minutes to reflect the changes on your myTNB account and you won’t be able to view it during this time. Check back later!",
     "selectAccount": "Select Your Account",
@@ -2378,12 +2411,12 @@
     "updateBillDelivery": "Update Bill Delivery Method"
   },
   "ServiceConfiguration": {
-    "GetEligibility": {
+    "Eligibility": {
       "enabled": true,
       "callInterval": 480
     },
     "ForceHideDBRBanner": false,
-    "GetBillRendering": {
+    "BillRendering": {
       "enabled": true
     }
   }

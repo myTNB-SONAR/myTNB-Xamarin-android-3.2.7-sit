@@ -90,21 +90,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
         public bool? hasInvoiceAttachment { set; get; } = false;
 
         [JsonIgnore]
-        public bool dbrEnabled
-        {
-            get
-            {
-                try
-                {
-                    return DBRUtility.Instance.ShouldShowDBRCard(caNo ?? string.Empty);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("[DEBUG] dbrEnabled Error: " + e.Message);
-                }
-                return false;
-            }
-        }
+        public bool dbrEnabled { set; get; } = false;
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]

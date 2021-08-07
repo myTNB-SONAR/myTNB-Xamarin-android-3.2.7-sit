@@ -6910,6 +6910,7 @@
     </AndroidResource>
     <Compile Include="Src\ManageBillDelivery\Adapter\ManageBillDeliveryEmailListAdapter.cs" />
     <Compile Include="Src\Utils\DynatraceHelper.cs" />
+    <Compile Include="Src\Session Cache\AccountTypeCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7245,6 +7246,7 @@
     <Folder Include="Src\ManageBillDelivery\Adapter\" />
     <Folder Include="Src\DigitalBill\" />
     <Folder Include="Src\Device Cache\" />
+    <Folder Include="Src\Session Cache\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

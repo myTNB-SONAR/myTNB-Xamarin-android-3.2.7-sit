@@ -2277,7 +2277,7 @@
             "type": "none"
           }
         ],
-        "GetEligibility": [
+        "Eligibility": [
           {
             "code": "7200",
             "title": "",
@@ -2299,7 +2299,40 @@
             "type": "none"
           }
         ],
-        "GetBillRendering": [
+        "BillRendering": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "MultiBillRendering": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "InstallationDetails": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "MultiInstallationDetails": [
           {
             "code": "7200",
             "title": "",
@@ -2370,12 +2403,12 @@
     "updateBillDelivery": "Kemas Kini Cara Penerimaan Bil"
   },
   "ServiceConfiguration": {
-    "GetEligibility": {
+    "Eligibility": {
       "enabled": true,
       "callInterval": 480
     },
     "ForceHideDBRBanner": false,
-    "GetBillRendering": {
+    "BillRendering": {
       "enabled": true
     }
   }

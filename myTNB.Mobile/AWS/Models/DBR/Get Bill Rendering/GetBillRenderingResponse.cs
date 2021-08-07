@@ -4,6 +4,7 @@ using System.Diagnostics;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using static myTNB.Mobile.AWSConstants;
+using static myTNB.Mobile.EligibilitySessionCache;
 using static myTNB.Mobile.MobileConstants;
 
 namespace myTNB.Mobile.AWS.Models
@@ -53,7 +54,8 @@ namespace myTNB.Mobile.AWS.Models
             get
             {
                 MobileEnums.DBRTypeEnum renderingType = MobileEnums.DBRTypeEnum.None;
-                if (!DigitalBillEligibility.IsValid())
+                if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup)
+                    && !DigitalBillEligibility.IsValid())
                 {
                     return renderingType;
                 }

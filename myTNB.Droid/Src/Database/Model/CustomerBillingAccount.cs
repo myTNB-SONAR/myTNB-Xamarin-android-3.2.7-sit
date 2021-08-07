@@ -89,7 +89,7 @@ namespace myTNB_Android.Src.Database.Model
 
         [Column("IsViewBillShown")]
         public bool IsViewBillShown { get; set; }
-        
+
         public static int CreateTable()
         {
             var db = DBHelper.GetSQLiteConnection();
@@ -310,7 +310,7 @@ namespace myTNB_Android.Src.Database.Model
                         updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
                         if (updatedList != null && updatedList.Count > 0)
                         {
-                            CustomerBillingAccount selected =  updatedList.Find(x => x.IsSelected);
+                            CustomerBillingAccount selected = updatedList.Find(x => x.IsSelected);
                             if (selected != null)
                             {
                                 return selected;
@@ -645,7 +645,7 @@ namespace myTNB_Android.Src.Database.Model
                     i++;
                 }
                 var db = DBHelper.GetSQLiteConnection();
-                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId = 2 AND accNum NOT IN ("+ excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId = 2 AND accNum NOT IN (" + excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
             }
             return reAccountList;
         }
