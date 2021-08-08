@@ -4,7 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Content.Res;
 using Android.OS;
-using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -15,6 +14,7 @@ using myTNB.Mobile.API.Managers.Scheduler;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Database.Model;
@@ -22,8 +22,10 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.MultipleAccountPayment.Fragment;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.SessionCache;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -63,6 +65,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private GetBillRenderingResponse billRenderingResponse;
         private bool _isOwner;
         public bool paymentReceiptGenerated = false;
+
+        internal bool ShouldBackToHome { set; get; } = false;
 
         public override int ResourceId()
         {
@@ -208,6 +212,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 Bundle bundle = new Bundle();
                 if (IsApplicationPayment)
                 {
+                    UpdateApplicationPayment();
                     bundle.PutBoolean("ISAPPLICATIONPAYMENT", IsApplicationPayment);
                     bundle.PutString("APPLICATIONPAYMENTDETAILS", JsonConvert.SerializeObject(ApplicationPaymentDetail));
                     bundle.PutString("ApplicationType", ApplicationType);
@@ -229,6 +234,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 fragmentTransaction.Commit();
                 currentFragment = selectPaymentFragment;
             }
+        }
+
+        private async void UpdateApplicationPayment()
+        {
+            ApplicationPaymentDetail = await AccountTypeCache.Instance.UpdateApplicationPayment(ApplicationPaymentDetail, this);
         }
 
         internal void SetPaymentReceiptFlag(bool flag, SummaryDashBordRequest summaryDashBoardRequest)
@@ -299,18 +309,29 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     Log.Debug("MakePaymentActivity", "Current Fragment :" + currentFragment.Class);
                     if (currentFragment is MPPaymentWebViewFragment)
                     {
-                        MyTNBAppToolTipBuilder cancelPaymentPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                            .SetTitle(Utility.GetLocalizedLabel("MakePayment", "abortTitle"))
-                            .SetMessage(Utility.GetLocalizedLabel("MakePayment", "abortMessage"))
-                            .SetCTALabel(Utility.GetLocalizedCommonLabel("no"))
-                            .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("yes"))
-                            .SetSecondaryCTAaction(() =>
-                            {
-                                this.SupportFragmentManager.PopBackStack();
-                                this.SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
-                            })
-                            .Build();
-                        cancelPaymentPopup.Show();
+                        if (ShouldBackToHome)
+                        {
+                            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                            HomeMenuUtils.ResetAll();
+                            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                            this.StartActivity(DashboardIntent);
+                        }
+                        else
+                        {
+                            MyTNBAppToolTipBuilder cancelPaymentPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                                .SetTitle(Utility.GetLocalizedLabel("MakePayment", "abortTitle"))
+                                .SetMessage(Utility.GetLocalizedLabel("MakePayment", "abortMessage"))
+                                .SetCTALabel(Utility.GetLocalizedCommonLabel("no"))
+                                .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("yes"))
+                                .SetSecondaryCTAaction(() =>
+                                {
+                                    this.SupportFragmentManager.PopBackStack();
+                                    this.SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
+                                })
+                                .Build();
+                            cancelPaymentPopup.Show();
+                        }
                     }
                     else
                     {
@@ -440,17 +461,21 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         }
         public string GetEligibleDBRAccount()
         {
-            List<string> dBRCAs = DBRUtility.Instance.GetDBRCAs();
+            List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                        , EligibilitySessionCache.FeatureProperty.TargetGroup)
+                ? DBRUtility.Instance.GetDBRCAs()
+                : AccountTypeCache.Instance.DBREligibleCAs;
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             string account = string.Empty;
             if (dBRCAs.Count > 0)
             {
-                    foreach (var paymentCa in accounts)
-                    {
-                        account = dBRCAs.Where(x => x == paymentCa.accountNumber).FirstOrDefault();
-                        break;
-                    }
+                foreach (var paymentCa in accounts)
+                {
+                    account = dBRCAs.Where(x => x == paymentCa.accountNumber).FirstOrDefault();
+                    break;
+                }
             }
-           
+
             return account;
         }
         public async void OnSetAppointment()

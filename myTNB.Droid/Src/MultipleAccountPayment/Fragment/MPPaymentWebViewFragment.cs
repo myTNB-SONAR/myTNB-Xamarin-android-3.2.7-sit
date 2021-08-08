@@ -411,6 +411,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 {
                     if (url.ToLower().Contains("statusreceipt.aspx") && url.ToLower().Contains("approved") || url.ToLower().Contains("paystatusreceipt"))
                     {
+                        this.mActivity.ShouldBackToHome = true;
                         try
                         {
                             IDTXAction WEBVIEW_PAYMENT_SUCCESS = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_SUCCESS);  // DYNA
@@ -428,6 +429,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else if (url.ToLower().Contains("statusreceipt.aspx") || url.ToLower().Contains("paystatusreceipt") && url.ToLower().Contains("failed"))
                     {
+                        this.mActivity.ShouldBackToHome = true;
                         try
                         {
                             IDTXAction WEBVIEW_PAYMENT_FAIL = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_FAIL);  // DYNA

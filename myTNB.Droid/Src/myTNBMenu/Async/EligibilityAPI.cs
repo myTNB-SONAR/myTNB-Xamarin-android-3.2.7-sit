@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.Content;
 using Android.OS;
 using Android.Preferences;
@@ -7,6 +8,8 @@ using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.SessionCache;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Async
 {
@@ -41,8 +44,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 #pragma warning restore CS0618 // Type or member is obsolete
             string eligibilityTimeStamp = preferences.GetString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, string.Empty);
 
-           if (EligibilityManager.Instance.ShouldCallApi(AWSConstants.Services.GetEligibility
-                , eligibilityTimeStamp))
+            if (EligibilityManager.Instance.ShouldCallApi(AWSConstants.Services.GetEligibility
+                 , eligibilityTimeStamp))
             {
                 if (!AccessTokenCache.Instance.HasTokenSaved(_activity))
                 {
@@ -50,7 +53,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     AccessTokenCache.Instance.SaveAccessToken(_activity, accessToken);
                 }
 
-                GetEligibilityResponse response = await EligibilityManager.Instance.GetEligibility(UserEntity.GetActive().UserID ?? string.Empty 
+                GetEligibilityResponse response = await EligibilityManager.Instance.GetEligibility(UserEntity.GetActive().UserID ?? string.Empty
                     , AccessTokenCache.Instance.GetAccessToken(_activity));
 
                 //Nullity Check
@@ -69,8 +72,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
                     //Use data or any EligibilitySessionCache functionality
                 }
-                bool IsAccountDBREligible = DBRUtility.Instance.ShouldShowHomeDBRCard;
-                _activity.ShowHomeDBRCard(IsAccountDBREligible);
             }
             else if (EligibilityManager.Instance.IsEnabled(AWSConstants.Services.GetEligibility)
                 && preferences.GetString(MobileConstants.SharePreferenceKey.GetEligibilityData, string.Empty) is string encryptedData
@@ -79,15 +80,52 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             {
                 GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
                 EligibilitySessionCache.Instance.SetData(data);
-                bool IsAccountDBREligible = DBRUtility.Instance.ShouldShowHomeDBRCard;
-                _activity.ShowHomeDBRCard(IsAccountDBREligible);
                 //Use data or any EligibilitySessionCache functionality
             }
-           else
+
+            if (DBRUtility.Instance.IsAccountDBREligible
+                    && !EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                        , EligibilitySessionCache.FeatureProperty.TargetGroup))
             {
-                bool IsAccountDBREligible = DBRUtility.Instance.ShouldShowHomeDBRCard;
-                _activity.ShowHomeDBRCard(IsAccountDBREligible);
+                List<string> dbrCAList = AccountTypeCache.Instance.GetDBRAccountList();
+                List<string> residentialList = new List<string>();
+                if (dbrCAList != null && dbrCAList.Count > 0)
+                {
+                    PostMultiInstallationDetailsResponse installationdetailsResponse = await DBRManager.Instance.PostMultiInstallationDetails(dbrCAList
+                        , AccessTokenCache.Instance.GetAccessToken(_activity));
+                    if (installationdetailsResponse != null
+                        && installationdetailsResponse.StatusDetail != null
+                        && installationdetailsResponse.StatusDetail.IsSuccess
+                        && installationdetailsResponse.Content != null
+                        && installationdetailsResponse.Content.Count > 0)
+                    {
+                        for (int i = 0; i < dbrCAList.Count; i++)
+                        {
+                            if (installationdetailsResponse.Content[i].IsResidential)
+                            {
+                                residentialList.Add(dbrCAList[i]);
+                            }
+                        }
+                        AccountTypeCache.Instance.UpdateCATariffType(residentialList);
+
+                        PostMultiBillRenderingResponse multiBillRenderingResponse = await DBRManager.Instance.PostMultiBillRendering(residentialList
+                            , AccessTokenCache.Instance.GetAccessToken(_activity));
+                        if (multiBillRenderingResponse != null
+                            && multiBillRenderingResponse.StatusDetail != null
+                            && multiBillRenderingResponse.StatusDetail.IsSuccess
+                            && multiBillRenderingResponse.Content != null
+                            && multiBillRenderingResponse.Content.Count > 0)
+                        {
+                            AccountTypeCache.Instance.UpdateCARendering(multiBillRenderingResponse.Content, residentialList);
+                            Console.WriteLine("Debug 0: " + JsonConvert.SerializeObject(residentialList));
+                            Console.WriteLine("Debug 1: " + JsonConvert.SerializeObject(AccountTypeCache.Instance.DBREligibleCAs));
+                        }
+                    }
+                }
             }
+
+            bool IsAccountDBREligible = DBRUtility.Instance.ShouldShowHomeDBRCard;
+            _activity.ShowHomeDBRCard(IsAccountDBREligible);
         }
     }
 }

@@ -65,6 +65,7 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using System.Linq;
+using myTNB_Android.Src.SessionCache;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -4855,7 +4856,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 this.SetIsClicked(true);
                 isGoToBillingDetail = true;
 
-                if(DBRUtility.Instance.IsAccountDBREligible && GetEligibleDBRAccount(selectedAccount) == selectedAccount.AccountNum)
+                if (DBRUtility.Instance.IsAccountDBREligible && GetEligibleDBRAccount(selectedAccount) == selectedAccount.AccountNum)
                 {
                     GetBillRenderingAsync(selectedAccount);
                 }
@@ -5083,7 +5084,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     StartActivity(intent);
                 }
                 else
-                { 
+                {
                     MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                                         .SetTitle(billrenderingresponse.StatusDetail.Title)
                                         .SetMessage(billrenderingresponse.StatusDetail.Message)
@@ -5101,7 +5102,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public string GetEligibleDBRAccount(AccountData selectedAccount)
         {
             CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-            List<string> dBRCAs = DBRUtility.Instance.GetDBRCAs();
+            List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                        , EligibilitySessionCache.FeatureProperty.TargetGroup)
+                ? DBRUtility.Instance.GetDBRCAs()
+                : AccountTypeCache.Instance.DBREligibleCAs;
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             CustomerBillingAccount account = new CustomerBillingAccount();
             string dbraccount = string.Empty;
@@ -9139,10 +9143,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowBillDetails(AccountData accountData, List<AccountChargeModel> selectedAccountChargesModelList)
         {
-                Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
-                intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(accountData));
-                intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
-                intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
+            Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
+            intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(accountData));
+            intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
+            intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
             StartActivity(intent);
         }
 

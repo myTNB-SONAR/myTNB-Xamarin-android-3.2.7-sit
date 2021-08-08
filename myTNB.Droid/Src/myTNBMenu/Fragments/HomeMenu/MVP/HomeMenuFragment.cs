@@ -52,6 +52,7 @@ using myTNB_Android.Src.ManageBillDelivery.MVP;
 using System.Linq;
 using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.SessionCache;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -425,7 +426,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 SetDBRDiscoverView();
                 SetupNewFAQView();
-                
+
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
@@ -567,37 +568,70 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 ShowProgressDialog();
-                CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
-                //_isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccNum);
-                _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount.AccNum);
-                if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                if (DBRUtility.Instance.IsAccountDBREligible
+                   && !EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                       , EligibilitySessionCache.FeatureProperty.TargetGroup))
                 {
-                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
-                    AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
-                }
-                billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
-
-                //Nullity Check
-                if (billRenderingResponse != null
-                   && billRenderingResponse.StatusDetail != null
-                   && billRenderingResponse.StatusDetail.IsSuccess
-                   && billRenderingResponse.Content != null
-                   && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
-                {
-                    Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                    intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
-                    intent.PutExtra("accountNumber", dbrAccount.AccNum);
-                    intent.PutExtra("isOwner", _isOwner);
-                    StartActivity(intent);
+                    GetBillRenderingModel renderingValue = AccountTypeCache.Instance.GetFirstRenderingResponse();
+                    if (renderingValue != null && renderingValue.DBRType != MobileEnums.DBRTypeEnum.None)
+                    {
+                        Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                        intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(new GetBillRenderingResponse
+                        {
+                            Content = renderingValue,
+                            StatusDetail = new StatusDetail
+                            {
+                                IsSuccess = true
+                            }
+                        }));
+                        intent.PutExtra("accountNumber", renderingValue.ContractAccountNumber);
+                        intent.PutExtra("isOwner", true);
+                        StartActivity(intent);
+                    }
+                    else
+                    {
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(LanguageManager.Instance.GetErrorValue("defaultErrorTitle"))
+                            .SetMessage(LanguageManager.Instance.GetErrorValue("defaultErrorMessage"))
+                            .SetCTALabel(LanguageManager.Instance.GetCommonValue("ok"))
+                            .Build();
+                        errorPopup.Show();
+                    }
                 }
                 else
                 {
-                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                        .SetTitle(billRenderingResponse?.StatusDetail?.Title ?? string.Empty)
-                        .SetMessage(billRenderingResponse?.StatusDetail?.Message ?? string.Empty)
-                        .SetCTALabel(billRenderingResponse?.StatusDetail?.PrimaryCTATitle ?? string.Empty)
-                        .Build();
-                    errorPopup.Show();
+                    CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                    //_isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccNum);
+                    _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount.AccNum);
+                    if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                    {
+                        string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                        AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                    }
+                    billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+
+                    //Nullity Check
+                    if (billRenderingResponse != null
+                       && billRenderingResponse.StatusDetail != null
+                       && billRenderingResponse.StatusDetail.IsSuccess
+                       && billRenderingResponse.Content != null
+                       && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
+                    {
+                        Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                        intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                        intent.PutExtra("accountNumber", dbrAccount.AccNum);
+                        intent.PutExtra("isOwner", _isOwner);
+                        StartActivity(intent);
+                    }
+                    else
+                    {
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(billRenderingResponse?.StatusDetail?.Title ?? string.Empty)
+                            .SetMessage(billRenderingResponse?.StatusDetail?.Message ?? string.Empty)
+                            .SetCTALabel(billRenderingResponse?.StatusDetail?.PrimaryCTATitle ?? string.Empty)
+                            .Build();
+                        errorPopup.Show();
+                    }
                 }
                 HideProgressDialog();
 
@@ -610,7 +644,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public CustomerBillingAccount GetEligibleDBRAccount()
         {
             CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-            List<string> dBRCAs = DBRUtility.Instance.GetDBRCAs();
+            List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                        , EligibilitySessionCache.FeatureProperty.TargetGroup)
+                ? DBRUtility.Instance.GetDBRCAs()
+                : AccountTypeCache.Instance.DBREligibleCAs;
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             CustomerBillingAccount account = new CustomerBillingAccount();
             if (dBRCAs.Count > 0)

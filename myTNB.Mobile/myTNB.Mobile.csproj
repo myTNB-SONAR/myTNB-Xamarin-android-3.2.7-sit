@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
-    <IntermediateOutputPath>obj\Release\netstandard2.0</IntermediateOutputPath>
+    <IntermediateOutputPath>obj\Release\netstandard2.0\netstandard2.0</IntermediateOutputPath>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
@@ -14,7 +14,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\SIT\</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +29,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Release\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -113,6 +113,9 @@
     <Folder Include="AWS\Managers\DBR\" />
     <Folder Include="AWS\Services\DBR\" />
     <Folder Include="AWS\Managers\Eligibility\" />
+    <Folder Include="AWS\Models\DBR\Post Multi Bill Rendering\" />
+    <Folder Include="AWS\Models\DBR\Post Installation Details\" />
+    <Folder Include="AWS\Models\DBR\Post Multi Installation Details\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -164,6 +167,9 @@
     <None Remove="Resources\Notification\NotificationInfo_10071.json" />
     <None Remove="Resources\Notification\NotificationInfo_10072.json" />
     <None Remove="Test Data\Application Search\Search01.json" />
+    <None Remove="AWS\Models\DBR\Get Multi Bill Rendering\" />
+    <None Remove="AWS\Models\DBR\Post Installation Details\" />
+    <None Remove="AWS\Models\DBR\Post Multi Installation Details\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />

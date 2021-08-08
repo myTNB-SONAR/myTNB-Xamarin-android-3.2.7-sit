@@ -26,6 +26,7 @@ using System.Linq;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.ManageBillDelivery.ManageBillDeliveryEmailList.Adapter;
 using AndroidX.RecyclerView.Widget;
+using myTNB_Android.Src.SessionCache;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -849,7 +850,10 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         }
         public List<DBRAccount> GetEligibleDBRAccountList()
         {
-            List<string> dBRCAs = DBRUtility.Instance.GetDBRCAs();
+            List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                        , EligibilitySessionCache.FeatureProperty.TargetGroup)
+                ? DBRUtility.Instance.GetDBRCAs()
+                : AccountTypeCache.Instance.DBREligibleCAs;
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             List<CustomerBillingAccount> eligibleDBRAccountList = new List<CustomerBillingAccount>();
             CustomerBillingAccount account = new CustomerBillingAccount();

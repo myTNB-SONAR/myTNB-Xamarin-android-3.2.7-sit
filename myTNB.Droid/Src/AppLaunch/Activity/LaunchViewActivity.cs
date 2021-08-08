@@ -362,12 +362,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             try
             {
                 ShowProgressDialog();
-                List<string> caList = DBRUtility.Instance.GetDBRCAs();
                 if (isDBREnabled
-                    && caList != null
-                    && caList.Count > 0
-                    && caList.FindIndex(x => x == UserSessions.DBROwnerNotificationAccountNumber) is int dbrCAIndex
-                    && dbrCAIndex > -1
                     && CustomerBillingAccount.List() is List<CustomerBillingAccount> accountList
                     && accountList != null
                     && accountList.Count > 0

@@ -185,5 +185,20 @@ namespace myTNB.Mobile
                 return false;
             }
         }
+
+        public bool IsDBRBannerForceHide
+        {
+            get
+            {
+                if (LanguageManager.Instance.GetServiceConfig("ServiceConfiguration", "ForceHideDBRBanner") is JToken config
+                    && config != null
+                    && config.ToObject<bool>() is bool isForceHide
+                    && isForceHide)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
     }
 }
