@@ -2268,6 +2268,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                     else
                     {
+                        HomeMenuFragment.IsFromLogin = true;
                         this.mView.HideDiscoverViewView();
                     }
                 }

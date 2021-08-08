@@ -1030,6 +1030,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetDBRDiscoverView()
         {
+            if(DashboardHomeActivity.IsEligibilityAPICalled)
+            {
+                 discovercontainer.Visibility = ViewStates.Gone;
+            }
             if (IsAccountDBREligible)
             {
                 SetDiscoverResult(IsAccountDBREligible);

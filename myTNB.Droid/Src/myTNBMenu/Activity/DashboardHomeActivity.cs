@@ -63,7 +63,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         internal readonly string TAG = typeof(DashboardHomeActivity).Name;
 
         public readonly static int PAYMENT_RESULT_CODE = 5451;
-
+        public static bool IsEligibilityAPICalled = false;
         public static DashboardHomeActivity dashboardHomeActivity;
 
         private DashboardHomeContract.IUserActionsListener userActionsListener;
@@ -1450,6 +1450,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 try
                 {
+                    IsEligibilityAPICalled = true;
                     if (currentFragment != null)
                     {
                         if (currentFragment.GetType() == typeof(HomeMenuFragment))
