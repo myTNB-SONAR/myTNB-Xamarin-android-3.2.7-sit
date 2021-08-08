@@ -132,7 +132,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         private ISharedPreferences mPref;
         private bool _isOwner { get; set; }
         private ManageBillDeliveryContract.IUserActionsListener userActionsListener;
-        private List<DBRAccount> dbrAccountList = new List<DBRAccount>();
+        private List<DBRAccount> dbrEligibleAccountList = new List<DBRAccount>();
         public readonly static int DBR_SELECT_ACCOUNT_ACTIVITY_CODE = 8798;
         private string selectedAccountNumber;
         private DBRAccount selectedEligibleAccount;
@@ -315,7 +315,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     mPref = PreferenceManager.GetDefaultSharedPreferences(this);
                     if (_isOwner)
                     {
-                        ic_ca_info.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
+                        ic_ca_info.Visibility = ViewStates.Visible;
                         Handler h = new Handler();
                         Action myAction = () =>
                         {
@@ -584,10 +584,10 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [OnClick(Resource.Id.txt_ca_name)]
         void OnCANameFilter(object sender, EventArgs eventArgs)
         {
-            dbrAccountList = GetEligibleDBRAccountList();
-            if (dbrAccountList != null && dbrAccountList.Count > 0)
+            dbrEligibleAccountList = GetEligibleDBRAccountList();
+            if (dbrEligibleAccountList != null && dbrEligibleAccountList.Count > 0)
             {
-                this.presenter.CheckDBRAccountEligibility(dbrAccountList);
+                this.presenter.CheckDBRAccountEligibility(dbrEligibleAccountList);
             }
             else
             {
@@ -598,6 +598,19 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         public void ShowDBREligibleAccountList(List<DBRAccount> dbrEligibleAccountList)
         {
+            foreach (DBRAccount account in dbrEligibleAccountList)
+            {
+                if (account.accountNumber == selectedAccountNumber)
+                {
+                    selectedEligibleAccount = account;
+                    account.accountSelected = true;
+                }
+                else
+                {
+                    account.accountSelected = false;
+                }
+            }
+
             Intent intent = new Intent(this, typeof(SelectDBRAccountActivity));
             intent.PutExtra("DBR_ELIGIBLE_ACCOUNT_LIST", JsonConvert.SerializeObject(dbrEligibleAccountList));
             intent.PutExtra("SELECTED_ACCOUNT_NUMBER", JsonConvert.SerializeObject(selectedAccountNumber));
@@ -671,7 +684,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     {
                         GetDeliveryDisplay(getBillRenderingModel);
                     }
-                    foreach (DBRAccount account in dbrAccountList)
+                    foreach (DBRAccount account in dbrEligibleAccountList)
                     {
                         if (account.accountNumber == selectedAccountNumber)
                         {
@@ -857,7 +870,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             List<CustomerBillingAccount> eligibleDBRAccountList = new List<CustomerBillingAccount>();
             CustomerBillingAccount account = new CustomerBillingAccount();
-            List<DBRAccount> dbrEligibleAccountList = new List<DBRAccount>();
+            dbrEligibleAccountList = new List<DBRAccount>();
 
             if (dBRCAs.Count > 0)
             {
