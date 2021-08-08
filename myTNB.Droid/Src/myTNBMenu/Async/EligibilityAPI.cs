@@ -83,9 +83,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                 //Use data or any EligibilitySessionCache functionality
             }
 
-            //Todo: Set target group to !
             if (DBRUtility.Instance.IsAccountDBREligible
-                    && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                    && !EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                         , EligibilitySessionCache.FeatureProperty.TargetGroup))
             {
                 List<string> dbrCAList = AccountTypeCache.Instance.GetDBRAccountList();
