@@ -272,7 +272,7 @@ namespace myTNB_Android.Src.Billing.MVP
                     digital_container.Visibility = ViewStates.Visible;
                     if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill)
                     {
-                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
+                        bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
                     }
                     else if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Email)
                     {
@@ -280,7 +280,7 @@ namespace myTNB_Android.Src.Billing.MVP
                     }
                     if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Paper)
                     {
-                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_Paper_Bill);
+                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
                     }
 
                     paperlessTitle.Text = billRenderingResponse.Content.SegmentMessage;
