@@ -12,6 +12,8 @@ using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.FeedbackDetails.Activity;
+using myTNB_Android.Src.OverVoltageFeedback;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.SelectSubmittedFeedback.Adapter;
 using myTNB_Android.Src.SelectSubmittedFeedback.MVP;
 using myTNB_Android.Src.Utils;
@@ -88,6 +90,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         {
             try
             {
+                this.SetIsClicked(false);
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
@@ -275,6 +278,14 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         public void ShowFeedbackDetailsOthers(SubmittedFeedbackDetails submittedFeedback)
         {
             var othersIntent = new Intent(this, typeof(FeedbackDetailsOthersActivity));
+            StartActivity(othersIntent);
+        }
+
+        public void ShowFeedbackDetailsOverVoltage(SubmittedFeedbackDetails submittedFeedbackdetail, SubmittedFeedback submittedFeedback, string ClaimId)
+        {
+            var othersIntent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+            othersIntent.PutExtra("TITLE", !string.IsNullOrEmpty(submittedFeedback.FeedbackNameInListView) ? submittedFeedback.FeedbackNameInListView : submittedFeedback.FeedbackCategoryName);
+            othersIntent.PutExtra("ClaimId", ClaimId);
             StartActivity(othersIntent);
         }
 

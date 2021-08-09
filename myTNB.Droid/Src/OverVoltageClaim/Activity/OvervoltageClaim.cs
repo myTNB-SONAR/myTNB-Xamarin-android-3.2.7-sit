@@ -14,9 +14,12 @@ using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using Org.Json;
 using Xamarin.Essentials;
 
 
@@ -37,6 +40,8 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
         TextView txtstep1of2;
 
         MyTNBAppToolTipBuilder leaveDialog;
+        private string accNo = null;
+
         public override int ResourceId()
         {
             return Resource.Layout.OvervoltageClaim;
@@ -52,6 +57,16 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             try
             {
                 base.OnCreate(savedInstanceState);
+                Android.OS.Bundle extras = Intent.Extras;
+
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.ACCOUNT_NUMBER))
+                    {
+                        accNo = extras.GetString(Constants.ACCOUNT_NUMBER);
+                    }
+               
+                }
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
                 SetUI();
                 Xamarin.Essentials.Platform.Init(this, savedInstanceState);
@@ -109,8 +124,9 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 // webView.SetWebViewClient(new WebViewClient());
                 ShowProgressDialog();
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });              
-                webView.LoadUrl("https://serene-rosalind-a35967.netlify.app/"); //Live http://192.168.0.178:3000/
+                webView.LoadUrl("https://serene-rosalind-a35967.netlify.app/"); //https://mytnbwvovis.ap.ngrok.io/  Live https://serene-rosalind-a35967.netlify.app/ //http://192.168.1.158:3000/ //https://mytnbwvovis.ap.ngrok.io/
                 await Task.Delay(0);
+                //PassData();
                 //HideProgressDialog();
             }
             catch (Exception ex)
@@ -147,7 +163,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             }
         }
         internal async Task ResponseFromWebviewAsync(string message)
-        {
+            {
             try
             { 
                 var data = JsonConvert.DeserializeObject<DTOWebView>(message); 
@@ -213,6 +229,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 }
                 else if (data.currentScreen == "step2-screen" && data.nextScreen == "submit-screen")
                     {
+                    ShowProgressDialog();
                     IsINZeroStepTab = false;
                     txtstep1of2.Visibility = ViewStates.Visible;
                     //txtstep1of2.Text = "Step 2 of 2";
@@ -221,6 +238,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                     Intent OverVoltagClaim = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
                     OverVoltagClaim.PutExtra("SerialNumber", serviceNumber.Trim());
                     StartActivity(OverVoltagClaim);
+                    HideProgressDialog();
                 }
                 else
                 {
@@ -233,7 +251,28 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
 
             }
         }
-         
+
+        internal void PassData()
+        {
+            try
+            {
+                var data = new BaseRequest();
+                var usin = data.usrInf;
+                var ac = accNo.Trim();
+                var datajson = JsonConvert.SerializeObject(usin);
+                Console.WriteLine(datajson);
+                
+                UserEntity user = UserEntity.GetActive();
+                //webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { getUserInfo('" + ac +"', '" + user.IdentificationNo + "', '" + user.UserID + "', '" + user.DisplayName + "','" + datajson + "') },100); })();", null);
+                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { getUserInfo('" + ac +"', '" + user.IdentificationNo + "', '" + user.UserID + "', '" + user.DisplayName + "','" + usin.eid + "','" + usin.lang + "','" + usin.sec_auth_k1 + "') },100); })();", null);
+                
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 
     internal class WebViewClient :  WebChromeClient
@@ -249,7 +288,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
            
         }
         public override bool OnJsAlert(WebView view, string url, string message, JsResult result)
-        {
+            {
             //return base.OnJsAlert(view, url, message, result);
             result.Cancel();
             overVoltageClaim.ResponseFromWebviewAsync(message);
@@ -264,6 +303,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             if (newProgress == 100)
             {
                 this.overVoltageClaim.HideProgressDialog();
+                overVoltageClaim.PassData();
             
             }
            

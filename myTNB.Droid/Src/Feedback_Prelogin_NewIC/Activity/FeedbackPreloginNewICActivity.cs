@@ -512,9 +512,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             {
                 if(IsOverVoltageClick)
                 {
-                    Intent generalEnquiry = new Intent(this, typeof(OvervoltageClaim));
-                    //generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
-                    StartActivity(generalEnquiry);
+                    Intent overvoltageClaim = new Intent(this, typeof(OvervoltageClaim));
+                    overvoltageClaim.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
+                    StartActivity(overvoltageClaim);
                     IsOverVoltageClick = false;
                 }
                 else

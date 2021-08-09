@@ -51,6 +51,12 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             void ShowFeedbackDetailsOthers(SubmittedFeedbackDetails submittedFeedback);
 
             /// <summary>
+            /// Show others feedback details
+            /// </summary>
+            /// <param name="submittedFeedback"></param>
+            void ShowFeedbackDetailsOverVoltage(SubmittedFeedbackDetails submittedFeedbackdetail, SubmittedFeedback submittedFeedback, string ClaimId);
+
+            /// <summary>
             /// Show start loading
             /// </summary>
             void ShowStartLoading();

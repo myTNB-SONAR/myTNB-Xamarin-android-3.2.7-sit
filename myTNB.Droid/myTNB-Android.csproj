@@ -37,11 +37,11 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
     <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType></DebugType>
@@ -6265,6 +6265,18 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\OverVoltageClaimSuccessPage\Activity\OverVoltageClaimSuccessPageActivity.cs" />
+    <AndroidResource Include="Resources\layout\AppointmentsetLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\OverVoltageFeedbackDetail.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\MyTNBService\Request\SubmittedFeedbeckClaimIdDetailRequestModel.cs" />
+    <Compile Include="Src\MyTNBService\Response\SubmittedFeedbeckDetailModel.cs" />
+    <Compile Include="Src\AppointmentDetailSet\Activity\AppointmentSetActivity.cs" />
+    <Compile Include="Src\OverVoltageFeedback\Activity\OverVoltageFeedbackDetailActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -6604,6 +6616,10 @@
     <Folder Include="Src\OverVoltageClaim\WebView\" />
     <Folder Include="Src\OverVoltageClaimSuccessPage\" />
     <Folder Include="Src\OverVoltageClaimSuccessPage\Activity\" />
+    <Folder Include="Src\OverVoltageFeedback\" />
+    <Folder Include="Src\AppointmentDetailSet\" />
+    <Folder Include="Src\AppointmentDetailSet\Activity\" />
+    <Folder Include="Src\OverVoltageFeedback\Activity\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

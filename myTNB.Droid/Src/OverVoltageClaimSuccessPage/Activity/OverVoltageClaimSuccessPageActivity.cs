@@ -15,6 +15,9 @@ using CheeseBind;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.OverVoltageFeedback;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
@@ -44,7 +47,7 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
         [BindView(Resource.Id.btnViewSubmitted)]
         Button btnViewSubmitted;
 
-
+        string SerialNumber;
 
         public override int ResourceId()
         {
@@ -74,7 +77,7 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
             try
             {
                 // string SerialNumber =  Intent.GetStringExtra("SerialNumber");
-                var SerialNumber = Intent.GetStringExtra("SerialNumber");
+                SerialNumber = Intent.GetStringExtra("SerialNumber");
                 txtFeedbackIdContent.Text = SerialNumber;
                 txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitICFeedback_OverVoltageClainSuccessPageThankyouRequest");
                 txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent");
@@ -103,6 +106,36 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
             Intent intent = new Intent(this, typeof(DashboardHomeActivity));            
             intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(intent);
+        }
+
+        [OnClick(Resource.Id.btnViewSubmitted)]
+        void GoToClimDetail(object sender, EventArgs eventArgs)
+        {
+            GetClaimID();
+            //Intent intent = new Intent(this, typeof(DashboardHomeActivity));
+            //intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            //StartActivity(intent);
+        }
+
+        private async void GetClaimID()
+        {
+            try
+            {
+                var claimDetailResponce = await ServiceApiImpl.Instance.SubmittedFeedbackClaimIdDetail(new SubmittedFeedbeckClaimIdDetailRequestModel(SerialNumber));
+
+                if (claimDetailResponce.d.data != null)
+                {
+                    var ClaimId = claimDetailResponce.d.data.ClaimId;
+                    var othersIntent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+                    othersIntent.PutExtra("TITLE", Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
+                    othersIntent.PutExtra("ClaimId", ClaimId);
+                    StartActivity(othersIntent);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

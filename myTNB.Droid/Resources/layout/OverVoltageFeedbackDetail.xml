@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/rootView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	android:orientation="vertical">
+	<include
+		android:id="@+id/toolbar"
+		layout="@layout/toolbar" />
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginTop="?actionBarSize"
+		android:background="@color/white"
+		android:paddingTop="5dp">
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_gravity="center"
+			android:clipToPadding="false"
+			android:overScrollMode="never"
+			android:fillViewport="false">
+			<LinearLayout
+				android:id="@+id/mainView"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:gravity="center"
+				android:orientation="vertical">
+                 <android.webkit.WebView  
+                    android:layout_width="match_parent"  
+                    android:layout_height="match_parent"  
+                    android:id="@+id/webView" /> 
+			</LinearLayout>		
+		</ScrollView>
+	</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

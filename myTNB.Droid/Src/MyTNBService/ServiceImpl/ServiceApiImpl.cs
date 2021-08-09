@@ -173,6 +173,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call SubmittedFeedbackClaimIdDetail with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SubmittedFeedbeckDetailModel> SubmittedFeedbackClaimIdDetail([Body] Request.BaseRequest request)
+        {
+            return api.SubmittedFeedbackClaimIdDetail<SubmittedFeedbeckDetailModel>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
         /// Call GetLocationsByKeyword with default timeout.
         /// </summary>
         /// <param name="request"></param>

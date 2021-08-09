@@ -76,6 +76,7 @@
   <!--Submit Enquiry Status Color-->
   <color name="createdColorSubmit">#424141</color>
   <color name="completedColorSubmit">@color/freshGreen</color>
+
   <!--End Submit Enquiry Status Color-->
 
 
