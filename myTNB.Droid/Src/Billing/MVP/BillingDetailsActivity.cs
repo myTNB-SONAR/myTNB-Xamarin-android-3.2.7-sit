@@ -270,11 +270,13 @@ namespace myTNB_Android.Src.Billing.MVP
                 if (billRenderingResponse != null)
                 {
                     digital_container.Visibility = ViewStates.Visible;
-                    if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill)
+                    if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill
+                        || billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBillWithCTA)
                     {
                         bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
                     }
-                    else if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Email)
+                    else if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Email
+                        || billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EmailWithCTA)
                     {
                         bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
                     }
@@ -283,7 +285,7 @@ namespace myTNB_Android.Src.Billing.MVP
                         bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
                     }
 
-                    paperlessTitle.Text = billRenderingResponse.Content.SegmentMessage;
+                    paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
                 }
             }
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
