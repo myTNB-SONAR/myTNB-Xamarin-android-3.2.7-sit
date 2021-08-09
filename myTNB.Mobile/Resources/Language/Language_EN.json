@@ -244,7 +244,9 @@
     "stateReason": "Please state your reason",
     "selectAnAccount": "Select an account",
     "tncSubscribeFAQ": "By submitting, you are agreeing to the <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Self Meter Reading FAQ</strong></a>, ",
-    "tncSubscribeTNC": "<a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy Policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>."
+    "tncSubscribeTNC": "<a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy Policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
+    //add new by irul
+    "tncsmrNew": "By subscribing to Self Meter Reading, you agreed to read and submit meter reading on monthly basis except for month of April, August and December"
   },
   "Status": {
     "feedbackSuccessTitle": "Feedback Successful",
