@@ -27,6 +27,7 @@ using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.ManageBillDelivery.ManageBillDeliveryEmailList.Adapter;
 using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.SessionCache;
+using Android.Graphics;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -38,6 +39,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         , ViewPager.IOnPageChangeListener
         , ManageBillDeliveryContract.IView
     {
+        [BindView(Resource.Id.rootView)]
+        CoordinatorLayout rootView;
+
         [BindView(Resource.Id.txt_ca_name)]
         TextView txt_ca_name;
 
@@ -290,7 +294,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 else if (getBillRenderingModel.Content.DBRType == MobileEnums.DBRTypeEnum.Email)
                 {
                     FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
-                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(435f) : (int)DPUtils.ConvertDPToPx(375f);
+                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(320f) : (int)DPUtils.ConvertDPToPx(300f);
                     TenantDeliverigAddress.Visibility = applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = btnUpdateDigitalBillLayout.Visibility = deliverigAddress.Visibility = ViewStates.Gone;
                     email_layout.Visibility = email_container.Visibility = digitalBillLabelLayout.Visibility = digitalBillLabelContainer.Visibility = deliverigTitle.Visibility = ViewStates.Visible;
 
@@ -336,12 +340,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 else if (getBillRenderingModel.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
                 {
                     FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
-                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(400f) : (int)DPUtils.ConvertDPToPx(355f);
+                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(320f) : (int)DPUtils.ConvertDPToPx(300f);
                     applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
                     email_layout.Visibility = email_container.Visibility = deliverigTitle.Visibility = btnUpdateDigitalBillLayout.Visibility = ic_ca_info.Visibility = ViewStates.Visible;
 
-                    //deliveryUserName.Text = user.DisplayName + Utility.GetLocalizedLabel("ManageDigitalBillLanding", "you");
-                    //deliveryEmail.Text = user.Email;
+             
                     img_display.SetImageResource(Resource.Drawable.display_emailbilling);
                     txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillTitle");
                     txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillDescription"));
@@ -935,6 +938,28 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             return selectAccountContainer.Height;
         }
+        public int GetTopHeight()
+        {
+            int i = 0;
 
+            try
+            {
+                Rect offsetViewBounds = new Rect();
+                //returns the visible bounds
+                btnUpdateDigitalBillLayout.GetDrawingRect(offsetViewBounds);
+                // calculates the relative coordinates to the parent
+
+                rootView.OffsetDescendantRectToMyCoords(btnUpdateDigitalBillLayout, offsetViewBounds);
+
+                i = offsetViewBounds.Top;
+
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
     }
 }

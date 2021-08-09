@@ -2568,8 +2568,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
                 else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBillWithCTA)
                 {
-                    middleHeight = (int)DPUtils.ConvertDPToPx(120f);
-                    topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - middleHeight;
+                    middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight() + (int)DPUtils.ConvertDPToPx(20f);
+                    topHeight = ((ManageBillDeliveryActivity)this.mContext).GetTopHeight();
                     LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                     topLayoutParam.Height = topHeight;
                     topLayout.RequestLayout();
@@ -2631,9 +2631,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     }
                     else
                     {
-                        middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight();
-                        topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight() - (int)DPUtils.ConvertDPToPx(20f);
-
+                        middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight() + (int)DPUtils.ConvertDPToPx(20f);
+                        topHeight = ((ManageBillDeliveryActivity)this.mContext).GetTopHeight();
                         LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                         topLayoutParam.Height = topHeight;
                         topLayout.RequestLayout();
