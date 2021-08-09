@@ -10,7 +10,8 @@ namespace myTNB.Mobile.AWS.Services.AccessToken
     {
         [Post("/{environment}/api/v1/Identity/GenerateAccessToken")]
         Task<HttpResponseMessage> GenerateAccessToken([Body] AccessTokenRequest request
-           , CancellationToken cancelToken
-           , string environment = AWSConstants.Environment);
+            , CancellationToken cancelToken
+            , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
+            , string environment = AWSConstants.Environment);
     }
 }

@@ -39,14 +39,14 @@
 
         //Encrypt / Decrypt
         private const string SaltKey_DEV = "Salt-4NHF1XP910G8NN6GRH23PD12N9X6T5DW";
-        private const string Passphrase_DEV = "PW-myTNB-DEV";
         private const string SaltKey_PROD = "Salt-IT9LJQ3LJEAK5G2R35L5V6A5FUDO7A5B";
+        private const string Passphrase_DEV = "PW-myTNB-DEV";
         private const string Passphrase_PROD = "PW-myTNB-PROD";
 
 #if DEBUG
         public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
-        public const string SitecoreURL = SitecoreSIT;
+        public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
 #elif MASTER || SIT
@@ -118,6 +118,7 @@
         public struct PushNotificationTypes
         {
             public const string DBR_Owner = "DBROWNER";
+            public const string APPLICATIONSTATUS = "APPLICATIONSTATUS";
         }
     }
 }

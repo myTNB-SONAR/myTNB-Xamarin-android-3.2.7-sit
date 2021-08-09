@@ -186,8 +186,20 @@ namespace myTNB.Mobile.AWS.Models
             get
             {
                 return DBRType == MobileEnums.DBRTypeEnum.Paper
-                    ? URLs.StartDBRRedirectURL
-                    : URLs.PaperBillOptInDBRRedirectURL;
+                    ? Domains.StartDigitalBill
+                    : Domains.OptInToPaperBill;
+            }
+        }
+
+        /// <summary>
+        /// Origin URL
+        /// </summary>
+        [JsonIgnore]
+        public string OriginURL
+        {
+            get
+            {
+                return BackToApp;
             }
         }
 

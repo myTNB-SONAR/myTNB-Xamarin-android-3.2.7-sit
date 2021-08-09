@@ -2,77 +2,83 @@
 {
     public static class AWSConstants
     {
-        //AWS DEV
-        private const string XAPIKey_DEV = "8BVhUBJIJO9RAFwrxmx0o76n7tfRsPyd4DSChI5r";
-        private const string XAPIKey_SIT = "8BVhUBJIJO9RAFwrxmx0o76n7tfRsPyd4DSChI5r";
-        private const string SaltKey_DEV = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
-        private const string Passphrase_DEV = "PW-myTNBDbrSso";
-        private const string DBROriginURL_DEV = "mytnbapp://action=backToApp";
-        private const string StartDBRRedirectURL_DEV = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/DigitalBill/Start";
-        private const string PaperBillOptInRedirectURL_DEV = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/PaperBill/OptIn";
-        private const string DBRSSOURL_DEV = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/Sso?s={0}";
-        //AWS PROD
-        private const string XAPIKey_PROD = "8BVhUBJIJO9RAFwrxmx0o76n7tfRsPyd4DSChI5r";
-        private const string SaltKey_PROD = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
-        private const string Passphrase_PROD = "PW-myTNBDbrSso";
-        private const string DBROriginURL_PROD = "mytnbapp://action=backToApp";
-        private const string StartDBRRedirectURL_PROD = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/DigitalBill/Start";
-        private const string PaperBillOptInRedirectURL_PROD = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/PaperBill/OptIn";
-        private const string DBRSSOURL_PROD = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/Sso?s={0}";
-
         internal const int TimeOut = 10000;
-
         internal const string Channel = "myTNB_API_Mobile";
-        internal static int RoleID = 16;
+        internal const int RoleID = 16;
 
-        private const string PROD = "Prod";
+        //XAPI Keys
+        private const string XAPIKey_DEV = "KqNPPaCgl913pSLSHBgVT8NjJvTfTdYH6W0R1w78";
+        private const string XAPIKey_SIT = "8BVhUBJIJO9RAFwrxmx0o76n7tfRsPyd4DSChI5r";
+        private const string XAPIKey_PROD = "gpUS5pe4aO2yMbId7bFa13dGfYYnBWbjn3vqn0d7";
+
+        //Salt
+        private const string SaltKey_DEV = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
+        private const string SaltKey_SIT = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
+        private const string SaltKey_PROD = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
+
+        //Passphrase
+        private const string Passphrase_DEV = "PW-myTNBDbrSso";
+        private const string Passphrase_SIT = "PW-myTNBDbrSso";
+        private const string Passphrase_PROD = "PW-myTNBDbrSso";
+
+        //Environment
+        private const string Environment_DEV = "Prod";
+        private const string Environment_SIT = "Prod";
+        private const string Environment_PROD = "Prod";
+
+        //WEB Actions
+        internal const string BackToApp = "mytnbapp://action=backToApp";
 
         //Domains
-        internal struct Domains
+        public struct Domains
         {
-            internal const string GenerateAccessToken = "https://ru5ofma1zd.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetBillRendering = "https://q7zjjtvkmf.execute-api.ap-southeast-1.amazonaws.com";
+#if DEBUGs
+            internal const string GenerateAccessToken = "https://5y8p2rm83k.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetDBREligibility = "https://j8kgh1w7y3.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GetBillRendering = "https://udv358acc6.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetMultiBillRendering = "https://udv358acc6.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";
-        }
-
-        public struct URLs
-        {
-#if DEBUG
-            public const string DBROriginURL = DBROriginURL_DEV;
-            public const string StartDBRRedirectURL = StartDBRRedirectURL_DEV;
-            public const string PaperBillOptInDBRRedirectURL = PaperBillOptInRedirectURL_DEV;
-            public const string DBRSSOURL = DBRSSOURL_DEV;
+            internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
+            internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
+            internal const string StartDigitalBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8011/DigitalBill/Start";
+            internal const string OptInToPaperBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8011/PaperBill/OptIn";
+            public const string SSO = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8011/Sso?s={0}";
 #elif MASTER || SIT
-        
-            public const string DBROriginURL = DBROriginURL_DEV;
-            public const string StartDBRRedirectURL = StartDBRRedirectURL_DEV;
-            public const string PaperBillOptInDBRRedirectURL = PaperBillOptInRedirectURL_DEV;
-            public const string DBRSSOURL = DBRSSOURL_DEV;
+            internal const string GenerateAccessToken = "https://5c6jgu44tf.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GetDBREligibility = "https://12pq772dmj.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GetBillRendering = "https://k6mjxscgb1.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GetMultiBillRendering = "https://k6mjxscgb1.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
+            internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
+            internal const string StartDigitalBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8021/DigitalBill/Start";
+            internal const string OptInToPaperBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8021/PaperBill/OptIn";
+            public const string SSO = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8021/Sso?s={0}";
 #else
-            public const string DBROriginURL = DBROriginURL_PROD;
-            public const string StartDBRRedirectURL = StartDBRRedirectURL_PROD;
-            public const string PaperBillOptInDBRRedirectURL = PaperBillOptInRedirectURL_PROD;
-            public const string DBRSSOURL = DBRSSOURL_PROD;
+            internal const string GenerateAccessToken = "https://u87s7tl12m.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GetDBREligibility = "https://ej1yrq9zc6.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GetBillRendering = "https://yzixerxax2.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GetMultiBillRendering = "https://yzixerxax2.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
+            internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
+            internal const string StartDigitalBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/DigitalBill/Start";
+            internal const string OptInToPaperBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/PaperBill/OptIn";
+            public const string SSO = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/Sso?s={0}";
 #endif
         }
 
-#if DEBUG
-        internal const string Environment = PROD;
+#if DEBUGs
+        internal const string Environment = Environment_DEV;
         internal const string XAPIKey = XAPIKey_DEV;
         public const string SaltKey = SaltKey_DEV;
         public const string PassPhrase = Passphrase_DEV;
-#elif MASTER || SIT
-        internal const string Environment = PROD;
+#elif MASTER || SIT || DEBUG
+        internal const string Environment = Environment_SIT;
         internal const string XAPIKey = XAPIKey_SIT;
-        public const string SaltKey = SaltKey_DEV;
-        public const string PassPhrase = Passphrase_DEV;
+        public const string SaltKey = SaltKey_SIT;
+        public const string PassPhrase = Passphrase_SIT;
 #else
-        internal const string Environment = PROD;
+        internal const string Environment = Environment_PROD;
         internal const string XAPIKey = XAPIKey_PROD;
-        public const string SaltKey = SaltKeyPROD;
+        public const string SaltKey = SaltKey_PROD;
         public const string PassPhrase = PassphrasePROD;
 #endif
 
@@ -92,7 +98,6 @@
             internal const string PostMultiBillRendering = "MultiBillRendering";
             internal const string PostInstallationDetails = "InstallationDetails";
             internal const string PostMultiInstallationDetails = "MultiInstallationDetails";
-
             public const string GetEligibility = "Eligibility";
         }
     }

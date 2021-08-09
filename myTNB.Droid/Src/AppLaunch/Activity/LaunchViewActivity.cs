@@ -113,7 +113,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         string notifType = Intent.Extras.GetString("Type");
                         UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
-                        if (notifType.ToUpper() == ApplicationStatusNotificationModel.TYPE_APPLICATIONSTATUS
+                        if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.APPLICATIONSTATUS
                             && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID)
                             && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONID)
                             && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE))

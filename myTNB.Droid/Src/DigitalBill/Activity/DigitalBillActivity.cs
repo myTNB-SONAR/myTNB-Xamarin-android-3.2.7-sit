@@ -39,7 +39,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         public AccountData mSelectedAccountData;
         private static FrameLayout mainView;
         GetBillRenderingResponse BillRendering;
-        
+
         WebView tncWebView;
 
         const string PAGE_ID = "ManageDigitalBillLanding";
@@ -110,7 +110,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 {
                     BillRendering = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
                 }
-               
+
                 mPresenter = new DigitalBillPresenter(this);
 
                 tncWebView = FindViewById<WebView>(Resource.Id.tncWebView);
@@ -125,7 +125,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        
+
         public void SetDefaultData()
         {
             try
@@ -142,11 +142,11 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                                        ? LanguageManager.Language.MS
                                        : LanguageManager.Language.EN).ToString()
                                    , TextViewUtils.FontSelected
-                                   , AWSConstants.URLs.DBROriginURL
+                                   , BillRendering.Content.OriginURL
                                    , BillRendering.Content.RedirectURL
                                    , accnum);
 
-                tncWebView.PostUrl(AWSConstants.URLs.DBRSSOURL, GetBytes(signature, "base64"));
+                tncWebView.PostUrl(AWSConstants.Domains.SSO, GetBytes(signature, "base64"));
             }
             catch (System.Exception e)
             {
@@ -217,7 +217,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             ShowProgressDialog();
             try
             {
-                
+
                 CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
                 AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
@@ -274,7 +274,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     if (url.ToLower().Contains("mytnbapp://action=startDigitalBilling"))
                     {
                         mActivity.OnManageBillDelivery();
-                        
+
                     }
                     else
                     {
@@ -288,14 +288,14 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             {
                 try
                 {
-                   // if (ConnectionUtils.HasInternetConnection(mActivity))
+                    // if (ConnectionUtils.HasInternetConnection(mActivity))
                     {
                         base.OnPageStarted(view, url, favicon);
                         //progressBar.Visibility = ViewStates.Visible;
                     }
-                   // else
+                    // else
                     {
-                       // ShowErrorMessage(url);
+                        // ShowErrorMessage(url);
                     }
 
 
@@ -310,7 +310,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             {
                 try
                 {
-                   
+
                 }
                 catch (System.Exception e)
                 {
@@ -348,14 +348,14 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                         ShowErrorMessage(failingUrl);
                     }
 
-                   // if (!ConnectionUtils.HasInternetConnection(mActivity))
-                   // {
-                   //     mWebView.StopLoading();
+                    // if (!ConnectionUtils.HasInternetConnection(mActivity))
+                    // {
+                    //     mWebView.StopLoading();
                     //}
-                   // else
-                   // {
-                   //     mWebView.LoadUrl("");
-                   // }
+                    // else
+                    // {
+                    //     mWebView.LoadUrl("");
+                    // }
                 }
                 catch (System.Exception e)
                 {
