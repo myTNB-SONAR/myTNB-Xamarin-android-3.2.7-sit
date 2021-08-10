@@ -394,7 +394,10 @@
   "SelectElectricityAccounts": {
     "title": "Pilih Akaun Elektrik",
     "accountsMissing": "Mengapa akaun saya tiada di sini?",
-    "dbrMissingAccountsMessage": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!"
+    "dbrAccountsMissingTitlePilot": "Mengapa akaun saya tiada di sini?",
+    "dbrMissingAccountsMessagePilot": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
+    "dbrAccountsMissingTitleNationwide": "Mengapa akaun saya tiada di sini?",
+    "dbrMissingAccountsMessageNationwide": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!"
   },
   "Usage": {
     "title": "Usage",
@@ -418,7 +421,7 @@
     "iWillGetBy": "Terima pada",
     "emptyDateAmount": "- -",
     "viewDetails": "Lihat Butiran",
-    "needToPay": "Jumlah perlu dibayar",
+    "needToPay": "Jumlah bil anda",
     "paidExtra": "Saya telah bayar ekstra",
     "clearedAllBills": "Saya sudah jelaskan semua bil",
     "by": "sebelum",
@@ -438,7 +441,7 @@
     "clearedBills": "Saya sudah jelaskan semua bil",
     "viewMore": "Lihat Butiran",
     "paidExtra": "Saya telah bayar ekstra",
-    "needToPay": "Jumlah perlu dibayar",
+    "needToPay": "Jumlah bil anda",
     "by": "sebelum",
     "getBy": "dapat pada",
     "myEarnings": "Pendapatan saya",
@@ -488,7 +491,7 @@
     "billDetails": "Caj Saya",
     "outstandingCharges": "Tunggakan",
     "billThisMonth": "Caj semasa",
-    "needToPay": "Jumlah perlu dibayar",
+    "needToPay": "Jumlah bil anda",
     "by": "sebelum",
     "paidExtra": "Saya telah bayar ekstra",
     "clearedBills": "Saya sudah jelaskan semua bil",
@@ -496,7 +499,7 @@
     "applicationCharges": "Caj sekali bayar",
     "tooltiptitle1": "Perkara daripada bil kertas/PDF anda",
     "tooltiptitle2": "Perkara daripada surat tuntutan anda",
-    "tooltipdesc1": "Jumlah perlu dibayar|Tunggakan|Caj Semasa (penggunaan elektrik sahaja)",
+    "tooltipdesc1": "Jumlah bil anda|Tunggakan|Caj Semasa (penggunaan elektrik sahaja)",
     "tooltipdesc2": "Wang Cagaran|Duti Setem|Caj Pemprosesan|Caj Meter",
     "pay": "Bayar",
     "tutorialTitle": "Lihat Bil anda.",
@@ -2393,10 +2396,16 @@
     "updatingTitle": "Kami sedang mengemaskini cara penerimaan bil anda.",
     "updatingDescription": "Akaun anda sedang dikemaskinikan dan dijangka mengambil masa sehingga 5 minit. Kembali semula nanti!",
     "selectAccount": "Pilih Akaun Anda",
-    "notEligibleAccountsTitle": "Mengapa akaun saya tidak ada di sini?",
-    "notEligibleAccountsMessage": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
+    "notEligibleAccountsTitlePilot": "Mengapa akaun saya tidak ada di sini?",
+    "notEligibleAccountsMessagePilot": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
+    "notEligibleAccountsTitleNationwide": "Mengapa akaun saya tidak ada di sini?",
+    "notEligibleAccountsMessageNationwide": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
     "nonOwnerPaperTitle": "Anda menerima Bil Bercetak untuk akaun ini.",
-    "nonOwnerPaperMessage": "Bil anda dihantar ke alamat premis akaun ini."
+    "nonOwnerPaperMessage": "Bil anda dihantar ke alamat premis akaun ini.",
+    "nonOwnerEBillTitle": "Akaun anda adalah mesra alam dengan Bil myTNB!",
+    "nonOwnerEmailBillTitle": "Anda menerima Bil myTNB & E-mel.",
+    "nonOwnerEBillDescription": "Bil anda dihantar di Aplikasi & Portal myTNB. Terima kasih di atas sokongan anda!",
+    "nonOwnerEmailBillDescription": "Bil anda dihantar di Aplikasi & Portal myTNB dan e-mel untuk akaun ini."
   },
   "DBRWebview": {
     "goPaperless": "Jom Paperless!",

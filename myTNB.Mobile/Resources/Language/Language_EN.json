@@ -394,7 +394,10 @@
   "SelectElectricityAccounts": {
     "title": "Select Electricity Account",
     "accountsMissing": "Why are some of my accounts not here?",
-    "dbrMissingAccountsMessage": "In our push for a more sustainable future, we’re introducing this as a pilot program for Smart Meter accounts in smaller areas of Malaysia and are showing you only <b>electricity accounts that are eligible for digital bills</b>. We’re working hard for the program to expand nationwide and be available to all your other accounts soon!"
+    "dbrAccountsMissingTitlePilot": "Why are some of my accounts not here?",
+    "dbrMissingAccountsMessagePilot": "In our push for a more sustainable future, we’re introducing this as a pilot program for Smart Meter accounts in smaller areas of Malaysia and are showing you only <b>electricity accounts that are eligible for digital bills</b>. We’re working hard for the program to expand nationwide and be available to all your other accounts soon!",
+    "dbrAccountsMissingTitleNationwide": "Why are some of my accounts not here?",
+    "dbrMissingAccountsMessageNationwide": "In our push for a more sustainable future, we’re introducing this as a pilot program for Smart Meter accounts in smaller areas of Malaysia and are showing you only <b>electricity accounts that are eligible for digital bills</b>. We’re working hard for the program to expand nationwide and be available to all your other accounts soon!"
   },
   "Usage": {
     "title": "Usage",
@@ -2401,10 +2404,16 @@
     "updatingTitle": "We’re currently updating your bill delivery method.",
     "updatingDescription": "It may take up to 5 minutes to reflect the changes on your myTNB account and you won’t be able to view it during this time. Check back later!",
     "selectAccount": "Select Your Account",
-    "notEligibleAccountsTitle": "Why are some of my accounts not here?",
-    "notEligibleAccountsMessage": "We're introducing this as a pilot program for Smart Meter accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We’re working hard towards expanding it nationwide, so it'll be available to all your other accounts soon! Please stay tuned!",
+    "notEligibleAccountsTitlePilot": "Why are some of my accounts not here?",
+    "notEligibleAccountsMessagePilot": "We're introducing this as a pilot program for Smart Meter accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We’re working hard towards expanding it nationwide, so it'll be available to all your other accounts soon! Please stay tuned!",
+    "notEligibleAccountsTitleNationwide": "Why are some of my accounts not here?",
+    "notEligibleAccountsMessageNationwide": "We're introducing this as a pilot program for Smart Meter accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We’re working hard towards expanding it nationwide, so it'll be available to all your other accounts soon! Please stay tuned!",
     "nonOwnerPaperTitle": "You’re receiving Paper Bill for this account.",
-    "nonOwnerPaperMessage": "Your bills are being delivered to its premises address."
+    "nonOwnerPaperMessage": "Your bills are being delivered to its premises address.",
+    "nonOwnerEBillTitle": "Your account is environmentally friendly with myTNB Bill!",
+    "nonOwnerEmailBillTitle": "You’re receiving myTNB & Email Bills.",
+    "nonOwnerEBillDescription": "Your bills are being delivered on myTNB App & Portal. Thank you for playing your part!",
+    "nonOwnerEmailBillDescription": "Your bills are being delivered on myTNB App & Portal and email for this account."
   },
   "DBRWebview": {
     "goPaperless": "Jom Paperless!",

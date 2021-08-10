@@ -72,7 +72,7 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
             SetResult(Result.Ok, returnIntent);
             Finish();
         }
-        
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -101,7 +101,7 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                     Utility.LoggingNonFatalError(e);
                 }
             }
-            
+
 
             if (accountList != null && accountList.Count > 0)
             {
@@ -121,7 +121,7 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                 {
                     accountList[0].accountSelected = true;
                 }
-               
+
             }
             noEligibleAccountContainer.Visibility = ViewStates.Gone;
             eligibleAccountListContainer.Visibility = ViewStates.Visible;
@@ -145,12 +145,13 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
         {
             if (e.Position == accountList.Count)//Handling Account list Info tooltip from list
             {
+                bool isPilot = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                    , EligibilitySessionCache.FeatureProperty.TargetGroup);
                 MyTNBAppToolTipBuilder dbrTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                 .SetTitle(Utility.GetLocalizedLabel("SelectElectricityAccounts", "accountsMissing"))
-                   .SetMessage(Utility.GetLocalizedLabel("SelectElectricityAccounts", "dbrMissingAccountsMessage"))
-                  .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                  .Build();
-
+                    .SetTitle(Utility.GetLocalizedLabel("SelectElectricityAccounts", isPilot ? "dbrAccountsMissingTitlePilot" : "dbrAccountsMissingTitleNationwide"))
+                    .SetMessage(Utility.GetLocalizedLabel("SelectElectricityAccounts", isPilot ? "dbrMissingAccountsMessagePilot" : "dbrMissingAccountsMessageNationwide"))
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                    .Build();
                 dbrTooltip.Show();
             }
             else
@@ -167,7 +168,7 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                     }
                 }
                 GetBillRenderingAsync(accountList.Find(x => { return x.accountSelected; }).accountNumber);
-                
+
             }
         }
 

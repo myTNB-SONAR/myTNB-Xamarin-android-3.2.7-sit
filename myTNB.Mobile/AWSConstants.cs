@@ -32,7 +32,7 @@
         //Domains
         public struct Domains
         {
-#if DEBUGs
+#if DEBUG
             internal const string GenerateAccessToken = "https://5y8p2rm83k.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetDBREligibility = "https://j8kgh1w7y3.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetBillRendering = "https://udv358acc6.execute-api.ap-southeast-1.amazonaws.com";
