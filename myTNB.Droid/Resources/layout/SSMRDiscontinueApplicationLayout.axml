@@ -261,7 +261,7 @@
                             android:checked="false"
                             android:textSize="12dp"
                             android:paddingTop="-4dp"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="top"
                             android:button="@drawable/checkbox_selector" />
                         <TextView
                             android:textAppearance="?android:attr/textAppearanceSmall"

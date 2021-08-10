@@ -90,6 +90,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             this.mView.ShowTermsAndConditions();
         }
 
+        public void NavigateToTermsAndConditionsView()
+        {
+            this.mView.ShowTermsAndConditionsView();
+        }
+
         public void NavigateToFAQ()
         {
             this.mView.ShowFAQ();

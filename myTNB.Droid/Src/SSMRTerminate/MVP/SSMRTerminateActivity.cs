@@ -26,6 +26,7 @@ using Android.Text.Style;
 using Google.Android.Material.TextField;
 using AndroidX.Core.Content;
 using myTNB_Android.Src.FAQ.Activity;
+using myTNB_Android.Src.SMRnewTncView.Activity;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
@@ -213,8 +214,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             txtInputLayoutReason.Hint = GetLabelByLanguage("selectReason");
             btnDisconnectionSubmit.Text = GetLabelCommonByLanguage("submit");
             txtInputLayoutTxtReason.Hint = GetLabelByLanguage("stateReason");
-            txtTermsConditionsNew.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("SSMRApplication", "tncsmrNew"));
-            StripUnderlinesFromLinks(txtTermsConditionsNew);
+
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
@@ -318,21 +318,19 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 reasonDetailContainer.Visibility = ViewStates.Gone;
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
-                    txtTermsConditionsFAQ.Visibility = ViewStates.Visible;
-                    txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeTNC"), FromHtmlOptions.ModeLegacy);
-                    txtTermsConditionsFAQ.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeFAQ"), FromHtmlOptions.ModeLegacy);
-
-                    StripUnderlinesFromLinks(txtTermsConditions);
-                    StripUnderlinesFromLinks(txtTermsConditionsFAQ);
+                    txtTermsConditions.Visibility = ViewStates.Gone;
+                    txtTermsConditionsFAQ.Visibility = ViewStates.Gone;
+                  
+                    txtTermsConditionsNew.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncsmrNew"), FromHtmlOptions.ModeLegacy);
+                    StripUnderlinesFromLinks(txtTermsConditionsNew);
                 }
                 else
                 {
-                    txtTermsConditionsFAQ.Visibility = ViewStates.Visible;
-                    txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeTNC"));
-                    txtTermsConditionsFAQ.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeFAQ"));
+                    txtTermsConditions.Visibility = ViewStates.Gone;
+                    txtTermsConditionsFAQ.Visibility = ViewStates.Gone;
 
-                    StripUnderlinesFromLinks(txtTermsConditions);
-                    StripUnderlinesFromLinks(txtTermsConditionsFAQ);
+                    txtTermsConditionsNew.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncsmrNew"));
+                    StripUnderlinesFromLinks(txtTermsConditionsNew);
                 }
                 ShowContactDetails();
             }
@@ -377,6 +375,16 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 spannable.SetSpan(newSpan, start, end, 0);
             }
             textView.TextFormatted = spannable;
+        }
+
+        [OnClick(Resource.Id.txtTermsConditionsNew)]
+        void OnTermsConditionsView(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.mPresenter.NavigateToTermsAndConditionsView();
+            }
         }
 
         private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
@@ -680,6 +688,10 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         public void ShowTermsAndConditions()
         {
             StartActivity(typeof(TermsAndConditionActivity));
+        }
+        public void ShowTermsAndConditionsView()
+        {
+            StartActivity(typeof(SMRnewTncViewActivity));
         }
 
         public void OnRequestSuccessful(SMRregistrationSubmitResponse response)
