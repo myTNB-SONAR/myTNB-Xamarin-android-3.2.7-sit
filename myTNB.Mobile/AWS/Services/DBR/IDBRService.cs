@@ -29,7 +29,7 @@ namespace myTNB.Mobile.AWS.Services.DBR
            , CancellationToken cancellationToken
            , [Header(AWSConstants.Headers.Authorization)] string accessToken
            , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
-           , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = "KqNPPaCgl913pSLSHBgVT8NjJvTfTdYH6W0R1w78"//AWSConstants.XAPIKey
+           , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
            , string environment = AWSConstants.Environment);
 
         [Post("/{environment}/api/v1/Z_CS_SSP_GET_INSTL")]
