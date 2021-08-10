@@ -18,6 +18,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.OverVoltageFeedback;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
