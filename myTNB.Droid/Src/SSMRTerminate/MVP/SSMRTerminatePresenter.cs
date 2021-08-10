@@ -246,7 +246,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             }
         }
 
-        public void CheckRequiredFieldsForApply(string mobile_no, string email)
+        public void CheckRequiredFieldsForApply(string mobile_no, string email,bool checkbox)
         {
             try
             {
@@ -325,7 +325,16 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 }
 
                 this.mView.ClearErrors();
-                this.mView.EnableSubmitButton();
+                if (checkbox)
+                    {
+                        this.mView.EnableSubmitButton();
+                    }
+                    else
+                    {
+                        this.mView.DisableSubmitButton();
+                    }
+                //this.mView.EnableSubmitButton();
+
             }
             catch (System.Exception e)
             {

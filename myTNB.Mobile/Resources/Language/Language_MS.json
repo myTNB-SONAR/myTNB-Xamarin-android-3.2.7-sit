@@ -244,7 +244,9 @@
     "stateReason": "Sila nyatakan sebab anda",
     "selectAnAccount": "Pilih Akaun",
     "tncSubscribeFAQ": "Dengan menghantar, anda bersetuju pada <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Soalan Lazim Self Meter Reading</strong></a>, ",
-    "tncSubscribeTNC": "<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>."
+    "tncSubscribeTNC": "<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
+    //add new by irul
+    "tncsmrNew": "MS_By subscribing to Self Meter Reading, you agreed to read and submit meter reading on monthly basis except for month of April, August and December"
   },
   "Status": {
     "feedbackSuccessTitle": "Maklum Balas Berjaya",
