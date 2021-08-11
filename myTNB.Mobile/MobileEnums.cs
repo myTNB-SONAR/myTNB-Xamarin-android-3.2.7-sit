@@ -12,5 +12,17 @@
             WhatsApp,
             None
         }
+
+        public enum RenderingMethodEnum
+        {
+            EBill,
+            EBill_Email,
+            EBill_Email_Paper,
+            EBill_Paper,
+            Email,
+            Email_Paper,
+            Paper,
+            None
+        }
     }
 }

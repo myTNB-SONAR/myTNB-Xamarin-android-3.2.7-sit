@@ -220,20 +220,185 @@ namespace myTNB.Mobile.AWS.Models
             }
         }
 
+        /// <summary>
+        /// Determines if CA is Pre or Post Conversion
+        /// True - Post
+        /// False - Pre
+        /// </summary>
         [JsonIgnore]
-        public bool IsPaperAndEmail
+        public bool IsPostConversion
         {
             get
             {
-                if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EMail)
+                return PreviousBillRendering != null;
+            }
+        }
+
+        [JsonIgnore]
+        public MobileEnums.RenderingMethodEnum CurrentRenderingMethod
+        {
+            get
+            {
+                MobileEnums.RenderingMethodEnum rMethod = MobileEnums.RenderingMethodEnum.None;
+                if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EBill)
                 {
                     if (BCRecord != null && BCRecord.Count > 0)
                     {
-                        int index = BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_Paper);
-                        return index > -1;
+                        if (BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_Paper) > -1
+                            && BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_EMail) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Email_Paper;
+                        }
+                        else if (BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_Paper) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Paper;
+                        }
+                        else if (BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_EMail) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Email;
+                        }
+                        else
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill;
+                        }
+                    }
+                    else
+                    {
+                        rMethod = MobileEnums.RenderingMethodEnum.EBill;
                     }
                 }
-                return false;
+                else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EMail)
+                {
+                    if (BCRecord != null && BCRecord.Count > 0)
+                    {
+                        if (BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_Paper) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Email_Paper;
+                        }
+                        else if (BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_EBill) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Email;
+                        }
+                        else
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Email;
+                        }
+                    }
+                    else
+                    {
+                        rMethod = MobileEnums.RenderingMethodEnum.EBill_Email;
+                    }
+
+                }
+                else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_Paper)
+                {
+                    if (BCRecord != null && BCRecord.Count > 0)
+                    {
+                        if (BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_EMail) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Email_Paper;
+                        }
+                        else if (BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_EBill) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Paper;
+                        }
+                        else
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Paper;
+                        }
+                    }
+                    else
+                    {
+                        rMethod = MobileEnums.RenderingMethodEnum.EBill_Paper;
+                    }
+                }
+                return rMethod;
+            }
+        }
+
+        [JsonIgnore]
+        public MobileEnums.RenderingMethodEnum PreviousRenderingMethod
+        {
+            get
+            {
+                MobileEnums.RenderingMethodEnum rMethod = MobileEnums.RenderingMethodEnum.None;
+                if (IsPostConversion)
+                {
+                    return rMethod;
+                }
+
+                if (PreviousBillRendering.OwnerBillRenderingMethod == BillRenderingCodes.Owner_EBill)
+                {
+                    if (PreviousBillRendering.BCRecord != null && PreviousBillRendering.BCRecord.Count > 0)
+                    {
+                        if (PreviousBillRendering.BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_Paper) > -1
+                            && PreviousBillRendering.BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_EMail) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Email_Paper;
+                        }
+                        else if (PreviousBillRendering.BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_Paper) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Paper;
+                        }
+                        else if (PreviousBillRendering.BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_EMail) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Email;
+                        }
+                        else
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill;
+                        }
+                    }
+                    else
+                    {
+                        rMethod = MobileEnums.RenderingMethodEnum.EBill;
+                    }
+                }
+                else if (PreviousBillRendering.OwnerBillRenderingMethod == BillRenderingCodes.Owner_EMail)
+                {
+                    if (PreviousBillRendering.BCRecord != null && PreviousBillRendering.BCRecord.Count > 0)
+                    {
+                        if (PreviousBillRendering.BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_Paper) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Email_Paper;
+                        }
+                        else if (PreviousBillRendering.BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_EBill) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Email;
+                        }
+                        else
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Email;
+                        }
+                    }
+                    else
+                    {
+                        rMethod = MobileEnums.RenderingMethodEnum.EBill_Email;
+                    }
+                }
+                else if (PreviousBillRendering.OwnerBillRenderingMethod == BillRenderingCodes.Owner_Paper)
+                {
+                    if (PreviousBillRendering.BCRecord != null && PreviousBillRendering.BCRecord.Count > 0)
+                    {
+                        if (PreviousBillRendering.BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_EMail) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Email_Paper;
+                        }
+                        else if (PreviousBillRendering.BCRecord.FindIndex(x => x.RenderingMethod == BillRenderingCodes.BC_EBill) > -1)
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Paper;
+                        }
+                        else
+                        {
+                            rMethod = MobileEnums.RenderingMethodEnum.EBill_Paper;
+                        }
+                    }
+                    else
+                    {
+                        rMethod = MobileEnums.RenderingMethodEnum.EBill_Paper;
+                    }
+                }
+                return rMethod;
             }
         }
     }

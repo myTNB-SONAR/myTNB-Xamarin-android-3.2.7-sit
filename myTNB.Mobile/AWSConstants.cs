@@ -32,7 +32,7 @@
         //Domains
         public struct Domains
         {
-#if DEBUG
+#if DEBUGs
             internal const string GenerateAccessToken = "https://5y8p2rm83k.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetDBREligibility = "https://j8kgh1w7y3.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetBillRendering = "https://udv358acc6.execute-api.ap-southeast-1.amazonaws.com";
@@ -42,7 +42,7 @@
             internal const string StartDigitalBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8011/DigitalBill/Start";
             internal const string OptInToPaperBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8011/PaperBill/OptIn";
             public const string SSO = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8011/Sso?s={0}";
-#elif MASTER || SIT
+#elif MASTER || SIT || DEBUG
             internal const string GenerateAccessToken = "https://5c6jgu44tf.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetDBREligibility = "https://12pq772dmj.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetBillRendering = "https://k6mjxscgb1.execute-api.ap-southeast-1.amazonaws.com";

@@ -101,7 +101,12 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     {
                         for (int i = 0; i < dbrCAList.Count; i++)
                         {
-                            if (installationdetailsResponse.Content[i].IsResidential)
+                            if (installationdetailsResponse.Content.ContainsKey(dbrCAList[i])
+                                && installationdetailsResponse.Content[dbrCAList[i]] is List<PostInstallationDetailsResponseModel> installationDetail
+                                && installationDetail != null
+                                && installationDetail.Count > 0
+                                && installationDetail[0] != null
+                                && installationDetail[0].IsResidential)
                             {
                                 residentialList.Add(dbrCAList[i]);
                             }

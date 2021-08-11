@@ -211,12 +211,15 @@ namespace myTNB.Mobile
                     }
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
+                    responseString = responseString.Replace("[", string.Empty).Replace("]", string.Empty);
                     response = JsonConvert.DeserializeObject<PostInstallationDetailsResponse>(responseString);
-                    if (response != null
-                        && response.Content != null
-                        && response.StatusDetail != null
-                        && response.StatusDetail.Code.IsValid())
+
+                    if (response != null)
                     {
+                        response.StatusDetail = new StatusDetail
+                        {
+                            Code = "7200"
+                        };
                         response.StatusDetail = AWSConstants.Services.PostInstallationDetails.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
@@ -255,10 +258,6 @@ namespace myTNB.Mobile
                 StatusDetail = new StatusDetail()
             };
             response.StatusDetail = AWSConstants.Services.PostInstallationDetails.GetStatusDetails(MobileConstants.DEFAULT);
-
-            //For Testing
-            response.StatusDetail.IsSuccess = true;
-            response.Content = new PostInstallationDetailsResponseModel();
             return response;
         }
 
@@ -290,12 +289,17 @@ namespace myTNB.Mobile
                     }
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
+                    responseString = "{\"Content\":" + responseString + "}";
                     response = JsonConvert.DeserializeObject<PostMultiInstallationDetailsResponse>(responseString);
+
                     if (response != null
                         && response.Content != null
-                        && response.StatusDetail != null
-                        && response.StatusDetail.Code.IsValid())
+                        && response.Content.Count > 0)
                     {
+                        response.StatusDetail = new StatusDetail
+                        {
+                            Code = "7200"
+                        };
                         response.StatusDetail = AWSConstants.Services.PostMultiInstallationDetails.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
@@ -313,6 +317,7 @@ namespace myTNB.Mobile
                             response.StatusDetail = AWSConstants.Services.PostMultiInstallationDetails.GetStatusDetails(MobileConstants.DEFAULT);
                         }
                     }
+
                     Debug.WriteLine("[DEBUG] [PostMultiInstallationDetails]: " + JsonConvert.SerializeObject(response));
                     return response;
                 }
@@ -334,14 +339,6 @@ namespace myTNB.Mobile
                 StatusDetail = new StatusDetail()
             };
             response.StatusDetail = AWSConstants.Services.PostMultiInstallationDetails.GetStatusDetails(MobileConstants.DEFAULT);
-
-            //For testing
-            response.StatusDetail.IsSuccess = true;
-            response.Content = new List<PostInstallationDetailsResponseModel>();
-            for (int i = 0; i < caList.Count; i++)
-            {
-                response.Content.Add(new PostInstallationDetailsResponseModel());
-            }
 
             return response;
         }

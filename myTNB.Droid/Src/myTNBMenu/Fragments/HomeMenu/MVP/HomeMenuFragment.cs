@@ -572,28 +572,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                    && !EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                        , EligibilitySessionCache.FeatureProperty.TargetGroup))
                 {
-                    GetBillRenderingModel renderingValue = AccountTypeCache.Instance.GetFirstRenderingResponse();
-                    if (renderingValue != null && renderingValue.DBRType != MobileEnums.DBRTypeEnum.None)
+                    List<string> caList = AccountTypeCache.Instance.DBREligibleCAs;
+                    string caNumber = caList != null && caList.Count > 0
+                        ? caList[0]
+                        : string.Empty;
+                    GetBillRenderingResponse BillRenderingResponse = await DBRManager.Instance.GetBillRendering(caNumber
+                        , AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                    if (BillRenderingResponse != null
+                        && BillRenderingResponse.StatusDetail != null
+                        && BillRenderingResponse.StatusDetail.IsSuccess
+                        && BillRenderingResponse.Content != null
+                        && BillRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
                     {
                         Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                        intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(new GetBillRenderingResponse
-                        {
-                            Content = renderingValue,
-                            StatusDetail = new StatusDetail
-                            {
-                                IsSuccess = true
-                            }
-                        }));
-                        intent.PutExtra("accountNumber", renderingValue.ContractAccountNumber);
+                        intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                        intent.PutExtra("accountNumber", BillRenderingResponse.Content.ContractAccountNumber);
                         intent.PutExtra("isOwner", true);
                         StartActivity(intent);
                     }
                     else
                     {
                         MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                            .SetTitle(LanguageManager.Instance.GetErrorValue("defaultErrorTitle"))
-                            .SetMessage(LanguageManager.Instance.GetErrorValue("defaultErrorMessage"))
-                            .SetCTALabel(LanguageManager.Instance.GetCommonValue("ok"))
+                            .SetTitle(billRenderingResponse?.StatusDetail?.Title ?? string.Empty)
+                            .SetMessage(billRenderingResponse?.StatusDetail?.Message ?? string.Empty)
+                            .SetCTALabel(billRenderingResponse?.StatusDetail?.PrimaryCTATitle ?? string.Empty)
                             .Build();
                         errorPopup.Show();
                     }
@@ -1030,9 +1032,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetDBRDiscoverView()
         {
-            if(DashboardHomeActivity.IsEligibilityAPICalled)
+            if (DashboardHomeActivity.IsEligibilityAPICalled)
             {
-                 discovercontainer.Visibility = ViewStates.Gone;
+                discovercontainer.Visibility = ViewStates.Gone;
             }
             if (IsAccountDBREligible)
             {
