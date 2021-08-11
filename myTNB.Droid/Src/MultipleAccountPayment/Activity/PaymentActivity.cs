@@ -67,6 +67,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         public bool paymentReceiptGenerated = false;
 
         internal bool ShouldBackToHome { set; get; } = false;
+        internal bool IsMultiplePayment;
 
         public override int ResourceId()
         {
@@ -137,6 +138,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     if (extras.ContainsKey("PAYMENT_ITEMS"))
                     {
                         accounts = DeSerialze<List<MPAccount>>(extras.GetString("PAYMENT_ITEMS"));
+                        IsMultiplePayment = accounts != null && accounts.Count > 1;
                     }
 
                     if (extras.ContainsKey("ACCOUNT_CHARGES_LIST"))
@@ -420,6 +422,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             try
             {
                 ShowProgressDialog();
+                DynatraceHelper.OnTrack(IsMultiplePayment
+                    ? DynatraceConstants.DBR.CTAs.PaymentSuccess.Multiple
+                    : DynatraceConstants.DBR.CTAs.PaymentSuccess.Single);
                 string dbrAccount = GetEligibleDBRAccount();
                 _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount);
                 if (!AccessTokenCache.Instance.HasTokenSaved(this))

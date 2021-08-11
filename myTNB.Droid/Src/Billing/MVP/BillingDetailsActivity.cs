@@ -7,8 +7,6 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Preferences;
-using Android.Text;
-using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
@@ -17,7 +15,6 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Java.Text;
 using myTNB.Mobile;
-using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
@@ -31,6 +28,7 @@ using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
+using myTNB.Mobile.AWS.Models;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -125,7 +123,6 @@ namespace myTNB_Android.Src.Billing.MVP
         ImageView bill_paperless_icon;
 
         bool _isOwner;
-
 
         GetBillRenderingResponse billRenderingResponse;
 
@@ -270,22 +267,22 @@ namespace myTNB_Android.Src.Billing.MVP
                 if (billRenderingResponse != null)
                 {
                     digital_container.Visibility = ViewStates.Visible;
-                    if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill
-                        || billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBillWithCTA)
+                    if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBill
+                        || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
                     {
                         bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
                     }
-                    else if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Email
-                        || billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EmailWithCTA)
+                    else if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Email
+                        || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
                     {
                         bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
                     }
-                    if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Paper)
+                    if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
                     {
                         bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
                     }
-
                     paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
+                    SetDynatraceScreenTags();
                 }
             }
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -322,36 +319,73 @@ namespace myTNB_Android.Src.Billing.MVP
                 topLayout.Visibility = ViewStates.Invisible;
                 this.billingDetailsPresenter.ShowBillDetails(selectedAccountData, isCheckPendingPaymentNeeded);
             }
-
-            ShowGoPapperless();
         }
 
-        private void ShowGoPapperless()
+        private void SetDynatraceCTATags()
         {
-            string ebilltype = "NonTargted";
-            if (ebilltype == "NonTargted")
+            string dynatraceTag = string.Empty;
+            if (billRenderingResponse.Content.IsPostConversion)
             {
-
+                if (billRenderingResponse.Content.PreviousRenderingMethod == MobileEnums.RenderingMethodEnum.None
+                    && billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.CTAs.BillDetails.Post_EBill;
+                }
+                else if (billRenderingResponse.Content.PreviousRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email_Paper
+                   && billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.CTAs.BillDetails.Post_EBill_Email;
+                }
             }
-            else if (ebilltype == "AutoConvert")
+            else
             {
-
+                if (billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.Paper
+                    || billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Paper)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.CTAs.BillDetails.Pre_EBill_Paper;
+                }
+                else if (billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email_Paper)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.CTAs.BillDetails.Pre_EBill_Email_Paper;
+                }
             }
-            else if (ebilltype == "DigitalBill")
+            if (dynatraceTag.IsValid())
             {
-
+                DynatraceHelper.OnTrack(dynatraceTag);
             }
-            else if (ebilltype == "BillEmail")
-            {
+        }
 
+        private void SetDynatraceScreenTags()
+        {
+            string dynatraceTag = string.Empty;
+            if (billRenderingResponse.Content.IsPostConversion)
+            {
+                if (billRenderingResponse.Content.PreviousRenderingMethod == MobileEnums.RenderingMethodEnum.None
+                    && billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.Screens.BillDetails.Post_EBill;
+                }
+                else if (billRenderingResponse.Content.PreviousRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email_Paper
+                   && billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.Screens.BillDetails.Post_EBill_Email;
+                }
             }
-            else if (ebilltype == "PaperBills")
+            else
             {
-
+                if (billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.Paper
+                    || billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Paper)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.Screens.BillDetails.Pre_EBill_Paper;
+                }
+                else if (billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email_Paper)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.Screens.BillDetails.Pre_EBill_Email_Paper;
+                }
             }
-            else if (ebilltype == "WhatsappBills")
+            if (dynatraceTag.IsValid())
             {
-
+                DynatraceHelper.OnTrack(dynatraceTag);
             }
         }
 
@@ -360,6 +394,7 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             if (!this.GetIsClicked())
             {
+                SetDynatraceCTATags();
                 _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
                     ? selectedAccountData.IsOwner
                     : DBRUtility.Instance.IsCADBREligible(selectedAccountData.AccountNum);

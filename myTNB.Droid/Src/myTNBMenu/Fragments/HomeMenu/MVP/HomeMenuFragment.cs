@@ -560,6 +560,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             if (DBRUtility.Instance.IsAccountDBREligible)
             {
+                DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Home_Banner);
                 GetBillRenderingAsync();
             }
         }
@@ -568,73 +569,55 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 ShowProgressDialog();
+                string caNumber = string.Empty;
                 if (DBRUtility.Instance.IsAccountDBREligible
                    && !EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                        , EligibilitySessionCache.FeatureProperty.TargetGroup))
                 {
                     List<string> caList = AccountTypeCache.Instance.DBREligibleCAs;
-                    string caNumber = caList != null && caList.Count > 0
+                    caNumber = caList != null && caList.Count > 0
                         ? caList[0]
                         : string.Empty;
-                    GetBillRenderingResponse BillRenderingResponse = await DBRManager.Instance.GetBillRendering(caNumber
-                        , AccessTokenCache.Instance.GetAccessToken(this.Activity));
-                    if (BillRenderingResponse != null
-                        && BillRenderingResponse.StatusDetail != null
-                        && BillRenderingResponse.StatusDetail.IsSuccess
-                        && BillRenderingResponse.Content != null
-                        && BillRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
-                    {
-                        Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                        intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
-                        intent.PutExtra("accountNumber", BillRenderingResponse.Content.ContractAccountNumber);
-                        intent.PutExtra("isOwner", true);
-                        StartActivity(intent);
-                    }
-                    else
-                    {
-                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                            .SetTitle(billRenderingResponse?.StatusDetail?.Title ?? string.Empty)
-                            .SetMessage(billRenderingResponse?.StatusDetail?.Message ?? string.Empty)
-                            .SetCTALabel(billRenderingResponse?.StatusDetail?.PrimaryCTATitle ?? string.Empty)
-                            .Build();
-                        errorPopup.Show();
-                    }
+                    _isOwner = true;
                 }
                 else
                 {
                     CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
-                    //_isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(dbrAccount.AccNum);
                     _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount.AccNum);
-                    if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
-                    {
-                        string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
-                        AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
-                    }
-                    billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
-
-                    //Nullity Check
-                    if (billRenderingResponse != null
-                       && billRenderingResponse.StatusDetail != null
-                       && billRenderingResponse.StatusDetail.IsSuccess
-                       && billRenderingResponse.Content != null
-                       && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
-                    {
-                        Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                        intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
-                        intent.PutExtra("accountNumber", dbrAccount.AccNum);
-                        intent.PutExtra("isOwner", _isOwner);
-                        StartActivity(intent);
-                    }
-                    else
-                    {
-                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                            .SetTitle(billRenderingResponse?.StatusDetail?.Title ?? string.Empty)
-                            .SetMessage(billRenderingResponse?.StatusDetail?.Message ?? string.Empty)
-                            .SetCTALabel(billRenderingResponse?.StatusDetail?.PrimaryCTATitle ?? string.Empty)
-                            .Build();
-                        errorPopup.Show();
-                    }
+                    caNumber = dbrAccount.AccNum;
                 }
+
+                if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                }
+                billRenderingResponse = await DBRManager.Instance.GetBillRendering(caNumber
+                    , AccessTokenCache.Instance.GetAccessToken(this.Activity));
+
+                //Nullity Check
+                if (billRenderingResponse != null
+                   && billRenderingResponse.StatusDetail != null
+                   && billRenderingResponse.StatusDetail.IsSuccess
+                   && billRenderingResponse.Content != null
+                   && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
+                {
+                    Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                    intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                    intent.PutExtra("accountNumber", caNumber);
+                    intent.PutExtra("isOwner", _isOwner);
+                    StartActivity(intent);
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(billRenderingResponse?.StatusDetail?.Title ?? string.Empty)
+                        .SetMessage(billRenderingResponse?.StatusDetail?.Message ?? string.Empty)
+                        .SetCTALabel(billRenderingResponse?.StatusDetail?.PrimaryCTATitle ?? string.Empty)
+                        .Build();
+                    errorPopup.Show();
+                }
+
                 HideProgressDialog();
 
             }
@@ -1162,7 +1145,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupTitle"))
                     .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupMessage"))
                     .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "gotIt"))
-                    .SetCTAaction(() => { this.SetIsClicked(false); })
+                    .SetCTAaction(() =>
+                    {
+                        this.SetIsClicked(false);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
+                    })
                     .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupStartNow"))
                     .SetSecondaryCTAaction(() => ShowManageBill())
                     .Build();
@@ -1170,11 +1157,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-
         public void ShowManageBill()
         {
             try
             {
+                DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_Viewmore);
                 GetBillRenderingAsync();
             }
             catch (System.Exception e)

@@ -145,10 +145,10 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             }
         }
 
-
         [OnClick(Resource.Id.ManageBill_container)]
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.ManageElectricityAccount.Manage);
             Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
             intent.PutExtra("isOwner", _isOwner);
             intent.PutExtra("accountNumber", accountData.AccountNum);
@@ -438,7 +438,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 ShowProgressDialog();
                 GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                 AccountData dbrAccount = selectedAccount;
-                //_isOwner = EligibilitySessionCache.Instance.IsDBROTTagFromCache ? false : EligibilitySessionCache.Instance.IsCADBREligible(selectedAccount.AccountNum);
                 _isOwner = DBRUtility.Instance.IsCADBREligible(selectedAccount.AccountNum);
 
                 if (!AccessTokenCache.Instance.HasTokenSaved(this))
