@@ -529,7 +529,7 @@
                                 android:singleLine="true"
                                 android:lineSpacingExtra="2dp"
                                 android:layout_marginLeft="4dp"
-                                android:layout_marginRight="28dp"/>
+                                android:layout_marginRight="22dp"/>
                             <ImageView
                                 android:id="@+id/whatsNewUnreadImg"
                                 android:layout_height="16dp"
@@ -537,7 +537,6 @@
                                 android:scaleType="fitXY"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentRight="true"
-                                android:layout_marginRight="6dp"
                                 android:src="@drawable/ic_notifications_unread" />
                         </RelativeLayout>
                     </LinearLayout>
