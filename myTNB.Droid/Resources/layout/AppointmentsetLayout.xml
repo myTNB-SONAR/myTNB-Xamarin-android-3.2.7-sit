@@ -116,7 +116,7 @@
                     android:layout_weight=".6"
                     android:textColor="@color/tunaGrey"
                     android:text="1001571305"
-                    android:id="@+id/servicerequest"/>
+                    android:id="@+id/servicerequestnumber"/>
               
             </LinearLayout>
              <View
@@ -161,7 +161,7 @@
                     android:layout_weight=".6"
                     android:textColor="@color/tunaGrey"
                     android:text="16 May 2021"
-                    android:id="@+id/appointmentValue"/>
+                    android:id="@+id/appointmentdate"/>
                
             </LinearLayout>
              <View
@@ -206,7 +206,7 @@
                     android:layout_weight=".6"
                     android:textColor="@color/tunaGrey"
                     android:text="Rahman bin Naz"
-                    android:id="@+id/premiseaddresstext"/>
+                    android:id="@+id/technicianname"/>
                
             </LinearLayout>
              <View
@@ -250,7 +250,7 @@
                     android:layout_weight=".6"
                     android:textColor="@color/tunaGrey"
                     android:text="Level 1, S-0876, Mid Valley City, 58000, Kuala Lumpur, Federal Territory of Kuala Lumpur."
-                    android:id="@+id/addresstext"/>
+                    android:id="@+id/incidentadd"/>
                
             </LinearLayout>
         </LinearLayout>

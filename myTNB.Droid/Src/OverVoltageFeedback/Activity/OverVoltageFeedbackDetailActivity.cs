@@ -13,9 +13,11 @@ using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.AppointmentDetailSet.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.FeedbackDetails.MVP;
+using myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
@@ -30,6 +32,8 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         [BindView(Resource.Id.webView)]
         WebView webView;
         string ClaimId;
+        string TempTitle;
+        DTOWebView data;
 
         SubmittedFeedbackDetails submittedFeedback;
         private FeedbackDetailsContract.Others.IUserActionsListener userActionsListener;
@@ -125,7 +129,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 // webView.SetWebViewClient(new WebViewClient());
                 ShowProgressDialog();
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
-                webView.LoadUrl("https://serene-rosalind-a35967.netlify.app/claimPage/" + ClaimId); //Live https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId// http://192.168.1.158:3000/claimPage/b1683610-34e6-424e-86fd-fce3ae3ab0b //338d6d22-4f04-4065-b7b1-3cb97542faa6 //https://serene-rosalind-a35967.netlify.app/claimPage/" + ClaimId
+                webView.LoadUrl("https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId);//http://192.168.1.158:3000 //Live https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId// http://192.168.1.158:3000/claimPage/b1683610-34e6-424e-86fd-fce3ae3ab0b //338d6d22-4f04-4065-b7b1-3cb97542faa6 //https://serene-rosalind-a35967.netlify.app/claimPage/" + ClaimId
                 await Task.Delay(0);
                 //HideProgressDialog();
             }
@@ -138,7 +142,9 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         {
             base.OnResume();
             try
-            {
+            {               
+                SetToolBarTitle(Intent.GetStringExtra("TITLE"));
+                SetUI();
                 FirebaseAnalyticsUtils.SetScreenName(this, "Feedback Details");
             }
             catch (Exception e)
@@ -187,6 +193,59 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             }
         }
 
+        internal void ResponseFromWebviewAsync(string message)
+        {
+            data = JsonConvert.DeserializeObject<DTOWebView>(message);
+            TempTitle = data.title;
+            if (data.title == "Set Appointment")
+            {
+                SetToolBarTitle("Set Appointment");
+            }
+            if (data.srNumber != null)
+            {
+                if (data.title == "CancelAppointment")
+                {
+                    Intent canclAppointment = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
+                    canclAppointment.PutExtra("Sernumbr", data.srNumber);
+                    canclAppointment.PutExtra("AppointmentFlag", "True");
+                    StartActivity(canclAppointment);
+                }
+                else if (data.title == "CancelEnquiry")
+                {
+                    Intent canclEnquiry = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
+                    canclEnquiry.PutExtra("Sernumbr", data.srNumber);
+                    canclEnquiry.PutExtra("EnuiryFlag", "True");
+                    StartActivity(canclEnquiry);
+                }
+                else
+                {
+                    Intent setAppointment = new Intent(this, typeof(AppointmentSetActivity));
+                    setAppointment.PutExtra("Sernumbr", data.srNumber);
+                    setAppointment.PutExtra("ApptDate", data.appointmentDate);
+                    setAppointment.PutExtra("TechName", data.technicianName);
+                    setAppointment.PutExtra("IncdAdd", data.incidentAddress);
+                    StartActivity(setAppointment);
+                }
+
+            }
+            else if (data.title == "overvoltageclaim")
+            {
+                SetToolBarTitle("Overvoltage Claim");
+            }
+        }
+        public override void OnBackPressed()
+        {
+            if (TempTitle == "Set Appointment")
+            {
+
+                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackAppointment').trigger('click'); },500); })();", null);
+            }
+            else
+            {
+                base.OnBackPressed();
+            }
+            
+        }
     }
 
     internal class WebViewClient : WebChromeClient
@@ -201,15 +260,15 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             this.webview = webview;
 
         }
-        //public override bool OnJsAlert(WebView view, string url, string message, JsResult result)
-        //{
-        //    //return base.OnJsAlert(view, url, message, result);
-        //    result.Cancel();
-        //    _FeedbackDetailsOthersActivity.ResponseFromWebviewAsync(message);
+        public override bool OnJsAlert(WebView view, string url, string message, JsResult result)
+        {
+            //return base.OnJsAlert(view, url, message, result);
+            result.Cancel();
+            _OverVoltageFeedbackDetailActivity.ResponseFromWebviewAsync(message);
 
-        //    return true;
+            return true;
 
-        //}
+        }
         public override void OnProgressChanged(WebView view, int newProgress)
         {
             base.OnProgressChanged(view, newProgress);
@@ -223,5 +282,18 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         }
 
 
+    }
+    public class DTOWebView
+    {
+        public string srNumber { get; set; }
+        public string appointmentDate { get; set; }
+        public string technicianName { get; set; }
+        public string incidentAddress { get; set; }
+        public string title { get; set; }
+        public string claimId { get; set; }
+        public string currentScreen { get; set; }
+        public string nextScreen { get; set; }
+        public string totalAmount { get; set; }
+        public string message { get; set; }
     }
 }
