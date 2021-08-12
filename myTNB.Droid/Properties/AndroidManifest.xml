@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mytnb.mytnb" android:versionName="v2.3.3" android:installLocation="internalOnly" android:versionCode="310">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.seamlessx.tnb.mytnbovis" android:versionName="v2.3.3" android:installLocation="internalOnly" android:versionCode="310">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.CAMERA" />
@@ -8,7 +8,7 @@
 	<uses-feature android:name="android.hardware.camera.autofocus" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-	<permission android:name="com.mytnb.mytnb.permission.MAPS_RECEIVE" android:protectionLevel="signature" />
+	<permission android:name="com.seamlessx.tnb.mytnbovis.permission.MAPS_RECEIVE" android:protectionLevel="signature" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
 	<uses-permission android:name="android.permission.BLUETOOTH" />

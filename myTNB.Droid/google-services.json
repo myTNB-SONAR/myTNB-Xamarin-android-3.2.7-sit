@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:282146697638:android:b577a7d3c33e2215c81f67",
+        "mobilesdk_app_id": "1:282146697638:android:25f26edff6db0ec9c81f67",
         "android_client_info": {
-          "package_name": "com.mytnb.mytnb"
+          "package_name": "com.seamlessx.tnb.mytnbovis"
         }
       },
       "oauth_client": [
