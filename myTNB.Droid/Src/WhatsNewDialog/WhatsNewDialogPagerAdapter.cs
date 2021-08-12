@@ -8,6 +8,7 @@ using AndroidX.CardView.Widget;
 using AndroidX.ViewPager.Widget;
 using DynatraceAndroid;
 using Facebook.Shimmer;
+using myTNB.Mobile;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
@@ -348,9 +349,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
         {
             try
             {
-                // dynatrace
-                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(!string.IsNullOrEmpty(title) ? title : Constants.DYNA_WHATS_NEW_DEFAULT);
-                dynaTrace.LeaveAction();
+                DynatraceHelper.OnTrack(title.IsValid() ? title : DynatraceConstants.HOMEPOPUP_WHATSNEWCLICKED);
             }
             catch (System.Exception e)
             {

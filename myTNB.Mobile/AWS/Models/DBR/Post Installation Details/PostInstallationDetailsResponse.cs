@@ -3,12 +3,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace myTNB.Mobile.AWS.Models
 {
-    public class PostInstallationDetailsResponse : BaseResponse<PostInstallationDetailsResponseModel>
-    {
-
-    }
-
-    public class PostInstallationDetailsResponseModel
+    public class PostInstallationDetailsResponse : BaseStatus
     {
         [JsonProperty("rateCategory")]
         public string RateCategory { set; get; }

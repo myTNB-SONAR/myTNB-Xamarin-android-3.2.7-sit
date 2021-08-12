@@ -30,11 +30,10 @@ using myTNB_Android.Src.ViewBill.Activity;
 using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
-using Android.Text;
-using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Database.Model;
+using myTNB.Mobile.AWS.Models;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
@@ -281,6 +280,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             if (!this.GetIsClicked())
             {
+                SetDynatraceCTATags();
                 this.SetIsClicked(true);
                 Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
@@ -442,7 +442,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
-        internal static ItemisedBillingMenuFragment NewInstance(AccountData selectedAccount, GetBillRenderingResponse billRenderingModel = null, bool _isOwner = false)
+        internal static ItemisedBillingMenuFragment NewInstance(AccountData selectedAccount
+            , GetBillRenderingResponse billRenderingModel = null
+            , bool _isOwner = false)
         {
             ItemisedBillingMenuFragment billsMenuFragment = new ItemisedBillingMenuFragment();
             Bundle args = new Bundle();
@@ -544,9 +546,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             ? selectedAccount.IsOwner
                             : DBRUtility.Instance.IsCADBREligible(dbrAccount.AccountNum);
 
-                        if (billRenderingResponse != null)
+                        if (billRenderingResponse != null
+                            && billRenderingResponse.StatusDetail != null
+                            && billRenderingResponse.StatusDetail.IsSuccess
+                            && billRenderingResponse.Content != null)
                         {
-                            if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.None)
+                            if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
                             {
                                 digital_container.Visibility = ViewStates.Gone;
                                 isDBRAccount = false;
@@ -555,21 +560,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             {
                                 isDBRAccount = true;
                                 digital_container.Visibility = ViewStates.Visible;
-                                if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBill
-                                    || billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EBillWithCTA)
+                                if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBill
+                                    || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
                                 {
                                     bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
                                 }
-                                else if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Email
-                                    || billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.EmailWithCTA)
+                                else if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Email
+                                    || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
                                 {
                                     bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
                                 }
-                                if (billRenderingResponse.Content.DBRType == myTNB.Mobile.MobileEnums.DBRTypeEnum.Paper)
+                                if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
                                 {
                                     bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
                                 }
                                 paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
+                                SetDynatraceScreenTags();
                             }
                         }
                     }
@@ -585,25 +591,98 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         public int GetItemisedBillingHeaderImageHeight()
         {
             return itemisedBillingHeaderImage.Height;
         }
+
         public int GetitemisedBillingInfoContainerHeight()
         {
             return itemisedBillingInfoContainer.Height;
         }
+
         public int GetitemisedBillingInfoShimmerHeight()
         {
             return itemisedBillingInfoShimmer.Height;
         }
+
         public int GetChargeAvailableContainerHeight()
         {
             return chargeAvailableContainer.Height;
         }
+
         public int GetchargeAvailableNoCTAContainerHeight()
         {
             return chargeAvailableNoCTAContainer.Height;
+        }
+
+        private void SetDynatraceScreenTags()
+        {
+            string dynatraceTag = string.Empty;
+            if (billRenderingResponse.Content.IsPostConversion)
+            {
+                if (billRenderingResponse.Content.PreviousRenderingMethod == MobileEnums.RenderingMethodEnum.None
+                    && billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.Screens.Bills.Post_EBill;
+                }
+                else if (billRenderingResponse.Content.PreviousRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email_Paper
+                   && billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.Screens.Bills.Post_EBill_Email;
+                }
+            }
+            else
+            {
+                if (billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.Paper
+                    || billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Paper)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.Screens.Bills.Pre_EBill_Paper;
+                }
+                else if (billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email_Paper)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.Screens.Bills.Pre_EBill_Email_Paper;
+                }
+            }
+            if (dynatraceTag.IsValid())
+            {
+                DynatraceHelper.OnTrack(dynatraceTag);
+            }
+        }
+
+        private void SetDynatraceCTATags()
+        {
+            string dynatraceTag = string.Empty;
+            if (billRenderingResponse.Content.IsPostConversion)
+            {
+                if (billRenderingResponse.Content.PreviousRenderingMethod == MobileEnums.RenderingMethodEnum.None
+                    && billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.CTAs.Bills.Post_EBill;
+                }
+                else if (billRenderingResponse.Content.PreviousRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email_Paper
+                   && billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.CTAs.Bills.Post_EBill_Email;
+                }
+            }
+            else
+            {
+                if (billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.Paper
+                    || billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Paper)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.CTAs.Bills.Pre_EBill_Paper;
+                }
+                else if (billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email_Paper)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.CTAs.Bills.Pre_EBill_Email_Paper;
+                }
+            }
+            if (dynatraceTag.IsValid())
+            {
+                DynatraceHelper.OnTrack(dynatraceTag);
+            }
         }
 
         public void ShowShimmerLoading()
