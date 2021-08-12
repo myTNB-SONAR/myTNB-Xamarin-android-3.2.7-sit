@@ -456,7 +456,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         else
                         {
                             int middleHeight = 0;
-                            int topHeight = ((HomeMenuFragment)this.mFragment).GettopRootViewHeight() + ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight() + ((HomeMenuFragment)this.mFragment).GetDiscovercontainerHeight() + (int)DPUtils.ConvertDPToPx(30f);
+                            int topHeight = ((HomeMenuFragment)this.mFragment).GettopRootViewHeight() + ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight() + ((HomeMenuFragment)this.mFragment).GetDiscovercontainerHeight() + (int)DPUtils.ConvertDPToPx(20f);
                             middleHeight = ((HomeMenuFragment)this.mFragment).GetnewFAQContainerHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight()) - (int)DPUtils.ConvertDPToPx(10f);
                             if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
                             {
@@ -471,7 +471,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int belowHeight = ((myTNB_Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
                                 middleHeight += (int)DPUtils.ConvertDPToPx(15f); 
-                                topHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight) - middleHeight - ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight() + (TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(20f) : (int)DPUtils.ConvertDPToPx(30f));
+                                topHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight) - middleHeight - ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight() + (TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(15f) : (int)DPUtils.ConvertDPToPx(20f));
                             }
 
                             LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;

@@ -410,7 +410,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             Handler h = new Handler();
             Action myAction = () =>
             {
-                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.OnGeneraNewAppTutorialList(), true);
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.OnGeneraNewAppTutorialList(),false);
             };
             h.PostDelayed(myAction, 100);
         }
