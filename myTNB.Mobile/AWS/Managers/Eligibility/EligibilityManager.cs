@@ -47,7 +47,19 @@ namespace myTNB.Mobile
             GetEligibilityResponse response = new GetEligibilityResponse();
             try
             {
-                IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.GetDBREligibility);
+                string EligibilityEndpoint = string.Empty;
+                string tmp_GenerateEligibility = AwsSitecoreManager.Instance.EgibilityEndpoint();
+
+                if (!string.IsNullOrEmpty(tmp_GenerateEligibility))
+                {
+                    EligibilityEndpoint = tmp_GenerateEligibility;
+                }
+                else
+                {
+                    EligibilityEndpoint = AWSConstants.Domains.GetDBREligibility;
+                }
+
+                IDBRService service = RestService.For<IDBRService>(EligibilityEndpoint);
                 HttpResponseMessage rawResponse = await service.GetEligibility(userID
                    , NetworkService.GetCancellationToken()
                    , accessToken
