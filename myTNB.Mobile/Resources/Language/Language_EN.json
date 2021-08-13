@@ -1104,7 +1104,16 @@
     "leaveDialouge": "Leave this page?",
     "leaveDialougeMessage": "You will lose all changes made since your last save. Press Yes to continue, or Cancel to stay on the current page.",
     "submitICFeedback_OverVoltageClainSuccessPageThankyouRequest": "Thank you for your request!",
-    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent": "We’ll get back to you soon. In the meantime, stay updated by tracking your claim status."
+    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent": "We’ll get back to you soon. In the meantime, stay updated by tracking your claim status.",
+    "thankYouForYourAgree": "Thank you for your submisison.",
+    "thankYouForYourAgreeDescription": "To proceed with payment, please submit the required payment information on the submitted enquiry page.",
+    "thankYouForYourDisagree": "Your negotiation request has been submitted.",
+    "thankYouForYourDisagreeDescription": "We'll get back to you soon. In the mean time, stay updated by tracking your submitted enquiry status.",
+    "proccedToPaymentInformation": "Proceed to Payment Infomation",
+    "thankYouForYourEnquiry": "Your enquiry has been cancelled.",
+    "thankYouForYourEnquiryDescription": "Your enquiry for over voltage claim request has been successfully cancelled.",
+    "thankYouForYourAppointment": "Your appointment has been cancelled.",
+    "thankYouForYourAppointmentDescription": "Your appointment for over voltage claim request has been successfully cancelled."
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",

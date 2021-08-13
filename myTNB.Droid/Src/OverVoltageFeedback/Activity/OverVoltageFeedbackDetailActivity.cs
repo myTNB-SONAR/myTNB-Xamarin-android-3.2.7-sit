@@ -97,8 +97,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 {
                     SetToolBarTitle(Intent.GetStringExtra("TITLE"));
                 }
-
-                SetUI();
+                //SetUI();
 
             }
             catch (Exception e)
@@ -129,7 +128,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 // webView.SetWebViewClient(new WebViewClient());
                 ShowProgressDialog();
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
-                webView.LoadUrl("https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId);//http://192.168.1.158:3000 //Live https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId// http://192.168.1.158:3000/claimPage/b1683610-34e6-424e-86fd-fce3ae3ab0b //338d6d22-4f04-4065-b7b1-3cb97542faa6 //https://serene-rosalind-a35967.netlify.app/claimPage/" + ClaimId
+                webView.LoadUrl("http://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId);//http://192.168.1.158:3000 //Live https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId// http://192.168.1.158:3000/claimPage/b1683610-34e6-424e-86fd-fce3ae3ab0b //338d6d22-4f04-4065-b7b1-3cb97542faa6 //https://serene-rosalind-a35967.netlify.app/claimPage/" + ClaimId
                 await Task.Delay(0);
                 //HideProgressDialog();
             }
@@ -217,6 +216,21 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     canclEnquiry.PutExtra("EnuiryFlag", "True");
                     StartActivity(canclEnquiry);
                 }
+                else if (data.title == "onAgree")
+                {
+                    Intent OnAgree = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
+                    OnAgree.PutExtra("Sernumbr", data.srNumber);
+                    OnAgree.PutExtra("AgreeFlag", "True");
+                    StartActivity(OnAgree);
+                }
+                else if (data.title == "onDisagree")
+                {
+
+                    Intent OnDisAgree = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
+                    OnDisAgree.PutExtra("Sernumbr", data.srNumber);
+                    OnDisAgree.PutExtra("DisAgreeFlag", "True");
+                    StartActivity(OnDisAgree);
+                }
                 else
                 {
                     Intent setAppointment = new Intent(this, typeof(AppointmentSetActivity));
@@ -228,10 +242,22 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 }
 
             }
+            else if (data.title == "Compensation Agreement")
+            {
+                SetToolBarTitle("Compensation Agreement");
+                TempTitle= "Compensation Agreement";
+
+            }
+            else if (data.title == "Negotiation Request")
+            {
+                SetToolBarTitle("Negotiation Request");
+                TempTitle = "Negotiation Request";
+            }
             else if (data.title == "overvoltageclaim")
             {
                 SetToolBarTitle("Overvoltage Claim");
             }
+            
         }
         public override void OnBackPressed()
         {
@@ -239,6 +265,14 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             {
 
                 webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackAppointment').trigger('click'); },500); })();", null);
+            }
+            else if (TempTitle == "Compensation Agreement")
+            {
+                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackCompensation').trigger('click'); },500); })();", null);
+            }
+            else if (TempTitle == "Negotiation Request")
+            {
+                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackNegotiation').trigger('click'); },500); })();", null);
             }
             else
             {

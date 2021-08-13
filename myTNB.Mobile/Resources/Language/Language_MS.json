@@ -1103,7 +1103,17 @@
     "registeredView": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
     "viewYes": "Ya",
     "viewNo": "Tidak",
-    "documentPdf": "Dokumen"
+    "documentPdf": "Dokumen",
+    "thankYouForYourAgree": "Terima kasih atas penyerahan anda.",
+    "thankYouForYourAgreeDescription": "To proceed with payment, please submit the required payment information on the submitted enquiry page.",
+    "thankYouForYourDisagree": "Permintaan rundingan anda telah dihantar.",
+    "thankYouForYourDisagreeDescription": "Kami akan menghubungi anda tidak lama lagi. itu dapatkan maklumat terkini dengan mengesan status pertanyaan yang anda kirimkan.", //
+    "proccedToPaymentInformation": "Teruskan ke Maklumat Pembayaran",
+    "thankYouForYourEnquiry": "Pertanyaan anda telah dibatalkan.",
+    "thankYouForYourEnquiryDescription": "Pertanyaan anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan.",
+    "thankYouForYourAppointment": "Temujanji anda telah dibatalkan.", 
+    "thankYouForYourAppointmentDescription": "Perjanjian anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan."
+
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",

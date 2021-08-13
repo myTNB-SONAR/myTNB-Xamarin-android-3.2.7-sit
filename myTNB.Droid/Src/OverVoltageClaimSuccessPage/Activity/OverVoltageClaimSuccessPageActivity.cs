@@ -52,6 +52,8 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
         string SerialNumber;
         public bool AppointmentFlag = false;
         public bool EnuiryFlag = false;
+        public bool AgreeFlag = false;
+        public bool DisAgreeFlag = false;
 
         public override int ResourceId()
         {
@@ -64,14 +66,22 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
             try
             {
 
-                if (AppointmentFlag == true)
+                if (AppointmentFlag == true | EnuiryFlag == true | AgreeFlag == true | DisAgreeFlag == true)
                 {
                     base.OnBackPressed();
                 }
-                else if (EnuiryFlag == true)
-                {
-                    base.OnBackPressed();
-                }
+                //else if (EnuiryFlag == true)
+                //{
+                //    base.OnBackPressed();
+                //}
+                //else if (AgreeFlag == true)
+                //{
+                //    base.OnBackPressed();
+                //}
+                //else if (DisAgreeFlag == true)
+                //{
+                //    base.OnBackPressed();
+                //}
                 else
                 {
                     Intent intent = new Intent(this, typeof(DashboardHomeActivity));
@@ -95,6 +105,8 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
             {
                 AppointmentFlag = Convert.ToBoolean(Intent.GetStringExtra("AppointmentFlag"));
                 EnuiryFlag = Convert.ToBoolean(Intent.GetStringExtra("EnuiryFlag"));
+                AgreeFlag = Convert.ToBoolean(Intent.GetStringExtra("AgreeFlag"));
+                DisAgreeFlag = Convert.ToBoolean(Intent.GetStringExtra("DisAgreeFlag"));
                 if (AppointmentFlag == true)
                 {
                     SetDataForCancleAppointment();
@@ -102,6 +114,14 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
                 else if (EnuiryFlag == true)
                 {
                     SetDataForCancleEnquiry();
+                }
+                else if (AgreeFlag == true)
+                {
+                    SetDataForAgreementSuccess();
+                }
+                else if (DisAgreeFlag == true)
+                {
+                    SetDataForNegotationScreen();
                 }
                 else
                 {
@@ -123,12 +143,35 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
 
         }
 
+        private void SetDataForNegotationScreen()
+        {
+
+            SerialNumber = Intent.GetStringExtra("Sernumbr");
+            txtFeedbackIdContent.Text = SerialNumber;
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourDisagree"); //"Your negotiation request has been submitted";
+            txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourDisagreeDescription"); //"We'll get back to you soon.In the mean time,stay updated by traccking your submitted enquiry status.";
+            txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
+            buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
+            btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
+        }
+
+        private void SetDataForAgreementSuccess()
+        {
+            SerialNumber = Intent.GetStringExtra("Sernumbr");
+            txtFeedbackIdContent.Text = SerialNumber;
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourAgree"); //"Thank you for your submisison.";
+            txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourAgreeDescription");//"To proceed with payment, please submit the required payment information on the submitted enquiry page.";
+            txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
+            buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
+            btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "proccedToPaymentInformation"); //"Proceed to Payment Infomation";
+        }
+
         private void SetDataForCancleEnquiry()
         {
             SerialNumber = Intent.GetStringExtra("Sernumbr");
             txtFeedbackIdContent.Text = SerialNumber;
-            txtTitleInfo.Text = "Your enquiry has been cancelled.";
-            txtContentInfo.Text = "Your enquiry for over voltage claim request has been successfully cancelled.";
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourEnquiry"); //"Your enquiry has been cancelled.";
+            txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourEnquiryDescription"); //"Your enquiry for over voltage claim request has been successfully cancelled.";
             txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
             buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
             btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
@@ -138,8 +181,8 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
         {
             SerialNumber = Intent.GetStringExtra("Sernumbr");
             txtFeedbackIdContent.Text = SerialNumber;
-            txtTitleInfo.Text = "Your appointment has been cancelled.";
-            txtContentInfo.Text = "Your appointment for over voltage claim request has been successfully cancelled.";
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourAppointment"); //"Your appointment has been cancelled.";
+            txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourAppointmentDescription"); //"Your appointment for over voltage claim request has been successfully cancelled.";
             txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
             buttonBackToHome.Text = "Set New Appointment";
             btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
@@ -163,9 +206,9 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
         [OnClick(Resource.Id.btnViewSubmitted)]
         void GoToClimDetail(object sender, EventArgs eventArgs)
         {
-            if (AppointmentFlag == true)
+            if (AppointmentFlag == true | EnuiryFlag == true | DisAgreeFlag == true)
             {
-                OnBackPressed();
+                base.OnBackPressed();
             }
             else
             {
