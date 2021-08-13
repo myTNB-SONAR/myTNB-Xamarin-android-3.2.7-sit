@@ -970,27 +970,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (selectedAccount != null)
                 {
 
-                    //commercial pop up checking YANA
-                    GovermentCommercial();
-
-                    //txtAddress.Text = selectedAccount.AddStreet;
+                    txtAddress.Text = selectedAccount.AddStreet;
 
                     //if not owner mask the address IRUL
-                    if (!selectedAccount.IsOwner == true)
-                    {
-                        if (!selectedAccount.IsHaveAccess == true)
-                        {
-                            txtAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccount.AddStreet);
-                        }
-                        else
-                        {
-                            txtAddress.Text = selectedAccount.AddStreet;
-                        }
-                    }
-                    else
-                    {
-                        txtAddress.Text = selectedAccount.AddStreet;
-                    }
+                    //if (!selectedAccount.IsOwner == true)
+                    //{
+                    //    if (!selectedAccount.IsHaveAccess == true)
+                    //    {
+                    //        txtAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccount.AddStreet);
+                    //    }
+                    //    else
+                    //    {s
+                    //        txtAddress.Text = selectedAccount.AddStreet;
+                    //    }
+                    //}
+                    //else
+                    //{
+                        //txtAddress.Text = selectedAccount.AddStreet;
+                    //}
 
 
 
@@ -1303,12 +1300,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        
+
         public void GovermentCommercial()
         {
 
             List<AccountData> selectedAccountList = new List<AccountData>();
             List<AccountData> selectedAccountList2 = new List<AccountData>();
             List<AccountData> selectedAccountList3 = UserSessions.GetCommercialList();
+
             if (selectedAccountList3.Count == 0)
             {
                 selectedAccountList.Add(selectedAccount);
@@ -1335,9 +1335,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     UserSessions.SetCommercialList(selectedAccountList);
                     GovermentCommercialDialog();
                 }
-
             }
-
+           
         }
 
         //popup commercial
@@ -1357,7 +1356,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
         }
-
 
         [OnClick(Resource.Id.dashboard_txt_account_name)]
         void OnSelectSupplyAccount(object sender, EventArgs eventArgs)
@@ -1983,7 +1981,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
             }
-
+            
             //txtAddress.Text = selectedAccount.AddStreet;
 
             //if not owner mask the address IRUL
@@ -1995,7 +1993,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
-                    txtAddress.Text = selectedAccount.AddStreet;
+                    txtAddress.Text = selectedAccount.AddStreet; //masked
                 }
             }
             else
@@ -5783,6 +5781,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         StopRangeShimmer();
                         StopGraphShimmer();
                         HideSMStatisticCard();
+                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
                         energyTipsView.Visibility = ViewStates.Gone;
 
                         string defaultMessage = Utility.GetLocalizedLabel("Usage", "emptyDataMsg");
@@ -5796,7 +5795,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (string.IsNullOrEmpty(contentTxt))
                             {
+                                
                                 newAccountContent.TextFormatted = Html.FromHtml(defaultMessage, FromHtmlOptions.ModeLegacy);
+                                
                             }
                             else
                             {
@@ -5807,6 +5808,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (string.IsNullOrEmpty(contentTxt))
                             {
+                                
                                 newAccountContent.TextFormatted = Html.FromHtml(defaultMessage);
                             }
                             else
@@ -6439,6 +6441,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (this.mPresenter != null)
                     {
                         this.mPresenter.OnCheckToCallDashboardTutorial();
+                        
                     }
                 }
                 catch (System.Exception e)
@@ -9724,6 +9727,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
             NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList());
+           
         }
 
         public void DashboardCustomScrolling(int yPosition)

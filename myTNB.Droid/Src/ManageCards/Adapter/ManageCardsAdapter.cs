@@ -41,10 +41,12 @@ namespace myTNB_Android.Src.ManageCards.Adapter
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     viewHolder.txtCardNumber.TextFormatted = Html.FromHtml(html, FromHtmlOptions.ModeLegacy);
+                    TextViewUtils.SetTextSize16(viewHolder.txtCardNumber);
                 }
                 else
                 {
                     viewHolder.txtCardNumber.TextFormatted = Html.FromHtml(html);
+                    TextViewUtils.SetTextSize16(viewHolder.txtCardNumber);
                 }
 
                 if (item.CardType.Equals("VISA") || item.CardType.Equals("V"))
@@ -72,6 +74,7 @@ namespace myTNB_Android.Src.ManageCards.Adapter
             {
                 Utility.LoggingNonFatalError(e);
             }
+           
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -97,6 +100,8 @@ namespace myTNB_Android.Src.ManageCards.Adapter
             {
                 imgCardNumberDelete.Click += (sender, e) => listener(base.LayoutPosition);
             }
+
+            
         }
     }
 }

@@ -288,20 +288,21 @@ namespace myTNB_Android.Src.AddAccount
             try
             {
                 AccountNumber.Text = this.item.accountNumber;
+                AccountAddress.Text = this.item.accountAddress;
 
                 //if not owner mask the address IRUL
-                if (!this.item.isOwner == true) {
-                    AccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, this.item.accountAddress);
-                    //AccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, this.item.accountAddress);
-                }
-                else
-                {
-                    AccountAddress.Text = this.item.accountAddress;
-                }
+                //if (!this.item.isOwner == true) {
+                //    AccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, this.item.accountAddress);
+                //    //AccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, this.item.accountAddress);
+                //}
+                //else
+                //{
+                //    AccountAddress.Text = this.item.accountAddress;
+                //}
 
 
                 if (this.item.accountLabel.Equals(EG_ACCOUNT_LABEL))
-                {   
+                {
                     AccountLabel.Hint = this.item.accountLabel;
                 }
                 else
@@ -312,7 +313,7 @@ namespace myTNB_Android.Src.AddAccount
                 AccountLabel.AfterTextChanged += (sender, args) =>
                 {
                     textInputLayoutAccountLabel.Error = null;
-                    item.accountLabel = AccountLabel.Text.Trim();
+                    //item.accountLabel = AccountLabel.Text.Trim();
                     if (!string.IsNullOrEmpty(item.accountLabel))
                     {
                         textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");

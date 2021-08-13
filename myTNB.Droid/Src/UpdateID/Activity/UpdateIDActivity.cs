@@ -88,6 +88,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
 
         private bool isClicked = false;
         private bool fromAddAccPage = false;
+        private bool fromIDFlag = false;
 
         Snackbar mUpdateIc;
 
@@ -129,6 +130,9 @@ namespace myTNB_Android.Src.UpdateID.Activity
                     textInputLayoutICNo);
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRegister);
+
+                TextViewUtils.SetTextSize14(txtAccountType, identityType, txtICNumber, LabelDetails);
+                TextViewUtils.SetTextSize16(btnRegister);
 
                 txtAccountType.Text = Utility.GetLocalizedLabel("OneLastThing", "idtypeTitle").ToUpper();
                 textInputLayoutICNo.Hint = Utility.GetLocalizedLabel("OneLastThing", "idNumberhint");

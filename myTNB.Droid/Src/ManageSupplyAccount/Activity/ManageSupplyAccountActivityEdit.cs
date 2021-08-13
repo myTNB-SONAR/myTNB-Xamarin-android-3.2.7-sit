@@ -122,7 +122,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 {
                     if (!accountData.IsHaveAccess == true)
                     {
-                        txtAccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
+                        //txtAccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
+                        txtAccountAddress.Text = accountData.AddStreet;
                         infoAddress.Visibility = ViewStates.Visible;
                     }
                     else

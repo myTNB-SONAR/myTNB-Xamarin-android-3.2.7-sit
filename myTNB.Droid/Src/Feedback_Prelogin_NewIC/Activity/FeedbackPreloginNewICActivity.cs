@@ -152,7 +152,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);  //get from shared pref
 
 
-                if (isUpdatePersonalDetail == true)
+                if (isUpdatePersonalDetail == false)
+                {
+                    updatePersonalInfoConstraint.Visibility = ViewStates.Visible;
+                }
+                else
                 {
                     updatePersonalInfoConstraint.Visibility = ViewStates.Gone;
                 }

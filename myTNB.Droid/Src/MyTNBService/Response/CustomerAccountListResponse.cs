@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.MyTNBService.Response
@@ -68,6 +69,31 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "IsApplyEBilling")]
             public bool IsApplyEBilling { get; set; }
+
+            [JsonProperty(PropertyName = "unitNo")]
+            public string unitNo { get; set; }
+
+            [JsonProperty(PropertyName = "building")]
+            public string building { get; set; }
+
+            [JsonProperty(PropertyName = "houseNo")]
+            public string houseNo { get; set; }
+
+            [JsonProperty(PropertyName = "street")]
+            public string street { get; set; }
+
+            [JsonProperty(PropertyName = "area")]
+            public string area { get; set; }
+
+            [JsonProperty(PropertyName = "city")]
+            public string city { get; set; }
+
+            [JsonProperty(PropertyName = "postCode")]
+            public string postCode { get; set; }
+
+            [JsonProperty(PropertyName = "state")]
+            public string state { get; set; }
+
         }
     }
 }

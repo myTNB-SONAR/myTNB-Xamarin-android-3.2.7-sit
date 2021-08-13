@@ -1096,11 +1096,26 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         if (newAccount.accountNumber.Equals(item.accountNumber))
                         {
                             newAccount.accountAddress = item.accountStAddress;
+                            newAccount.houseNo = item.houseNo;
+                            newAccount.unitNo = item.unitNo;
+                            newAccount.building = item.building;
+                            newAccount.houseNo = item.houseNo;
+                            newAccount.street = item.street;
+                            newAccount.area = item.area;
+                            newAccount.city = item.city;
+                            newAccount.postCode = item.postCode;
+                            newAccount.state = item.state;
                             newAccount.ownerName = item.accountOwnerName;
                             newAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
                             newAccount.isOwned = item.isOwned;
                             newAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             finalAccountList.Add(newAccount);
+
+                            //UserSessions.SaveAddress(mSharedPref, false);
+                            ///<summary>
+                            ///THIS TO SAVE HOUSE NO FOR MASKING ADDRESS
+                            ///</summary>
+                            //UserSessions.SaveAddress(finalAccountList);
                         }
                     }
 

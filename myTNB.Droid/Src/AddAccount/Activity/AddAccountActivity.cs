@@ -6,6 +6,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
+using myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity;
 using myTNB_Android.Src.AddAccount.Fragment;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity;
@@ -136,7 +137,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 }
                 else
                 {
-                    Intent nextIntent = new Intent(this, typeof(FeedbackPreloginNewICActivity));
+                    //Intent nextIntent = new Intent(this, typeof(FeedbackPreloginNewICActivity));
+                    Intent nextIntent = new Intent(this, typeof(AddAccUpdateIdetificationDetailsActivity)); 
                     StartActivity(nextIntent);
                 }
             }

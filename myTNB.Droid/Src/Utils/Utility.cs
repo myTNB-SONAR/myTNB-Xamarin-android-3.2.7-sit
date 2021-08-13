@@ -306,6 +306,7 @@ namespace myTNB_Android.Src.Utils
             }).Show();
         }
 
+
         public static void ShowIdentificationUpdateProfileDialog(Activity context, Action confirmAction, Action checkboxAction, Action uncheckboxAction, Action cancelAction = null)
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.DIALOGBOX_WITH_CHECKBOX)
@@ -314,7 +315,7 @@ namespace myTNB_Android.Src.Utils
                         .SetTitleCheckBox("Don't Show This Again")
                         .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "later"))
-                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "update"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "proceed"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();

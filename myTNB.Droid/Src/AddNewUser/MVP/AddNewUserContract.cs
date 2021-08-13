@@ -70,7 +70,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             /// Action to remove account
             /// </summary>
             /// <param name="accountData">AccountData</param>
-            void OnAddAccount(string userEmail, string accNo, bool isHaveAccess, bool isHaveEBilling, string accAddress, string accName);
+            void OnAddAccount(string userEmail, string accNo, bool isHaveAccess, bool isHaveEBilling);
 
             void CheckRequiredFields(string email);
 

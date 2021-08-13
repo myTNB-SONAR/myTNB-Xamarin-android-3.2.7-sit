@@ -250,24 +250,25 @@ namespace myTNB_Android.Src.Billing.MVP
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             accountName.Text = selectedAccountData.AccountNickName;
+            accountAddress.Text = selectedAccountData.AddStreet;
             //accountAddress.Text = selectedAccountData.AddStreet;
 
             //if not owner mask the address IRUL
-            if (!selectedAccountData.IsOwner == true)
-            {
-                if (!selectedAccountData.IsHaveAccess == true)
-                {
-                    accountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccountData.AddStreet);
-                }
-                else
-                {
-                    accountAddress.Text = selectedAccountData.AddStreet;
-                }
-            }
-            else
-            {
-                accountAddress.Text = selectedAccountData.AddStreet;
-            }
+            //if (!selectedAccountData.IsOwner == true)
+            //{
+            //    if (!selectedAccountData.IsHaveAccess == true)
+            //    {
+            //        accountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccountData.AddStreet);
+            //    }
+            //    else
+            //    {
+            //        accountAddress.Text = selectedAccountData.AddStreet;
+            //    }
+            //}
+            //else
+            //{
+            //    accountAddress.Text = selectedAccountData.AddStreet;
+            //}
 
             if (selectedAccountChargeModel != null && !isCheckPendingPaymentNeeded)
             {

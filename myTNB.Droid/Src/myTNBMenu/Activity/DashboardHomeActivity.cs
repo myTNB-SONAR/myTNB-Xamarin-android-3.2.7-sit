@@ -490,16 +490,30 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Handler h = new Handler();
                 Action myAction = () =>
                 {
-                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial(); 
                     if (!UserSessions.HasManageAccessIconTutorialShown(this.mPref))
                     {
                         OnManageAccessIconTutorialDialog(selected.isOwned);
+                        
                     }
+                    else
+                    {
+                        //DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
+                        //if (!fragment.GetIsMDMSDown())
+                        //{
+                            DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
+                            fragment.GovermentCommercial();
+                        //}
+                        
+                        
+                    }
+
+                    
                 };
                 h.PostDelayed(myAction, 50);
             }
+            
             return base.OnCreateOptionsMenu(menu);
-           
         }
 
         public void OnManageAccessIconTutorialDialog(bool flag)
@@ -511,6 +525,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             };
             h.PostDelayed(myAction, 100);
         }
+
+        public void ShowCommercialDialog()
+        {
+            DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
+            fragment.GovermentCommercial();
+        }
+
 
         public int GetViewBillButtonHeight()
         {

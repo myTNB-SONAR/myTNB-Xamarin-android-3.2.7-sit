@@ -122,12 +122,13 @@
                             </LinearLayout>
                              <View
                                 android:id="@+id/paymentMethodGroupContentSeparator"
-                                android:visibility="visible"
+                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:background="@color/platinumGrey"
                                 android:divider="?android:listDivider"/>
                             <LinearLayout
+                                android:visibility="gone"
                                 android:padding="16dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

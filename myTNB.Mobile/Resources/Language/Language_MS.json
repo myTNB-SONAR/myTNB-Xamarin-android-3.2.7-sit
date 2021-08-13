@@ -121,7 +121,7 @@
     "eg": "Masukkan Nombor Permohonan 10-digit. Contoh: "
   },
   "Error": {
-    "invalid_email": "Format e-mel tidak sah.",
+    "invalid_email": "Format e-mel tidak sah, sila cuba sekali lagi",
     "invalid_mobileNumber": "Nombor telefon tidak sah.",
     "minimumMandatoryPayment": "Amaun minimum mestilah sekurang-kurangnya {0}",
     "minimumPayAmount": "Amaun minimum perlu melebihi RM 1.00",
@@ -235,7 +235,7 @@
     "titleIcUpdate": "Lengkapkan profil myTNB anda sekarang untuk pengalaman myTNB yang lebih baik!",
     "bodyIcUpdate": "Nombor pengenalan anda tidak tercatat dalam profil myTNB anda. Kemas kini sekarang untuk akses dan kawalan yang lebih menyeluruh atas akaun elektrik anda!",
     "tutorialUpdateNicknameBtn": "Kemas kini Nama Gelaran",
-    "tutorialUsageTitle": "Lihat butiran akaun anda di sini.",
+    "tutorialUsageTitle": "Lihat dan urus akaun di sini.",
     "tutorialUsageDesc": "Lihat butiran akaun anda dengan mudah dan urus pengguna lain yang mempunyai akses pada akaun anda di sini.",
     "tutorialUsageDescNonOwner": "Lihat butiran akaun anda dengan mudah di sini.",
     "tutorialAccountTitleNew": "Lihat semua akaun anda di suatu tempat.",
@@ -449,8 +449,8 @@
     "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda.",
     "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     //added by yana
-    "accountTypeDialogTitle": "Lihat akaun eleketrik ini di Portal myTNB untuk pengalaman yang lebih baik!",
-    "accountTypeDialogMessage": "Anda boleh log masuk ke portal menggunakan maklumat log masuk yang sama dan nikmati akses penuh untuk akaun tersebut."
+    "accountTypeDialogTitle": "Lihat akaun elektrik ini di Portal myTNB untuk pengalaman yang lebih baik!",
+    "accountTypeDialogMessage": "Anda boleh log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> myTNB menggunakan maklumat log masuk yang sama dan nikmati akses penuh untuk akaun tersebut."
   },
   "Bills": {
     "title": "Bil",
@@ -671,7 +671,7 @@
     "DisclaimerDetails1": "Saya mengesahkan bahawa saya <b>({0})</b> pemilik / orang yang diberi kuasa, mempunyai persetujuan dan kebenaran untuk melihat maklumat akaun yang disenaraikan. Sebagai bukan pemilik, saya bersetuju untuk berkongsi nama dan alamat e-mel dengan pemilik semasa penyerahan permintaan ini.",
     "DisclaimerDetails2": "Dimaklumkan bahawa aplikasi ini adalah untuk keistimewaan penggunaan antara TNB dan pemegang akaunnya dan orang lain dengan persetujuan pemegang akaun. TNB tidak akan bertanggungjawab atas penggunaan yang salah dan penggunaan maklumat yang dijelaskan dan terkandung di dalam ini serta tidak berkewajipan untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengesahkan perkara ini, anda dianggap telah membaca, memahami dan menyetujui penafian seperti yang ditunjukkan.",
     "GovDialogTitle": "Maaf, kami tidak dapat menambah akaun elektrik Kerajaan ke dalam Aplikasi myTNB sekarang.",
-    "GovDialogDetails": "Anda masih boleh menambah dan melihat akaun Kerajaan anda melalui Portal myTNB.",
+    "GovDialogDetails": "Anda masih boleh menambah dan melihat akaun Kerajaan anda melalui <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">myTNB Portal</a>.",
     "titleNonOwnerAddAcc": "Teruskan memasuki akaun anda dan berikan nama gelaran untuk rujukan mudah.",
     "titleOwnerDetailRegion": "Sila masukkan alamat e-mel atau nombor telefon pemilik akaun ini supaya kami boleh memberikan makluman kepadanya."
   },
@@ -722,12 +722,12 @@
   "NotificationAddAccount": {
     "title": "Notifikasi",
     "notificationTitle": "Akaun elektrik anda ditambah oleh orang lain.",
-    "notificationDetailMessage": "Hello, <nama panggilan akaun> telah ditambahkan oleh <Nama Penuh & / alamat e-mel> ke dalam akaun myTNB mereka.",
+    "notificationDetailMessage": "Hello, {nickname} telah ditambahkan oleh <Nama Penuh & / alamat e-mel> ke dalam akaun myTNB mereka.",
     "notificationDetail": "Check out your account vieweing access settings! You can manage the user if you do not recognise them or wish to change their account access.",
     "btnManageAccess": "Urus Akses",
-    "ownernNotificationnTitle": "BM_You are now an owner to My House",
-    "ownernNotificationDetailMessage": "BM_We want to let you  know that your access to {account nickname} has been changed to Owner access and you can now enjoy full account access like initiating applications!",
-    "ownernNotificationDetail": "BM_Plus, stay in control of your account information and permissions by definig what you let others access as an owner of an electricity account, view your account now!"
+    "ownernNotificationnTitle": "Anda telah menjadi pemiik akaun My House.",
+    "ownernNotificationDetailMessage": "Kami ingin memberitahu bahawa akses {account nickname} anda telah berubah kepada akses pemilik dan anda sekarang boleh menikmati akses penuh akaun anda seperti memohon permohonan!",
+    "ownernNotificationDetail": "Selain itu, kendalikan maklumat dan kebenaran akaun anda dengan menentukan akses yang anda beri kepada pengguna lain sebagai pemilik akaun elektrik!"
   },
 
   "ApplicationSetting": {
@@ -868,7 +868,7 @@
     "popupremoveAccountMessage": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda.",
     //addby wan
     "detailSectionTitle": "Akaun myTNB",
-    "accountSectionTitle": "BM_TNB Electricity Supply Accounts",
+    "accountSectionTitle": "Akaun Bekalan Elektrik",
     "logout": "Log keluar",
     "logoutMessage": "BM_Are you sure you want to log out from the myTNB app?",
     "mobileNumberVerified": "Anda berjaya mengemas kini nombor telefon anda",
@@ -939,7 +939,7 @@
     "titleNoAutoPay": "BM_You don't have AutoPay yet.",
     "bodyNoAutoPay": "BM_Let us take care your monthly bills automatically. We'll pause AutoPay when your bills are higher than usual",
     "btnStartAutoPay": "BM_Start AutoPay",
-    "titleCard": "BM_My Saved Credit / Debit Cards"
+    "titleCard": "Kad Kredit / Debit Saya yang Disimpan"
   },
   "ViewBill": {
     "titleBill": "Bil",
@@ -1246,7 +1246,17 @@
     "registeredView": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
     "viewYes": "Ya",
     "viewNo": "Tidak",
-    "documentPdf": "Dokumen"
+    "documentPdf": "Dokumen",
+    //update identification details | yana
+    "pageStep1": "Langkah 1 dari 4",
+    "pageStep2": "Langkah 2 dari 4",
+    "pageStep3": "Langkah 3 dari 4",
+    "pageStep4": "Langkah 4 dari 4",
+    "enterYourNewDetails": "Masukkan butiran baru anda:",
+    "skipStep": "Tidak, Saya ingin melangkau langkah ini",
+    "copyOfOwnerLabel": "Salinan pengenalan diri pemilik (IC / Pasport)",
+    "frontIc": "Hadapan",
+    "backIc": "Belakang"
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",
@@ -1384,7 +1394,7 @@
   "UserAccess": {
     "title": "Akses Pengguna",
     "LabelTitle": "Pengguna yang mempunyai akses ke akaun ini:",
-    "LabelEmptyTitle": "BM_Looks like your electricity account is not viewed or accessed by anyone else. You can help them by adding this account to their view below.",
+    "LabelEmptyTitle": "Nampaknya akaun elektrik anda tidak dilihat atau diakses oleh sesiapa. Anda boleh menambah pengguna ke dalam akaun untuk memudahkan pantauan mereka.",
     "addUserBtn": "Tambah Pengguna",
     "AddTitle": "Tambah",
     "RemoveTitle": "Alih Keluar",
@@ -2038,9 +2048,9 @@
   },
 
   "CompleteYourProfile": {
-    "title": "BM_Complete Your Profile",
-    "lblTitle": "BM_Provide us your identification number for better experience!",
-    "lblSubTitle": "BM_Get better access and enjoy more TNB offerings on myTNB by helping us validate your identification.",
+    "title": "Lengkapkan Profil Anda",
+    "lblTitle": "Sediakan kami nombor pengenalan anda untuk pengalaman yang lebih baik!",
+    "lblSubTitle": "Sediakan kami nombor pengenalan anda untuk pengalaman yang lebih baik!",
     "txtFieldIDType": "Jenis Pengenalan",
     "txtFieldID": "Nombor Pengenalan",
     "mykad": "IC / Mykad",
@@ -2062,7 +2072,7 @@
     "whereToGetTheseNumberMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> dan <b>Nombor Notifikasi Perkhidmatan</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine."
   },
   "manageUser": {
-    "title": "BM_Manage User",
+    "title": "Manage User",
     "ManageUserTitle": "Berikan akses kepada pengguna untuk:",
     "fullElectricity": "Lihat bil elektrik penuh",
     "e_billing": "Buat permohonan e-Billing",
@@ -2072,8 +2082,8 @@
     "bodyDialogWhatIsThis": "Untuk melindungi maklumat anda, kami tidak memaparkan maklumat peribadi anda kepada bukan pemilik dan beberapa ciri aplikasi. Walaubagaimanapun, anda boleh memberikan mereka akses yang disenaraikan di sini jika sesuai dan mereka akan dimaklumkan mengenainya.",
     "manageUserDialogTitle": "Anda akan mengubah akses {0}.",
     "manageUserDialogMessage": "Setelah disahkan, akses {0} akan dikemas kini dan pengguna akan dimaklumkan mengenai akses yang telah anda pilih untuknya berkenaan akaun elektrik anda.",
-    "notSaveTitle": "BM_Are you sure you want to leave without saving changes you made to {0}’s access?",
-    "notSaveBody": "BM_The changes to {0}’s access will not be saved if you choose to leave this page and their accesses will remain as before.",
+    "notSaveTitle": "Adakah anda pasti mahu keluar tanpa menyimpan perubahan akses {0} yang anda lakukan??",
+    "notSaveBody": "Perubahan pada akses {0} tidak akan disimpan jika anda memilih untuk keluar dari halaman ini dan akses mereka akan kekal seperti sebelumnya.",
     "saveSuccess": "Perubahan terhadap akses pengguna telah disimpan dan pengguna telah diberitahu tentang kemas kini akses mereka.",
     "manageUserInviteAccessDialogTitle": "Adakah anda mahu menghantar satu lagi jemputan untuk menyertai myTNB?",
     "manageUserInviteAccessDialogMessage": "Kami telah menjemput {0} untuk menyertai myTNB dan melihat akaun elektrik anda. Anda boleh menghantar satu lagi jemputan jika mereka tidak menerimanya.",
@@ -2591,6 +2601,8 @@
     "whatIsThisMean": "Apakah maksud ini?",
     "toottipTitle": "Memberi pengguna anda lebih banyak akses.",
     "tooltipBody": "Untuk melindungi maklumat anda, kami tidak memaparkan maklumat peribadi anda kepada bukan pemilik dan beberapa ciri aplikasi. Walaubagaimanapun, anda boleh memberikan mereka akses yang disenaraikan di sini jika sesuai dan mereka akan dimaklumkan mengenainya.",
-    "addUserButton": "Tambah Penguna"
+    "addUserButton": "Tambah Penguna",
+    "userExistedHeader": "Pengguna ini telah ditambahkan ke senarai pengguna akaun anda sebelum ini.",
+    "userExistedDetails": "Pengguna ini sudah mempunyai akses untuk akaun ini. Cuba alamat e-mel yang lain."
   }
 }

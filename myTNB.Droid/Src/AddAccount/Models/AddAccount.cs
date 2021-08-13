@@ -52,5 +52,37 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty(PropertyName = "OwnerMobileNum")]
         [AliasAs("OwnerMobileNum")]
         public string mobileNoOwner { get; set; }
+
+        [JsonProperty(PropertyName = "unitNo")]
+        [AliasAs("unitNo")]
+        public string unitNo { get; set; }
+
+        [JsonProperty(PropertyName = "building")]
+        [AliasAs("building")]
+        public string building { get; set; }
+
+        [JsonProperty(PropertyName = "houseNo")]
+        [AliasAs("houseNo")]
+        public string houseNo { get; set; }
+
+        [JsonProperty(PropertyName = "street")]
+        [AliasAs("street")]
+        public string street { get; set; }
+
+        [JsonProperty(PropertyName = "area")]
+        [AliasAs("area")]
+        public string area { get; set; }
+
+        [JsonProperty(PropertyName = "city")]
+        [AliasAs("city")]
+        public string city { get; set; }
+
+        [JsonProperty(PropertyName = "postCode")]
+        [AliasAs("postCode")]
+        public string postCode { get; set; }
+
+        [JsonProperty(PropertyName = "state")]
+        [AliasAs("state")]
+        public string state { get; set; }
     }
 }

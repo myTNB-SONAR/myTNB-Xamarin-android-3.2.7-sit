@@ -52,7 +52,7 @@
         android:layout_alignParentRight="true"
         android:gravity="right|center"
         android:layout_weight="0.2"
-        android:layout_width="0dp"
+        android:layout_width="20dp"
         android:layout_height="match_parent">
         <TextView
             android:visibility="gone"
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/itemAction"
-            android:drawablePadding="5dp" 
+            android:drawablePadding="10dp"
             android:text="Manage"
             android:textSize="12dp"
             android:singleLine="true"

@@ -158,8 +158,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                         bool appUpdateAvailable = false;
                         AppLaunchMasterDataModel responseData = masterDataResponse.GetData();
+                        bool updateDetail = masterDataResponse.Response.IsFeedbackUpdateDetailDisabled;
 
-                        UserSessions.SaveFeedbackUpdateDetailDisabled(mSharedPref, responseData.IsFeedbackUpdateDetailDisabled.ToString());  //save sharedpref cater prelogin & after login
+                        UserSessions.SaveFeedbackUpdateDetailDisabled(mSharedPref, updateDetail.ToString());  //save sharedpref cater prelogin & after login
 
                         UserSessions.SaveCheckEmailVerified(mSharedPref, responseData.UserVerificationInfo.Email.ToString());  //save sharedpref check email  //wan
 
@@ -262,6 +263,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                                         }
 
+                                        //timestamp
+                                        //string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+                                        //GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest(Convert.ToDateTime(datetime));
+                                        //CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
+
                                         //Checks for saved language preference
                                         LanguageUtil.SaveLanguagePrefInBackground();
 
@@ -327,7 +333,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                     mView.ShowPreLogin();
                                 }
-                                else
+                                else //baru install
                                 {
                                     if (!UserSessions.IsDeviceIdUpdated(mSharedPref) || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
                                     {

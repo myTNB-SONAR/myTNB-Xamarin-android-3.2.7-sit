@@ -207,6 +207,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 {
                     Intent updateMobileNo = new Intent(this, typeof(UpdateIDActivity));
                     StartActivityForResult(updateMobileNo, Constants.UPDATE_IC_REQUEST);
+                   
                 }
                 catch (System.Exception e)
                 {
@@ -341,6 +342,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             try
             {
+
                 Snackbar updateNameBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "toast_SuccessUpdateName"), Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
@@ -735,6 +737,12 @@ namespace myTNB_Android.Src.MyAccount.Activity
                         {
                             ShowIDUpdateSuccess();
                             MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+                            UserEntity user = UserEntity.GetActive();
+                            if (!string.IsNullOrEmpty(user.IdentificationNo))
+                            {
+                                fromIDFlag = false;
+                                referenceNumber.SetFlagID(fromIDFlag);
+                            }
                         }
                     }
                 }

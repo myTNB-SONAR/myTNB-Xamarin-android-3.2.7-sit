@@ -148,20 +148,19 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             {
                 if (!this.GetIsClicked())
                 {
-                    string address = "";
+                    //string address = "";
                     string email = txtUserEmail.Text.ToString().Trim();
                     this.SetIsClicked(true);
 
-                    if (!checkboxfullbill == true)
-                    {
-                        address = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
-                    }
-                    else
-                    {
-                        address = accountData.AddStreet;
-                    }        
-                    this.userActionsListener.OnAddAccount(email, accountData.AccountNum, checkboxfullbill, checkboxbilling, address, accountData.AccountName);
-
+                    //if (!checkboxfullbill == true)
+                    //{
+                    //    address = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
+                    //}
+                    //else
+                    //{
+                    //    address = accountData.AddStreet;
+                    //}        
+                    this.userActionsListener.OnAddAccount(email, accountData.AccountNum, checkboxfullbill, checkboxbilling);
                     //ShowAddTNBUserSuccess();
                     //ShowAddNonTNBUserSuccess();
                 }
@@ -300,7 +299,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
         {
 
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                       .SetTitle((string.Format(Utility.GetLocalizedLabel("AddUserAccess", "toottipTitle"))))
+                       .SetTitle(string.Format(Utility.GetLocalizedLabel("AddUserAccess", "toottipTitle")))
                        .SetMessage(string.Format(Utility.GetLocalizedLabel("AddUserAccess", "tooltipBody")))
                        .SetContentGravity(GravityFlags.Left)
                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
@@ -388,18 +387,28 @@ namespace myTNB_Android.Src.AddNewUser.Activity
 
         public void ShowErrorMessageResponse(string error)
         {
-            Snackbar errorMessageSnackbar =
-            Snackbar.Make(rootView, error, Snackbar.LengthIndefinite)
-                        .SetAction(Utility.GetLocalizedCommonLabel("close"),
-                         (view) =>
-                         {
-                             // EMPTY WILL CLOSE SNACKBAR
-                         }
-                        );//.Show();
-            View snackbarView = errorMessageSnackbar.View;
-            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
-            textView.SetMaxLines(4);
-            errorMessageSnackbar.Show();
+           
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                           .SetTitle(string.Format(Utility.GetLocalizedLabel("AddUserAccess", "userExistedHeader")))
+                           .SetMessage(string.Format(Utility.GetLocalizedLabel("AddUserAccess", "userExistedDetails")))
+                           .SetContentGravity(GravityFlags.Left)
+                           .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                           .Build().Show();
+
+          
+
+            //Snackbar errorMessageSnackbar =
+            //Snackbar.Make(rootView, error, Snackbar.LengthIndefinite)
+            //            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+            //             (view) =>
+            //             {
+            //                 // EMPTY WILL CLOSE SNACKBAR
+            //             }
+            //            );//.Show();
+            //View snackbarView = errorMessageSnackbar.View;
+            //TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            //textView.SetMaxLines(4);
+            //errorMessageSnackbar.Show();
         }
 
         public override void OnTrimMemory(TrimMemory level)

@@ -35,6 +35,8 @@ namespace myTNB_Android.Src.Login.MVP
         public static readonly string TAG = "LoginPresenter";
         private LoginContract.IView mView;
         private ISharedPreferences mSharedPref;
+        //DateTime referenceDate;
+
 
         CancellationTokenSource cts;
 
@@ -114,7 +116,7 @@ namespace myTNB_Android.Src.Login.MVP
                 Log.Debug(TAG, "[DEBUG] FCM TOKEN: " + fcmToken);
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
                 userAuthRequest.SetUserName(usrNme);
-                //string dt = JsonConvert.SerializeObject(userAuthRequest);
+                string dt = JsonConvert.SerializeObject(userAuthRequest);
                 var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthRequest);
 
                 if (!userResponse.IsSuccessResponse())
@@ -277,9 +279,12 @@ namespace myTNB_Android.Src.Login.MVP
                         int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                         if (Id > 0)
                         {
+                            string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+                            
                             UserEntity.UpdateDeviceId(deviceId);
 
-                            CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(new BaseRequest());
+                            GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest(Convert.ToDateTime(datetime));
+                            CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
                             if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                             {
                                 if (customerAccountListResponse.GetData().Count > 0)

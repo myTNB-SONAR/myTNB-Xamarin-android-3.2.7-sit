@@ -74,7 +74,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
+    <DebugType></DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\SIT\</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
@@ -91,8 +91,8 @@
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidUseAapt2>true</AndroidUseAapt2>
-    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -6851,6 +6851,31 @@
       </Generator>
     </AndroidResource>
     <Compile Include="Src\LogUserAccess\Adapter\LogUserAccessRecyclerviewAdapter.cs" />
+    <Compile Include="Src\MyTNBService\Request\GetCustomerAccountListRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\BaseResponseV2.cs" />
+    <AndroidResource Include="Resources\layout\AddAccountUpdateIdentificationStepOneView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AddAccountUpdateIdentificationStepTwoView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AddAccountUpdateIdentificationStepThreeView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\AddAcc_UpdateIdentification_StepOne\Activity\AddAccUpdateIdetificationDetailsActivity.cs" />
+    <Compile Include="Src\AddAcc_UpdateIdentification_StepOne\MVP\AddAccUpdateIdentificationDetailsContract.cs" />
+    <Compile Include="Src\AddAcc_UpdateIdentification_StepOne\MVP\AddAccUpdateIdentificationDetailsPresenter.cs" />
+    <Compile Include="Src\AddAcc_UpdateIdentification_StepTwo\Activity\AddAccUpdateIdetificationDetailsStepTwoActivity.cs" />
+    <Compile Include="Src\AddAcc_UpdateIdentification_StepTwo\MVP\AddAccUpdateIdetificationDetailsStepTwoContract.cs" />
+    <Compile Include="Src\AddAcc_UpdateIdentification_StepTwo\MVP\AddAccUpdateIdetificationDetailsStepTwoPresenter.cs" />
+    <Compile Include="Src\AddAcc_UpdateIdentification_StepThree\Activity\AddAccUpdateIdetificationDetailsStepThreeActivity.cs" />
+    <Compile Include="Src\AddAcc_UpdateIdentification_StepThree\MVP\AddAccUpdateIdetificationDetailsStepThreeContract.cs" />
+    <Compile Include="Src\AddAcc_UpdateIdentification_StepThree\MVP\AddAccUpdateIdetificationDetailsStepThreePresenter.cs" />
+    <Compile Include="Src\AddAcc_UpdateIdentification_StepFour\Activity\AddAccUpdateIdentificationStepFourActivity.cs" />
+    <Compile Include="Src\Common\Adapter\SelectItemFontSizeAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7157,6 +7182,17 @@
     <Folder Include="Src\UpdatePassword\Api\" />
     <Folder Include="Src\XDetailRegistrationForm\Api\" />
     <Folder Include="Src\XEmailRegistrationForm\Api\" />
+    <Folder Include="Src\AddAcc_UpdateIdentification_StepOne\" />
+    <Folder Include="Src\AddAcc_UpdateIdentification_StepOne\Activity\" />
+    <Folder Include="Src\AddAcc_UpdateIdentification_StepOne\MVP\" />
+    <Folder Include="Src\AddAcc_UpdateIdentification_StepTwo\" />
+    <Folder Include="Src\AddAcc_UpdateIdentification_StepTwo\Activity\" />
+    <Folder Include="Src\AddAcc_UpdateIdentification_StepTwo\MVP\" />
+    <Folder Include="Src\AddAcc_UpdateIdentification_StepThree\" />
+    <Folder Include="Src\AddAcc_UpdateIdentification_StepThree\Activity\" />
+    <Folder Include="Src\AddAcc_UpdateIdentification_StepThree\MVP\" />
+    <Folder Include="Src\AddAcc_UpdateIdentification_StepFour\" />
+    <Folder Include="Src\AddAcc_UpdateIdentification_StepFour\Activity\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

@@ -121,7 +121,7 @@
     "eg": "Enter a 10-digit Application Number. eg. "
   },
   "Error": {
-    "invalid_email": "Invalid email address",
+    "invalid_email": "Invalid email address, please try again",
     "invalid_mobileNumber": "Invalid mobile number",
     "minimumMandatoryPayment": "Minimum amount must be at least {0}",
     "minimumPayAmount": "Minimum amount cannot be lower than RM 1.00",
@@ -235,7 +235,7 @@
     "titleIcUpdate": "Complete your myTNB profile now for a better myTNB experience!",
     "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!",
     "tutorialUpdateNicknameBtn": "Update Nickname",
-    "tutorialUsageTitle": "View your account details here.",
+    "tutorialUsageTitle": "View and manage account here.",
     "tutorialUsageDesc": "Easily view your account details and manage who has access to your account from here.",
     "tutorialUsageDescNonOwner": "Easily view your account details from here.",
     "tutorialAccountTitleNew": "View your accounts all in one place.",
@@ -449,8 +449,8 @@
     "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.",
     "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
     //added by yana
-    "accountTypeDialogTitle": "View this electricity account on myTNB Portal for better experience!",
-    "accountTypeDialogMessage": "You can log in to the portal using the same log in details and enjoy full access to the account."
+    "accountTypeDialogTitle": "View this electricity account on myTNB Portal for a better experience!",
+    "accountTypeDialogMessage": "You can log in to myTNB <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> using the same login details and enjoy full access to the account."
   },
   "Bills": {
     "title": "Bills",
@@ -612,7 +612,7 @@
     "additionalAccts": "Additional account(s)",
     "removeAcct": "Remove Account",
     "removeAcctMsg": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b>.<br><br>Visit the Self-Service Portal or Kedai Tenaga to close your electricity supply account.",
-    "addAcctSuccessMsg": "Add Account(s) Successful",
+    "addAcctSuccessMsg": "Account Successfully Added!",
     "ownerICNumber": "Owner's IC / Passport Number",
     "rocNumber": "ROC Number",
     "whereIsMyAccountTitle": "Where is my account number?",
@@ -671,7 +671,7 @@
     "DisclaimerDetails1": "I confirm that I <b>({0})</b> the owner / authorised person, have the consent and permission to view the account information for the account(s) listed. As a non-owner I agree to share my name and email address with the owner upon submission of this request.",
     "DisclaimerDetails2": "Please be informed that this application is for the privilege use between TNB and its account holder and any other person with the consent of the account holder. TNB shall not be held liable for any improper use and incorrect use of the information described and contained herein and under no obligation to check the authenticity of such consent and permission given. Upon confirming, you are deemed to have read, understood and agreed to the disclaimer as displayed.",
     "GovDialogTitle": "Sorry we can't add Government electricity accounts on myTNB App right now.",
-    "GovDialogDetails": "You still can add and view your Government account through the myTNB Portal",
+    "GovDialogDetails": "You can still add and view your Government account through <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">myTNB Portal</a>.",
     "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference.",
     "titleOwnerDetailRegion": "Please provide the owner’s email or mobile number for the account above so we can notify them."
   },
@@ -1245,7 +1245,18 @@
     "registeredView": "Is this electricity account registered under your name?",
     "viewYes": "Yes",
     "viewNo": "No",
-    "documentPdf": "Document"
+    "documentPdf": "Document",
+    //update identification details | yana
+    "pageStep1": "Step 1 of 4",
+    "pageStep2": "Step 2 of 4",
+    "pageStep3": "Step 3 of 4",
+    "pageStep4": "Step 4 of 4",
+    "enterYourNewDetails": "Enter your new details:",
+    "skipStep": "No, I'd like to skip this step",
+    "copyOfOwnerLabel": "Copy of owner's identification (IC / Passport)",
+    "frontIc": "Front",
+    "backIc": "Back"
+
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
@@ -1393,7 +1404,7 @@
     "deleteUserTitle": "Are you sure you want to remove the current user(s)?",
     "deleteUserBody": "Once removed, the selected user(s) will be revoked of all access and unable to view any information related to this account.",
     "walkthroughStep1Title": "View your activity log here",
-    "walkthroughStep2Title": "Your account viewers at a glance.",
+    "walkthroughStep2Title": "Your account users at a glance.",
     "walkthroughStep1": "Track all your access and permissions controls so you don’t miss out on anything!",
     "walkthroughStep2": "View and manage people who are viewing your account or provide access to someone new here.",
     "tapToSkip": "Tap to skip",
@@ -2590,6 +2601,8 @@
     "whatIsThisMean": "What does this mean?",
     "toottipTitle": "Give your users more access.",
     "tooltipBody": "To protect your information, we’re not showing non-owners your personal infromation and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
-    "addUserButton": "Add User"
+    "addUserButton": "Add User",
+    "userExistedHeader": "This user has already been added to your account user list.",
+    "userExistedDetails": "This user already has access to your account. Try another email address."
   }
 }

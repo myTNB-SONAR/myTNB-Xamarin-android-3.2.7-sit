@@ -47,5 +47,21 @@
         public string countryDetail { get; set; }
 
         public bool CountryCheckNoPhone { get; set; }
+        
+        public string unitNo { get; set; }
+
+        public string building { get; set; }
+
+        public string houseNo { get; set; }
+
+        public string street { get; set; }
+
+        public string area { get; set; }
+
+        public string city { get; set; }
+
+        public string postCode { get; set; }
+
+        public string state { get; set; }
     }
 }

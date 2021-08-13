@@ -71,6 +71,10 @@ namespace myTNB_Android.Src.RegisterValidation.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtAccCreated,
                     txtVerifyEmail);
 
+                TextViewUtils.SetTextSize18(btnContinue);
+                TextViewUtils.SetTextSize16(txtAccCreated, txtVerifyEmail);
+                TextViewUtils.SetTextSize14(txtVerifyNotification);
+
                 txtAccCreated.Text = Utility.GetLocalizedLabel("RegisterSuccess", "acccreated");
                 txtVerifyEmail.Text = Utility.GetLocalizedLabel("RegisterSuccess", "emailverify");
                 //txtAccCreated.Text = GetLabelByLanguage("acccreated");
