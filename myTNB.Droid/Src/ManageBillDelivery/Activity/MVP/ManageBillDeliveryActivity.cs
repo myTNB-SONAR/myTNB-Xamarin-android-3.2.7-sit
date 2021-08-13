@@ -165,8 +165,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             TextViewUtils.SetTextSize12(digitalBillLabel, txtSelectedAccountTitle);
             TextViewUtils.SetTextSize16(btnStartDigitalBill, deliverigTitle, txtTitle);
             TextViewUtils.SetTextSize14(deliverigAddress, TenantDeliverigAddress, txtMessage);
-            layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-            manageBillDeliveryEmailRecyclerView.SetLayoutManager(layoutManager);
+            
             if (extras != null)
             {
                 if (extras.ContainsKey("accountNumber"))
@@ -177,7 +176,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     if (accountIndex > -1)
                     {
                         mSelectedAccountData = AccountData.Copy(allAccountList[accountIndex], true);
-                        txt_ca_name.Text = mSelectedAccountData.AccountNickName;
+                        txt_ca_name.Text = mSelectedAccountData.AccountNickName + " - " + mSelectedAccountData.AccountNum;
                         deliverigAddress.Text = mSelectedAccountData.AddStreet;
                         TenantDeliverigAddress.Text = mSelectedAccountData.AddStreet;
                         selectedAccountNumber = mSelectedAccountData.AccountNum;
@@ -246,7 +245,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                     layout.Height = TextViewUtils.IsLargeFonts
                         ? (int)DPUtils.ConvertDPToPx(296f)
-                        : (int)DPUtils.ConvertDPToPx(275f);
+                        : (int)DPUtils.ConvertDPToPx(295f);
                     applicationIndicator.Visibility
                         = btnStartDigitalBillLayout.Visibility
                         = applicationIndicator.Visibility
@@ -333,10 +332,14 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 }
                 else if (getBillRenderingModel.Content.DBRType == MobileEnums.DBRTypeEnum.Email)
                 {
+                    layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                    manageBillDeliveryEmailRecyclerView.SetLayoutManager(layoutManager);
+                    manageBillDeliveryEmailListAdapter = new ManageBillDeliveryEmailListAdapter(this, getBillRenderingModel.Content.EmailList);
+                    manageBillDeliveryEmailRecyclerView.SetAdapter(manageBillDeliveryEmailListAdapter);
                     FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                     layout.Height = TextViewUtils.IsLargeFonts
                         ? (int)DPUtils.ConvertDPToPx(300f)
-                        : (int)DPUtils.ConvertDPToPx(265f);
+                        : (int)DPUtils.ConvertDPToPx(310f);
                     TenantDeliverigAddress.Visibility
                         = applicationIndicator.Visibility
                         = btnStartDigitalBillLayout.Visibility
@@ -353,8 +356,18 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         = deliverigTitle.Visibility
                         = ViewStates.Visible;
 
-                    manageBillDeliveryEmailListAdapter = new ManageBillDeliveryEmailListAdapter(this, getBillRenderingModel.Content.EmailList);
-                    manageBillDeliveryEmailRecyclerView.SetAdapter(manageBillDeliveryEmailListAdapter);
+                    if (getBillRenderingModel.Content.EmailList.Count >= 2)
+                    {
+                        layout.Height = TextViewUtils.IsLargeFonts
+                       ? layout.Height + manageBillDeliveryEmailRecyclerView.Height
+                       : layout.Height + manageBillDeliveryEmailRecyclerView.Height;
+                    }
+                    else
+                    {
+                        layout.Height = TextViewUtils.IsLargeFonts
+                         ? layout.Height + manageBillDeliveryEmailRecyclerView.Height + (int)DPUtils.ConvertDPToPx(45f)
+                         : layout.Height + manageBillDeliveryEmailRecyclerView.Height + +(int)DPUtils.ConvertDPToPx(50f);
+                    }
 
                     img_display.SetImageResource(Resource.Drawable.display_emailbilling);
                     txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding"
@@ -384,10 +397,14 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 }
                 else if (getBillRenderingModel.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
                 {
+                    layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                    manageBillDeliveryEmailRecyclerView.SetLayoutManager(layoutManager);
+                    manageBillDeliveryEmailListAdapter = new ManageBillDeliveryEmailListAdapter(this, getBillRenderingModel.Content.EmailList);
+                    manageBillDeliveryEmailRecyclerView.SetAdapter(manageBillDeliveryEmailListAdapter);
                     FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                     layout.Height = TextViewUtils.IsLargeFonts
-                        ? (int)DPUtils.ConvertDPToPx(300f)
-                        : (int)DPUtils.ConvertDPToPx(265f);
+                        ? (int)DPUtils.ConvertDPToPx(200f)
+                        : (int)DPUtils.ConvertDPToPx(255f);
                     applicationIndicator.Visibility
                         = btnStartDigitalBillLayout.Visibility
                         = applicationIndicator.Visibility
@@ -404,8 +421,19 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         = ic_ca_info.Visibility
                         = ViewStates.Visible;
 
-                    manageBillDeliveryEmailListAdapter = new ManageBillDeliveryEmailListAdapter(this, getBillRenderingModel.Content.EmailList);
-                    manageBillDeliveryEmailRecyclerView.SetAdapter(manageBillDeliveryEmailListAdapter);
+
+                    if (getBillRenderingModel.Content.EmailList.Count >= 2)
+                    {
+                        layout.Height = TextViewUtils.IsLargeFonts
+                       ? layout.Height + manageBillDeliveryEmailRecyclerView.Height
+                       : layout.Height + manageBillDeliveryEmailRecyclerView.Height;
+                    }
+                    else
+                    {
+                        layout.Height = TextViewUtils.IsLargeFonts
+                         ? layout.Height + manageBillDeliveryEmailRecyclerView.Height + (int)DPUtils.ConvertDPToPx(45f)
+                         : layout.Height + manageBillDeliveryEmailRecyclerView.Height + +(int)DPUtils.ConvertDPToPx(50f);
+                    }
 
                     img_display.SetImageResource(Resource.Drawable.display_emailbilling);
                     txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding"
@@ -460,7 +488,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.Paper;
                         FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
                         layout.Height = TextViewUtils.IsLargeFonts
-                            ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 1.7))
+                            ? (int)DPUtils.ConvertDPToPx(480f + (float)(deliverigAddress.Text.Length / 1.7))
                             : (int)DPUtils.ConvertDPToPx(455f);
                         ScrollPage();
                     }
@@ -885,7 +913,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         }
                     }
                     selectedAccountNickName = selectedEligibleAccount.accountName;
-                    txt_ca_name.Text = selectedAccountNickName;
+                    txt_ca_name.Text = selectedAccountNickName + " - " + mSelectedAccountData.AccountNum;
                     deliverigAddress.Text = selectedEligibleAccount.accountAddress;
                     TenantDeliverigAddress.Text = selectedEligibleAccount.accountAddress;
                 }
@@ -895,7 +923,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         public void SetAccountName(CustomerBillingAccount selectedAccount)
         {
-            txt_ca_name.Text = selectedAccount.AccDesc;
+            txt_ca_name.Text = selectedAccount.AccDesc + " - " + mSelectedAccountData.AccountNum;
             deliverigAddress.Text = selectedAccount.AccountStAddress;
             TenantDeliverigAddress.Text = selectedEligibleAccount.accountAddress;
             if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Paper)
