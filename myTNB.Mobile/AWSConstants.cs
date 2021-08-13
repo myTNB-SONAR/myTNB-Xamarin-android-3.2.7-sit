@@ -36,7 +36,7 @@
             internal const string GetDBREligibility = "https://j8kgh1w7y3.execute-api.ap-southeast-1.amazonaws.com";         //DEV URL
 #elif MASTER || SIT
             //internal const string GetDBREligibility = "https://j8kgh1w7y3.execute-api.ap-southeast-1.amazonaws.com";         //DEV URL
-            internal const string GetDBREligibility = " https://12pq772dmj.execute-api.ap-southeast-1.amazonaws.com";        // Staging URL
+            internal const string GetDBREligibility = "https://12pq772dmj.execute-api.ap-southeast-1.amazonaws.com";        // Staging URL
 #else
             internal const string GetDBREligibility = " https://12pq772dmj.execute-api.ap-southeast-1.amazonaws.com";        // Staging URL //Need release endpoint 
 #endif

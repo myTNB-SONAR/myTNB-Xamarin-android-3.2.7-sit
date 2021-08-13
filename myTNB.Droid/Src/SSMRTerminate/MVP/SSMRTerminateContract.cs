@@ -28,6 +28,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             void UpdateSMRData(string email, string mobile_no);
             void SetTerminationReasonsList(List<TerminationReasonModel> list);
             void ShowTermsAndConditions();
+            void ShowTermsAndConditionsView();
             void OnRequestSuccessful(SMRregistrationSubmitResponse response);
             void OnRequestFailed(SMRregistrationSubmitResponse response);
             void ShowFAQ();
@@ -43,9 +44,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             void NavigateToTermsAndConditions();
 
+            void NavigateToTermsAndConditionsView();
+
             void NavigateToFAQ();
 
-            void OnSubmitApplication(string accountNum, string oldEmail, string oldPhoneNum, string newEmail, string newPhoneNum, string terminationReason, string mode);
+            void OnSubmitApplication(string accountNum, string oldEmail, string oldPhoneNum, string newEmail, string newPhoneNum, string terminationReason, string mode);         
         }
 
         public interface SSMRTerminateApiPresenter

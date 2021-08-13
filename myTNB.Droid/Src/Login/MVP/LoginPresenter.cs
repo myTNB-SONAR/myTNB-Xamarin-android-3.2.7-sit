@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Text;
 using Android.Util;
 using Firebase.Iid;
+using fbm = Firebase.Messaging ;
 using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
@@ -30,6 +31,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Android.Gms.Extensions;
 
 namespace myTNB_Android.Src.Login.MVP
 {
@@ -111,8 +113,10 @@ namespace myTNB_Android.Src.Login.MVP
                 }
                 if (string.IsNullOrEmpty(fcmToken) || string.IsNullOrWhiteSpace(fcmToken))
                 {
-                    fcmToken = FirebaseInstanceId.Instance.Token;
+                    var fcmData= await fbm.FirebaseMessaging.Instance.GetToken();
+                    fcmToken = fcmData.ToString();
                     FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
+
                 }
                 Log.Debug(TAG, "[DEBUG] FCM TOKEN: " + fcmToken);
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);

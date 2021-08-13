@@ -42,6 +42,8 @@ using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.DeviceCache;
+using fbm = Firebase.Messaging;
+using Android.Gms.Extensions;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -137,8 +139,17 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
             else
             {
-                fcmToken = FirebaseInstanceId.Instance.Token;
-                FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
+                try
+                {
+                    var token = await fbm.FirebaseMessaging.Instance.GetToken();
+                    fcmToken = token.ToString();
+                    FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
+                }
+             catch (Exception e)
+             {
+                 Utility.LoggingNonFatalError(e);
+             }
+            
             }
             System.Diagnostics.Debug.WriteLine("[DEBUG] FCM TOKEN: " + fcmToken);
             Console.WriteLine("[CONSOLE] FCM TOKEN: " + fcmToken);
@@ -154,6 +165,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             try
             {
                 UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
+
                 AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
                       (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));
                 if (masterDataResponse != null && masterDataResponse.Response != null)

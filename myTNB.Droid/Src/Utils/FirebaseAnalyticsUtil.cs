@@ -18,13 +18,24 @@ namespace myTNB_Android.Src.Utils
 		public static void SetScreenName(this Android.App.Activity mActivity, string screenName)
 		{
 			SetAnalytics(FirebaseAnalytics.GetInstance(mActivity));
-			mAnalytics.SetCurrentScreen(mActivity, screenName, mActivity.Class.SimpleName);
+			//mAnalytics.SetCurrentScreen(mActivity, screenName, mActivity.Class.SimpleName);  //deprecated
+
+			Bundle bundle = new Bundle();
+			bundle.PutString(FirebaseAnalytics.Param.ScreenName, screenName);
+			mAnalytics.LogEvent(FirebaseAnalytics.Event.ScreenView, bundle); // new firebase api
+
 		}
 
 		public static void SetFragmentScreenName(this AndroidX.Fragment.App.Fragment mFragment, string screenName)
 		{
 			SetAnalytics(FirebaseAnalytics.GetInstance(mFragment.Activity));
-			mAnalytics.SetCurrentScreen(mFragment.Activity, screenName, mFragment.Class.SimpleName);
+			//mAnalytics.SetCurrentScreen(mFragment.Activity, screenName, mFragment.Class.SimpleName);   //deprecated
+
+			Bundle bundle = new Bundle();
+			bundle.PutString(FirebaseAnalytics.Param.ScreenName, screenName);
+			mAnalytics.LogEvent(FirebaseAnalytics.Event.ScreenView, bundle); //new firebase api
+
+
 		}
 
 		public static void SetScreenNameDynaTrace(string screenName)

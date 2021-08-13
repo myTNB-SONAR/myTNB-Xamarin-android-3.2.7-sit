@@ -70,16 +70,16 @@ namespace myTNB_Android.Src.Firebase.Services
             }
         }
 
-        private async void QueryNotifications(string title, string message)
-        {
-        }
+        //private async void QueryNotifications(string title, string message)
+        //{
+        //}
 
         private void SendNotification(string title, string message)
         {
             if (UserSessions.Notification != null)
             {
                 Intent intent = new Intent(this, typeof(UserNotificationDetailActivity));
-                intent.PutExtra(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(UserSessions.Notification));
+                intent.PutExtra(Utils.Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(UserSessions.Notification));
                 intent.AddFlags(ActivityFlags.ClearTop);
                 pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
             }
@@ -87,10 +87,15 @@ namespace myTNB_Android.Src.Firebase.Services
             {
                 flag = true;
                 Intent intent = new Intent(this, typeof(NotificationActivity));
-                intent.PutExtra(Constants.HAS_NOTIFICATION, true);
+                intent.PutExtra(Utils.Constants.HAS_NOTIFICATION, true);
                 intent.AddFlags(ActivityFlags.ClearTop);
                 pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
             }
+            // Intent intent = new Intent(this, typeof(NotificationActivity));
+            // intent.PutExtra(Utils.Constants.HAS_NOTIFICATION, true);
+
+            // intent.AddFlags(ActivityFlags.ClearTop);
+            // PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
 
             if (UserSessions.Notification != null || flag)
             {

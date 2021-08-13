@@ -186,21 +186,18 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
                     string fileName = string.Format("{0}.pdf", this.mView.GetImageName(countUserPick));
                     countUserPick++;
 
-      
-
                     string fileNameIfonlyLocal = fileName;  // temporary file name
-                    string tempPath = selectedImage.Path;
-                    //get filename
-                    int cut = tempPath.LastIndexOf('/');
-                    if (cut != -1)
-                    {
-                        fileNameIfonlyLocal = tempPath.Substring(cut + 1);
-                    }
+
+                    string tempFilename = this.mView.getFilename(selectedImage); // get filename from content resolver
+
+                    if (tempFilename!=null)
+                        if (tempFilename.Contains("pdf"))
+                        {
+                            fileNameIfonlyLocal = tempFilename;
+                        }
 
                     // reacreate from uri path
                     string copiedpath = this.mView.copyPDFGetFilePath(selectedImage, fileNameIfonlyLocal);
-
-                    
 
 
                     //from 
