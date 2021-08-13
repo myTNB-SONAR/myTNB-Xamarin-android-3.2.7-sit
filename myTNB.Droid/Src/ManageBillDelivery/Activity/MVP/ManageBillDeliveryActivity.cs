@@ -913,7 +913,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         }
                     }
                     selectedAccountNickName = selectedEligibleAccount.accountName;
-                    txt_ca_name.Text = selectedAccountNickName + " - " + mSelectedAccountData.AccountNum;
+                    txt_ca_name.Text = selectedAccountNickName + " - " + selectedEligibleAccount.accountNumber;
                     deliverigAddress.Text = selectedEligibleAccount.accountAddress;
                     TenantDeliverigAddress.Text = selectedEligibleAccount.accountAddress;
                 }
@@ -923,7 +923,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         public void SetAccountName(CustomerBillingAccount selectedAccount)
         {
-            txt_ca_name.Text = selectedAccount.AccDesc + " - " + mSelectedAccountData.AccountNum;
+            txt_ca_name.Text = selectedAccount.AccDesc + " - " + selectedAccount.AccNum;
             deliverigAddress.Text = selectedAccount.AccountStAddress;
             TenantDeliverigAddress.Text = selectedEligibleAccount.accountAddress;
             if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Paper)
