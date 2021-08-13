@@ -667,7 +667,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.SetISMDMSDown(true);
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
-                    this.mView.SetMDMSDownRefreshMessage(usageHistoryResponse);
+                    this.mView.SetMDMSDownRefreshMessage(usageHistoryResponse); 
                     OnByRM();
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "8304")
