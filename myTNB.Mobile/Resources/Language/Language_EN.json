@@ -974,6 +974,8 @@
   },
   "SubmitEnquiry": {
     //"enquireTitle": "Enquiry",
+    "exGratiaAgreementTitle": "Ex-gratia Agreement",
+    "defaultErrorMessage": "Sorry, this is not working right now. Please try again later.",
     "enquireTitle": "Submit & Track Enquiry",
     "submitEnquiryTitle": "Submit New Enquiry",
     "submitEnquiryDescription": "Let us know your thoughts and concerns.",

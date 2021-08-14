@@ -973,6 +973,8 @@
     "title": "Pilih Negara/Wilayah"
   },
   "SubmitEnquiry": {
+    "exGratiaAgreementTitle": "Perjanjian Ex-gratia", //
+    "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.", //
     "enquireTitle": "Pertanyaan",
     "submitEnquiryTitle": "Hantar dan Lihat Pertanyaan",
     "submitEnquiryDescription": "Kongsikan bagaimana kami boleh membantu anda",
@@ -1111,7 +1113,7 @@
     "proccedToPaymentInformation": "Teruskan ke Maklumat Pembayaran",
     "thankYouForYourEnquiry": "Pertanyaan anda telah dibatalkan.",
     "thankYouForYourEnquiryDescription": "Pertanyaan anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan.",
-    "thankYouForYourAppointment": "Temujanji anda telah dibatalkan.", 
+    "thankYouForYourAppointment": "Temujanji anda telah dibatalkan.",
     "thankYouForYourAppointmentDescription": "Perjanjian anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan."
 
   },

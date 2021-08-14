@@ -6277,6 +6277,16 @@
     <Compile Include="Src\MyTNBService\Response\SubmittedFeedbeckDetailModel.cs" />
     <Compile Include="Src\AppointmentDetailSet\Activity\AppointmentSetActivity.cs" />
     <Compile Include="Src\OverVoltageFeedback\Activity\OverVoltageFeedbackDetailActivity.cs" />
+    <AndroidResource Include="Resources\layout\FeedBackSubmittedSuccessView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\FeedBackSubmittedSucess\Activity\FeedBackSubmittedSuccessActivity.cs" />
+    <AndroidResource Include="Resources\layout\PaymentInfoSunmittedSuccessView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\PaymentInfoSunmittedSuccess\Activity\PaymentInfoSunmittedSuccessActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -6620,6 +6630,10 @@
     <Folder Include="Src\AppointmentDetailSet\" />
     <Folder Include="Src\AppointmentDetailSet\Activity\" />
     <Folder Include="Src\OverVoltageFeedback\Activity\" />
+    <Folder Include="Src\FeedBackSubmittedSucess\" />
+    <Folder Include="Src\FeedBackSubmittedSucess\Activity\" />
+    <Folder Include="Src\PaymentInfoSunmittedSuccess\" />
+    <Folder Include="Src\PaymentInfoSunmittedSuccess\Activity\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
