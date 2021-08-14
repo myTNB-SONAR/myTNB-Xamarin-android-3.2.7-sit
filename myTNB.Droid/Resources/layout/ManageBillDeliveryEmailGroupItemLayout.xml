@@ -38,12 +38,11 @@
 				android:ellipsize="end"
 				android:text="UI-Adam Hussein (You)"/>
 		</LinearLayout>
-		
 	</LinearLayout>
 	<View
 		android:id="@+id/applicationStatusItemGroupContentSeparator"
 		android:visibility="visible"
 		android:layout_width="match_parent"
-		android:layout_height="10dp"
+		android:layout_height="1dp"
 		android:background="@color/lightGrey"/>
 </LinearLayout>
