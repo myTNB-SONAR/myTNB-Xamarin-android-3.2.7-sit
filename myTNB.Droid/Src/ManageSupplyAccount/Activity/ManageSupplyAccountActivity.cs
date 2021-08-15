@@ -418,16 +418,30 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
-            newList.Add(new NewAppModel()
+            if (_isOwner)
             {
-                ContentShowPosition = ContentType.TopLeft,
-                ContentTitle = Utility.GetLocalizedLabel("Tutorial", "manageCAManageBillDeliveryTitle"),
-                ContentMessage = Utility.GetLocalizedLabel("Tutorial", "manageCAManageBillDeliveryMessage"),
-                ItemCount = 0,
-                DisplayMode = "",
-                IsButtonShow = false
-            });
-
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = Utility.GetLocalizedLabel("Tutorial", "manageCAManageBillDeliveryTitle"),
+                    ContentMessage = Utility.GetLocalizedLabel("Tutorial", "manageCAManageBillDeliveryMessage"),
+                    ItemCount = 0,
+                    DisplayMode = "",
+                    IsButtonShow = false
+                });
+            }
+            else
+            {
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = Utility.GetLocalizedLabel("Tutorial", "manageCAViewBillDeliveryTitle"),
+                    ContentMessage = Utility.GetLocalizedLabel("Tutorial", "manageCAViewBillDeliveryMessage"),
+                    ItemCount = 0,
+                    DisplayMode = "",
+                    IsButtonShow = false
+                });
+            }
             return newList;
         }
 

@@ -338,8 +338,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     manageBillDeliveryEmailRecyclerView.SetAdapter(manageBillDeliveryEmailListAdapter);
                     FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                     layout.Height = TextViewUtils.IsLargeFonts
-                        ? (int)DPUtils.ConvertDPToPx(300f)
-                        : (int)DPUtils.ConvertDPToPx(310f);
+                        ? (int)DPUtils.ConvertDPToPx(480f)
+                        : (int)DPUtils.ConvertDPToPx(455f);
                     TenantDeliverigAddress.Visibility
                         = applicationIndicator.Visibility
                         = btnStartDigitalBillLayout.Visibility
@@ -356,18 +356,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         = deliverigTitle.Visibility
                         = ViewStates.Visible;
 
-                    if (getBillRenderingModel.Content.EmailList.Count >= 2)
-                    {
-                        layout.Height = TextViewUtils.IsLargeFonts
-                       ? layout.Height + manageBillDeliveryEmailRecyclerView.Height
-                       : layout.Height + manageBillDeliveryEmailRecyclerView.Height;
-                    }
-                    else
-                    {
-                        layout.Height = TextViewUtils.IsLargeFonts
-                         ? layout.Height + manageBillDeliveryEmailRecyclerView.Height + (int)DPUtils.ConvertDPToPx(45f)
-                         : layout.Height + manageBillDeliveryEmailRecyclerView.Height + +(int)DPUtils.ConvertDPToPx(50f);
-                    }
+
+                    layout.Height = layout.Height + manageBillDeliveryEmailRecyclerView.Height;
+
 
                     img_display.SetImageResource(Resource.Drawable.display_emailbilling);
                     txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding"
@@ -377,7 +368,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     mPref = PreferenceManager.GetDefaultSharedPreferences(this);
                     if (_isOwner)
                     {
-                        ic_ca_info.Visibility = ViewStates.Visible;
+                        ic_ca_info.Visibility = manageBillDeliveryEmailRecyclerView.Visibility = ViewStates.Visible;
                         Handler h = new Handler();
                         Action myAction = () =>
                         {
@@ -392,7 +383,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     }
                     else
                     {
-                        digitalBillLabelContainer.Visibility = ic_ca_info.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
+                        digitalBillLabelContainer.Visibility = ic_ca_info.Visibility = digitalBillLabelLayout.Visibility = deliverigTitle.Visibility = ViewStates.Gone;
                     }
                 }
                 else if (getBillRenderingModel.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
@@ -403,8 +394,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     manageBillDeliveryEmailRecyclerView.SetAdapter(manageBillDeliveryEmailListAdapter);
                     FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                     layout.Height = TextViewUtils.IsLargeFonts
-                        ? (int)DPUtils.ConvertDPToPx(200f)
-                        : (int)DPUtils.ConvertDPToPx(255f);
+                        ? (int)DPUtils.ConvertDPToPx(310f)
+                        : (int)DPUtils.ConvertDPToPx(300f);
                     applicationIndicator.Visibility
                         = btnStartDigitalBillLayout.Visibility
                         = applicationIndicator.Visibility
@@ -422,18 +413,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         = ViewStates.Visible;
 
 
-                    if (getBillRenderingModel.Content.EmailList.Count >= 2)
-                    {
-                        layout.Height = TextViewUtils.IsLargeFonts
-                       ? layout.Height + manageBillDeliveryEmailRecyclerView.Height
-                       : layout.Height + manageBillDeliveryEmailRecyclerView.Height;
-                    }
-                    else
-                    {
-                        layout.Height = TextViewUtils.IsLargeFonts
-                         ? layout.Height + manageBillDeliveryEmailRecyclerView.Height + (int)DPUtils.ConvertDPToPx(45f)
-                         : layout.Height + manageBillDeliveryEmailRecyclerView.Height + +(int)DPUtils.ConvertDPToPx(50f);
-                    }
+
+                    layout.Height = layout.Height + manageBillDeliveryEmailRecyclerView.Height;
+                   
 
                     img_display.SetImageResource(Resource.Drawable.display_emailbilling);
                     txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding"
@@ -445,6 +427,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     {
                         ic_ca_info.Visibility
                             = btnUpdateDigitalBillLayout.Visibility
+                            = manageBillDeliveryEmailRecyclerView.Visibility
                             = ViewStates.Visible;
                         Handler h = new Handler();
                         Action myAction = () =>
@@ -898,6 +881,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         && _billRenderingResponse.StatusDetail.IsSuccess
                         && _billRenderingResponse.Content != null)
                     {
+                        _isOwner = DBRUtility.Instance.IsCADBREligible(selectedAccountNumber);
                         GetDeliveryDisplay(_billRenderingResponse);
                     }
                     foreach (DBRAccount account in dbrEligibleAccountList)
@@ -916,6 +900,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     txt_ca_name.Text = selectedAccountNickName + " - " + mSelectedAccountData.AccountNum;
                     deliverigAddress.Text = selectedEligibleAccount.accountAddress;
                     TenantDeliverigAddress.Text = selectedEligibleAccount.accountAddress;
+                    
                 }
             }
             base.OnActivityResult(requestCode, resultCode, data);
