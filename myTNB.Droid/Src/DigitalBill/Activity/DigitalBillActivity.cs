@@ -9,22 +9,19 @@ using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using Java.IO;
-using Java.Lang;
 using myTNB;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
-using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.DigitalBill.MVP;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using Constants = myTNB_Android.Src.Utils.Constants;
 
 namespace myTNB_Android.Src.DigitalBill.Activity
@@ -38,12 +35,12 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         private static Snackbar mErrorMessageSnackBar;
         public AccountData mSelectedAccountData;
         private static FrameLayout mainView;
-        GetBillRenderingResponse BillRendering;
+        private GetBillRenderingResponse BillRendering;
 
-        WebView tncWebView;
+        private WebView micrositeWebView;
 
-        const string PAGE_ID = "ManageDigitalBillLanding";
-        const string SELECTED_ACCOUNT_KEY = ".selectedAccount";
+        private const string PAGE_ID = "ManageDigitalBillLanding";
+        private const string SELECTED_ACCOUNT_KEY = ".selectedAccount";
         private string mSavedTimeStamp = "0000000";
 
         [BindView(Resource.Id.progressBar)]
@@ -96,8 +93,6 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            //mainView = rootView.FindViewById<FrameLayout>(Resource.Id.rootView);
-
             try
             {
                 Bundle extras = Intent.Extras;
@@ -113,9 +108,9 @@ namespace myTNB_Android.Src.DigitalBill.Activity
 
                 mPresenter = new DigitalBillPresenter(this);
 
-                tncWebView = FindViewById<WebView>(Resource.Id.tncWebView);
-                tncWebView.Settings.JavaScriptEnabled = (true);
-                tncWebView.SetWebViewClient(new MyTNBWebViewClient(this));
+                micrositeWebView = FindViewById<WebView>(Resource.Id.tncWebView);
+                micrositeWebView.Settings.JavaScriptEnabled = true;
+                micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
                 progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
                 ShowDigitalBill(true);
 
@@ -134,49 +129,27 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 string accnum = mSelectedAccountData.AccountNum;
                 string myTNBAccountName = user?.DisplayName ?? string.Empty;
                 string signature = SSOManager.Instance.GetSignature(myTNBAccountName
-                                   , MobileConstants.SharePreferenceKey.AccessToken
-                                   , user.DeviceId ?? string.Empty
-                                   , DeviceIdUtils.GetAppVersionName()
-                                   , 16
-                                   , (LanguageUtil.GetAppLanguage() == "MS"
-                                       ? LanguageManager.Language.MS
-                                       : LanguageManager.Language.EN).ToString()
-                                   , TextViewUtils.FontSelected
-                                   , BillRendering.Content.OriginURL
-                                   , BillRendering.Content.RedirectURL
-                                   , accnum);
+                    , AccessTokenCache.Instance.GetAccessToken(this)
+                    , user.DeviceId ?? string.Empty
+                    , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
+                    , 16
+                    , (LanguageUtil.GetAppLanguage() == "MS"
+                        ? LanguageManager.Language.MS
+                        : LanguageManager.Language.EN).ToString()
+                    , TextViewUtils.FontSelected ?? "N"
+                    , BillRendering.Content.OriginURL
+                    , BillRendering.Content.RedirectURL
+                    , accnum);
 
-                tncWebView.PostUrl(AWSConstants.Domains.SSO, GetBytes(signature, "base64"));
+                string ssoURL = string.Format(AWSConstants.Domains.SSO, signature);
+                micrositeWebView.LoadUrl(ssoURL);
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public byte[] GetBytes(string data, string charset)
-        {
-            if (string.IsNullOrEmpty(data))
-            {
-                throw new IllegalArgumentException("data may not be null");
-            }
 
-            if (string.IsNullOrEmpty(charset))
-            {
-                throw new IllegalArgumentException("charset may not be null or empty");
-            }
-
-            Java.Lang.String ToBeEncoded = new Java.Lang.String(data);
-
-            try
-            {
-                return ToBeEncoded.GetBytes(charset);
-            }
-            catch (UnsupportedEncodingException e)
-            {
-                Utility.LoggingNonFatalError(e);
-                return ToBeEncoded.GetBytes();
-            }
-        }
         public void HideProgressBar()
         {
             try
@@ -212,12 +185,12 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         public override AssetManager Assets =>
             (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop && Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
             ? Resources.Assets : base.Assets;
-        public void OnManageBillDelivery()
+
+        internal void OnManageBillDelivery()
         {
             ShowProgressDialog();
             try
             {
-
                 CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
                 AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
@@ -232,6 +205,16 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             }
             HideProgressDialog();
         }
+
+        internal void OnShowDashboard()
+        {
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+            HomeMenuUtils.ResetAll();
+            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(DashboardIntent);
+        }
+
         public void ShowProgressDialog()
         {
             try
@@ -268,37 +251,28 @@ namespace myTNB_Android.Src.DigitalBill.Activity
 
             public override bool ShouldOverrideUrlLoading(WebView view, string url)
             {
+                bool shouldOverride = false;
                 if (ConnectionUtils.HasInternetConnection(mActivity))
                 {
-
-                    if (url.ToLower().Contains("mytnbapp://action=startDigitalBilling"))
+                    if (url.ToLower().Contains("mytnbapp://action=backToApp"))
                     {
-                        mActivity.OnManageBillDelivery();
-
+                        mActivity.OnBackPressed();
+                        shouldOverride = true;
                     }
-                    else
+                    else if (url.ToLower().Contains("mytnbapp://action=backToHome"))
                     {
-                        view.LoadUrl(url);
+                        mActivity.OnShowDashboard();
+                        shouldOverride = true;
                     }
                 }
-                return true;
+                return shouldOverride;
             }
 
             public override void OnPageStarted(WebView view, string url, Android.Graphics.Bitmap favicon)
             {
                 try
                 {
-                    // if (ConnectionUtils.HasInternetConnection(mActivity))
-                    {
-                        base.OnPageStarted(view, url, favicon);
-                        //progressBar.Visibility = ViewStates.Visible;
-                    }
-                    // else
-                    {
-                        // ShowErrorMessage(url);
-                    }
-
-
+                    base.OnPageStarted(view, url, favicon);
                 }
                 catch (System.Exception e)
                 {
@@ -347,15 +321,6 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     {
                         ShowErrorMessage(failingUrl);
                     }
-
-                    // if (!ConnectionUtils.HasInternetConnection(mActivity))
-                    // {
-                    //     mWebView.StopLoading();
-                    //}
-                    // else
-                    // {
-                    //     mWebView.LoadUrl("");
-                    // }
                 }
                 catch (System.Exception e)
                 {
@@ -365,18 +330,17 @@ namespace myTNB_Android.Src.DigitalBill.Activity
 
             public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error)
             {
-                //base.OnReceivedSslError(view, handler, error);
                 handler.Proceed();
             }
 
             public override void OnLoadResource(WebView view, string url)
             {
-                //base.OnLoadResource(view, url);
                 if (!ConnectionUtils.HasInternetConnection(mActivity))
                 {
                     view.StopLoading();
                 }
             }
+
             public static void ShowErrorMessage(string failingUrl)
             {
                 if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
@@ -384,23 +348,19 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     mErrorMessageSnackBar.Dismiss();
                 }
 
-                mErrorMessageSnackBar = Snackbar.Make(mainView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
-                .SetAction(Utility.GetLocalizedLabel("Common", "tryAgain"), delegate
-                {
-                    if (!failingUrl.ToLower().Contains("statusreceipt.aspx") || !failingUrl.ToLower().Contains("paystatusreceipt"))
+                mErrorMessageSnackBar = Snackbar.Make(mainView
+                    , Utility.GetLocalizedErrorLabel("noDataConnectionMessage")
+                    , Snackbar.LengthIndefinite)
+                    .SetAction(Utility.GetLocalizedLabel("Common", "tryAgain")
+                        , delegate
                     {
-                        //mWebView.LoadUrl(failingUrl);
-                    }
-                    mErrorMessageSnackBar.Dismiss();
-                });
+                        mErrorMessageSnackBar.Dismiss();
+                    });
                 View v = mErrorMessageSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(5);
-
                 mErrorMessageSnackBar.Show();
             }
-
         }
-
     }
 }
