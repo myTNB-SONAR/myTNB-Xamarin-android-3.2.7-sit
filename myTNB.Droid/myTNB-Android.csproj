@@ -6281,11 +6281,11 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\FeedBackSubmittedSucess\Activity\FeedBackSubmittedSuccessActivity.cs" />
     <AndroidResource Include="Resources\layout\PaymentInfoSunmittedSuccessView.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\FeedBackSubmittedSucess\Activity\FeedBackSubmittedSuccessActivity.cs" />
     <Compile Include="Src\PaymentInfoSunmittedSuccess\Activity\PaymentInfoSunmittedSuccessActivity.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -6633,6 +6633,8 @@
     <Folder Include="Src\FeedBackSubmittedSucess\" />
     <Folder Include="Src\FeedBackSubmittedSucess\Activity\" />
     <Folder Include="Src\PaymentInfoSunmittedSuccess\" />
+    <Folder Include="Src\PaymentInfoSunmittedSuccess\Activity\" />
+    <Folder Include="Src\FeedBackSubmittedSucess\Activity\" />
     <Folder Include="Src\PaymentInfoSunmittedSuccess\Activity\" />
   </ItemGroup>
   <ItemGroup>
