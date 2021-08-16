@@ -75,6 +75,7 @@ namespace myTNB_Android.Src.AppointmentDetailSet.Activity
         [OnClick(Resource.Id.btnViewSubmitted)]
         void OnToViewSubmittedEnquiry(object sender, EventArgs eventArgs)
         {
+           // OverVoltageFeedbackDetailActivity.backFromAppointmentFlag = true;
             OnBackPressed();
         }
 

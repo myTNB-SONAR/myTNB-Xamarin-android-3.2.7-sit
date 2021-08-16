@@ -50,10 +50,12 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
 
 
         string SerialNumber;
+        string ClaimId;
         public bool AppointmentFlag = false;
         public bool EnuiryFlag = false;
         public bool AgreeFlag = false;
         public bool DisAgreeFlag = false;
+        public static bool comeFromsubmitClaimPage = false;
 
         public override int ResourceId()
         {
@@ -107,6 +109,7 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
                 EnuiryFlag = Convert.ToBoolean(Intent.GetStringExtra("EnuiryFlag"));
                 AgreeFlag = Convert.ToBoolean(Intent.GetStringExtra("AgreeFlag"));
                 DisAgreeFlag = Convert.ToBoolean(Intent.GetStringExtra("DisAgreeFlag"));
+                ClaimId = Intent.GetStringExtra("ClaimId");
                 if (AppointmentFlag == true)
                 {
                     SetDataForCancleAppointment();
@@ -198,21 +201,54 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
         [OnClick(Resource.Id.buttonBackToHome)]
         void OnToHome(object sender, EventArgs eventArgs)
         {
-            Intent intent = new Intent(this, typeof(DashboardHomeActivity));            
-            intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            StartActivity(intent);
+            if (AppointmentFlag)
+            {
+
+                Intent intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+                intent.PutExtra("setAppointmentFlag", "True");
+                intent.PutExtra("ClaimId", ClaimId);
+                intent.PutExtra("TITLE", "Overvoltage Claim");
+                intent.PutExtra("IsfromSetAppointmentSucces", "True");                
+                intent.SetFlags(ActivityFlags.ClearTop);
+                StartActivity(intent);
+            }
+            
         }
 
         [OnClick(Resource.Id.btnViewSubmitted)]
         void GoToClimDetail(object sender, EventArgs eventArgs)
         {
-            if (AppointmentFlag == true | EnuiryFlag == true | DisAgreeFlag == true)
+            if (EnuiryFlag == true | DisAgreeFlag == true)
             {
                 base.OnBackPressed();
             }
-            else
+            else if (AgreeFlag)
+            {
+                OverVoltageFeedbackDetailActivity.proccedToPaymentFlag=true;
+                //Intent intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+                //intent.PutExtra("proccedToPaymentFlag", "True");
+                //intent.PutExtra("ClaimId", ClaimId);                
+                //intent.SetFlags(ActivityFlags.ClearTop);
+                //StartActivity(intent);
+                base.OnBackPressed();
+
+            }
+            //else if (AppointmentFlag == true  | AppointmentFlag == true)
+            //{
+            //    Intent intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+            //    intent.PutExtra("setAppointmentFlag", "True");
+            //    intent.PutExtra("ClaimId", ClaimId);
+            //    intent.SetFlags(ActivityFlags.ClearTop);
+            //    StartActivity(intent);
+            //}
+            else if(comeFromsubmitClaimPage)
             {
                 GetClaimID();
+                comeFromsubmitClaimPage = false;
+            }
+            else if(AppointmentFlag)
+            {
+                base.OnBackPressed();
             }
         }
 

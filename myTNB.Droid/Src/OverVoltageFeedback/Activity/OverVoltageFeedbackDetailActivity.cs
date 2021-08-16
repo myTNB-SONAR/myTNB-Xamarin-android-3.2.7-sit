@@ -4,11 +4,13 @@ using System.Linq;
 using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
+using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.Content;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
@@ -21,6 +23,7 @@ using myTNB_Android.Src.FeedbackDetails.MVP;
 using myTNB_Android.Src.FeedBackSubmittedSucess.Activity;
 using myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity;
 using myTNB_Android.Src.PaymentInfoSunmittedSuccess.Activity;
+using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
@@ -45,9 +48,15 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 
         bool IsfromPaymentInfoSubmittedSucces = false;
         bool IsfromFeedBackSubmittedSucces = false;
-
+        bool IsfromSetAppointmentSucces = false;
+        public static bool proccedToPaymentFlag = false;
+        public static bool backFromAppointmentFlag = false;
+        bool setAppointmentFlag = false;
         SubmittedFeedbackDetails submittedFeedback;
         private FeedbackDetailsContract.Others.IUserActionsListener userActionsListener;
+        //File upload
+        public static bool isCapture = false;
+        private Action<int, Result, Intent> resultCallbackvalue;
 
         public bool IsActive()
         {
@@ -117,7 +126,10 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 if (Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
                 {
                     SetToolBarTitle(Intent.GetStringExtra("TITLE"));
+                    TempTitle = Intent.GetStringExtra("TITLE");
                 }
+                setAppointmentFlag = Convert.ToBoolean(Intent.GetStringExtra("setAppointmentFlag"));
+                //proccedToPaymentFlag = Convert.ToBoolean(Intent.GetStringExtra("proccedToPaymentFlag"));
                 //SetUI();
 
             }
@@ -131,6 +143,40 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         {
             try
             {
+                // WebView Live
+                var domain = "http://mytnbwvovis.ap.ngrok.io/";
+
+                // WebView Local
+                //var domain = "http://192.168.1.158:3000/";
+
+                String EndPoint = "";
+                
+                
+                
+                if (proccedToPaymentFlag)
+                {
+                    EndPoint = "?paymentInfo=true";
+                    proccedToPaymentFlag = false;
+                }
+                else if (setAppointmentFlag)
+                {
+                    EndPoint = "?setAppointment=true";
+                    setAppointmentFlag = false;
+                }
+                //else if (backFromAppointmentFlag)
+                //{
+                //    EndPoint = "";
+                //    SetToolBarTitle("Overvoltage Claim");
+
+                //}
+                else
+                {
+                    EndPoint = "";
+                    SetToolBarTitle("Overvoltage Claim");
+                    TempTitle = "Overvoltage Claim";
+                }
+                var url = domain + "claimPage/" + ClaimId + EndPoint;
+
                 webView = FindViewById<WebView>(Resource.Id.webView);
 
                 WebSettings websettings = webView.Settings;
@@ -149,32 +195,84 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 // webView.SetWebViewClient(new WebViewClient());
                 ShowProgressDialog();
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
-                webView.LoadUrl("https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId);//http://192.168.1.158:3000 //Live https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId// http://192.168.1.158:3000/claimPage/b1683610-34e6-424e-86fd-fce3ae3ab0b //338d6d22-4f04-4065-b7b1-3cb97542faa6 //https://serene-rosalind-a35967.netlify.app/claimPage/" + ClaimId
+                webView.LoadUrl(url); //"https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId  //Live https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId// http://192.168.1.158:3000/claimPage/b1683610-34e6-424e-86fd-fce3ae3ab0b //338d6d22-4f04-4065-b7b1-3cb97542faa6 //https://serene-rosalind-a35967.netlify.app/claimPage/" + ClaimId
                 await Task.Delay(0);
                 //HideProgressDialog();
+                //File upload
+                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera) != (int)Permission.Granted)
+                {
+                    RequestPermissions(new string[] { Manifest.Permission.Camera }, 0);
+                }
+
+
+                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
+                {
+                    RequestPermissions(new string[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage }, 0);
+                }
+
             }
             catch (Exception ex)
             {
 
             }
         }
+        //File upload
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        public void StartsActivity(Intent intent, int requestCode, Action<int, Result, Intent> resultCallback)
+        {
+            this.resultCallbackvalue = resultCallback;
+            isCapture = true;
+            StartActivityForResult(intent, requestCode);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (this.resultCallbackvalue != null)
+            {
+                this.resultCallbackvalue(requestCode, resultCode, data);
+                this.resultCallbackvalue = null;
+            }
+        }
         protected override void OnResume()
         {
             base.OnResume();
             try
-            {               
+            {
+                ClaimId = Intent.GetStringExtra("ClaimId");
                 SetToolBarTitle(Intent.GetStringExtra("TITLE"));
-                SetUI();
                 IsfromFeedBackSubmittedSucces = Convert.ToBoolean(Intent.GetStringExtra("IsfromPaymentInfoSubmittedSucces"));
+                IsfromPaymentInfoSubmittedSucces = Convert.ToBoolean(Intent.GetStringExtra("IsfromPaymentInfoSubmittedSucces"));
+                IsfromSetAppointmentSucces = Convert.ToBoolean(Intent.GetStringExtra("IsfromSetAppointmentSucces"));
                 if (IsfromFeedBackSubmittedSucces == true)
                 {
                     txtstep1of2.Visibility = ViewStates.Gone;
                 }
-                IsfromPaymentInfoSubmittedSucces = Convert.ToBoolean(Intent.GetStringExtra("IsfromPaymentInfoSubmittedSucces"));
-                if (IsfromPaymentInfoSubmittedSucces == true)
+                else if (IsfromPaymentInfoSubmittedSucces == true)
                 {
                     txtstep1of2.Visibility = ViewStates.Gone;
                 }
+                else if (IsfromSetAppointmentSucces)
+                {
+                    SetToolBarTitle("Set Appointment");
+                    TempTitle = "Set Appointment";
+                }
+                TempTitle = Intent.GetStringExtra("TITLE");
+                if (!isCapture)
+                {
+                    SetUI();
+                }
+                else
+                {
+                    isCapture = false;
+                }
+
                 FirebaseAnalyticsUtils.SetScreenName(this, "Feedback Details");
             }
             catch (Exception e)
@@ -225,249 +323,288 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 
         internal void ResponseFromWebviewAsync(string message)
         {
-            data = JsonConvert.DeserializeObject<DTOWebView>(message);
-            //TempTitle = data.title;
-            if (data.title == "Set Appointment")
+            try
             {
-                SetToolBarTitle("Set Appointment");
-            }
+                data = JsonConvert.DeserializeObject<DTOWebView>(message);
+                //TempTitle = data.title;
+                if (data.title == "Set Appointment")
+                {
+                    SetToolBarTitle("Set Appointment");
+                    TempTitle = "Set Appointment";
+                }                
 
-            if (data.srNumber != null)
-            {
-                if (data.title == "CancelAppointment")
+                if (data.srNumber != null)
                 {
-                    Intent canclAppointment = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
-                    canclAppointment.PutExtra("Sernumbr", data.srNumber);
-                    canclAppointment.PutExtra("AppointmentFlag", "True");
-                    StartActivity(canclAppointment);
-                }
-                else if (data.title == "CancelEnquiry")
-                {
-                    Intent canclEnquiry = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
-                    canclEnquiry.PutExtra("Sernumbr", data.srNumber);
-                    canclEnquiry.PutExtra("EnuiryFlag", "True");
-                    StartActivity(canclEnquiry);
-                }
-                else if (data.title == "onAgree")
-                {
-                    Intent OnAgree = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
-                    OnAgree.PutExtra("Sernumbr", data.srNumber);
-                    OnAgree.PutExtra("AgreeFlag", "True");
-                    StartActivity(OnAgree);
-                }
-                else if (data.title == "onDisagree")
-                {
+                    if (data.title == "CancelAppointment")
+                    {
+                        TempTitle = "Set Appointment";
+                        Intent canclAppointment = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
+                        canclAppointment.PutExtra("Sernumbr", data.srNumber);
+                        canclAppointment.PutExtra("AppointmentFlag", "True");
+                        canclAppointment.PutExtra("ClaimId", ClaimId);
+                        StartActivity(canclAppointment);
+                    }
+                    else if (data.title == "CancelEnquiry")
+                    {
+                        TempTitle = "CancelEnquiry";
+                        Intent canclEnquiry = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
+                        canclEnquiry.PutExtra("Sernumbr", data.srNumber);
+                        canclEnquiry.PutExtra("EnuiryFlag", "True");
+                        StartActivity(canclEnquiry);
+                    }
+                    else if (data.title == "onAgree")
+                    {
+                        TempTitle = "onAgree";
+                        Intent OnAgree = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
+                        OnAgree.PutExtra("Sernumbr", data.srNumber);
+                        OnAgree.PutExtra("AgreeFlag", "True");
+                        OnAgree.PutExtra("ClaimId", ClaimId);
+                        StartActivity(OnAgree);
+                    }
+                    else if (data.title == "onDisagree")
+                    {
+                        TempTitle = "onDisagree";
+                        Intent OnDisAgree = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
+                        OnDisAgree.PutExtra("Sernumbr", data.srNumber);
+                        OnDisAgree.PutExtra("DisAgreeFlag", "True");
+                        StartActivity(OnDisAgree);
+                    }
+                    else if (data.currentScreen == "submit" && TempTitle == "Enter Payment Details")
+                    {
+                        Intent paymentInfoSubmitted = new Intent(this, typeof(PaymentInfoSunmittedSuccessActivity));
+                        paymentInfoSubmitted.PutExtra("Sernumbr", data.srNumber);
+                        paymentInfoSubmitted.PutExtra("TotalAmt", data.totalAmount);
+                        paymentInfoSubmitted.PutExtra("ClaimId", data.claimId);
+                        StartActivity(paymentInfoSubmitted);
+                    }
+                    else if (data.currentScreen == "submit" && TempTitle == "Update Payment Details")
+                    {
+                        Intent paymentInfoSubmitted = new Intent(this, typeof(PaymentInfoSunmittedSuccessActivity));
+                        paymentInfoSubmitted.PutExtra("Sernumbr", data.srNumber);
+                        paymentInfoSubmitted.PutExtra("TotalAmt", data.totalAmount);
+                        paymentInfoSubmitted.PutExtra("ClaimId", data.claimId);
+                        StartActivity(paymentInfoSubmitted);
+                    }
+                    else
+                    {
+                        Intent setAppointment = new Intent(this, typeof(AppointmentSetActivity));
+                        setAppointment.PutExtra("Sernumbr", data.srNumber);
+                        setAppointment.PutExtra("ApptDate", data.appointmentDate);
+                        setAppointment.PutExtra("TechName", data.technicianName);
+                        setAppointment.PutExtra("IncdAdd", data.incidentAddress);
+                        StartActivity(setAppointment);
+                    }
 
-                    Intent OnDisAgree = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
-                    OnDisAgree.PutExtra("Sernumbr", data.srNumber);
-                    OnDisAgree.PutExtra("DisAgreeFlag", "True");
-                    StartActivity(OnDisAgree);
                 }
-                else if (data.currentScreen == "submit" && TempTitle== "Enter Payment Details")
+                else if (!string.IsNullOrEmpty(data.crStatus))
                 {
-                    Intent paymentInfoSubmitted = new Intent(this, typeof(PaymentInfoSunmittedSuccessActivity));
-                    paymentInfoSubmitted.PutExtra("Sernumbr", data.srNumber);
-                    paymentInfoSubmitted.PutExtra("TotalAmt", data.totalAmount);
-                    paymentInfoSubmitted.PutExtra("ClaimId", data.claimId);
-                    StartActivity(paymentInfoSubmitted);
+                    if (data.crStatus != "NULL")
+                    {
+                        SelectSubmittedFeedbackActivity.status = data.crStatus;//"Cancelled";
+                    }
+                    //NavigationController.SetNavigationBarHidden(false, false);
+                    base.OnBackPressed();
                 }
-                else if (data.currentScreen == "submit" && TempTitle == "Update Payment Details")
+                else if (data.title == "Compensation Agreement")
                 {
-                    Intent paymentInfoSubmitted = new Intent(this, typeof(PaymentInfoSunmittedSuccessActivity));
-                    paymentInfoSubmitted.PutExtra("Sernumbr", data.srNumber);
-                    paymentInfoSubmitted.PutExtra("TotalAmt", data.totalAmount);
-                    paymentInfoSubmitted.PutExtra("ClaimId", data.claimId);
-                    StartActivity(paymentInfoSubmitted);
-                }
-                else
-                {
-                    Intent setAppointment = new Intent(this, typeof(AppointmentSetActivity));
-                    setAppointment.PutExtra("Sernumbr", data.srNumber);
-                    setAppointment.PutExtra("ApptDate", data.appointmentDate);
-                    setAppointment.PutExtra("TechName", data.technicianName);
-                    setAppointment.PutExtra("IncdAdd", data.incidentAddress);
-                    StartActivity(setAppointment);
-                }
+                    SetToolBarTitle("Compensation Agreement");
+                    TempTitle = "Compensation Agreement";
 
-            }
-            else if (!string.IsNullOrEmpty(data.crStatus))
-            {
-                //if (data.crStatus != "NULL")
+                }
+                else if (data.title == "Negotiation Request")
+                {
+                    SetToolBarTitle("Negotiation Request");
+                    TempTitle = "Negotiation Request";
+                }
+                else if (data.title == "Enter Payment Details")
+                {
+                    SetToolBarTitle("Enter Payment Details");
+                    TempTitle = "Enter Payment Details";
+                    //TempStepperTitle = "Enter Payment Details";
+                }
+                else if (data.title == "Update Payment Details")
+                {
+                    SetToolBarTitle("Update Payment Details");
+                    TempTitle = "Update Payment Details";
+                    txtstep1of2.Visibility = ViewStates.Visible;
+                    txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
+
+                }
+                else if (data.currentScreen == "1" && data.nextScreen == "2" && TempTitle == "Enter Payment Details")
+                {
+                    txtstep1of2.Visibility = ViewStates.Visible;
+                    txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
+                }
+                else if (data.currentScreen == "1" && data.nextScreen == "overvoltageclaim")
+                {
+                    txtstep1of2.Visibility = ViewStates.Gone;
+                    SetToolBarTitle("Overvoltage Claim");
+                    TempTitle = "Overvoltage Claim";
+                }
+                else if (data.currentScreen == "1" && data.nextScreen == "2" && data.title == "Update Payment Details")
+                {
+                    SetToolBarTitle("Update Payment Details");
+                    txtstep1of2.Visibility = ViewStates.Visible;
+                    txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
+                }
+                else if (data.currentScreen == "2" && data.nextScreen == "submit")
+                {
+                    txtstep1of2.Visibility = ViewStates.Visible;
+                    txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle2of2");
+                }
+                else if (data.currentScreen == "2" && data.nextScreen == "1")
+                {
+                    txtstep1of2.Visibility = ViewStates.Visible;
+                    txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
+                }
+                else if (data.currentScreen == "0" && data.nextScreen == "overvoltageclaim")
+                {
+                    string toolbartitle = Intent.GetStringExtra("TITLE");
+                    SetToolBarTitle(Intent.GetStringExtra("TITLE"));
+                    //base.OnBackPressed();
+                }
+                //back to start screen
+                else if (data.currentScreen == "1" && data.nextScreen == "0")
+                {
+                    txtstep1of2.Visibility = ViewStates.Gone;
+                }
+                //else if (data.currentScreen == "1" && data.nextScreen == "2")
                 //{
-                //    SubmittedFeedbackViewController.status = data.crStatus;//"Cancelled";
+                //    txtstep1of2.Visibility = ViewStates.Gone;
                 //}
-                //NavigationController.SetNavigationBarHidden(false, false);
-                base.OnBackPressed();
+                else if (data.currentScreen == "0" && data.nextScreen == "overvoltageclaim")
+                {
+                    txtstep1of2.Visibility = ViewStates.Visible;
+                    txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle2of2");
+                }
+                else if (data.title == "Rate Your Experience")
+                {
+                    SetToolBarTitle("Rate Your Experience");
+                    TempTitle = "Rate Your Experience";
+
+                }
+                else if (data.title == "overvoltageclaim")
+                {
+                    SetToolBarTitle("Overvoltage Claim");
+                    TempTitle = "Overvoltage Claim";
+                }
+                else if (!string.IsNullOrEmpty(data.claimId))
+                {
+                    Intent FeedBackSubmittedSuccess = new Intent(this, typeof(FeedBackSubmittedSuccessActivity));
+                    FeedBackSubmittedSuccess.PutExtra("ClaimId", data.claimId);
+                    StartActivity(FeedBackSubmittedSuccess);
+                }
             }
-            else if (data.title == "Compensation Agreement")
+            catch (Exception ex)
             {
-                SetToolBarTitle("Compensation Agreement");
-                TempTitle = "Compensation Agreement";
 
             }
-            else if (data.title == "Negotiation Request")
-            {
-                SetToolBarTitle("Negotiation Request");
-                TempTitle = "Negotiation Request";
-            }
-            else if (data.title == "Enter Payment Details")
-            {
-                SetToolBarTitle("Enter Payment Details");
-                TempTitle = "Enter Payment Details";
-                //TempStepperTitle = "Enter Payment Details";
-            }
-            else if (data.title == "Update Payment Details")
-            {
-                SetToolBarTitle("Update Payment Details");
-                TempTitle = "Update Payment Details";
-                txtstep1of2.Visibility = ViewStates.Visible;
-                txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
-
-            }
-            else if (data.currentScreen == "1" && data.nextScreen == "2" && TempTitle == "Enter Payment Details")
-            {
-                txtstep1of2.Visibility = ViewStates.Visible;
-                txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
-            }
-            else if (data.currentScreen == "1" && data.nextScreen == "overvoltageclaim")
-            {
-                txtstep1of2.Visibility = ViewStates.Gone;
-                SetToolBarTitle("Overvoltage Claim");
-            }
-            else if (data.currentScreen == "1" && data.nextScreen == "2" && data.title == "Update Payment Details")
-            {
-                SetToolBarTitle("Update Payment Details");
-                txtstep1of2.Visibility = ViewStates.Visible;
-                txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
-            }
-            else if (data.currentScreen == "2" && data.nextScreen == "submit")
-            {
-                txtstep1of2.Visibility = ViewStates.Visible;
-                txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle2of2");
-            }
-            else if (data.currentScreen == "2" && data.nextScreen == "1")
-            {
-                txtstep1of2.Visibility = ViewStates.Visible;
-                txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
-            }
-            else if (data.currentScreen == "0" && data.nextScreen == "overvoltageclaim")
-            {
-                string toolbartitle = Intent.GetStringExtra("TITLE");
-                SetToolBarTitle(Intent.GetStringExtra("TITLE"));
-                //base.OnBackPressed();
-            }
-            //back to start screen
-            else if (data.currentScreen == "1" && data.nextScreen == "0")
-            {
-                txtstep1of2.Visibility = ViewStates.Gone;
-            }
-            //else if (data.currentScreen == "1" && data.nextScreen == "2")
-            //{
-            //    txtstep1of2.Visibility = ViewStates.Gone;
-            //}
-            else if (data.currentScreen == "0" && data.nextScreen == "overvoltageclaim")
-            {
-                txtstep1of2.Visibility = ViewStates.Visible;
-                txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle2of2");
-            }
-            else if (data.title == "Rate Your Experience")
-            {
-                SetToolBarTitle("Rate Your Experience");
-
-            }
-            else if (data.title == "overvoltageclaim")
-            {
-                SetToolBarTitle("Overvoltage Claim");
-            }
-            else if (!string.IsNullOrEmpty(data.claimId))
-            {
-                Intent FeedBackSubmittedSuccess = new Intent(this, typeof(FeedBackSubmittedSuccessActivity));
-                FeedBackSubmittedSuccess.PutExtra("ClaimId", data.claimId);
-                StartActivity(FeedBackSubmittedSuccess);
-            }
+            
 
 
         }
         public override void OnBackPressed()
         {
-            if (TempTitle == "Set Appointment")
+            try
             {
 
-                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackAppointment').trigger('click'); },500); })();", null);
-            }
-            else if (TempTitle == "Compensation Agreement")
-            {
-                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackCompensation').trigger('click'); },500); })();", null);
-            }
-            else if (TempTitle == "Negotiation Request")
-            {
-                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackNegotiation').trigger('click'); },500); })();", null);
-            }
-            else if (data == null)
-            {
-                base.OnBackPressed();
-            }
-            else if (data != null)
-            {
-                //if (data.title == "Update Payment Details")
-                //{
-                //    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackUpdatePaymentStep').trigger('click'); },500); })();", null);
-                //}
-                if (data.currentScreen == "0" && data.nextScreen == "1")
+                if (TempTitle == "Set Appointment")
                 {
-                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackPaymnet').trigger('click'); },500); })();", null);
+                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackAppointment').trigger('click'); },500); })();", null);
                 }
-                else if (data.currentScreen == "1" && data.nextScreen == "2" && TempTitle == "Enter Payment Details")
+                else if (TempTitle == "Compensation Agreement")
                 {
-                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackPaymentStep').trigger('click'); },500); })();", null);
+                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackCompensation').trigger('click'); },500); })();", null);
                 }
-                else if (data.currentScreen == "1" && data.nextScreen == "2" && TempTitle == "Update Payment Details")
+                else if (TempTitle == "Negotiation Request")
                 {
-                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackUpdatePaymentStep').trigger('click'); },500); })();", null);
+                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackNegotiation').trigger('click'); },500); })();", null);
                 }
-                else if (data.currentScreen == "2" && data.nextScreen == "submit" && TempTitle == "Enter Payment Details")
-                {
-                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackPaymentStep').trigger('click'); },500); })();", null);
-                }
-                else if (data.currentScreen == "2" && data.nextScreen == "submit" && TempTitle == "Update Payment Details")
-                {
-                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackUpdatePayment').trigger('click'); },500); })();", null);
-                }
-                else if (data.currentScreen == "2" && data.nextScreen == "1" && TempTitle == "Enter Payment Details")
-                {
-                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackPaymentStep').trigger('click'); },500); })();", null);
-                }
-                else if (data.currentScreen == "2" && data.nextScreen == "1" && TempTitle == "Update Payment Details")
-                {
-                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackUpdatePaymentStep').trigger('click'); },500); })();", null);
-                }
-                else if (data.currentScreen == "1" && data.nextScreen == "0")
-                {
-                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackPaymnet').trigger('click'); },500); })();", null);
-                }
-                else if (data.title == "Rate Your Experience")
-                {
-                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackRatingPage').trigger('click'); },500); })();", null);
-
-                }
-                else if (data.currentScreen == "1" && data.nextScreen == "0")
+                else if (TempTitle == "Overvoltage Claim")
                 {
                     base.OnBackPressed();
                 }
-                else if (data.currentScreen == "0" && data.nextScreen == "overvoltageclaim")
+                else if (data == null)
                 {
                     base.OnBackPressed();
                 }
-                else if (data.title == "overvoltageclaim")
+                else if (data != null)
                 {
-                    base.OnBackPressed();
+                    //if (data.title == "Update Payment Details")
+                    //{
+                    //    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackUpdatePaymentStep').trigger('click'); },500); })();", null);
+                    //}
+
+                    if (data.currentScreen == "0" && data.nextScreen == "1")
+                    {
+                        webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackPaymnet').trigger('click'); },500); })();", null);
+                    }
+                    else if (data.title == "CancelEnquiry")
+                    {
+                        base.OnBackPressed();
+                    }
+                    else if (data.currentScreen == "1" && data.nextScreen == "2" && TempTitle == "Enter Payment Details")
+                    {
+                        webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackPaymentStep').trigger('click'); },500); })();", null);
+                    }
+                    else if (data.currentScreen == "1" && data.nextScreen == "2" && TempTitle == "Update Payment Details")
+                    {
+                        webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackUpdatePaymentStep').trigger('click'); },500); })();", null);
+                    }
+                    else if (data.currentScreen == "2" && data.nextScreen == "submit" && TempTitle == "Enter Payment Details")
+                    {
+                        webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackPaymentStep').trigger('click'); },500); })();", null);
+                    }
+                    else if (data.currentScreen == "2" && data.nextScreen == "submit" && TempTitle == "Update Payment Details")
+                    {
+                        webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackUpdatePayment').trigger('click'); },500); })();", null);
+                    }
+                    else if (data.currentScreen == "2" && data.nextScreen == "1" && TempTitle == "Enter Payment Details")
+                    {
+                        webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackPaymentStep').trigger('click'); },500); })();", null);
+                    }
+                    else if (data.currentScreen == "2" && data.nextScreen == "1" && TempTitle == "Update Payment Details")
+                    {
+                        webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackUpdatePaymentStep').trigger('click'); },500); })();", null);
+                    }
+                    else if (data.currentScreen == "1" && data.nextScreen == "0")
+                    {
+                        webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackPaymnet').trigger('click'); },500); })();", null);
+                    }
+                    else if (data.title == "Rate Your Experience")
+                    {
+                        webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackRatingPage').trigger('click'); },500); })();", null);
+
+                    }
+                    else if (data.currentScreen == "1" && data.nextScreen == "0")
+                    {
+                        base.OnBackPressed();
+                    }
+                    else if (data.currentScreen == "0" && data.nextScreen == "overvoltageclaim")
+                    {
+                        base.OnBackPressed();
+                    }
+                    else if (data.title == "overvoltageclaim" )
+                    {
+                        if (TempTitle == "Overvoltage Claim")
+                        {
+                            //base.OnBackPressed();
+                            webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#getCurrentStatusForMobileApp').trigger('click'); },500); })();", null);
+                        }
+                        //base.OnBackPressed();
+
+                    }
+
                 }
 
+                else
+                {
+                    base.OnBackPressed();
+                }
             }
-
-            else
+            catch (Exception ex)
             {
-                base.OnBackPressed();
+
             }
 
 
@@ -499,6 +636,8 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
     {
         OverVoltageFeedbackDetailActivity _OverVoltageFeedbackDetailActivity;
         private WebView webview;
+        private static int filechooser = 1;
+        private IValueCallback message;
         //Give the host application a chance to take over the control when a new URL is about to be loaded in the current WebView.  
 
         public WebViewClient(OverVoltageFeedbackDetailActivity _OverVoltageFeedbackDetailActivity, WebView webview)
@@ -528,7 +667,44 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 
         }
 
+        public override bool OnShowFileChooser(WebView webView, IValueCallback filePathCallback, FileChooserParams fileChooserParams)
+        {
+            this.message = filePathCallback;
+            Intent captureIntent = fileChooserParams.CreateIntent();
+            Intent contentSelectionIntent = new Intent(Intent.ActionGetContent);
+            contentSelectionIntent.AddCategory(Intent.CategoryOpenable);
+            contentSelectionIntent.SetType("*/*");
+            Intent[] intentArray;
+            if (captureIntent != null)
+            {
+                intentArray = new Intent[] { captureIntent };
+            }
+            else
+            {
+                intentArray = new Intent[0];
+            }
 
+            this._OverVoltageFeedbackDetailActivity.StartsActivity(contentSelectionIntent, filechooser, this.OnActivityResult);
+
+            return true;
+        }
+        private void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            if (data != null)
+            {
+                if (requestCode == filechooser)
+                {
+                    if (null == this.message)
+                    {
+                        //`enter code here`
+                        return;
+                    }
+
+                    this.message.OnReceiveValue(WebChromeClient.FileChooserParams.ParseResult((int)resultCode, data));
+                    this.message = null;
+                }
+            }
+        }
     }
     public class DTOWebView
     {

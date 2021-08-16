@@ -237,6 +237,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                     var serviceNumber = data.serviceNumber;
                     Intent OverVoltagClaim = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
                     OverVoltagClaim.PutExtra("SerialNumber", serviceNumber.Trim());
+                    OverVoltageClaimSuccessPageActivity.comeFromsubmitClaimPage = true;
                     StartActivity(OverVoltagClaim);
                     HideProgressDialog();
                 }
