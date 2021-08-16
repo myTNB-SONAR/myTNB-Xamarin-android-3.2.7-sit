@@ -7,7 +7,6 @@ using Android.OS;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
-using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB;
 using myTNB.Mobile;
@@ -17,34 +16,30 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.DigitalBill.MVP;
-using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using Constants = myTNB_Android.Src.Utils.Constants;
 
 namespace myTNB_Android.Src.DigitalBill.Activity
 {
-    [Activity(Label = "@string/terms_conditions_activity_title",
-        ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.TnC")]
-    public class DigitalBillActivity : BaseActivityCustom, DigitalBillContract.IView
+    [Activity(Label = "@string/terms_conditions_activity_title"
+        , ScreenOrientation = ScreenOrientation.Portrait
+        , Theme = "@style/Theme.TnC")]
+    public class DigitalBillActivity : BaseActivityCustom
+        , DigitalBillContract.IView
     {
+        private static Snackbar mErrorMessageSnackBar;
+        private static FrameLayout mainView;
+        private WebView micrositeWebView;
+
         private DigitalBillPresenter mPresenter;
         private DigitalBillContract.IUserActionsListener userActionsListener;
-        private static Snackbar mErrorMessageSnackBar;
-        public AccountData mSelectedAccountData;
-        private static FrameLayout mainView;
         private GetBillRenderingResponse BillRendering;
-
-        private WebView micrositeWebView;
 
         private const string PAGE_ID = "ManageDigitalBillLanding";
         private const string SELECTED_ACCOUNT_KEY = ".selectedAccount";
-        private string mSavedTimeStamp = "0000000";
 
-        [BindView(Resource.Id.progressBar)]
-        ProgressBar progressBar;
+        private string _accountNumber = string.Empty;
 
         public bool IsActive()
         {
@@ -74,7 +69,6 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 {
                     try
                     {
-                        progressBar.Visibility = ViewStates.Gone;
                         SetDefaultData();
                     }
                     catch (System.Exception er)
@@ -85,7 +79,6 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             }
             catch (System.Exception e)
             {
-                progressBar.Visibility = ViewStates.Gone;
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -99,11 +92,11 @@ namespace myTNB_Android.Src.DigitalBill.Activity
 
                 if ((extras != null) && extras.ContainsKey(SELECTED_ACCOUNT_KEY))
                 {
-                    mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
+                    _accountNumber = extras.GetString(SELECTED_ACCOUNT_KEY);
                 }
-                if ((extras != null) && extras.ContainsKey("billrenderingresponse"))
+                if ((extras != null) && extras.ContainsKey("billRenderingResponse"))
                 {
-                    BillRendering = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
+                    BillRendering = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billRenderingResponse"));
                 }
 
                 mPresenter = new DigitalBillPresenter(this);
@@ -111,9 +104,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 micrositeWebView = FindViewById<WebView>(Resource.Id.tncWebView);
                 micrositeWebView.Settings.JavaScriptEnabled = true;
                 micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
-                progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
                 ShowDigitalBill(true);
-
             }
             catch (System.Exception e)
             {
@@ -126,7 +117,6 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             try
             {
                 UserEntity user = UserEntity.GetActive();
-                string accnum = mSelectedAccountData.AccountNum;
                 string myTNBAccountName = user?.DisplayName ?? string.Empty;
                 string signature = SSOManager.Instance.GetSignature(myTNBAccountName
                     , AccessTokenCache.Instance.GetAccessToken(this)
@@ -139,7 +129,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     , TextViewUtils.FontSelected ?? "N"
                     , BillRendering.Content.OriginURL
                     , BillRendering.Content.RedirectURL
-                    , accnum);
+                    , _accountNumber);
 
                 string ssoURL = string.Format(AWSConstants.Domains.SSO, signature);
                 micrositeWebView.LoadUrl(ssoURL);
@@ -154,7 +144,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             try
             {
-                progressBar.Visibility = ViewStates.Gone;
+
             }
             catch (System.Exception e)
             {
@@ -186,26 +176,6 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop && Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
             ? Resources.Assets : base.Assets;
 
-        internal void OnManageBillDelivery()
-        {
-            ShowProgressDialog();
-            try
-            {
-                CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-                AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
-                Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
-                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(BillRendering));
-                intent.PutExtra("_isOwner", JsonConvert.SerializeObject(DBRUtility.Instance.IsCADBREligible(selectedAccountData.AccountNum)));
-                StartActivity(intent);
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
-            }
-            HideProgressDialog();
-        }
-
         internal void OnShowDashboard()
         {
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
@@ -219,7 +189,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             try
             {
-                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+                //LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (System.Exception e)
             {
@@ -231,7 +201,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             try
             {
-                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+                //LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (System.Exception e)
             {
@@ -242,7 +212,6 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             public DigitalBillActivity mActivity;
             public ProgressBar progressBar;
-            private bool isRedirected = false;
 
             public MyTNBWebViewClient(DigitalBillActivity mActivity)
             {

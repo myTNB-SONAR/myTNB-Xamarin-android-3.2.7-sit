@@ -6,7 +6,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
@@ -165,7 +164,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             TextViewUtils.SetTextSize12(digitalBillLabel, txtSelectedAccountTitle);
             TextViewUtils.SetTextSize16(btnStartDigitalBill, deliverigTitle, txtTitle);
             TextViewUtils.SetTextSize14(deliverigAddress, TenantDeliverigAddress, txtMessage);
-            
+
             if (extras != null)
             {
                 if (extras.ContainsKey("accountNumber"))
@@ -203,7 +202,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             }
             btnStartDigitalBill.Click += delegate
             {
-                InitiateDBRRequest(mSelectedAccountData);
+                OnDisplayMicrosite();
+            };
+            btnUpdateDigitalBill.Click += delegate
+            {
+                OnDisplayMicrosite();
             };
         }
 
@@ -415,7 +418,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
 
                     layout.Height = layout.Height + manageBillDeliveryEmailRecyclerView.Height;
-                   
+
 
                     img_display.SetImageResource(Resource.Drawable.display_emailbilling);
                     txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding"
@@ -598,14 +601,14 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             }
         }
 
-        public void InitiateDBRRequest(AccountData mSelectedAccountData)
+        public void OnDisplayMicrosite()
         {
             try
             {
                 SetDynatraceCTATags();
                 Intent intent = new Intent(this, typeof(DigitalBillActivity));
-                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
-                intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(_billRenderingResponse));
+                intent.PutExtra(Constants.SELECTED_ACCOUNT, _accountNumber);
+                intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(_billRenderingResponse));
                 StartActivity(intent);
             }
             catch (Exception e)
@@ -882,6 +885,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         && _billRenderingResponse.Content != null)
                     {
                         _isOwner = DBRUtility.Instance.IsCADBREligible(selectedAccountNumber);
+                        _accountNumber = selectedAccountNumber;
                         SetToolBarTitle(GetLabelByLanguage(_isOwner ? "title" : "dbrViewBillDelivery"));
                         GetDeliveryDisplay(_billRenderingResponse);
                     }
@@ -901,7 +905,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     txt_ca_name.Text = selectedAccountNickName + " - " + selectedEligibleAccount.accountNumber;
                     deliverigAddress.Text = selectedEligibleAccount.accountAddress;
                     TenantDeliverigAddress.Text = selectedEligibleAccount.accountAddress;
-                    
                 }
             }
             base.OnActivityResult(requestCode, resultCode, data);
