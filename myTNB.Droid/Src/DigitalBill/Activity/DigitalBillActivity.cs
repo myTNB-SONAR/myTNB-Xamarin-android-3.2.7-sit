@@ -254,12 +254,12 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 bool shouldOverride = false;
                 if (ConnectionUtils.HasInternetConnection(mActivity))
                 {
-                    if (url.ToLower().Contains("mytnbapp://action=backToApp"))
+                    if (url.Contains("mytnbapp://action=backToApp"))
                     {
                         mActivity.OnBackPressed();
                         shouldOverride = true;
                     }
-                    else if (url.ToLower().Contains("mytnbapp://action=backToHome"))
+                    else if (url.Contains("mytnbapp://action=backToHome"))
                     {
                         mActivity.OnShowDashboard();
                         shouldOverride = true;
