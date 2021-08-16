@@ -882,6 +882,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         && _billRenderingResponse.Content != null)
                     {
                         _isOwner = DBRUtility.Instance.IsCADBREligible(selectedAccountNumber);
+                        SetToolBarTitle(GetLabelByLanguage(_isOwner ? "title" : "dbrViewBillDelivery"));
                         GetDeliveryDisplay(_billRenderingResponse);
                     }
                     foreach (DBRAccount account in dbrEligibleAccountList)
