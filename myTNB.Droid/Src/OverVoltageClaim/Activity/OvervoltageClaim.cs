@@ -106,6 +106,10 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
         {
             try
             {
+                #if DEBUG
+                global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
+                #endif
+
                 webView = FindViewById<WebView>(Resource.Id.webView);
                 txtstep1of2 = FindViewById<TextView>(Resource.Id.txtstep1of2);
                 WebSettings websettings = webView.Settings;
