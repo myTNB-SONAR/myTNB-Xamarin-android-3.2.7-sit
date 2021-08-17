@@ -28,7 +28,7 @@ namespace myTNB_Android.Src.PaymentInfoSunmittedSuccess.Activity
           , Theme = "@style/Theme.FaultyStreetLamps")]
     public class PaymentInfoSunmittedSuccessActivity : BaseAppCompatActivity
     {
-        System.Globalization.CultureInfo info = System.Globalization.CultureInfo.GetCultureInfo("en - IN");
+        //System.Globalization.CultureInfo info = System.Globalization.CultureInfo.GetCultureInfo("en - IN");
         [BindView(Resource.Id.txtTitleInfo)]
         TextView txtTitleInfo;
 
@@ -74,7 +74,9 @@ namespace myTNB_Android.Src.PaymentInfoSunmittedSuccess.Activity
             txtFeedbackIdContent.Text = Sernumbr;
             //txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitICFeedback_OverVoltageClainSuccessPageThankyouRequest");
             //txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent");
-            totalclaimamt.Text = Convert.ToDouble(TotalAmt).ToString("N2", info);//TotalAmt;
+            //totalclaimamt.Text = Convert.ToDouble(TotalAmt).ToString("N2", info);//TotalAmt;
+            var Amt = Convert.ToDouble(TotalAmt);
+            totalclaimamt.Text = string.Format("{0:#,0.####}", Amt);
             txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
             buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
             btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");

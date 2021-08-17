@@ -207,9 +207,16 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
                 Intent intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
                 intent.PutExtra("setAppointmentFlag", "True");
                 intent.PutExtra("ClaimId", ClaimId);
-                intent.PutExtra("TITLE", "Overvoltage Claim");
+                intent.PutExtra("TITLE", "Set Appointment");
                 intent.PutExtra("IsfromSetAppointmentSucces", "True");                
                 intent.SetFlags(ActivityFlags.ClearTop);
+                StartActivity(intent);
+            }
+            else if(EnuiryFlag == true | DisAgreeFlag == true | comeFromsubmitClaimPage == true | AgreeFlag == true)
+            {
+                //Back to home
+                Intent intent = new Intent(this, typeof(DashboardHomeActivity));
+                intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(intent);
             }
             
@@ -225,11 +232,6 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
             else if (AgreeFlag)
             {
                 OverVoltageFeedbackDetailActivity.proccedToPaymentFlag=true;
-                //Intent intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
-                //intent.PutExtra("proccedToPaymentFlag", "True");
-                //intent.PutExtra("ClaimId", ClaimId);                
-                //intent.SetFlags(ActivityFlags.ClearTop);
-                //StartActivity(intent);
                 base.OnBackPressed();
 
             }

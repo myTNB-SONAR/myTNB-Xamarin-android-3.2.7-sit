@@ -250,7 +250,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             try
             {
                 ClaimId = Intent.GetStringExtra("ClaimId");
-                SetToolBarTitle(Intent.GetStringExtra("TITLE"));
+                //SetToolBarTitle(Intent.GetStringExtra("TITLE"));
                 IsfromFeedBackSubmittedSucces = Convert.ToBoolean(Intent.GetStringExtra("IsfromPaymentInfoSubmittedSucces"));
                 IsfromPaymentInfoSubmittedSucces = Convert.ToBoolean(Intent.GetStringExtra("IsfromPaymentInfoSubmittedSucces"));
                 IsfromSetAppointmentSucces = Convert.ToBoolean(Intent.GetStringExtra("IsfromSetAppointmentSucces"));
@@ -267,13 +267,21 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     SetToolBarTitle("Set Appointment");
                     TempTitle = "Set Appointment";
                 }
+                else if(proccedToPaymentFlag)
+                {
+                    SetToolBarTitle("Enter Payment Details");
+                    TempTitle = "Enter Payment Details";
+                }
                 TempTitle = Intent.GetStringExtra("TITLE");
+
                 if (!isCapture)
                 {
                     SetUI();
                 }
                 else
                 {
+                    SetToolBarTitle("Enter Payment Details");
+                    TempTitle = "Enter Payment Details";
                     isCapture = false;
                 }
 
@@ -526,7 +534,9 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 }
                 else if (TempTitle == "Overvoltage Claim")
                 {
-                    base.OnBackPressed();
+                   //base.OnBackPressed();
+                   webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#getCurrentStatusForMobileApp').trigger('click'); },500); })();", null);
+                   
                 }
                 else if (data == null)
                 {
@@ -707,6 +717,13 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     this.message.OnReceiveValue(WebChromeClient.FileChooserParams.ParseResult((int)resultCode, data));
                     this.message = null;
                 }
+            }
+            else
+            {
+                this.message.OnReceiveValue(null);
+                this.message = null;
+                return;
+
             }
         }
     }
