@@ -39,9 +39,9 @@
             internal const string GetMultiBillRendering = "https://udv358acc6.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
             internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
-            internal const string StartDigitalBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8011/DigitalBill/Start";
-            internal const string OptInToPaperBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8011/PaperBill/OptIn";
-            public const string SSO = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8011/Sso?s={0}";
+            internal const string StartDigitalBill = "https://devdbr.mytnb.com.my/DigitalBill/Start";
+            internal const string OptInToPaperBill = "https://devdbr.mytnb.com.my/PaperBill/OptIn";
+            public const string SSO = "https://devdbr.mytnb.com.my/Sso?s={0}";
 #elif MASTER || SIT || DEBUG
             internal const string GenerateAccessToken = "https://5c6jgu44tf.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetDBREligibility = "https://12pq772dmj.execute-api.ap-southeast-1.amazonaws.com";
@@ -49,9 +49,9 @@
             internal const string GetMultiBillRendering = "https://k6mjxscgb1.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
             internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
-            internal const string StartDigitalBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8021/DigitalBill/Start";
-            internal const string OptInToPaperBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8021/PaperBill/OptIn";
-            public const string SSO = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com:8021/Sso?s={0}";
+            internal const string StartDigitalBill = "https://stagingdbr.mytnb.com.my/DigitalBill/Start";
+            internal const string OptInToPaperBill = "https://stagingdbr.mytnb.com.my/PaperBill/OptIn";
+            public const string SSO = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
 #else
             internal const string GenerateAccessToken = "https://u87s7tl12m.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetDBREligibility = "https://ej1yrq9zc6.execute-api.ap-southeast-1.amazonaws.com";
@@ -59,9 +59,9 @@
             internal const string GetMultiBillRendering = "https://yzixerxax2.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
             internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
-            internal const string StartDigitalBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/DigitalBill/Start";
-            internal const string OptInToPaperBill = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/PaperBill/OptIn";
-            public const string SSO = "http://ecsdbr-1386369932.ap-southeast-1.elb.amazonaws.com/Sso?s={0}";
+            internal const string StartDigitalBill = "https://dbr.mytnb.com.my/DigitalBill/Start";
+            internal const string OptInToPaperBill = "https://dbr.mytnb.com.my/PaperBill/OptIn";
+            public const string SSO = "https://dbr.mytnb.com.my/Sso?s={0}";
 #endif
         }
 
