@@ -176,7 +176,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepTwo.Activity
 
         private bool isMobileNumberValidated = false;
 
-        private bool isRegisteredOwner;
+        private bool isRegisteredOwner = true;
 
 
 

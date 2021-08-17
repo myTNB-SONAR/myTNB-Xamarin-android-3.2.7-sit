@@ -36,6 +36,10 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.MVP
 
             void toggleDisableClick();
 
+            void DisableNextButton();
+
+            void EnableNextButton();
+
             void ShowWhereIsMyAcc();
 
             void OnSubmitError(string message = null);
@@ -58,11 +62,15 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.MVP
 
             bool CheckRequiredFields(string accno, string ic);
 
+            //void CheckRequiredFields(string accno, string icno);
+
             void OnGoNextStep();
 
             void onShowWhereIsMyAcc();
 
             void ValidateAccountAsync(string contractAccounts, bool isUpdateUserInfo);
+
+            //bool validateField(string accno, string icno);
 
             void showScan();
 

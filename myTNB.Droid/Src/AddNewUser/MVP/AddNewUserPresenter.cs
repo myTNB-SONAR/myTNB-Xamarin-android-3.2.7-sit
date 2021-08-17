@@ -135,7 +135,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
                 }
                 else
                 {
-                    this.mView.ShowErrorMessageResponse(AddNewUserAccountResponse.Response.DisplayMessage);
+                    this.mView.ShowErrorMessageResponse(AddNewUserAccountResponse.Response.DisplayTitle,AddNewUserAccountResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

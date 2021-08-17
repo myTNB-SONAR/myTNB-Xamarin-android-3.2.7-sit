@@ -1329,7 +1329,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 }
 
-                if ((selectedAccount.AccountTypeId.Equals("2") || selectedAccount.AccountCategoryId.Equals("3")) && !acc)
+                if ((selectedAccount.AccountTypeId.Equals("2") || selectedAccount.AccountTypeId.Equals("3")) && !acc)
                 {
                     selectedAccountList.Add(selectedAccount);
                     UserSessions.SetCommercialList(selectedAccountList);
@@ -1342,7 +1342,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         //popup commercial
         public void GovermentCommercialDialog()
         {
-            if (selectedAccount.AccountTypeId.Equals("2") || selectedAccount.AccountCategoryId.Equals("3"))
+            if (selectedAccount.AccountTypeId.Equals("2") || selectedAccount.AccountTypeId.Equals("3"))
             {
                 string data = Utility.GetLocalizedLabel("Usage", "accountTypeDialogMessage");
                 string temp = string.Format(data);
@@ -1982,24 +1982,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
             }
             
-            //txtAddress.Text = selectedAccount.AddStreet;
+            txtAddress.Text = selectedAccount.AddStreet;
 
             //if not owner mask the address IRUL
-            if (!selectedAccount.IsOwner == true)
-            {
-                if (!selectedAccount.IsHaveAccess == true)
-                {
-                    txtAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccount.AddStreet);
-                }
-                else
-                {
-                    txtAddress.Text = selectedAccount.AddStreet; //masked
-                }
-            }
-            else
-            {
-                txtAddress.Text = selectedAccount.AddStreet;
-            }
+            //if (!selectedAccount.IsOwner == true)
+            //{
+            //    if (!selectedAccount.IsHaveAccess == true)
+            //    {
+            //        txtAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccount.AddStreet);
+            //    }
+            //    else
+            //    {
+            //        txtAddress.Text = selectedAccount.AddStreet; //masked
+            //    }
+            //}
+            //else
+            //{
+            //    txtAddress.Text = selectedAccount.AddStreet;
+            //}
 
 
             mdmsDayViewDownLayout.Visibility = ViewStates.Gone;

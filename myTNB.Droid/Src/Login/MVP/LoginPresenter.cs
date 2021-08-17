@@ -279,11 +279,11 @@ namespace myTNB_Android.Src.Login.MVP
                         int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                         if (Id > 0)
                         {
-                            string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+                            //string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
                             
                             UserEntity.UpdateDeviceId(deviceId);
 
-                            GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest(Convert.ToDateTime(datetime));
+                            GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest();
                             CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
                             if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                             {

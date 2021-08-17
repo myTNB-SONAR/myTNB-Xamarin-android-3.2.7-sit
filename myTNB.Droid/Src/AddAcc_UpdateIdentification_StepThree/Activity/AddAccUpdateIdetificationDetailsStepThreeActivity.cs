@@ -80,6 +80,21 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
         [BindView(Resource.Id.FrameLayout_copyOfIC)]
         FrameLayout FrameLayout_copyOfIC;
 
+        [BindView(Resource.Id.txtRelatedScreenshotTitle3)]
+        TextView txtRelatedScreenshotTitle3;
+
+        [BindView(Resource.Id.recyclerView3)]
+        RecyclerView recyclerView3;
+
+        [BindView(Resource.Id.TextView_proofOfConsent_image3)]
+        TextView TextView_proofOfConsent_image3;
+
+        [BindView(Resource.Id.FrameLayout_agreement)]
+        FrameLayout FrameLayout_agreement;
+
+        [BindView(Resource.Id.TextView_agreement)]
+        TextView TextView_agreement;
+
         [BindView(Resource.Id.btnNext)]
         Button btnNext;
 
@@ -87,8 +102,8 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
         {
             OWNER_IC,
             OWN_IC,
-            //SUPPORTING_DOC,
-            //PERMISES
+            SUPPORTING_DOC,
+            PERMISES
         }
 
         private bool isOwner = false;
@@ -192,12 +207,12 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
                 txtstep.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "pageStep3");
 
                 //2 set font type , 300 normal 500 button
-                TextViewUtils.SetMuseoSans300Typeface(TextViewtitle_frontIC, TextViewtitle_backIC);
-                TextViewUtils.SetMuseoSans300Typeface(txtstep, TextView_yourIC_image, TextView_ownerIC);
-                TextViewUtils.SetMuseoSans500Typeface(uploadSupportingDoc, CopyOfOwnerLabel,TextView_exampleofIC);
-                TextViewUtils.SetTextSize9(TextView_ownerIC, TextView_yourIC_image);
-                TextViewUtils.SetTextSize12(txtstep, TextView_exampleofIC);
-                TextViewUtils.SetTextSize14(TextViewtitle_frontIC, TextViewtitle_backIC);
+                TextViewUtils.SetMuseoSans300Typeface(TextViewtitle_frontIC, TextViewtitle_backIC, txtRelatedScreenshotTitle3);
+                TextViewUtils.SetMuseoSans300Typeface(txtstep, TextView_yourIC_image, TextView_ownerIC, TextView_proofOfConsent_image3);
+                TextViewUtils.SetMuseoSans500Typeface(uploadSupportingDoc, CopyOfOwnerLabel,TextView_exampleofIC, TextView_agreement);
+                TextViewUtils.SetTextSize9(TextView_ownerIC, TextView_yourIC_image, TextView_proofOfConsent_image3);
+                TextViewUtils.SetTextSize12(txtstep, TextView_exampleofIC, TextView_agreement);
+                TextViewUtils.SetTextSize14(TextViewtitle_frontIC, TextViewtitle_backIC, txtRelatedScreenshotTitle3);
                 TextViewUtils.SetTextSize16(uploadSupportingDoc, CopyOfOwnerLabel, btnNext);
 
                 //owner adapter
@@ -247,17 +262,17 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
 
                 //premise adapter
 
-                //layoutManager4 = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-                //permiseAdapter = new permiseAdapter(true);
-                //permiseAdapter.Insert(new Base.Models.AttachedImage()
-                //{
-                //    ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
-                //});
-                //recyclerView3.SetLayoutManager(layoutManager4);
-                //recyclerView3.SetAdapter(permiseAdapter);
+                layoutManager4 = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                permiseAdapter = new permiseAdapter(true);
+                permiseAdapter.Insert(new Base.Models.AttachedImage()
+                {
+                    ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
+                });
+                recyclerView3.SetLayoutManager(layoutManager4);
+                recyclerView3.SetAdapter(permiseAdapter);
 
-                //permiseAdapter.AddClickEvent += delegate { Adapter_AddClickEvent(ADAPTER_TYPE.PERMISES); };
-                //permiseAdapter.RemoveClickEvent += PERMISES_Adapter_RemoveClickEvent;
+                permiseAdapter.AddClickEvent += delegate { Adapter_AddClickEvent(ADAPTER_TYPE.PERMISES); };
+                permiseAdapter.RemoveClickEvent += PERMISES_Adapter_RemoveClickEvent;
 
 
                 //set translation of string 
@@ -270,7 +285,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
                 TextView_ownerIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
                 TextView_yourIC_image.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
                 //TextView_proofOfConsent_image.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
-                //TextView_proofOfConsent_image3.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
+                TextView_proofOfConsent_image3.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
 
 
                 txtstep.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "pageStep3");
@@ -280,9 +295,9 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
                 TextViewtitle_backIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backIc");
                 TextView_exampleofIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "icInfo");
                 //txtRelatedScreenshotTitle2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "consentTitle");
-                //txtRelatedScreenshotTitle3.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "copyOfPermiseProof");
+                txtRelatedScreenshotTitle3.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "copyOfPermiseProof");
                 //TextView_proofOfConsent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "consentInfo");
-                //TextView_agreement.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "permisesTooltipTitle");
+                TextView_agreement.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "permisesTooltipTitle");
                 btnNext.Text = Utility.GetLocalizedLabel("Common", "next");
 
 
@@ -290,8 +305,8 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
                 //if (isOwner)
                 //{
 
-                //    //FrameLayout_proofofconsent.Visibility = ViewStates.Gone;
-                //    //TextView_proofOfConsent_image.Visibility = ViewStates.Gone;
+                //    FrameLayout_proofofconsent.Visibility = ViewStates.Gone;
+                //    TextView_proofOfConsent_image.Visibility = ViewStates.Gone;
                 //    TextView_yourIC_image.Visibility = ViewStates.Gone;
 
 
@@ -304,24 +319,24 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
 
                 //}
 
-                //if (!premiseAddress.IsNullOrEmpty())
-                //{
+                if (!premiseAddress.IsNullOrEmpty())
+                {
 
-                //    txtRelatedScreenshotTitle3.Visibility = ViewStates.Visible;
-                //    recyclerView3.Visibility = ViewStates.Visible;
-                //    txtRelatedScreenshotTitle3.Visibility = ViewStates.Visible;
-                //    TextView_proofOfConsent_image3.Visibility = ViewStates.Visible;
-                //    FrameLayout_agreement.Visibility = ViewStates.Visible;
+                    txtRelatedScreenshotTitle3.Visibility = ViewStates.Visible;
+                    recyclerView3.Visibility = ViewStates.Visible;
+                    txtRelatedScreenshotTitle3.Visibility = ViewStates.Visible;
+                    TextView_proofOfConsent_image3.Visibility = ViewStates.Visible;
+                    FrameLayout_agreement.Visibility = ViewStates.Visible;
 
-                //}
-                //else
-                //{
-                //    txtRelatedScreenshotTitle3.Visibility = ViewStates.Gone;
-                //    recyclerView3.Visibility = ViewStates.Gone;
-                //    txtRelatedScreenshotTitle3.Visibility = ViewStates.Gone;
-                //    TextView_proofOfConsent_image3.Visibility = ViewStates.Gone;
-                //    FrameLayout_agreement.Visibility = ViewStates.Gone;
-                //}
+                }
+                else
+                {
+                    txtRelatedScreenshotTitle3.Visibility = ViewStates.Gone;
+                    recyclerView3.Visibility = ViewStates.Gone;
+                    txtRelatedScreenshotTitle3.Visibility = ViewStates.Gone;
+                    TextView_proofOfConsent_image3.Visibility = ViewStates.Gone;
+                    FrameLayout_agreement.Visibility = ViewStates.Gone;
+                }
 
                 OnCheckingAttachment();  // disable button if there was no attachment
             }
@@ -466,24 +481,24 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
             //        });
             //    }
             //}
-            //if (type.Equals(ADAPTER_TYPE.PERMISES))
-            //{
-            //    permiseAdapter.Update(permiseAdapter.ItemCount - 1, new AttachedImage()
-            //    {
-            //        ViewType = Constants.VIEW_TYPE_REAL_RECORD,
-            //        Name = pFileName,
-            //        Path = pFilePath,
-            //        FileName = tFullname
+            if (type.Equals(ADAPTER_TYPE.PERMISES))
+            {
+                permiseAdapter.Update(permiseAdapter.ItemCount - 1, new AttachedImage()
+                {
+                    ViewType = Constants.VIEW_TYPE_REAL_RECORD,
+                    Name = pFileName,
+                    Path = pFilePath,
+                    FileName = tFullname
 
-            //    });
-            //    if (permiseAdapter.ItemCount < 1)
-            //    {
-            //        permiseAdapter.Add(new AttachedImage()
-            //        {
-            //            ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
-            //        });
-            //    }
-            //}
+                });
+                if (permiseAdapter.ItemCount < 1)
+                {
+                    permiseAdapter.Add(new AttachedImage()
+                    {
+                        ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
+                    });
+                }
+            }
 
             OnCheckingAttachment();   // check attachment // this control the button 
         }
@@ -611,41 +626,41 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
 
 
 
-        //[Preserve]
-        //private void PERMISES_Adapter_RemoveClickEvent(object sender, int e)
-        //{
-        //    UserSessions.SaveAdapterType(mSharedPref, ADAPTER_TYPE.PERMISES.ToString());  // set shared pref adapter type 
+        [Preserve]
+        private void PERMISES_Adapter_RemoveClickEvent(object sender, int e)
+        {
+            UserSessions.SaveAdapterType(mSharedPref, ADAPTER_TYPE.PERMISES.ToString());  // set shared pref adapter type 
 
-        //    try
-        //    {
-        //        permiseAdapter.Remove(e);
-        //        if (permiseAdapter.GetAllImages().Count == 1 && permiseAdapter.ItemCount == 1)
-        //        {
-        //            permiseAdapter.Add(new AttachedImage()
-        //            {
-        //                ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
-        //            });
-        //        }
-        //        else
-        //        {
+            try
+            {
+                permiseAdapter.Remove(e);
+                if (permiseAdapter.GetAllImages().Count == 1 && permiseAdapter.ItemCount == 1)
+                {
+                    permiseAdapter.Add(new AttachedImage()
+                    {
+                        ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
+                    });
+                }
+                else
+                {
 
-        //            if (permiseAdapter.ItemCount == 0)
-        //            {
-        //                permiseAdapter.Add(new AttachedImage()
-        //                {
-        //                    ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
-        //                });
+                    if (permiseAdapter.ItemCount == 0)
+                    {
+                        permiseAdapter.Add(new AttachedImage()
+                        {
+                            ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
+                        });
 
-        //                //TextView_proofOfConsent_image3.Visibility = ViewStates.Visible;
-        //            }
-        //        }
-        //        OnCheckingAttachment();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Utility.LoggingNonFatalError(ex);
-        //    }
-        //}
+                        //TextView_proofOfConsent_image3.Visibility = ViewStates.Visible;
+                    }
+                }
+                OnCheckingAttachment();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
 
 
 
@@ -673,11 +688,11 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
                 //    UserSessions.SaveAdapterType(mSharedPref, ADAPTER_TYPE.SUPPORTING_DOC.ToString());
 
                 //}
-                //if (type.Equals(ADAPTER_TYPE.PERMISES))
-                //{
-                //    UserSessions.SaveAdapterType(mSharedPref, ADAPTER_TYPE.PERMISES.ToString());
+                if (type.Equals(ADAPTER_TYPE.PERMISES))
+                {
+                    UserSessions.SaveAdapterType(mSharedPref, ADAPTER_TYPE.PERMISES.ToString());
 
-                //}
+                }
 
                 string[] items = { Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")  ,
                                Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary") ,
@@ -735,6 +750,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
                     if (isOwner)
                     {
                         Intent.PutExtra(Constants.IMAGE_OWNER, JsonConvert.SerializeObject(adapter?.GetAllImages()));
+                        Intent.PutExtra(Constants.IMAGE_OWN, JsonConvert.SerializeObject(ic_adapter?.GetAllImages()));
                     }
                     else if (!isOwner)
                     {
@@ -792,7 +808,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
                     }
 
                     Intent.PutExtra(Constants.PAGE_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle"));  // need translation    
-                    Intent.PutExtra(Constants.PAGE_STEP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle3of3"));// need translation        
+                    //Intent.PutExtra(Constants.PAGE_STEP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle3of3"));// need translation        
 
                     StartActivity(Intent);
                 }
@@ -933,15 +949,15 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
         //    }
         //}
 
-        //[OnClick(Resource.Id.FrameLayout_agreement)]
-        //public void OnFrameLayout_agreement(object sender, EventArgs eventArgs)
-        //{
-        //    if (!this.GetIsClicked())
-        //    {
-        //        this.SetIsClicked(true);
-        //        this.userActionsListener.OninfoLabelPermise();
-        //    }
-        //}
+        [OnClick(Resource.Id.FrameLayout_agreement)]
+        public void OnFrameLayout_agreement(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OninfoLabelPermise();
+            }
+        }
 
         [OnClick(Resource.Id.FrameLayout_copyOfIC)]
         public void OnFrameLayout_copyOfIC(object sender, EventArgs eventArgs)
@@ -1203,21 +1219,21 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
                 //    //TextView_proofOfConsent_image.Visibility = ViewStates.Gone;
 
                 //}
-                //if (type.Equals(ADAPTER_TYPE.PERMISES))
-                //{
+                if (type.Equals(ADAPTER_TYPE.PERMISES))
+                {
 
-                //    int position = permiseAdapter.ItemCount - 1;
-                //    AttachedImage attachImage = permiseAdapter.GetItemObject(position);
-                //    if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
-                //    {
-                //        attachImage.IsLoading = false;
-                //        permiseAdapter.Update(position, attachImage);
-                //    }
+                    int position = permiseAdapter.ItemCount - 1;
+                    AttachedImage attachImage = permiseAdapter.GetItemObject(position);
+                    if (attachImage != null && attachImage.ViewType == Constants.VIEW_TYPE_DUMMY_RECORD)
+                    {
+                        attachImage.IsLoading = false;
+                        permiseAdapter.Update(position, attachImage);
+                    }
 
-                //    //hide mb file size 
-                //    //TextView_proofOfConsent_image3.Visibility = ViewStates.Gone;
+                    //hide mb file size 
+                    TextView_proofOfConsent_image3.Visibility = ViewStates.Gone;
 
-                //}
+                }
             }
             catch (Exception e)
             {

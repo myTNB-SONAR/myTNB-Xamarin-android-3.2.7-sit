@@ -673,7 +673,8 @@
     "GovDialogTitle": "Sorry we can't add Government electricity accounts on myTNB App right now.",
     "GovDialogDetails": "You can still add and view your Government account through <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">myTNB Portal</a>.",
     "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference.",
-    "titleOwnerDetailRegion": "Please provide the owner’s email or mobile number for the account above so we can notify them."
+    "titleOwnerDetailRegion": "Please provide the owner’s email or mobile number for the account above so we can notify them.",
+    "backToHome": "Back to Home"
   },
   "Profile": {
     "title": "Profile",
@@ -1157,7 +1158,7 @@
     "registeredInfoDetail": "A registered owner is the person who opened this electricity account under their name with their IC or Passport.",
     "whichInfoUpdate": "Which information would you like to update?",
     "ownerTitle": "What is your relationship with the owner?",
-    "icTitle": "Identification Number (IC/Passport)",
+    "icTitle": "Identification Number (IC/Passport/Army ID)",
     "icHint": "Enter New Identification Number",
     "accNametitle": "Account Name",
     "accNameHint": "Enter new account name",

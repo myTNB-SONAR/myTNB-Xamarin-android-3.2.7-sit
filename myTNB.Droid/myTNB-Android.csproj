@@ -34,8 +34,8 @@
     <NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>True</DebugSymbols>
-    <DebugType>Full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -51,7 +51,6 @@
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
     <AndroidUseAapt2>true</AndroidUseAapt2>
-    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -74,8 +73,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType></DebugType>
-    <Optimize>false</Optimize>
+    <DebugType>portable</DebugType>
+    <Optimize>true</Optimize>
     <OutputPath>bin\SIT\</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -6876,6 +6875,9 @@
     <Compile Include="Src\AddAcc_UpdateIdentification_StepThree\MVP\AddAccUpdateIdetificationDetailsStepThreePresenter.cs" />
     <Compile Include="Src\AddAcc_UpdateIdentification_StepFour\Activity\AddAccUpdateIdentificationStepFourActivity.cs" />
     <Compile Include="Src\Common\Adapter\SelectItemFontSizeAdapter.cs" />
+    <Compile Include="Src\AddAcc_UpdateIdentification_StepFour\MVP\AddAccUpdateIdentificationStepFourContract.cs" />
+    <Compile Include="Src\AddAcc_UpdateIdentification_StepFour\MVP\AddAccUpdateIdentificationStepFourPresenter.cs" />
+    <Compile Include="Src\Login\Models\FeatureInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7193,6 +7195,7 @@
     <Folder Include="Src\AddAcc_UpdateIdentification_StepThree\MVP\" />
     <Folder Include="Src\AddAcc_UpdateIdentification_StepFour\" />
     <Folder Include="Src\AddAcc_UpdateIdentification_StepFour\Activity\" />
+    <Folder Include="Src\AddAcc_UpdateIdentification_StepFour\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

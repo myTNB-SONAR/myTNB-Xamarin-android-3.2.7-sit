@@ -21,7 +21,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             /// Show error message from api response
             /// </summary>
             /// <param name="error">string</param>
-            void ShowErrorMessageResponse(string error);
+            void ShowErrorMessageResponse(string errorTitle, string errorDetail);
 
             /// <summary>
             /// Hide remove progress dialog

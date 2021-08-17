@@ -570,7 +570,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 {
                                     isOwner = item.isOwned,
                                     accountNumber = item.accNum,
-                                    accountLabel = EG_ACCOUNT_LABEL + ACCOUNT_COUNT,
+                                    //accountLabel = EG_ACCOUNT_LABEL + ACCOUNT_COUNT,
+                                    accountLabel = "",
                                     accountAddress = item.accountStAddress,
                                     ownerName = "",
                                     accountTypeId = item.accountTypeId,

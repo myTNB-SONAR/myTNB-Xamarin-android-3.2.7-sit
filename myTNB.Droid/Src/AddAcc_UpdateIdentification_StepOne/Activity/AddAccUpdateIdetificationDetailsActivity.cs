@@ -32,6 +32,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Runtime;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
@@ -50,14 +51,14 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
         [BindView(Resource.Id.txtAccountNo)]
         EditText txtAccountNo;
 
-        [BindView(Resource.Id.txtICNumber)]
-        EditText txtICNumber;
-
         [BindView(Resource.Id.txtInputLayoutAccountNo)]
         TextInputLayout txtInputLayoutAccountNo;
 
-        [BindView(Resource.Id.textInputLayoutICNo)]
-        TextInputLayout textInputLayoutICNo;
+        [BindView(Resource.Id.txtInputLayoutNewIC)]
+        TextInputLayout txtInputLayoutNewIC;
+
+        [BindView(Resource.Id.txtNewIC)]
+        EditText txtNewIC;
 
         [BindView(Resource.Id.infoLabeltxtWhereIsMyAcc)]
         TextView infoLabeltxtWhereIsMyAcc;
@@ -104,32 +105,37 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 // Intent intent = Intent;
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle"));
                 //2 set font type , 300 normal 500 button
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, textInputLayoutICNo);
-                TextViewUtils.SetMuseoSans300Typeface(txtAccountNo, txtICNumber, pageStep, infoLabeltxtWhereIsMyAcc);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, txtInputLayoutNewIC);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountNo, txtNewIC, pageStep, infoLabeltxtWhereIsMyAcc);
                 TextViewUtils.SetMuseoSans500Typeface(enterYourNewDetails, btnNext);
                 TextViewUtils.SetTextSize12(infoLabeltxtWhereIsMyAcc);
-                TextViewUtils.SetTextSize14(txtAccountNo, txtICNumber,pageStep);
+                TextViewUtils.SetTextSize14(txtAccountNo, pageStep);
                 TextViewUtils.SetTextSize16(btnNext, enterYourNewDetails);
+
+                txtInputLayoutNewIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutNewIC.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
 
                 //set translation of string 
 
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberHint");
-                textInputLayoutICNo.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "icTitle");
+                txtInputLayoutNewIC.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "icTitle");
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");
                 pageStep.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "pageStep1");
                 enterYourNewDetails.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enterYourNewDetails");
                 //txtAccountNo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberHint");
                 btnNext.Text = Utility.GetLocalizedLabel("Common", "next");
 
+                //txtICNumber.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
+                //txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
+                //txtICNumber.AddTextChangedListener(new PhoneTextWatcher(txtICNumber, identityType));
+                //txtICNumber.SetOnKeyListener(new KeyListener());
+                //txtICNumber.InputType = InputTypes.ClassNumber;
 
-                txtICNumber.FocusChange += txtICNumber_FocusChange;
-                txtICNumber.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
-                txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
-                txtICNumber.InputType = InputTypes.ClassNumber;
 
-                txtICNumber.AddTextChangedListener(new PhoneTextWatcher(txtICNumber, identityType));
-                txtICNumber.SetOnKeyListener(new KeyListener());
-                txtICNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_account_no, 0, 0, 0);
+                txtNewIC.FocusChange += txtICNumber_FocusChange;
+                txtNewIC.TextChanged += txtICNumber_TextChange;  //adding listener on text change
+                txtNewIC.AddTextChangedListener(new InputFilterFormField(txtNewIC, txtInputLayoutNewIC));  //adding listener on text change
+                txtNewIC.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_account_no, 0, 0, 0);
 
                 if (!UserEntity.IsCurrentlyActive())
                 {
@@ -144,14 +150,11 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 txtAccountNo.SetOnTouchListener(this);  //set listener on dropdown arrow at TextLayout
                 txtAccountNo.TextChanged += TextChange;  //adding listener on text change
                 //txtAccountNo.FocusChange += TxtAccountNo_FocusChange;
-
                 txtAccountNo.AddTextChangedListener(new InputFilterFormField(txtAccountNo, txtInputLayoutAccountNo));  //adding listener on text change
 
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");  // inject translation to text
 
                 onGetTooltipImageContent();
-
-               
             }
             catch (Exception e)
             {
@@ -163,9 +166,11 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
         {
             try
             {
-                string ic = txtICNumber.Text.ToString().Trim();
-                ClearICMinimumCharactersError();
-                //EnableRegisterButton();
+                string ic = txtNewIC.Text.ToString().Trim();
+                string accno = txtAccountNo.Text.ToString().Trim();
+                //ClearICMinimumCharactersError();
+
+                this.userActionsListener.CheckRequiredFields(accno, ic);
             }
             catch (Exception ex)
             {
@@ -176,22 +181,26 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
 
         public void ClearICMinimumCharactersError()
         {
-            if (!string.IsNullOrEmpty(textInputLayoutICNo.Error))
+            txtInputLayoutNewIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                : Resource.Style.TextInputLayoutBottomErrorHint);
+
+            if (!string.IsNullOrEmpty(txtInputLayoutNewIC.Error))
             {
-                textInputLayoutICNo.Error = null;
-                textInputLayoutICNo.ErrorEnabled = false;
+                txtInputLayoutNewIC.Error = null;
+                txtInputLayoutNewIC.ErrorEnabled = false;
             }
         }
 
         public void ShowFullICError()
         {
-            if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "mykadhint"))
-            {
-                textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "mykadhint");
-            }
+            txtInputLayoutNewIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
 
-            if (!textInputLayoutICNo.ErrorEnabled)
-                textInputLayoutICNo.ErrorEnabled = true;
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewIC.FindViewById<TextView>(Resource.Id.textinput_error));
+            if (txtInputLayoutNewIC.Error != Utility.GetLocalizedErrorLabel("invalid_icNumber"))
+            {
+                txtInputLayoutNewIC.Error = Utility.GetLocalizedErrorLabel("invalid_icNumber");
+            }
         }
 
         public class PhoneTextWatcher : Java.Lang.Object, ITextWatcher
@@ -267,7 +276,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                     }
                     flagDel = false;
                 }
-
+                
             }
 
         }
@@ -284,80 +293,14 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
             }
         }
 
+
         public void ShowInvalidIdentificationError()
         {
-
             Utility.ShowIdentificationErrorDialog(this, () =>
             {
                 ShowProgressDialog();
 
             });
-
-        }
-
-        //private void TxtAccountNo_FocusChange(object sender, View.FocusChangeEventArgs e)
-        //{
-        //    try
-        //    {
-
-        //        if (!e.HasFocus)
-        //        {
-        //            string accno = txtAccountNo.Text.ToString().Trim();
-        //            string ic = txtICNumber.Text.ToString().Trim();
-        //            this.userActionsListener.CheckRequiredFields(accno, ic);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Utility.LoggingNonFatalError(ex);
-        //    }
-        //}
-
-        private void txtICNumber_FocusChange(object sender, View.FocusChangeEventArgs e)
-        {
-            try
-            {
-
-                string accno = txtAccountNo.Text.ToString().Trim();
-                string ic = txtICNumber.Text.ToString().Trim();
-                //this.userActionsListener.CheckRequiredFields(accno, ic);
-
-                if (!e.HasFocus)
-                {
-                    ClearICMinimumCharactersError();
-                    this.userActionsListener.CheckRequiredFields(accno, ic);
-
-                    if (ic.Equals(""))
-                    {
-                        ShowFullICError();
-                        //ClearICMinimumCharactersError();
-                    }
-                    else
-                    {
-
-                        ic = ic.Replace("-", string.Empty);
-                        if (!this.mPresenter.CheckIdentificationIsValid(ic))
-                        {
-
-                            ShowFullICError();
-                        }
-                        else
-                        {
-                            ClearICMinimumCharactersError();
-                        }
-
-                    }
-                }
-                else
-                {
-                    ClearICMinimumCharactersError();
-                }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
-
         }
 
         public override int ResourceId()
@@ -430,24 +373,86 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
             return false;
         }
 
+        private void TxtAccountNo_FocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            try
+            {
+                if (!e.HasFocus)
+                {
+                    string accno = txtAccountNo.Text.ToString().Trim();
+                    string ic = txtNewIC.Text.ToString().Trim();
+                    this.userActionsListener.CheckRequiredFields(accno, ic);
+                }
+                //else
+                //{
+                //    RemoveNumberErrorMessage();
+                //}
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        private void txtICNumber_FocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            try
+            {
+                if (!e.HasFocus)
+                {
+                    string accno = txtAccountNo.Text.ToString().Trim();
+                    string ic = txtNewIC.Text.ToString().Trim();
+                    this.userActionsListener.CheckRequiredFields(accno, ic);
+                }
+                //else
+                //{
+                //    ClearICMinimumCharactersError();
+                //}
+
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        private void txtICNumber_TextChange(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                EnableNextButton();
+                string ic = txtNewIC.Text.ToString().Trim();
+                string accno = txtAccountNo.Text.ToString().Trim();
+
+                if (!string.IsNullOrEmpty(ic))
+                {
+
+                    txtInputLayoutNewIC.Error = null;
+                    txtInputLayoutNewIC.ErrorEnabled = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
         private void TextChange(object sender, TextChangedEventArgs e)
         {
             try
             {
-                string ic = txtICNumber.Text.ToString().Trim();
+                EnableNextButton();
+                string ic = txtNewIC.Text.ToString().Trim();
                 string accno = txtAccountNo.Text.ToString().Trim();
 
                 if (!string.IsNullOrEmpty(accno))
                 {
                     txtInputLayoutAccountNo.Error = null;
+
                 }
-                //if (!string.IsNullOrEmpty(ic))
-                //{
-                   
-                //    textInputLayoutICNo.Error = null;
-                //    textInputLayoutICNo.ErrorEnabled = false;
-                //}
-                 this.userActionsListener.CheckRequiredFields(accno, ic);
+               
+                //this.userActionsListener.CheckRequiredFields(accno, ic);
 
             }
             catch (Exception ex)
@@ -469,16 +474,22 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
             isAccChoosed = false;
         }
 
-
-
         public override Boolean ShowCustomToolbarTitle()
         {
             return true;
         }
 
+        public void DisableNextButton()
+        {
+            btnNext.Enabled = false;
+            btnNext.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+        }
 
-
-
+        public void EnableNextButton()
+        {
+            btnNext.Enabled = true;
+            btnNext.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+        }
 
         protected override void OnResume()
         {
@@ -605,6 +616,15 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
             txtInputLayoutAccountNo.RequestFocus();
         }
 
+        public void RemoveIDNumberErrorMessage()
+        {
+            txtInputLayoutNewIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                : Resource.Style.TextInputLayoutBottomErrorHint);
+
+            txtInputLayoutNewIC.Error = "";
+
+        }
 
         public void RemoveNumberErrorMessage()
         {
@@ -690,7 +710,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 else
                 {
                     string accno = txtAccountNo.Text.ToString().Trim();
-                    string ic = txtICNumber.Text.ToString().Trim();
+                    string ic = txtNewIC.Text.ToString().Trim();
                     bool isAllowed = this.userActionsListener.CheckRequiredFields(accno, ic);
 
                     if (isAllowed)
@@ -745,7 +765,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
             var updatePersoanlInfo = new Intent(this, typeof(AddAccUpdateIdetificationDetailsStepTwoActivity));
 
             updatePersoanlInfo.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
-            updatePersoanlInfo.PutExtra(Constants.ACCOUNT_IC_NUMBER, txtICNumber.Text.ToString().Trim());
+            updatePersoanlInfo.PutExtra(Constants.ACCOUNT_IC_NUMBER, txtNewIC.Text.ToString().Trim());
             updatePersoanlInfo.PutExtra(Constants.PAGE_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle"));
             updatePersoanlInfo.PutExtra(Constants.PAGE_STEP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of3"));
 

@@ -110,9 +110,9 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                         int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                         if (Id > 0)
                         {
-                            string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+                            //string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
 
-                            GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest(Convert.ToDateTime(datetime));
+                            GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest();
                             CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
                             if (customerAccountListResponse.IsSuccessResponse())
                             {

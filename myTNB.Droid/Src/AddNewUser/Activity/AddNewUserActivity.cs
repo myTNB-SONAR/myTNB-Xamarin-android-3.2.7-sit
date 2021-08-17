@@ -385,15 +385,14 @@ namespace myTNB_Android.Src.AddNewUser.Activity
 
         }
 
-        public void ShowErrorMessageResponse(string error)
+        public void ShowErrorMessageResponse(string errorTitle, string errorDetail)
         {
-           
-                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                           .SetTitle(string.Format(Utility.GetLocalizedLabel("AddUserAccess", "userExistedHeader")))
-                           .SetMessage(string.Format(Utility.GetLocalizedLabel("AddUserAccess", "userExistedDetails")))
-                           .SetContentGravity(GravityFlags.Left)
-                           .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                           .Build().Show();
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(errorTitle)
+                        .SetMessage(errorDetail)
+                        .SetContentGravity(GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                        .Build().Show();
 
           
 

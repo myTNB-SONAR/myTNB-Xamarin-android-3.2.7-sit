@@ -333,8 +333,11 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
     
         public void ShowEmptyEmailError()
         {
+            textInputLayoutEmailReg.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                : Resource.Style.TextInputLayoutBottomErrorHint);
             //ClearInvalidEmailError();
-            if(textInputLayoutEmailReg.Error != GetString(Resource.String.registration_form_errors_empty_email))
+            if (textInputLayoutEmailReg.Error != GetString(Resource.String.registration_form_errors_empty_email))
             {
                 textInputLayoutEmailReg.Error = GetString(Resource.String.registration_form_errors_empty_email);
             }
@@ -346,6 +349,10 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
        
         public void ShowEmptyPasswordError()
         {
+            textInputLayoutPasswordReg.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+               ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+               : Resource.Style.TextInputLayoutBottomErrorHint);
+
             ClearPasswordMinimumOf6CharactersError();
             if (textInputLayoutPasswordReg.Error != GetString(Resource.String.registration_form_errors_empty_password))
             {
@@ -358,6 +365,10 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
         public void ShowPasswordMinimumOf6CharactersError()
         {
+            textInputLayoutPasswordReg.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+               ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+               : Resource.Style.TextInputLayoutBottomErrorHint);
+
             ClearInvalidPasswordHint();
             textInputLayoutPasswordReg.Error = null;
             if (textInputLayoutPasswordReg.Error != Utility.GetLocalizedErrorLabel("invalid_password")) {
@@ -369,6 +380,10 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
         public void ShowPasswordHint()
         {
+            textInputLayoutPasswordReg.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+               ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+               : Resource.Style.TextInputLayoutBottomErrorHint);
+
             ClearPasswordMinimumOf6CharactersError();
             if (textInputLayoutPasswordReg.HelperText != Utility.GetLocalizedLabel("RegisterNew", "passwordHint"))
             {
@@ -381,6 +396,10 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
         public void ShowInvalidEmailError()
         {
+            textInputLayoutEmailReg.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+               ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+               : Resource.Style.TextInputLayoutBottomErrorHint);
+
             ClearInvalidEmailHint();
             textInputLayoutEmailReg.Error = null;
             if (textInputLayoutEmailReg.Error != Utility.GetLocalizedErrorLabel("invalid_email"))
@@ -393,6 +412,10 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
         public void ShowEmailHint()
         {
+            textInputLayoutEmailReg.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+              ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+              : Resource.Style.TextInputLayoutBottomErrorHint);
+
             ClearInvalidEmailError(); 
             if (textInputLayoutEmailReg.HelperText != Utility.GetLocalizedLabel("RegisterNew", "EmailHint"))
             {
@@ -422,6 +445,10 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
         public void ShowEmptyEmailErrorNew()
         {
+            textInputLayoutEmailReg.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+              ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+              : Resource.Style.TextInputLayoutBottomErrorHint);
+
             ClearInvalidEmailHint();
             textInputLayoutEmailReg.Error = null;
             if (textInputLayoutEmailReg.Error != Utility.GetLocalizedLabel("RegisterNew", "emailRequired"))
@@ -435,6 +462,10 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
         public void ShowEmptyPasswordErrorNew()
         {
+            textInputLayoutPasswordReg.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+              ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+              : Resource.Style.TextInputLayoutBottomErrorHint);
+
             ClearPasswordMinimumOf6CharactersError();
             ClearInvalidPasswordHint();
             textInputLayoutPasswordReg.Error = null;

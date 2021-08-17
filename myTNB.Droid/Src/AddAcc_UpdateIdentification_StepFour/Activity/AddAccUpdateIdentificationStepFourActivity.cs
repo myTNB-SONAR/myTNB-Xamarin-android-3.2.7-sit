@@ -22,6 +22,7 @@ using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
+using myTNB_Android.Src.AddAcc_UpdateIdentification_StepFour.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
@@ -45,14 +46,11 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepFour.Activity
    , Theme = "@style/Theme.OwnerTenantBaseTheme")]
 
 
-    public class AddAccUpdateIdentificationStepFourActivity : BaseActivityCustom, FeedbackGeneralEnquiryStepTwoContract.IView
+    public class AddAccUpdateIdentificationStepFourActivity : BaseActivityCustom, AddAccUpdateIdentificationStepFourContract.IView
     {
 
-        FeedbackGeneralEnquiryStepTwoContract.IUserActionsListener userActionsListener;
-        FeedbackGeneralEnquiryStepTwoPresenter mPresenter;
-
-
-
+        AddAccUpdateIdentificationStepFourContract.IUserActionsListener userActionsListener;
+        AddAccUpdateIdentificationStepFourPresenter mPresenter;
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -135,7 +133,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepFour.Activity
             try
             {
                 //1 set presenter
-                mPresenter = new FeedbackGeneralEnquiryStepTwoPresenter(this);
+                mPresenter = new AddAccUpdateIdentificationStepFourPresenter(this);
 
 
 
@@ -184,6 +182,8 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepFour.Activity
                     {
                         // add image 
                         attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_OWNER))[0]);
+                        attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_OWN))[0]);
+                        
                         if (extras.ContainsKey(Constants.ACCOUNT_PREMISE_ADDRESS))
                         {
                             attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_PERMISES))[0]);
@@ -586,7 +586,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepFour.Activity
             return Resource.Layout.FeedbackGeneralEnquiryStepTwoView;
         }
 
-        public void SetPresenter(FeedbackGeneralEnquiryStepTwoContract.IUserActionsListener userActionListener)
+        public void SetPresenter(AddAccUpdateIdentificationStepFourContract.IUserActionsListener userActionListener)
         {
             this.userActionsListener = userActionListener;
         }
@@ -731,6 +731,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepFour.Activity
                     h.PostDelayed(myAction, 3000);
 
                     int ownerRelationshipID = 0;
+                    //isOwner = true;
 
                     // ensure not from feedback and owner must be false to pass this parameter
                     if (feedback.IsNullOrEmpty() && isOwner == false)
@@ -772,8 +773,6 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepFour.Activity
                     string txtPhoneNumber = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
 
                     this.userActionsListener.OnSubmit(acc, feedback, txtName.Text.ToString().Trim(), txtPhoneNumber.ToString().Trim(), txtEmail.Text.Trim(), attachedImages, updateFeedbackList, isOwner, ownerRelationshipID, ownerRelationship);
-
-
 
 
                 }

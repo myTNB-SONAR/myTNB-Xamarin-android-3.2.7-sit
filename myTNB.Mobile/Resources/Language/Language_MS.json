@@ -673,7 +673,8 @@
     "GovDialogTitle": "Maaf, kami tidak dapat menambah akaun elektrik Kerajaan ke dalam Aplikasi myTNB sekarang.",
     "GovDialogDetails": "Anda masih boleh menambah dan melihat akaun Kerajaan anda melalui <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">myTNB Portal</a>.",
     "titleNonOwnerAddAcc": "Teruskan memasuki akaun anda dan berikan nama gelaran untuk rujukan mudah.",
-    "titleOwnerDetailRegion": "Sila masukkan alamat e-mel atau nombor telefon pemilik akaun ini supaya kami boleh memberikan makluman kepadanya."
+    "titleOwnerDetailRegion": "Sila masukkan alamat e-mel atau nombor telefon pemilik akaun ini supaya kami boleh memberikan makluman kepadanya.",
+    "backToHome": "Pulang ke Muka Hadapan"
   },
   "Profile": {
     "title": "Profil",
@@ -1183,7 +1184,7 @@
     "ownerConsentDescription": "Anda sebagai bukan pemilik atau pihak diberi kuasa perlu menyertakan butiran pengesahan pemilik untuk mengemaskini maklumat peribadi pemilik bagi pihak pemilik kerana maklumat ini akan kekal di dalam akaun elektrik TNB pemilik.",
     "stepTitle2of3": "Langkah 2 dari 3",
     "ownerIcOwner": "Salinan kad pengenalan pemilik (IC / Pasport)",
-    "icTitleinfo": "Salinan kad pengenalan anda (IC/Pasport)",
+    "icTitleinfo": "Salinan kad pengenalan anda (IC/Pasport/ID Tentera)",
     "icInfo": "Bagaimanakah contoh salinan pengenalan diri?",
     "consentTitle": "Bukti Persetujuan",
     "consentInfo": "Bagaimanakah contoh bukti persetujuan?",

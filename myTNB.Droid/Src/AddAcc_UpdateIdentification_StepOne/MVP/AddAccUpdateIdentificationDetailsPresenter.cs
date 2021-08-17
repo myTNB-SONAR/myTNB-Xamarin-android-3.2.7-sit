@@ -83,26 +83,26 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.MVP
             this.mView.onScan();
         }
 
-        public bool CheckIdentificationIsValid(string icno)
-        {
-            bool isValid = false;
-            try
-            {
-                isValid = hasNumber.IsMatch(icno) && icno.Length == 12;
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-            return isValid;
-        }
+        //public bool CheckIdentificationIsValid(string icno)
+        //{
+        //    bool isValid = false;
+        //    try
+        //    {
+        //        isValid = hasNumber.IsMatch(icno) && icno.Length == 12;
+        //    }
+        //    catch (System.Exception e)
+        //    {
+        //        Utility.LoggingNonFatalError(e);
+        //    }
+        //    return isValid;
+        //}
 
         public bool CheckRequiredFields(string accno, string ic)
         {
             try
             {
-
                 bool allowToProceed = true;
+                this.mView.DisableNextButton();
 
                 if (!TextUtils.IsEmpty(accno))
                 {
@@ -124,38 +124,30 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.MVP
                 {
                     //if empty
                     this.mView.ShowEnterOrSelectAccNumber();
+                    //this.mView.RemoveNumberErrorMessage();
                     allowToProceed = false;
 
                 }
 
-
-
-                ic = ic.Replace("-", string.Empty);
-                if (!CheckIdentificationIsValid(ic))
+                if (TextUtils.IsEmpty(ic))
                 {
+                    
                     this.mView.ShowFullICError();
-                    //this.mView.DisableRegisterButton();
-                    //return;
-
+                    allowToProceed = false;
                 }
-                //else
-                //{
-                //    this.mView.ShowIdentificationHint();
-                //}
 
 
-
-                if (allowToProceed)
+                if (allowToProceed == true)
                 {
                     this.mView.toggleEnableClick();
+                    this.mView.EnableNextButton();
+
                 }
                 else
                 {
                     this.mView.toggleDisableClick();
+                    this.mView.DisableNextButton();
                 }
-
-                
-
                 return allowToProceed;
 
             }
@@ -165,6 +157,102 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.MVP
                 return false;
             }
         }
+
+        //public bool validateField(string accno, string ic)
+        //{
+        //    try
+        //    {
+        //        bool isCorrect = true;
+
+        //        this.mView.DisableNextButton();
+
+        //        if (string.IsNullOrEmpty(accno))
+        //        {
+        //            this.mView.ShowInvalidAccountNumberError();
+        //            isCorrect = false;
+        //        }
+
+        //        if (string.IsNullOrEmpty(ic))
+        //        {
+        //            this.mView.ShowFullICError();
+        //            isCorrect = false;
+        //        }
+
+               
+
+        //        string ic_no = ic.Replace("-", string.Empty);
+        //        if (ic_no.Length < 12)
+        //        {
+        //            this.mView.ShowFullICError();
+        //            isCorrect = false;
+        //        }
+                
+
+        //        //handle button to enable or disable
+        //        if (isCorrect == true)
+        //        {
+        //            this.mView.toggleEnableClick();
+        //            this.mView.EnableNextButton();
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            this.mView.toggleDisableClick();
+        //            this.mView.DisableNextButton();
+        //            return false;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Utility.LoggingNonFatalError(ex);
+        //        return false;
+        //    }
+        //}
+
+
+        //public void CheckRequiredFields(string accno, string ic)
+        //{
+
+        //    try
+        //    {
+        //        if (!TextUtils.IsEmpty(accno) && !TextUtils.IsEmpty(ic))
+        //        {
+        //            if (!Utility.AddAccountNumberValidation(accno.Length))
+        //            {
+        //                this.mView.ShowInvalidAccountNumberError();
+        //                this.mView.DisableNextButton();
+        //            }
+        //            else
+        //            {
+        //                this.mView.RemoveNumberErrorMessage();
+
+        //            }
+
+                   
+        //            string ic_no = ic.Replace("-", string.Empty);
+        //            if (!CheckIdentificationIsValid(ic_no))
+        //            {
+        //                this.mView.ShowFullICError();
+        //                this.mView.DisableNextButton();
+        //                return;
+        //            }
+        //            else
+        //            {
+        //                this.mView.ClearICMinimumCharactersError();
+        //                //this.mView.ShowIdentificationHint();
+        //            }
+        //            this.mView.EnableNextButton();
+        //        }
+        //        else
+        //        {
+        //            this.mView.DisableNextButton();
+        //        }
+        //    }
+        //    catch (System.Exception e)
+        //    {
+        //        Utility.LoggingNonFatalError(e);
+        //    }
+        //}
 
         public async void ValidateAccountAsync(string contractAccounts, bool isUpdateUserInfo)
         {

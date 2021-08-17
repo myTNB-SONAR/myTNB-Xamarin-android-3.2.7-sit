@@ -9,6 +9,7 @@ namespace myTNB_Android.Src.MyTNBService.Request
         public List<AddAccount.Models.AddAccount> billAccounts;
         public string AccountName;
         public DeviceInfoRequest deviceInf;
+        public List<Login.Models.FeatureInfo> featureInfo;
 
         public AddAccountsRequest(List<AddAccount.Models.AddAccount> accountList , string accName)
         {
@@ -17,6 +18,7 @@ namespace myTNB_Android.Src.MyTNBService.Request
             this.isHaveAccess = false;
             this.isApplyBilling = false;
             this.AccountName = accName;
+            featureInfo = new List<Login.Models.FeatureInfo>();
         }
     }
 }
