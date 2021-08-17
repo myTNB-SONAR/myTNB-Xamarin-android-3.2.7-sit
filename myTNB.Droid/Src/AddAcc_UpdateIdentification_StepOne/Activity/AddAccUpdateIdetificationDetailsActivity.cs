@@ -130,12 +130,13 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 //txtICNumber.AddTextChangedListener(new PhoneTextWatcher(txtICNumber, identityType));
                 //txtICNumber.SetOnKeyListener(new KeyListener());
                 //txtICNumber.InputType = InputTypes.ClassNumber;
-
+                string idnumber = UserEntity.GetActive().IdentificationNo;
+                txtNewIC.Text = idnumber;
 
                 txtNewIC.FocusChange += txtICNumber_FocusChange;
                 txtNewIC.TextChanged += txtICNumber_TextChange;  //adding listener on text change
                 txtNewIC.AddTextChangedListener(new InputFilterFormField(txtNewIC, txtInputLayoutNewIC));  //adding listener on text change
-                txtNewIC.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_account_no, 0, 0, 0);
+                //txtNewIC.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_ic, 0, 0, 0);
 
                 if (!UserEntity.IsCurrentlyActive())
                 {

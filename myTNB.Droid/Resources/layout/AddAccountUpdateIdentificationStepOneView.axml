@@ -122,7 +122,6 @@
 								android:drawableLeft="@drawable/smr_why_accounts_info"/>
 						</LinearLayout>
 					</FrameLayout>
-
 					<TextView
 						android:id="@+id/enterYourNewDetails"
 						android:layout_width="match_parent"
@@ -141,20 +140,14 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_gravity="center_vertical"
-						android:background="@color/white"
-						android:paddingLeft="12dp"
-						android:paddingStart="16dp"
-						android:paddingEnd="16dp">
+						android:background="@color/white">
 						<com.google.android.material.textfield.TextInputLayout
 							android:id="@+id/txtInputLayoutNewIC"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:layout_marginLeft="4dp"
 							android:layout_marginTop="10dp"
-							android:layout_marginBottom="4dp"
-							android:paddingBottom="0dp"
-							app:counterEnabled="false"
-							app:counterMaxLength="250"
+							android:layout_marginRight="16dp"
+							android:layout_marginLeft="16dp"
 							app:errorEnabled="true"
 							app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
 							app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
@@ -162,14 +155,10 @@
 								android:id="@+id/txtNewIC"
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
-								android:drawableLeft="@drawable/placeholder_ic"
+							    android:drawablePadding="6dp"
 								android:hint="ENTER NEW IDENTIFICATION NUMBER"
-								android:importantForAutofill="noExcludeDescendants"
-								android:singleLine="true"
-								android:paddingTop="5dp"
-								android:scrollbarStyle="insideInset"
-								android:scrollbars="vertical"
-								android:textSize="16dp" />
+								android:textSize="16dp"
+								android:maxLines="1"/>
 						</com.google.android.material.textfield.TextInputLayout>                  
 					</LinearLayout>
 				</LinearLayout>

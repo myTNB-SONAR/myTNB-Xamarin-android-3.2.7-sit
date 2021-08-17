@@ -358,6 +358,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 //Item selectedItem = languageItemList.Find(item => { return item.selected; });
                 
                 ShowTooltipConfirm();
+                
                 //Item selectedItem = FontItemList.Find(item => { return item.selected; });
                 //_ = RunUpdateFont(selectedItem);
                 //SetSelectedFont(selectedItemfont.type);
@@ -553,7 +554,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 TextViewUtils.SaveFontSize(selectedItem);
                 UpdateFont();
                 MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
-                //OnBackProceedFont();
+                OnBackProceed();
                 //selectItemTextSizeAdapter = new SelectItemFontSizeAdapter(this, FontItemList);
                 //FontListView.Adapter = selectItemTextSizeAdapter;
                 //HideShowProgressDialog();
