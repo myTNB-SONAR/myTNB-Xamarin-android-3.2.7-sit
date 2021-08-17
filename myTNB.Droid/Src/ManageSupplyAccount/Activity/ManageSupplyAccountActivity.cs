@@ -464,7 +464,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 ShowProgressDialog();
                 GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                 AccountData dbrAccount = selectedAccount;
-                _isOwner = DBRUtility.Instance.IsCADBREligible(selectedAccount.AccountNum);
 
                 if (!AccessTokenCache.Instance.HasTokenSaved(this))
                 {

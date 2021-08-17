@@ -68,6 +68,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         internal bool ShouldBackToHome { set; get; } = false;
         internal bool IsMultiplePayment;
+        internal static List<string> CAsWithPaperBillList;
 
         public override int ResourceId()
         {
@@ -127,7 +128,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
                 coordinatorLayout = FindViewById<AndroidX.CoordinatorLayout.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
                 Bundle extras = Intent.Extras;
-
+                CAsWithPaperBillList = new List<string>();
                 if (extras != null)
                 {
                     if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
@@ -417,53 +418,72 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     break;
             }
         }
+
+        private bool GetIsOwnerTag(string ca)
+        {
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            int accountIndex = allAccountList.FindIndex(x => x.AccNum == ca);
+            if (accountIndex > -1 && allAccountList[accountIndex] != null)
+            {
+                return allAccountList[accountIndex].isOwned;
+            }
+            return false;
+        }
+
         public async void GetBillRenderingAsync()
         {
             try
             {
-                ShowProgressDialog();
                 DynatraceHelper.OnTrack(IsMultiplePayment
                     ? DynatraceConstants.DBR.CTAs.PaymentSuccess.Multiple
                     : DynatraceConstants.DBR.CTAs.PaymentSuccess.Single);
-                string dbrAccount = GetEligibleDBRAccount();
-                _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount);
-                if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                if (CAsWithPaperBillList != null && CAsWithPaperBillList.Count > 0)
                 {
-                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
-                    AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
-                }
-                billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount, AccessTokenCache.Instance.GetAccessToken(this));
+                    ShowProgressDialog();
 
-                //Nullity Check
-                if (billRenderingResponse != null
-                   && billRenderingResponse.StatusDetail != null
-                   && billRenderingResponse.StatusDetail.IsSuccess
-                   && billRenderingResponse.Content != null
-                   && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
-                {
-                    Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
-                    intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
-                    intent.PutExtra("accountNumber", dbrAccount);
-                    intent.PutExtra("isOwner", _isOwner);
-                    StartActivity(intent);
-                }
-                else
-                {
-                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                        .SetTitle(billRenderingResponse?.StatusDetail?.Title ?? string.Empty)
-                        .SetMessage(billRenderingResponse?.StatusDetail?.Message ?? string.Empty)
-                        .SetCTALabel(billRenderingResponse?.StatusDetail?.PrimaryCTATitle ?? string.Empty)
-                        .Build();
-                    errorPopup.Show();
-                }
-                HideProgressDialog();
+                    string dbrAccount = CAsWithPaperBillList[0];
+                    _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
+                            ? GetIsOwnerTag(dbrAccount)
+                            : DBRUtility.Instance.IsCADBREligible(dbrAccount);
 
+                    if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                    {
+                        string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                        AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
+                    }
+                    billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount, AccessTokenCache.Instance.GetAccessToken(this));
+
+                    //Nullity Check
+                    if (billRenderingResponse != null
+                       && billRenderingResponse.StatusDetail != null
+                       && billRenderingResponse.StatusDetail.IsSuccess
+                       && billRenderingResponse.Content != null
+                       && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
+                    {
+                        Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                        intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                        intent.PutExtra("accountNumber", dbrAccount);
+                        intent.PutExtra("isOwner", _isOwner);
+                        StartActivity(intent);
+                    }
+                    else
+                    {
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(billRenderingResponse?.StatusDetail?.Title ?? string.Empty)
+                            .SetMessage(billRenderingResponse?.StatusDetail?.Message ?? string.Empty)
+                            .SetCTALabel(billRenderingResponse?.StatusDetail?.PrimaryCTATitle ?? string.Empty)
+                            .Build();
+                        errorPopup.Show();
+                    }
+                    HideProgressDialog();
+                }
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         public string GetEligibleDBRAccount()
         {
             List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
