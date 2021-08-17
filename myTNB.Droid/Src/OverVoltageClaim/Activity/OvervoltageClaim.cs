@@ -127,8 +127,19 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 websettings.JavaScriptCanOpenWindowsAutomatically = true;
                 // webView.SetWebViewClient(new WebViewClient());
                 ShowProgressDialog();
-                webView.SetWebChromeClient(new WebViewClient(this, webView) { });              
-                webView.LoadUrl("https://mytnbwvovis.ap.ngrok.io/"); //https://serene-rosalind-a35967.netlify.app/ //https://mytnbwvovis.ap.ngrok.io/  Live https://serene-rosalind-a35967.netlify.app/ //http://192.168.1.158:3000/ //https://mytnbwvovis.ap.ngrok.io/
+                webView.SetWebChromeClient(new WebViewClient(this, webView) { });
+
+                // WebView Live
+                var domain = "http://mytnbwvovis.ap.ngrok.io/";
+
+                // WebView Local
+                //var domain = "http://192.168.1.158:3000/";
+
+                //https://serene-rosalind-a35967.netlify.app/ //https://mytnbwvovis.ap.ngrok.io/  Live https://serene-rosalind-a35967.netlify.app/ //http://192.168.1.158:3000/ //https://mytnbwvovis.ap.ngrok.io/
+
+                var url = domain;
+
+                webView.LoadUrl(url); 
                 await Task.Delay(0);
                 //PassData();
                 //HideProgressDialog();
