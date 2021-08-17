@@ -405,10 +405,20 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                     string ic = txtNewIC.Text.ToString().Trim();
                     this.userActionsListener.CheckRequiredFields(accno, ic);
                 }
-                //else
-                //{
-                //    ClearICMinimumCharactersError();
-                //}
+                else
+                {
+                    if (!TextUtils.IsEmpty(txtAccountNo.Text.ToString()))
+                    {
+                        if (!Utility.AddAccountNumberValidation(txtAccountNo.Text.Length))
+                        {
+                            ShowInvalidAccountNumberError();
+                        }
+                        else
+                        {
+                            RemoveNumberErrorMessage();
+                        }
+                    }
+                }
 
             }
             catch (Exception ex)
