@@ -961,7 +961,14 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             Handler h = new Handler();
             Action myAction = () =>
             {
-                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.OnGenerateNewAppTutorialList(), true);
+                if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Email)
+                    {
+                        NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.OnGenerateNewAppTutorialList(), false);
+                    }
+                else
+                {
+                    NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.OnGenerateNewAppTutorialList(), true);
+                }
             };
             h.PostDelayed(myAction, 100);
         }

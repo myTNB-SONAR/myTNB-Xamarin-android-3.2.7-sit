@@ -1134,6 +1134,8 @@
     "applicationStatusDetailsActionTwoMessage": "Ambil tindakan yang diperlukan untuk permohonan anda dengan mudah di sini.",
     "dbrBillTitle": "Cara penerimaan bil anda.",
     "dbrBillMessage": "Semak cara penerimaan bil anda di sini dan klik untuk uruskan tetapan anda.",
+    "dbrBillTitleTenant": "Cara penerimaan bil akaun anda.",
+    "dbrBillMessageTenant": "Semak cara penerimaan bil anda di sini dan klik untuk butiran lanjut.",
     "manageCAManageBillDeliveryTitle": "Cara penerimaan bil anda.",
     "manageCAManageBillDeliveryMessage": "Semak dan urus cara penerimaan bil anda di sini.",
     "manageCAViewBillDeliveryTitle": "Cara penerimaan bil akaun anda.",

@@ -67,6 +67,12 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [BindView(Resource.Id.ManageBill_container)]
         LinearLayout ManageBill_container;
 
+        [BindView(Resource.Id.icon_myaccount_new)]
+        LinearLayout icon_myaccount_new;
+
+        [BindView(Resource.Id.txtNewLabel)]
+        TextView txtNewLabel;
+
         ISharedPreferences mPref;
 
         ManageSupplyAccountContract.IUserActionsListener userActionsListener;
@@ -112,7 +118,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
-                TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName, manageBillTitle);
+                TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName, manageBillTitle, txtNewLabel);
                 txtInputLayoutNickName.SetHintTextAppearance(TextViewUtils.IsLargeFonts
                     ? Resource.Style.TextInputLayout_TextAppearance_Large
                     : Resource.Style.TextInputLayout_TextAppearance_Small);
@@ -127,10 +133,16 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 txtInputLayoutNickName.Hint = GetLabelCommonByLanguage("acctNickname");
                 btnTextUpdateNickName.Text = GetLabelCommonByLanguage("update");
                 btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
+                txtNewLabel.Text = Utility.GetLocalizedLabel("Common", "new");
+                mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+                if (UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
+                {
+                    icon_myaccount_new.Visibility = ViewStates.Gone;
+                }
                 txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
                 this.userActionsListener.Start();
-                mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+               
 
                 bool isDBREnabled = DBRUtility.Instance.IsAccountDBREligible;
                 if (isDBREnabled)
@@ -472,7 +484,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         ? "dbrManageDeliveryMethod"
                         : "dbrViewBillDelivery");
                     ManageBill_container.Visibility = ViewStates.Visible;
-
+                    
+                   
                     Handler handler = new Handler();
                     Action myAction = () =>
                     {

@@ -1400,7 +1400,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         Utility.LoggingNonFatalError(e);
                     }
                 });
-                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(isDBRAccount));
+                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(isDBRAccount,_isOwner));
             }
             catch (System.Exception ex)
             {

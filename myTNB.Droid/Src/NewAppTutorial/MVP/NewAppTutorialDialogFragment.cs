@@ -456,7 +456,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                     swipeDoubleTapLayout.Visibility = ViewStates.Gone;
                                 }
                             }
-
+                            
                             if (e.Position == NewAppTutorialList.Count - 1)
                             {
                                 txtDoubleTapDismiss.Visibility = ViewStates.Gone;
@@ -473,6 +473,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                 txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                             }
                             if (this.mContext != null && this.mContext is ApplicationStatusDetailActivity)
+                            {
+                                txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                                txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
+                            }
+                            if (this.mContext != null && this.mContext is ManageBillDeliveryActivity)
                             {
                                 txtDoubleTapDismiss.Visibility = ViewStates.Visible;
                                 txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;

@@ -1134,6 +1134,8 @@
     "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submitted application here.",
     "dbrBillTitle": "Your account bill delivery method.",
     "dbrBillMessage": "View your bill delivery method here and tap to manage your preference.",
+    "dbrBillTitleTenant": "Your account bill delivery method.",
+    "dbrBillMessageTenant": "View your bill delivery method here and tap for more details.",
     "manageCAManageBillDeliveryTitle": "Your account bill delivery method.",
     "manageCAManageBillDeliveryMessage": "View and directly manage your bill delivery method here.",
     "manageCAViewBillDeliveryTitle": "Your account bill delivery method.",
