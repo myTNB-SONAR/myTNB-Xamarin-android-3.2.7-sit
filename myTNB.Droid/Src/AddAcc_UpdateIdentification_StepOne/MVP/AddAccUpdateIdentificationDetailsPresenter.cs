@@ -116,9 +116,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.MVP
                     else
                     {
                         this.mView.RemoveNumberErrorMessage();
-
                     }
-
                 }
                 else
                 {
@@ -126,22 +124,24 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.MVP
                     this.mView.ShowEnterOrSelectAccNumber();
                     //this.mView.RemoveNumberErrorMessage();
                     allowToProceed = false;
-
                 }
 
                 if (TextUtils.IsEmpty(ic))
                 {
-                    
                     this.mView.ShowFullICError();
                     allowToProceed = false;
                 }
+                else
+                {
+                    this.mView.ClearICMinimumCharactersError();
+                }
+
 
 
                 if (allowToProceed == true)
                 {
                     this.mView.toggleEnableClick();
                     this.mView.EnableNextButton();
-
                 }
                 else
                 {

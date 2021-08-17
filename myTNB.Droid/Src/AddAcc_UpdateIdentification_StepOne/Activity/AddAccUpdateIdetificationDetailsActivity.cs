@@ -420,7 +420,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
         {
             try
             {
-                EnableNextButton();
+                //EnableNextButton();
                 string ic = txtNewIC.Text.ToString().Trim();
                 string accno = txtAccountNo.Text.ToString().Trim();
 
@@ -442,7 +442,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
         {
             try
             {
-                EnableNextButton();
+                //EnableNextButton();
                 string ic = txtNewIC.Text.ToString().Trim();
                 string accno = txtAccountNo.Text.ToString().Trim();
 
