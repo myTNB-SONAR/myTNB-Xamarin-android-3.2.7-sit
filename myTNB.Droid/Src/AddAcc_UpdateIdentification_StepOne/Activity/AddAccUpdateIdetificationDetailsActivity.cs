@@ -154,7 +154,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 txtAccountNo.AddTextChangedListener(new InputFilterFormField(txtAccountNo, txtInputLayoutAccountNo));  //adding listener on text change
 
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");  // inject translation to text
-
+                DisableNextButton();
                 onGetTooltipImageContent();
             }
             catch (Exception e)
@@ -407,17 +407,11 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 }
                 else
                 {
-                    if (!TextUtils.IsEmpty(txtAccountNo.Text.ToString()))
-                    {
-                        if (!Utility.AddAccountNumberValidation(txtAccountNo.Text.Length))
-                        {
-                            ShowInvalidAccountNumberError();
-                        }
-                        else
-                        {
-                            RemoveNumberErrorMessage();
-                        }
-                    }
+                    string accno = txtAccountNo.Text.ToString().Trim();
+                    string ic = txtNewIC.Text.ToString().Trim();
+                    this.userActionsListener.CheckRequiredFields(accno, ic);
+                    txtNewIC.RequestFocus();
+                    txtAccountNo.ClearFocus();
                 }
 
             }
@@ -431,7 +425,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
         {
             try
             {
-                //EnableNextButton();
+                ButtonEnable();
                 string ic = txtNewIC.Text.ToString().Trim();
                 string accno = txtAccountNo.Text.ToString().Trim();
 
@@ -453,7 +447,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
         {
             try
             {
-                //EnableNextButton();
+                ButtonEnable();
                 string ic = txtNewIC.Text.ToString().Trim();
                 string accno = txtAccountNo.Text.ToString().Trim();
 
@@ -472,6 +466,40 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
             }
 
 
+        }
+
+        public void ButtonEnable()
+        {
+            string ic = txtNewIC.Text.ToString().Trim();
+            string accno = txtAccountNo.Text.ToString().Trim();
+            bool allow = true;
+
+            if (string.IsNullOrEmpty(ic) || string.IsNullOrEmpty(accno))
+            {
+                allow = false;
+            }
+
+            /*if (!TextUtils.IsEmpty(accno))
+            {
+
+                if (!Utility.AddAccountNumberValidation(accno.Length))
+                {
+                    allow = false;
+                }
+            }
+            else
+            {
+                allow = false;
+            }*/
+
+            if (allow)
+            {
+                EnableNextButton();
+            }
+            else
+            {
+                DisableNextButton();
+            }
         }
 
 
@@ -624,7 +652,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc");
             }
 
-            txtInputLayoutAccountNo.RequestFocus();
+            //txtInputLayoutAccountNo.RequestFocus();
         }
 
         public void RemoveIDNumberErrorMessage()
