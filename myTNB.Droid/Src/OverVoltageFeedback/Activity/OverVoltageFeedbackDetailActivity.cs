@@ -126,7 +126,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 if (Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
                 {
                     SetToolBarTitle(Intent.GetStringExtra("TITLE"));
-                    TempTitle = Intent.GetStringExtra("TITLE");
+                    TempTitle = "Overvoltage Claim";
                 }
                 setAppointmentFlag = Convert.ToBoolean(Intent.GetStringExtra("setAppointmentFlag"));
                 //proccedToPaymentFlag = Convert.ToBoolean(Intent.GetStringExtra("proccedToPaymentFlag"));
@@ -147,7 +147,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 var domain = "http://mytnbwvovis.ap.ngrok.io/";
 
                 // WebView Local
-                //var domain = "http://192.168.1.158:3000/";
+                //var domain = "http://192.168.1.159:3000/";
 
                 String EndPoint = "";
                 
@@ -172,7 +172,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 else
                 {
                     EndPoint = "";
-                    SetToolBarTitle("Overvoltage Claim");
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
                     TempTitle = "Overvoltage Claim";
                 }
                 var url = domain + "claimPage/" + ClaimId + EndPoint;
@@ -264,15 +264,15 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 }
                 else if (IsfromSetAppointmentSucces)
                 {
-                    SetToolBarTitle("Set Appointment");
-                    TempTitle = "Set Appointment";
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "setAppointmentTitle")); 
+                     TempTitle = "Set Appointment";
                 }
                 else if(proccedToPaymentFlag)
                 {
-                    SetToolBarTitle("Enter Payment Details");
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "enterPaymentDetailsTitle"));
                     TempTitle = "Enter Payment Details";
                 }
-                TempTitle = Intent.GetStringExtra("TITLE");
+                //TempTitle = Intent.GetStringExtra("TITLE");
 
                 if (!isCapture)
                 {
@@ -280,7 +280,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 }
                 else
                 {
-                    SetToolBarTitle("Enter Payment Details");
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "enterPaymentDetailsTitle"));
                     TempTitle = "Enter Payment Details";
                     isCapture = false;
                 }
@@ -341,7 +341,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 //TempTitle = data.title;
                 if (data.title == "Set Appointment")
                 {
-                    SetToolBarTitle("Set Appointment");
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "setAppointmentTitle"));
                     TempTitle = "Set Appointment";
                 }                
 
@@ -419,24 +419,24 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 }
                 else if (data.title == "Compensation Agreement")
                 {
-                    SetToolBarTitle("Compensation Agreement");
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "compensationAgreementTitle"));
                     TempTitle = "Compensation Agreement";
 
                 }
                 else if (data.title == "Negotiation Request")
                 {
-                    SetToolBarTitle("Negotiation Request");
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "negotiationRequestTitle"));
                     TempTitle = "Negotiation Request";
                 }
                 else if (data.title == "Enter Payment Details")
                 {
-                    SetToolBarTitle("Enter Payment Details");
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "enterPaymentDetailsTitle"));
                     TempTitle = "Enter Payment Details";
                     //TempStepperTitle = "Enter Payment Details";
                 }
                 else if (data.title == "Update Payment Details")
                 {
-                    SetToolBarTitle("Update Payment Details");
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "updatePaymentDetailsTitle"));
                     TempTitle = "Update Payment Details";
                     txtstep1of2.Visibility = ViewStates.Visible;
                     txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
@@ -450,12 +450,12 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 else if (data.currentScreen == "1" && data.nextScreen == "overvoltageclaim")
                 {
                     txtstep1of2.Visibility = ViewStates.Gone;
-                    SetToolBarTitle("Overvoltage Claim");
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
                     TempTitle = "Overvoltage Claim";
                 }
                 else if (data.currentScreen == "1" && data.nextScreen == "2" && data.title == "Update Payment Details")
                 {
-                    SetToolBarTitle("Update Payment Details");
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "updatePaymentDetailsTitle"));
                     txtstep1of2.Visibility = ViewStates.Visible;
                     txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
                 }
@@ -491,13 +491,13 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 }
                 else if (data.title == "Rate Your Experience")
                 {
-                    SetToolBarTitle("Rate Your Experience");
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "rateYourExperienceTitle"));
                     TempTitle = "Rate Your Experience";
 
                 }
                 else if (data.title == "overvoltageclaim")
                 {
-                    SetToolBarTitle("Overvoltage Claim");
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
                     TempTitle = "Overvoltage Claim";
                 }
                 else if (!string.IsNullOrEmpty(data.claimId))
@@ -505,6 +505,11 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     Intent FeedBackSubmittedSuccess = new Intent(this, typeof(FeedBackSubmittedSuccessActivity));
                     FeedBackSubmittedSuccess.PutExtra("ClaimId", data.claimId);
                     StartActivity(FeedBackSubmittedSuccess);
+                }
+                else if (data.title == "Ex-gratia Agreement")
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "exGratiaAgreementTitle"));
+                    TempTitle = "Ex-gratia Agreement";
                 }
             }
             catch (Exception ex)
@@ -525,6 +530,10 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackAppointment').trigger('click'); },500); })();", null);
                 }
                 else if (TempTitle == "Compensation Agreement")
+                {
+                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackCompensation').trigger('click'); },500); })();", null);
+                }
+                else if (TempTitle == "Ex-gratia Agreement")
                 {
                     webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackCompensation').trigger('click'); },500); })();", null);
                 }
@@ -629,7 +638,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             {
                 var data = new MyTNBService.Request.BaseRequest();
                 var usin = data.usrInf;
-                var ac = accNo.Trim();
+                var ac = string.IsNullOrEmpty(accNo) ? " " : accNo.Trim();
                 var datajson = JsonConvert.SerializeObject(usin);
                 Console.WriteLine(datajson);
 
@@ -676,7 +685,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             if (newProgress == 100)
             {
                 this._OverVoltageFeedbackDetailActivity.HideProgressDialog();
-
+                this._OverVoltageFeedbackDetailActivity.PassData();
             }
 
         }

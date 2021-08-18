@@ -73,7 +73,7 @@ namespace myTNB_Android.Src.FeedBackSubmittedSucess.Activity
             intent.SetFlags(ActivityFlags.ClearTop);
             intent.PutExtra("IsfromFeedBackSubmittedSucces", "True");
             intent.PutExtra("ClaimId", ClaimId);
-            intent.PutExtra("TITLE", "Overvoltage Claim");
+            intent.PutExtra("TITLE", Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
             StartActivity(intent);
         }
     }

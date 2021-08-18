@@ -280,7 +280,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             {
                                 vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitEnquiry"));
                             }
-                            vh.newLabel.Visibility = ViewStates.Gone;
+                            //if (UserSessions.HasSubmitEnquiry(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
+                            //{
+                                vh.newLabel.Visibility = ViewStates.Gone;
+                            //}
                             break;
                         case "1004":
                             if (Utility.IsEnablePayment() && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded())

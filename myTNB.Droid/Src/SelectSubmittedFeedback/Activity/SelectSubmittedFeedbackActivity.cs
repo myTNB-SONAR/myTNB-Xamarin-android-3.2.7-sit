@@ -51,6 +51,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         MaterialDialog progressDialog;
         public static string status;
         public static string srNumber;
+        public static string AccountNumber;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -100,6 +101,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
                     this.SetIsClicked(true);
                     SubmittedFeedback feedback = adapter.GetItemObject(e.Position);
                     srNumber = feedback.FeedbackId;
+                    //AccountNumber = feedback.
                     this.userActionsListener.OnSelect(feedback);
                 }
             }

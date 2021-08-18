@@ -1106,16 +1106,32 @@
     "viewYes": "Ya",
     "viewNo": "Tidak",
     "documentPdf": "Dokumen",
-    "thankYouForYourAgree": "Terima kasih atas penyerahan anda.",
-    "thankYouForYourAgreeDescription": "To proceed with payment, please submit the required payment information on the submitted enquiry page.",
-    "thankYouForYourDisagree": "Permintaan rundingan anda telah dihantar.",
+    "thankYouForYourEnquiry": "Pertanyaan anda telah dibatalkan.", //
+    "thankYouForYourEnquiryDescription": "Pertanyaan anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan.", //
+    "thankYouForYourAppointment": "Temujanji anda telah dibatalkan.", //
+    "thankYouForYourAppointmentDescription": "Perjanjian anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan.", //
+    "thankYouForYourAgree": "Terima kasih atas penyerahan anda.", //
+    "thankYouForYourAgreeDescription": "To proceed with payment, please submit the required payment information on the submitted enquiry page.", //
+    "thankYouForYourDisagree": "Permintaan rundingan anda telah dihantar.", //
     "thankYouForYourDisagreeDescription": "Kami akan menghubungi anda tidak lama lagi. itu dapatkan maklumat terkini dengan mengesan status pertanyaan yang anda kirimkan.", //
-    "proccedToPaymentInformation": "Teruskan ke Maklumat Pembayaran",
-    "thankYouForYourEnquiry": "Pertanyaan anda telah dibatalkan.",
-    "thankYouForYourEnquiryDescription": "Pertanyaan anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan.",
-    "thankYouForYourAppointment": "Temujanji anda telah dibatalkan.",
-    "thankYouForYourAppointmentDescription": "Perjanjian anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan."
-
+    "proccedToPaymentInformation": "Teruskan ke Maklumat Pembayaran", //button name
+    "setNewAppointment": "Tetapkan Temujanji Baru", //button name
+    "appointmentSet": "Janji Temu Ditetapkan! ", //
+    "appointmentSetDescription": "Terima kasih! Temujanji anda disahkan dengan perincian di bawah.", //
+    "dateTitle": "TARIKH JANJI TEMU", //
+    "technicianName": "NAMA TEKNIK", //
+    "incidentAddress": "ALAMAT INCIDENT", //
+    "thankYouForProvidingYourDetails": "Terima kasih kerana memberikan maklumat anda!", //
+    "thankYouForProvidingYourDetailsDescription": "Kami akan menyemak maklumat anda dan memberitahu anda setelah kami menyetujuinya. Nilai pampasan akan diproses ke akaun bank yang anda hantar dengan masa sekitar 14 hari bekerja.", //
+    "totalClaimAmount": "Jumlah Tuntutan (RM)", //
+    "thankYouForYourSubmission": "Terima kasih atas penyerahan anda!", //
+    "yourRatingWillHelpUsServeYouBetter": "Penilaian anda akan membantu kami melayani anda dengan lebih baik.", //
+    "enterPaymentDetailsTitle": "Masukkan Butiran Pembayaran", //
+    "rateYourExperienceTitle": "Nilaikan Pengalaman Anda", //
+    "setAppointmentTitle": "Tetapkan Janji Temu", //
+    "negotiationRequestTitle": "Permintaan Rundingan", //
+    "compensationAgreementTitle": "Perjanjian Pampasan", //
+    "updatePaymentDetailsTitle": "Kemas kini Butiran Pembayaran"
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",

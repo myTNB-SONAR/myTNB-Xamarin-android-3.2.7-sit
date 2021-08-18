@@ -152,6 +152,18 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static bool HasSubmitEnquiry(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("HasSubmitEnquiry", false);
+        }
+
+        public static void DoSubmitEnquiry(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("HasSubmitEnquiry", true);
+            editor.Apply();
+        }
+
         public static bool HasViewBillShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasViewBillShown", false);

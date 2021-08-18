@@ -98,7 +98,7 @@ namespace myTNB_Android.Src.PaymentInfoSunmittedSuccess.Activity
             intent.SetFlags(ActivityFlags.ClearTop);
             intent.PutExtra("IsfromPaymentInfoSubmittedSucces", "True");
             intent.PutExtra("ClaimId", ClaimId);
-            intent.PutExtra("TITLE", "Overvoltage Claim");
+            intent.PutExtra("TITLE", Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
             StartActivity(intent);
             //OnBackPressed();
         }

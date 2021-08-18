@@ -207,7 +207,7 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
                 Intent intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
                 intent.PutExtra("setAppointmentFlag", "True");
                 intent.PutExtra("ClaimId", ClaimId);
-                intent.PutExtra("TITLE", "Set Appointment");
+                intent.PutExtra("TITLE", Utility.GetLocalizedLabel("SubmitEnquiry", "setAppointmentTitle"));
                 intent.PutExtra("IsfromSetAppointmentSucces", "True");                
                 intent.SetFlags(ActivityFlags.ClearTop);
                 StartActivity(intent);
