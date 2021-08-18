@@ -343,7 +343,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         manageBillDeliveryEmailRecyclerView.SetAdapter(manageBillDeliveryEmailListAdapter);
                         FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                         layout.Height = TextViewUtils.IsLargeFonts
-                            ? (int)DPUtils.ConvertDPToPx(480f)
+                            ? (int)DPUtils.ConvertDPToPx(490f)
                             : (int)DPUtils.ConvertDPToPx(455f);
                         TenantDeliverigAddress.Visibility
                             = applicationIndicator.Visibility
@@ -399,8 +399,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         manageBillDeliveryEmailRecyclerView.SetAdapter(manageBillDeliveryEmailListAdapter);
                         FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                         layout.Height = TextViewUtils.IsLargeFonts
-                            ? (int)DPUtils.ConvertDPToPx(310f)
-                            : (int)DPUtils.ConvertDPToPx(300f);
+                             ? (int)DPUtils.ConvertDPToPx(490f)
+                            : (int)DPUtils.ConvertDPToPx(455f);
                         applicationIndicator.Visibility
                             = btnStartDigitalBillLayout.Visibility
                             = applicationIndicator.Visibility
