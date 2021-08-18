@@ -477,7 +477,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                 txtDoubleTapDismiss.Visibility = ViewStates.Visible;
                                 txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                             }
-                            if (this.mContext != null && this.mContext is ManageBillDeliveryActivity)
+                            if (this.mContext != null && this.mContext is ManageBillDeliveryActivity && UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EmailWithCTA)
                             {
                                 txtDoubleTapDismiss.Visibility = ViewStates.Visible;
                                 txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
@@ -744,7 +744,13 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                 }
                             }
                         };
+                        if (this.mContext != null && this.mContext is ManageBillDeliveryActivity && UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EmailWithCTA)
+                        {
+                            txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                            txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
+                        }
                     }
+                    
                 }
                 else
                 {
