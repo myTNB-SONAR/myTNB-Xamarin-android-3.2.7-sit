@@ -647,7 +647,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             return mainBillingHistoryList != null && mainAccountChargeModelList != null;
         }
 
-        public List<NewAppModel> OnGeneraNewAppTutorialList(bool isDBRAccount, bool _isOwner)
+        public List<NewAppModel> OnGeneraNewAppTutorialList(bool _isOwner)
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
@@ -702,7 +702,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     DisplayMode = DisplayMode,
                     IsButtonShow = false
                 });
-                if (isDBRAccount)
+                if (DBRUtility.Instance.IsAccountDBREligible)
                 {
                     if (_isOwner)
                     {

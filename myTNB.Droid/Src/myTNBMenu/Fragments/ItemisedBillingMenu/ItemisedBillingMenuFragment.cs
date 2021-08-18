@@ -166,7 +166,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         List<Item> itemFilterList = new List<Item>();
         List<AccountBillPayHistoryModel> selectedBillingHistoryModelList;
         List<AccountBillPayFilter> billPayFilterList;
-        bool isDBRAccount;
         internal bool _isOwner { get; set; }
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
@@ -554,11 +553,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
                             {
                                 digital_container.Visibility = ViewStates.Gone;
-                                isDBRAccount = false;
                             }
                             else
                             {
-                                isDBRAccount = true;
                                 digital_container.Visibility = ViewStates.Visible;
                                 if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBill
                                     || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
@@ -1400,7 +1397,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         Utility.LoggingNonFatalError(e);
                     }
                 });
-                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(isDBRAccount,_isOwner));
+                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(_isOwner));
+
             }
             catch (System.Exception ex)
             {

@@ -496,6 +496,10 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     };
                     handler.PostDelayed(myAction, 50);
                 }
+                else
+                {
+                    ManageBill_container.Visibility = ViewStates.Gone;
+                }
                 HideProgressDialog();
             }
             catch (System.Exception e)
