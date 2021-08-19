@@ -183,6 +183,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// CA number Verify.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<CAVerifyResponseModel> CAVerify([Body] Request.BaseRequest request)
+        {
+            return api.CAVerify<CAVerifyResponseModel>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
         /// Call GetLocationsByKeyword with default timeout.
         /// </summary>
         /// <param name="request"></param>

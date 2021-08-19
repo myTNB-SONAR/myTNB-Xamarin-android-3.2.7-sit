@@ -1131,7 +1131,10 @@
     "setAppointmentTitle": "Tetapkan Janji Temu", //
     "negotiationRequestTitle": "Permintaan Rundingan", //
     "compensationAgreementTitle": "Perjanjian Pampasan", //
-    "updatePaymentDetailsTitle": "Kemas kini Butiran Pembayaran"
+    "updatePaymentDetailsTitle": "Kemas kini Butiran Pembayaran",
+    "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle": "Tuntutan OverVoltage pada masa ini tidak diaktifkan untuk Kepong.", //
+    "overVoltageClaimIsCurrentlyNotEnabledForKepongDescription": "Nombor akaun terpilih di bawah kepong pada masa ini tidak diaktifkan untuk tuntutan voltan berlebihan melalui myTNB, sila hubungi TNB CareLine kami di 1300-88-5454 atau hantarkan e-mel kepada kami di tnbcareline@tnb.com.my atau kunjungi kedai tenega.",
+    "Got it": "Ok" //
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",

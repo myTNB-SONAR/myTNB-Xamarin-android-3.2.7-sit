@@ -6288,6 +6288,32 @@
     </AndroidResource>
     <Compile Include="Src\FeedBackSubmittedSucess\Activity\FeedBackSubmittedSuccessActivity.cs" />
     <Compile Include="Src\PaymentInfoSunmittedSuccess\Activity\PaymentInfoSunmittedSuccessActivity.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\overvoltageclaimicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\overvoltageclaimicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\overvoltageclaimicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\overvoltageclaimicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\overvoltageclaimicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\overvoltageclaimicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\MyTNBService\Request\CAVerifyRequestModel.cs" />
+    <Compile Include="Src\MyTNBService\Response\CAVerifyResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

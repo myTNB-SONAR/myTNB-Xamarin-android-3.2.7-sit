@@ -60,6 +60,9 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Post("/v6/mytnbappws.asmx/GetOvervoltageClaimDetail")]
         Task<T> SubmittedFeedbackClaimIdDetail<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/TriggerOVISServices")]
+        Task<T> CAVerify<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         //TODO
         [Headers("Content-Type:application/json; charset=utf-8")]

@@ -38,6 +38,8 @@ using myTNB_Android.Src.FeedbackFail.Activity;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity;
 using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.OverVoltageClaim.Activity;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity;
@@ -47,6 +49,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -112,12 +115,18 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         [BindView(Resource.Id.txtOverVoltageClaimContent)]
         TextView txtOverVoltageClaimContent;
 
+        [BindView(Resource.Id.updatePersoanlInfoIcon1)]
+        ImageView updatePersoanlInfoIcon1;
         
+
 
 
         [BindView(Resource.Id.scanNewEnquiry)]
         ImageButton scanNewEnquiry;
 
+
+        [BindView(Resource.Id.accountLayout4)]
+        FrameLayout accountLayout4;
 
 
         String GeneralEnquiry1of2_app_bar = "@string/bill_related_activity_title";
@@ -136,13 +145,26 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
 
         private ISharedPreferences mSharedPref;
+        public bool overvoltageClaimVisible = false;
+        public bool overvoltageClaimEnabled = false;
+        public bool IsWhiteListedArea = false;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        MyTNBAppToolTipBuilder leaveDialog;
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
             {
-              
+
+                //Contract Account List
+                List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                List<string> contactAccountNumbers = new List<string>();
+
+                var data = new MyTNBService.Request.BaseRequest();
+                var usin = data.usrInf;
+                //var CANumberVerifyResponce = await ServiceApiImpl.Instance.CAVerify(new CAVerifyRequestModel(usin.sspuid, "GET", "/claim/Ext/9ee598cd-82a9-4089-8eb2-571067f1e407", null));
+
+
 
                 //init shared preferences 
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
@@ -217,12 +239,29 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
                 bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);  //get from shared pref
 
+                //OverVoltage Claim Toggle based on pilot/nonpilot
+                //if (overvoltageClaimVisible == false)
+                //{
+                //    overvoltageclaimConstraint.Visibility = ViewStates.Gone;
+                //}
+                //else if (overvoltageClaimVisible == true)
+                //{
+                //    overvoltageclaimConstraint.Visibility = ViewStates.Visible;
+                //    //if (overvoltageClaimEnabled == true)
+                //    //{
+                //    //    overvoltageclaimConstraint.Enabled = true;
+                //    //}
+                //    //else
+                //    //{
+                //    //    overvoltageclaimConstraint.Enabled = false;
+                //    //}
+                //}
 
                 if (isUpdatePersonalDetail == true)
                 {
                     updatePersonalInfoConstraint.Visibility = ViewStates.Gone;
                 }
-
+                
                 //210031353308
 
 
@@ -371,15 +410,41 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             return true;
         }
 
-
-
-
-
+        [Obsolete]
         protected override void OnResume()
         {
             base.OnResume();
             try
             {
+                //non pilot
+                if (overvoltageClaimVisible == false)
+                {
+                    overvoltageclaimConstraint.Visibility = ViewStates.Gone;
+                    accountLayout4.Visibility = ViewStates.Gone;
+                }
+                //Pilot flow
+                else if (overvoltageClaimVisible == true)
+                {
+                    overvoltageclaimConstraint.Visibility = ViewStates.Visible;
+                    accountLayout4.Visibility = ViewStates.Visible;
+                    overvoltageclaimConstraint.Clickable = true;
+                    if (IsWhiteListedArea == false)
+                    {
+                        txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
+                        txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
+                        //updatePersoanlInfoIcon1.SetAlpha(Convert.ToInt32(0.5));
+                        overvoltageclaimConstraint.Clickable = false;
+
+                    }
+                    else
+                    {
+                        txtOverVoltageClaim.SetTextColor(Color.ParseColor("#1c79ca"));
+                        txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#49494a"));
+                        //updatePersoanlInfoIcon1.SetAlpha(Convert.ToInt32(1));
+                    }
+                    
+                    
+                }
                 FirebaseAnalyticsUtils.SetScreenName(this, "Submit New Enquiry");
             }
             catch (Exception e)
@@ -432,6 +497,19 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+
+        [OnClick(Resource.Id.accountLayout4)]
+        void OnDialogClick(object sender, EventArgs eventArgs)
+        {
+            leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+             .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle"))
+             .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongDescription"))
+             .SetCTALabel(Utility.GetLocalizedLabel("SubmitEnquiry", "Got it"))
+             .SetCTAaction(() => { leaveDialog.DismissDialog(); })
+             .Build();
+            leaveDialog.Show();           
         }
 
 
@@ -576,6 +654,20 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 
                         //injecting string into the accno
                         txtAccountNo.Text = selectedAccount.AccountNum;
+                        if (txtAccountNo.Text == "210000750008")//3
+                        {
+                            overvoltageClaimVisible = true;
+                            IsWhiteListedArea = true;
+                        }
+                        else if (txtAccountNo.Text == "220004092309")
+                        {
+                            overvoltageClaimVisible = true;
+                            IsWhiteListedArea = false;
+                        }
+                        else if (txtAccountNo.Text == "220004421505")//1
+                        {
+                            overvoltageClaimVisible = false;
+                        }
                     }
                 }
 

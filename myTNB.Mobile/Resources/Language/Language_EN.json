@@ -1133,6 +1133,9 @@
     "negotiationRequestTitle": "Negotiation Request",
     "compensationAgreementTitle": "Compensation Agreement",
     "updatePaymentDetailsTitle": "Update Payment Details",
+    "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle": "OverVoltage Claim is currently not enabled for Kepong.",
+    "overVoltageClaimIsCurrentlyNotEnabledForKepongDescription": "The selected account number under kepong area is currently not enabled for overvoltage claim via myTNB, please contact our TNB CareLine at 1300-88-5454 or email us at tnbcareline@tnb.com.my or visit kedai tenega.",
+    "Got it": "Got it"
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
