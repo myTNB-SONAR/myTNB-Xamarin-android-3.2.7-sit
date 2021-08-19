@@ -187,7 +187,7 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
             txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourAppointment"); //"Your appointment has been cancelled.";
             txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourAppointmentDescription"); //"Your appointment for over voltage claim request has been successfully cancelled.";
             txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
-            buttonBackToHome.Text = "Set New Appointment";
+            buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "setNewAppointment");
             btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
         }
 

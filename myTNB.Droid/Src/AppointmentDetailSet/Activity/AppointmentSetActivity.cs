@@ -15,6 +15,7 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.AppointmentDetailSet.Activity
 {
@@ -23,6 +24,30 @@ namespace myTNB_Android.Src.AppointmentDetailSet.Activity
           , Theme = "@style/Theme.FaultyStreetLamps")]
     public class AppointmentSetActivity : BaseAppCompatActivity
     {
+        [BindView(Resource.Id.txtTitleInfo)]
+        TextView txtTitleInfo;
+
+        [BindView(Resource.Id.txtMessageInfo)]
+        TextView txtMessageInfo;
+
+        [BindView(Resource.Id.servicerequestLabel)]
+        TextView servicerequestLabel;
+
+        [BindView(Resource.Id.appointmentLabel)]
+        TextView appointmentLabel;
+
+        [BindView(Resource.Id.premiseLabel)]
+        TextView premiseLabel;
+
+        [BindView(Resource.Id.addressLabel)]
+        TextView addressLabel;
+
+        [BindView(Resource.Id.buttonBackToHome)]
+        TextView buttonBackToHome;
+
+        [BindView(Resource.Id.btnViewSubmitted)]
+        TextView btnViewSubmitted;
+
         [BindView(Resource.Id.servicerequestnumber)]
         TextView _servicerequestnumber;
         string requestnumber;
@@ -58,6 +83,15 @@ namespace myTNB_Android.Src.AppointmentDetailSet.Activity
 
         private void SetUI()
         {
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "appointmentSet"); //"Your negotiation request has been submitted";
+            txtMessageInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "appointmentSetDescription");
+            servicerequestLabel.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceReqNum");
+            appointmentLabel.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "dateTitle");
+            premiseLabel.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "technicianName");
+            addressLabel.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "incidentAddress");
+            buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
+            btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmitted");
+
             requestnumber = Intent.GetStringExtra("Sernumbr");
             appointdate = Intent.GetStringExtra("ApptDate");
             techname = Intent.GetStringExtra("TechName");
