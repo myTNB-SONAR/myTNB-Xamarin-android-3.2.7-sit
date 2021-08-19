@@ -975,8 +975,8 @@
   "SubmitEnquiry": {
     "exGratiaAgreementTitle": "Perjanjian Ex-gratia", //
     "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.", //
-    "enquireTitle": "Pertanyaan",
-    "submitEnquiryTitle": "Hantar dan Lihat Pertanyaan",
+    "enquireTitle": "Hantar dan Lihat Pertanyaan",
+    "submitEnquiryTitle": "Hantar Pertanyaan",
     "submitEnquiryDescription": "Kongsikan bagaimana kami boleh membantu anda",
     "viewSubmittedEnquiry": "Lihat Pertanyaan yang Dihantar",
     "viewEnquiryTitle": "Lihat kemas kini status pertanyaan anda di sini.",
