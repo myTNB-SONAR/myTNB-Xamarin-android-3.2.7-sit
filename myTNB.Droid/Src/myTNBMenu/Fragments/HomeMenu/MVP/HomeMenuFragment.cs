@@ -3346,18 +3346,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void ShowDiscoverMoreLayout()
         {
-            //discoverMoreContainer.Visibility = ViewStates.Gone;
             if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
             {          
                 discoverMoreContainer.Visibility = ViewStates.Visible;
-                bool isDateAvailable = false;
                 try
                 {
                     //DateTime publishDateTime = DateTime.ParseExact(whatsNewList[position].PublishDate, "yyyyMMddTHHmmss",
                     DateTime publishDateTime = DateTime.UtcNow;
                     //CultureInfo.InvariantCulture, DateTimeStyles.None);
 
-                    if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                    /*if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
                     {
                         CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
                         txtDate.Text = publishDateTime.ToString("dd MMM yyyy", currCult);
@@ -3368,7 +3366,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
                         txtDate.Text = publishDateTime.ToString("dd MMM yyyy", currCult);
                         isDateAvailable = true;
-                    }
+                    }*/
+                    txtDate.Text = GetLabelByLanguage("DiscoverMoreDate");
 
                     if (UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                     {

@@ -51,11 +51,17 @@
         internal const string SaltKey = SaltKeyDEV;
         internal const string PassPhrase = PassphraseDEV;
 #elif MASTER || SIT
-        public static string ApiDomain = SIT;
+        /*public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKeyDEV;
-        internal const string PassPhrase = PassphraseDEV;
+        internal const string PassPhrase = PassphraseDEV;*/
+
+        public static string ApiDomain = PROD;
+        public const string ApiKeyId = ApiKeyIdPROD;
+        public const string SitecoreURL = SitecorePROD;
+        internal const string SaltKey = SaltKeyPROD;
+        internal const string PassPhrase = PassphrasePROD;
 #else
         public static string ApiDomain = PROD;
         public const string ApiKeyId = ApiKeyIdPROD;

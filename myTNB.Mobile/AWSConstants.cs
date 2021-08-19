@@ -22,36 +22,45 @@
 
         private const string SIT = "SIT";
         private const string PROD = "Prod";
+
+
+        public const string Identity = "Identity";
+        public const string Eligibility = "Eligibility";
+
+
         private const string XAPIKeySIT = "8BVhUBJIJO9RAFwrxmx0o76n7tfRsPyd4DSChI5r";
-        private const string XAPIKeyProd = "8BVhUBJIJO9RAFwrxmx0o76n7tfRsPyd4DSChI5r";
+        private const string XAPIKeyProd = "gpUS5pe4aO2yMbId7bFa13dGfYYnBWbjn3vqn0d7";
 
-        //Domains
-        internal struct Domains
-        {
-           
-            //internal const string GenerateAccessToken = "https://ru5ofma1zd.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GenerateAccessToken = "https://5c6jgu44tf.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetBillRendering = "https://q7zjjtvkmf.execute-api.ap-southeast-1.amazonaws.com";
-#if DEBUG
-            internal const string GetDBREligibility = "https://j8kgh1w7y3.execute-api.ap-southeast-1.amazonaws.com";         //DEV URL
-#elif MASTER || SIT
-            //internal const string GetDBREligibility = "https://j8kgh1w7y3.execute-api.ap-southeast-1.amazonaws.com";         //DEV URL
-            internal const string GetDBREligibility = "https://12pq772dmj.execute-api.ap-southeast-1.amazonaws.com";        // Staging URL
-#else
-            internal const string GetDBREligibility = " https://12pq772dmj.execute-api.ap-southeast-1.amazonaws.com";        // Staging URL //Need release endpoint 
-#endif
-        }
+        private const string AWSEndpoint_SIT = "https://stagingapi.mytnb.com.my";
+        private const string AWSEndpoint_PROD = "https://api.mytnb.com.my";
+
+        ////Domains
+        //internal struct Domains
+        //{
+        //    internal const string GetBillRendering = "https://q7zjjtvkmf.execute-api.ap-southeast-1.amazonaws.com";
+        //}
 
 #if DEBUG
         internal const string Environment = PROD;
+        internal const string AWS_Endpoint = AWSEndpoint_SIT;
         internal const string XAPIKey = XAPIKeySIT;
         public const string SaltKey = SaltKeyDEV;
         public const string PassPhrase = PassphraseDEV;
         public const string DBROriginURL = DBROriginURLDEV;
         public const string DBRRedirectURL = DBRRedirectURLDEV;
         public const string DBRSSOURL = DBRSSOURLDEV;
+
+        //internal const string Environment = PROD;
+        //internal const string AWS_Endpoint = AWSEndpoint_PROD;
+        //internal const string XAPIKey = XAPIKeyProd;
+        //public const string SaltKey = SaltKeyPROD;
+        //public const string PassPhrase = PassphrasePROD;
+        //public const string DBROriginURL = DBROriginURLPROD;
+        //public const string DBRRedirectURL = DBRRedirectURLPROD;
+        //public const string DBRSSOURL = DBRSSOURLPROD;
 #elif MASTER || SIT
         internal const string Environment = PROD;
+        internal const string AWS_Endpoint = AWSEndpoint_SIT;
         internal const string XAPIKey = XAPIKeySIT;
         public const string SaltKey = SaltKeyDEV;
         public const string PassPhrase = PassphraseDEV;
@@ -60,6 +69,7 @@
         public const string DBRSSOURL = DBRSSOURLDEV;
 #else
         internal const string Environment = PROD;
+        internal const string AWS_Endpoint = AWSEndpoint_PROD;
         internal const string XAPIKey = XAPIKeyProd;
         public const string SaltKey = SaltKeyPROD;
         public const string PassPhrase = PassphrasePROD;

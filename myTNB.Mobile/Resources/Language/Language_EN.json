@@ -2362,10 +2362,5 @@
       "enabled": true,
       "callInterval": 480
     }
-  },
-
-  "AWSServiceConfiguration": {
-    "TokenEndpoint": "https://5c6jgu44tf.execute-api.ap-southeast-1.amazonaws.com",
-    "EligibilityEndpoint": "https://12pq772dmj.execute-api.ap-southeast-1.amazonaws.com"
   }
 }

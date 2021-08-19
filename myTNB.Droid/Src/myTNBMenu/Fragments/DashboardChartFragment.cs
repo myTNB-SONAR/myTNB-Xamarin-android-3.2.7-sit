@@ -5375,7 +5375,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 ToastUtils.OnDisplayToast(Activity, string.Format(Utility.GetLocalizedLabel("Usage", "toastSaveBudgetuccessfull")));
                 isHaveEnergyBudget = true;
                 editBudget = false;
-                //SetUp();
+                isChangeVirtualHeightNeed = true;
+                SetVirtualHeightParams(6f);
                 ShowSMStatisticCard();
                 energyBudgetRMinput.Enabled = false;
             }

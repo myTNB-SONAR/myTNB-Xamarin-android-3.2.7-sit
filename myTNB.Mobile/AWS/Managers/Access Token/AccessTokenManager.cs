@@ -38,19 +38,7 @@ namespace myTNB.Mobile
                 //userID = "0D1568D9-7770-4345-84BD-04C2C56A2069";
                 //userID = "1b4d7fa4-f6b8-4743-8dec-5375b135b27469859";
 
-                string tokenEndpoint = string.Empty;
-                string tmp_GenerateAccessToken = AwsSitecoreManager.Instance.TokenEndpoint();
-
-                if (!string.IsNullOrEmpty(tmp_GenerateAccessToken))
-                {
-                    tokenEndpoint = tmp_GenerateAccessToken;
-                }
-                else
-                {
-                    tokenEndpoint = AWSConstants.Domains.GenerateAccessToken;
-                }
-
-                IAccessTokenService service = RestService.For<IAccessTokenService>(tokenEndpoint);
+                IAccessTokenService service = RestService.For<IAccessTokenService>(AWSConstants.AWS_Endpoint);
                 AccessTokenRequest request = new AccessTokenRequest
                 {
                     Channel = AWSConstants.Channel,

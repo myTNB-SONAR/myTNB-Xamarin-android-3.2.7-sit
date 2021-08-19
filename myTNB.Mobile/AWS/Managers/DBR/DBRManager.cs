@@ -37,7 +37,7 @@ namespace myTNB.Mobile
             GetBillRenderingResponse response = new GetBillRenderingResponse();
             try
             {
-                IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.GetBillRendering);
+                IDBRService service = RestService.For<IDBRService>(AWSConstants.AWS_Endpoint);
                 HttpResponseMessage rawResponse = await service.GetBillRendering(ca
                    , NetworkService.GetCancellationToken()
                    , accessToken
