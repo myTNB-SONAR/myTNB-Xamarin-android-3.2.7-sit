@@ -143,24 +143,22 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         {
             try
             {
-                // WebView Live
-                var domain = "http://mytnbwvovis.ap.ngrok.io/";
+                const string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
+                // const string domain = "http://192.168.68.127:3000/"; // WebView Local
 
-                // WebView Local
-                //var domain = "http://192.168.1.159:3000/";
-
-                String EndPoint = "";
-                
+                String queryParams = null;
                 
                 
                 if (proccedToPaymentFlag)
                 {
-                    EndPoint = "?paymentInfo=true";
+                    queryParams += queryParams == null ? "?" : "&";
+                    queryParams += "paymentInfo=true";
                     proccedToPaymentFlag = false;
                 }
                 else if (setAppointmentFlag)
                 {
-                    EndPoint = "?setAppointment=true";
+                    queryParams += queryParams == null ? "?" : "&";
+                    queryParams += "setAppointment=true";
                     setAppointmentFlag = false;
                 }
                 //else if (backFromAppointmentFlag)
@@ -171,13 +169,19 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 //}
                 else
                 {
-                    EndPoint = "";
                     SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
                     TempTitle = "Overvoltage Claim";
                 }
-                var url = domain + "claimPage/" + ClaimId + EndPoint;
 
-                #if DEBUG
+                if (TextViewUtils.IsLargeFonts)
+                {
+                    queryParams += queryParams == null ? "?" : "&";
+                    queryParams += "large";
+                }
+
+                string url = domain + "claimPage/" + ClaimId + queryParams;
+
+#if DEBUG
                 global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
                 #endif
 
