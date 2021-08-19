@@ -55,6 +55,10 @@ namespace myTNB_Android.Src.FeedBackSubmittedSucess.Activity
         }
         private void SetUI()
         {
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourSubmission");
+            txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "yourRatingWillHelpUsServeYouBetter");
+            buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
+            btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmitted");
             ClaimId = Intent.GetStringExtra("ClaimId");
         }
 

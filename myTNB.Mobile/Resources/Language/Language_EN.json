@@ -1111,7 +1111,7 @@
     "thankYouForYourEnquiryDescription": "Your enquiry for over voltage claim request has been successfully cancelled.",
     "thankYouForYourAppointment": "Your appointment has been cancelled.",
     "thankYouForYourAppointmentDescription": "Your appointment for over voltage claim request has been successfully cancelled.",
-    "thankYouForYourAgree": "Thank you for your submisison.",
+    "thankYouForYourAgree": "Thank you for your submission.",
     "thankYouForYourAgreeDescription": "To proceed with payment, please submit the required payment information on the submitted enquiry page.",
     "thankYouForYourDisagree": "Your negotiation request has been submitted.",
     "thankYouForYourDisagreeDescription": "We'll get back to you soon. In the mean time, stay updated by tracking your submitted enquiry status.",
@@ -1119,6 +1119,7 @@
     "setNewAppointment": "Set New Appointment", //button name
     "appointmentSet": "Appointment Set!",
     "appointmentSetDescription": "Thank you! Your appointment is confirmed with details below.",
+    "serviceReqNum": "SERVICE REQUEST NUMBER",
     "dateTitle": "APPOINTMENT DATE",
     "technicianName": "TECHNICIAN NAME",
     "incidentAddress": "INCIDENT ADDRESS",

@@ -72,6 +72,9 @@ namespace myTNB_Android.Src.PaymentInfoSunmittedSuccess.Activity
             ClaimId = Intent.GetStringExtra("ClaimId");
 
             txtFeedbackIdContent.Text = Sernumbr;
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForProvidingYourDetails");
+            txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForProvidingYourDetailsDescription");
+            txttotalclaimamt.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "totalClaimAmount");
             //txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitICFeedback_OverVoltageClainSuccessPageThankyouRequest");
             //txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent");
             //totalclaimamt.Text = Convert.ToDouble(TotalAmt).ToString("N2", info);//TotalAmt;
