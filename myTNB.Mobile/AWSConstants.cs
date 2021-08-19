@@ -33,30 +33,30 @@
         public struct Domains
         {
 #if DEBUGs
-            internal const string GenerateAccessToken = "https://5y8p2rm83k.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetDBREligibility = "https://j8kgh1w7y3.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetBillRendering = "https://udv358acc6.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetMultiBillRendering = "https://udv358acc6.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GenerateAccessToken = "https://devapi.mytnb.com.my/Identity/api/v1";
+            internal const string GetEligibility = "https://devapi.mytnb.com.my/Eligibility/api/v1";
+            internal const string GetBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetMultiBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
             internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
             internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
             internal const string StartDigitalBill = "https://devdbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://devdbr.mytnb.com.my/PaperBill/OptIn";
             public const string SSO = "https://devdbr.mytnb.com.my/Sso?s={0}";
 #elif MASTER || SIT || DEBUG
-            internal const string GenerateAccessToken = "https://5c6jgu44tf.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetDBREligibility = "https://12pq772dmj.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetBillRendering = "https://k6mjxscgb1.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetMultiBillRendering = "https://k6mjxscgb1.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GenerateAccessToken = "https://stagingapi.mytnb.com.my/Identity/api/v1";
+            internal const string GetEligibility = "https://stagingapi.mytnb.com.my/Eligibility/api/v1";
+            internal const string GetBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetMultiBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
             internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
             internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
             internal const string StartDigitalBill = "https://stagingdbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://stagingdbr.mytnb.com.my/PaperBill/OptIn";
             public const string SSO = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
 #else
-            internal const string GenerateAccessToken = "https://u87s7tl12m.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetDBREligibility = "https://ej1yrq9zc6.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetBillRendering = "https://yzixerxax2.execute-api.ap-southeast-1.amazonaws.com";
-            internal const string GetMultiBillRendering = "https://yzixerxax2.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GenerateAccessToken = "https://api.mytnb.com.my/Identity/api/v1";
+            internal const string GetEligibility = "https://api.mytnb.com.my/Eligibility/api/v1";
+            internal const string GetBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetMultiBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
             internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
             internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
             internal const string StartDigitalBill = "https://dbr.mytnb.com.my/DigitalBill/Start";

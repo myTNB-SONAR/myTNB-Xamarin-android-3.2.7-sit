@@ -8,7 +8,7 @@ namespace myTNB.Mobile.AWS.Services.DBR
 {
     internal interface IDBRService
     {
-        [Get("/{environment}/api/v1/eligibility/{userID}")]
+        [Get("/eligibility/{userID}")]
         Task<HttpResponseMessage> GetEligibility(string userID
             , CancellationToken cancellationToken
             , [Header(AWSConstants.Headers.Authorization)] string accessToken
@@ -16,7 +16,7 @@ namespace myTNB.Mobile.AWS.Services.DBR
             , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
             , string environment = AWSConstants.Environment);
 
-        [Get("/{environment}/api/v1/billrendering/{ca}")]
+        [Get("/billrendering/{ca}")]
         Task<HttpResponseMessage> GetBillRendering(string ca
            , CancellationToken cancellationToken
            , [Header(AWSConstants.Headers.Authorization)] string accessToken
@@ -24,7 +24,7 @@ namespace myTNB.Mobile.AWS.Services.DBR
            , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
            , string environment = AWSConstants.Environment);
 
-        [Post("/{environment}/api/v1/BillRendering/GetMultiple")]
+        [Post("/BillRendering/GetMultiple")]
         Task<HttpResponseMessage> PostMultiBillRendering(PostMultiBillRenderingRequest request
            , CancellationToken cancellationToken
            , [Header(AWSConstants.Headers.Authorization)] string accessToken

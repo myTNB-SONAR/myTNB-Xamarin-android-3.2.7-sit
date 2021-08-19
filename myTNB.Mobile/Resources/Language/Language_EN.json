@@ -2419,7 +2419,11 @@
   },
   "DBRWebview": {
     "goPaperless": "Jom Paperless!",
-    "updateBillDelivery": "Update Bill Delivery Method"
+    "updateBillDelivery": "Update Bill Delivery Method",
+    "confirmPopupTitle": "Leave this page?",
+    "confirmPopupMessage": "You are about to close this page and end your session.",
+    "nevermind": "Nevermind",
+    "confirm": "Confirm"
   },
   "ServiceConfiguration": {
     "Eligibility": {

@@ -2411,7 +2411,11 @@
   },
   "DBRWebview": {
     "goPaperless": "Jom Paperless!",
-    "updateBillDelivery": "Kemas Kini Cara Penerimaan Bil"
+    "updateBillDelivery": "Kemas Kini Cara Penerimaan Bil",
+    "confirmPopupTitle": "Tutup halaman ini?",
+    "confirmPopupMessage": "Anda akan menutup halaman ini dan menamatkan sesi anda.",
+    "nevermind": "Tidak Mengapa",
+    "confirm": "Sahkan"
   },
   "ServiceConfiguration": {
     "Eligibility": {

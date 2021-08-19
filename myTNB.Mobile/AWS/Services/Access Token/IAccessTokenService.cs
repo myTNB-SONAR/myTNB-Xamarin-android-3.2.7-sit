@@ -8,7 +8,7 @@ namespace myTNB.Mobile.AWS.Services.AccessToken
 {
     internal interface IAccessTokenService
     {
-        [Post("/{environment}/api/v1/Identity/GenerateAccessToken")]
+        [Post("/Identity/GenerateAccessToken")]
         Task<HttpResponseMessage> GenerateAccessToken([Body] AccessTokenRequest request
             , CancellationToken cancelToken
             , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
