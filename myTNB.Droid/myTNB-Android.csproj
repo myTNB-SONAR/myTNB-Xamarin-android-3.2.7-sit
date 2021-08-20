@@ -125,15 +125,6 @@
     <Reference Include="crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.8.1.1\lib\netstandard1.3\crypto.dll</HintPath>
     </Reference>
-    <Reference Include="Dynatrace.OneAgent.Android, Version=7.2.7.1233, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Dynatrace.OneAgent.Forms, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="Dynatrace.OneAgent.Forms.Android, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Forms.Android.dll</HintPath>
-    </Reference>
     <Reference Include="FastAndroidCamera, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FastAndroidCamera.2.0.0\lib\MonoAndroid403\FastAndroidCamera.dll</HintPath>
     </Reference>
@@ -683,6 +674,15 @@
     </Reference>
     <Reference Include="Xamarin.Firebase.Core">
       <HintPath>..\packages\Xamarin.Firebase.Core.71.1601.4\lib\monoandroid90\Xamarin.Firebase.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.OneAgent.Android">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.OneAgent.Forms.Android">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Forms.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.OneAgent.Forms">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Forms.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -9381,4 +9381,5 @@
   <Import Project="..\packages\Xamarin.Firebase.Analytics.71.1630.4\build\MonoAndroid90\Xamarin.Firebase.Analytics.targets" Condition="Exists('..\packages\Xamarin.Firebase.Analytics.71.1630.4\build\MonoAndroid90\Xamarin.Firebase.Analytics.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Measurement.Connector.Impl.71.1705.4\build\MonoAndroid90\Xamarin.Firebase.Measurement.Connector.Impl.targets" Condition="Exists('..\packages\Xamarin.Firebase.Measurement.Connector.Impl.71.1705.4\build\MonoAndroid90\Xamarin.Firebase.Measurement.Connector.Impl.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Core.71.1601.4\build\MonoAndroid90\Xamarin.Firebase.Core.targets" Condition="Exists('..\packages\Xamarin.Firebase.Core.71.1601.4\build\MonoAndroid90\Xamarin.Firebase.Core.targets')" />
+  <Import Project="..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets" Condition="Exists('..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets')" />
 </Project>
