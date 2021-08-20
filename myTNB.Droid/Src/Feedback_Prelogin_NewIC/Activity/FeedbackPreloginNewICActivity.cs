@@ -39,6 +39,7 @@ using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity;
 using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.OverVoltageClaim.Activity;
 using myTNB_Android.Src.SiteCore;
@@ -48,6 +49,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
@@ -148,6 +150,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         public bool overvoltageClaimVisible = false;
         public bool overvoltageClaimEnabled = false;
         public bool IsWhiteListedArea = false;
+        public bool IsPilot = false;
+        CAVerifyResponseModel CANumberVerifyResponce;
 
         MyTNBAppToolTipBuilder leaveDialog;
         protected async override void OnCreate(Bundle savedInstanceState)
@@ -155,15 +159,46 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             base.OnCreate(savedInstanceState);
             try
             {
-
+                ShowProgressDialog();
                 //Contract Account List
                 List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
                 List<string> contactAccountNumbers = new List<string>();
+                foreach(var CANumber in accountList)
+                {
+                    var no = CANumber.AccNum;
+                    contactAccountNumbers.Add(no);
+                }
 
                 var data = new MyTNBService.Request.BaseRequest();
                 var usin = data.usrInf;
-                //var CANumberVerifyResponce = await ServiceApiImpl.Instance.CAVerify(new CAVerifyRequestModel(usin.sspuid, "GET", "/claim/Ext/9ee598cd-82a9-4089-8eb2-571067f1e407", null));
-
+                var listData = new OVISRequest();
+                listData.contactAccountNumbers = contactAccountNumbers;
+                if(CANumberVerifyResponce == null)
+                {
+                    ShowProgressDialog();
+                }
+                
+                //verifyCADetailsExt Endpoint
+                CANumberVerifyResponce = await ServiceApiImpl.Instance.CAVerify(new CAVerifyRequestModel(usin.sspuid, "POST", "/claim/verifyCADetailsExt", listData));
+                if (CANumberVerifyResponce != null)
+                {
+                    IsPilot = CANumberVerifyResponce.d.OvervoltageClaimEnabled;
+                    //Non Pilot
+                    if (!CANumberVerifyResponce.d.OvervoltageClaimEnabled)
+                    {
+                        overvoltageClaimVisible = false;
+                    }
+                    //Pilot
+                    else if (CANumberVerifyResponce.d.OvervoltageClaimEnabled)
+                    {
+                        overvoltageClaimVisible = true;
+                        IsWhiteListedArea = true;
+                        overvoltageclaimConstraint.Visibility = ViewStates.Visible;
+                        accountLayout4.Visibility = ViewStates.Visible;
+                        overvoltageclaimConstraint.Clickable = true;
+                    }
+                    HideProgressDialog();
+                }
 
 
                 //init shared preferences 
@@ -445,6 +480,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     
                     
                 }
+                HideProgressDialog();
                 FirebaseAnalyticsUtils.SetScreenName(this, "Submit New Enquiry");
             }
             catch (Exception e)
@@ -654,20 +690,49 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 
                         //injecting string into the accno
                         txtAccountNo.Text = selectedAccount.AccountNum;
-                        if (txtAccountNo.Text == "210000750008")//3
-                        {
-                            overvoltageClaimVisible = true;
-                            IsWhiteListedArea = true;
-                        }
-                        else if (txtAccountNo.Text == "220004092309")
-                        {
-                            overvoltageClaimVisible = true;
-                            IsWhiteListedArea = false;
-                        }
-                        else if (txtAccountNo.Text == "220004421505")//1
+                        if (!IsPilot)
                         {
                             overvoltageClaimVisible = false;
                         }
+                        else if (IsPilot)
+                        {
+                            string isValid = null;
+                            if(CANumberVerifyResponce.d.OvervoltageClaimSupported.ContainsKey(txtAccountNo.Text))
+                            {
+                                for (int i=0; i < CANumberVerifyResponce.d.OvervoltageClaimSupported.Count();i++)
+                                {
+                                    if (CANumberVerifyResponce.d.OvervoltageClaimSupported.ElementAt(i).Key == txtAccountNo.Text)
+                                    {
+                                        isValid=CANumberVerifyResponce.d.OvervoltageClaimSupported.ElementAt(i).Value;
+                                        //return;
+                                    }
+                                }
+                            }
+                            overvoltageClaimVisible = true;
+                            if (isValid=="true")
+                            {
+                                IsWhiteListedArea = true;
+                            }
+                            else if(isValid =="false" || isValid == "INVALID")
+                            {
+                                IsWhiteListedArea = false;
+                            }
+                        }
+
+                        //if (txtAccountNo.Text == "210000750008")//3
+                        //{
+                        //    overvoltageClaimVisible = true;
+                        //    IsWhiteListedArea = true;
+                        //}
+                        //else if (txtAccountNo.Text == "220004092309")
+                        //{
+                        //    overvoltageClaimVisible = true;
+                        //    IsWhiteListedArea = false;
+                        //}
+                        //else if (txtAccountNo.Text == "220004421505")//1
+                        //{
+                        //    overvoltageClaimVisible = false;
+                        //}
                     }
                 }
 
