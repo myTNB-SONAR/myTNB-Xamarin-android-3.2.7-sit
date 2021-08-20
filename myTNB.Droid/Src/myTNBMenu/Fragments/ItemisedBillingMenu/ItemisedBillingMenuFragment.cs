@@ -281,11 +281,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 SetDynatraceCTATags();
                 this.SetIsClicked(true);
-                Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
-                intent.PutExtra("accountNumber", mSelectedAccountData.AccountNum);
-                intent.PutExtra("isOwner", _isOwner);
-                StartActivity(intent);
+                if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+                {
+                    Intent intent = new Intent(Activity, typeof(PaperBillDeliveryActivity));
+                    intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                    intent.PutExtra("accountNumber", mSelectedAccountData.AccountNum);
+                    intent.PutExtra("isOwner", _isOwner);
+                    StartActivity(intent);
+                }
+                else
+                {
+                    Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                    intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                    intent.PutExtra("accountNumber", mSelectedAccountData.AccountNum);
+                    intent.PutExtra("isOwner", _isOwner);
+                    StartActivity(intent);
+                }
             }
         }
 

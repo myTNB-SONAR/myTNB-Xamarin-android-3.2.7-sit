@@ -6424,12 +6424,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\ManageBillDelivery\Activity\MVP\ManageBillDeliveryFragment.cs" />
-    <Compile Include="Src\ManageBillDelivery\Activity\MVP\ManageBillDeliveryPresenter.cs" />
-    <Compile Include="Src\ManageBillDelivery\Activity\MVP\ManageBillDeliveryContract.cs" />
-    <Compile Include="Src\ManageBillDelivery\Activity\MVP\ManageBillDeliveryAdapter.cs" />
-    <Compile Include="Src\ManageBillDelivery\Activity\MVP\ManageBillDeliveryModel.cs" />
-    <Compile Include="Src\ManageBillDelivery\Activity\MVP\ManageBillDeliveryActivity.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_9.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -6566,13 +6560,10 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\ManageBillDelivery\Activity\MVP\SelectDBRAccountActivity.cs" />
     <AndroidResource Include="Resources\layout\SelectDBRAccountLayout.axml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\ManageBillDelivery\Activity\MVP\DBRAccount.cs" />
-    <Compile Include="Src\ManageBillDelivery\Adapter\SelectAccountAdapter.cs" />
     <AndroidResource Include="Resources\layout\DigitalBillView.axml">
       <SubType></SubType>
       <Generator></Generator>
@@ -6903,12 +6894,26 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\ManageBillDelivery\Adapter\ManageBillDeliveryEmailListAdapter.cs" />
     <Compile Include="Src\Utils\DynatraceHelper.cs" />
     <Compile Include="Src\Session Cache\AccountTypeCache.cs" />
-    <Compile Include="Src\ManageBillDelivery\DigitalBill\Activity\DigitalBillActivity.cs" />
-    <Compile Include="Src\ManageBillDelivery\DigitalBill\MVP\DigitalBillContract.cs" />
-    <Compile Include="Src\ManageBillDelivery\DigitalBill\MVP\DigitalBillPresenter.cs" />
+    <Compile Include="Src\DigitalBillRendering\DigitalBillWebView\Activity\DigitalBillActivity.cs" />
+    <Compile Include="Src\DigitalBillRendering\DigitalBillWebView\MVP\DigitalBillContract.cs" />
+    <Compile Include="Src\DigitalBillRendering\DigitalBillWebView\MVP\DigitalBillPresenter.cs" />
+    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\DBRAccount.cs" />
+    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\ManageBillDeliveryActivity.cs" />
+    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\ManageBillDeliveryAdapter.cs" />
+    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\ManageBillDeliveryContract.cs" />
+    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\ManageBillDeliveryFragment.cs" />
+    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\ManageBillDeliveryModel.cs" />
+    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\ManageBillDeliveryPresenter.cs" />
+    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\SelectDBRAccountActivity.cs" />
+    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\ManageBillDeliveryEmailListAdapter.cs" />
+    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\SelectAccountAdapter.cs" />
+    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\PaperBillActivity.cs" />
+    <AndroidResource Include="Resources\layout\PaperBillDelivery.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7242,10 +7247,12 @@
     <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\" />
     <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\Adapter\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusRating\" />
-    <Folder Include="Src\ManageBillDelivery\Adapter\" />
     <Folder Include="Src\Device Cache\" />
     <Folder Include="Src\Session Cache\" />
-    <Folder Include="Src\ManageBillDelivery\DigitalBill\" />
+    <Folder Include="Src\DigitalBillRendering\DigitalBillWebView\" />
+    <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\" />
+    <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\" />
+    <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
