@@ -36,7 +36,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         private DigitalBillContract.IUserActionsListener userActionsListener;
         private GetBillRenderingResponse BillRendering;
 
-        private const string PAGE_ID = "ManageDigitalBillLanding";
+        private const string PAGE_ID = "DBRWebview";
         private const string SELECTED_ACCOUNT_KEY = ".selectedAccount";
 
         private string _accountNumber = string.Empty;
@@ -54,11 +54,6 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         public void SetPresenter(DigitalBillContract.IUserActionsListener userActionListener)
         {
             this.userActionsListener = userActionListener;
-        }
-
-        public override bool ShowCustomToolbarTitle()
-        {
-            return true;
         }
 
         public void ShowDigitalBill(bool success)
@@ -104,12 +99,43 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 micrositeWebView = FindViewById<WebView>(Resource.Id.tncWebView);
                 micrositeWebView.Settings.JavaScriptEnabled = true;
                 micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
+                SetToolBarTitle(GetLabelByLanguage(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
+                    ? "goPaperless"
+                    : "updateBillDelivery"));
                 ShowDigitalBill(true);
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.DBRWebViewMenu, menu);
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            MyTNBAppToolTipBuilder exitTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
+                .SetTitle(Utility.GetLocalizedLabel("DBRWebview", "confirmPopupTitle"))
+                .SetMessage(Utility.GetLocalizedLabel("DBRWebview", "confirmPopupMessage"))
+                .SetCTALabel(Utility.GetLocalizedLabel("DBRWebview", "nevermind"))
+                .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DBRWebview", "confirm"))
+                .SetSecondaryCTAaction(() => { OnBackPressed(); })
+                .IsIconImage(true)
+                .SetContentGravity(GravityFlags.Center)
+                .Build();
+            exitTooltip.Show();
+
+            return true;
+        }
+
+        public override bool ShowBackArrowIndicator()
+        {
+            return false;
         }
 
         public void SetDefaultData()
@@ -208,6 +234,12 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        public override bool ShowCustomToolbarTitle()
+        {
+            return true;
+        }
+
         public class MyTNBWebViewClient : WebViewClient
         {
             public DigitalBillActivity mActivity;

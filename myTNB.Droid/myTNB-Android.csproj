@@ -6909,6 +6909,30 @@
     <Compile Include="Src\ManageBillDelivery\DigitalBill\Activity\DigitalBillActivity.cs" />
     <Compile Include="Src\ManageBillDelivery\DigitalBill\MVP\DigitalBillContract.cs" />
     <Compile Include="Src\ManageBillDelivery\DigitalBill\MVP\DigitalBillPresenter.cs" />
+    <AndroidResource Include="Resources\menu\DBRWebViewMenu.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_validation_success.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_validation_success.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_validation_success.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_validation_success.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_validation_success.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

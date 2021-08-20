@@ -38,6 +38,7 @@ namespace myTNB_Android.Src.Utils
         private Android.App.Activity mContext;
         private GravityFlags mGravityFlag;
         private Bitmap imageResourceBitmap;
+        private bool isIconImage = false;
 
         private MyTNBAppToolTipBuilder(Android.App.Activity context)
         {
@@ -166,6 +167,12 @@ namespace myTNB_Android.Src.Utils
         public MyTNBAppToolTipBuilder SetHeaderImageBitmap(Bitmap imageResource)
         {
             this.imageResourceBitmap = imageResource;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder IsIconImage(bool isIcon)
+        {
+            this.isIconImage = isIcon;
             return this;
         }
 
@@ -373,8 +380,17 @@ namespace myTNB_Android.Src.Utils
                 TextViewUtils.SetTextSize16(tooltipPrimaryCTA, tooltipPrimaryCTA, tooltipSecondaryCTA);
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
+                tooltipTitle.Gravity = this.mGravityFlag;
+                tooltipMessage.Gravity = this.mGravityFlag;
 
-                if (this.imageResourceBitmap != null)
+                if (this.isIconImage)
+                {
+                    tooltipImageHeader.Visibility = ViewStates.Gone;
+                    ImageView tooltipImageHeaderIcon = this.dialog.FindViewById<ImageView>(Resource.Id.imgToolTipHeaderIcon);
+                    tooltipImageHeaderIcon.SetImageResource(this.imageResource);
+                    tooltipImageHeaderIcon.Visibility = ViewStates.Visible;
+                }
+                else if (this.imageResourceBitmap != null)
                 {
                     float currentImgWidth = DPUtils.ConvertDPToPx(284f);
                     float calImgRatio = currentImgWidth / this.imageResourceBitmap.Width;
@@ -382,7 +398,7 @@ namespace myTNB_Android.Src.Utils
 
                     tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
                     tooltipImageHeader.LayoutParameters.Height = currentImgHeight;
-                    tooltipImageHeader.RequestLayout();
+                     tooltipImageHeader.RequestLayout();
                 }
                 else
                 {
