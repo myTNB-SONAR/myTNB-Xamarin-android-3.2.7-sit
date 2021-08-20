@@ -247,8 +247,23 @@
 					android:paddingBottom="18dp"
 					tools:layout_editor_absoluteX="0dp"
 					tools:layout_editor_absoluteY="47dp"					
-                    >					
+                    >
 					<ImageView
+						android:id="@+id/updatePersoanlInfoIcon2"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="16dp"
+						android:layout_marginStart="16dp"
+						android:layout_marginTop="17dp"
+						android:src="@drawable/overvoltagedisableicon"
+						app:layout_constraintLeft_toLeftOf="parent"
+						app:layout_constraintTop_toTopOf="parent"
+						app:srcCompat="@drawable/overvoltageclaimicon"
+						android:enabled="false"
+						android:visibility="invisible"
+						/>
+					<ImageView
+						
 						android:id="@+id/updatePersoanlInfoIcon1"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -321,7 +336,7 @@
 							android:gravity="center|left"
 							android:orientation="horizontal">
 							<TextView
-								android:id="@+id/infoLabeltxtWhereIsMyAcc"
+								android:id="@+id/infoLabel"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:textSize="12dp"

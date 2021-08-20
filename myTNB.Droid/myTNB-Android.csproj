@@ -6314,6 +6314,22 @@
     </AndroidResource>
     <Compile Include="Src\MyTNBService\Request\CAVerifyRequestModel.cs" />
     <Compile Include="Src\MyTNBService\Response\CAVerifyResponseModel.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\overvoltagedisableicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\overvoltagedisableicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\overvoltagedisableicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\overvoltagedisableicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
