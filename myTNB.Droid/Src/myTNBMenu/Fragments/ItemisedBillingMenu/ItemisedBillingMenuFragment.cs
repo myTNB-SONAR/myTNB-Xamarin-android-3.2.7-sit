@@ -652,6 +652,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 {
                     dynatraceTag = DynatraceConstants.DBR.Screens.Bills.Pre_EBill_Email_Paper;
                 }
+                else if (billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.Screens.Bills.Post_EBill_Email;
+                }
             }
             if (dynatraceTag.IsValid())
             {
@@ -685,6 +689,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 else if (billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email_Paper)
                 {
                     dynatraceTag = DynatraceConstants.DBR.CTAs.Bills.Pre_EBill_Email_Paper;
+                }
+                else if (billRenderingResponse.Content.CurrentRenderingMethod == MobileEnums.RenderingMethodEnum.EBill_Email)
+                {
+                    dynatraceTag = DynatraceConstants.DBR.CTAs.Bills.Post_EBill_Email;
                 }
             }
             if (dynatraceTag.IsValid())

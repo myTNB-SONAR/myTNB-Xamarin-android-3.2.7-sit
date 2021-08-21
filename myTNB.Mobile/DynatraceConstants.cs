@@ -69,8 +69,8 @@
                 {
                     public const string Pre_EBill_Paper = "App_Action_BillDetails_EBill&Paper_Banner";
                     public const string Pre_EBill_Email_Paper = "App_Action_BillDetails_EBill&Paper&Email_Banner";
-                    public const string Post_EBill = "App_Action_BillDetail_EBill_Banner";
-                    public const string Post_EBill_Email = "App_Action_BillDetail_EBill&Email_Banner";
+                    public const string Post_EBill = "App_Action_BillDetails_EBill_Banner";
+                    public const string Post_EBill_Email = "App_Action_BillDetails_EBill&Email_Banner";
                 }
 
                 public struct ManageBillDelivery
