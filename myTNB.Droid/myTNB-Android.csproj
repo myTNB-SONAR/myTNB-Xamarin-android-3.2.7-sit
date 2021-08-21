@@ -6914,6 +6914,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\CustomViewPager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

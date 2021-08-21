@@ -17,34 +17,33 @@
 			layout="@layout/toolbar"
 			android:id="@+id/toolbar" />
 		<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			android:background="@color/white">
-		<LinearLayout
-					android:id="@+id/selectAccountContainer"
-					android:orientation="vertical"
+			<LinearLayout
+				android:id="@+id/selectAccountContainer"
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:layout_marginRight="16dp"
+				android:layout_marginBottom="16dp"
+				android:layout_marginTop="16dp">
+				<TextView
+					android:text="SELECT YOUR ACCOUNT"
+					android:layout_width="wrap_content"
+					android:layout_height="17dp"
+					android:id="@+id/txtSelectedAccountTitle"
+					android:gravity="center_horizontal"
+					android:textSize="12dp"
+					android:textColor="#a6a6a6"/>
+				<LinearLayout
+					android:id="@+id/ManageBill_container"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="16dp"
-					android:layout_marginRight="16dp"
-					android:layout_marginBottom="16dp"
-					android:layout_marginTop="16dp">
-					<TextView
-						android:text="SELECT YOUR ACCOUNT"
-						android:layout_width="wrap_content"
-						android:layout_height="17dp"
-						android:id="@+id/txtSelectedAccountTitle"
-						android:gravity="center_horizontal"
-						android:textSize="12dp"
-						android:textColor="#a6a6a6"/>
-
-			<LinearLayout
-                android:id="@+id/ManageBill_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal"
-                android:background="@color/white">
+					android:layout_marginTop="4dp"
+					android:orientation="horizontal"
+					android:background="@color/white">
 					<TextView
 						android:id="@+id/txt_ca_name"
 						android:layout_width="0dp"
@@ -55,55 +54,36 @@
 						android:drawablePadding="4dp"
 						android:drawableRight="@drawable/ic_action_dropdown1"/>
 					<ImageView
-                    android:id="@+id/ic_ca_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/ic_form_info"/>
-
+						android:id="@+id/ic_ca_info"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginRight="8dp"
+						android:src="@drawable/ic_form_info"/>
 				</LinearLayout>
-			<View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:paddingBottom="16dp"
-                android:background="@color/platinumGrey"/>
-
-			
-				
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:paddingBottom="16dp"
+					android:background="@color/platinumGrey"/>
 			</LinearLayout>
 		</LinearLayout>
 		<View
-						android:layout_width="fill_parent"
-						android:layout_height="16dp"
-						android:background="@color/lightGrey" />
-		
+			android:layout_width="fill_parent"
+			android:layout_height="16dp"
+			android:background="@color/lightGrey" />
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:orientation="vertical"
 			android:background="@color/lightGrey">
-			<FrameLayout
+			<LinearLayout
 				android:layout_width="match_parent"
-				android:background="@color/lightGrey"
-				android:id="@+id/viewPagerLyout"
+				android:background="@color/white"
+				android:id="@+id/viewPagerLayout"
 				android:orientation="vertical"
-				android:layout_height="500dp">
+				android:layout_height="wrap_content">
 				<LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-					android:orientation="vertical">
-				<androidx.viewpager.widget.ViewPager
-					android:id="@+id/viewPager"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingLeft="8dp"
-					android:paddingRight="8dp"
-					android:visibility="gone"
-					android:background="@color/white"
-					android:overScrollMode="never"/>
-				</LinearLayout>
-				<LinearLayout
-                    android:id="@+id/applicationIndicatorLayout"
+					android:id="@+id/applicationIndicatorLayout"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:paddingLeft="2dp"
@@ -119,40 +99,38 @@
 						android:background="@color/white"
 						android:gravity="center"
 						android:orientation="horizontal">
-					<LinearLayout
-						android:id="@+id/indicatorContainer"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:background="@color/white"
-						android:gravity="bottom"
-						android:layout_gravity="bottom"
-						android:layout_marginTop="16dp"
-						android:layout_marginBottom="16dp"
-						android:orientation="horizontal"/>
+						<LinearLayout
+							android:id="@+id/indicatorContainer"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:background="@color/white"
+							android:gravity="bottom"
+							android:layout_gravity="bottom"
+							android:layout_marginTop="16dp"
+							android:layout_marginBottom="16dp"
+							android:orientation="horizontal"/>
 					</RelativeLayout>
-					
-					
 				</LinearLayout>
 				<LinearLayout
-							android:layout_height="47dp"
-							android:layout_width="match_parent"
-							android:orientation="vertical"
-							android:background="@color/white"
-							android:layout_marginBottom="16dp"
-							android:visibility="gone"
-							android:id="@+id/btnStartDigitalBillLayout"
-							android:paddingLeft="16dp"
-							android:paddingRight="16dp">
-								<Button
-									android:id="@+id/btnStartDigitalBill"
-									android:layout_height="wrap_content"
-									android:layout_width="match_parent"
-									android:textAllCaps="false"
-									android:paddingLeft="6dp"
-									style="@style/DarkButton" 
-									android:text="UI-Update Bill Delivery Method" />
-						</LinearLayout>
-			</FrameLayout>
+					android:layout_height="47dp"
+					android:layout_width="match_parent"
+					android:orientation="vertical"
+					android:background="@color/white"
+					android:layout_marginBottom="16dp"
+					android:visibility="gone"
+					android:id="@+id/btnStartDigitalBillLayout"
+					android:paddingLeft="16dp"
+					android:paddingRight="16dp">
+					<Button
+						android:id="@+id/btnStartDigitalBill"
+						android:layout_height="wrap_content"
+						android:layout_width="match_parent"
+						android:textAllCaps="false"
+						android:paddingLeft="6dp"
+						style="@style/DarkButton"
+						android:text="UI-Update Bill Delivery Method" />
+				</LinearLayout>
+			</LinearLayout>
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -175,7 +153,7 @@
 						android:layout_width="match_parent"
 						android:layout_marginTop="32dp"
 						android:layout_gravity="center_horizontal"/>
-						</LinearLayout>
+				</LinearLayout>
 				<TextView
 					android:layout_height="wrap_content"
 					android:layout_width="match_parent"
@@ -222,133 +200,129 @@
 				</LinearLayout>
 			</LinearLayout>
 			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_gravity="top"
+				android:layout_height="wrap_content"
+				android:id="@+id/deliveryLayout"
+				android:visibility="visible"
+				android:gravity="center">
+				<LinearLayout
 					android:orientation="vertical"
 					android:layout_width="match_parent"
-					android:layout_gravity="top"
 					android:layout_height="wrap_content"
-					android:id="@+id/deliveryLayout"
+					android:background="@color/lightGrey"
+					android:id="@+id/digitalBillLabelLayout"
+					android:paddingBottom="5dp"
 					android:visibility="visible"
 					android:gravity="center">
-						
-						<LinearLayout
-							android:orientation="vertical"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:background="@color/lightGrey"
-							android:id="@+id/digitalBillLabelLayout"
-							android:paddingTop="16dp"
-							android:paddingBottom="5dp"
-							android:visibility="visible"
-							android:gravity="center">
-						<LinearLayout
-								android:id="@+id/digitalBillLabelContainer"
-								android:layout_width="match_parent"
-								android:layout_height="wrap_content"
-								android:layout_marginLeft="16dp"
-								android:layout_marginRight="16dp"
-								android:visibility="visible"
-								android:paddingLeft="2dp"
-								android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
-								android:gravity="center|left"
-								android:orientation="vertical">
-								<TextView
-									android:id="@+id/digitalBillLabel"
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:textSize="12dp"
-									android:textColor="#1c79ca"
-									android:drawablePadding="8dp"
-									android:text="UI-What if I want another bill delivery method?"
-									android:drawableLeft="@drawable/smr_why_accounts_info"
-									android:gravity="center_vertical"/>
-							</LinearLayout>
-						</LinearLayout>
+					<LinearLayout
+						android:id="@+id/digitalBillLabelContainer"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:visibility="visible"
+						android:paddingLeft="2dp"
+						android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
+						android:gravity="center|left"
+						android:orientation="vertical">
 						<TextView
-							android:layout_width="match_parent"
+							android:id="@+id/digitalBillLabel"
+							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:background="@color/lightGrey"
-							android:gravity="left"
-							android:textSize="16dp"
-							android:lineSpacingExtra="4sp"
-							android:paddingTop="8dp"
-							android:paddingLeft="16dp"
-							android:paddingBottom="8dp"
+							android:textSize="12dp"
 							android:textColor="#1c79ca"
-							android:id="@+id/deliverigTitle"
-							android:text="UI-Delivering to"/>
-						<TextView
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:gravity="left"
-							android:textSize="14dp"
-							android:visibility="gone"
-							android:layout_marginLeft="16dp"
-							android:layout_marginRight="16dp"
-							android:background="@color/white"
-							android:layout_marginTop="16dp"
-							android:layout_marginBottom="16dp"
-							android:textColor="#49494a"
-							android:id="@+id/deliverigAddress"
-							android:text="UI-No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"/>
-						<LinearLayout
-							android:id="@+id/email_container"
-							android:layout_below="@+id/email_layout"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-					
-							android:orientation="vertical"
-							android:gravity="center_vertical"
-							android:layout_gravity="center_vertical"
-							android:background="@color/white"
-							android:clickable="true">
-							<androidx.recyclerview.widget.RecyclerView
-									android:id="@+id/manageBillDeliveryEmailRecyclerView"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:visibility="visible" />
-								<TextView
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:gravity="left"
-									android:paddingLeft="16dp"
-									android:paddingRight="16dp"
-									android:textSize="14dp"
-									android:visibility="visible"
-									android:background="@color/white"
-									android:layout_marginTop="16dp"
-									android:layout_marginBottom="16dp"
-									android:textColor="#49494a"
-									android:id="@+id/TenantDeliverigAddress"
-									android:text="UI-No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"/>
+							android:drawablePadding="8dp"
+							android:text="UI-What if I want another bill delivery method?"
+							android:drawableLeft="@drawable/smr_why_accounts_info"
+							android:gravity="center_vertical"/>
+					</LinearLayout>
 				</LinearLayout>
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="@color/lightGrey"
+					android:gravity="left"
+					android:textSize="16dp"
+					android:lineSpacingExtra="4sp"
+					android:paddingTop="16dp"
+					android:paddingLeft="16dp"
+					android:paddingBottom="8dp"
+					android:textColor="#1c79ca"
+					android:id="@+id/deliverigTitle"
+					android:text="UI-Delivering to"/>
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="left"
+					android:textSize="14dp"
+					android:visibility="gone"
+					android:paddingLeft="16dp"
+					android:paddingRight="16dp"
+					android:paddingTop="16dp"
+					android:paddingBottom="16dp"
+					android:background="@color/white"
+					android:textColor="#49494a"
+					android:id="@+id/deliveringAddress"
+					android:text="UI-No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"/>
+				<LinearLayout
+					android:id="@+id/email_container"
+					android:layout_below="@+id/email_layout"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:gravity="center_vertical"
+					android:layout_gravity="center_vertical"
+					android:background="@color/white"
+					android:clickable="true">
+					<androidx.recyclerview.widget.RecyclerView
+						android:id="@+id/manageBillDeliveryEmailRecyclerView"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:visibility="visible" />
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="left"
+						android:paddingLeft="16dp"
+						android:paddingRight="16dp"
+						android:textSize="14dp"
+						android:visibility="visible"
+						android:background="@color/white"
+						android:layout_marginTop="16dp"
+						android:layout_marginBottom="16dp"
+						android:textColor="#49494a"
+						android:id="@+id/TenantDeliveringAddress"
+						android:text="UI-No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"/>
 				</LinearLayout>
+			</LinearLayout>
 		</LinearLayout>
-		
 	</LinearLayout>
 	<LinearLayout
-				android:layout_height="88dp"
+		android:layout_height="88dp"
+		android:layout_width="match_parent"
+		android:orientation="vertical"
+		android:gravity="bottom"
+		android:background="@color/white"
+		android:layout_gravity="bottom"
+		android:visibility="visible"
+		android:id="@+id/btnUpdateDigitalBillLayout"
+		android:paddingLeft="16dp"
+		android:paddingRight="16dp">
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_marginBottom="16dp"
+			android:layout_marginTop="16dp"
+			android:gravity="center">
+			<Button
+				android:id="@+id/btnUpdateDigitalBill"
+				android:layout_height="match_parent"
 				android:layout_width="match_parent"
-				android:orientation="vertical"
-				android:gravity="bottom"
-				android:background="@color/white"
-				android:layout_gravity="bottom"
-				android:visibility="visible"
-				android:id="@+id/btnUpdateDigitalBillLayout"
-				android:paddingLeft="16dp"
-				android:paddingRight="16dp">
-				<RelativeLayout
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_marginBottom="16dp"
-					android:layout_marginTop="16dp"
-					android:gravity="center">
-					<Button
-						android:id="@+id/btnUpdateDigitalBill"
-						android:layout_height="match_parent"
-						android:layout_width="match_parent"
-						android:textAllCaps="false"
-						style="@style/Theme.ApplicationStatusLandingButton" 
-						android:text="UI-Update Bill Delivery Method" />
-				</RelativeLayout>
-			</LinearLayout>
+				android:textAllCaps="false"
+				style="@style/Theme.ApplicationStatusLandingButton"
+				android:text="UI-Update Bill Delivery Method" />
+		</RelativeLayout>
+	</LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

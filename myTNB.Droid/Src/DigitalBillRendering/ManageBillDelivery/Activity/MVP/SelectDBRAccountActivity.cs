@@ -14,7 +14,6 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DBR.DBRApplication.Adapter;
 using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
@@ -211,10 +210,10 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                 else
                 {
                     MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                        .SetTitle(response.StatusDetail.Title)
-                                        .SetMessage(response.StatusDetail.Message)
-                                        .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
-                                        .Build();
+                        .SetTitle(response.StatusDetail.Title)
+                        .SetMessage(response.StatusDetail.Message)
+                        .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
+                        .Build();
                     errorPopup.Show();
                 }
 

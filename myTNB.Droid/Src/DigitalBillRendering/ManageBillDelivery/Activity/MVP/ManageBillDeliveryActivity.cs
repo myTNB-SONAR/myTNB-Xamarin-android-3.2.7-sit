@@ -28,6 +28,7 @@ using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.SessionCache;
 using Android.Graphics;
 using static myTNB.Mobile.MobileEnums;
+using myTNB_Android.Src.DigitalBillRendering.ManageBillDelivery.Activity.MVP;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -50,9 +51,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         [BindView(Resource.Id.btnUpdateDigitalBill)]
         Button btnUpdateDigitalBill;
-
-        [BindView(Resource.Id.viewPager)]
-        ViewPager viewPager;
 
         [BindView(Resource.Id.digitalBillLabel)]
         TextView digitalBillLabel;
@@ -90,17 +88,17 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.applicationIndicator)]
         RelativeLayout applicationIndicator;
 
-        [BindView(Resource.Id.viewPagerLyout)]
-        FrameLayout viewPagerLyout;
+        [BindView(Resource.Id.viewPagerLayout)]
+        LinearLayout viewPagerLayout;
 
         [BindView(Resource.Id.deliverigTitle)]
-        TextView deliverigTitle;
+        TextView deliveringTitle;
 
-        [BindView(Resource.Id.deliverigAddress)]
-        TextView deliverigAddress;
+        [BindView(Resource.Id.deliveringAddress)]
+        TextView deliveringAddress;
 
-        [BindView(Resource.Id.TenantDeliverigAddress)]
-        TextView TenantDeliverigAddress;
+        [BindView(Resource.Id.TenantDeliveringAddress)]
+        TextView TenantDeliveringAddress;
 
         [BindView(Resource.Id.img_display)]
         ImageView img_display;
@@ -140,6 +138,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         LinearLayout.LayoutParams emailLayout;
         FrameLayout.LayoutParams viewerlayout;
 
+        private CustomViewPager vPager;
+
         //========================================== FORM LIFECYCLE ==================================================================================
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -148,24 +148,22 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
             // Create your application here
             presenter = new ManageBillDeliveryPresenter(this);
-            viewPager = (ViewPager)FindViewById(Resource.Id.viewPager);
-            viewPager.AddOnPageChangeListener(this);
-            ManageBillDeliveryAdapter = new ManageBillDeliveryAdapter(SupportFragmentManager);
-            ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
-            viewPager.Adapter = ManageBillDeliveryAdapter;
+
+            AddViewPager();
+
             UpdateAccountListIndicator();
             Bundle extras = Intent.Extras;
             digitalBillLabel.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "anotherDeliveryMethod");
             btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "startDigitalBillCTA");
-            deliverigTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "deliveringToTitle");
+            deliveringTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "deliveringToTitle");
             btnUpdateDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "updateBillDeliveryMethodCTA");
             btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "goPaperlessCTA");
             txtSelectedAccountTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "selectAccount");
-            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill, deliverigTitle, txtTitle);
-            TextViewUtils.SetMuseoSans300Typeface(deliverigAddress, TenantDeliverigAddress, txtMessage, txtSelectedAccountTitle);
+            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill, deliveringTitle, txtTitle);
+            TextViewUtils.SetMuseoSans300Typeface(deliveringAddress, TenantDeliveringAddress, txtMessage, txtSelectedAccountTitle);
             TextViewUtils.SetTextSize12(digitalBillLabel, txtSelectedAccountTitle);
-            TextViewUtils.SetTextSize16(btnStartDigitalBill, deliverigTitle, txtTitle);
-            TextViewUtils.SetTextSize14(deliverigAddress, TenantDeliverigAddress, txtMessage);
+            TextViewUtils.SetTextSize16(btnStartDigitalBill, deliveringTitle, txtTitle);
+            TextViewUtils.SetTextSize14(deliveringAddress, TenantDeliveringAddress, txtMessage);
 
             if (extras != null)
             {
@@ -178,8 +176,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     {
                         mSelectedAccountData = AccountData.Copy(allAccountList[accountIndex], true);
                         txt_ca_name.Text = mSelectedAccountData.AccountNickName + " - " + mSelectedAccountData.AccountNum;
-                        deliverigAddress.Text = mSelectedAccountData.AddStreet;
-                        TenantDeliverigAddress.Text = mSelectedAccountData.AddStreet;
+                        deliveringAddress.Text = mSelectedAccountData.AddStreet;
+                        TenantDeliveringAddress.Text = mSelectedAccountData.AddStreet;
                         selectedAccountNumber = mSelectedAccountData.AccountNum;
                     }
                 }
@@ -196,21 +194,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 {
                     currentAppNavigation = extras.GetString(Constants.APP_NAVIGATION_KEY);
                     ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
-                    viewPager.Adapter = ManageBillDeliveryAdapter;
+                    vPager.Adapter = ManageBillDeliveryAdapter;
                     UpdateAccountListIndicator();
                 }
 
                 SetToolBarTitle(GetLabelByLanguage(_isOwner ? "title" : "dbrViewBillDelivery"));
-
-               /* emailLayout = email_layout.LayoutParameters as LinearLayout.LayoutParams;
-                emailLayout.Height = TextViewUtils.IsLargeFonts
-                    ? (int)DPUtils.ConvertDPToPx(520f + (float)(deliverigAddress.Text.Length / 1.7))
-                    : (int)DPUtils.ConvertDPToPx(465f);
-
-                viewerlayout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
-                viewerlayout.Height = TextViewUtils.IsLargeFonts
-                    ? (int)DPUtils.ConvertDPToPx(380f)
-                    : (int)DPUtils.ConvertDPToPx(255f);*/
             }
             btnStartDigitalBill.Click += delegate
             {
@@ -222,23 +210,43 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             };
         }
 
+        private void AddViewPager()
+        {
+            ViewGroup.LayoutParams? viewPagerParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent
+               , ViewGroup.LayoutParams.WrapContent)
+            {
+                Width = ViewGroup.LayoutParams.MatchParent,
+                Height = ViewGroup.LayoutParams.WrapContent
+            };
+            vPager = new CustomViewPager(this)
+            {
+                Id = 42788,
+                LayoutParameters = viewPagerParams
+            };
+            vPager.AddOnPageChangeListener(this);
+            viewPagerLayout.AddView(vPager, 0);
+            ManageBillDeliveryAdapter = new ManageBillDeliveryAdapter(SupportFragmentManager);
+            ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
+            vPager.Adapter = ManageBillDeliveryAdapter;
+        }
+
         public void GetDeliveryDisplay(GetBillRenderingResponse getBillRenderingModel)
         {
             if (getBillRenderingModel != null && getBillRenderingModel.Content != null)
             {
                 UserEntity user = UserEntity.GetActive();
-                TenantDeliverigAddress.Visibility = ViewStates.Gone;
+                TenantDeliveringAddress.Visibility = ViewStates.Gone;
                 if (getBillRenderingModel.Content.IsInProgress)
                 {
-              
+
                     applicationIndicator.Visibility
                         = btnStartDigitalBillLayout.Visibility
                         = applicationIndicator.Visibility
                         = indicatorContainer.Visibility
-                        = viewPager.Visibility
-                        = deliverigAddress.Visibility
+                        = vPager.Visibility
+                        = deliveringAddress.Visibility
                         = email_container.Visibility
-                        = deliverigTitle.Visibility
+                        = deliveringTitle.Visibility
                         = btnUpdateDigitalBillLayout.Visibility
                         = digitalBillLabelLayout.Visibility
                         = digitalBillLabelContainer.Visibility
@@ -254,18 +262,17 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 }
                 else
                 {
-                    if (getBillRenderingModel.Content.DBRType == MobileEnums.DBRTypeEnum.EBill)
+                    if (getBillRenderingModel.Content.DBRType == DBRTypeEnum.EBill)
                     {
-                       
                         applicationIndicator.Visibility
-                             = viewPagerLyout.Visibility
+                            = viewPagerLayout.Visibility
                             = btnStartDigitalBillLayout.Visibility
                             = applicationIndicator.Visibility
                             = indicatorContainer.Visibility
-                            = viewPager.Visibility
-                            = deliverigAddress.Visibility
+                            = vPager.Visibility
+                            = deliveringAddress.Visibility
                             = email_container.Visibility
-                            = deliverigTitle.Visibility
+                            = deliveringTitle.Visibility
                             = btnUpdateDigitalBillLayout.Visibility
                             = ViewStates.Gone;
                         email_layout.Visibility
@@ -288,27 +295,25 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                             NewAppTutorialUtils.ForceCloseNewAppTutorial();
                             if (!UserSessions.HasManageEBillDeliveryTutorialShown(this.mPref))
                             {
-                                UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.EBill;
+                                UserSessions.ManageBillDelivery = DBRTypeEnum.EBill;
                                 OnShowManageBillDeliveryTutorialDialog();
                             }
                         };
                         h.PostDelayed(myAction, 50);
-
                     }
-                    else if (getBillRenderingModel.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
+                    else if (getBillRenderingModel.Content.DBRType == DBRTypeEnum.EBillWithCTA)
                     {
-                       
                         applicationIndicator.Visibility
-                             = viewPagerLyout.Visibility
+                             = viewPagerLayout.Visibility
                             = btnStartDigitalBillLayout.Visibility
                             = applicationIndicator.Visibility
                             = indicatorContainer.Visibility
-                            = viewPager.Visibility
-                            = deliverigAddress.Visibility
+                            = vPager.Visibility
+                            = deliveringAddress.Visibility
                             = email_container.Visibility
                             = digitalBillLabelContainer.Visibility
                             = digitalBillLabelLayout.Visibility
-                            = deliverigTitle.Visibility
+                            = deliveringTitle.Visibility
                             = ViewStates.Gone;
                         email_layout.Visibility
                             = btnUpdateDigitalBillLayout.Visibility
@@ -328,7 +333,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                                 NewAppTutorialUtils.ForceCloseNewAppTutorial();
                                 if (!UserSessions.HasManageOptedEBillDeliveryTutorialShown(this.mPref))
                                 {
-                                    UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.EBillWithCTA;
+                                    UserSessions.ManageBillDelivery = DBRTypeEnum.EBillWithCTA;
                                     OnShowManageBillDeliveryTutorialDialog();
                                 }
                             };
@@ -336,37 +341,36 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         }
                         else
                         {
-                            btnUpdateDigitalBillLayout.Visibility = digitalBillLabelContainer.Visibility = ic_ca_info.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
+                            btnUpdateDigitalBillLayout.Visibility
+                                = digitalBillLabelContainer.Visibility
+                                = ic_ca_info.Visibility
+                                = digitalBillLabelLayout.Visibility
+                                = ViewStates.Gone;
                         }
-
                     }
-                    else if (getBillRenderingModel.Content.DBRType == MobileEnums.DBRTypeEnum.Email)
+                    else if (getBillRenderingModel.Content.DBRType == DBRTypeEnum.Email)
                     {
                         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
                         manageBillDeliveryEmailRecyclerView.SetLayoutManager(layoutManager);
                         manageBillDeliveryEmailListAdapter = new ManageBillDeliveryEmailListAdapter(this, getBillRenderingModel.Content.EmailList);
                         manageBillDeliveryEmailRecyclerView.SetAdapter(manageBillDeliveryEmailListAdapter);
-                        
-                        TenantDeliverigAddress.Visibility
-                             = viewPagerLyout.Visibility
+
+                        TenantDeliveringAddress.Visibility
+                            = viewPagerLayout.Visibility
                             = applicationIndicator.Visibility
                             = btnStartDigitalBillLayout.Visibility
                             = applicationIndicator.Visibility
                             = indicatorContainer.Visibility
-                            = viewPager.Visibility
+                            = vPager.Visibility
                             = btnUpdateDigitalBillLayout.Visibility
-                            = deliverigAddress.Visibility
+                            = deliveringAddress.Visibility
                             = ViewStates.Gone;
                         email_layout.Visibility
                             = email_container.Visibility
                             = digitalBillLabelLayout.Visibility
                             = digitalBillLabelContainer.Visibility
-                            = deliverigTitle.Visibility
+                            = deliveringTitle.Visibility
                             = ViewStates.Visible;
-
-
-                        //emailLayout.Height = emailLayout.Height + manageBillDeliveryEmailRecyclerView.Height;
-
 
                         img_display.SetImageResource(Resource.Drawable.display_emailbilling);
                         txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding"
@@ -383,7 +387,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                                 NewAppTutorialUtils.ForceCloseNewAppTutorial();
                                 if (!UserSessions.HasManageEmailBillDeliveryTutorialShown(this.mPref))
                                 {
-                                    UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.Email;
+                                    UserSessions.ManageBillDelivery = DBRTypeEnum.Email;
                                     OnShowManageBillDeliveryTutorialDialog();
                                 }
                             };
@@ -391,37 +395,35 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         }
                         else
                         {
-                            digitalBillLabelContainer.Visibility = ic_ca_info.Visibility = digitalBillLabelLayout.Visibility = deliverigTitle.Visibility = ViewStates.Gone;
+                            digitalBillLabelContainer.Visibility
+                                = ic_ca_info.Visibility
+                                = digitalBillLabelLayout.Visibility
+                                = ViewStates.Gone;
                         }
                     }
-                    else if (getBillRenderingModel.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
+                    else if (getBillRenderingModel.Content.DBRType == DBRTypeEnum.EmailWithCTA)
                     {
                         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
                         manageBillDeliveryEmailRecyclerView.SetLayoutManager(layoutManager);
                         manageBillDeliveryEmailListAdapter = new ManageBillDeliveryEmailListAdapter(this, getBillRenderingModel.Content.EmailList);
                         manageBillDeliveryEmailRecyclerView.SetAdapter(manageBillDeliveryEmailListAdapter);
-                        
+
                         applicationIndicator.Visibility
-                             = viewPagerLyout.Visibility
+                            = viewPagerLayout.Visibility
                             = btnStartDigitalBillLayout.Visibility
                             = applicationIndicator.Visibility
                             = indicatorContainer.Visibility
-                            = viewPager.Visibility
-                            = deliverigAddress.Visibility
+                            = vPager.Visibility
+                            = deliveringAddress.Visibility
                             = digitalBillLabelContainer.Visibility
                             = digitalBillLabelLayout.Visibility
                             = ViewStates.Gone;
                         email_layout.Visibility
                             = email_container.Visibility
-                            = deliverigTitle.Visibility
+                            = deliveringTitle.Visibility
                             = btnUpdateDigitalBillLayout.Visibility
                             = ic_ca_info.Visibility
                             = ViewStates.Visible;
-
-
-
-                        //emailLayout.Height = emailLayout.Height + manageBillDeliveryEmailRecyclerView.Height;
-
 
                         img_display.SetImageResource(Resource.Drawable.display_emailbilling);
                         txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding"
@@ -441,7 +443,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                                 NewAppTutorialUtils.ForceCloseNewAppTutorial();
                                 if (!UserSessions.HasManageParallelEmailBillDeliveryTutorialShown(this.mPref))
                                 {
-                                    UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.EmailWithCTA;
+                                    UserSessions.ManageBillDelivery = DBRTypeEnum.EmailWithCTA;
                                     OnShowManageBillDeliveryTutorialDialog();
                                 }
                             };
@@ -456,9 +458,10 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                                 = ViewStates.Gone;
                         }
                     }
-                    else if (getBillRenderingModel.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+                    else if (getBillRenderingModel.Content.DBRType == DBRTypeEnum.Paper)
                     {
-                        viewPagerLyout.Visibility = ViewStates.Visible;
+                        viewPagerLayout.Visibility = ViewStates.Visible;
+                        deliveringTitle.Visibility = ViewStates.Visible;
                         if (_isOwner)
                         {
                             ic_ca_info.Visibility
@@ -466,8 +469,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                                 = btnStartDigitalBillLayout.Visibility
                                 = applicationIndicator.Visibility
                                 = indicatorContainer.Visibility
-                                = viewPager.Visibility
-                                = deliverigAddress.Visibility
+                                = vPager.Visibility
+                                = deliveringAddress.Visibility
                                 = ViewStates.Visible;
                             email_layout.Visibility
                                 = btnUpdateDigitalBillLayout.Visibility
@@ -475,13 +478,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                                 = digitalBillLabelContainer.Visibility
                                 = digitalBillLabelLayout.Visibility
                                 = ViewStates.Gone;
-                            UserSessions.ManageBillDelivery = MobileEnums.DBRTypeEnum.Paper;
-                           
+                            UserSessions.ManageBillDelivery = DBRTypeEnum.Paper;
                             ScrollPage();
                         }
                         else
                         {
-                            
                             manageBillDeliveryEmailRecyclerView.Visibility
                                 = digitalBillLabelContainer.Visibility
                                 = ic_ca_info.Visibility
@@ -490,25 +491,24 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                                 = btnStartDigitalBillLayout.Visibility
                                 = applicationIndicator.Visibility
                                 = indicatorContainer.Visibility
-                                = viewPager.Visibility
+                                = vPager.Visibility
                                 = btnUpdateDigitalBillLayout.Visibility
-                                = deliverigAddress.Visibility
+                                = deliveringAddress.Visibility
                                 = ViewStates.Gone;
-                            TenantDeliverigAddress.Visibility
+                            TenantDeliveringAddress.Visibility
                                 = email_layout.Visibility
                                 = email_container.Visibility
-                                = deliverigTitle.Visibility
                                 = ViewStates.Visible;
                             img_display.SetImageResource(Resource.Drawable.manage_bill_delivery_3);
                             txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "nonOwnerPaperTitle");
                             txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "nonOwnerPaperMessage"));
                         }
                     }
-                    else if (getBillRenderingModel.Content.DBRType == MobileEnums.DBRTypeEnum.WhatsApp)
+                    else if (getBillRenderingModel.Content.DBRType == DBRTypeEnum.WhatsApp)
                     {
 
                     }
-                    else if (getBillRenderingModel.Content.DBRType == MobileEnums.DBRTypeEnum.None)
+                    else if (getBillRenderingModel.Content.DBRType == DBRTypeEnum.None)
                     {
                         MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                             .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
@@ -520,7 +520,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     SetDynatraceScreenTags(getBillRenderingModel);
                 }
             }
-
         }
 
         private void SetDynatraceScreenTags(GetBillRenderingResponse billRenderingResponse)
@@ -630,7 +629,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             {
                 RunOnUiThread(() =>
                 {
-                    if (page <= viewPager.Adapter.Count)
+                    if (page <= vPager.Adapter.Count)
+                    //   if (page <= viewPager.Adapter.Count)
                     {
                         page++;
                     }
@@ -638,7 +638,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     {
                         page = 0;
                     }
-                    viewPager.SetCurrentItem(page, true);
+                    // viewPager.SetCurrentItem(page, true);
+                    vPager.SetCurrentItem(page, true);
+
                 });
             };
         }
@@ -903,8 +905,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     }
                     selectedAccountNickName = selectedEligibleAccount.accountName;
                     txt_ca_name.Text = selectedAccountNickName + " - " + selectedEligibleAccount.accountNumber;
-                    deliverigAddress.Text = selectedEligibleAccount.accountAddress;
-                    TenantDeliverigAddress.Text = selectedEligibleAccount.accountAddress;
+                    deliveringAddress.Text = selectedEligibleAccount.accountAddress;
+                    TenantDeliveringAddress.Text = selectedEligibleAccount.accountAddress;
                 }
             }
             base.OnActivityResult(requestCode, resultCode, data);
@@ -913,18 +915,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         public void SetAccountName(CustomerBillingAccount selectedAccount)
         {
             txt_ca_name.Text = selectedAccount.AccDesc + " - " + selectedAccount.AccNum;
-            deliverigAddress.Text = selectedAccount.AccountStAddress;
-            TenantDeliverigAddress.Text = selectedEligibleAccount.accountAddress;
-            /*if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Paper)
-            {
-                FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
-                layout.Height = TextViewUtils.IsLargeFonts
-                    ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 1.7))
-                    : (int)DPUtils.ConvertDPToPx(455f);
-            }*/
+            deliveringAddress.Text = selectedAccount.AccountStAddress;
+            TenantDeliveringAddress.Text = selectedEligibleAccount.accountAddress;
         }
-
-
 
         public override string GetPageId()
         {
@@ -957,7 +950,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             Handler h = new Handler();
             Action myAction = () =>
             {
-                if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Email)
+                if (UserSessions.ManageBillDelivery == DBRTypeEnum.Email)
                 {
                     NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.OnGenerateNewAppTutorialList(), false);
                 }
@@ -972,7 +965,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
-            if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBillWithCTA)
+            if (UserSessions.ManageBillDelivery == DBRTypeEnum.EBillWithCTA)
             {
                 newList.Add(new NewAppModel()
                 {
@@ -984,7 +977,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     IsButtonShow = false
                 });
             }
-            else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Email)
+            else if (UserSessions.ManageBillDelivery == DBRTypeEnum.Email)
             {
                 newList.Add(new NewAppModel()
                 {
@@ -996,7 +989,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     IsButtonShow = false
                 });
             }
-            else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EmailWithCTA)
+            else if (UserSessions.ManageBillDelivery == DBRTypeEnum.EmailWithCTA)
             {
                 newList.Add(new NewAppModel()
                 {
@@ -1082,7 +1075,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         public int GetviewPagerHeight()
         {
-            return viewPagerLyout.Height;
+            return viewPagerLayout.Height;
         }
         public int GetBtnUpdateDigitalBillHeight()
         {
