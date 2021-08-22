@@ -6911,12 +6911,7 @@
     <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\SelectDBRAccountActivity.cs" />
     <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\ManageBillDeliveryEmailListAdapter.cs" />
     <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\SelectAccountAdapter.cs" />
-    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\PaperBillActivity.cs" />
     <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\CustomViewPager.cs" />
-    <AndroidResource Include="Resources\layout\PaperBillDelivery.axml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\menu\DBRWebViewMenu.xml">
       <SubType></SubType>
       <Generator></Generator>
