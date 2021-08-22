@@ -2600,7 +2600,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     if (position == 0)
                     {
                         float h1 = 10f;
-                        middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight();
+                        middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight() - +(int)DPUtils.ConvertDPToPx(h1);
                         topHeight = (((ManageBillDeliveryActivity)this.mContext).GetEmail_layoutrHeight() + ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight()) +
                           (((ManageBillDeliveryActivity)this.mContext).GetSelectAccountContainerHeight()) + (int)DPUtils.ConvertDPToPx(h1);
                         LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
