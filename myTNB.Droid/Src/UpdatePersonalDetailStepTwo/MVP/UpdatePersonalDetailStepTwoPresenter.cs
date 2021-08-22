@@ -92,15 +92,15 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
                     countUserPick++;
 
 
-                    string fileNameIfonlyLocal = fileName;
-                    string tempFileName = selectedImage.Path;
+                    string fileNameIfonlyLocal = fileName;  // fallback filename
 
-                    //get filename
-                    int cut = tempFileName.LastIndexOf('/');
-                    if (cut != -1)
-                    {
-                        fileNameIfonlyLocal = tempFileName.Substring(cut + 1);
-                    }
+                    string contentResolverName = this.mView.getFilename(selectedImage); //actual filename
+
+                    if(contentResolverName!=null)
+                        if (contentResolverName.Contains("pdf"))
+                        {
+                            fileNameIfonlyLocal = contentResolverName; 
+                        }
 
                     // reacreate from uri path
                     string copiedpath = this.mView.copyPDFGetFilePath(selectedImage, fileNameIfonlyLocal);

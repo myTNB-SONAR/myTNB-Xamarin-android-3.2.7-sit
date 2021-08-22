@@ -140,8 +140,8 @@ namespace myTNB_Android.Src.Utils
             //internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
 #elif DEVELOP || SIT
-            internal static readonly string END_POINT = "http://10.215.128.191:99";  //dev
-            //internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
+            //internal static readonly string END_POINT = "http://10.215.128.191:99";  //dev
+            internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link";
 #else
             internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";

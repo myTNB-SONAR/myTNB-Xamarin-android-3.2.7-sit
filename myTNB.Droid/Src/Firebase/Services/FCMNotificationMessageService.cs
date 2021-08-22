@@ -60,14 +60,14 @@ namespace myTNB_Android.Src.Firebase.Services
             }
         }
 
-        private async void QueryNotifications(string title, string message)
-        {
-        }
+        //private async void QueryNotifications(string title, string message)
+        //{
+        //}
 
         private void SendNotification(string title, string message)
         {
             Intent intent = new Intent(this, typeof(NotificationActivity));
-            intent.PutExtra(Constants.HAS_NOTIFICATION, true);
+            intent.PutExtra(Utils.Constants.HAS_NOTIFICATION, true);
 
             intent.AddFlags(ActivityFlags.ClearTop);
             PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
