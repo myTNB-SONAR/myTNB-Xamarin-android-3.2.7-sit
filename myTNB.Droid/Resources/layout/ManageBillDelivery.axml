@@ -71,6 +71,11 @@
 			android:layout_width="fill_parent"
 			android:layout_height="16dp"
 			android:background="@color/lightGrey" />
+		<ScrollView
+				android:layout_height="match_parent"
+				android:layout_width="wrap_content"
+				android:overScrollMode="never"
+				android:fillViewport="true">
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -298,6 +303,7 @@
 				</LinearLayout>
 			</LinearLayout>
 		</LinearLayout>
+		</ScrollView>
 	</LinearLayout>
 	<LinearLayout
 		android:layout_height="88dp"

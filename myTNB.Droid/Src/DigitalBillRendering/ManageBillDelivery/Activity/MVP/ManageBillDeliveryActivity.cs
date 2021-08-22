@@ -1093,6 +1093,10 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             return selectAccountContainer.Height;
         }
+        public int GetEmail_layoutrHeight()
+        {
+            return email_layout.Height;
+        }
         public int GetTopHeight()
         {
             int i = 0;

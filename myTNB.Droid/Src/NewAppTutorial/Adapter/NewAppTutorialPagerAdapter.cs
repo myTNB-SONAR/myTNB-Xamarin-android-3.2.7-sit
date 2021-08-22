@@ -2535,11 +2535,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Email)
                 {
                     float h1 = 130f;
-                    float h2 = 125f;
-                    middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight() - ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() - ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() + (TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(24f) : 0);
-                    topHeight = (((ManageBillDeliveryActivity)this.mContext).GetviewPagerHeight() - ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight()) + ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight()
-                        + (((ManageBillDeliveryActivity)this.mContext).GetSelectAccountContainerHeight())
-                        + (TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(h1) : (int)DPUtils.ConvertDPToPx(h2));
+                    float h2 = 30f;
+                    middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight() - (int)DPUtils.ConvertDPToPx(h2); ;
+                    topHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmail_layoutrHeight()+ ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() +
+                                             ((ManageBillDeliveryActivity)this.mContext).GetSelectAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(h1);
                     LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                     topLayoutParam.Height = topHeight;
                     topLayout.RequestLayout();
@@ -2600,9 +2599,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 {
                     if (position == 0)
                     {
+                        float h1 = 10f;
                         middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight();
-                        topHeight = (((ManageBillDeliveryActivity)this.mContext).GetviewPagerHeight() - ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight()) +
-                          (((ManageBillDeliveryActivity)this.mContext).GetSelectAccountContainerHeight()) + (int)DPUtils.ConvertDPToPx(105f);
+                        topHeight = (((ManageBillDeliveryActivity)this.mContext).GetEmail_layoutrHeight() + ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight()) +
+                          (((ManageBillDeliveryActivity)this.mContext).GetSelectAccountContainerHeight()) + (int)DPUtils.ConvertDPToPx(h1);
                         LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                         topLayoutParam.Height = topHeight;
                         topLayout.RequestLayout();
