@@ -196,7 +196,7 @@
     "payBill": "Bayar<br>Bil Saya",
     "payBills": "Bayar<br>Bil Saya",
     "submitFeedback": "Hantar<br>Maklum Balas",
-    "submitEnquiry": "Hantar dan<br>Lihat Pertanyaan",
+    "submitEnquiry": "Hantar dan<br>Semak Pertanyaan",
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "Lihat Bil / Makluman Saya",
     "tutorialAccountTitle": "Ringkasan akaun anda.",
@@ -975,10 +975,10 @@
   "SubmitEnquiry": {
     "exGratiaAgreementTitle": "Perjanjian Ex-gratia", //
     "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.", //
-    "enquireTitle": "Hantar dan Lihat Pertanyaan",
-    "submitEnquiryTitle": "Hantar Pertanyaan",
+    "enquireTitle": "Hantar dan Semak Pertanyaan",
+    "submitEnquiryTitle": "Hantar Pertanyaan Baru",
     "submitEnquiryDescription": "Kongsikan bagaimana kami boleh membantu anda",
-    "viewSubmittedEnquiry": "Lihat Pertanyaan yang Dihantar",
+    "viewSubmittedEnquiry": "Semak Pertanyaan yang Dihantar",
     "viewEnquiryTitle": "Lihat kemas kini status pertanyaan anda di sini.",
     "accNumberHint": "Nombor Akaun",
     "accNumberInfo": "Dimanakah nombor akaun saya?",
