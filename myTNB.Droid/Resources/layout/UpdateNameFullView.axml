@@ -20,15 +20,15 @@
             android:layout_gravity="top"
             android:layout_margin="18dp"
             app:errorEnabled="true"
-            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
             <EditText
                 android:id="@+id/txtNameFull"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/placeholder_name"
                 android:drawablePadding="6dp"
-                android:hint="@string/update_account_hint_account_nickname"
-                android:inputType="text"
+                android:digits="@string/name_validation_with_character"
+                android:hint="@string/registration_form_full_name_hint"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
         <Button

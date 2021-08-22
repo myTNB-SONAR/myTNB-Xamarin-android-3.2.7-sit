@@ -96,7 +96,7 @@
                             android:drawablePadding="6dp"
                             android:drawableLeft="@drawable/placeholder_name"
                             android:id="@+id/txtFullName"
-                            android:digits="@string/name_validation_digits"
+                            android:digits="@string/name_validation_with_character"
                             android:maxLines="1"/>
                     </com.google.android.material.textfield.TextInputLayout>
                     <TextView
