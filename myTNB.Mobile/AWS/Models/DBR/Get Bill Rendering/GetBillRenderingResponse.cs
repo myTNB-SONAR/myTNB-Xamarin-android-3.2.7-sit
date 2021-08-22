@@ -322,7 +322,7 @@ namespace myTNB.Mobile.AWS.Models
             get
             {
                 MobileEnums.RenderingMethodEnum rMethod = MobileEnums.RenderingMethodEnum.None;
-                if (IsPostConversion || PreviousBillRendering == null)
+                if (!IsPostConversion || PreviousBillRendering == null)
                 {
                     return rMethod;
                 }

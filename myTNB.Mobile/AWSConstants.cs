@@ -37,8 +37,8 @@
             internal const string GetEligibility = "https://devapi.mytnb.com.my/Eligibility/api/v1";
             internal const string GetBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
             internal const string GetMultiBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
-            internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
-            internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
+            internal const string GetInstallationDetails = "https://devapi.mytnb.com.my/SapPi/api/v1";
+            internal const string GetMultiInstallationDetails = "https://devapi.mytnb.com.my/SapPi/api/v1";
             internal const string StartDigitalBill = "https://devdbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://devdbr.mytnb.com.my/PaperBill/OptIn";
             public const string SSO = "https://devdbr.mytnb.com.my/Sso?s={0}";
@@ -47,8 +47,8 @@
             internal const string GetEligibility = "https://stagingapi.mytnb.com.my/Eligibility/api/v1";
             internal const string GetBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
             internal const string GetMultiBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
-            internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
-            internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
+            internal const string GetInstallationDetails = "https://stagingapi.mytnb.com.my/SapPi/api/v1";
+            internal const string GetMultiInstallationDetails = "https://stagingapi.mytnb.com.my/SapPi/api/v1";
             internal const string StartDigitalBill = "https://stagingdbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://stagingdbr.mytnb.com.my/PaperBill/OptIn";
             public const string SSO = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
@@ -57,8 +57,8 @@
             internal const string GetEligibility = "https://api.mytnb.com.my/Eligibility/api/v1";
             internal const string GetBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
             internal const string GetMultiBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
-            internal const string GetInstallationDetails = "https://rq9iqdunf6.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
-            internal const string GetMultiInstallationDetails = "https://jqwg9vxr6d.execute-api.ap-southeast-1.amazonaws.com";// Not yet segregated
+            internal const string GetInstallationDetails = "https://dbr.mytnb.com.my/SapPi/api/v1";
+            internal const string GetMultiInstallationDetails = "https://dbr.mytnb.com.my/SapPi/api/v1";
             internal const string StartDigitalBill = "https://dbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://dbr.mytnb.com.my/PaperBill/OptIn";
             public const string SSO = "https://dbr.mytnb.com.my/Sso?s={0}";
