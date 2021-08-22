@@ -292,63 +292,17 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
             public void AfterTextChanged(IEditable s)
             {
-                //int start = 0;
-                //int before = 0;
-                //string Idtype = idText.Text;
+                int len = eText.Text.Length;
+                bool dash = eText.Text.Contains("-");
 
-                //if (Idtype.Equals("IC / MyKad"))
-                //{
-                //    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(14) });
-                //    if (!flagDel)
-                //    {
-
-                //        int len = eText.Text.Length;
-
-                //        if (eText.Text.Length == 12)
-                //        {
-                //            if ((len == 12 && KeyListener.KeyDel == 0) && before == 0)
-                //            {
-
-                //                string first6digit = eText.Text.Substring(0, 6);
-                //                string digit78 = eText.Text.Substring(eText.Text.Length - 6, 2);
-                //                string lastdigit = eText.Text.Substring(eText.Text.Length - 8);
-                //                eText.Text = first6digit + "-" + digit78 + "-" + lastdigit;
-                //                eText.SetSelection(eText.Text.Length);
-
-                //                changed = true;
-                //            }
-                //        }
-                //        else
-                //        {
-                //            if (eText.Text.Length == 14 & !changed)
-                //            {
-                //                if ((len == 6 || len == 9 || start == 5 || start == 8) && before == 0)
-                //                {
-                //                    eText.Text = eText.Text + "-";
-                //                    eText.SetSelection(eText.Text.Length);
-                //                }
-
-                //                if (len == 7 && before == 0)
-                //                {
-                //                    string first6digit = eText.Text.Substring(0, 6);
-                //                    string last1digit = eText.Text.Substring(eText.Text.Length - 1);
-                //                    eText.Text = first6digit + "-" + last1digit;
-                //                    eText.SetSelection(eText.Text.Length);
-                //                }
-
-                //                if (len == 10 && before == 0)
-                //                {
-                //                    string first9digit = eText.Text.Substring(0, 9);
-                //                    string last1digit = eText.Text.Substring(eText.Text.Length - 1);
-                //                    eText.Text = first9digit + "-" + last1digit;
-                //                    eText.SetSelection(eText.Text.Length);
-                //                }
-                //            }
-
-                //        }
-                //    }
-                //    flagDel = false;
-                //}
+                if (len == 12 && !dash)
+                {
+                    string first6digit = eText.Text.Substring(0, 6);
+                    string digit78 = eText.Text.Substring(eText.Text.Length - 6, 2);
+                    string lastdigit = eText.Text.Substring(eText.Text.Length - 4);
+                    eText.Text = first6digit + "-" + digit78 + "-" + lastdigit;
+                    eText.SetSelection(eText.Text.Length);
+                }
             }
 
             public void BeforeTextChanged(Java.Lang.ICharSequence s, int start, int count, int after)
