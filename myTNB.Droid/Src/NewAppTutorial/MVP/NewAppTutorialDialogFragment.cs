@@ -1005,7 +1005,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     else if (this.mActivity is DashboardHomeActivity)
                     {
                         UserSessions.DoManageAccessIconTutorialShown(this.mPref);
-                        ((DashboardHomeActivity)mActivity).ShowCommercialDialog();
+                        //((DashboardHomeActivity)mActivity).ShowCommercialDialog();
                     }
                     else if (this.mActivity is ManageAccessActivity)
                     {

@@ -286,11 +286,69 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 idText = idtype;
             }
             private bool flagDel = false;
+            //private bool changed = false;
             private EditText eText;
             private TextView idText;
 
             public void AfterTextChanged(IEditable s)
             {
+                //int start = 0;
+                //int before = 0;
+                //string Idtype = idText.Text;
+
+                //if (Idtype.Equals("IC / MyKad"))
+                //{
+                //    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(14) });
+                //    if (!flagDel)
+                //    {
+
+                //        int len = eText.Text.Length;
+
+                //        if (eText.Text.Length == 12)
+                //        {
+                //            if ((len == 12 && KeyListener.KeyDel == 0) && before == 0)
+                //            {
+
+                //                string first6digit = eText.Text.Substring(0, 6);
+                //                string digit78 = eText.Text.Substring(eText.Text.Length - 6, 2);
+                //                string lastdigit = eText.Text.Substring(eText.Text.Length - 8);
+                //                eText.Text = first6digit + "-" + digit78 + "-" + lastdigit;
+                //                eText.SetSelection(eText.Text.Length);
+
+                //                changed = true;
+                //            }
+                //        }
+                //        else
+                //        {
+                //            if (eText.Text.Length == 14 & !changed)
+                //            {
+                //                if ((len == 6 || len == 9 || start == 5 || start == 8) && before == 0)
+                //                {
+                //                    eText.Text = eText.Text + "-";
+                //                    eText.SetSelection(eText.Text.Length);
+                //                }
+
+                //                if (len == 7 && before == 0)
+                //                {
+                //                    string first6digit = eText.Text.Substring(0, 6);
+                //                    string last1digit = eText.Text.Substring(eText.Text.Length - 1);
+                //                    eText.Text = first6digit + "-" + last1digit;
+                //                    eText.SetSelection(eText.Text.Length);
+                //                }
+
+                //                if (len == 10 && before == 0)
+                //                {
+                //                    string first9digit = eText.Text.Substring(0, 9);
+                //                    string last1digit = eText.Text.Substring(eText.Text.Length - 1);
+                //                    eText.Text = first9digit + "-" + last1digit;
+                //                    eText.SetSelection(eText.Text.Length);
+                //                }
+                //            }
+
+                //        }
+                //    }
+                //    flagDel = false;
+                //}
             }
 
             public void BeforeTextChanged(Java.Lang.ICharSequence s, int start, int count, int after)
@@ -320,8 +378,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
             {
                 string Idtype = idText.Text;
-
-                if (Idtype.Equals("IC / Mykad"))
+                
+                if (Idtype.Equals("IC / MyKad"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(14) });
                     if (!flagDel)
@@ -351,7 +409,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     }
                     flagDel = false;
                 }
-                else if (Idtype.Equals("ArmyID/PoliceID") || Idtype.Equals("IDTentera/IDPolis"))
+                else if (Idtype.Equals("ArmyID / PoliceID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
                 }

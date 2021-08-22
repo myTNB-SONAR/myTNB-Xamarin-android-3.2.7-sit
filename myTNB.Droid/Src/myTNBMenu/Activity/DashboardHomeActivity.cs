@@ -55,6 +55,8 @@ using Android.Content.Res;
 using myTNB_Android.Src.ForgetPassword.Activity;
 using myTNB_Android.Src.UpdateID.Activity;
 using myTNB_Android.Src.ManageSupplyAccount.Activity;
+using myTNB_Android.Src.MyAccount.Activity;
+using Google.Android.Material.Snackbar;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -496,17 +498,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         OnManageAccessIconTutorialDialog(selected.isOwned);
                         
                     }
-                    else
-                    {
-                        //DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
-                        //if (!fragment.GetIsMDMSDown())
-                        //{
-                            DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
-                            fragment.GovermentCommercial();
-                        //}
+                    //else
+                    //{
+                    //    //DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
+                    //    //if (!fragment.GetIsMDMSDown())
+                    //    //{
+                    //        DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
+                    //        fragment.GovermentCommercial();
+                    //    //}
                         
                         
-                    }
+                    //}
 
                     
                 };
@@ -526,11 +528,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             h.PostDelayed(myAction, 100);
         }
 
-        public void ShowCommercialDialog()
-        {
-            DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
-            fragment.GovermentCommercial();
-        }
+        //public void ShowCommercialDialog()
+        //{
+        //    DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
+        //    fragment.GovermentCommercial();
+        //}
 
 
         public int GetViewBillButtonHeight()
@@ -674,10 +676,20 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowIdentificationUpdate()
         {
-            // TODO : START ACTIVITY
-            Intent updateID = new Intent(this, typeof(UpdateIDActivity));
-            StartActivityForResult(updateID, Constants.UPDATE_ID_REQUEST);
+            Intent updateICNo = new Intent(this, typeof(UpdateIDActivity));
+            StartActivityForResult(updateICNo, Constants.UPDATE_IC_REQUEST);
         }
+
+        //public void ShowProfile()
+        //{
+        //    //SetResult(Result.Ok);
+        //    Intent updateICNo = new Intent(this, typeof(MyProfileActivity));
+        //    StartActivityForResult(updateICNo, Constants.UPDATE_IC_REQUEST);
+
+        //}
+
+
+
 
         public void ShowBillMenu(AccountData selectedAccount)
         {

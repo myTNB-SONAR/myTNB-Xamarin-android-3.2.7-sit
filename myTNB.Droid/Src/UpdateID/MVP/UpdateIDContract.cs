@@ -116,6 +116,8 @@ namespace myTNB_Android.Src.UpdateID.MVP
 
             void CheckRequiredFields(string icno, string idtype);
 
+            bool validateField(string icno, string idtype);
+
             /// <summary>
             /// The returned permission result
             /// </summary>

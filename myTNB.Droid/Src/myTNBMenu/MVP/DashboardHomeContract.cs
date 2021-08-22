@@ -121,6 +121,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			void ShowHomeDashBoard();
 
+			//void ShowProfile();
+
 
 			void ShowBackButton(bool flag);
 

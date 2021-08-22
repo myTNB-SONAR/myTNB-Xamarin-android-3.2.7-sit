@@ -69,7 +69,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
                         {
                             UserEntity.UpdateICno(no_ic);
                             this.mView.ShowSuccessUpdateID();
-                            this.mView.HideProgress();
+                            //this.mView.HideProgress();
                         }
                     }
                     else
@@ -120,6 +120,52 @@ namespace myTNB_Android.Src.UpdateID.MVP
             }
 
 
+        }
+
+        public bool validateField(string icno, string idtype)
+        {
+            try
+            {
+                bool isCorrect = true;
+
+                this.mView.DisableRegisterButton();
+
+                if (string.IsNullOrEmpty(icno))
+                {
+                    isCorrect = false;
+                }
+
+                string ic_no = icno.Replace("-", string.Empty);
+                if (ic_no.Length < 12 && idtype == "1")
+                {
+                    isCorrect = false;
+                }
+                else if (icno.Length < 5 && icno.Length < 50 && idtype == "2")
+                {
+                    isCorrect = false;
+                }
+                else if (icno.Length < 5 && icno.Length < 50 && idtype == "3")
+                {
+                    isCorrect = false;
+                }
+
+                //handle button to enable or disable
+                if (isCorrect == true)
+                {
+                    this.mView.EnableRegisterButton();
+                    return true;
+                }
+                else
+                {
+                    this.mView.DisableRegisterButton();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+                return false;
+            }
         }
 
         public void CheckRequiredFields(string icno, string idtype)

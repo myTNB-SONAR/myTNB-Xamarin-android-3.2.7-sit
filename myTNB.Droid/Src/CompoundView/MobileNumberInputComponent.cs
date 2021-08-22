@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.CompoundView
         private bool isFromCountryCode = false;
         private bool isEmptyNoAfterDelete = false;
 
-        private const int MAX_NUMBER_INPUT = 17;
+        private const int MAX_NUMBER_INPUT = 15;
         private const string PLUS_CHARACTER = "+";
 
 

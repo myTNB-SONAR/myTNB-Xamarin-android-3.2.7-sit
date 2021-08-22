@@ -254,7 +254,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 
                 ///TextViewUtils.SetTextSize11(TextViewDoINeedOwnerConsent);
                 //TextViewUtils.SetTextSize12(pageStep);
-                TextViewUtils.SetTextSize14(pageStep,txtOwnerName, txtMobileNumber, txtEmailAddress, txtMailingAddress, txtPremiseAddress);
+                TextViewUtils.SetTextSize14(pageStep,txtOwnerName, txtMobileNumber, txtEmailAddress, txtMailingAddress, txtPremiseAddress, txtSkip);
                 TextViewUtils.SetTextSize16(btnNext, TextView_updateOnOwnerBehalf
                     , txtGeneralCurrentOwnerName, txtNewOwnerName, txtGeneralCurrentEmailAddress, txtNewEmailAddress
                     , txtGeneralCurrentMailingAddress, txtNewMailingAddress, txtGeneralCurrentPremiseAddress, txtNewPremiseAddress);

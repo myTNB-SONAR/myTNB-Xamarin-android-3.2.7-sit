@@ -205,8 +205,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
             {
                 try
                 {
-                    Intent updateMobileNo = new Intent(this, typeof(UpdateIDActivity));
-                    StartActivityForResult(updateMobileNo, Constants.UPDATE_IC_REQUEST);
+                    Intent updateICNo = new Intent(this, typeof(UpdateIDActivity));
+                    StartActivityForResult(updateICNo, Constants.UPDATE_IC_REQUEST);
                    
                 }
                 catch (System.Exception e)
@@ -394,7 +394,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             try
             {
                 Snackbar updateEmailBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "IDUpdateSuccess"), Snackbar.LengthIndefinite)
-                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                           .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
                              {
                                  // EMPTY WILL CLOSE SNACKBAR
@@ -746,6 +746,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                         }
                     }
                 }
+                
                 PopulateActiveAccountDetails();
             }
             catch (Exception e)

@@ -361,7 +361,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
         {
             if (isOwner)
             {  //if owner is choosed
-                if (adapter?.GetAllImages().Count == 0)
+                if (adapter?.GetAllImages().Count == 0 || ic_adapter.GetAllImages().Count == 0)
                 {
                     DisableSubmitButton();
 
@@ -385,37 +385,37 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
                         EnableSubmitButton();
                     }
                 }
+               
             }
-            else
-            {
-                //if tenant is choosed , mandatory 3 image
-                if (adapter?.GetAllImages().Count == 0 || ic_adapter?.GetAllImages().Count == 0 || SupportingDocAdapter?.GetAllImages().Count == 0)
-                {
-                    DisableSubmitButton();
+            //else
+            //{
+            //    //if tenant is choosed , mandatory 3 image
+            //    if (adapter?.GetAllImages().Count == 0 || ic_adapter?.GetAllImages().Count == 0 || SupportingDocAdapter?.GetAllImages().Count == 0)
+            //    {
+            //        DisableSubmitButton();
 
-                    if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count == 0)
-                    {
-                        DisableSubmitButton();
-                    }
-                }
-                else
-                {
+            //        if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count == 0)
+            //        {
+            //            DisableSubmitButton();
+            //        }
+            //    }
+            //    else
+            //    {
 
-                    if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count > 1)
-                    {
-
-                        EnableSubmitButton();
-                    }
-                    else if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count == 0)
-                    {
-                        DisableSubmitButton();
-                    }
-                    else
-                    {
-                        EnableSubmitButton();
-                    }
-                }
-            }
+            //        if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count > 1)
+            //        {
+            //            EnableSubmitButton();
+            //        }
+            //        else if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count == 0)
+            //        {
+            //            DisableSubmitButton();
+            //        }
+            //        else
+            //        {
+            //            EnableSubmitButton();
+            //        }
+            //    }
+            //}
         }
 
 

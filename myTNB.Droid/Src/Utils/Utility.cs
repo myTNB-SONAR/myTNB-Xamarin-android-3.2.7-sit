@@ -56,6 +56,13 @@ namespace myTNB_Android.Src.Utils
             return rg.IsMatch(strToCheck);
         }
 
+        public static bool isSpecialcharacter(string strToCheck)
+        {
+            
+            Regex rg = new Regex(@"^[\w@\-]+$"); ;
+            return rg.IsMatch(strToCheck);
+        }
+
         public static bool isAlpha(string strToCheck)
         {
             Regex rg = new Regex(@"^[a-zA-Z\s,]*$");

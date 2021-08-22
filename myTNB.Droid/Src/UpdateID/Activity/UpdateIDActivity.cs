@@ -88,7 +88,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
 
         private bool isClicked = false;
         private bool fromAddAccPage = false;
-        private bool fromIDFlag = false;
+       //private bool fromIDFlag = false;
 
         Snackbar mUpdateIc;
 
@@ -151,6 +151,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 //LabelTitle.Text = GetLabelByLanguage("updateIdLabelTitle");
                 //LabelDetails.Text = GetLabelByLanguage("updateIdLabelDetails");
 
+                txtICNumber.FocusChange += txtICNumber_FocusChange;
                 txtICNumber.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
                 txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
                 txtICNumber.InputType = InputTypes.ClassNumber;
@@ -176,13 +177,96 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 txtICNumber.SetOnKeyListener(new KeyListener());
 
                 MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+
                 ClearFields();
+                ClearAllErrorFields();
+
+                txtICNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_account_no, 0, 0, 0);
                 this.userActionsListener.Start();
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void txtICNumber_FocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            try
+            {
+                
+                string Idtype = selectedIdentificationType.Id;
+                string ic_no = txtICNumber.Text.ToString().Trim();
+                
+
+                if (!e.HasFocus)
+                {
+                    ClearICMinimumCharactersError();
+                    ClearICHint();
+                    this.userActionsListener.CheckRequiredFields( ic_no, Idtype);
+
+                    if (ic_no.Equals(""))
+                    {
+                        ClearICMinimumCharactersError();
+                        ClearICHint();
+                    }
+                    else
+                    {
+                        if (Idtype.Equals("1"))
+                        {
+                            ic_no = ic_no.Replace("-", string.Empty);
+                            if (!this.mPresenter.CheckIdentificationIsValid(ic_no))
+                            {
+                                ClearICHint();
+                                ShowFullICError();
+                            }
+                            //else
+                            //{
+                            //    ShowIdentificationHint();
+                            //}
+                        }
+                        else if (Idtype.Equals("2"))
+                        {
+                            if (!this.mPresenter.CheckArmyIdIsValid(ic_no))
+                            {
+                                ClearICHint();
+                                ShowFullArmyIdError();
+                            }
+                            //else
+                            //{
+                            //    ShowIdentificationHint();
+                            //}
+                        }
+                        else if (Idtype.Equals("3"))
+                        {
+                            if (!this.mPresenter.CheckPassportIsValid(ic_no))
+                            {
+                                ClearICHint();
+                                ShowFullPassportError();
+                            }
+                            //else
+                            //{
+                            //    ShowIdentificationHint();
+                            //}
+                        }
+                        else
+                        {
+                            ClearICMinimumCharactersError();
+                            ClearICHint();
+                        }
+
+                    }
+                }
+                else
+                {
+                    ShowIdentificationHint();
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+
         }
 
         public class PhoneTextWatcher : Java.Lang.Object, ITextWatcher
@@ -228,7 +312,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
             public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
             {
                 string Idtype = idText.Text;
-                if (Idtype.Equals("IC / Mykad"))
+                if (Idtype.Equals("IC / MyKad"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(14) });
                     if (!flagDel)
@@ -258,7 +342,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                     }
                     flagDel = false;
                 }
-                else if (Idtype.Equals("ArmyID/PoliceID") || Idtype.Equals("IDTentera/IDPolis"))
+                else if (Idtype.Equals("ArmyID / PoliceID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
                 }
@@ -287,9 +371,11 @@ namespace myTNB_Android.Src.UpdateID.Activity
             try
             {
                 string ic_no = txtICNumber.Text.ToString().Trim();
+                string Idtype = selectedIdentificationType.Id;
                 ClearICMinimumCharactersError();
                 ClearICHint();
-                EnableRegisterButton();
+                //EnableRegisterButton();
+                this.userActionsListener.validateField(ic_no,Idtype);
             }
             catch (Exception ex)
             {
@@ -784,29 +870,31 @@ namespace myTNB_Android.Src.UpdateID.Activity
                         Country selectedCountry = JsonConvert.DeserializeObject<Country>(dataString);
                         mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
                     }
-                    else if (requestCode == SELECT_IDENTIFICATION_TYPE_REQ_CODE)
-                    {
+                    //else if (requestCode == SELECT_IDENTIFICATION_TYPE_REQ_CODE)
+                    //{
 
-                        if (resultCode == Result.Ok)
-                        {
-                            selectedIdentificationType = JsonConvert.DeserializeObject<IdentificationType>(data.GetStringExtra("selectedIdentificationType"));
-                            if (selectedIdentificationType != null)
-                            {
-                                identityType.Text = selectedIdentificationType.Type;
-                                txtICNumber.Text = "";
-                                if (selectedIdentificationType.Id.Equals("1"))
-                                {
-                                    txtICNumber.InputType = InputTypes.ClassNumber;
-                                }
-                                else
-                                {
-                                    string digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz"; // or any characters you want to allow
-                                    txtICNumber.KeyListener = Android.Text.Method.DigitsKeyListener.GetInstance(digits);
-                                    txtICNumber.SetRawInputType(InputTypes.ClassText);
-                                }
-                            }
-                        }
-                    }
+                    //    if (resultCode == Result.Ok)
+                    //    {
+                    //        selectedIdentificationType = JsonConvert.DeserializeObject<IdentificationType>(data.GetStringExtra("selectedIdentificationType"));
+                    //        if (selectedIdentificationType != null)
+                    //        {
+                    //            identityType.Text = selectedIdentificationType.Type;
+                    //            txtICNumber.Text = "";
+                    //            if (selectedIdentificationType.Id.Equals("1"))
+                    //            {
+                    //                txtICNumber.InputType = InputTypes.ClassNumber;
+                    //            }
+                    //            //else
+                    //            //{
+                    //            //    string digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz"; // or any characters you want to allow
+                    //            //    txtICNumber.KeyListener = Android.Text.Method.DigitsKeyListener.GetInstance(digits);
+                    //            //    txtICNumber.SetRawInputType(InputTypes.ClassText);
+                    //            //}
+                    //        }
+                    //    }
+                    //}
+                   
+                    
                 }
             }
             catch (Exception e)

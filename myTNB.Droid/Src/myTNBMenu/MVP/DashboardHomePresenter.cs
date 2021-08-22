@@ -241,12 +241,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         }
                     }
                 }
-                else if (requestCode == Constants.UPDATE_ID_REQUEST)
+                else if (requestCode == Constants.UPDATE_IC_REQUEST)
                 {
                     if (resultCode == Result.Ok)
                     {
                         this.mView.SetMenuMoreCheck();
-                        OnMenuSelect(Resource.Id.menu_more);
+                        //this.mView.ShowProfile();
+                        //OnMenuSelect(Resource.Id.menu_more);
+                        DoLoadHomeDashBoardFragment();
                     }
                 }
             }
