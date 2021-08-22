@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
 {
     [Activity(Label = "@string/submitICFeedback_OverVoltageClaimTitle"
           , ScreenOrientation = ScreenOrientation.Portrait
-                  , WindowSoftInputMode = SoftInput.AdjustPan
+          , WindowSoftInputMode = SoftInput.AdjustResize
           , Theme = "@style/Theme.FaultyStreetLamps")]
    
     public class OvervoltageClaim : BaseToolbarAppCompatActivity 

@@ -29,8 +29,11 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 {
-    [Activity(Label = "OverVoltageFeedbackDetailActivity", ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.Others")]
+    [Activity(Label = "OverVoltageFeedbackDetailActivity"
+          , ScreenOrientation = ScreenOrientation.Portrait
+          , WindowSoftInputMode = SoftInput.AdjustResize
+          , Theme = "@style/Theme.Others")]
+
     public class OverVoltageFeedbackDetailActivity : BaseToolbarAppCompatActivity, FeedbackDetailsContract.Others.IView
     {
 
@@ -181,7 +184,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 
                 string url = domain + "claimPage/" + ClaimId + queryParams;
 
-#if DEBUG
+                #if DEBUG
                 global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
                 #endif
 
