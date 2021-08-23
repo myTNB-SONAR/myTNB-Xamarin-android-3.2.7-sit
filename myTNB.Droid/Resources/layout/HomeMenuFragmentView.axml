@@ -494,10 +494,29 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="128dp"
                                 app:cardCornerRadius="6dp"
-                                app:cardBackgroundColor="@color/shimmer_color"
+                                app:cardBackgroundColor="@color/white"
                                 app:cardElevation="3dp"
                                 app:cardUseCompatPadding="true"
                             android:id="@+id/card_view_click">
+                                <TextView
+										android:id="@+id/dbrNoteShimmer"
+										android:background="@color/shimmer_color"
+										android:layout_width="match_parent"
+                                        android:layout_marginLeft="16dp"
+                                        android:layout_marginRight="16dp"
+                                        android:layout_marginTop="8dp"
+										android:layout_height="25dp"
+										android:gravity="center"/>
+									<LinearLayout
+										android:layout_width="match_parent"
+										android:layout_height="56dp"
+										android:layout_marginTop="46dp"
+                                        android:layout_marginLeft="36dp"
+                                        android:layout_marginRight="36dp"
+										android:background="@color/shimmer_color"
+										android:gravity="center_horizontal"
+										android:orientation="horizontal">
+									</LinearLayout>
                             </androidx.cardview.widget.CardView>
                         </com.facebook.shimmer.ShimmerFrameLayout>
                         <com.facebook.shimmer.ShimmerFrameLayout
