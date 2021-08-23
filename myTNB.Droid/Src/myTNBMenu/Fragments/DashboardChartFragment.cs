@@ -1398,6 +1398,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         editBudget = false;
                         setEnergyBudgetlayout = false;
                     }
+                    else
+                    {
+                        DisableSetEnergyBudgetButton();
+                    }
                 }
                 else
                 {

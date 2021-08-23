@@ -2347,9 +2347,9 @@
   },
 
   "EnergyBudgetPopup": {
-    "title": "Take control of your energy usage with the new Energy Budget feature!",
-    "threeEasyStep": "Saving money in 3 easy steps:",
-    "firstStep": "SET a budget for your monthly energy usage",
+    "title": "Congratulations! You are selected to experience our new Energy Budget feature!",
+    "threeEasyStep": "Saving money in 3 easy steps: ",
+    "firstStep": "SET a budget for your existing Smart Meter accounts",
     "secondStep": "MONITOR your energy usage right at your fingertips",
     "thirdStep": "SAVINGS starts with you getting notified when reaching your set budget",
     "txtLetgetstarted": "Let's Get Started",

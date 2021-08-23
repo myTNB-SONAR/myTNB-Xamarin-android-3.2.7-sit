@@ -83,19 +83,14 @@ namespace myTNB.Mobile
                                         }
                                   );
                                 }
-                            }
-
-             
-
+                                ListOfFeature.Add(
+                                  new FeatureInfo()
+                                  {
+                                      FeatureName = features.ToString(),
+                                      ContractAccount = eligibleCA
+                                  });
+                            }            
                         }
-
-
-                        ListOfFeature.Add(
-                          new FeatureInfo()
-                          { 
-                              FeatureName = features.ToString(),
-                              ContractAccount = eligibleCA
-                          });
                     });
                 }
 
