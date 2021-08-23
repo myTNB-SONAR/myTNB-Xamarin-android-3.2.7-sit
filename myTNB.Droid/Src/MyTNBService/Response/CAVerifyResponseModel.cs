@@ -8,6 +8,7 @@ namespace myTNB_Android.Src.MyTNBService.Response
         //[JsonProperty("overvoltageClaimEnabled")]
         public bool OvervoltageClaimEnabled { get; set; }
 
+        public bool IsOvisUnderMaintenance { get; set; }
         //[JsonProperty("overvoltageClaimSupported")]
         public Dictionary<string, string> OvervoltageClaimSupported { get; set; }
     }

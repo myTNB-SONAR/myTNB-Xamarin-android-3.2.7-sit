@@ -1136,7 +1136,13 @@
     "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle": "Tuntutan Voltan Berlebihan pada masa ini tidak diaktifkan untuk ", //
     "overVoltageClaimIsCurrentlyNotEnabledForKepongDescription": "Nombor akaun yang dipilih pada masa ini tidak diaktifkan untuk tuntutan voltan berlebihan melalui myTNB,  sila hubungi TNB CareLine kami di talian 1300-88-5454 atau hantarkan e-mel kepada kami di tnbcareline@tnb.com.my atau kunjungi Kedai Tenega.",
     "Gotit": "Ok", //,
-    "currentlyNotEnabledForMelakaTitle": "Buat masa ini tidak diaktifkan untuk "
+    "currentlyNotEnabledForMelakaTitle": "Buat masa ini tidak diaktifkan untuk ",
+    "overVoltageMaintenanceLabel": "Perkhidmatan Tuntutan Overvoltage kini dalam penyelenggaraan",
+    "overVoltageMaintenanceTitle": "Kami akan kembali tidak lama lagi!",
+    "overVoltageMaintenanceDescription": "Maaf, perkhidmatan Tuntutan Overvoltage sedang dalam penyelenggaraan. Sila semak kemudian.",
+    "overVoltageClaimtemproryUnavailable": "Perkhidmatan Tuntutan Overvoltage tidak tersedia buat sementara waktu",
+    "overVoltageClaimtemproryUnavailableTitle": "Perkhidmatan tergendala sementara",
+    "overVoltageClaimtemproryUnavailableDescription": "Kami berusaha untuk memulihkan perkhidmatan Tuntutan Overvoltage secepat mungkin. Sila semak semula tidak lama lagi."
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",

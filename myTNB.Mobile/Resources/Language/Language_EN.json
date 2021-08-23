@@ -1137,7 +1137,13 @@
     "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle": "Overvoltage Claim is currently not enabled for ",
     "overVoltageClaimIsCurrentlyNotEnabledForKepongDescription": "The selected account number is currently not enabled for overvoltage claim via myTNB,  please contact our TNB CareLine at 1300-88-5454 or email us at tnbcareline@tnb.com.my or visit Kedai Tenega.",
     "Gotit": "Got it",
-    "currentlyNotEnabledForMelakaTitle": "Currently not enabled for "
+    "currentlyNotEnabledForMelakaTitle": "Currently not enabled for ",
+    "overVoltageMaintenanceLabel": "Overvoltage Claim service is currently under maintenance",
+    "overVoltageMaintenanceTitle": "We'll be back soon!",
+    "overVoltageMaintenanceDescription": "Sorry, Overvoltage Claim service is currently under maintenance. Please check back later.",
+    "overVoltageClaimtemproryUnavailable": "Overvoltage Claim service temporarily unavailable",
+    "overVoltageClaimtemproryUnavailableTitle": "Service temporarily unavailable",
+    "overVoltageClaimtemproryUnavailableDescription": "We're working to restore Overvoltage Claim service as quickly as possible. Please check back soon."
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
