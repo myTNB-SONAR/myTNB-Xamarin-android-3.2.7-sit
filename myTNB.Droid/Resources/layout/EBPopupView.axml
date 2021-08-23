@@ -135,33 +135,33 @@
 						android:text="SAVINGS starts with you getting notified when reaching your set budget"
 						android:id="@+id/txtSavingbudget" />
 				</LinearLayout>
+				<LinearLayout
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					android:orientation="horizontal"
+					android:padding="16dp"
+					android:background="@color/white"
+					android:weightSum="1">
+					<Button
+						android:id="@id/btnGetStarted"
+						android:text="Let's Get Started"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_weight="0.5"
+						android:layout_marginRight="2dp"
+						style="@style/DarkButton"
+						android:textAllCaps="false" />
+					<Button
+						android:id="@+id/btnMaybeLater"
+						android:text="Maybe Later"
+						android:layout_width="match_parent"
+						android:layout_weight="0.5"
+						android:layout_marginLeft="2dp"
+						android:layout_height="wrap_content"
+						style="@style/LightButton"
+						android:textAllCaps="false" />
+				</LinearLayout>
 				</LinearLayout>
 		</ScrollView>
-		<LinearLayout
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
-			android:orientation="vertical"
-			android:padding="16dp"
-			android:background="@color/white"
-			android:weightSum="1">
-			<Button
-				android:id="@id/btnGetStarted"
-				android:text="Let's Get Started"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_weight="0.5"
-				android:layout_marginRight="2dp"
-				style="@style/DarkButton"
-				android:textAllCaps="false" />
-			<Button
-				android:id="@+id/btnMaybeLater"
-				android:text="Maybe Later"
-				android:layout_width="match_parent"
-				android:layout_weight="0.5"
-				android:layout_marginLeft="2dp"
-				android:layout_height="wrap_content"
-				style="@style/LightButton"
-				android:textAllCaps="false" />
-		</LinearLayout>
 	</LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
