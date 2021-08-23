@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using myTNB.Mobile.Extensions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace myTNB.Mobile.AWS.Models
@@ -49,7 +50,12 @@ namespace myTNB.Mobile.AWS.Models
         {
             get
             {
-                return true;
+                if (RateCategory.IsValid())
+                {
+                    int index = MobileConstants.ResidentialTariffTypeList.FindIndex(x => x == RateCategory.ToUpper());
+                    return index > -1;
+                }
+                return false;
             }
         }
     }

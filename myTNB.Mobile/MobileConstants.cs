@@ -1,4 +1,6 @@
-﻿namespace myTNB.Mobile
+﻿using System.Collections.Generic;
+
+namespace myTNB.Mobile
 {
     public static class MobileConstants
     {
@@ -120,5 +122,13 @@
             public const string DBR_Owner = "DBROWNER";
             public const string APPLICATIONSTATUS = "APPLICATIONSTATUS";
         }
+
+        internal static List<string> ResidentialTariffTypeList = new List<string>
+        {
+            "A_LV"
+            , "A_LV_D"
+            , "A_LV_D_I"
+            , "A_LV_I"
+        };
     }
 }
