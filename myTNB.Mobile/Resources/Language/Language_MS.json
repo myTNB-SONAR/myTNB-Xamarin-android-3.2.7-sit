@@ -1268,7 +1268,9 @@
     "skipStep": "Tidak, Saya ingin melangkau langkah ini",
     "copyOfOwnerLabel": "Salinan pengenalan diri pemilik (IC / Pasport)",
     "frontIc": "Hadapan",
-    "backIc": "Belakang"
+    "backIc": "Belakang",
+    "moreInformation": "Adakah anda ingin mengemas kini lebih banyak maklumat?"
+
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",

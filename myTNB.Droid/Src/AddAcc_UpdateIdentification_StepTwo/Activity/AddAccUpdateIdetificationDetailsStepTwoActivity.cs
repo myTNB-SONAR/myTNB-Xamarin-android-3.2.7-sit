@@ -261,7 +261,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepTwo.Activity
 
                 //TRANSLATION
                 btnNext.Text = Utility.GetLocalizedLabel("Common", "next");
-                TextView_updateOnOwnerBehalf.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updateOwnerTitle");
+                TextView_updateOnOwnerBehalf.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "moreInformation");
                 txtSkip.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "skipStep");
                 txtOwnerName.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNametitle");
                 txtMobileNumber.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "mobileNumberTitle");
@@ -320,11 +320,6 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepTwo.Activity
 
                 mobileNumberFieldContainer.Visibility = ViewStates.Gone;  //hide mobile number when initialize
 
-
-
-
-
-
             }
             catch (System.Exception e)
             {
@@ -377,7 +372,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepTwo.Activity
 
         public void parseCheckRequiredField()
         {
-            bool toggleChkBoxSkip = true;
+            
 
             string ownerName = txtNewOwnerName.Text;
 
@@ -755,6 +750,53 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 select_mailing_address_chk_box.Clickable = false;
                 premiseAddress_chk_box.Clickable = false;
 
+                
+                if (toggleChkOwnerName)
+                {
+                    txtInputLayoutNewOwnerName.Visibility = ViewStates.Gone;
+                    txtNewOwnerName.Text = "";
+                    selectOwnerNameChkBox.Checked = false;
+                    toggleChkOwnerName = !toggleChkOwnerName;
+                    ClearErrors(typeOfLayout.ownerName);
+                }
+
+                if (toggleChkMobileNumber)
+                {
+                    mobileNumberFieldContainer.Visibility = ViewStates.Gone;
+                    mobileNumberInputComponent.ClearMobileNumber();
+                    mobile_number_chk_box.Checked = false;
+                    toggleChkMobileNumber = !toggleChkMobileNumber;
+                    ClearErrors(typeOfLayout.mobileNumber);
+                }
+
+                if (toggleChkEmailAddress)
+                {
+                    txtInputLayoutNewEmailAddress.Visibility = ViewStates.Gone;
+                    txtNewEmailAddress.Text = "";
+                    select_email_address_chk_box.Checked = false;
+                    toggleChkEmailAddress = !toggleChkEmailAddress;
+                    ClearErrors(typeOfLayout.emailAddress);
+                }
+
+                if (toggleChkMailingAddress)
+                {
+                    txtInputLayoutNewMailingAddress.Visibility = ViewStates.Gone;
+                    txtNewMailingAddress.Text = "";
+                    select_mailing_address_chk_box.Checked = false;
+                    toggleChkMailingAddress = !toggleChkMailingAddress;
+                    ClearErrors(typeOfLayout.mailingAddress);
+                }   
+
+
+                if (toggleChkPremiseAddress)
+                {
+                    txtInputLayoutNewPremiseAddress.Visibility = ViewStates.Gone;
+                    txtNewPremiseAddress.Text = "";
+                    premiseAddress_chk_box.Checked = false;
+                    toggleChkPremiseAddress = !toggleChkPremiseAddress;
+                    ClearErrors(typeOfLayout.premiseAddress);
+                }
+
             }
             catch (Exception e)
             {
@@ -778,7 +820,10 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 select_email_address_chk_box.Clickable = true;
                 select_mailing_address_chk_box.Clickable = true;
                 premiseAddress_chk_box.Clickable = true;
+
                 
+
+
             }
             catch (Exception e)
             {
@@ -792,7 +837,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepTwo.Activity
         public void toggleAccountOwnerName()
         {
             toggleChkOwnerName = !toggleChkOwnerName;  //boolean change
-
+            
 
             if (toggleChkOwnerName)
             {

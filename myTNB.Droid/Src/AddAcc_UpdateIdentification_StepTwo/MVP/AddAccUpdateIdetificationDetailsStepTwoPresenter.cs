@@ -129,19 +129,19 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepTwo.MVP
         }
 
        
-        public void CheckRequiredFields(bool toggleChkBoxIC, string ownerName, bool toggleChkOwnerName, bool mobileNumber, bool toggleChkMobileNumber, string emailAddress, bool toggleChkEmailAddress, string mailingAddress, bool toggleChkMailingAddress, string premiseAddress, bool toggleChkPremiseAddress, bool isOtherChoosed)
+        public void CheckRequiredFields(bool toggleChkBoxSkip, string ownerName, bool toggleChkOwnerName, bool mobileNumber, bool toggleChkMobileNumber, string emailAddress, bool toggleChkEmailAddress, string mailingAddress, bool toggleChkMailingAddress, string premiseAddress, bool toggleChkPremiseAddress, bool isOtherChoosed)
         {
             try
             {
                 bool shoudButtonEnable = true;
                 // this.mView.ClearErrors();
-                if(toggleChkBoxIC)
+                if(toggleChkBoxSkip)
                 {
                     this.mView.EnableSubmitButton();
                 }
                 else
                 {
-                    shoudButtonEnable = false;
+                    this.mView.DisableSubmitButton();
                 }
                
                 if (toggleChkOwnerName)

@@ -1267,7 +1267,8 @@
     "skipStep": "No, I'd like to skip this step",
     "copyOfOwnerLabel": "Copy of owner's identification (IC / Passport)",
     "frontIc": "Front",
-    "backIc": "Back"
+    "backIc": "Back",
+    "moreInformation": "Would you like to update more information?"
 
   },
   "Tutorial": {
