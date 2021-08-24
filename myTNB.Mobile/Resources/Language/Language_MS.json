@@ -1142,7 +1142,8 @@
     "overVoltageMaintenanceDescription": "Maaf, perkhidmatan Tuntutan Voltan Berlebihan sedang dalam penyelenggaraan. Sila semak semula kemudian.",
     "overVoltageClaimtemproryUnavailable": "Perkhidmatan Tuntutan Voltan Berlebihan tidak tersedia buat sementara waktu",
     "overVoltageClaimtemproryUnavailableTitle": "Perkhidmatan tidak tersedia buat sementara waktu",
-    "overVoltageClaimtemproryUnavailableDescription": "Kami berusaha untuk memulihkan perkhidmatan Tuntutan Voltan Berlebihan secepat mungkin. Sila semak semula tidak lama lagi."
+    "overVoltageClaimtemproryUnavailableDescription": "Kami berusaha untuk memulihkan perkhidmatan Tuntutan Voltan Berlebihan secepat mungkin. Sila semak semula tidak lama lagi.",
+    "tNC": "Terma dan Syarat"
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",

@@ -33,6 +33,8 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
     public class OvervoltageClaim : BaseToolbarAppCompatActivity 
     {
         public bool IsINZeroStepTab = true;
+        public bool IsTermAndConditions = false;
+        public bool IsInTermAndConsitionStepTab = false;
         [BindView(Resource.Id.webView)]
         WebView webView;
 
@@ -87,6 +89,15 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             {
                 webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBack').trigger('click'); },500); })();", null);
             }
+            else if (IsTermAndConditions)
+            {
+                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackTermsAndConditions').trigger('click'); },500); })();", null);
+
+            }
+            else if (IsInTermAndConsitionStepTab)
+            {
+                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackTnbTerms').trigger('click'); },500); })();", null);
+            }
             else
             {
                leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
@@ -130,7 +141,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
 
                 const string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
-                // const string domain = "http://192.168.68.127:3000/"; // WebView Local
+                //const string domain = "http://192.168.1.157:3000/"; // WebView Local
 
                 //https://serene-rosalind-a35967.netlify.app/ //https://mytnbwvovis.ap.ngrok.io/  Live https://serene-rosalind-a35967.netlify.app/ //http://192.168.1.158:3000/ //https://mytnbwvovis.ap.ngrok.io/
 
@@ -257,6 +268,75 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                     OverVoltageClaimSuccessPageActivity.comeFromsubmitClaimPage = true;
                     StartActivity(OverVoltagClaim);
                     HideProgressDialog();
+                }
+                else if (data.currentScreen == "step2-screen" && data.nextScreen == "TermsAndConditions")
+                {
+                    // Go to terms and condition screen
+                    try
+                    {
+                        IsTermAndConditions = true;
+                        IsINZeroStepTab = true;
+                        txtstep1of2.Visibility = ViewStates.Gone;
+                        SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "tNC"));
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+                }
+                else if (data.currentScreen == "TermsAndConditions" && data.nextScreen == "step2-screen")
+                {
+                    //Termsandconditions back
+                    try
+                    {
+                        SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
+                        IsTermAndConditions = false;
+                        IsINZeroStepTab = false;
+                        txtstep1of2.Visibility = ViewStates.Visible;
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+                }
+                else if (data.currentScreen == "TermsAndConditions" && data.nextScreen == "TnbTerms")
+                {
+                    //goto Termcondition main screen
+                    try
+                    {
+                        SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "tnbTermUse"));
+                        IsTermAndConditions = false;
+                        IsInTermAndConsitionStepTab = true;
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+                }
+                else if (data.currentScreen == "TermsAndConditions" && data.nextScreen == "privacy")
+                {
+                    //goto Privacy main screen
+                    try
+                    {
+                        SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicyTitle"));
+                        IsTermAndConditions = false;
+                        IsInTermAndConsitionStepTab = true;
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+                }
+                else if ((data.currentScreen == "TnbTerms" || data.currentScreen == "privacy") && data.nextScreen == "TermsAndConditions")
+                {
+                    //goto terms and condition screen
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "tNC"));
+                    IsTermAndConditions = true;
+                    IsInTermAndConsitionStepTab = false;
                 }
                 else
                 {

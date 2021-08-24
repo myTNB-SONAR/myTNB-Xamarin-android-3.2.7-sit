@@ -1143,7 +1143,8 @@
     "overVoltageMaintenanceDescription": "Sorry, Overvoltage Claim service is currently under maintenance. Please check back later.",
     "overVoltageClaimtemproryUnavailable": "Overvoltage Claim service temporarily unavailable",
     "overVoltageClaimtemproryUnavailableTitle": "Service temporarily unavailable",
-    "overVoltageClaimtemproryUnavailableDescription": "We're working to restore Overvoltage Claim service as quickly as possible. Please check back soon."
+    "overVoltageClaimtemproryUnavailableDescription": "We're working to restore Overvoltage Claim service as quickly as possible. Please check back soon.",
+    "tNC": "Terms and Conditions"
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
