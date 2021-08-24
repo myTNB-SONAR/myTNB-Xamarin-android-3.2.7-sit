@@ -4855,23 +4855,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 this.SetIsClicked(true);
                 isGoToBillingDetail = true;
-
-                if (DBRUtility.Instance.IsAccountDBREligible && GetEligibleDBRAccount(selectedAccount) == selectedAccount.AccountNum)
-                {
-                    GetBillRenderingAsync(selectedAccount);
-                }
-                else
-                {
-                    //_isOwner = DBRUtility.Instance.IsDBROTTagFromCache ? false : DBRUtility.Instance.IsCADBREligible(selectedAccount.AccountNum);
-                    _isOwner = DBRUtility.Instance.IsCADBREligible(selectedAccount.AccountNum);
-                    Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
-                    intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
-                    intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
-                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
-                    StartActivity(intent);
-                }
-
-
+                GetBillRenderingAsync(selectedAccount);
                 try
                 {
                     FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Details Buttom Clicked");
@@ -5060,44 +5044,75 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             try
             {
                 ShowProgressDialog();
-                GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
-                AccountData dbrAccount = selectedAccount;
-                if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                bool isEligible = DBRUtility.Instance.IsAccountDBREligible;
+                if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                    , EligibilitySessionCache.FeatureProperty.TargetGroup))
                 {
-                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
-                    AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                    isEligible = isEligible
+                        && AccountTypeCache.Instance.IsAccountEligible(selectedAccount.AccountNum);
+                    Console.WriteLine("[DEBUG] DashboardFrag IsDBREnabled 0: " + isEligible);
+                    if (isEligible)
+                    {
+                        PostInstallationDetailsResponse installationDetailsResponse = await DBRManager.Instance.PostInstallationDetails(selectedAccount.AccountNum
+                            , AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                        Console.WriteLine("[DEBUG] DashboardFrag RateCategory: " + installationDetailsResponse.RateCategory);
+                        Console.WriteLine("[DEBUG] DashboardFrag IsResidential: " + installationDetailsResponse.IsResidential);
+                        if (installationDetailsResponse != null
+                            && installationDetailsResponse.StatusDetail != null
+                            && installationDetailsResponse.StatusDetail.IsSuccess
+                            && installationDetailsResponse.IsResidential)
+                        {
+                            isEligible = true;
+                        }
+                        else
+                        {
+                            isEligible = false;
+                        }
+                    }
                 }
-                billrenderingresponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
 
-                HideProgressDialog();
-                //Nullity Check
-                if (billrenderingresponse != null
-                   && billrenderingresponse.StatusDetail != null
-                   && billrenderingresponse.StatusDetail.IsSuccess)
+                Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
+                intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
+                intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
+
+                if (isEligible)
                 {
+                    GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
+                    AccountData dbrAccount = selectedAccount;
+                    if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                    {
+                        string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                        AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                    }
+                    billrenderingresponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                    //Nullity Check
+                    if (billrenderingresponse != null
+                       && billrenderingresponse.StatusDetail != null
+                       && billrenderingresponse.StatusDetail.IsSuccess)
+                    {
+                        _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
+                            ? selectedAccount.IsOwner
+                            : DBRUtility.Instance.IsCADBREligible(dbrAccount.AccountNum);
 
-                    Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
-                    intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
-                    intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
-                    intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
-                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
-                    StartActivity(intent);
+                        intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
+                        intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
+                    }
+                    else
+                    {
+                        intent.PutExtra("_isOwner", JsonConvert.SerializeObject(selectedAccount.IsOwner));
+                    }
                 }
                 else
                 {
-                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                        .SetTitle(billrenderingresponse.StatusDetail.Title)
-                                        .SetMessage(billrenderingresponse.StatusDetail.Message)
-                                        .SetCTALabel(billrenderingresponse.StatusDetail.PrimaryCTATitle)
-                                        .Build();
-                    errorPopup.Show();
+                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(selectedAccount.IsOwner));
                 }
+                StartActivity(intent);
             }
             catch (System.Exception e)
             {
-                HideProgressDialog();
                 Utility.LoggingNonFatalError(e);
             }
+            HideProgressDialog();
         }
         public string GetEligibleDBRAccount(AccountData selectedAccount)
         {
@@ -5120,17 +5135,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
             }
-            else
-            {
-                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                     .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
-                                    .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
-                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
-                     .Build();
-                errorPopup.Show();
-            }
             return dbraccount;
         }
+
         private void OnGenerateTariffLegendValue(int index, bool isShow)
         {
             try

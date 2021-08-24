@@ -34,6 +34,7 @@ using myTNB.Mobile;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Database.Model;
 using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.SessionCache;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
@@ -195,10 +196,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
             {
                 mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
-                if (DBRUtility.Instance.IsAccountDBREligible)
-                {
-                    GetBillRenderingAsync(mSelectedAccountData);
-                }
+                GetBillRenderingAsync(mSelectedAccountData);
             }
         }
 
@@ -534,45 +532,75 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     {
                         GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                         AccountData dbrAccount = selectedAccount;
-                        if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                        bool isEligible = DBRUtility.Instance.IsAccountDBREligible;
+                        if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                            , EligibilitySessionCache.FeatureProperty.TargetGroup))
                         {
-                            string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
-                            AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
-                        }
-                        billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
-
-                        _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
-                            ? selectedAccount.IsOwner
-                            : DBRUtility.Instance.IsCADBREligible(dbrAccount.AccountNum);
-
-                        if (billRenderingResponse != null
-                            && billRenderingResponse.StatusDetail != null
-                            && billRenderingResponse.StatusDetail.IsSuccess
-                            && billRenderingResponse.Content != null)
-                        {
-                            if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
+                            isEligible = isEligible
+                                && AccountTypeCache.Instance.IsAccountEligible(dbrAccount.AccountNum);
+                            Console.WriteLine("[DEBUG] Bills IsDBREnabled 0: " + isEligible);
+                            if (isEligible)
                             {
-                                digital_container.Visibility = ViewStates.Gone;
+                                PostInstallationDetailsResponse installationDetailsResponse = await DBRManager.Instance.PostInstallationDetails(dbrAccount.AccountNum
+                                    , AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                                Console.WriteLine("[DEBUG] Bills RateCategory: " + installationDetailsResponse.RateCategory);
+                                Console.WriteLine("[DEBUG] Bills IsResidential: " + installationDetailsResponse.IsResidential);
+                                if (installationDetailsResponse != null
+                                    && installationDetailsResponse.StatusDetail != null
+                                    && installationDetailsResponse.StatusDetail.IsSuccess
+                                    && installationDetailsResponse.IsResidential)
+                                {
+                                    isEligible = true;
+                                }
+                                else
+                                {
+                                    isEligible = false;
+                                }
                             }
-                            else
+                        }
+
+                        if (isEligible)
+                        {
+                            if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
                             {
-                                digital_container.Visibility = ViewStates.Visible;
-                                if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBill
-                                    || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
+                                string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                                AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                            }
+                            billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum
+                                , AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                            _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
+                                ? selectedAccount.IsOwner
+                                : DBRUtility.Instance.IsCADBREligible(dbrAccount.AccountNum);
+
+                            if (billRenderingResponse != null
+                                && billRenderingResponse.StatusDetail != null
+                                && billRenderingResponse.StatusDetail.IsSuccess
+                                && billRenderingResponse.Content != null)
+                            {
+                                if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
                                 {
-                                    bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
+                                    digital_container.Visibility = ViewStates.Gone;
                                 }
-                                else if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Email
-                                    || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
+                                else
                                 {
-                                    bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
+                                    digital_container.Visibility = ViewStates.Visible;
+                                    if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBill
+                                        || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
+                                    {
+                                        bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
+                                    }
+                                    else if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Email
+                                        || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
+                                    {
+                                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
+                                    }
+                                    if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+                                    {
+                                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
+                                    }
+                                    paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
+                                    SetDynatraceScreenTags();
                                 }
-                                if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
-                                {
-                                    bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
-                                }
-                                paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
-                                SetDynatraceScreenTags();
                             }
                         }
                     }

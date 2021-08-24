@@ -127,6 +127,23 @@ namespace myTNB_Android.Src.SessionCache
             return applicationPaymentDetail;
         }
 
+        internal bool IsAccountEligible(string ca)
+        {
+            try
+            {
+                List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+                List<string> caList = allAccountList.Where(x => x.SmartMeterCode != "0")
+                    .Select(y => y.AccNum)
+                    .ToList();
+                return caList.FindIndex(x => x == ca) > -1;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[DEBUG] IsAccountEligible Error: " + e.Message);
+            }
+            return false;
+        }
+
         internal void Clear()
         {
             DBREligibleCAs = new List<string>();

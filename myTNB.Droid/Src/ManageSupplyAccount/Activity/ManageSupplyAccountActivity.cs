@@ -19,6 +19,7 @@ using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.ManageSupplyAccount.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB_Android.Src.SessionCache;
 using myTNB_Android.Src.UpdateNickname.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -142,14 +143,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
                 this.userActionsListener.Start();
-               
-
-                bool isDBREnabled = DBRUtility.Instance.IsAccountDBREligible;
-                if (isDBREnabled)
-                {
-                    GetBillRenderingAsync(accountData);
-                }
-
+                GetBillRenderingAsync(accountData);
             }
             catch (Exception e)
             {
@@ -422,7 +416,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             Handler h = new Handler();
             Action myAction = () =>
             {
-                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.OnGeneraNewAppTutorialList(),false);
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.OnGeneraNewAppTutorialList(), false);
             };
             h.PostDelayed(myAction, 100);
         }
@@ -462,51 +456,79 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             try
             {
                 ShowProgressDialog();
-                GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
-                AccountData dbrAccount = selectedAccount;
-
-                if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                bool isEligible = DBRUtility.Instance.IsAccountDBREligible;
+                if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                            , EligibilitySessionCache.FeatureProperty.TargetGroup))
                 {
-                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
-                    AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
-                }
-                _billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this));
-
-                //Nullity Check
-                if (_billRenderingResponse != null
-                    && _billRenderingResponse.StatusDetail != null
-                    && _billRenderingResponse.StatusDetail.IsSuccess
-                    && _billRenderingResponse.Content != null
-                    && _billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
-                {
-                    manageBillTitle.Text = Utility.GetLocalizedLabel("ManageAccount", _isOwner
-                        ? "dbrManageDeliveryMethod"
-                        : "dbrViewBillDelivery");
-                    ManageBill_container.Visibility = ViewStates.Visible;
-                    
-                   
-                    Handler handler = new Handler();
-                    Action myAction = () =>
+                    isEligible = isEligible
+                        && AccountTypeCache.Instance.IsAccountEligible(selectedAccount.AccountNum);
+                    Console.WriteLine("[DEBUG] Profile IsDBREnabled 0: " + isEligible);
+                    if (isEligible)
                     {
-                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                        if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
+                        PostInstallationDetailsResponse installationDetailsResponse = await DBRManager.Instance.PostInstallationDetails(selectedAccount.AccountNum
+                            , AccessTokenCache.Instance.GetAccessToken(this));
+                        Console.WriteLine("[DEBUG] Profile RateCategory: " + installationDetailsResponse.RateCategory);
+                        Console.WriteLine("[DEBUG] Profile IsResidential: " + installationDetailsResponse.IsResidential);
+                        if (installationDetailsResponse != null
+                            && installationDetailsResponse.StatusDetail != null
+                            && installationDetailsResponse.StatusDetail.IsSuccess
+                            && installationDetailsResponse.IsResidential)
                         {
-                            OnShowManageSupplyAccountTutorialDialog();
+                            isEligible = true;
                         }
-                    };
-                    handler.PostDelayed(myAction, 50);
+                        else
+                        {
+                            isEligible = false;
+                        }
+                    }
                 }
-                else
+                if (isEligible)
                 {
-                    ManageBill_container.Visibility = ViewStates.Gone;
+                    GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
+                    AccountData dbrAccount = selectedAccount;
+
+                    if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                    {
+                        string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                        AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
+                    }
+                    _billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this));
+
+                    //Nullity Check
+                    if (_billRenderingResponse != null
+                        && _billRenderingResponse.StatusDetail != null
+                        && _billRenderingResponse.StatusDetail.IsSuccess
+                        && _billRenderingResponse.Content != null
+                        && _billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
+                    {
+                        manageBillTitle.Text = Utility.GetLocalizedLabel("ManageAccount", _isOwner
+                            ? "dbrManageDeliveryMethod"
+                            : "dbrViewBillDelivery");
+                        ManageBill_container.Visibility = ViewStates.Visible;
+
+
+                        Handler handler = new Handler();
+                        Action myAction = () =>
+                        {
+                            NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                            if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
+                            {
+                                OnShowManageSupplyAccountTutorialDialog();
+                            }
+                        };
+                        handler.PostDelayed(myAction, 50);
+                    }
+                    else
+                    {
+                        ManageBill_container.Visibility = ViewStates.Gone;
+                    }
                 }
-                HideProgressDialog();
             }
             catch (System.Exception e)
             {
-                HideProgressDialog();
                 Utility.LoggingNonFatalError(e);
             }
+            HideProgressDialog();
         }
 
         public void ShowProgressDialog()
