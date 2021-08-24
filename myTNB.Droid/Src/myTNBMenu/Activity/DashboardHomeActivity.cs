@@ -676,20 +676,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowIdentificationUpdate()
         {
-            Intent updateICNo = new Intent(this, typeof(UpdateIDActivity));
+            Intent updateICNo = new Intent(this, typeof(MyProfileActivity));
             StartActivityForResult(updateICNo, Constants.UPDATE_IC_REQUEST);
         }
-
-        //public void ShowProfile()
-        //{
-        //    //SetResult(Result.Ok);
-        //    Intent updateICNo = new Intent(this, typeof(MyProfileActivity));
-        //    StartActivityForResult(updateICNo, Constants.UPDATE_IC_REQUEST);
-
-        //}
-
-
-
 
         public void ShowBillMenu(AccountData selectedAccount)
         {

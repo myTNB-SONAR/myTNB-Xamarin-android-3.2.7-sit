@@ -283,6 +283,17 @@ namespace myTNB_Android.Src.UpdateID.Activity
 
             public void AfterTextChanged(IEditable s)
             {
+                int len = eText.Text.Length;
+                bool dash = eText.Text.Contains("-");
+
+                if (len == 12 && !dash)
+                {
+                    string first6digit = eText.Text.Substring(0, 6);
+                    string digit78 = eText.Text.Substring(eText.Text.Length - 6, 2);
+                    string lastdigit = eText.Text.Substring(eText.Text.Length - 4);
+                    eText.Text = first6digit + "-" + digit78 + "-" + lastdigit;
+                    eText.SetSelection(eText.Text.Length);
+                }
             }
 
             public void BeforeTextChanged(Java.Lang.ICharSequence s, int start, int count, int after)
@@ -342,7 +353,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                     }
                     flagDel = false;
                 }
-                else if (Idtype.Equals("ArmyID / PoliceID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
+                else if (Idtype.Equals("Army / Police ID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
                 }
@@ -870,31 +881,31 @@ namespace myTNB_Android.Src.UpdateID.Activity
                         Country selectedCountry = JsonConvert.DeserializeObject<Country>(dataString);
                         mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
                     }
-                    //else if (requestCode == SELECT_IDENTIFICATION_TYPE_REQ_CODE)
-                    //{
+                    else if (requestCode == SELECT_IDENTIFICATION_TYPE_REQ_CODE)
+                    {
 
-                    //    if (resultCode == Result.Ok)
-                    //    {
-                    //        selectedIdentificationType = JsonConvert.DeserializeObject<IdentificationType>(data.GetStringExtra("selectedIdentificationType"));
-                    //        if (selectedIdentificationType != null)
-                    //        {
-                    //            identityType.Text = selectedIdentificationType.Type;
-                    //            txtICNumber.Text = "";
-                    //            if (selectedIdentificationType.Id.Equals("1"))
-                    //            {
-                    //                txtICNumber.InputType = InputTypes.ClassNumber;
-                    //            }
-                    //            //else
-                    //            //{
-                    //            //    string digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz"; // or any characters you want to allow
-                    //            //    txtICNumber.KeyListener = Android.Text.Method.DigitsKeyListener.GetInstance(digits);
-                    //            //    txtICNumber.SetRawInputType(InputTypes.ClassText);
-                    //            //}
-                    //        }
-                    //    }
-                    //}
-                   
-                    
+                        if (resultCode == Result.Ok)
+                        {
+                            selectedIdentificationType = JsonConvert.DeserializeObject<IdentificationType>(data.GetStringExtra("selectedIdentificationType"));
+                            if (selectedIdentificationType != null)
+                            {
+                                identityType.Text = selectedIdentificationType.Type;
+                                txtICNumber.Text = "";
+                                if (selectedIdentificationType.Id.Equals("1"))
+                                {
+                                    txtICNumber.InputType = InputTypes.ClassNumber;
+                                }
+                                //else
+                                //{
+                                //    string digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz"; // or any characters you want to allow
+                                //    txtICNumber.KeyListener = Android.Text.Method.DigitsKeyListener.GetInstance(digits);
+                                //    txtICNumber.SetRawInputType(InputTypes.ClassText);
+                                //}
+                            }
+                        }
+                    }
+
+
                 }
             }
             catch (Exception e)

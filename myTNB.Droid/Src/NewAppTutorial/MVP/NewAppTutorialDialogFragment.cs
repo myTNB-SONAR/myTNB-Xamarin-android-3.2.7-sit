@@ -90,6 +90,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 swipeTopDoubleTapLayout = rootView.FindViewById<LinearLayout>(Resource.Id.swipeTopDoubleTapLayout);
                 txtDoubleTapDismiss = rootView.FindViewById<TextView>(Resource.Id.txtDoubleTapDismiss);
                 txtTopDoubleTapDismiss = rootView.FindViewById<TextView>(Resource.Id.txtTopDoubleTapDismiss);
+                TextViewUtils.SetMuseoSans300Typeface(txtDoubleTapDismiss, txtTopDoubleTapDismiss);
                 TextViewUtils.SetTextSize12(txtDoubleTapDismiss, txtTopDoubleTapDismiss);
 
                 if (NewAppTutorialList.Count > 1)
@@ -126,7 +127,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 //     txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
                 }
 
-                TextViewUtils.SetMuseoSans300Typeface(txtDoubleTapDismiss, txtTopDoubleTapDismiss);
+               
 
                 if (this.mFragment != null)
                 {

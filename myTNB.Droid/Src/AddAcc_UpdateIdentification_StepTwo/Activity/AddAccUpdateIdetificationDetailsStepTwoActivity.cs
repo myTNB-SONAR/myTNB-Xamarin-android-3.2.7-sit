@@ -237,7 +237,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepTwo.Activity
 
                 this.mPresenter = new AddAccUpdateIdetificationDetailsStepTwoPresenter(this);
 
-                TextViewUtils.SetMuseoSans300Typeface(pageStep,txtOwnerName, txtMobileNumber, txtEmailAddress, txtMailingAddress, txtPremiseAddress); //txtView
+                TextViewUtils.SetMuseoSans300Typeface(pageStep, txtSkip, txtOwnerName, txtMobileNumber, txtEmailAddress, txtMailingAddress, txtPremiseAddress); //txtView
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName, txtInputLayoutNewPremiseAddress); //inputLay
                 TextViewUtils.SetMuseoSans500Typeface(txtNewOwnerName); //edit text
                 TextViewUtils.SetMuseoSans500Typeface(TextView_updateOnOwnerBehalf);  //txtView
