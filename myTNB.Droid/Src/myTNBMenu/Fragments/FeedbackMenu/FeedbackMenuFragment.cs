@@ -237,7 +237,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {   //TODO change intent location 
             var billingPaymentFeedback = new Intent(this.Activity, typeof(FeedbackPreloginNewICActivity));
             billingPaymentFeedback.PutExtra("TITLE", feedbackBillRelatedTitle);
-            ShowProgressDialog();
             StartActivity(billingPaymentFeedback);
         }
 

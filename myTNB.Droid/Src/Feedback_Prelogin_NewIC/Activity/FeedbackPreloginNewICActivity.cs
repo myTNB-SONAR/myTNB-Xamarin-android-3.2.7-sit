@@ -169,8 +169,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         {
             base.OnCreate(savedInstanceState);
             try
-            {
-                ShowProgressDialog();
+            {               
                 //Contract Account List
                 accountList = CustomerBillingAccount.List();
                 contactAccountNumbers = new List<string>();
@@ -246,6 +245,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 txtAccountNo.SetOnTouchListener(this);  //set listener on dropdown arrow at TextLayout
                 txtAccountNo.TextChanged += TextChange;  //adding listener on text change
                 txtAccountNo.FocusChange += TxtAccountNo_FocusChange;
+
+                //Keyboard done button click
                 txtAccountNo.EditorAction += delegate (object sender, TextView.EditorActionEventArgs e)
                 {
                     if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
@@ -318,10 +319,10 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 {
                     var data = new MyTNBService.Request.BaseRequest();
                     var usin = data.usrInf;
-                    
+                    AccNoDesc = "";
                     //verifyCADetailsExt Endpoint
-                    CANumberVerifyResponce = await ServiceApiImpl.Instance.CAVerify(new CAVerifyRequestModel(usin.sspuid, "POST", "/claim/verifyCADetailsExt", listData));                  
-
+                    CANumberVerifyResponce = await ServiceApiImpl.Instance.CAVerify(new CAVerifyRequestModel(usin.sspuid, "POST", "/claim/verifyCADetailsExt", listData));
+                    
                     if (CANumberVerifyResponce != null)
                     {
                         if (CANumberVerifyResponce.d != null)
@@ -397,8 +398,15 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                                                 AccNoDesc = "";
                                                 AccNoDesc = accountList[index].AccDesc;
                                             }
-
-                                            var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + AccNoDesc + " & " + txtAccountNo.Text;
+                                            string infoValue;
+                                            if (string.IsNullOrEmpty(AccNoDesc))
+                                            {
+                                                infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + txtAccountNo.Text;
+                                            }
+                                            else
+                                            {
+                                                infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + AccNoDesc + " & " + txtAccountNo.Text;
+                                            }
                                             InfoLabel.Text = infoValue;
                                         }
                                     }
@@ -406,7 +414,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                                 }
 
                             }
-                            HideProgressDialog();
+                            
                         }
                         else
                         {
@@ -417,8 +425,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     {
                         overvoltageClaimVisible = false;
                     }
-                }
-                
+                }                
                 HideProgressDialog();
             }
             catch (Exception ex)
@@ -641,7 +648,15 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                                 AccNoDesc = accountList[index].AccDesc;
                             }
 
-                            var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + AccNoDesc + " & " + txtAccountNo.Text;
+                            string infoValue;
+                            if (string.IsNullOrEmpty(AccNoDesc))
+                            {
+                                infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + txtAccountNo.Text;
+                            }
+                            else
+                            {
+                                infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + AccNoDesc + " & " + txtAccountNo.Text;
+                            }
                             InfoLabel.Text = infoValue;
                         }
                         else if (IsWhiteListedArea == true)
@@ -658,8 +673,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
                     }
                 }
-               
-                HideProgressDialog();
+                             
                 FirebaseAnalyticsUtils.SetScreenName(this, "Submit New Enquiry");
             }
             catch (Exception e)
@@ -741,7 +755,15 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             }
             else
             {
-                title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle") + AccNoDesc + " & " + txtAccountNo.Text;
+                if(string.IsNullOrEmpty(AccNoDesc))
+                {
+                    title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle") + txtAccountNo.Text;
+                }
+                else
+                {
+                    title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle") + AccNoDesc + " & " + txtAccountNo.Text;
+                }
+                
                 leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                  .SetTitle(title)
                  .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongDescription"))
@@ -873,6 +895,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
             try
             {
+
                 base.OnActivityResult(requestCode, resultCode, data);
                 if (requestCode == Constants.BARCODE_REQUEST_CODE)
                 {
