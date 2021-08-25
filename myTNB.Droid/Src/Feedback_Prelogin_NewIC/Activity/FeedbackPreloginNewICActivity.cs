@@ -405,7 +405,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                                             }
                                             else
                                             {
-                                                infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + AccNoDesc + " & " + txtAccountNo.Text;
+                                                infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + AccNoDesc + " - " + txtAccountNo.Text;
                                             }
                                             InfoLabel.Text = infoValue;
                                         }
@@ -655,7 +655,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                             }
                             else
                             {
-                                infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + AccNoDesc + " & " + txtAccountNo.Text;
+                                infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + AccNoDesc + " - " + txtAccountNo.Text;
                             }
                             InfoLabel.Text = infoValue;
                         }
@@ -761,7 +761,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 }
                 else
                 {
-                    title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle") + AccNoDesc + " & " + txtAccountNo.Text;
+                    title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle") + AccNoDesc + " - " + txtAccountNo.Text;
                 }
                 
                 leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
