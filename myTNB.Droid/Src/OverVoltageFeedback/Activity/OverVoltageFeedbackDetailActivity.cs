@@ -185,7 +185,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 string url = domain + "claimPage/" + ClaimId + queryParams;
 
                 #if DEBUG
-                global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
+                //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
                 #endif
 
                 webView = FindViewById<WebView>(Resource.Id.webView);
