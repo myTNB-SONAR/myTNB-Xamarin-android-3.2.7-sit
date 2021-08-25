@@ -294,14 +294,26 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             {
                 int len = eText.Text.Length;
                 bool dash = eText.Text.Contains("-");
+                string Idtype = idText.Text;
 
-                if (len == 12 && !dash)
+                if (Idtype.Equals("IC / MyKad"))
                 {
-                    string first6digit = eText.Text.Substring(0, 6);
-                    string digit78 = eText.Text.Substring(eText.Text.Length - 6, 2);
-                    string lastdigit = eText.Text.Substring(eText.Text.Length - 4);
-                    eText.Text = first6digit + "-" + digit78 + "-" + lastdigit;
-                    eText.SetSelection(eText.Text.Length);
+                    if (len == 12 && !dash)
+                    {
+                        string first6digit = eText.Text.Substring(0, 6);
+                        string digit78 = eText.Text.Substring(eText.Text.Length - 6, 2);
+                        string lastdigit = eText.Text.Substring(eText.Text.Length - 4);
+                        eText.Text = first6digit + "-" + digit78 + "-" + lastdigit;
+                        eText.SetSelection(eText.Text.Length);
+                    }
+                }
+                else if (Idtype.Equals("Army / Police ID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
+                {
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
+                }
+                else if (Idtype.Equals("Passport") || Idtype.Equals("Pasport"))
+                {
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
                 }
             }
 
@@ -363,7 +375,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     }
                     flagDel = false;
                 }
-                else if (Idtype.Equals("ArmyID / PoliceID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
+                else if (Idtype.Equals("Army / Police ID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
                 }
@@ -1104,17 +1116,17 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         }
 
 
-        public void ShowFullNameError()
-        {
-            // ClearFullNameError();
-            if (textInputLayoutFullName.Error != GetString(Resource.String.name_error))
-            {
-                textInputLayoutFullName.Error = GetString(Resource.String.name_error);
-            }
-            textInputLayoutFullName.Error = GetString(Resource.String.name_error);
-            if (!textInputLayoutFullName.ErrorEnabled)
-                textInputLayoutFullName.ErrorEnabled = true;
-        }
+        //public void ShowFullNameError()
+        //{
+        //    // ClearFullNameError();
+        //    if (textInputLayoutFullName.Error != GetString(Resource.String.name_error))
+        //    {
+        //        textInputLayoutFullName.Error = GetString(Resource.String.name_error);
+        //    }
+        //    textInputLayoutFullName.Error = GetString(Resource.String.name_error);
+        //    if (!textInputLayoutFullName.ErrorEnabled)
+        //        textInputLayoutFullName.ErrorEnabled = true;
+        //}
 
         public void ShowFullICError()
         {

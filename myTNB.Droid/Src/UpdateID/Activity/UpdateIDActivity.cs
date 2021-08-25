@@ -285,14 +285,26 @@ namespace myTNB_Android.Src.UpdateID.Activity
             {
                 int len = eText.Text.Length;
                 bool dash = eText.Text.Contains("-");
+                string Idtype = idText.Text;
 
-                if (len == 12 && !dash)
+                if (Idtype.Equals("IC / MyKad"))
                 {
-                    string first6digit = eText.Text.Substring(0, 6);
-                    string digit78 = eText.Text.Substring(eText.Text.Length - 6, 2);
-                    string lastdigit = eText.Text.Substring(eText.Text.Length - 4);
-                    eText.Text = first6digit + "-" + digit78 + "-" + lastdigit;
-                    eText.SetSelection(eText.Text.Length);
+                    if (len == 12 && !dash)
+                    {
+                        string first6digit = eText.Text.Substring(0, 6);
+                        string digit78 = eText.Text.Substring(eText.Text.Length - 6, 2);
+                        string lastdigit = eText.Text.Substring(eText.Text.Length - 4);
+                        eText.Text = first6digit + "-" + digit78 + "-" + lastdigit;
+                        eText.SetSelection(eText.Text.Length);
+                    }
+                }
+                else if (Idtype.Equals("Army / Police ID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
+                {
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
+                }
+                else if (Idtype.Equals("Passport") || Idtype.Equals("Pasport"))
+                {
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
                 }
             }
 
@@ -895,12 +907,12 @@ namespace myTNB_Android.Src.UpdateID.Activity
                                 {
                                     txtICNumber.InputType = InputTypes.ClassNumber;
                                 }
-                                //else
-                                //{
-                                //    string digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz"; // or any characters you want to allow
-                                //    txtICNumber.KeyListener = Android.Text.Method.DigitsKeyListener.GetInstance(digits);
-                                //    txtICNumber.SetRawInputType(InputTypes.ClassText);
-                                //}
+                                else
+                                {
+                                    string digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz"; // or any characters you want to allow
+                                    txtICNumber.KeyListener = Android.Text.Method.DigitsKeyListener.GetInstance(digits);
+                                    txtICNumber.SetRawInputType(InputTypes.ClassText);
+                                }
                             }
                         }
                     }

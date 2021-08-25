@@ -148,7 +148,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             /// <returns>boolean representation of should show rationale or not</returns>
             bool ShouldShowSMSReceiveRationale();
 
-            void ShowFullNameError();
+            //void ShowFullNameError();
 
             void ShowFullICError();
 

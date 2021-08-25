@@ -113,16 +113,16 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
                 if (!TextUtils.IsEmpty(fullname) && !TextUtils.IsEmpty(icno) && !TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(idtype) && (checkbox))
                 {
 
-                    if (!Utility.isAlphaNumeric(fullname) && !Utility.isSpecialcharacter(fullname))
-                    {
-                        this.mView.ShowFullNameError();
-                        this.mView.DisableRegisterButton();
-                        return;
-                    }
-                    else
-                    {
-                        this.mView.ClearFullNameError();
-                    }
+                    //if (!Utility.isAlphaNumeric(fullname) && !Utility.isSpecialcharacter(fullname))
+                    //{
+                    //    this.mView.ShowFullNameError();
+                    //    this.mView.DisableRegisterButton();
+                    //    return;
+                    //}
+                    //else
+                    //{
+                    //    this.mView.ClearFullNameError();
+                    //}
                     string ic_no = icno.Replace("-", string.Empty);
                     if (!CheckIdentificationIsValid(ic_no) && idtype.Equals("1"))
                     {
@@ -236,11 +236,11 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
                 return;
             }
 
-            if (!Utility.isAlphaNumeric(fullname) && !Utility.isSpecialcharacter(fullname))
-            {
-                this.mView.ShowFullNameError();
-                return;
-            }
+            //if (!Utility.isAlphaNumeric(fullname) && !Utility.isSpecialcharacter(fullname))
+            //{
+            //    this.mView.ShowFullNameError();
+            //    return;
+            //}
 
             if (TextUtils.IsEmpty(icno))
             {

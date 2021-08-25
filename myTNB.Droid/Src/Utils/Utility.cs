@@ -319,7 +319,7 @@ namespace myTNB_Android.Src.Utils
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.DIALOGBOX_WITH_CHECKBOX)
                         .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "titleIcUpdate"))
                         .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "bodyIcUpdate"))
-                        .SetTitleCheckBox("Don't Show This Again")
+                        .SetTitleCheckBox(Utility.GetLocalizedLabel("Common", "dontShowThisAgain"))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "later"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "proceed"))
