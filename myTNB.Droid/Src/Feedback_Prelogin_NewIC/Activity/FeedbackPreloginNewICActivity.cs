@@ -315,14 +315,14 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             try
             {
                 ShowProgressDialog();
-                if(IsNetworkAvailable())
+                if (IsNetworkAvailable())
                 {
                     var data = new MyTNBService.Request.BaseRequest();
                     var usin = data.usrInf;
                     AccNoDesc = "";
                     //verifyCADetailsExt Endpoint
                     CANumberVerifyResponce = await ServiceApiImpl.Instance.CAVerify(new CAVerifyRequestModel(usin.sspuid, "POST", "/claim/verifyCADetailsExt", listData));
-                    
+
                     if (CANumberVerifyResponce != null)
                     {
                         if (CANumberVerifyResponce.d != null)
@@ -414,7 +414,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                                 }
 
                             }
-                            
+
                         }
                         else
                         {
@@ -425,7 +425,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     {
                         overvoltageClaimVisible = false;
                     }
-                }                
+                }              
                 HideProgressDialog();
             }
             catch (Exception ex)
@@ -442,6 +442,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     accountLayout4.Visibility = ViewStates.Visible;
                     var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailable");
                     InfoLabel.Text = infoValue;
+                    HideProgressDialog();
                 }
                 
             }
