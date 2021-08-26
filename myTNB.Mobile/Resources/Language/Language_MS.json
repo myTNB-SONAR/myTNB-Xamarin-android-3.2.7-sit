@@ -790,7 +790,8 @@
     "noAccounts": "Tiada Akaun Elektrik",
     "addAccountMessage": "Tambah Akaun Elektrik TNB sedia ada untuk melihat butiran penggunaan dan transaksi.",
     "popupremoveAccountTitleSwipe": "Alih Keluar Akaun",
-    "popupremoveAccountMessageSwipe": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda."
+    "popupremoveAccountMessageSwipe": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda.",
+    "emptyListDetails": "Tidak ada akaun elektrik yang ditambahkan. Tambahkan akaun sekarang dan anda akan mendapat akses ke penggunaan, bil dan mengurus akaun anda."
 
   },
   "Prelogin": {
@@ -2077,7 +2078,7 @@
     "updateIdTitle": "Sahkan Nombor Pengenalan Anda:",
     "confrimButton": "Sahkan",
     "re_enter": "Masukkan semula",
-    "updateIdMessage": "Pastikan nomnor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja."
+    "updateIdMessage": "Pastikan nombor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja."
   },
   "SearchByNumber": {
     "title": "Cari Dengan",

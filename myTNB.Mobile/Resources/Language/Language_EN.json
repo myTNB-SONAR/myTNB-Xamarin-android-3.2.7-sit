@@ -789,7 +789,8 @@
     "noAccounts": "No Electricity Account",
     "addAccountMessage": "Add your existing TNB Electricity Supply Account to view usage and transaction details.",
     "popupremoveAccountTitleSwipe": "Remove Account",
-    "popupremoveAccountMessageSwipe": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity account. Visit the myTNB Portal or Kedai Tenaga to close your electricity supply account."
+    "popupremoveAccountMessageSwipe": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity account. Visit the myTNB Portal or Kedai Tenaga to close your electricity supply account.",
+    "emptyListDetails": "There is no electricity account added. Add an account now and you’ll have access to your usage, bills and manage your account."
 
   },
   "Prelogin": {

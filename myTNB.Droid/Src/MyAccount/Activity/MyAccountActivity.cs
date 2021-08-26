@@ -18,6 +18,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageSupplyAccount.Activity;
 using myTNB_Android.Src.MyAccount.Adapter;
 using myTNB_Android.Src.MyAccount.MVP;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -44,14 +45,14 @@ namespace myTNB_Android.Src.MyAccount.Activity
         [BindView(Resource.Id.btnAddAnotherAccount)]
         Button btnAddAnotherAccount;
 
-        [BindView(Resource.Id.btnAddAccount)]
-        Button btnAddAccount;
+        //[BindView(Resource.Id.btnAddAccount)]
+        //Button btnAddAccount;
 
         [BindView(Resource.Id.no_account_layout)]
         FrameLayout NoAccountLayout;
 
-        [BindView(Resource.Id.txtMyAccountNoAccountTitle)]
-        TextView txtMyAccountNoAccountTitle;
+        //[BindView(Resource.Id.txtMyAccountNoAccountTitle)]
+        //TextView txtMyAccountNoAccountTitle;
 
         [BindView(Resource.Id.txtMyAccountNoAccountContent)]
         TextView txtMyAccountNoAccountContent;
@@ -64,6 +65,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
         MyAccountPresenter mPresenter;
 
         MaterialDialog accountRetrieverDialog;
+
+        private bool fromDashboard = false;
 
         const string PAGE_ID = "ManageAccount";
 
@@ -85,6 +88,10 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
             try
             {
+                if (Intent.HasExtra("fromDashboard"))
+                {
+                    fromDashboard = Intent.Extras.GetBoolean("fromDashboard", false);
+                }
                 // Create your application here
                 //TextViewUtils.SetMuseoSans300Typeface(
                 //    txtMyAccountNoAccountContent);
@@ -92,15 +99,15 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 //    btnAddAccount);
 
                 TextViewUtils.SetTextSize12(txtMyAccountNoAccountContent);
-                TextViewUtils.SetTextSize14(txtMyAccountNoAccountTitle);
-                TextViewUtils.SetTextSize16(btnAddAccount, btnAddAnotherAccount);
+                //TextViewUtils.SetTextSize14(txtMyAccountNoAccountTitle);
+                TextViewUtils.SetTextSize16( btnAddAnotherAccount);
                 //TextViewUtils.SetTextSize18(txtTnBSupplyAccountTitle);
 
                 //txtTnBSupplyAccountTitle.Text = GetLabelByLanguage("accountSectionTitle");
                 btnAddAnotherAccount.Text = GetLabelCommonByLanguage("addAnotherAcct");
-                txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
-                txtMyAccountNoAccountContent.Text = GetLabelByLanguage("addAccountMessage");
-                btnAddAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
+                //txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
+                txtMyAccountNoAccountContent.Text = Utility.GetLocalizedLabel("MyAccount", "emptyListDetails");
+                //btnAddAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
                 //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
                 adapter = new MyAccountAdapter(this, false);
@@ -190,6 +197,30 @@ namespace myTNB_Android.Src.MyAccount.Activity
             adapter.setCustomButtonListner(this);
             this.userActionsListener.Start();
             ShowAccountRemovedSuccess();
+        }
+
+        public override void OnBackPressed()
+        {
+            base.OnBackPressed();
+            if (fromDashboard)
+                ShowDashboard();
+            else
+                this.Finish();
+        }
+
+        //public void NavigateToDashboard()
+        //{
+        //    if (fromDashboard)
+        //        ShowDashboard();
+        //    else
+        //        this.Finish();
+        //}
+
+        public void ShowDashboard()
+        {
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(DashboardIntent);
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -283,15 +314,15 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
 
-        [OnClick(Resource.Id.btnAddAccount)]
-        void OnClickAddAccount(object sender, EventArgs eventArgs)
-        {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                ShowAddAccount();
-            }
-        }
+        //[OnClick(Resource.Id.btnAddAccount)]
+        //void OnClickAddAccount(object sender, EventArgs eventArgs)
+        //{
+        //    if (!this.GetIsClicked())
+        //    {
+        //        this.SetIsClicked(true);
+        //        ShowAddAccount();
+        //    }
+        //}
 
         [OnClick(Resource.Id.btnAddAnotherAccount)]
         void OnClickAddAnotherAccount(object sender, EventArgs eventArgs)
@@ -485,7 +516,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             try
             {
                 listView.EmptyView = NoAccountLayout;
-                btnAddAnotherAccount.Visibility = ViewStates.Gone;
+                btnAddAnotherAccount.Visibility = ViewStates.Visible;
             }
             catch (Exception e)
             {

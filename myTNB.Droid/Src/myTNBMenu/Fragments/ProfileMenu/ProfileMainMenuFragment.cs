@@ -522,19 +522,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         private void ShowManageAccount()
         {
-            List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
-            if (customerAccountList != null && customerAccountList.Count > 0)
-            {
+            //List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
+            //if (customerAccountList != null && customerAccountList.Count > 0)
+            //{
                 Intent nextIntent = new Intent(this.Activity, typeof(MyAccountActivity));
                 nextIntent.PutExtra(Constants.FORCE_UPDATE_PHONE_NO, mobileNoUpdated);
                 StartActivityForResult(nextIntent, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
-            }
-            else
-            {
-                Intent nextIntent = new Intent(this.Activity, typeof(LinkAccountActivity));
-                nextIntent.PutExtra(Constants.FORCE_UPDATE_PHONE_NO, mobileNoUpdated);
-                StartActivityForResult(nextIntent, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
-            }
+            //}
+            //else
+            //{
+            //    Intent nextIntent = new Intent(this.Activity, typeof(LinkAccountActivity));
+            //    nextIntent.PutExtra(Constants.FORCE_UPDATE_PHONE_NO, mobileNoUpdated);
+            //    StartActivityForResult(nextIntent, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
+            //}
 
         }
 
