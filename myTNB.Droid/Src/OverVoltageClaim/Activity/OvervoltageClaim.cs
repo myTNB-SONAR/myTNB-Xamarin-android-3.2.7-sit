@@ -149,7 +149,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
 
                 if (TextViewUtils.IsLargeFonts)
                 {
-                    url += "?large";
+                    url += "&large";
                 }
 
                 webView.LoadUrl(url); 

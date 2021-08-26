@@ -337,7 +337,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                                 txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
                                 updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
                                 updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                                overvoltageclaimConstraint.Clickable = false;
+                                overvoltageclaimConstraint.Clickable = true;
                                 accountLayout4.Visibility = ViewStates.Visible;
 
                                 var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageMaintenanceLabel");
@@ -390,7 +390,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                                             txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
                                             updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
                                             updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                                            overvoltageclaimConstraint.Clickable = false;
+                                            overvoltageclaimConstraint.Clickable = true;
                                             accountLayout4.Visibility = ViewStates.Visible;
                                             int index = accountList.FindIndex(s => s.AccNum.Equals(txtAccountNo.Text));
                                             if (index != -1)
@@ -438,7 +438,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
                     updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
                     updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                    overvoltageclaimConstraint.Clickable = false;
+                    overvoltageclaimConstraint.Clickable = true;
                     accountLayout4.Visibility = ViewStates.Visible;
                     var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailable");
                     InfoLabel.Text = infoValue;
@@ -602,7 +602,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
                     updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
                     updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                    overvoltageclaimConstraint.Clickable = false;
+                    overvoltageclaimConstraint.Clickable = true;
                     accountLayout4.Visibility = ViewStates.Visible;
                     var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailable");
                     InfoLabel.Text = infoValue;
@@ -616,7 +616,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                         txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
                         updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
                         updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                        overvoltageclaimConstraint.Clickable = false;
+                        overvoltageclaimConstraint.Clickable = true;
                         accountLayout4.Visibility = ViewStates.Visible;
 
                         var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageMaintenanceLabel");
@@ -640,7 +640,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                             txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
                             updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
                             updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                            overvoltageclaimConstraint.Clickable = false;
+                            overvoltageclaimConstraint.Clickable = true;
                             accountLayout4.Visibility = ViewStates.Visible;
                             int index = accountList.FindIndex(s => s.AccNum.Equals(txtAccountNo.Text));
                             if (index != -1)
@@ -1037,26 +1037,74 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             if (!this.GetIsClicked())
             {
                 IsOverVoltageClick = true;
-                if (DownTimeEntity.IsBCRMDown())
+                //Overvoltage clickable with blue color
+                if(IsWhiteListedArea)
                 {
-                    OnBCRMDownTimeErrorMessage();
-                    this.SetIsClicked(false);
-                }
-                else
-                {
-                    string accno = txtAccountNo.Text.ToString().Trim();
-                    bool isAllowed = this.userActionsListener.CheckRequiredFields(accno);
-
-                    if (isAllowed)
+                    if (DownTimeEntity.IsBCRMDown())
                     {
-                        this.SetIsClicked(true);
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false);
+                        OnBCRMDownTimeErrorMessage();
+                        this.SetIsClicked(false);
                     }
                     else
                     {
-                        this.SetIsClicked(false);
-                    }
+                        string accno = txtAccountNo.Text.ToString().Trim();
+                        bool isAllowed = this.userActionsListener.CheckRequiredFields(accno);
 
+                        if (isAllowed)
+                        {
+                            this.SetIsClicked(true);
+                            this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false);
+                        }
+                        else
+                        {
+                            this.SetIsClicked(false);
+                        }
+
+                    }
+                }
+                //Overvoltage clickable with gray color
+                else
+                {
+                    string title;
+                    if (OvisUnderMaintenance == true)
+                    {
+                        leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                         .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageMaintenanceTitle"))
+                         .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageMaintenanceDescription"))
+                         .SetCTALabel(Utility.GetLocalizedLabel("SubmitEnquiry", "Gotit"))
+                         .SetCTAaction(() => { leaveDialog.DismissDialog(); })
+                         .Build();
+                        leaveDialog.Show();
+                    }
+                    else if (IsServerDown)
+                    {
+                        leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                         .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailableTitle"))
+                         .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailableDescription"))
+                         .SetCTALabel(Utility.GetLocalizedLabel("SubmitEnquiry", "Gotit"))
+                         .SetCTAaction(() => { leaveDialog.DismissDialog(); })
+                         .Build();
+                        leaveDialog.Show();
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(AccNoDesc))
+                        {
+                            title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle") + txtAccountNo.Text;
+                        }
+                        else
+                        {
+                            title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle") + AccNoDesc + " - " + txtAccountNo.Text;
+                        }
+
+                        leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                         .SetTitle(title)
+                         .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongDescription"))
+                         .SetCTALabel(Utility.GetLocalizedLabel("SubmitEnquiry", "Gotit"))
+                         .SetCTAaction(() => { leaveDialog.DismissDialog(); })
+                         .Build();
+                        leaveDialog.Show();
+                    }
                 }
             }
         }
