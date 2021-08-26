@@ -2347,9 +2347,9 @@
   },
 
   "EnergyBudgetPopup": {
-    "title": "Take control of your energy usage with the new Energy Budget feature!",
-    "threeEasyStep": "Saving money in 3 easy steps:",
-    "firstStep": "SET a budget for your monthly energy usage",
+    "title": "Congratulations! You are selected to experience our new Energy Budget feature!",
+    "threeEasyStep": "Saving money in 3 easy steps: ",
+    "firstStep": "SET a budget for your existing Smart Meter accounts",
     "secondStep": "MONITOR your energy usage right at your fingertips",
     "thirdStep": "SAVINGS starts with you getting notified when reaching your set budget",
     "txtLetgetstarted": "Let's Get Started",
@@ -2362,5 +2362,33 @@
       "enabled": true,
       "callInterval": 480
     }
+  },
+
+  "FeedBackEB": {
+    "pagefeedbackTitle": "Energy Budget Feedback",
+    "pagefeedbackSetupTitle": "Energy Budget Set-Up Feedback",
+    "titleNumberOne": "Did you find Energy Budget useful?",
+    "thumbUpYes": "Yes, absolutely",
+    "thumbDownNo": "Not really",
+    "btnNoThank": "No Thanks",
+    "btnShare": "Share",
+    "titleSelectApplies": "Select all that applies",
+    "saveOnEBusage": "Didn't save on energy usage",
+    "EBcannotTrusted": "Energy Budget can't be trusted",
+    "NotUsingEBagain": "Won't use Energy Budget again",
+    "EBtipNotHelpful": "Energy saving tips weren't helpful",
+    "tellusMore": "Tell us more (Optional)",
+    "hinttellusMore": "characters left",
+    "titleNumberTwo": "How likely are you to recommend Energy Budget to your friends/family?",
+    "starOnetitle": "I don't like this",
+    "starTwotitle": "I did not enjoy it",
+    "starThreetitle": "It was okay",
+    "starFourtitle": "It was good!",
+    "starFivetitle": "It was great!",
+    "improveTitle": "What can be improved?",
+    "txtSimplicity": "Set Up Simplicity",
+    "txtContent": "Content Relevance",
+    "txtNavigation": "Navigation",
+    "txtDesign": "Design"
   }
 }

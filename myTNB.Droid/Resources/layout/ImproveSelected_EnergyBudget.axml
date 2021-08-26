@@ -23,7 +23,7 @@
             android:layout_margin="8dp"
             android:layout_gravity="center_vertical"
             android:text="I did not enjoy it"
-            android:textColor="@color/charcoalGrey"
+            android:textColor="@color/silverchalice"
             android:textSize="10dp" />
     </LinearLayout>
 </LinearLayout>

@@ -2339,12 +2339,12 @@
   },
 
   "EnergyBudgetPopup": {
-    "title": "Kawal penggunaan elektrik anda dengan mudah Bersama Energy Budget!",
+    "title": "Tahniah! Rasai pengalaman baru dalam mengawal penggunaan elektrik bersama Energy Budget!",
     "threeEasyStep": "Penjimatan wang melalui 3 cara mudah:",
-    "firstStep": "TETAPKAN tahap penggunaan bulanan anda",
+    "firstStep": "TETAPKAN tahap penggunaan bulanan meter pintar terpilih anda",
     "secondStep": "PANTAU penggunaan harian dengan mudah",
     "thirdStep": "BERJIMAT apabila anda menghampiri penggunaan yang anda tetapkan",
-    "txtLetgetstarted": "Mari Kita Mulakan",
+    "txtLetgetstarted": "Mula Sekarang",
     "txtViewmybudget": "Lihat Budget Saya",
     "txtMaybelater": "Kemudian"
   },
@@ -2354,5 +2354,33 @@
       "enabled": true,
       "callInterval": 480
     }
+  },
+
+  "FeedBackEB": {
+    "pagefeedbackTitle": "Energy Budget Feedback",
+    "pagefeedbackSetupTitle": "Energy Budget Set-Up Feedback",
+    "titleNumberOne": "Did you find Energy Budget useful?",
+    "thumbUpYes": "Yes, absolutely",
+    "thumbDownNo": "Not really",
+    "btnNoThank": "No Thanks",
+    "btnShare": "Share",
+    "titleSelectApplies": "Select all that applies",
+    "saveOnEBusage": "Didn't save on energy usage",
+    "EBcannotTrusted": "Energy Budget can't be trusted",
+    "NotUsingEBagain": "Won't use Energy Budget again",
+    "EBtipNotHelpful": "Energy saving tips weren't helpful",
+    "tellusMore": "Tell us more (Optional)",
+    "hinttellusMore": "characters left",
+    "titleNumberTwo": "How likely are you to recommend Energy Budget to your friends/family?",
+    "starOnetitle": "I don't like this",
+    "starTwotitle": "I did not enjoy it",
+    "starThreetitle": "It was okay",
+    "starFourtitle": "It was good!",
+    "starFivetitle": "It was great!",
+    "improveTitle": "What can be improved?",
+    "txtSimplicity": "Set Up Simplicity",
+    "txtContent": "Content Relevance",
+    "txtNavigation": "Navigation",
+    "txtDesign": "Design"
   }
 }

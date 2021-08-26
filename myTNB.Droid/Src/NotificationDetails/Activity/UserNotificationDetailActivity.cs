@@ -11,12 +11,15 @@ using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using DynatraceAndroid;
 using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.EnergyBudgetRating.Activity;
+using myTNB_Android.Src.EnergyBudgetRating.Fargment;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -61,6 +64,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         UserNotificationDetailPresenter mPresenter;
         AlertDialog removeDialog;
         public bool pushFromDashboard = false;
+        IDTXAction dynaTrace;
 
         public override int ResourceId()
         {
@@ -408,6 +412,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_tips);
             FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_tips);
+            MyTNBAccountManagement.GetInstance().SetIsFromViewTips(true);
             Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
             webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("PushNotificationDetails", "viewTipsURL"));
             webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("PushNotificationList", "title"));
@@ -471,6 +476,92 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 .SetContentGravity(GravityFlags.Center)
                 .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                 .Build().Show();
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+            try
+            {
+                dynaTrace.LeaveAction();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                dynaTrace = DynatraceAndroid.Dynatrace.EnterAction("EB_view_notification_duration");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                if (MyTNBAccountManagement.GetInstance().IsFromViewTipsPage())
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsFromViewTips(false);
+                    ShowFeedBackSetupPageRating();
+                }
+
+                if (MyTNBAccountManagement.GetInstance().IsFinishFeedback())
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsFinishFeedback(false);
+                    ShowThankYouFeedbackTooltips();
+                }
+            }
+            catch (Exception e)
+            {
+                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ShowFeedBackSetupPageRating()
+        {
+            try
+            {
+                SetupFeedBackFragment.Create(this, SetupFeedBackFragment.ToolTipType.NORMAL_WITH_THREE_BUTTON)
+                    .SetCTALabel("Don't Ask Again")
+                    .SetYesBtnCTAaction(() =>
+                    {
+                        Intent intent = new Intent(this, typeof(EnergyBudgetRatingActivity));
+                        intent.PutExtra("feedbackOne", "Yes");
+                        StartActivity(intent);
+                    })
+                    .SetNoBtnCTAaction(() =>
+                    {
+                        Intent intent = new Intent(this, typeof(EnergyBudgetRatingActivity));
+                        intent.PutExtra("feedbackOne", "No");
+                        StartActivity(intent);
+                    })
+                    .Build().Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ShowThankYouFeedbackTooltips()
+        {
+            try
+            {
+                SetupFeedBackFragment.Create(this, SetupFeedBackFragment.ToolTipType.IMAGE_HEADER)
+                    .SetCTALabel("Okay")
+                    .SetTitle("Thank you for your feedback!")
+                    .Build().Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
     }

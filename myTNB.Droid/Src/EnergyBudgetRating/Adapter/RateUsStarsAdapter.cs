@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
 
                     //vh.txtTitleInfo.Text = QuestionCount + ". " + question.Question;
                     //QuestionCount += 1;
-                    if (question.QuestionType.Equals(Constants.QUESTION_TYPE_RATING))
+                    if (question.QuestionType.Equals(Constants.QUESTION_TYPE_RATING_EB_FEEDBACK_TWO))
                     {
                         vh.ratingBar.Visibility = ViewStates.Visible;
                         vh.txtTitleInfo.Visibility = ViewStates.Visible;
@@ -116,9 +116,75 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                             OnRatingUpdate(vh, position);
                         };
                     }
-                    else
+                    else if (question.QuestionType.Equals(Constants.QUESTION_TYPE_RATING_EB_FEEDBACK_ONE))
                     {
+                        vh.ratingBar.Visibility = ViewStates.Visible;
+                        vh.txtTitleInfo.Visibility = ViewStates.Gone;
 
+                        if (position == 0)
+                        {
+                            if (SelectedRating != 0 && SelectedRating < 6)
+                            {
+                                vh.txtTitleInfo.Text = question.InputOptionValueList[SelectedRating - 1].InputOptionValues;
+                                question.InputRating = SelectedRating.ToString();
+                                question.IsQuestionAnswered = true;
+                                vh.ratingBar.Rating = SelectedRating;
+                            }
+                            else
+                            {
+                                question.IsQuestionAnswered = false;
+                                //vh.txtContentInfo.Text = "";
+                            }
+                        }
+                        else
+                        {
+                            question.IsQuestionAnswered = false;
+                            //vh.txtTitleInfo.Text = "";
+                        }
+                        //vh.ratingBar.Rating = SelectedRating;
+
+                        vh.ratingBar.RatingBarChange += (o, e) =>
+                        {
+                            vh.ratingBar.Rating = e.Rating;
+                            int Rating = ((int)e.Rating);
+                            if (Rating == 0)
+                            {
+                                question.IsQuestionAnswered = false;
+                                vh.txtTitleInfo.Text = "";
+                            }
+                            else if (Rating == 1)
+                            {
+                                question.IsQuestionAnswered = true;
+                                //vh.txtTitleInfo.Text = question.InputOptionValueList[0].InputOptionValues;
+                                vh.txtTitleInfo.Text = "I don't like this";
+                            }
+                            else if (Rating == 2)
+                            {
+                                question.IsQuestionAnswered = true;
+                                //vh.txtTitleInfo.Text = question.InputOptionValueList[1].InputOptionValues;
+                                vh.txtTitleInfo.Text = "I did not enjoy it";
+                            }
+                            else if (Rating == 3)
+                            {
+                                question.IsQuestionAnswered = true;
+                                //vh.txtTitleInfo.Text = question.InputOptionValueList[2].InputOptionValues;
+                                vh.txtTitleInfo.Text = "It was okay";
+                            }
+                            else if (Rating == 4)
+                            {
+                                question.IsQuestionAnswered = true;
+                                //vh.txtTitleInfo.Text = question.InputOptionValueList[3].InputOptionValues;
+                                vh.txtTitleInfo.Text = "It was good!";
+                            }
+                            else if (Rating == 5)
+                            {
+                                question.IsQuestionAnswered = true;
+                                //vh.txtTitleInfo.Text = question.InputOptionValueList[4].InputOptionValues;
+                                vh.txtTitleInfo.Text = "It was great!";
+                            }
+                            question.InputRating = Rating.ToString();
+                            OnRatingUpdate(vh, position);
+                        };
                     }
                 }
             }
@@ -141,7 +207,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
             {
                 foreach (RateUsStar item in questions)
                 {
-                    if (!item.IsQuestionAnswered && item.IsMandatory)
+                    if (item.InputRating.Equals("0"))
                     {
                         flag = false;
                         break;

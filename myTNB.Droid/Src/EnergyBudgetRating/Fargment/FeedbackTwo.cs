@@ -5,6 +5,7 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.Snackbar;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.EnergyBudgetRating.Activity;
 using myTNB_Android.Src.EnergyBudgetRating.Adapter;
 using myTNB_Android.Src.EnergyBudgetRating.Model;
@@ -38,7 +39,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
         private GridLayoutManager layoutManager;
 
-        private RateUsStarsAdapter adapter;
+        private RateUsStarsCustomAdapter adapter;
 
         private ImproveSelectAdapter adapterGrid;
 
@@ -46,7 +47,15 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
         private TextView txtTellUsMoreHintCount;
 
-        private List<RateUsStar> activeQuestionList = new List<RateUsStar>();
+        private TextView titleSetUpFeedback;
+
+        private TextView titleImproveSuggest;
+
+        private TextView bodyImproveSuggest;
+
+        private TextView titleStarRating;
+
+        private List<ImproveSelectModel> activeQuestionList = new List<ImproveSelectModel>();
 
         private List<ImproveSelectModel> improveSelectModels = new List<ImproveSelectModel>();
 
@@ -58,6 +67,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
         private string deviceID;
         private int selectedRating;
         private string questionCatId;
+        private bool fromClick;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -72,22 +82,10 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
             {
                 mPresenter = new EnergyBudgetRatingPresenter(this);
                 ratingActivity = ((EnergyBudgetRatingActivity)Activity);
-
-                if (Arguments.ContainsKey(Constants.QUESTION_ID_CATEGORY))
+               
+                if (Arguments.ContainsKey("StarFromDashboardFragmentPage"))
                 {
-                    questionCatId = Arguments.GetString(Constants.QUESTION_ID_CATEGORY);
-                }
-                if (Arguments.ContainsKey(Constants.DEVICE_ID_PARAM))
-                {
-                    deviceID = Arguments.GetString(Constants.DEVICE_ID_PARAM);
-                }
-                if (Arguments.ContainsKey(Constants.MERCHANT_TRANS_ID))
-                {
-                    merchantTransId = Arguments.GetString(Constants.MERCHANT_TRANS_ID);
-                }
-                if (Arguments.ContainsKey(Constants.SELECTED_RATING))
-                {
-                    selectedRating = Arguments.GetInt(Constants.SELECTED_RATING);
+                    selectedRating = Arguments.GetInt("StarFromDashboardFragmentPage");
                 }
 
                 recyclerView = mainView.FindViewById<RecyclerView>(Resource.Id.question_recycler_view);
@@ -95,15 +93,23 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 //rootView = mainView.FindViewById<FrameLayout>(Resource.Id.baseView);
                 txtTellUsMore = mainView.FindViewById<EditText>(Resource.Id.txtTellUsMore);
                 txtTellUsMoreHintCount = mainView.FindViewById<TextView>(Resource.Id.txtTellUsMoreHintCount);
+                titleSetUpFeedback = mainView.FindViewById<TextView>(Resource.Id.titleSetUpFeedback);
+                titleImproveSuggest = mainView.FindViewById<TextView>(Resource.Id.titleImproveSuggest);
+                bodyImproveSuggest = mainView.FindViewById<TextView>(Resource.Id.bodyImproveSuggest);
+                titleStarRating = mainView.FindViewById<TextView>(Resource.Id.titleLinearlayout);
                 btnNoThank = mainView.FindViewById<Button>(Resource.Id.btnNoTQ);
                 btnShare = mainView.FindViewById<Button>(Resource.Id.btnShare);
 
-                btnNoThank.Text = Utility.GetLocalizedCommonLabel("submit");
-                btnShare.Text = Utility.GetLocalizedCommonLabel("submit");
-                txtTellUsMoreHintCount.Text = (initialnumber.ToString() + " characters left");
+                titleImproveSuggest.Text = Utility.GetLocalizedLabel("FeedBackEB", "improveTitle");
+                bodyImproveSuggest.Text = Utility.GetLocalizedLabel("FeedBackEB", "titleSelectApplies");
+                txtTellUsMore.Hint = Utility.GetLocalizedLabel("FeedBackEB", "tellusMore");
+                btnNoThank.Text = Utility.GetLocalizedLabel("FeedBackEB", "btnNoThank");
+                btnShare.Text = Utility.GetLocalizedLabel("FeedBackEB", "btnShare");
 
-                layoutManager = new GridLayoutManager(Activity.ApplicationContext, 1);
-                adapter = new RateUsStarsAdapter(Activity.ApplicationContext, activeQuestionList, selectedRating);
+                txtTellUsMoreHintCount.Text = (initialnumber.ToString() + " " + Utility.GetLocalizedLabel("FeedBackEB", "hinttellusMore"));
+
+                layoutManager = new GridLayoutManager(Activity.ApplicationContext, 5);
+                adapter = new RateUsStarsCustomAdapter(Activity.ApplicationContext, activeQuestionList, selectedRating);
                 recyclerView.SetLayoutManager(layoutManager);
                 recyclerView.SetAdapter(adapter);
                 adapter.RatingUpdate += OnRatingUpdate;
@@ -115,17 +121,24 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 adapterGrid.SelectUpdate += OnSelectUpdate;
 
                 txtTellUsMore.TextChanged += TxtTellUsMore_TextChanged;
+
                 injectDemoData();
                 injectSelectData();
+                SelectStarFromData(selectedRating);
                 //this.userActionsListener.GetQuestions(questionCatId);
 
-                /*btnShare.Click += delegate
+                btnNoThank.Click += delegate
                 {
-                    if (adapter.GetInputAnswers().Count > 0)
-                    {
-                        this.userActionsListener.PrepareSubmitRateUsRequest(merchantTransId, deviceID, adapter.GetInputAnswers());
-                    }
-                };*/
+                    MyTNBAccountManagement.GetInstance().SetIsFromClickAdapter(0);
+                    ShowSumitRateUsSuccess();
+                };
+
+                btnShare.Click += delegate
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsFromClickAdapter(0);
+                    MyTNBAccountManagement.GetInstance().SetIsFinishFeedback(true);
+                    ShowSumitRateUsSuccess();
+                };
             }
             catch (Exception e)
             {
@@ -142,11 +155,11 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 if (tellusmore.Length > 0)
                 {
                     int remainNumber = initialnumber - tellusmore.Length;
-                    txtTellUsMoreHintCount.Text = (remainNumber.ToString() + " characters left").ToString();
+                    txtTellUsMoreHintCount.Text = (remainNumber.ToString() + " " + Utility.GetLocalizedLabel("FeedBackEB", "hinttellusMore"));
                 }
                 else
                 {
-                    txtTellUsMoreHintCount.Text = (initialnumber.ToString() + " characters left");
+                    txtTellUsMoreHintCount.Text = (initialnumber.ToString() + " " + Utility.GetLocalizedLabel("FeedBackEB", "hinttellusMore"));
                 }
             }
             catch (Exception ex)
@@ -166,7 +179,81 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
             {
                 if (adapter != null)
                 {
-                    if (adapter.IsAllQuestionAnswered())
+                    if (MyTNBAccountManagement.GetInstance().IsFromClickAdapter() != position)
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsFromClickAdapter(position);
+                        List<ImproveSelectModel> activeStarSelectList = new List<ImproveSelectModel>();
+                        int starSelect = position + 1;
+                        foreach (ImproveSelectModel data in activeQuestionList)
+                        {
+                            int NoStar = int.Parse(data.IconCategories);
+                            if (NoStar < starSelect || NoStar == starSelect)
+                            {
+                                data.IsSelected = true;
+                            }
+                            else
+                            {
+                                data.IsSelected = false;
+                            }
+                            activeStarSelectList.Add(data);
+                        }
+                        activeQuestionList = null;
+                        activeQuestionList = activeStarSelectList;
+                        layoutManager = new GridLayoutManager(Activity.ApplicationContext, 5);
+                        adapter = new RateUsStarsCustomAdapter(Activity.ApplicationContext, activeQuestionList, selectedRating);
+                        recyclerView.SetLayoutManager(layoutManager);
+                        recyclerView.SetAdapter(adapter);
+                        adapter.RatingUpdate += OnRatingUpdate;
+                        StarTitleChange(starSelect);
+                        //adapter.NotifyDataSetChanged();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StarTitleChange(int position)
+        {
+            try
+            {
+                if (position.Equals(1))
+                {
+                    titleStarRating.Text = Utility.GetLocalizedLabel("FeedBackEB", "starOnetitle");
+                }
+                else if (position.Equals(2))
+                {
+                    titleStarRating.Text = Utility.GetLocalizedLabel("FeedBackEB", "starTwotitle");
+                }
+                else if (position.Equals(3))
+                {
+                    titleStarRating.Text = Utility.GetLocalizedLabel("FeedBackEB", "starThreetitle");
+                }
+                else if (position.Equals(4))
+                {
+                    titleStarRating.Text = Utility.GetLocalizedLabel("FeedBackEB", "starFourtitle");
+                }
+                else
+                {
+                    titleStarRating.Text = Utility.GetLocalizedLabel("FeedBackEB", "starFivetitle");
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        void OnSelectUpdate(object sender, int position)
+        {
+            try
+            {
+                //adapterGrid.NotifyDataSetChanged();
+                if (adapterGrid != null)
+                {
+                    if (adapterGrid.IsAllQuestionAnswered())
                     {
                         EnableShareButton();
                     }
@@ -182,20 +269,39 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
             }
         }
 
-        void OnSelectUpdate(object sender, int position)
+        public void SelectStarFromData(int position)
         {
             try
             {
-                //adapterGrid.NotifyDataSetChanged();
                 if (adapter != null)
                 {
-                    if (adapter.IsAllQuestionAnswered())
+                    if (MyTNBAccountManagement.GetInstance().IsFromClickAdapter() == position)
                     {
-                        EnableShareButton();
-                    }
-                    else
-                    {
-                        DisableShareButton();
+                        MyTNBAccountManagement.GetInstance().SetIsFromClickAdapter(position);
+                        List<ImproveSelectModel> activeStarSelectList = new List<ImproveSelectModel>();
+                        int starSelect = position + 1;
+                        foreach (ImproveSelectModel data in activeQuestionList)
+                        {
+                            int NoStar = int.Parse(data.IconCategories);
+                            if (NoStar < starSelect || NoStar == starSelect)
+                            {
+                                data.IsSelected = true;
+                            }
+                            else
+                            {
+                                data.IsSelected = false;
+                            }
+                            activeStarSelectList.Add(data);
+                        }
+                        activeQuestionList = null;
+                        activeQuestionList = activeStarSelectList;
+                        layoutManager = new GridLayoutManager(Activity.ApplicationContext, 5);
+                        adapter = new RateUsStarsCustomAdapter(Activity.ApplicationContext, activeQuestionList, selectedRating);
+                        recyclerView.SetLayoutManager(layoutManager);
+                        recyclerView.SetAdapter(adapter);
+                        adapter.RatingUpdate += OnRatingUpdate;
+                        StarTitleChange(starSelect);
+                        //adapter.NotifyDataSetChanged();
                     }
                 }
             }
@@ -217,7 +323,20 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
             btnShare.Background = ContextCompat.GetDrawable(Activity.ApplicationContext, Resource.Drawable.green_button_background);
         }
 
-        public void injectDemoData()
+        private void ShowFeedBackSetupPageRating()
+        {
+            SetupFeedBackFragment.Create(this.Activity, SetupFeedBackFragment.ToolTipType.FEEDBACK_WITH_IMAGES_STAR_RATING_BUTTON)
+                        .SetCTAaction(() =>
+                        {
+                        })
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            //this.userActionsListener.OnRemove(creditCardData, e);
+                        })
+                        .Build().Show();
+        }
+
+        /*public void injectDemoData()
         {
             List<InputOptionValue> InputOptionValueList = new List<InputOptionValue>();
             var inputOptionValueList = new InputOptionValue
@@ -232,12 +351,57 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 WLTYQuestionId = "",
                 Question = "How satisfied are you with the myTNB app?",
                 QuestionCategory = "Bill Related",
-                QuestionType = "Rating",
+                QuestionType = "RatingFeedBackTwo",
                 IsActive = true,
                 IsMandatory = true,
                 InputOptionValueList = InputOptionValueList,
             };
             activeQuestionList.Add(test);
+            adapter.NotifyDataSetChanged();
+        }*/
+
+        public void injectDemoData()
+        {
+            var data1 = new ImproveSelectModel
+            {
+                ModelCategories = "feedback_two",
+                IconCategories = "1",
+                IsSelected = false,
+            };
+            activeQuestionList.Add(data1);
+
+            var data2 = new ImproveSelectModel
+            {
+                ModelCategories = "feedback_two",
+                IconCategories = "2",
+                IsSelected = false,
+            };
+            activeQuestionList.Add(data2);
+
+            var data3 = new ImproveSelectModel
+            {
+                ModelCategories = "feedback_two",
+                IconCategories = "3",
+                IsSelected = false,
+            };
+            activeQuestionList.Add(data3);
+
+            var data4 = new ImproveSelectModel
+            {
+                ModelCategories = "feedback_two",
+                IconCategories = "4",
+                IsSelected = false,
+            };
+            activeQuestionList.Add(data4);
+
+            var data5 = new ImproveSelectModel
+            {
+                ModelCategories = "feedback_two",
+                IconCategories = "5",
+                IsSelected = false,
+            };
+            activeQuestionList.Add(data5);
+            //adapterGrid.NotifyDataSetChanged();
             adapter.NotifyDataSetChanged();
         }
 

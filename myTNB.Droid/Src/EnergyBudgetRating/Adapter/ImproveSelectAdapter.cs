@@ -55,7 +55,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                             }
                             else
                             {
-                                vh.ImageIcon.SetImageResource(Resource.Drawable.pdfIcon);
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.active_simplify_icon);
                             }
                         }
                         else if (question.IconCategories.Equals("2"))
@@ -67,7 +67,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                             }
                             else
                             {
-                                vh.ImageIcon.SetImageResource(Resource.Drawable.pdfIcon);
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.active_content_relevant_icon);
                             }
                         }
                         else if (question.IconCategories.Equals("3"))
@@ -79,7 +79,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                             }
                             else
                             {
-                                vh.ImageIcon.SetImageResource(Resource.Drawable.pdfIcon);
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.active_navigation_icon);
                             }
                         }
                         else
@@ -91,11 +91,61 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                             }
                             else
                             {
-                                vh.ImageIcon.SetImageResource(Resource.Drawable.pdfIcon);
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.active_design_icon);
                             }
                         }
                     }
-
+                    else
+                    {
+                        if (question.IconCategories.Equals("1"))
+                        {
+                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "saveOnEBusage");
+                            if (!question.IsSelected)
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.saved_EB_usage_ratingEB_icon);
+                            }
+                            else
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.active_saved_EB_usage_ratingEB_icon);
+                            }
+                        }
+                        else if (question.IconCategories.Equals("2"))
+                        {
+                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "EBcannotTrusted");
+                            if (!question.IsSelected)
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.cannot_function_ratingEB_icon);
+                            }
+                            else
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.active_cannot_function_ratingEB_icon);
+                            }
+                        }
+                        else if (question.IconCategories.Equals("3"))
+                        {
+                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "NotUsingEBagain");
+                            if (!question.IsSelected)
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.will_use_again_ratingEB_icon);
+                            }
+                            else
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.active_will_use_again_ratingEB_icon);
+                            }
+                        }
+                        else
+                        {
+                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "EBtipNotHelpful");
+                            if (!question.IsSelected)
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.saving_tip_ratingEB_icon);
+                            }
+                            else
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.active_saving_tip_ratingEB_icon);
+                            }
+                        }
+                    }
                     vh.ImageIcon.Click += (o, e) =>
                     {
                         //vh.ratingBar.Rating = e.Rating;
@@ -108,57 +158,114 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                         {
                             question.IsSelected = false;
                         }
-
-                        if (question.IconCategories.Equals("1"))
+                        if (question.ModelCategories.Equals("feedback_two"))
                         {
-                            if (!question.IsSelected)
+                            if (question.IconCategories.Equals("1"))
                             {
-                                vh.ImageIcon.SetImageResource(Resource.Drawable.simplify_icon);
-                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.charcoalGrey));
+                                if (!question.IsSelected)
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.simplify_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                                }
+                                else
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.active_simplify_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                }
+                            }
+                            else if (question.IconCategories.Equals("2"))
+                            {
+                                if (!question.IsSelected)
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.content_relevant_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                                }
+                                else
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.active_content_relevant_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                }
+                            }
+                            else if (question.IconCategories.Equals("3"))
+                            {
+                                if (!question.IsSelected)
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.navigation_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                                }
+                                else
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.active_navigation_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                }
                             }
                             else
                             {
-                                vh.ImageIcon.SetImageResource(Resource.Drawable.pdfIcon);
-                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
-                            }
-                        }
-                        else if (question.IconCategories.Equals("2"))
-                        {
-                            if (!question.IsSelected)
-                            {
-                                vh.ImageIcon.SetImageResource(Resource.Drawable.content_relevant_icon);
-                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.charcoalGrey));
-                            }
-                            else
-                            {
-                                vh.ImageIcon.SetImageResource(Resource.Drawable.pdfIcon);
-                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
-                            }
-                        }
-                        else if (question.IconCategories.Equals("3"))
-                        {
-                            if (!question.IsSelected)
-                            {
-                                vh.ImageIcon.SetImageResource(Resource.Drawable.navigation_icon);
-                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.charcoalGrey));
-                            }
-                            else
-                            {
-                                vh.ImageIcon.SetImageResource(Resource.Drawable.pdfIcon);
-                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                if (!question.IsSelected)
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.design_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                                }
+                                else
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.active_design_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                }
                             }
                         }
                         else
                         {
-                            if (!question.IsSelected)
+                            if (question.IconCategories.Equals("1"))
                             {
-                                vh.ImageIcon.SetImageResource(Resource.Drawable.design_icon);
-                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.charcoalGrey));
+                                if (!question.IsSelected)
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.saved_EB_usage_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                                }
+                                else
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.active_saved_EB_usage_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                }
+                            }
+                            else if (question.IconCategories.Equals("2"))
+                            {
+                                if (!question.IsSelected)
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.cannot_function_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                                }
+                                else
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.active_cannot_function_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                }
+                            }
+                            else if (question.IconCategories.Equals("3"))
+                            {
+                                if (!question.IsSelected)
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.will_use_again_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                                }
+                                else
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.active_will_use_again_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                }
                             }
                             else
                             {
-                                vh.ImageIcon.SetImageResource(Resource.Drawable.pdfIcon);
-                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                if (!question.IsSelected)
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.saving_tip_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                                }
+                                else
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.active_saving_tip_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                }
                             }
                         }
                         //question.InputRating = Rating.ToString();
@@ -170,7 +277,6 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
             {
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
         void OnSelectUpdate(ImproveSelectViewHolder sender, int position)
@@ -178,16 +284,16 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
             SelectUpdate(sender, position);
         }
 
-        /*public bool IsAllQuestionAnswered()
+        public bool IsAllQuestionAnswered()
         {
-            bool flag = true;
+            bool flag = false;
             try
             {
-                foreach (RateUsStar item in questions)
+                foreach (ImproveSelectModel item in questions)
                 {
-                    if (!item.IsQuestionAnswered && item.IsMandatory)
+                    if (item.IsSelected)
                     {
-                        flag = false;
+                        flag = true;
                         break;
                     }
                 }
@@ -197,7 +303,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                 Utility.LoggingNonFatalError(e);
             }
             return flag;
-        }*/
+        }
 
         /*public List<InputAnswerDetails> GetInputAnswers()
         {
@@ -248,20 +354,6 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                 TextViewUtils.SetTextSize12(txtTitleInfo);
 
             }
-            /*public bool OnTouch(View v, MotionEvent e)
-            {
-                if (v.Id == Resource.Id.txtComments)
-                {
-                    v.Parent.RequestDisallowInterceptTouchEvent(true);
-                    switch (e.Action & MotionEventActions.Mask)
-                    {
-                        case MotionEventActions.Up:
-                            v.Parent.RequestDisallowInterceptTouchEvent(false);
-                            break;
-                    }
-                }
-                return false;
-            }*/
         }
     }
 }

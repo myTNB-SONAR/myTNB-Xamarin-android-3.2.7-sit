@@ -38,6 +38,8 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.EnergyBudgetRating.Activity;
+using myTNB_Android.Src.EnergyBudgetRating.Fargment;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -1397,6 +1399,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         EnableSetEnergyBudgetButton();
                         editBudget = false;
                         setEnergyBudgetlayout = false;
+                    }
+                    else
+                    {
+                        DisableSetEnergyBudgetButton();
                     }
                 }
                 else
@@ -5379,6 +5385,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SetVirtualHeightParams(6f);
                 ShowSMStatisticCard();
                 energyBudgetRMinput.Enabled = false;
+                ShowFeedBackSetupPageRating();
             }
             catch (System.Exception e)
             {
@@ -6761,6 +6768,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         EnablePayButton();
                     }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                if (MyTNBAccountManagement.GetInstance().IsFinishFeedback())
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsFinishFeedback(false);
+                    ShowThankYouFeedbackTooltips();
                 }
             }
             catch (System.Exception e)
@@ -10978,5 +10998,44 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             textView.SetMaxLines(4);
             errorMessageSnackbar.Show();
         }
+
+        private void ShowFeedBackSetupPageRating()
+        {
+            try
+            {
+                SetupFeedBackFragment.Create(this.Activity, SetupFeedBackFragment.ToolTipType.FEEDBACK_WITH_IMAGES_STAR_RATING_BUTTON)
+                    .SetCTALabel(Utility.GetLocalizedLabel("FeedBackEB", "btnNoThank"))
+                    .SetCTAaction(() =>
+                    {
+                    })
+                    .SetSecondaryCTAaction(() =>
+                    {
+                        int startSelect = MyTNBAccountManagement.GetInstance().IsFromClickAdapter();
+                        Intent intent = new Intent(Activity, typeof(EnergyBudgetRatingActivity));
+                        intent.PutExtra("feedbackTwo", startSelect);
+                        StartActivity(intent);
+                    })
+                    .Build().Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ShowThankYouFeedbackTooltips()
+        {
+            try
+            {
+                SetupFeedBackFragment.Create(this.Activity, SetupFeedBackFragment.ToolTipType.IMAGE_HEADER)
+                    .SetCTALabel("Okay")
+                    .SetTitle("Thank you for your feedback!")
+                    .Build().Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }   
     }
 }

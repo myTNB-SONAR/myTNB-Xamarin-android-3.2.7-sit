@@ -4,7 +4,9 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
+using CheeseBind;
 using Google.Android.Material.Snackbar;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.EnergyBudgetRating.Activity;
 using myTNB_Android.Src.EnergyBudgetRating.Adapter;
 using myTNB_Android.Src.EnergyBudgetRating.Model;
@@ -36,17 +38,37 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
         private Button btnShare;
 
+        private LinearLayout btnYesAbsolutely;
+
+        private LinearLayout btnNotReally;
+
         private GridLayoutManager layoutManager;
 
-        private RateUsStarsAdapter adapter;
+        private RateUsStarsCustomAdapter adapter;
 
         private ImproveSelectAdapter adapterGrid;
 
         private EditText txtTellUsMore;
 
         private TextView txtTellUsMoreHintCount;
+        
+        private TextView titleSetUpFeedback;
+        
+        private TextView titleNumber;
 
-        private List<RateUsStar> activeQuestionList = new List<RateUsStar>();
+        private TextView titleYes;
+
+        private TextView titleNo;
+
+        private TextView titleselectApply;
+
+        private TextView TitleNumberTwo;
+
+        private ImageView img_displayYes;
+
+        private ImageView img_displayNo;
+
+        private List<ImproveSelectModel> activeQuestionList = new List<ImproveSelectModel>();
 
         private List<ImproveSelectModel> improveSelectModels = new List<ImproveSelectModel>();
 
@@ -57,7 +79,11 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
         private string merchantTransId;
         private string deviceID;
         private int selectedRating;
-        private string questionCatId;
+        private string YesOrNoSelect;
+        private bool btnYesClick = false;
+        private bool btnNoClick = false;
+        private bool selectStarComplete = false;
+        private bool selectIconComplete = false;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -66,19 +92,15 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            View mainView = inflater.Inflate(Resource.Layout.FeedBackEnergyBudget_Two_SubmitRatingView, container, false);
+            View mainView = inflater.Inflate(Resource.Layout.FeedBackEnergyBudget_One_SubmitRatingView, container, false);
             try
             {
                 mPresenter = new EnergyBudgetRatingPresenter(this);
                 ratingActivity = ((EnergyBudgetRatingActivity)Activity);
 
-                if (Arguments.ContainsKey(Constants.QUESTION_ID_CATEGORY))
+                if (Arguments.ContainsKey("StarFromNotificationDetailPage"))
                 {
-                    questionCatId = Arguments.GetString(Constants.QUESTION_ID_CATEGORY);
-                }
-                if (Arguments.ContainsKey(Constants.DEVICE_ID_PARAM))
-                {
-                    deviceID = Arguments.GetString(Constants.DEVICE_ID_PARAM);
+                    YesOrNoSelect = Arguments.GetString("StarFromNotificationDetailPage");
                 }
 
                 recyclerView = mainView.FindViewById<RecyclerView>(Resource.Id.question_recycler_view);
@@ -88,13 +110,32 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 txtTellUsMoreHintCount = mainView.FindViewById<TextView>(Resource.Id.txtTellUsMoreHintCount);
                 btnNoThank = mainView.FindViewById<Button>(Resource.Id.btnNoTQ);
                 btnShare = mainView.FindViewById<Button>(Resource.Id.btnShare);
+                btnYesAbsolutely = mainView.FindViewById<LinearLayout>(Resource.Id.btnYes_Layout);
+                btnNotReally = mainView.FindViewById<LinearLayout>(Resource.Id.btnNo_Layout);
+                titleSetUpFeedback = mainView.FindViewById<TextView>(Resource.Id.titleSetUpFeedback);
+                titleNumber = mainView.FindViewById<TextView>(Resource.Id.titleNumber);
+                titleYes = mainView.FindViewById<TextView>(Resource.Id.titleYes);
+                titleNo = mainView.FindViewById<TextView>(Resource.Id.titleNo);
+                titleselectApply = mainView.FindViewById<TextView>(Resource.Id.titleselectApply);
+                TitleNumberTwo = mainView.FindViewById<TextView>(Resource.Id.TitleNumberTwo);
+                img_displayYes = mainView.FindViewById<ImageView>(Resource.Id.img_displayYes);
+                img_displayNo = mainView.FindViewById<ImageView>(Resource.Id.img_displayNo);
 
-                btnNoThank.Text = Utility.GetLocalizedCommonLabel("submit");
-                btnShare.Text = Utility.GetLocalizedCommonLabel("submit");
-                txtTellUsMoreHintCount.Text = (initialnumber.ToString() + " characters left");
+                btnNoThank.Text = Utility.GetLocalizedLabel("FeedBackEB", "btnNoThank");
+                btnShare.Text = Utility.GetLocalizedLabel("FeedBackEB", "btnShare");
+                txtTellUsMore.Hint = Utility.GetLocalizedLabel("FeedBackEB", "tellusMore");
+                //txtTellUsMoreHintCount.Text = Utility.GetLocalizedLabel("FeedBackEB", "hinttellusMore");
+                titleYes.Text = Utility.GetLocalizedLabel("FeedBackEB", "thumbUpYes");
+                titleNo.Text = Utility.GetLocalizedLabel("FeedBackEB", "thumbDownNo");
+                titleSetUpFeedback.Text = Utility.GetLocalizedLabel("FeedBackEB", "pagefeedbackTitle");
+                titleNumber.Text = Utility.GetLocalizedLabel("FeedBackEB", "titleNumberOne");
+                TitleNumberTwo.Text = Utility.GetLocalizedLabel("FeedBackEB", "titleNumberTwo");
+                titleselectApply.Text = Utility.GetLocalizedLabel("FeedBackEB", "titleSelectApplies");
 
-                layoutManager = new GridLayoutManager(Activity.ApplicationContext, 1);
-                adapter = new RateUsStarsAdapter(Activity.ApplicationContext, activeQuestionList, selectedRating);
+                txtTellUsMoreHintCount.Text = (initialnumber.ToString() + " " + Utility.GetLocalizedLabel("FeedBackEB", "hinttellusMore"));
+
+                layoutManager = new GridLayoutManager(Activity.ApplicationContext, 5);
+                adapter = new RateUsStarsCustomAdapter(Activity.ApplicationContext, activeQuestionList, selectedRating);
                 recyclerView.SetLayoutManager(layoutManager);
                 recyclerView.SetAdapter(adapter);
                 adapter.RatingUpdate += OnRatingUpdate;
@@ -106,17 +147,38 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 adapterGrid.SelectUpdate += OnSelectUpdate;
 
                 txtTellUsMore.TextChanged += TxtTellUsMore_TextChanged;
+                btnYesAbsolutely.Click += BtnYesAbsolutely_Click;
+                btnNotReally.Click += BtnNotReally_Click;
+
+                if (YesOrNoSelect.Equals("Yes"))
+                {
+                    btnYesClick = true;
+                    btnNoClick = false;
+                    enableBtnYes();
+                    disableBtnNo();
+                }
+                else
+                {
+                    btnNoClick = true;
+                    btnYesClick = false;
+                    enableBtnNo();
+                    disableBtnYes();
+                }
+
                 injectDemoData();
                 injectSelectData();
-                //this.userActionsListener.GetQuestions(questionCatId);
 
-                /*btnShare.Click += delegate
+                btnNoThank.Click += delegate
                 {
-                    if (adapter.GetInputAnswers().Count > 0)
-                    {
-                        this.userActionsListener.PrepareSubmitRateUsRequest(merchantTransId, deviceID, adapter.GetInputAnswers());
-                    }
-                };*/
+                    ShowSumitRateUsSuccess();
+                };
+
+                btnShare.Click += delegate
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsFinishFeedback(true);
+                    ShowSumitRateUsSuccess();
+                };
+
             }
             catch (Exception e)
             {
@@ -125,6 +187,93 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
             return mainView;
         }
 
+        private void BtnYesAbsolutely_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!btnYesClick)
+                {
+                    btnYesClick = true;
+                    btnNoClick = false;
+                }
+                else
+                {
+                    btnYesClick = false;
+                }
+
+                if (btnYesClick && !btnNoClick)
+                {
+                    enableBtnYes();
+                    disableBtnNo();
+                    if (selectIconComplete && selectStarComplete)
+                    {
+                        EnableShareButton();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        private void BtnNotReally_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!btnNoClick)
+                {
+                    btnNoClick = true;
+                    btnYesClick = false;
+                }
+                else
+                {
+                    btnNoClick = false;
+                }
+
+                if (!btnYesClick && btnNoClick)
+                {
+                    enableBtnNo();
+                    disableBtnYes();
+                    if (selectIconComplete && selectStarComplete)
+                    {
+                        EnableShareButton();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        public void enableBtnYes()
+        {
+            btnYesAbsolutely.Background = ContextCompat.GetDrawable(Activity.ApplicationContext, Resource.Drawable.blue_out_line_thin);
+            img_displayYes.SetImageResource(Resource.Drawable.thumb_up_blue_yes);
+            titleYes.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.powerBlue));
+        }
+
+        public void disableBtnYes()
+        {
+            btnYesAbsolutely.Background = ContextCompat.GetDrawable(Activity.ApplicationContext, Resource.Drawable.silver_chalice_button_outline);
+            img_displayYes.SetImageResource(Resource.Drawable.thumb_up_grey_yes);
+            titleYes.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverchalice));
+        }
+
+        public void enableBtnNo()
+        {
+            btnNotReally.Background = ContextCompat.GetDrawable(Activity.ApplicationContext, Resource.Drawable.blue_out_line_thin);
+            img_displayNo.SetImageResource(Resource.Drawable.thumb_down_no_blue);
+            titleNo.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.powerBlue));
+        }
+
+        public void disableBtnNo()
+        {
+            btnNotReally.Background = ContextCompat.GetDrawable(Activity.ApplicationContext, Resource.Drawable.silver_chalice_button_outline);
+            img_displayNo.SetImageResource(Resource.Drawable.thumb_down_no_grey);
+            titleNo.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverchalice));
+        }
         private void TxtTellUsMore_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
             try
@@ -133,11 +282,11 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 if (tellusmore.Length > 0)
                 {
                     int remainNumber = initialnumber - tellusmore.Length;
-                    txtTellUsMoreHintCount.Text = (remainNumber.ToString() + " characters left").ToString();
+                    txtTellUsMoreHintCount.Text = (remainNumber.ToString() + " " + Utility.GetLocalizedLabel("FeedBackEB", "hinttellusMore"));
                 }
                 else
                 {
-                    txtTellUsMoreHintCount.Text = (initialnumber.ToString() + " characters left");
+                    txtTellUsMoreHintCount.Text = (initialnumber.ToString() + " " + Utility.GetLocalizedLabel("FeedBackEB", "hinttellusMore"));
                 }
             }
             catch (Exception ex)
@@ -157,14 +306,45 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
             {
                 if (adapter != null)
                 {
-                    if (adapter.IsAllQuestionAnswered())
+                    if (MyTNBAccountManagement.GetInstance().IsFromClickAdapter() != position)
                     {
-                        EnableShareButton();
+                        MyTNBAccountManagement.GetInstance().SetIsFromClickAdapter(position);
+                        List<ImproveSelectModel> activeStarSelectList = new List<ImproveSelectModel>();
+                        int starSelect = position + 1;
+                        foreach (ImproveSelectModel data in activeQuestionList)
+                        {
+                            int NoStar = int.Parse(data.IconCategories);
+                            if (NoStar < starSelect || NoStar == starSelect)
+                            {
+                                data.IsSelected = true;
+                            }
+                            else
+                            {
+                                data.IsSelected = false;
+                            }
+                            activeStarSelectList.Add(data);
+                        }
+                        activeQuestionList = null;
+                        activeQuestionList = activeStarSelectList;
+                        layoutManager = new GridLayoutManager(Activity.ApplicationContext, 5);
+                        adapter = new RateUsStarsCustomAdapter(Activity.ApplicationContext, activeQuestionList, selectedRating);
+                        recyclerView.SetLayoutManager(layoutManager);
+                        recyclerView.SetAdapter(adapter);
+                        adapter.RatingUpdate += OnRatingUpdate;
+                    }
+                    /*if (adapter.IsAllQuestionAnswered())
+                    {
+                        selectStarComplete = true;
+                        if (adapterGrid.IsAllQuestionAnswered() && !btnYesClick && !btnNoClick)
+                        {
+                            EnableShareButton();
+                        }
                     }
                     else
                     {
+                        selectStarComplete = false;
                         DisableShareButton();
-                    }
+                    }*/
                 }
             }
             catch (Exception e)
@@ -178,14 +358,19 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
             try
             {
                 //adapterGrid.NotifyDataSetChanged();
-                if (adapter != null)
+                if (adapterGrid != null)
                 {
-                    if (adapter.IsAllQuestionAnswered())
+                    if (adapterGrid.IsAllQuestionAnswered())
                     {
-                        EnableShareButton();
+                        selectIconComplete = true;
+                        if (!btnYesClick && !btnNoClick)
+                        {
+                            EnableShareButton();
+                        }
                     }
                     else
                     {
+                        selectIconComplete = false;
                         DisableShareButton();
                     }
                 }
@@ -208,7 +393,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
             btnShare.Background = ContextCompat.GetDrawable(Activity.ApplicationContext, Resource.Drawable.green_button_background);
         }
 
-        public void injectDemoData()
+        /*public void injectDemoData()
         {
             List<InputOptionValue> InputOptionValueList = new List<InputOptionValue>();
             var inputOptionValueList = new InputOptionValue
@@ -223,16 +408,16 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 WLTYQuestionId = "",
                 Question = "How satisfied are you with the myTNB app?",
                 QuestionCategory = "Bill Related",
-                QuestionType = "Rating",
+                QuestionType = "RatingFeedBackOne",
                 IsActive = true,
                 IsMandatory = true,
                 InputOptionValueList = InputOptionValueList,
             };
             activeQuestionList.Add(test);
             adapter.NotifyDataSetChanged();
-        }
+        }*/
 
-        public void injectSelectData()
+        public void injectDemoData()
         {
             var data1 = new ImproveSelectModel
             {
@@ -240,7 +425,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 IconCategories = "1",
                 IsSelected = false,
             };
-            improveSelectModels.Add(data1);
+            activeQuestionList.Add(data1);
 
             var data2 = new ImproveSelectModel
             {
@@ -248,7 +433,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 IconCategories = "2",
                 IsSelected = false,
             };
-            improveSelectModels.Add(data2);
+            activeQuestionList.Add(data2);
 
             var data3 = new ImproveSelectModel
             {
@@ -256,11 +441,56 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 IconCategories = "3",
                 IsSelected = false,
             };
-            improveSelectModels.Add(data3);
+            activeQuestionList.Add(data3);
 
             var data4 = new ImproveSelectModel
             {
                 ModelCategories = "feedback_two",
+                IconCategories = "4",
+                IsSelected = false,
+            };
+            activeQuestionList.Add(data4);
+
+            var data5 = new ImproveSelectModel
+            {
+                ModelCategories = "feedback_two",
+                IconCategories = "5",
+                IsSelected = false,
+            };
+            activeQuestionList.Add(data5);
+            //adapterGrid.NotifyDataSetChanged();
+            adapter.NotifyDataSetChanged();
+        }
+
+        public void injectSelectData()
+        {
+            var data1 = new ImproveSelectModel
+            {
+                ModelCategories = "feedback_one",
+                IconCategories = "1",
+                IsSelected = false,
+            };
+            improveSelectModels.Add(data1);
+
+            var data2 = new ImproveSelectModel
+            {
+                ModelCategories = "feedback_one",
+                IconCategories = "2",
+                IsSelected = false,
+            };
+            improveSelectModels.Add(data2);
+
+            var data3 = new ImproveSelectModel
+            {
+                ModelCategories = "feedback_one",
+                IconCategories = "3",
+                IsSelected = false,
+            };
+            improveSelectModels.Add(data3);
+
+            var data4 = new ImproveSelectModel
+            {
+                ModelCategories = "feedback_one",
                 IconCategories = "4",
                 IsSelected = false,
             };

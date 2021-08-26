@@ -25,8 +25,8 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Activity
 
         AndroidX.Fragment.App.Fragment  currentFragment;
 
-        private string quesIdCategory = "1";
-        private string merchantTransID;
+        private int SelectStar = 1;
+        private string SelectYesOrNo;
         private string deviceID;
         private int selectedRating;
         private string PAGE_ID = "Rating";
@@ -52,19 +52,16 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Activity
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
-                    if (extras.ContainsKey(Constants.QUESTION_ID_CATEGORY))
+                    if (extras.ContainsKey("feedbackOne"))
                     {
-                        quesIdCategory = extras.GetInt(Constants.QUESTION_ID_CATEGORY).ToString();
+                        fromNotification = true;
+                        SelectYesOrNo = extras.GetString("feedbackOne");
                     }
-                    if (extras.ContainsKey(Constants.MERCHANT_TRANS_ID))
+                    else if (extras.ContainsKey("feedbackTwo"))
                     {
-                        merchantTransID = extras.GetString(Constants.MERCHANT_TRANS_ID);
+                        fromSaveEnergyBudget = true;
+                        SelectStar = extras.GetInt("feedbackTwo");
                     }
-                    if (extras.ContainsKey(Constants.SELECTED_RATING))
-                    {
-                        selectedRating = extras.GetInt(Constants.SELECTED_RATING, 1);
-                    }
-
                 }
 
                 if (fromNotification)
@@ -97,27 +94,21 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Activity
 
         public void OnLoadFeedbackOneFragment()
         {
-            AndroidX.Fragment.App.Fragment feedbackTwo = new FeedbackTwo();
+            AndroidX.Fragment.App.Fragment feedbackOne = new FeedbackOne();
             Bundle bundle = new Bundle();
-            bundle.PutString(Constants.QUESTION_ID_CATEGORY, quesIdCategory);
-            bundle.PutInt(Constants.SELECTED_RATING, selectedRating);
-            bundle.PutString(Constants.MERCHANT_TRANS_ID, merchantTransID);
-            bundle.PutString(Constants.DEVICE_ID_PARAM, deviceID);
-            feedbackTwo.Arguments = bundle;
+            bundle.PutString("StarFromNotificationDetailPage", SelectYesOrNo);
+            feedbackOne.Arguments = bundle;
             var fragmentTransaction = SupportFragmentManager.BeginTransaction();
-            fragmentTransaction.Add(Resource.Id.fragment_container, feedbackTwo);
+            fragmentTransaction.Add(Resource.Id.fragment_container, feedbackOne);
             fragmentTransaction.Commit();
-            currentFragment = feedbackTwo;
+            currentFragment = feedbackOne;
         }
 
         public void OnLoadFeedbackTwoFragment()
         {
             AndroidX.Fragment.App.Fragment feedbackTwo = new FeedbackTwo();
             Bundle bundle = new Bundle();
-            bundle.PutString(Constants.QUESTION_ID_CATEGORY, quesIdCategory);
-            bundle.PutInt(Constants.SELECTED_RATING, selectedRating);
-            bundle.PutString(Constants.MERCHANT_TRANS_ID, merchantTransID);
-            bundle.PutString(Constants.DEVICE_ID_PARAM, deviceID);
+            bundle.PutInt("StarFromDashboardFragmentPage", SelectStar);
             feedbackTwo.Arguments = bundle;
             var fragmentTransaction = SupportFragmentManager.BeginTransaction();
             fragmentTransaction.Add(Resource.Id.fragment_container, feedbackTwo);
@@ -127,15 +118,9 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Activity
 
         public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
         {
-            if (fragment is FeedbackTwo)
+            if (currentFragment is FeedbackTwo || currentFragment is FeedbackOne)
             {
-                var thankYouFragment = new FeedbackTwo();
-                thankYouFragment.Arguments = bundle;
-                var fragmentTransaction = SupportFragmentManager.BeginTransaction();
-                fragmentTransaction.Add(Resource.Id.fragment_container, thankYouFragment);
-                fragmentTransaction.AddToBackStack(null);
-                fragmentTransaction.Commit();
-                currentFragment = thankYouFragment;
+                Finish();
             }
         }
 
@@ -145,7 +130,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Activity
             {
                 int count = this.SupportFragmentManager.BackStackEntryCount;
                 Log.Debug("OnBackPressed", "fragment stack count :" + count);
-                if (currentFragment is FeedbackTwo || currentFragment is FeedbackTwo)
+                if (currentFragment is FeedbackTwo || currentFragment is FeedbackOne)
                 {
                     Finish();
                 }
