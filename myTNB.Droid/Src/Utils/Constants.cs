@@ -189,6 +189,8 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string QUESTION_TYPE_COMMENTS = "Multiline Comment";
         internal static readonly string DEVICE_ID_PARAM = ".deviceID";
         internal static readonly string MERCHANT_TRANS_ID = ".merchantTransId";
+        internal static readonly string QUESTION_TYPE_RATING_EB_FEEDBACK_ONE = "RatingFeedBackOne";
+        internal static readonly string QUESTION_TYPE_RATING_EB_FEEDBACK_TWO = "RatingFeedBackTwo";
 
         //Downtime
         internal static readonly string BCRM_SYSTEM = "BCRM";
