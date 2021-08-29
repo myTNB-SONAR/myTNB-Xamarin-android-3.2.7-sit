@@ -222,7 +222,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 {
                     if (NewAppTutorialList.Count > 0)
                     {
-                        int ItemCount = NewAppTutorialList[1].ItemCount;
+                        int ItemCount = NewAppTutorialList[0].ItemCount;
                         if (ItemCount > 0)
                         {
                             int topHeight = (int)DPUtils.ConvertDPToPx(65f);

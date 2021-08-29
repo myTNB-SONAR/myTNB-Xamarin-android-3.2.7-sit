@@ -247,8 +247,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     {
                         this.mView.SetMenuMoreCheck();
                         //this.mView.ShowProfile();
-                        //OnMenuSelect(Resource.Id.menu_more);
-                        DoLoadHomeDashBoardFragment();
+                        OnMenuSelect(Resource.Id.menu_more);
+                        //DoLoadHomeDashBoardFragment();
                     }
                 }
             }
