@@ -440,8 +440,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             if (i == 0)
                             {
                                 image.SetImageResource(Resource.Drawable.white_circle_active);
-                                txtDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
-                                txtTopDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
+                                txtDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Visible : ViewStates.Visible;
+                                txtTopDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Visible : ViewStates.Visible;
                             }
                             else
                             {
@@ -786,8 +786,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                 {
                                                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                                                 }
-                                                txtDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
-                                                txtTopDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
+                                                txtDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Visible : ViewStates.Visible;
+                                                txtTopDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Visible : ViewStates.Visible;
                                             }
                                             else
                                             {
