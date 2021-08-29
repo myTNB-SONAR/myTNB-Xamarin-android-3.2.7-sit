@@ -243,13 +243,17 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 }
                 else if (requestCode == Constants.UPDATE_IC_REQUEST)
                 {
-                    if (resultCode == Result.Ok)
-                    {
-                        this.mView.SetMenuMoreCheck();
-                        //this.mView.ShowProfile();
-                        OnMenuSelect(Resource.Id.menu_more);
-                        //DoLoadHomeDashBoardFragment();
-                    }
+                    this.mView.SetMenuMoreCheck();
+                    OnLoadMoreMenu();
+
+                    //if (resultCode == Result.Ok)
+                    //{
+                    //    this.mView.SetMenuMoreCheck();
+                    //    //this.mView.ShowProfile();
+                    //    //OnMenuSelect(Resource.Id.menu_more);
+                    //    OnLoadMoreMenu();
+                    //    //DoLoadHomeDashBoardFragment();
+                    //}
                 }
             }
             catch (System.Exception e)

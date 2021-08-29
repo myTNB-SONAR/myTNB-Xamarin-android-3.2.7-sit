@@ -677,6 +677,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowIdentificationUpdate()
         {
             Intent updateICNo = new Intent(this, typeof(MyProfileActivity));
+            //updateICNo.PutExtra("fromDashboard", true);
             StartActivityForResult(updateICNo, Constants.UPDATE_IC_REQUEST);
         }
 

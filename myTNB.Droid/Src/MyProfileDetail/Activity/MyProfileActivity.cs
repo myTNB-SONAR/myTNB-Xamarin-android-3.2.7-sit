@@ -19,6 +19,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageSupplyAccount.Activity;
 using myTNB_Android.Src.MyProfileDetail.Adapter;
 using myTNB_Android.Src.MyProfileDetail.MVP;
+using myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.NotificationSettings.Activity;
 using myTNB_Android.Src.UpdateID.Activity;
@@ -60,6 +61,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         private bool fromEmailVerify = false;
 
+       // private bool fromDashboard = false;
+
         ISharedPreferences mPref;
 
         private int APP_LANGUAGE_REQUEST = 32766;
@@ -83,6 +86,12 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
             try
             {
+
+                //if (Intent.HasExtra("fromDashboard"))
+                //{
+                //    fromDashboard = Intent.Extras.GetBoolean("fromDashboard", false);
+                //}
+
                 mPref = PreferenceManager.GetDefaultSharedPreferences(this);
                 
                 UserEntity user = UserEntity.GetActive();
@@ -288,6 +297,13 @@ namespace myTNB_Android.Src.MyAccount.Activity
             });
 
         }
+
+        public override void OnBackPressed()
+        {
+            base.OnBackPressed();
+            Finish();
+        }
+        
 
         private void ShowMobileUpdateSuccess(string newPhone)
         {
