@@ -52,6 +52,7 @@ using myTNB.Mobile;
 using Android.Util;
 using myTNB_Android.Src.myTNBMenu.Async;
 using Android.Content.Res;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -835,6 +836,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 errorPopup.Show();
                             }
                             HideProgressDialog();
+                        }
+                        else if (!string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("enquiryDetails"))
+                        {
+                            //Overvoltage detail page
+                            Intent viewReceipt = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+                            viewReceipt.PutExtra("ClaimId", EnquiryDetailsDeeplinkCache.Instance.ClaimID);
+                            StartActivity(viewReceipt);
                         }
                     }
                 }
