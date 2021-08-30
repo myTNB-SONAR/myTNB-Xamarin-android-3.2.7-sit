@@ -56,17 +56,17 @@ namespace myTNB_Android.Src.Base.Activity
                 try
                 {
                     Configuration configuration = Resources.Configuration;
-                    System.Console.WriteLine("[DEBUG] FONT SCALE 1: " + configuration.FontScale);//2, 1.5, 1.3, 1.1
+                    //System.Console.WriteLine("[DEBUG] FONT SCALE 1: " + configuration.FontScale);//2, 1.5, 1.3, 1.1
                     configuration.FontScale = configuration.FontScale >= 1.3F ? 1.3f : configuration.FontScale;
-                    System.Console.WriteLine("[DEBUG] FONT SCALE 2: " + configuration.FontScale);//2, 1.5, 1.3, 1.1
+                    //System.Console.WriteLine("[DEBUG] FONT SCALE 2: " + configuration.FontScale);//2, 1.5, 1.3, 1.1
 
                     DisplayMetrics metrics = Resources.DisplayMetrics;
-                    System.Console.WriteLine("[DEBUG] SCALED DENSITY 1: " + metrics.ScaledDensity);//7, 5.25, 4.55, 3.85
-                    System.Console.WriteLine("[DEBUG] DENSITY: " + metrics.Density);//3.5, 3.5, 3.5, 3.5
-                    System.Console.WriteLine("[DEBUG] DENSITYDPI: " + metrics.DensityDpi);//D560, D560, D560, D560
+                    //System.Console.WriteLine("[DEBUG] SCALED DENSITY 1: " + metrics.ScaledDensity);//7, 5.25, 4.55, 3.85
+                    //System.Console.WriteLine("[DEBUG] DENSITY: " + metrics.Density);//3.5, 3.5, 3.5, 3.5
+                    //System.Console.WriteLine("[DEBUG] DENSITYDPI: " + metrics.DensityDpi);//D560, D560, D560, D560
                     //280 //Xhigh //D360
                     metrics.ScaledDensity = configuration.FontScale * metrics.Density;
-                    System.Console.WriteLine("[DEBUG] SCALED DENSITY 2: " + metrics.ScaledDensity);
+                    //System.Console.WriteLine("[DEBUG] SCALED DENSITY 2: " + metrics.ScaledDensity);
 
                     Resources.UpdateConfiguration(configuration, metrics);
                 }

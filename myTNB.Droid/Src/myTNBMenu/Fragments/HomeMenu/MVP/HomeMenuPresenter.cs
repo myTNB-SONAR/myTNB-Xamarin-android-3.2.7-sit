@@ -104,7 +104,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 catch (System.Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
-
                 }
             }
         }

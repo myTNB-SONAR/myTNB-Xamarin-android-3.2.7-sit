@@ -13,6 +13,8 @@
         public const string SITECORE_REFER_LOCAL = "sitecore_refer_local";
         public const string HOMEPOPUP_WHATSNEWCLICKED = "WhatsNewClicked";
 
+        public const string App_Launch_Master_Fail = "App_Launch_Master_Data_Fail";
+
         public struct DBR
         {
             public struct Screens
@@ -90,6 +92,11 @@
                 {
                     public const string Single = "App_Action_PaySuccess_Single_JomPaperless";
                     public const string Multiple = "App_Action_PaySuccess_Multiple_JomPaperless";
+                }
+
+                public struct Webview
+                {
+                    public const string Close_Confirm = "App_Action_OptBackPaperClose_Confirm";
                 }
             }
         }

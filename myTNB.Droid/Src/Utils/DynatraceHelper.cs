@@ -1,5 +1,6 @@
-﻿using System.Diagnostics;
+﻿using Android.Util;
 using DynatraceAndroid;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android
@@ -14,20 +15,36 @@ namespace myTNB_Android
                 if (dynaTrace != null)
                 {
                     dynaTrace.LeaveAction();
-                    Debug.WriteLine("[Success] Dynatrace Track: " + actionName);
-                    System.Console.WriteLine("[Success] Dynatrace Track: " + actionName);
+                    Log.Debug("[DEBUG]", "[Success] Dynatrace Track: " + actionName);
                 }
                 else
                 {
-                    Debug.WriteLine("[Warning] Dynatrace Track: Action is Null");
-                    System.Console.WriteLine("[Success] Dynatrace Track: " + actionName);
+                    Log.Debug("[DEBUG]", "[Warning] Dynatrace Track: Action is Null");
                 }
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
-                Debug.WriteLine("[Error] Dynatrace Track: " + e.Message);
-                System.Console.WriteLine("[Success] Dynatrace Track: " + actionName);
+                Log.Debug("[DEBUG]", "[Error] Dynatrace Track: " + e.Message);
+            }
+        }
+
+        internal static void IdentifyUser()
+        {
+            try
+            {
+                UserEntity loggedUser = UserEntity.GetActive();
+                string userEmail = loggedUser.Email;
+                if (userEmail.IsValid())
+                {
+                    DynatraceAndroid.Dynatrace.IdentifyUser(userEmail);
+                    Log.Debug("[DEBUG]", "[Success] Dynatrace IdentifyUser: " + userEmail);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                Log.Debug("[DEBUG]", "[Error] Dynatrace IdentifyUser: " + e.Message);
             }
         }
     }
