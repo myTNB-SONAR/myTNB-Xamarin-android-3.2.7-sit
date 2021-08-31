@@ -53,6 +53,8 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.MVP
             void onScan();
 
             void ShowSelectAccount();
+
+            void ClearICHint();
         }
 
         public interface IUserActionsListener : IBasePresenter

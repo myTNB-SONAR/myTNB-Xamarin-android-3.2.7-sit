@@ -1270,7 +1270,8 @@
     "copyOfOwnerLabel": "Salinan pengenalan diri pemilik (IC / Pasport)",
     "frontIc": "Hadapan",
     "backIc": "Belakang",
-    "moreInformation": "Adakah anda ingin mengemas kini lebih banyak maklumat?"
+    "moreInformation": "Adakah anda ingin mengemas kini lebih banyak maklumat?",
+    "icHint": "Contoh: IC, Pasport, Tentera / Polis ID"
 
   },
   "Tutorial": {

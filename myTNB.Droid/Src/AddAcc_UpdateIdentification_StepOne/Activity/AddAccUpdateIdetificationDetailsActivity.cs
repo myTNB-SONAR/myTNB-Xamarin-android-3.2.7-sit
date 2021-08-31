@@ -403,13 +403,16 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 {
                     string accno = txtAccountNo.Text.ToString().Trim();
                     string ic = txtNewIC.Text.ToString().Trim();
+                    ShowICHint();
                     this.userActionsListener.CheckRequiredFields(accno, ic);
                 }
                 else
                 {
+                   
                     string accno = txtAccountNo.Text.ToString().Trim();
                     string ic = txtNewIC.Text.ToString().Trim();
                     this.userActionsListener.CheckRequiredFields(accno, ic);
+                    ClearICHint();
                     txtNewIC.RequestFocus();
                     txtAccountNo.ClearFocus();
                 }
@@ -425,6 +428,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
         {
             try
             {
+                ShowICHint();
                 ButtonEnable();
                 string ic = txtNewIC.Text.ToString().Trim();
                 string accno = txtAccountNo.Text.ToString().Trim();
@@ -447,6 +451,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
         {
             try
             {
+                ClearICHint();
                 ButtonEnable();
                 string ic = txtNewIC.Text.ToString().Trim();
                 string accno = txtAccountNo.Text.ToString().Trim();
@@ -627,6 +632,28 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
         //    }
         //}
 
+
+        public void ShowICHint()
+        {
+            txtInputLayoutNewIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+              ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+              : Resource.Style.TextInputLayoutBottomErrorHint);
+
+            
+            if (txtInputLayoutNewIC.HelperText != Utility.GetLocalizedLabel("SubmitEnquiry", "icHint"))
+            {
+                txtInputLayoutNewIC.HelperText = Utility.GetLocalizedLabel("SubmitEnquiry", "icHint");
+            }
+
+            if (!txtInputLayoutNewIC.HelperTextEnabled)
+                txtInputLayoutNewIC.HelperTextEnabled = true;
+        }
+
+        public void ClearICHint()
+        {
+            txtInputLayoutNewIC.HelperText = null;
+            txtInputLayoutNewIC.HelperTextEnabled = false;
+        }
 
         public void ShowInvalidAccountNumberError()
         {

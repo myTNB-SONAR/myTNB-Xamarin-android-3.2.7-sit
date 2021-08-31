@@ -1162,5 +1162,32 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        //private Snackbar mCancelledExceptionSnackBar;
+        //public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
+        //{
+        //    if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+        //    {
+        //        mCancelledExceptionSnackBar.Dismiss();
+        //    }
+
+        //    mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+        //    .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
+        //    {
+
+        //        mCancelledExceptionSnackBar.Dismiss();
+        //        string email = txtEmail.Text;
+        //        string password = txtPassword.Text;
+        //        this.userActionsListener.LoginAsync(email, password, this.DeviceId(), chkRemeberMe.Checked);
+        //    }
+        //    );
+        //    View v = mCancelledExceptionSnackBar.View;
+        //    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+        //    tv.SetMaxLines(5);
+        //    mCancelledExceptionSnackBar.Show();
+
+        //    this.SetIsClicked(false);
+
+        //}
     }
 }

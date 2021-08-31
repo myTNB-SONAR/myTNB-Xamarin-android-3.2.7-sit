@@ -104,7 +104,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 //TextViewUtils.SetTextSize18(txtTnBSupplyAccountTitle);
 
                 //txtTnBSupplyAccountTitle.Text = GetLabelByLanguage("accountSectionTitle");
-                btnAddAnotherAccount.Text = GetLabelCommonByLanguage("addAnotherAcct");
+                //btnAddAnotherAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
                 //txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
                 txtMyAccountNoAccountContent.Text = Utility.GetLocalizedLabel("MyAccount", "emptyListDetails");
                 //btnAddAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
@@ -503,6 +503,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 adapter.AddAll(accountList);
                 adapter.NotifyDataSetChanged();
                 listView.SetNoScroll();
+                btnAddAnotherAccount.Text = GetLabelCommonByLanguage("addAnotherAcct");
                 //btnAddAnotherAccount.Visibility = ViewStates.Visible;
             }
             catch (Exception e)
@@ -517,6 +518,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             {
                 listView.EmptyView = NoAccountLayout;
                 btnAddAnotherAccount.Visibility = ViewStates.Visible;
+                btnAddAnotherAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
             }
             catch (Exception e)
             {

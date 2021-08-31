@@ -1269,7 +1269,8 @@
     "copyOfOwnerLabel": "Copy of owner's identification (IC / Passport)",
     "frontIc": "Front",
     "backIc": "Back",
-    "moreInformation": "Would you like to update more information?"
+    "moreInformation": "Would you like to update more information?",
+    "icHint": "Example: IC, Passport, Army / Police ID"
 
   },
   "Tutorial": {

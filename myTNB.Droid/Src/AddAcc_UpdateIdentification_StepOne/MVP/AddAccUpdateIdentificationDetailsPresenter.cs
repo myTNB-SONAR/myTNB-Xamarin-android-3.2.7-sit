@@ -116,6 +116,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.MVP
                     else
                     {
                         this.mView.RemoveNumberErrorMessage();
+                        this.mView.ClearICHint();
                     }
                 }
                 else
@@ -128,6 +129,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.MVP
 
                 if (TextUtils.IsEmpty(ic))
                 {
+                    
                     this.mView.ShowFullICError();
                     allowToProceed = false;
                 }

@@ -94,6 +94,18 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// <param name="count">integer representation of no of badges</param>
             void ShowNotificationCount(int count);
 
+            /// <summary>
+            ///  Hides progress dialog when logging in is finish
+            ///  Pre-Validation
+            /// </summary>
+            void HideProgressDialog();
+
+            /// <summary>
+            /// Shows a cancelled exception with an option to retry
+            /// </summary>
+            /// <param name="operationCanceledException">the returned exception</param>
+            //void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException);
+
 
             void OnSavedTimeStampRecievd(string timestamp);
 
