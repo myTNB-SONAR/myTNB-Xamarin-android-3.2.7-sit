@@ -265,6 +265,12 @@
 						android:textSize="16dp"
 						android:textColor="#1c79ca"/>
 					<ImageView
+						android:id="@+id/download_bill_icon"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginRight="12dp"
+						android:src="@drawable/download_bill_statement"/>
+					<ImageView
 						android:id="@+id/bill_filter_icon"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"

@@ -368,10 +368,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
+        private void ShowDownloadBill()
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent newIntent = new Intent(this.Activity, typeof(FilterBillHistoryActivity));
+                    string filterDescription = "NONRE";
+                    bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
+                    if (isREAccount)
+                    {
+                        filterDescription = "RE";
+                    }
+                    newIntent.PutExtra("FILTER_DESCRIPTION", filterDescription);
+                    newIntent.PutExtra("ITEM_LIST", JsonConvert.SerializeObject(itemFilterList));
+                    StartActivityForResult(newIntent, 12345);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         [OnClick(Resource.Id.bill_filter_icon)]
         void OnFilterBillHistory(object sender, EventArgs eventArgs)
         {
             ShowSelectFilter();
+        }
+        [OnClick(Resource.Id.download_bill_icon)]
+        void OnDownloadBillHistory(object sender, EventArgs eventArgs)
+        {
+            ShowDownloadBill();
         }
 
         [OnClick(Resource.Id.btnRefresh)]
