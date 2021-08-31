@@ -6,6 +6,7 @@ using AndroidX.Core.App;
 using Firebase.Messaging;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace myTNB_Android.Src.Firebase.Services
             UserEntity userEntity = UserEntity.GetActive();
 
             IDictionary<string, string> remoteData = remoteMessage.Data;
-
+            //var x = remoteData["claimId"];
             string title = string.Empty;
             if (remoteMessage.GetNotification().Title != null)
             {
@@ -46,7 +47,7 @@ namespace myTNB_Android.Src.Firebase.Services
                 message = remoteMessage.GetNotification().Body;
             }
 
-            SendNotification(title, message);
+            SendNotification(title, message, remoteData);
             if (remoteData.ContainsKey("Badge") && int.TryParse(remoteData["Badge"], out int count))
             {
                 if (count <= 0)
@@ -64,29 +65,61 @@ namespace myTNB_Android.Src.Firebase.Services
         {
         }
 
-        private void SendNotification(string title, string message)
+        private void SendNotification(string title, string message, IDictionary<string, string> remoteData)
         {
-            Intent intent = new Intent(this, typeof(NotificationActivity));
-            intent.PutExtra(Constants.HAS_NOTIFICATION, true);
+            Intent intent;
+            if (remoteData.ContainsKey("claimId"))
+            {
+                intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));               
+                //intent.AddFlags(ActivityFlags.ClearTop);                
+                intent.AddFlags(ActivityFlags.ClearTop);
+                intent.PutExtra("ClaimId",remoteData["claimId"]);
+                PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
 
-            intent.AddFlags(ActivityFlags.ClearTop);
-            PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
+                Android.Net.Uri defaultSoundUri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                        .SetSmallIcon(Resource.Drawable.ic_launcher)
+                        .SetLargeIcon(BitmapFactory.DecodeResource(this.Resources,
+                                Resource.Drawable.ic_launcher))
+                        .SetContentTitle(title)
+                        .SetContentText(message)
+                        .SetAutoCancel(true)
+                        .SetSound(defaultSoundUri)
+                        .SetContentIntent(pendingIntent);
 
-            Android.Net.Uri defaultSoundUri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                    .SetSmallIcon(Resource.Drawable.ic_launcher)
-                    .SetLargeIcon(BitmapFactory.DecodeResource(this.Resources,
-                            Resource.Drawable.ic_launcher))
-                    .SetContentTitle(title)
-                    .SetContentText(message)
-                    .SetAutoCancel(true)
-                    .SetSound(defaultSoundUri)
-                    .SetContentIntent(pendingIntent);
+                NotificationManager notificationManager =
+                        (NotificationManager)GetSystemService(Context.NotificationService);
 
-            NotificationManager notificationManager =
-                    (NotificationManager)GetSystemService(Context.NotificationService);
+                notificationManager.Notify(0, notificationBuilder.Build());
+            }
+            else
+            {
+                intent = new Intent(this, typeof(NotificationActivity));
+                intent.PutExtra(Constants.HAS_NOTIFICATION, true);
+                intent.AddFlags(ActivityFlags.ClearTop);
 
-            notificationManager.Notify(0, notificationBuilder.Build());
+
+                PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
+
+                Android.Net.Uri defaultSoundUri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                        .SetSmallIcon(Resource.Drawable.ic_launcher)
+                        .SetLargeIcon(BitmapFactory.DecodeResource(this.Resources,
+                                Resource.Drawable.ic_launcher))
+                        .SetContentTitle(title)
+                        .SetContentText(message)
+                        .SetAutoCancel(true)
+                        .SetSound(defaultSoundUri)
+                        .SetContentIntent(pendingIntent);
+
+                NotificationManager notificationManager =
+                        (NotificationManager)GetSystemService(Context.NotificationService);
+
+                notificationManager.Notify(0, notificationBuilder.Build());
+            }
+                
+
+          
         }
     }
 }

@@ -41,6 +41,7 @@ using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using Newtonsoft.Json;
 using Firebase.Iid;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -80,6 +81,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         private string urlSchemaData = "";
         private string urlSchemaPath = "";
+        string ClaimId = "";
         private Snackbar mSnackBar;
         private Snackbar mNoInternetSnackbar;
         private Snackbar mUnknownExceptionSnackBar;
@@ -139,6 +141,12 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         }
+                    }
+
+                    if (Intent.Extras.ContainsKey("claimId"))
+                    {
+                       ClaimId = Intent.Extras.GetString("claimId");
+                    
                     }
 
                     // Get CategoryBrowsable intent data
@@ -550,7 +558,15 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowNotification()
         {
-            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
+            if(!string.IsNullOrEmpty(ClaimId))
+            {
+                isAppLaunchDone = true;
+                Intent Intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+                Intent.AddFlags(ActivityFlags.ClearTop);
+                Intent.PutExtra("ClaimId", ClaimId);
+                StartActivity(Intent);
+            }
+            else if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
                 isAppLaunchDone = true;
                 Intent notificationIntent = new Intent(this, typeof(NotificationActivity));

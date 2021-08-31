@@ -142,6 +142,11 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             }
         }
 
+        //protected override void OnNewIntent(Intent intent)
+        //{
+        //    base.OnNewIntent(intent);
+        //    ClaimId = intent.GetStringExtra("ClaimId");
+        //}
         private async void SetUI()
         {
             try

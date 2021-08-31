@@ -79,7 +79,7 @@ namespace myTNB_Android.Src.PaymentInfoSunmittedSuccess.Activity
             //txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent");
             //totalclaimamt.Text = Convert.ToDouble(TotalAmt).ToString("N2", info);//TotalAmt;
             var Amt = Convert.ToDouble(TotalAmt);
-            totalclaimamt.Text = string.Format("{0:#,0.####}", Amt);
+            totalclaimamt.Text = string.Format("{0:#,0.00##}", Amt);
             txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
             buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
             btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
