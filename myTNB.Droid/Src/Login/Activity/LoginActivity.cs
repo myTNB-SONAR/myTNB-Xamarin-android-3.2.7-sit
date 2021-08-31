@@ -37,6 +37,10 @@ namespace myTNB_Android.Src.Login.Activity
         private LoginPresenter mPresenter;
         private LoginContract.IUserActionsListener userActionsListener;
 
+        public static string urlSchemaData = "";
+        public static string urlSchemaPath = "";
+
+
         private AlertDialog mProgressDialog;
 
         [BindView(Resource.Id.txtInputLayoutEmail)]
@@ -103,6 +107,17 @@ namespace myTNB_Android.Src.Login.Activity
                     })
                     .SetCancelable(false)
                     .Create();
+
+
+                Bundle extras = Intent?.Extras;
+                if (extras != null && extras.ContainsKey("urlSchemaData"))
+                {
+                    urlSchemaData = extras.GetString("urlSchemaData");
+                    if (extras != null && extras.ContainsKey("urlSchemaPath"))
+                    {
+                        urlSchemaPath = extras.GetString("urlSchemaPath");
+                    }
+                }
 
                 TextViewUtils.SetMuseoSans300Typeface(chkRemeberMe, txtEmail, txtPassword, txtNoAccount);
                 TextViewUtils.SetMuseoSans500Typeface(txtRegisterAccount, txtAccountLogin, txtForgotPassword);
@@ -407,7 +422,17 @@ namespace myTNB_Android.Src.Login.Activity
             // TODO : START ACTIVITY DASHBOARD
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            if (!string.IsNullOrEmpty(urlSchemaData))
+            {
+                DashboardIntent.PutExtra("urlSchemaData", urlSchemaData);
+                if (!string.IsNullOrEmpty(urlSchemaPath))
+                {
+                    DashboardIntent.PutExtra("urlSchemaPath", urlSchemaPath);
+                }
+            }
             StartActivity(DashboardIntent);
+            urlSchemaPath = "";
+            urlSchemaData = "";
         }
 
         public void ShowForgetPassword()

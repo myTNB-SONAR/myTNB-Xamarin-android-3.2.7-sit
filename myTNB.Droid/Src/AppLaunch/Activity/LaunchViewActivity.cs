@@ -351,6 +351,14 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
                     PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    if (!string.IsNullOrEmpty(urlSchemaData))
+                    {
+                        PreLoginIntent.PutExtra("urlSchemaData", urlSchemaData);
+                        if (!string.IsNullOrEmpty(urlSchemaPath))
+                        {
+                            PreLoginIntent.PutExtra("urlSchemaPath", urlSchemaPath);
+                        }
+                    }
                     StartActivity(PreLoginIntent);
                 }
                 else
@@ -1128,6 +1136,15 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         urlSchemaData = "applicationDetails";
                         ApplicationDetailsDeeplinkCache.Instance.SetData(deepLinkUrl);
+                    }
+                    else if (deepLinkUrl.Contains("overvoltageClaimDetails"))
+                    {
+                        urlSchemaData = "enquiryDetails";
+                        EnquiryDetailsDeeplinkCache.Instance.SetData(deepLinkUrl);
+#if DEBUG
+                        Log.Debug(TAG, "[Dynamic Link] overvoltageClaimDetails = " + deepLinkUrl);
+#endif
+                        //TODO: go to enquiryDetails instead, and use something like EnquiryDetailsDeeplinkCache
                     }
                 }
             }

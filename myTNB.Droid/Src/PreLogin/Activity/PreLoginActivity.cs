@@ -47,6 +47,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
         private bool isApplicationStatusEnabled = false;
         private int cardCount = 4;
 
+        private string urlSchemaData = "";
+        private string urlSchemaPath = "";
+
         [BindView(Resource.Id.txtWelcome)]
         TextView txtWelcome;
 
@@ -213,6 +216,16 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 }
                 cardCount = isApplicationStatusEnabled || TextViewUtils.IsLargeFonts ? 4 : 3;
 
+                Bundle extras = Intent?.Extras;
+                if (extras != null && extras.ContainsKey("urlSchemaData"))
+                {
+                    urlSchemaData = extras.GetString("urlSchemaData");
+                    if (extras != null && extras.ContainsKey("urlSchemaPath"))
+                    {
+                        urlSchemaPath = extras.GetString("urlSchemaPath");
+                    }
+                }
+
                 UpdateLabels();
                 GenerateTopLayoutLayout();
                 GenerateFindUsCardLayout();
@@ -255,7 +268,17 @@ namespace myTNB_Android.Src.PreLogin.Activity
         public void ShowLogin()
         {
             // TODO : ADD START ACTIVITY LOGIN ACTIVITY
+            if (!string.IsNullOrEmpty(urlSchemaData))
+            {
+                LoginActivity.urlSchemaData = urlSchemaData;
+                if (!string.IsNullOrEmpty(urlSchemaPath))
+                {
+                    LoginActivity.urlSchemaPath= urlSchemaPath ;
+                }
+            }
             StartActivity(typeof(LoginActivity));
+            urlSchemaPath = "";
+            urlSchemaData = "";
         }
 
         public void ShowRegister()
