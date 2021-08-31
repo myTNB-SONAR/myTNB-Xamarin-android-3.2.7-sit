@@ -57,6 +57,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
             string getActualPath(Android.Net.Uri uri);
 
+            string getFilename(Android.Net.Uri uri);
+
+
         }
 
         public interface IUserActionsListener : IBasePresenter

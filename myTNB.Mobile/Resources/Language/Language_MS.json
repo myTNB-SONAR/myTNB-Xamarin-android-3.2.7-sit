@@ -221,10 +221,17 @@
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
     "receivedExtra": "terima lebih",
     "applicationStatus": "Status<br>Permohonan",
-    "discoverMore": "Terokai",
     "dbrReminderPopupTitle": "Jom paperless dengan Bil myTNB hari ini!",
     "dbrReminderPopupMessage": "Jadilah orang pertama yang memberi impak dengan memilih kaedah paperless untuk bil anda yang seterusnya! Dengan myTNB, anda mempunyai cara yang lebih baik dan mesra alam untuk menerima bil secara digital melalui Aplikasi & Portal myTNB.",
-    "dbrReminderPopupStartNow": "Ketahui Lanjut"
+    "dbrReminderPopupStartNow": "Ketahui Lanjut",
+    //EnergyBudget
+    "energyBudget": "Energy <br> Budget Saya",
+    "tutorialEnergyBudgetTitle": "Mulakan langkah untuk menguruskan tenaga anda",
+    "tutorialEnergyBudgetDesc": "Anda boleh mengakses Energy Budget dari laman utama untuk mula menetapkan jumlah bil yang anda inginkan",
+    //DiscoverMore
+    "DiscoverMore": "Terokai",
+    "DiscoverMoreTitle": "Energy Budget kini telah tiba!",
+    "DiscoverMoreDate": "07 May 2021"
   },
   "Tabbar": {
     "home": "Utama",
@@ -254,8 +261,21 @@
     "stateReason": "Sila nyatakan sebab anda",
     "selectAnAccount": "Pilih Akaun",
     "tncSubscribeFAQ": "Dengan menghantar, anda bersetuju pada <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Soalan Lazim Self Meter Reading</strong></a>, ",
-    "tncSubscribeTNC": "<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>."
+    "tncSubscribeTNC": "<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
+    "tncsmrNew": "Dengan melanggan/menghantar Self Meter Reading, saya faham dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat Self Meter Reading</strong></a>, <a href=\"\\\"><strong>Terma Penggunaan dan Polisi Perlindungan Data Peribadi TNB</strong></a>. Saya juga bersetuju untuk menghantar bacaan meter pada setiap bulan kecuali pada bulan bukan Self Meter Reading"
+
   },
+
+  "SSMRApplicationTnc": {
+    "title": "Self Meter Reading",
+    "termsnCondition": "Terma dan Syarat Self Meter Reading",
+    "termsofUse": "Terma Penggunaan TNB",
+    "pdpa": "Polisi Perlindungan Data",
+    "termsofUsePolicy": "https://www.tnb.com.my/terms-policy/",
+    "pdpaPolicy": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
+    "tncData": "<p>1.Setelah berjaya mendaftar, anda dikehendaki untuk menghantar bacaan meter pada setiap bulan kecuali pada bulan April, Ogos dan Disember kerana bacaan meter di premis akan dibuat oleh pihak kami pada bulan-bulan tersebut.</p><p>2.Pada setiap bulan, anda akan menerima notifikasi untuk menghantar bacaan meter kepada pihak kami untuk tujuan pembilan. Anda dinasihatkan untuk menghantar bacaan meter mengikut tarikh bacaan yang telah ditetapkan.</p><p>3.Bacaan meter yang diterima akan disemak untuk pengesahan dengan kadar segera. Setelah pengesahan dibuat, salinan bill elektrik boleh dilihat melalui aplikasi myTNB dan portal myTNB pada keesokan hari.</p><p>4.Anda akan menerima bil anggaran mengikut purata penggunaan sekiranya, bacaan meter yang dihantar tidak dapat disahkan atau bacaan meter tidak dihantar mengikut tarikh bacaan yang telah ditetapkan.</p><p>5.Pihak kami akan membuat pelarasan sekiranya terdapat kejanggalan pada bacaan meter yang diterima.</p><p>6.Perkhidmatan ini akan dihentikan sekiranya:</p><p> a)Bacaan pada meter tidak dihantar selama dua bulan berturut-turut, atau</p><p> b)Sekiranya kriteria perkhidmatan tidak lagi dipenuhi, sebagai contoh, akaun telibat dengan pemotongan bekalan, penutupan akaun, perubahan tarif dan sebagainya.</p>"
+  },
+
   "Status": {
     "feedbackSuccessTitle": "Maklum Balas Berjaya",
     "feedbackFailTitle": "Maklum Balas Tidak Berjaya",
@@ -434,7 +454,20 @@
     "tariffLegendNote": "Nota: Blok berwarna di atas mewakili kadar elektrik anda. Untuk melihat pecahan terperinci, sila rujuk bil anda.",
     "prevReadingEmptyTitle": "Maaf, kami tidak dapat melakukan tindakan ini sekarang.",
     "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda.",
-    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
+    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+    //EnergyBudget
+    "myMonthlyBudget": "Energy Budget saya adalah",
+    "whyIsAmountDiff": "Mengapakah jumlah penggunaan saya lain daripada jumlah bil saya?",
+    "whyIsAmountDiffBody": "Jumlah penggunaan terkini anda adalah jumlah tenaga yang anda telah guna setakat ini. Oleh kerana jumlah ini belum dibilkan mengikuti kitaran pembilan anda, ia belum tertakluk kepada cukai, diskaun atau caj tambahan dari kami.",
+    "editEnergyButton": "Tetapkan Energy Budget anda",
+    "setEnergyButton": "Tetapkan Sekarang",
+    "saveEnergyButton": "Simpan Energy Budget baharu",
+    "toastSaveBudgetuccessfull": "Anda telah berjaya menetapkan Energy Budget anda!",
+    "myUsageSoFar": "Penggunaan saya setakat ini",
+    "disconnectedEnergyBudget": "Nampaknya Energy Budget anda terputus sambungan. Refresh untuk sambung semula!",
+    "refreshNowEnergyBudgetButton": "'Refresh' Sekarang",
+    "youHaveNotSetBudget": "Anda belum menetapkan Energy Budget anda",
+    "youHaveNotSetBudgetSubtitle": "Tetapkan Energy Budget anda, pantau penggunaan anda dan terima pemberitahuan apabila berdekatan dengan Energy Budget anda!"
   },
   "Bills": {
     "title": "Bil",
@@ -578,7 +611,12 @@
     "reenableSSMR": "Aktifkan semula SMR",
     "viewReadingHistory": "Kembali ke Penggunaan",
     "paymentHistory": "Rekod bayaran",
-    "viewReceipt": "Melihat Resit"
+    "viewReceipt": "Melihat Resit",
+    //EnergyBudget
+    "viewBudget": "Paparkan Budget",
+    "viewTips": "Rujuk Tips",
+    "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks",
+    "EnergyBudgetTitle": "Energy Budget"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -2416,6 +2454,21 @@
     "confirmPopupMessage": "Anda akan menutup halaman ini dan menamatkan sesi anda.",
     "nevermind": "Tidak Mengapa",
     "confirm": "Sahkan"
+  },
+  "EnregyBudgetListing": {
+    "title": "Pilih Akaun Meter Pintar",
+    "tootltipTitle": "Mengapakah sesetengah akaun saya tidak disenaraikan?",
+    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Apabila meter anda telah ditukarkan ke meter pintar, akaun tersebut akan ditambah secara automatik ke dalam senarai ini."
+  },
+  "EnergyBudgetPopup": {
+    "title": "Kawal penggunaan elektrik anda dengan mudah Bersama Energy Budget!",
+    "threeEasyStep": "Penjimatan wang melalui 3 cara mudah:",
+    "firstStep": "TETAPKAN tahap penggunaan bulanan anda",
+    "secondStep": "PANTAU penggunaan harian dengan mudah",
+    "thirdStep": "BERJIMAT apabila anda menghampiri penggunaan yang anda tetapkan",
+    "txtLetgetstarted": "Mari Kita Mulakan",
+    "txtViewmybudget": "Lihat Budget Saya",
+    "txtMaybelater": "Kemudian"
   },
   "ServiceConfiguration": {
     "Eligibility": {

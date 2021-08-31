@@ -52,5 +52,10 @@ namespace myTNB_Android.Src.DeviceCache
             return !string.IsNullOrEmpty(tkn)
                 && !string.IsNullOrWhiteSpace(tkn);
         }
+
+        public void ClearToken()
+        {
+            Token = string.Empty;
+        }
     }
 }

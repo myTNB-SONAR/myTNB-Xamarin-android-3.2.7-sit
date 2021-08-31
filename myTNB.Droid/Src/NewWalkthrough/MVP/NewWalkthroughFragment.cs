@@ -1,6 +1,4 @@
 ﻿
-using System;
-using System.Threading.Tasks;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
@@ -10,6 +8,8 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
+using System;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
 {

@@ -43,6 +43,8 @@ using Newtonsoft.Json;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile.AWS.Models;
+using Firebase.Iid;
+using myTNB_Android.Src.NotificationDetails.Activity;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -135,6 +137,14 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         }
+                    }
+
+                    if (Intent.Extras.ContainsKey("Type") && Intent.Extras.ContainsKey("RequestTransId") && Intent.Extras.ContainsKey("EventId"))
+                    {
+                        string type = Intent.Extras.GetString(NotificationOpenDirectDetails.TYPE);
+                        string requestTransID = Intent.Extras.GetString(NotificationOpenDirectDetails.PARAM_REQUESTTRANSID);
+                        string eventID = Intent.Extras.GetString(NotificationOpenDirectDetails.Param_EVENTID);
+                        UserSessions.SetNotification(type, requestTransID, eventID);
                     }
 
                     if (Intent.Extras.ContainsKey("Email"))
@@ -327,9 +337,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 ApplicationStatusNotificationModel notificationObj = UserSessions.ApplicationStatusNotification;
                 ApplicationDetailDisplay detailResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(notificationObj.SaveApplicationID
-                       , notificationObj.ApplicationID
-                       , notificationObj.ApplicationType
-                       , notificationObj.System);
+                    , notificationObj.ApplicationID
+                    , notificationObj.ApplicationType
+                    , notificationObj.System);
 
                 if (detailResponse.StatusDetail.IsSuccess)
                 {
@@ -442,7 +452,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             return this.DeviceId();
         }
-
 
         public void ShowDeviceNotSupported()
         {
@@ -612,6 +621,41 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Intent notificationIntent = new Intent(this, typeof(NotificationActivity));
                 notificationIntent.PutExtra(Constants.HAS_NOTIFICATION, true);
                 StartActivity(notificationIntent);
+            }
+        }
+
+        public void ShowNotificationDetails()
+        {
+            var usrsession = UserSessions.Notification;
+            mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);
+        }
+
+        public void ShowDetails(NotificationDetails.Models.NotificationDetails details)
+        {
+            try
+            {
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_in_app_notification);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_in_app_notification);
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+            isAppLaunchDone = true;
+            Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
+            notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+            StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+        }
+
+        public void ShowProgress()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -1227,6 +1271,71 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        //private Snackbar mApiExcecptionSnackBar;
+        public void ShowRetryOptionsApiException(ApiException apiException)
+        {
+            if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+            {
+                mApiExcecptionSnackBar.Dismiss();
+            }
+
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+                mApiExcecptionSnackBar.Dismiss();
+            });
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mApiExcecptionSnackBar.Show();
+            this.SetIsClicked(false);
+        }
+
+        private Snackbar mCancelledExceptionSnackBar;
+        public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
+        {
+            if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+            {
+                mCancelledExceptionSnackBar.Dismiss();
+            }
+
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mCancelledExceptionSnackBar.Dismiss();
+
+            }
+            );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
+        }
+
+        private Snackbar mUknownExceptionSnackBar;
+        public void ShowRetryOptionsUnknownException(Exception exception)
+        {
+            if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
+            {
+                mUknownExceptionSnackBar.Dismiss();
+
+            }
+
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+                mUknownExceptionSnackBar.Dismiss();
+            }
+            );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mUknownExceptionSnackBar.Show();
+            this.SetIsClicked(false);
         }
     }
 }

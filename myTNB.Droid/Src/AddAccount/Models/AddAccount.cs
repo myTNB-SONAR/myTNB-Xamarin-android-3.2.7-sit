@@ -44,5 +44,9 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty(PropertyName = "isTaggedSMR")]
         [AliasAs("isTaggedSMR")]
         public string IsTaggedSMR { get; set; }
+
+        [JsonProperty(PropertyName = "BudgetAmount")]
+        [AliasAs("BudgetAmount")]
+        public string BudgetAmount { get; set; }
     }
 }

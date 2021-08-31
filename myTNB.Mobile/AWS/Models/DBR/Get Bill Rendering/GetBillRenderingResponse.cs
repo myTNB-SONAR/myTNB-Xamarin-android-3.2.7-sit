@@ -4,7 +4,6 @@ using System.Diagnostics;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using static myTNB.Mobile.AWSConstants;
-using static myTNB.Mobile.EligibilitySessionCache;
 using static myTNB.Mobile.MobileConstants;
 
 namespace myTNB.Mobile.AWS.Models
@@ -54,7 +53,7 @@ namespace myTNB.Mobile.AWS.Models
             get
             {
                 MobileEnums.DBRTypeEnum renderingType = MobileEnums.DBRTypeEnum.None;
-                if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup)
+                if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR, EligibilitySessionCache.FeatureProperty.TargetGroup)
                     && !DigitalBillEligibility.IsValid())
                 {
                     return renderingType;
@@ -71,9 +70,36 @@ namespace myTNB.Mobile.AWS.Models
                 }
                 else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EBill)
                 {
-                    renderingType = IsUpdateCtaAllow
-                        ? MobileEnums.DBRTypeEnum.EBillWithCTA
-                        : MobileEnums.DBRTypeEnum.EBill;
+                    if (BCRecord != null && BCRecord.Count > 0)
+                    {
+                        bool isEbill = true;
+                        for (int i = 0; i < BCRecord.Count; i++)
+                        {
+                            if (BCRecord[i].RenderingMethod == BillRenderingCodes.BC_EMail)
+                            {
+                                isEbill = false;
+                                break;
+                            }
+                        }
+                        if (isEbill)
+                        {
+                            renderingType = IsUpdateCtaAllow
+                                ? MobileEnums.DBRTypeEnum.EBillWithCTA
+                                : MobileEnums.DBRTypeEnum.EBill;
+                        }
+                        else
+                        {
+                            renderingType = IsUpdateCtaAllow
+                                ? MobileEnums.DBRTypeEnum.EmailWithCTA
+                                : MobileEnums.DBRTypeEnum.Email;
+                        }
+                    }
+                    else
+                    {
+                        renderingType = IsUpdateCtaAllow
+                            ? MobileEnums.DBRTypeEnum.EBillWithCTA
+                            : MobileEnums.DBRTypeEnum.EBill;
+                    }
                 }
                 return renderingType;
             }
@@ -88,15 +114,17 @@ namespace myTNB.Mobile.AWS.Models
             get
             {
                 string message = string.Empty;
-                if (IsPaper)
+                if (DBRType == MobileEnums.DBRTypeEnum.Paper)
                 {
                     message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_PaperBill);
                 }
-                else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EMail)
+                else if (DBRType == MobileEnums.DBRTypeEnum.Email
+                    || DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
                 {
                     message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_Email);
                 }
-                else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EBill)
+                else if (DBRType == MobileEnums.DBRTypeEnum.EBill
+                    || DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
                 {
                     message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_EBill);
                 }
@@ -114,15 +142,17 @@ namespace myTNB.Mobile.AWS.Models
             get
             {
                 string image = string.Empty;
-                if (IsPaper)
+                if (DBRType == MobileEnums.DBRTypeEnum.Paper)
                 {
                     image = "Icon-DBR-Paper-Bill";
                 }
-                else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EMail)
+                else if (DBRType == MobileEnums.DBRTypeEnum.Email
+                    || DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
                 {
                     image = "Icon-DBR-EMail";
                 }
-                else if (OwnerBillRenderingMethod == BillRenderingCodes.Owner_EBill)
+                else if (DBRType == MobileEnums.DBRTypeEnum.EBill
+                    || DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
                 {
                     image = "Icon-DBR-EBill";
                 }

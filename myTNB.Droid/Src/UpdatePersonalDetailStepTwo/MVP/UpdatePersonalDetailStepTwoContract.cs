@@ -57,6 +57,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
             string GetImageName(int itemCount);
 
             void ShowPDF();
+
+            public string getFilename(Android.Net.Uri uri);
         }
 
         public interface IUserActionsListener : IBasePresenter

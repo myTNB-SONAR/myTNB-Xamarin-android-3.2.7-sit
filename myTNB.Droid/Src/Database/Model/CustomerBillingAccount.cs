@@ -90,6 +90,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("IsViewBillShown")]
         public bool IsViewBillShown { get; set; }
 
+        [Column("BudgetAmount")]
+        public string BudgetAmount { get; set; }
+
         public static int CreateTable()
         {
             var db = DBHelper.GetSQLiteConnection();
@@ -121,7 +124,8 @@ namespace myTNB_Android.Src.Database.Model
                 AccountCategoryId = accountResponse.accountCategoryId,
                 SmartMeterCode = accountResponse.smartMeterCode == null ? "0" : accountResponse.smartMeterCode,
                 IsSelected = isSelected,
-                IsTaggedSMR = accountResponse.IsTaggedSMR
+                IsTaggedSMR = accountResponse.IsTaggedSMR,
+                BudgetAmount = accountResponse.BudgetAmount == null ? "0" : accountResponse.BudgetAmount
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -184,7 +188,8 @@ namespace myTNB_Android.Src.Database.Model
                 IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
                 isOwned = accountResponse.IsOwned,
                 IsSMROnBoardingDontShowAgain = false,
-                IsPeriodOpen = false
+                IsPeriodOpen = false,
+                BudgetAmount = accountResponse.BudgetAmount
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -1198,5 +1203,33 @@ namespace myTNB_Android.Src.Database.Model
             return enabled;
         }
 
+        public static List<CustomerBillingAccount> SMeterBudgetAccountList()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            List<CustomerBillingAccount> eligibleSMAccounts = new List<CustomerBillingAccount>();
+            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode != '0' AND accountCategoryId != 2").ToList().OrderBy(x => x.AccDesc).ToList();
+            return eligibleSMAccounts;
+        }
+
+        public static void UpdateEnergyBudgetRM(string TotalBudget, string accNum)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("Update CustomerBillingAccountEntity SET BudgetAmount = ? WHERE accNum = ?", TotalBudget, accNum);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static List<CustomerBillingAccount> EnergyBudgetRM(string accNum)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            List<CustomerBillingAccount> eligibleSMAccounts = new List<CustomerBillingAccount>();
+            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accNum = ?", accNum).ToList().OrderBy(x => x.AccDesc).ToList();
+            return eligibleSMAccounts;
+        }
     }
 }

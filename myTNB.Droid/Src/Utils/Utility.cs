@@ -341,6 +341,31 @@ namespace myTNB_Android.Src.Utils
             return isPaymentEnable;
         }
 
+        public static bool IsMDMSDownEnergyBudget()
+        {
+            bool isMDMSEnable = true;
+           
+            DownTimeEntity smartmeterdailyEntity = DownTimeEntity.GetByCode(Constants.Smart_Meter_Daily_SYSTEM);
+            DownTimeEntity smartmeter = DownTimeEntity.GetByCode(Constants.SMART_METER_SYSTEM);
+
+            if (smartmeterdailyEntity != null && smartmeterdailyEntity.IsDown)
+            {
+                isMDMSEnable = false;
+            }
+            else
+            {
+                if (smartmeter != null && smartmeter != null)
+                {
+                    if (smartmeter.IsDown || smartmeterdailyEntity.IsDown)
+                    {
+                        isMDMSEnable = false;
+                    }
+                }
+            }
+
+            return isMDMSEnable;
+        }
+
         public static string GetAppVersionName(Context appContext)
         {
             string appVersionName = "";

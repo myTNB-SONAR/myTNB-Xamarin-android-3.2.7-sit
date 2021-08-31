@@ -221,10 +221,17 @@
     "serviceRefreshMessage": "Uh oh, looks like your quick actions have been unplugged. Refresh to stay plugged in!",
     "receivedExtra": "received extra",
     "applicationStatus": "Application<br>Status",
-    "discoverMore": "Discover More",
     "dbrReminderPopupTitle": "Jom paperless with myTNB Bill today!",
     "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill onwards! With myTNB, you have a better and more environmentally friendly way to receive your paperless bills digitally via myTNB App & Portal.",
-    "dbrReminderPopupStartNow": "View More"
+    "dbrReminderPopupStartNow": "View More",
+    //EnergyBudget
+    "energyBudget": "My Energy<br>Budget",
+    "tutorialEnergyBudgetTitle": "Begin your Energy Budget journey",
+    "tutorialEnergyBudgetDesc": "Access Energy Budget easily from homepage to start setting up your desired monthly bill amount",
+    //DiscoverMore
+    "DiscoverMore": "Discover More",
+    "DiscoverMoreTitle": "The new Energy Budget feature is here!",
+    "DiscoverMoreDate": "07 May 2021"
   },
   "Tabbar": {
     "home": "Home",
@@ -254,8 +261,20 @@
     "stateReason": "Please state your reason",
     "selectAnAccount": "Select an account",
     "tncSubscribeFAQ": "By submitting, you are agreeing to the <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Self Meter Reading FAQ</strong></a>, ",
-    "tncSubscribeTNC": "<a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy Policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>."
+    "tncSubscribeTNC": "<a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy Policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
+    "tncsmrNew": "By subscribing to Self Meter Reading, I understand and agree on the <a href=\"\\\"><strong>Self Meter Reading Terms and Conditions</strong></a>, <a href=\"\\\"><strong>TNB's Terms of Use and Personal Data Protection Policy</strong></a>. I also agree to submit meter reading on a monthly basis except non Self Meter Reading month"
   },
+
+  "SSMRApplicationTnc": {
+    "title": "Self Meter Reading",
+    "termsnCondition": "Self Meter Reading Terms and Conditions",
+    "termsofUse": "TNB's Terms of Use",
+    "pdpa": "Personal Data Protection Policy",
+    "termsofUsePolicy": "https://www.tnb.com.my/terms-policy/",
+    "pdpaPolicy": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
+    "tncData": "<p>1.Upon successful registration, you are required to submit your reading for all months except for April, August and December where we will do the reading.</p><p>2.Every month, you will receive a notification from us to submit your reading. Kindly submit the readings within the specified date.</p><p>3.We will validate your readings immediately upon submission. Once validated, you can view your bill via myTNB Portal and myTNB App on the following day.</p><p>4.We will estimate your reading based on average consumption; if the validation is unsuccessful or not submitted within the specified period.</p><p>5.We shall make the necessary adjustments if there are any differences found in the readings submitted.</p><p>6.You may no longer enjoy this service if:</p><p> a)There are no readings submitted for 2 consecutive months.</p><p> b)If you no longer meet the requirements (E.g. Supply disconnected, Close of Account, Change of Tariff and others)</p>"
+  },
+
   "Status": {
     "feedbackSuccessTitle": "Feedback Successful",
     "feedbackFailTitle": "Feedback Unsuccessful",
@@ -434,7 +453,20 @@
     "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.",
     "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
     "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.",
-    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while."
+    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
+    //EnergyBudget
+    "myMonthlyBudget": "My monthly budget is",
+    "whyIsAmountDiff": "Will this be my final bill amount?",
+    "whyIsAmountDiffBody": "Its simple! The amount displayed is your usage which is the energy used so far. Your final bill will include tax, discounts or additional charges.",
+    "editEnergyButton": "Edit Budget",
+    "setEnergyButton": "Set Now",
+    "saveEnergyButton": "Save New Budget",
+    "toastSaveBudgetuccessfull": "You've successfully saved your monthly budget!",
+    "myUsageSoFar": "My usage so far",
+    "disconnectedEnergyBudget": "Uh-oh, looks like your Energy Budget have been unplugged. Refresh to stay plugged in!",
+    "refreshNowEnergyBudgetButton": "Refresh Now",
+    "youHaveNotSetBudget": "You have not set up your Energy Budget",
+    "youHaveNotSetBudgetSubtitle": "Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!"
   },
   "Bills": {
     "title": "Bills",
@@ -578,7 +610,12 @@
     "reenableSSMR": "Re-start Self Meter Reading",
     "viewReadingHistory": "View Reading History",
     "paymentHistory": "Payment history",
-    "viewReceipt": "View Receipt"
+    "viewReceipt": "View Receipt",
+    //EnergyBudget
+    "viewBudget": "View Budget",
+    "viewTips": "View Tips",
+    "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks",
+    "EnergyBudgetTitle": "Energy Budget"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -2424,6 +2461,21 @@
     "confirmPopupMessage": "You are about to close this page and end your session.",
     "nevermind": "Nevermind",
     "confirm": "Confirm"
+  },
+  "EnregyBudgetListing": {
+    "title": "Select Smart Meter Account",
+    "tootltipTitle": "Why are some of my accounts not listed?",
+    "tooltipBody": "As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. Once your normal meter has been converted into Smart Meter, it will be automatically added into the list."
+  },
+  "EnergyBudgetPopup": {
+    "title": "Take control of your energy usage with the new Energy Budget feature!",
+    "threeEasyStep": "Saving money in 3 easy steps:",
+    "firstStep": "SET a budget for your monthly energy usage",
+    "secondStep": "MONITOR your energy usage right at your fingertips",
+    "thirdStep": "SAVINGS starts with you getting notified when reaching your set budget",
+    "txtLetgetstarted": "Let's Get Started",
+    "txtViewmybudget": "View My Budget",
+    "txtMaybelater": "Maybe Later"
   },
   "ServiceConfiguration": {
     "Eligibility": {

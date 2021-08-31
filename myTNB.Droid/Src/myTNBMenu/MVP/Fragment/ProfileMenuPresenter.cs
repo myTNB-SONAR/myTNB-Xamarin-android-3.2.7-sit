@@ -13,6 +13,9 @@ using myTNB_Android.Src.Utils;
 using Refit;
 using myTNB;
 using myTNB.Mobile;
+using myTNB_Android.Src.AppLaunch.Models;
+using Android.Content;
+using myTNB_Android.Src.DeviceCache;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -22,9 +25,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         private readonly string TAG = typeof(ProfileMenuPresenter).Name;
         private List<CreditCardData> cardList = new List<CreditCardData>();
         CancellationTokenSource cts;
+        private ISharedPreferences mPref;
 
-        public ProfileMenuPresenter(ProfileMenuContract.IView mView)
+        public ProfileMenuPresenter(ProfileMenuContract.IView mView, ISharedPreferences pref)
         {
+            this.mPref = pref;
             this.mView = mView;
         }
 
@@ -152,6 +157,24 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         {
                             int newRecord = UserNotificationTypesEntity.InsertOrReplace(notificationType);
                             Console.WriteLine(string.Format("New Type Created {0}", newRecord));
+
+                            if (notificationType.MasterId == "1000020")
+                            {
+                                NotificationTypes type = new NotificationTypes()
+                                {
+                                    MasterId = notificationType.Id,
+                                    Title = notificationType.Title,
+                                    Code = notificationType.Code,
+                                    PreferenceMode = notificationType.PreferenceMode,
+                                    Type = notificationType.Type,
+                                    CreatedDate = notificationType.CreatedDate,
+                                    Id = notificationType.MasterId,
+                                    IsOpted = notificationType.IsOpted,
+                                    ShowInPreference = notificationType.ShowInPreference,
+                                    ShowInFilterList = notificationType.ShowInFilterList
+                                };
+                                NotificationTypesEntity.InsertOrReplace(type);
+                            }
                         }
 
                         foreach (UserNotificationChannel notificationChannel in notificationChannelApi.GetData())
@@ -237,6 +260,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                             ? LanguageManager.Language.MS
                             : LanguageManager.Language.EN);
 
+                    UserSessions.RemoveEligibleData(mPref);
+                    EligibilitySessionCache.Instance.Clear();
+                    FeatureInfoManager.Instance.Clear();
+                    AccessTokenCache.Instance.ClearToken();
                     UserEntity.RemoveActive();
                     UserRegister.RemoveActive();
                     CustomerBillingAccount.RemoveActive();

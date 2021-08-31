@@ -181,8 +181,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			void OnResetEppTooltip();
 
 			void OnResetWhereIsMyAccNumber();
-
-		}
+        }
 
         public interface IUserActionsListener : IBasePresenter
 		{
