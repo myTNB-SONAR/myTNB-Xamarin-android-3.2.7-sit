@@ -26,6 +26,9 @@ using myTNB_Android.Src.PaymentInfoSunmittedSuccess.Activity;
 using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using Xamarin.Essentials;
+using myTNB_Android.Src.MyTNBService.Request;
+using BaseRequest = myTNB_Android.Src.MyTNBService.Request.BaseRequest;
 
 namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 {
@@ -110,7 +113,9 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            //myTNB.Mobile.BaseRequest data = new myTNB.Mobile.BaseRequest();
+            //var useremail =data.UserInfo;
+           
             try
             {
                 Android.OS.Bundle extras = Intent.Extras;
@@ -151,7 +156,22 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         {
             try
             {
-                const string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
+                //device info
+                var AppVersion = DeviceIdUtils.GetAppVersionName();
+                var OsVersion = "Android" + DeviceIdUtils.GetAndroidVersion();
+                var DeviceModel = DeviceInfo.Model;
+                var Manufacturer = DeviceInfo.Manufacturer;
+                var userinfo = new BaseRequest();
+                var useremail = userinfo.usrInf.eid;
+
+
+                //const string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
+                //const string domain = "http://192.168.1.157:3000/"; // WebView Local
+                // var domain = "http://192.168.1.157:3000/claimPage/" + ClaimId + "?eid=" + useremail + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel;
+
+                // WebView Live
+                //const string domain = "http://mytnbwvovis.ap.ngrok.io/";
+                var domain = "https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId + "?eid=" + useremail + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel;
                 //const string domain = "http://192.168.1.157:3000/"; // WebView Local
 
                 String queryParams = null;
@@ -159,14 +179,16 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 
                 if (proccedToPaymentFlag)
                 {
-                    queryParams += queryParams == null ? "?" : "&";
-                    queryParams += "paymentInfo=true";
+                    //queryParams += queryParams == null ? "?" : "&";
+                    //queryParams += "paymentInfo=true";
+                    queryParams = "&paymentInfo=true";
                     proccedToPaymentFlag = false;
                 }
                 else if (setAppointmentFlag)
                 {
-                    queryParams += queryParams == null ? "?" : "&";
-                    queryParams += "setAppointment=true";
+                    //queryParams += queryParams == null ? "?" : "&";
+                    //queryParams += "setAppointment=true";
+                    queryParams = "&setAppointment=true";
                     setAppointmentFlag = false;
                 }
                 //else if (backFromAppointmentFlag)
@@ -183,11 +205,13 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 
                 if (TextViewUtils.IsLargeFonts)
                 {
-                    queryParams += queryParams == null ? "?" : "&";
-                    queryParams += "large";
+                    //queryParams += queryParams == null ? "?" : "&";
+                    //queryParams += "large";
+                    queryParams = "&large";
                 }
 
-                string url = domain + "claimPage/" + ClaimId + queryParams;
+                string url = domain + queryParams;
+               // string url = domain + "claimPage/" + ClaimId + queryParams;
 
                 #if DEBUG
                 //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
