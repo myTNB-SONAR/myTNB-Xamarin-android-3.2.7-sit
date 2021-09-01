@@ -610,10 +610,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 else
                 {
+                    string? title = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.Title.IsValid()
+                        ? billRenderingResponse?.StatusDetail?.Title
+                        : Utility.GetLocalizedLabel("Error", "defaultErrorTitle");
+
+                    string? message = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.Message.IsValid()
+                       ? billRenderingResponse?.StatusDetail?.Message
+                       : Utility.GetLocalizedLabel("Error", "defaultErrorMessage");
+
+                    string? cta = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.PrimaryCTATitle.IsValid()
+                       ? billRenderingResponse?.StatusDetail?.PrimaryCTATitle
+                       : Utility.GetLocalizedLabel("Common", "ok");
+
                     MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                        .SetTitle(billRenderingResponse?.StatusDetail?.Title ?? string.Empty)
-                        .SetMessage(billRenderingResponse?.StatusDetail?.Message ?? string.Empty)
-                        .SetCTALabel(billRenderingResponse?.StatusDetail?.PrimaryCTATitle ?? string.Empty)
+                        .SetTitle(title ?? string.Empty)
+                        .SetMessage(message ?? string.Empty)
+                        .SetCTALabel(cta ?? string.Empty)
                         .Build();
                     errorPopup.Show();
                 }
@@ -1114,7 +1126,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 ShowMarketingTooltip();
                                 IsFromLogin = false;
                             }
-                            if(!GetHomeTutorialCallState())
+                            if (!GetHomeTutorialCallState())
                             {
                                 IsFromLogin = true;
                             }

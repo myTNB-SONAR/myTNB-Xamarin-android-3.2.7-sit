@@ -116,6 +116,11 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             return base.OnCreateOptionsMenu(menu);
         }
 
+        /// <summary>
+        /// X Button Action
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             MyTNBAppToolTipBuilder exitTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
@@ -124,12 +129,15 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 .SetMessage(Utility.GetLocalizedLabel("DBRWebview", "confirmPopupMessage"))
                 .SetCTALabel(Utility.GetLocalizedLabel("DBRWebview", "nevermind"))
                 .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DBRWebview", "confirm"))
-                .SetSecondaryCTAaction(() => { OnBackPressed(); })
+                .SetSecondaryCTAaction(() =>
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Close_Confirm);
+                    OnBackPressed();
+                })
                 .IsIconImage(true)
                 .SetContentGravity(GravityFlags.Center)
                 .Build();
             exitTooltip.Show();
-
             return true;
         }
 

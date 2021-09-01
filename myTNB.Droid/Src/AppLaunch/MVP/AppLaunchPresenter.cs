@@ -128,7 +128,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
             }
             System.Diagnostics.Debug.WriteLine("[DEBUG] FCM TOKEN: " + fcmToken);
-            Console.WriteLine("[CONSOLE] FCM TOKEN: " + fcmToken);
+            Log.Debug("[DEBUG]", "FCM TOKEN: " + fcmToken);
             //Testing End
             this.mView.SetAppLaunchSuccessfulFlag(false, AppLaunchNavigation.Nothing);
             cts = new CancellationTokenSource();
@@ -400,7 +400,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         private void EvaluateServiceRetry()
         {
             serviceCallCounter++;
-            Log.Debug(TAG, string.Format("AppLaunchMasterData Service failed in {0} seconds: Retry: {1} ", appLaunchMasterDataTimeout, serviceCallCounter));
+            if (serviceCallCounter == 1)
+            {
+                DynatraceHelper.IdentifyUser();
+            }
+            DynatraceHelper.OnTrack(myTNB.Mobile.DynatraceConstants.App_Launch_Master_Fail);
+            Log.Debug(TAG, string.Format("AppLaunchMasterData Service failed in {0} seconds: Retry: {1} "
+                , appLaunchMasterDataTimeout
+                , serviceCallCounter));
             if (serviceCallCounter == 1)//If first failed, do auto-retry.
             {
                 appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT;
