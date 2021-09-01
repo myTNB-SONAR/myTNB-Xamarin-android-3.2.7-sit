@@ -30,7 +30,7 @@
 				android:id="@+id/btnSubmit"
 				android:layout_height="wrap_content"
 				android:layout_width="match_parent"
-				android:text="UI-View Account Statement"
+				android:text="View Account Statement"
 				android:textSize="16dp"
 				android:textAllCaps="false"
 				style="@style/DarkButton1"/>
@@ -68,7 +68,7 @@
 							android:layout_marginLeft="16dp"
 							android:layout_marginTop="16dp"
 							android:gravity="left"
-							android:text="UI-I want to view:"
+							android:text="I want to view:"
 							android:textColor="@color/powerBlue"
 							android:textSize="16dp" />
 					</LinearLayout>
@@ -86,8 +86,8 @@
 							android:layout_marginBottom="13dp"
 							android:layout_marginLeft="16dp"
 							android:layout_marginRight="16dp"
-							android:text="UI-Past 6 months"
-							android:textColor="@color/powerBlue"
+							android:text="Past 6 months"
+							android:textColor="#49494a"
 							android:textSize="16dp" />
 					</LinearLayout>
 					<View 
@@ -122,10 +122,83 @@
 							android:layout_marginBottom="13dp"
 							android:layout_marginLeft="16dp"
 							android:layout_marginRight="16dp"
-							android:text="UI-Custom Period"
+							android:text="Custom Period"
+							android:textColor="#49494a"
+							android:textSize="16dp" />
+					</LinearLayout>
+					<LinearLayout
+						android:id="@+id/customDateContainer"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:background="@color/lightGrey"
+						android:orientation="vertical">
+						<TextView
+							android:id="@+id/txtCustomPeriod"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="16dp"
+							android:layout_marginBottom="8dp"
+							android:layout_marginLeft="16dp"
+							android:layout_marginRight="16dp"
+							android:text="Within 6 months: "
 							android:textColor="@color/powerBlue"
 							android:textSize="16dp" />
 					</LinearLayout>
+					 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="12dp"
+                    android:paddingStart="16dp"
+                    android:background="@color/white"
+                    android:id="@+id/filterDateMainLayour">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.ColorFix"
+                        android:id="@+id/txtInputLayoutFromDate"
+                        android:layout_marginTop="10dp"
+                        app:errorEnabled="true"
+                        android:layout_marginRight="20dp">
+                        <EditText
+                            android:hint="From"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/card_exp"
+                            android:id="@+id/txtFromDate"
+                            android:textSize="16dp"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:paddingTop="5dp"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.ColorFix"
+                        android:id="@+id/txtInputLayoutToDate"
+                        app:errorEnabled="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="20dp">
+                        <EditText
+                            android:hint="To"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/card_exp"
+                            android:id="@+id/txtToDate"
+                            android:textSize="16dp"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:paddingTop="5dp"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 				</LinearLayout>
 
 			</ScrollView>

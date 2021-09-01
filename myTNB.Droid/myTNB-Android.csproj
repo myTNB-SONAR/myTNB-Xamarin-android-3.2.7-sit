@@ -6960,6 +6960,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\BillStatement\MVP\BillStatementActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7299,6 +7300,8 @@
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\" />
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\" />
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\" />
+    <Folder Include="Src\BillStatement\" />
+    <Folder Include="Src\BillStatement\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
