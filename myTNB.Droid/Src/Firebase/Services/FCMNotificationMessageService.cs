@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.Firebase.Services
             UserEntity userEntity = UserEntity.GetActive();
 
             IDictionary<string, string> remoteData = remoteMessage.Data;
-            //var x = remoteData["claimId"];
+
             string title = string.Empty;
             if (remoteMessage.GetNotification().Title != null)
             {
@@ -67,10 +67,9 @@ namespace myTNB_Android.Src.Firebase.Services
 
         private void SendNotification(string title, string message, IDictionary<string, string> remoteData)
         {
-            Intent intent;
             if (remoteData.ContainsKey("claimId"))
             {
-                intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));               
+                Intent intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));               
                 //intent.AddFlags(ActivityFlags.ClearTop);                
                 intent.AddFlags(ActivityFlags.ClearTop);
                 intent.PutExtra("ClaimId",remoteData["claimId"]);
@@ -94,11 +93,10 @@ namespace myTNB_Android.Src.Firebase.Services
             }
             else
             {
-                intent = new Intent(this, typeof(NotificationActivity));
+                Intent intent = new Intent(this, typeof(NotificationActivity));
                 intent.PutExtra(Constants.HAS_NOTIFICATION, true);
+
                 intent.AddFlags(ActivityFlags.ClearTop);
-
-
                 PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
 
                 Android.Net.Uri defaultSoundUri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
@@ -117,9 +115,6 @@ namespace myTNB_Android.Src.Firebase.Services
 
                 notificationManager.Notify(0, notificationBuilder.Build());
             }
-                
-
-          
         }
     }
 }
