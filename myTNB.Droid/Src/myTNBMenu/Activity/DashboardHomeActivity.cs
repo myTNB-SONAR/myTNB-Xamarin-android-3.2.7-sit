@@ -1449,6 +1449,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 OnCheckWhatsNewTab();
             }
         }
+
         public void ShowHomeDBRCard(bool IsAccountDBREligible)
         {
             this.RunOnUiThread(() =>
@@ -2667,7 +2668,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public bool SetEligibleEBUser()
         {
-            return UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
+            return UserSessions.GetEnergyBudgetList().Count > 0
+                && MyTNBAccountManagement.GetInstance().IsEBUserVerify()
+                && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
         }
 
         public bool SetEligibleEBUserExtra()
@@ -2708,7 +2711,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             if (SetEligibleEBUserExtra())
             {
-
                 if (UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals(string.Empty))
                 {
                     UserSessions.SavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this), "1");

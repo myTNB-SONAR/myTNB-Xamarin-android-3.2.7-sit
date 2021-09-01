@@ -284,7 +284,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             , UserSessions.GetDeviceId()
                                             , DeviceIdUtils.GetAppVersionName()
                                             , TextViewUtils.FontInfo
-                                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+                                            , LanguageUtil.GetAppLanguage() == "MS"
+                                                ? LanguageManager.Language.MS
+                                                : LanguageManager.Language.EN);
                                         AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
 
                                         bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);

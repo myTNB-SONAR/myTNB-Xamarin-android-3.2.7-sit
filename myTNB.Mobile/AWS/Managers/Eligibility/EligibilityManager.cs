@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -87,6 +88,21 @@ namespace myTNB.Mobile
                         response.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                 }
+
+
+                List<ContractAccountsModel> dummyData = new List<ContractAccountsModel>();
+                dummyData.Add(new ContractAccountsModel {
+                    Acted = false,
+                    ModifiedDate = null,
+                    ContractAccount = "220457936205"
+                });
+
+                response.Content.EB = new EBModel
+                {
+                    ContractAccounts = dummyData
+                };
+
+
                 Debug.WriteLine("[DEBUG] GetEligibility: " + JsonConvert.SerializeObject(response));
                 return response;
             }

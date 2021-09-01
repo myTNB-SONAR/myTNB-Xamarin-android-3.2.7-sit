@@ -32,7 +32,7 @@
         //Domains
         public struct Domains
         {
-#if DEBUGs
+#if DEBUG
             internal const string GenerateAccessToken = "https://devapi.mytnb.com.my/Identity/api/v1";
             internal const string GetEligibility = "https://devapi.mytnb.com.my/Eligibility/api/v1";
             internal const string GetBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
