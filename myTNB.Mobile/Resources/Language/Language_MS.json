@@ -1271,7 +1271,8 @@
     "frontIc": "Hadapan",
     "backIc": "Belakang",
     "moreInformation": "Adakah anda ingin mengemas kini lebih banyak maklumat?",
-    "icHint": "Contoh: IC, Pasport, Tentera / Polis ID"
+    "idTitle": "Masukkan Nombor Pengenalan Baru",
+    "idHint": "Contoh: IC, Pasport, Tentera / Polis ID"
 
   },
   "Tutorial": {

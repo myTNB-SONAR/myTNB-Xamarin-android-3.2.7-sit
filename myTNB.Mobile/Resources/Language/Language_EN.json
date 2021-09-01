@@ -1270,7 +1270,9 @@
     "frontIc": "Front",
     "backIc": "Back",
     "moreInformation": "Would you like to update more information?",
-    "icHint": "Example: IC, Passport, Army / Police ID"
+    "icHintStep1": "Example: IC, Passport, Army / Police ID",
+    "idTitle": "Enter New Identification Number",
+    "idHint": "Example: IC, Passport, Army / Police ID"
 
   },
   "Tutorial": {

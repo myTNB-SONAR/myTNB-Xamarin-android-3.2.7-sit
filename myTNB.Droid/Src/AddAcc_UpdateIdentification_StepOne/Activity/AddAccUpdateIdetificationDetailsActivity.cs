@@ -118,7 +118,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 //set translation of string 
 
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberHint");
-                txtInputLayoutNewIC.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "icTitle");
+                txtInputLayoutNewIC.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "idTitle");
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");
                 pageStep.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "pageStep1");
                 enterYourNewDetails.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enterYourNewDetails");
@@ -640,9 +640,9 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
               : Resource.Style.TextInputLayoutBottomErrorHint);
 
             
-            if (txtInputLayoutNewIC.HelperText != Utility.GetLocalizedLabel("SubmitEnquiry", "icHint"))
+            if (txtInputLayoutNewIC.HelperText != Utility.GetLocalizedLabel("SubmitEnquiry", "idHint"))
             {
-                txtInputLayoutNewIC.HelperText = Utility.GetLocalizedLabel("SubmitEnquiry", "icHint");
+                txtInputLayoutNewIC.HelperText = Utility.GetLocalizedLabel("SubmitEnquiry", "idHint");
             }
 
             if (!txtInputLayoutNewIC.HelperTextEnabled)
