@@ -29,6 +29,24 @@ namespace myTNB_Android.Src.BillStatement.MVP
         [BindView(Resource.Id.txtInputLayoutToDate)]
         TextInputLayout txtInputLayoutToDate;
 
+        [BindView(Resource.Id.imgCustomPeriodAction)]
+        ImageView imgCustomPeriodAction;
+
+        [BindView(Resource.Id.imgSixMonthsAction)]
+        ImageView imgSixMonthsAction;
+
+        [BindView(Resource.Id.customDateContainer)]
+        LinearLayout customDateContainer;
+
+        [BindView(Resource.Id.filterDateMainLayout)]
+        LinearLayout filterDateMainLayout;
+
+        [BindView(Resource.Id.btnSubmit)]
+        Button btnSubmit;
+        
+        bool isSixMonthSelected = false;
+        bool isCustomDateelected = false;
+
         [BindView(Resource.Id.txtToDate)]
         EditText txtToDate;
 
@@ -44,8 +62,6 @@ namespace myTNB_Android.Src.BillStatement.MVP
 
         private bool isStartPickerPopup = false;
         private bool isEndPickerPopup = false;
-        private bool isClearTapped = false;
-
         MonthYearPickerDialog pd;
 
         public override int ResourceId()
@@ -115,7 +131,30 @@ namespace myTNB_Android.Src.BillStatement.MVP
         {
            //Show Statement
         }
+        
 
+        [OnClick(Resource.Id.customPeriodContainer)]
+        internal void OnCustomPeriodContainerClick(object sender, EventArgs e)
+        {
+            imgCustomPeriodAction.Visibility = ViewStates.Visible;
+            imgSixMonthsAction.Visibility = ViewStates.Gone;
+            customDateContainer.Visibility = ViewStates.Visible;
+            filterDateMainLayout.Visibility = ViewStates.Visible;
+            isCustomDateelected = true;
+            isSixMonthSelected = false;
+            SetCTAEnable();
+        }
+        [OnClick(Resource.Id.sixMonthsContainer)]
+        internal void OnSixMonthsContainerClick(object sender, EventArgs e)
+        {
+            imgSixMonthsAction.Visibility = ViewStates.Visible;
+            imgCustomPeriodAction.Visibility = ViewStates.Gone;
+            customDateContainer.Visibility = ViewStates.Gone;
+            filterDateMainLayout.Visibility = ViewStates.Gone;
+            isSixMonthSelected = true;
+            isCustomDateelected = false;
+            SetCTAEnable();
+        }
 
         public override void OnBackPressed()
         {
@@ -324,7 +363,11 @@ namespace myTNB_Android.Src.BillStatement.MVP
 
         private void SetCTAEnable()
         {
-            bool isEnabled = !string.IsNullOrEmpty(startDisplayDate) || !string.IsNullOrEmpty(endDisplayDate);
+            bool isEnabled = (!string.IsNullOrEmpty(startDisplayDate) && !string.IsNullOrEmpty(endDisplayDate)) || isSixMonthSelected;
+            btnSubmit.Enabled = isEnabled;
+            btnSubmit.Background = ContextCompat.GetDrawable(this, isEnabled
+                ? Resource.Drawable.green_button_background
+                : Resource.Drawable.silver_chalice_button_background);
         }
     }
 }
