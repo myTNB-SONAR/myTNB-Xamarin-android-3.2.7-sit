@@ -1299,7 +1299,7 @@
     "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
     "IDUpdateSuccess": "Terima kasih kerana mengemaskini! Aktiviti anda telah dirakam seperti di bawah.",
     //syahmi add
-    "lblID": "IC / ID Askar / Nombor Pasport",
+    "lblID": "IC, Pasport, Tentera / Polis ID ",
     "passwordchange": "Tukar Kata Laluan Saya",
     "gotIt": "Ok",
     "resend": "Hantar semula",
@@ -1506,7 +1506,7 @@
     "armyidhint": "ID Tentera mesti antara 5-50 aksara.",
     "passporthint": "Pasport mestilah antara 5-50 aksara.",
     "IdHeaderError": "Nombor kad pengenalan ini telah digunakan untuk akaun yang sedia ada.",
-    "IdBodyError": "Sila pastikan bahawa anda telah memasukkan nombor kad pengenalan yang betul, atau hubungi TNB CareLine untuk bertanya mengenai perkara ini.",
+    "IdBodyError": "Sila pastikan bahawa anda telah memasukkan nombor kad pengenalan yang betul, atau hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> untuk bertanya mengenai perkara ini.",
     "ctaTitleNew": "Daftar Akaun Saya",
     "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat</strong></a>."
   },

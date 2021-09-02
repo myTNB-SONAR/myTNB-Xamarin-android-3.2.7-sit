@@ -20,6 +20,11 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Post("/v6/mytnbappws.asmx/GetAccountsV3")]
         Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);    //lyana //merge DBR
 
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetAccountsV3")]
+        Task<T> GetCustomerAccountListAppLunch<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);    //lyana //aws applaunch only
+
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/AddTNBAccountToUserReg")]
         Task<T> AddAccountToCustomer<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);

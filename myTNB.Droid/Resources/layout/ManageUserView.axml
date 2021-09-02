@@ -219,7 +219,7 @@
                         android:text="Cancel"
                         android:textSize="16dp"
                         android:textAllCaps="false"
-                        style="@style/LightButton"/>
+                        style="@style/LightButtonRed"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_height="wrap_content"
@@ -233,7 +233,7 @@
                         android:text="Resend"
                         android:textSize="16dp"
                         android:textAllCaps="false"
-                        style="@style/LightButtonRed"/>
+                        style="@style/LightButton"/>
                 </LinearLayout>
         </LinearLayout>
         <LinearLayout

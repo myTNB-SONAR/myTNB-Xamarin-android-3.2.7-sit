@@ -128,6 +128,8 @@ namespace myTNB_Android.Src.UpdateID.MVP
 
             void OnUpdateIC(string no_ic, string idtype);
 
+            void OnCheckID(string icno, string idtype);
+
             /// <summary>
             /// User actions to go back to previous screen
             /// </summary>

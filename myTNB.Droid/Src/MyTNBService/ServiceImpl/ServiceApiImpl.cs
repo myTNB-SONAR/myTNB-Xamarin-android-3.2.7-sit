@@ -60,6 +60,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call GetAccounts with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<CustomerAccountListResponse> GetCustomerAccountListAppLunch([Body] Request.BaseRequest request)
+        {
+            return api.GetCustomerAccountListAppLunch<CustomerAccountListResponse>(request, CancellationTokenSourceWrapper.GetToken()); //lyana AWS
+        }
+
+        /// <summary>
         /// Call GetAccounts with timeout set.
         /// </summary>
         /// <param name="request"></param>

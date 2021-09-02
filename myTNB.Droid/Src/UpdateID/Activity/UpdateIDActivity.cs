@@ -456,6 +456,16 @@ namespace myTNB_Android.Src.UpdateID.Activity
             Finish();
         }
 
+        public void ShowInvalidIdentificationError()
+        {
+            this.SetIsClicked(false);
+            Utility.ShowIdentificationErrorDialog(this, () =>
+            {
+                ShowProgressDialog();
+            });
+
+        }
+
         public void ShowEmptyICNoError()
         {
             // ClearICError();
@@ -508,15 +518,18 @@ namespace myTNB_Android.Src.UpdateID.Activity
             {
                 if (!this.GetIsClicked())
                 {
+                    this.SetIsClicked(true);
                     string Idtype = selectedIdentificationType.Id;
                     string ic_no = txtICNumber.Text.ToString().Trim();
-                    this.userActionsListener.CheckRequiredFields(ic_no, Idtype);
+
+                    this.userActionsListener.OnCheckID(ic_no, Idtype);
+                    //this.userActionsListener.CheckRequiredFields(ic_no, Idtype);
 
                     bool hasExistedID = MyTNBAccountManagement.GetInstance().IsIDUpdated();
 
                     if (hasExistedID)
                     {
-                        this.SetIsClicked(true);
+                        //this.userActionsListener.OnUpdateIC(Idtype, ic_no);
                         ShowUpdateIdDialog(this, () =>
                         {
                             // _ = RunUpdateID(idtype,ic_no);
@@ -526,6 +539,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                     }
                     else
                     {
+                        ShowInvalidIdentificationError();
                         DisableRegisterButton();
                         if (Idtype.Equals("1"))
                         {
@@ -823,17 +837,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 textInputLayoutICNo.ErrorEnabled = true;
         }
 
-        public void ShowInvalidIdentificationError()
-        {
-
-            Utility.ShowIdentificationErrorDialog(this, () =>
-            {
-                ShowProgressDialog();
-
-            });
-
-        }
-
+      
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);

@@ -1299,7 +1299,7 @@
     "mobileNumberVerified": "You've successfully updated your phone number!",
     "IDUpdateSuccess": "Thank you for updating! Your update has been recorded below.",
     //syahmi add
-    "lblID": "Ic / Army ID / Passport Number",
+    "lblID": "IC, Passport, Army / Police ID",
     "passwordchange": "Change My Password",
     "gotIt": "Got It",
     "resend": "Resend",
@@ -1506,7 +1506,7 @@
     "armyidhint": "The Army ID must be between 5-50 characters.",
     "passporthint": "The Passport must be between 5-50 characters.",
     "IdHeaderError": "This identification number has been used for an existing account.",
-    "IdBodyError": "Please ensure that you’ve entered the correct identification number, or contact TNB CareLine to enquire further about this matter.",
+    "IdBodyError": "Please ensure that you’ve entered the correct identification number, or contact <b><a href=\"tel: 1300885454\">TNB Careline</a></b> to enquire further about this matter.",
     "ctaTitleNew": "Create My Account",
     "tnc_checked": "I have read and agreed to the <a href=\"\\\"><strong>TNB Terms and Conditions</strong></a>"
   },

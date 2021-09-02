@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Firebase.Iid;
 using myTNB_Android.Src.Base;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.UpdateID.MVP
 {
@@ -177,33 +178,93 @@ namespace myTNB_Android.Src.UpdateID.MVP
                     string ic_no = icno.Replace("-", string.Empty);
                     if (!CheckIdentificationIsValid(ic_no) && idtype.Equals("1"))
                     {
-                        MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+                        this.mView.ShowFullICError();
+                        this.mView.DisableRegisterButton();
                         return;
                     }
                     else if (!CheckArmyIdIsValid(icno) && idtype.Equals("2"))
                     {
-                        MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+                        this.mView.ShowFullArmyIdError();
+                        this.mView.DisableRegisterButton();
                         return;
                     }
-                    else if (!CheckPassportIsValid(icno) && idtype.Equals("3"))
+                    else 
                     {
-                        MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+                        this.mView.ShowFullPassportError();
+                        this.mView.DisableRegisterButton();
                         return;
                     }
-                    else
-                    {
-                        //this.mView.ShowIdentificationHint();
-                    }
-                    MyTNBAccountManagement.GetInstance().SetIsIDUpdated(true);
+                    //else
+                    //{
+                    //    this.mView.ClearICMinimumCharactersError();
+                    //    //this.mView.ShowIdentificationHint();
+                    //}
+                    this.mView.EnableRegisterButton();
                 }
                 else
                 {
-                    MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+                    this.mView.DisableRegisterButton();
                 }
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public async void OnCheckID(string icno, string idtype)
+        {
+
+            this.mView.ShowProgressDialog();
+            //this.mView.ClearAllErrorFields();
+
+            try
+            {
+                var task = Task.Run(async () => {
+
+                    UserCredentialsEntity userEntity = new UserCredentialsEntity();
+                    icno = icno.Replace("-", string.Empty);
+                    GetRegisteredUser getICVerify = new GetRegisteredUser(idtype, icno);
+                    getICVerify.SetUserName(userEntity.Email);
+                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticateIDOnlyNew(getICVerify);
+
+                    //if (userResponse.GetDataAll().isActive)
+                    if (userResponse.Response.Data.isActive)
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+                    }
+                    else
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsIDUpdated(true);
+                        //this.mView.ShowInvalidAcquiringTokenThruSMS(userResponse.Response.DisplayMessage);
+                    }
+                });
+                Task.WaitAll(task);
+
+            }
+            catch (System.OperationCanceledException e)
+            {
+                Log.Debug(TAG, "Cancelled Exception");
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (System.Exception e)
+            {
+                // ADD UNKNOWN EXCEPTION HERE
+                Log.Debug(TAG, "Stack " + e.StackTrace);
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            finally
+            {
+                this.mView.HideProgressDialog();
             }
         }
 
