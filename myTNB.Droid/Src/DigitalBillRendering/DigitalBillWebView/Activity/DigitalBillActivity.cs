@@ -160,7 +160,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     , (LanguageUtil.GetAppLanguage() == "MS"
                         ? LanguageManager.Language.MS
                         : LanguageManager.Language.EN).ToString()
-                    , TextViewUtils.FontSelected ?? "N"
+                    , TextViewUtils.FontInfo ?? "N"
                     , BillRendering.Content.OriginURL
                     , BillRendering.Content.RedirectURL
                     , _accountNumber);

@@ -6936,6 +6936,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Device Cache\DeviceSizeCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

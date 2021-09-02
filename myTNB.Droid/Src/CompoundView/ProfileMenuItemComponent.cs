@@ -46,7 +46,8 @@ namespace myTNB_Android.Src.CompoundView
             try
             {
                 Configuration configuration = Resources.Configuration;
-                configuration.FontScale = configuration.FontScale >= 1.3F ? 1.3f : configuration.FontScale;
+                DeviceSizeCache.FontScale = configuration.FontScale;
+                configuration.FontScale = DeviceSizeCache.FontScale;
 
                 DisplayMetrics metrics = Resources.DisplayMetrics;
                 metrics.ScaledDensity = configuration.FontScale * metrics.Density;

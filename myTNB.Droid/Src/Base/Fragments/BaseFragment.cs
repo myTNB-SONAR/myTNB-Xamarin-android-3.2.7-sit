@@ -37,7 +37,8 @@ namespace myTNB_Android.Src.Base.Fragments
                 try
                 {
                     Android.Content.Res.Configuration configuration = Resources.Configuration;
-                    configuration.FontScale = 1.3F;
+                    DeviceSizeCache.FontScale = configuration.FontScale;
+                    configuration.FontScale = DeviceSizeCache.FontScale;
                     DisplayMetrics metrics = Resources.DisplayMetrics;
                     metrics.ScaledDensity = configuration.FontScale * metrics.Density;
                     Resources.UpdateConfiguration(configuration, metrics);
