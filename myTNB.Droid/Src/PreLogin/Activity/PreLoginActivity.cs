@@ -224,6 +224,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 editor.Remove(MobileConstants.SharePreferenceKey.AccessToken);
                 editor.Remove(MobileConstants.SharePreferenceKey.GetEligibilityData);
                 editor.Remove(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp);
+                EligibilitySessionCache.Instance.Clear();
 
                 //For Testing
                 editor.Remove("hasHomeTutorialShown");
