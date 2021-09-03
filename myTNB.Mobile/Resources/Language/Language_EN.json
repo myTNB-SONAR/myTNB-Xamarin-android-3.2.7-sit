@@ -1144,7 +1144,10 @@
     "overVoltageClaimtemproryUnavailable": "Overvoltage Claim service temporarily unavailable",
     "overVoltageClaimtemproryUnavailableTitle": "Service temporarily unavailable",
     "overVoltageClaimtemproryUnavailableDescription": "We're working to restore Overvoltage Claim service as quickly as possible. Please check back soon.",
-    "tNC": "Terms and Conditions"
+    "tNC": "Terms and Conditions",
+    "rescheduleAppointment": "Reschedule Appointment",
+    "appointmentUpdate": "Your appointment date has been updated."
+
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
