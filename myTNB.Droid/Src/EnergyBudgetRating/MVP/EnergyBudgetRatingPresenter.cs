@@ -1,5 +1,6 @@
 ﻿using Android.Util;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.EnergyBudgetRating.Model;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
@@ -88,7 +89,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.MVP
             }
         }
 
-        /*public void PrepareSubmitRateUsRequest(string referenceId, string deviceID, List<Request.SubmitRateUsRequest.InputAnswerDetails> inputAnswerDetails)
+        public void PrepareSubmitRateUsRequest(string referenceId, string deviceID, List<RateUsStar.InputOptionValue> inputAnswerDetails)
         {
             try
             {
@@ -96,19 +97,19 @@ namespace myTNB_Android.Src.EnergyBudgetRating.MVP
                 {
                     UserEntity entity = UserEntity.GetActive();
 
-                    Request.SubmitRateUsRequest submitRateUsRequest = new Request.SubmitRateUsRequest()
+                    Request.SubmitRateUsEBRequest submitRateUsEBRequest = new Request.SubmitRateUsEBRequest()
                     {
                         ApiKeyID = Constants.APP_CONFIG.API_KEY_ID
                     };
-                    submitRateUsRequest.InputAnswer = new Request.SubmitRateUsRequest.InputAnswerT()
+                    submitRateUsEBRequest.InputAnswer = new Request.SubmitRateUsEBRequest.InputAnswerT()
                     {
                         ReferenceId = referenceId,
                         Email = entity.Email,
                         DeviceId = deviceID,
-                        InputAnswerDetails = inputAnswerDetails
+                        //InputAnswerDetails = inputAnswerDetails
                     };
 
-                    SubmitRateUs(submitRateUsRequest);
+                    SubmitRateUs(submitRateUsEBRequest);
                 }
             }
             catch (Exception e)
@@ -116,14 +117,14 @@ namespace myTNB_Android.Src.EnergyBudgetRating.MVP
                 Log.Debug(TAG, e.StackTrace);
                 Utility.LoggingNonFatalError(e);
             }
-        }*/
+        }
 
         public void Start()
         {
 
         }
 
-        /*public async void SubmitRateUs(Request.SubmitRateUsRequest submitRateUsRequest)
+        public async void SubmitRateUs(Request.SubmitRateUsEBRequest submitRateUsEBRequest)
         {
             if (mView.IsActive())
             {
@@ -132,9 +133,9 @@ namespace myTNB_Android.Src.EnergyBudgetRating.MVP
 
             try
             {
-                MyTNBService.Request.SubmitRateUsRequest rateUsRequest = new MyTNBService.Request.SubmitRateUsRequest(submitRateUsRequest.InputAnswer.ReferenceId,
-                    submitRateUsRequest.InputAnswer.Email, submitRateUsRequest.InputAnswer.DeviceId);
-                submitRateUsRequest.InputAnswer.InputAnswerDetails.ForEach(answer =>
+                MyTNBService.Request.SubmitRateUsRequest rateUsRequest = new MyTNBService.Request.SubmitRateUsRequest(submitRateUsEBRequest.InputAnswer.ReferenceId,
+                    submitRateUsEBRequest.InputAnswer.Email, submitRateUsEBRequest.InputAnswer.DeviceId);
+                submitRateUsEBRequest.InputAnswer.InputAnswerDetails.ForEach(answer =>
                 {
                     rateUsRequest.AddAnswerDetails(answer.WLTYQuestionId,
                         answer.RatingInput, answer.MultilineInput);
@@ -186,6 +187,6 @@ namespace myTNB_Android.Src.EnergyBudgetRating.MVP
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
-        }*/
+        }
     }
 }

@@ -602,7 +602,12 @@
     "viewBudget": "View Budget",
     "viewTips": "View Tips",
     "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks",
-    "EnergyBudgetTitle": "Energy Budget"
+    "EnergyBudgetTitle": "Energy Budget",
+    "EnergyBudgetSavingTips": "Energy Saving Tips",
+    "feedback2Title": "Did you find Energy Budget useful?",
+    "likeButtonDetails": "Yes, Absolutely",
+    "dislikeButton": "Not really",
+    "dontAskAgain": "Don't Ask Again"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -2365,8 +2370,26 @@
   },
 
   "FeedBackEB": {
-    "pagefeedbackTitle": "Energy Budget Feedback",
-    "pagefeedbackSetupTitle": "Energy Budget Set-Up Feedback",
+    "title": "Energy Budget Set-Up Feedback",
+    "starOnetitle": "I don't like this",
+    "starTwotitle": "I did not enjoy it",
+    "starThreetitle": "It was okay",
+    "starFourtitle": "It was good!",
+    "starFivetitle": "It was great!",
+    "improveTitle": "What can be improved?",
+    "titleSelectApplies": "Select all that applies",
+    "tellusMore": "Tell us more (Optional)",
+    "hinttellusMore": "characters left",
+    "txtSimplicity": "Set Up Simplicity",
+    "txtContent": "Content Relevance",
+    "txtNavigation": "Navigation",
+    "txtDesign": "Design",
+    "btnNoThank": "No Thanks",
+    "btnShare": "Share"
+  },
+
+  "FeedBackEBNotification": {
+    "title": "Energy Budget Feedback",
     "titleNumberOne": "Did you find Energy Budget useful?",
     "thumbUpYes": "Yes, absolutely",
     "thumbDownNo": "Not really",
@@ -2380,15 +2403,9 @@
     "tellusMore": "Tell us more (Optional)",
     "hinttellusMore": "characters left",
     "titleNumberTwo": "How likely are you to recommend Energy Budget to your friends/family?",
-    "starOnetitle": "I don't like this",
-    "starTwotitle": "I did not enjoy it",
-    "starThreetitle": "It was okay",
-    "starFourtitle": "It was good!",
-    "starFivetitle": "It was great!",
-    "improveTitle": "What can be improved?",
-    "txtSimplicity": "Set Up Simplicity",
-    "txtContent": "Content Relevance",
-    "txtNavigation": "Navigation",
-    "txtDesign": "Design"
+    "btnDontAskAgain": "Don't Ask Again",
+    "txtCongrat": "Congratulation! How was your Energy Budget set up?",
+    "txtTQFeedback": "Thank you for your feedback!",
+    "txtOkay": "Okay"
   }
 }

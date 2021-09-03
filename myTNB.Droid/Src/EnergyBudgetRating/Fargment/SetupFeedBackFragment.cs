@@ -33,6 +33,9 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
         private ToolTipType toolTipType;
         private int imageResource;
         private string title;
+        private string titleOtherOne;
+        private string titleOtherTwo;
+        private string titleOtherThree;
         private string message;
         private string ctaLabel;
         private string secondaryCTALabel;
@@ -133,6 +136,17 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
             return this;
         }
 
+        public SetupFeedBackFragment SetTitleOtherOne(string titleOtherOne)
+        {
+            this.titleOtherOne = titleOtherOne;
+            return this;
+        }
+
+        public SetupFeedBackFragment SetTitleOtherTwo(string titleOtherTwo)
+        {
+            this.titleOtherTwo = titleOtherTwo;
+            return this;
+        }
         public SetupFeedBackFragment SetMessage(string message, Color? color = null, Typeface? typeface = null)
         {
             this.message = message;
@@ -213,6 +227,9 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 TextViewUtils.SetTextSize20(tooltipTitle);
                 TextViewUtils.SetTextSize16(tooltipCTA);
 
+                tooltipTitle.Text = this.title;
+                tooltipCTA.Text = this.ctaLabel;
+
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
@@ -221,9 +238,6 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                         this.ctaAction();
                     }
                 };
-
-                tooltipTitle.Text = this.title;
-                tooltipCTA.Text = this.ctaLabel;
             }           
             else if (this.toolTipType == ToolTipType.FEEDBACK_WITH_IMAGES_STAR_RATING_BUTTON)
             {
@@ -232,8 +246,15 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 RecyclerView recyclerView = this.dialog.FindViewById<RecyclerView>(Resource.Id.dialogRecyclerView);
                 TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
                 TextView tooltipBlueTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitleBlue);
-                tooltipCTA.Text = this.ctaLabel;
                 LinearLayout indicatorContainer = this.dialog.FindViewById<LinearLayout>(Resource.Id.dialoagListViewIndicatorContainer);
+                
+                TextViewUtils.SetMuseoSans500Typeface(tooltipCTA, tooltipBlueTitle);
+
+                TextViewUtils.SetTextSize18(tooltipBlueTitle);
+                TextViewUtils.SetTextSize14(tooltipCTA);
+
+                tooltipBlueTitle.Text = this.title;
+                tooltipCTA.Text = this.ctaLabel;
 
                 injectData();
                 layoutManager = new GridLayoutManager(this.mContext, 5);
@@ -241,7 +262,6 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 recyclerView.SetLayoutManager(layoutManager);
                 recyclerView.SetAdapter(adaptercustom);
                 adaptercustom.RatingUpdate += OnRatingUpdate;
-                TextViewUtils.SetTextSize16(tooltipCTA);
 
                 tooltipCTA.Click += delegate
                 {
@@ -260,10 +280,19 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 TextView titleNo = this.dialog.FindViewById<TextView>(Resource.Id.titleNo);
                 ImageView img_displayYes = this.dialog.FindViewById<ImageView>(Resource.Id.img_displayYes);
                 ImageView img_displayNo = this.dialog.FindViewById<ImageView>(Resource.Id.img_displayNo);
-                btnDontAsk.Text = this.ctaLabel;
                 LinearLayout indicatorContainer = this.dialog.FindViewById<LinearLayout>(Resource.Id.dialoagListViewIndicatorContainer);
 
+                TextViewUtils.SetMuseoSans500Typeface(tooltipBlueTitle, titleYes, titleNo);
+                TextViewUtils.SetMuseoSans500Typeface(btnDontAsk);
+
+                TextViewUtils.SetTextSize17(tooltipBlueTitle);
                 TextViewUtils.SetTextSize16(btnDontAsk);
+                TextViewUtils.SetTextSize10(titleYes, titleNo);
+
+                tooltipBlueTitle.Text = this.title;
+                titleYes.Text = this.titleOtherOne;
+                titleNo.Text = this.titleOtherTwo;
+                btnDontAsk.Text = this.ctaLabel;
 
                 btnDontAsk.Click += delegate
                 {
@@ -282,7 +311,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                         this.dialog.Dismiss();
                         this.ctaYesAction?.Invoke();
                     };
-                    h.PostDelayed(myAction, 5);
+                    h.PostDelayed(myAction, 3000);
                 };
 
                 btnNo.Click += delegate
@@ -296,7 +325,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                         this.dialog.Dismiss();
                         this.ctaNoAction?.Invoke();
                     };
-                    h.PostDelayed(myAction, 5);
+                    h.PostDelayed(myAction, 3000);
                 };
             }
             return this;
@@ -311,7 +340,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
         {
             var data1 = new ImproveSelectModel
             {
-                ModelCategories = "feedback",
+                ModelCategories = "star",
                 IconCategories = "1",
                 IsSelected = false,
             };
@@ -319,7 +348,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
             var data2 = new ImproveSelectModel
             {
-                ModelCategories = "feedback",
+                ModelCategories = "star",
                 IconCategories = "2",
                 IsSelected = false,
             };
@@ -327,7 +356,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
             var data3 = new ImproveSelectModel
             {
-                ModelCategories = "feedback",
+                ModelCategories = "star",
                 IconCategories = "3",
                 IsSelected = false,
             };
@@ -335,7 +364,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
             var data4 = new ImproveSelectModel
             {
-                ModelCategories = "feedback",
+                ModelCategories = "star",
                 IconCategories = "4",
                 IsSelected = false,
             };
@@ -343,7 +372,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
             var data5 = new ImproveSelectModel
             {
-                ModelCategories = "feedback",
+                ModelCategories = "star",
                 IconCategories = "5",
                 IsSelected = false,
             };
@@ -381,7 +410,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                         adaptercustom = new RateUsStarsCustomAdapter(this.mContext, SelectStarPosition, position);
                         recyclerView.SetLayoutManager(layoutManager);
                         recyclerView.SetAdapter(adaptercustom);
-                        adaptercustom.RatingUpdate += OnRatingUpdate;
+                        //adaptercustom.RatingUpdate += OnRatingUpdate;
                         Handler h = new Handler(Looper.MyLooper());
                         Action myAction = () =>
                         {
@@ -389,7 +418,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                             this.ctaAction?.Invoke();
                             this.secondaryCTAAction();
                         };
-                        h.PostDelayed(myAction, 5);
+                        h.PostDelayed(myAction, 3000);
                     }
                 }
             }

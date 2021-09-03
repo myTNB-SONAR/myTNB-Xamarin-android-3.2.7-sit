@@ -416,22 +416,38 @@ namespace myTNB_Android.Src.Utils
 
 #if MASTER || SIT || DEBUG
         internal static readonly string EB_in_app_notification = "EB_in_app_notification_SIT";
+        internal static readonly string EB_view_tips_reached = "EB_view_tips_reached_SIT";
+        internal static readonly string EB_view_tips_reaching = "EB_view_tips_reaching_SIT";
+        internal static readonly string EB_view_budget_reached = "EB_view_budget_reached_SIT";
+        internal static readonly string EB_view_budget_reaching = "EB_view_budget_reaching_SIT";
+        internal static readonly string EB_view_notification_duration_reaching = "EB_view_notification_duration_reaching_SIT";
+        internal static readonly string EB_view_notification_duration_reached = "EB_view_notification_duration_reached_SIT";
         internal static readonly string EB_initiate_Later = "EB_initiate_Later_SIT";
         internal static readonly string EB_initiate_Start = "EB_initiate_Start_SIT";
         internal static readonly string EB_start = "EB_start_SIT";
         internal static readonly string EB_setup_success = "EB_setup_success_SIT";
         internal static readonly string EB_edit_budget = "EB_edit_budget_SIT";
         internal static readonly string EB_tooltip = "EB_tooltip_SIT";
+        internal static readonly string EB_view_budget_duration = "EB_view_budget_duration_SIT";
         internal static readonly string EB_view_tips = "EB_view_tips_SIT";
+        internal static readonly string EB_initiate_Duration = "EB_initiate_Duration_SIT";
 #else
         internal static readonly string EB_in_app_notification = "EB_in_app_notification";
+        internal static readonly string EB_view_tips_reached = "EB_view_tips_reached";
+        internal static readonly string EB_view_tips_reaching = "EB_view_tips_reaching";
+        internal static readonly string EB_view_budget_reached = "EB_view_budget_reached";
+        internal static readonly string EB_view_budget_reaching = "EB_view_budget_reaching";
+        internal static readonly string EB_view_notification_duration_reaching = "EB_view_notification_duration_reaching";
+        internal static readonly string EB_view_notification_duration_reached = "EB_view_notification_duration_reached";
         internal static readonly string EB_initiate_Later = "EB_initiate_Later";
         internal static readonly string EB_initiate_Start = "EB_initiate_Start";
         internal static readonly string EB_start = "EB_start";
         internal static readonly string EB_setup_success = "EB_setup_success";
         internal static readonly string EB_edit_budget = "EB_edit_budget";
         internal static readonly string EB_tooltip = "EB_tooltip";
+        internal static readonly string EB_view_budget_duration = "EB_view_budget_duration";
         internal static readonly string EB_view_tips = "EB_view_tips";
+        internal static readonly string EB_initiate_Duration = "EB_initiate_Duration";
 #endif
 
     }

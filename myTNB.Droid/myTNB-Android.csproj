@@ -896,6 +896,8 @@
     <Compile Include="Src\EnergyBudgetRating\Model\RateUsStar.cs" />
     <Compile Include="Src\EnergyBudgetRating\MVP\EnergyBudgetRatingContract.cs" />
     <Compile Include="Src\EnergyBudgetRating\MVP\EnergyBudgetRatingPresenter.cs" />
+    <Compile Include="Src\EnergyBudgetRating\Request\SubmitRateUsEBRequest.cs" />
+    <Compile Include="Src\EnergyBudgetRating\Response\SubmitRateUsEBResponse.cs" />
     <Compile Include="Src\FAQ\Activity\FAQListActivity.cs" />
     <Compile Include="Src\FAQ\Adapter\FAQListAdapter.cs" />
     <Compile Include="Src\FAQ\MVP\FAQContract.cs" />
@@ -9755,6 +9757,21 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\bg_popup_EB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\bg_popup_EB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\bg_popup_EB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\bg_popup_EB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\bg_popup_EB.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

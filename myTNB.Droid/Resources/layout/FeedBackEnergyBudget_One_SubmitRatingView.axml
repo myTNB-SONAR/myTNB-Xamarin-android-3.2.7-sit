@@ -62,15 +62,15 @@
 	                    android:layout_height="wrap_content"
 	                    android:layout_width="wrap_content"
 	                    android:layout_marginRight="8dp"
-	                    android:layout_gravity="center_vertical|left"
+	                    android:layout_gravity="top|center"
                         android:visibility="visible"
 	                    android:src="@drawable/img_one" />
                     <TextView
                         android:id="@+id/titleNumber"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3dp"
+                        android:layout_marginTop="2dp"
                         android:textSize="16dp"
                         android:text="Did you find Energy Budget useful?"
                         android:textColor="@color/powerBlue"
@@ -91,7 +91,7 @@
                             android:layout_weight="0.5"
                             android:gravity="center"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content">
+                            android:layout_height="match_parent">
                             <ImageView
 	                            android:id="@+id/img_displayYes"
 	                            android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                             android:layout_width="0dp"
                             android:layout_marginLeft="6dp"
                             android:gravity="center"
-                            android:layout_height="wrap_content">
+                            android:layout_height="match_parent">
                             <ImageView
 	                            android:id="@+id/img_displayNo"
 	                            android:layout_height="wrap_content"

@@ -402,6 +402,17 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             CustomerBillingAccount.RemoveSelected();
             CustomerBillingAccount.SetSelected(mSelectedAccountData.AccountNum);
 
+            if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80)
+            {
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_budget_reaching);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_budget_reaching);
+            }
+            else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+            {
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_budget_reached);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_budget_reached);
+            }
+
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.PutExtra("FROM_NOTIFICATION",true);
             MyTNBAccountManagement.GetInstance().SetIsAccessUsageFromNotification(true);
@@ -412,6 +423,16 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_tips);
             FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_tips);
+            if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80)
+            {
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_tips_reaching);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_tips_reaching);
+            }
+            else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+            {
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_tips_reached);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_tips_reached);
+            }
             MyTNBAccountManagement.GetInstance().SetIsFromViewTips(true);
             Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
             webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("PushNotificationDetails", "viewTipsURL"));
@@ -483,7 +504,11 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             base.OnPause();
             try
             {
-                dynaTrace.LeaveAction();
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || 
+                    notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+                {
+                    dynaTrace.LeaveAction();
+                }
             }
             catch (Exception e)
             {
@@ -496,7 +521,17 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             base.OnResume();
             try
             {
-                dynaTrace = DynatraceAndroid.Dynatrace.EnterAction("EB_view_notification_duration");
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80)
+                {
+                    dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_view_notification_duration_reaching);
+                    FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_notification_duration_reaching);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+                {
+                    dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_view_notification_duration_reached);
+                    FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_notification_duration_reached);
+                }
+                //dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_view_notification_duration);
             }
             catch (Exception e)
             {
@@ -508,7 +543,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 if (MyTNBAccountManagement.GetInstance().IsFromViewTipsPage())
                 {
                     MyTNBAccountManagement.GetInstance().SetIsFromViewTips(false);
+                    MyTNBAccountManagement.GetInstance().SetIsFromClickAdapter(6);
                     ShowFeedBackSetupPageRating();
+                    //mPresenter.OnCheckFeedbackCount(notificationDetails);
                 }
 
                 if (MyTNBAccountManagement.GetInstance().IsFinishFeedback())
@@ -523,12 +560,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
-        private void ShowFeedBackSetupPageRating()
+        public void ShowFeedBackSetupPageRating()
         {
             try
             {
                 SetupFeedBackFragment.Create(this, SetupFeedBackFragment.ToolTipType.NORMAL_WITH_THREE_BUTTON)
-                    .SetCTALabel("Don't Ask Again")
+                    .SetCTALabel(Utility.GetLocalizedLabel("PushNotificationDetails", "dontAskAgain"))
+                    .SetTitleOtherOne(Utility.GetLocalizedLabel("PushNotificationDetails", "likeButtonDetails"))
+                    .SetTitleOtherTwo(Utility.GetLocalizedLabel("PushNotificationDetails", "dislikeButton"))
+                    .SetTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "feedback2Title"))
                     .SetYesBtnCTAaction(() =>
                     {
                         Intent intent = new Intent(this, typeof(EnergyBudgetRatingActivity));
@@ -549,13 +589,13 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
-        private void ShowThankYouFeedbackTooltips()
+        public void ShowThankYouFeedbackTooltips()
         {
             try
             {
                 SetupFeedBackFragment.Create(this, SetupFeedBackFragment.ToolTipType.IMAGE_HEADER)
-                    .SetCTALabel("Okay")
-                    .SetTitle("Thank you for your feedback!")
+                    .SetCTALabel(Utility.GetLocalizedLabel("FeedBackEBNotification", "txtOkay"))
+                    .SetTitle(Utility.GetLocalizedLabel("FeedBackEBNotification", "txtTQFeedback"))
                     .Build().Show();
             }
             catch (System.Exception e)

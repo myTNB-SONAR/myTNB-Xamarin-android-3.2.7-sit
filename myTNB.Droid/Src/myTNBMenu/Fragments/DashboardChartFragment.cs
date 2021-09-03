@@ -19,6 +19,7 @@ using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
+using DynatraceAndroid;
 using Facebook.Shimmer;
 using Google.Android.Material.BottomSheet;
 using Google.Android.Material.Snackbar;
@@ -681,6 +682,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private bool mIsPendingPayment = false;
 
         private bool isEBUser = false;
+
+        IDTXAction dynaTrace;
 
         private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
         private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0", new DecimalFormatSymbols(Java.Util.Locale.Us));
@@ -5385,7 +5388,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SetVirtualHeightParams(6f);
                 ShowSMStatisticCard();
                 energyBudgetRMinput.Enabled = false;
-                ShowFeedBackSetupPageRating();
+
+                MyTNBAccountManagement.GetInstance().SetIsFromClickAdapter(6);
+                ShowFeedBackPageRating();
             }
             catch (System.Exception e)
             {
@@ -6781,6 +6786,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     MyTNBAccountManagement.GetInstance().SetIsFinishFeedback(false);
                     ShowThankYouFeedbackTooltips();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                if (isEBUser)
+                {
+                    dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_view_budget_duration);
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, Constants.EB_view_budget_duration);
                 }
             }
             catch (System.Exception e)
@@ -9755,6 +9773,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     NewAppTutorialUtils.ForceCloseNewAppTutorial();
                 }
+
+                if (isEBUser)
+                {
+                    dynaTrace.LeaveAction();
+                }
             }
             catch (System.Exception e)
             {
@@ -10999,12 +11022,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             errorMessageSnackbar.Show();
         }
 
-        private void ShowFeedBackSetupPageRating()
+        private void ShowFeedBackPageRating()
         {
             try
             {
                 SetupFeedBackFragment.Create(this.Activity, SetupFeedBackFragment.ToolTipType.FEEDBACK_WITH_IMAGES_STAR_RATING_BUTTON)
-                    .SetCTALabel(Utility.GetLocalizedLabel("FeedBackEB", "btnNoThank"))
+                    .SetCTALabel(Utility.GetLocalizedLabel("FeedBackEBNotification", "btnDontAskAgain"))
+                    .SetTitle(Utility.GetLocalizedLabel("FeedBackEBNotification", "txtCongrat"))
                     .SetCTAaction(() =>
                     {
                     })
@@ -11028,8 +11052,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             try
             {
                 SetupFeedBackFragment.Create(this.Activity, SetupFeedBackFragment.ToolTipType.IMAGE_HEADER)
-                    .SetCTALabel("Okay")
-                    .SetTitle("Thank you for your feedback!")
+                    .SetCTALabel(Utility.GetLocalizedLabel("FeedBackEBNotification", "txtOkay"))
+                    .SetTitle(Utility.GetLocalizedLabel("FeedBackEBNotification", "txtTQFeedback"))
                     .Build().Show();
             }
             catch (System.Exception e)

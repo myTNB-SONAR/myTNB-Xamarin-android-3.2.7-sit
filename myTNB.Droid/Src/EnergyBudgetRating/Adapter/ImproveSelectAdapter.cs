@@ -48,7 +48,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                     {
                         if (question.IconCategories.Equals("1"))
                         {
-                            vh.txtTitleInfo.Text = "Set Up Simplicity";
+                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "txtSimplicity");
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.simplify_icon);
@@ -60,7 +60,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                         }
                         else if (question.IconCategories.Equals("2"))
                         {
-                            vh.txtTitleInfo.Text = "Content Relevance";
+                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "txtContent");
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.content_relevant_icon);
@@ -72,7 +72,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                         }
                         else if (question.IconCategories.Equals("3"))
                         {
-                            vh.txtTitleInfo.Text = "Navigation";
+                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "txtNavigation");
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.navigation_icon);
@@ -84,7 +84,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                         }
                         else
                         {
-                            vh.txtTitleInfo.Text = "Design";
+                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "txtDesign");
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.design_icon);
@@ -99,7 +99,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                     {
                         if (question.IconCategories.Equals("1"))
                         {
-                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "saveOnEBusage");
+                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "saveOnEBusage");
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.saved_EB_usage_ratingEB_icon);
@@ -111,7 +111,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                         }
                         else if (question.IconCategories.Equals("2"))
                         {
-                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "EBcannotTrusted");
+                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "EBcannotTrusted");
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.cannot_function_ratingEB_icon);
@@ -123,7 +123,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                         }
                         else if (question.IconCategories.Equals("3"))
                         {
-                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "NotUsingEBagain");
+                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "NotUsingEBagain");
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.will_use_again_ratingEB_icon);
@@ -135,7 +135,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                         }
                         else
                         {
-                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "EBtipNotHelpful");
+                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "EBtipNotHelpful");
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.saving_tip_ratingEB_icon);
@@ -351,7 +351,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                 ImageIcon.Click += (s, e) => listener((this), base.LayoutPosition);
 
                 TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
-                TextViewUtils.SetTextSize12(txtTitleInfo);
+                TextViewUtils.SetTextSize10(txtTitleInfo);
 
             }
         }

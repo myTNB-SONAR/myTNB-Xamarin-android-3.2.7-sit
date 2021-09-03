@@ -100,6 +100,18 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 btnNoThank = mainView.FindViewById<Button>(Resource.Id.btnNoTQ);
                 btnShare = mainView.FindViewById<Button>(Resource.Id.btnShare);
 
+                TextViewUtils.SetMuseoSans500Typeface(btnNoThank, btnShare);
+                TextViewUtils.SetMuseoSans500Typeface(titleSetUpFeedback, titleImproveSuggest, titleStarRating);
+                TextViewUtils.SetMuseoSans500Typeface(txtTellUsMore);
+                TextViewUtils.SetMuseoSans300Typeface(txtTellUsMoreHintCount, bodyImproveSuggest);
+
+                TextViewUtils.SetTextSize16(btnNoThank, btnShare);
+                TextViewUtils.SetTextSize16(titleSetUpFeedback, titleStarRating);
+                TextViewUtils.SetTextSize12(txtTellUsMore);
+                TextViewUtils.SetTextSize12(titleImproveSuggest);
+                TextViewUtils.SetTextSize10(txtTellUsMoreHintCount, bodyImproveSuggest);
+
+                titleSetUpFeedback.Text = Utility.GetLocalizedLabel("FeedBackEB", "title");
                 titleImproveSuggest.Text = Utility.GetLocalizedLabel("FeedBackEB", "improveTitle");
                 bodyImproveSuggest.Text = Utility.GetLocalizedLabel("FeedBackEB", "titleSelectApplies");
                 txtTellUsMore.Hint = Utility.GetLocalizedLabel("FeedBackEB", "tellusMore");
@@ -122,9 +134,10 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
                 txtTellUsMore.TextChanged += TxtTellUsMore_TextChanged;
 
-                injectDemoData();
+                injectStarData();
                 injectSelectData();
                 SelectStarFromData(selectedRating);
+                DisableShareButton();
                 //this.userActionsListener.GetQuestions(questionCatId);
 
                 btnNoThank.Click += delegate
@@ -302,6 +315,15 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                         adapter.RatingUpdate += OnRatingUpdate;
                         StarTitleChange(starSelect);
                         //adapter.NotifyDataSetChanged();
+
+                        if (adapterGrid.IsAllQuestionAnswered())
+                        {
+                            EnableShareButton();
+                        }
+                        else
+                        {
+                            DisableShareButton();
+                        }
                     }
                 }
             }
@@ -321,19 +343,6 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
         {
             btnShare.Enabled = true;
             btnShare.Background = ContextCompat.GetDrawable(Activity.ApplicationContext, Resource.Drawable.green_button_background);
-        }
-
-        private void ShowFeedBackSetupPageRating()
-        {
-            SetupFeedBackFragment.Create(this.Activity, SetupFeedBackFragment.ToolTipType.FEEDBACK_WITH_IMAGES_STAR_RATING_BUTTON)
-                        .SetCTAaction(() =>
-                        {
-                        })
-                        .SetSecondaryCTAaction(() =>
-                        {
-                            //this.userActionsListener.OnRemove(creditCardData, e);
-                        })
-                        .Build().Show();
         }
 
         /*public void injectDemoData()
@@ -360,11 +369,11 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
             adapter.NotifyDataSetChanged();
         }*/
 
-        public void injectDemoData()
+        public void injectStarData()
         {
             var data1 = new ImproveSelectModel
             {
-                ModelCategories = "feedback_two",
+                ModelCategories = "star",
                 IconCategories = "1",
                 IsSelected = false,
             };
@@ -372,7 +381,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
             var data2 = new ImproveSelectModel
             {
-                ModelCategories = "feedback_two",
+                ModelCategories = "star",
                 IconCategories = "2",
                 IsSelected = false,
             };
@@ -380,7 +389,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
             var data3 = new ImproveSelectModel
             {
-                ModelCategories = "feedback_two",
+                ModelCategories = "star",
                 IconCategories = "3",
                 IsSelected = false,
             };
@@ -388,7 +397,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
             var data4 = new ImproveSelectModel
             {
-                ModelCategories = "feedback_two",
+                ModelCategories = "star",
                 IconCategories = "4",
                 IsSelected = false,
             };
@@ -396,7 +405,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
             var data5 = new ImproveSelectModel
             {
-                ModelCategories = "feedback_two",
+                ModelCategories = "star",
                 IconCategories = "5",
                 IsSelected = false,
             };
