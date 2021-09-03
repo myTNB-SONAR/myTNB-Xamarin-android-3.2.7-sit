@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.Content.Res;
 using Android.Net.Http;
 using Android.OS;
+using Android.Util;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
@@ -40,6 +41,8 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         private const string SELECTED_ACCOUNT_KEY = ".selectedAccount";
 
         private string _accountNumber = string.Empty;
+
+        internal bool ShouldBackToHome = false;
 
         public bool IsActive()
         {
@@ -132,7 +135,15 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 .SetSecondaryCTAaction(() =>
                 {
                     DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Close_Confirm);
-                    OnBackPressed();
+                    Log.Debug("[DEBUG]", "ShouldBackToHome: " + ShouldBackToHome);
+                    if (ShouldBackToHome)
+                    {
+                        OnShowDashboard();
+                    }
+                    else
+                    {
+                        OnBackPressed();
+                    }
                 })
                 .IsIconImage(true)
                 .SetContentGravity(GravityFlags.Center)
@@ -250,8 +261,8 @@ namespace myTNB_Android.Src.DigitalBill.Activity
 
         public class MyTNBWebViewClient : WebViewClient
         {
-            public DigitalBillActivity mActivity;
-            public ProgressBar progressBar;
+            private DigitalBillActivity mActivity;
+            private ProgressBar progressBar;
 
             public MyTNBWebViewClient(DigitalBillActivity mActivity)
             {
@@ -263,6 +274,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 bool shouldOverride = false;
                 if (ConnectionUtils.HasInternetConnection(mActivity))
                 {
+                    Log.Debug("[DEBUG]", "MyTNBWebViewClient url: " + url.ToString());
                     if (url.Contains("mytnbapp://action=backToApp"))
                     {
                         mActivity.OnBackPressed();
@@ -273,6 +285,13 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                         mActivity.OnShowDashboard();
                         shouldOverride = true;
                     }
+
+                    //Update for X button
+                    if (url.ToString().Contains("BillDelivery/Success"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                    }
+                    Log.Debug("[DEBUG]", "MyTNBWebViewClient ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }
                 return shouldOverride;
             }
@@ -282,6 +301,13 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 try
                 {
                     base.OnPageStarted(view, url, favicon);
+                    Log.Debug("[DEBUG]", "OnPageStarted url: " + url.ToString());
+                    //Update for X button
+                    if (url.ToString().Contains("BillDelivery/Success"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                    }
+                    Log.Debug("[DEBUG]", "OnPageStarted ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }
                 catch (System.Exception e)
                 {
@@ -293,7 +319,13 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             {
                 try
                 {
-
+                    Log.Debug("[DEBUG]", "OnPageFinished url: " + url.ToString());
+                    //Update for X button
+                    if (url.ToString().Contains("BillDelivery/Success"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                    }
+                    Log.Debug("[DEBUG]", "OnPageFinished ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }
                 catch (System.Exception e)
                 {
