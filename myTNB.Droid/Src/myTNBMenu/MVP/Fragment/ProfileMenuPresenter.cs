@@ -232,6 +232,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         , string.Empty
                         , UserSessions.GetDeviceId()
                         , DeviceIdUtils.GetAppVersionName()
+                        , MobileConstants.OSType.Android
                         , TextViewUtils.FontInfo
                         , LanguageUtil.GetAppLanguage() == "MS"
                             ? LanguageManager.Language.MS

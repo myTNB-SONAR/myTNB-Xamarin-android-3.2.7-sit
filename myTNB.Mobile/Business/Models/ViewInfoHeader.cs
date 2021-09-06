@@ -7,5 +7,6 @@
         public string RoleId { set; get; }
         public string Lang { set; get; }
         public string FontSize { set; get; }
+        public string OSType { set; get; }
     }
 }

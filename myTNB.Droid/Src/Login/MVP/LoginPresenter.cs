@@ -355,6 +355,7 @@ namespace myTNB_Android.Src.Login.MVP
                                     , UserEntity.GetActive().UserName
                                     , UserSessions.GetDeviceId()
                                     , DeviceIdUtils.GetAppVersionName()
+                                    , myTNB.Mobile.MobileConstants.OSType.Android
                                     , TextViewUtils.FontInfo
                                     , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                 AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);

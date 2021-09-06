@@ -43,6 +43,7 @@ namespace myTNB
             , string userName
             , string deviceToken
             , string appVersion
+            , string osType
             , string fontSize = "N"
             , Language language = Language.EN)
         {
@@ -62,7 +63,8 @@ namespace myTNB
                     : string.Empty,
                 RoleId = roleID,
                 Lang = language.ToString(),
-                FontSize = fontSize.ToUpper() == "L" ? "L" : "N"
+                FontSize = fontSize.ToUpper() == "L" ? "L" : "N",
+                OSType = osType
             };
         }
 
