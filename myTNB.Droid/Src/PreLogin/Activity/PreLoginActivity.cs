@@ -19,6 +19,7 @@ using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Feedback_PreLogin_Menu.Activity;
 using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.Login.Activity;
@@ -225,6 +226,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 editor.Remove(MobileConstants.SharePreferenceKey.GetEligibilityData);
                 editor.Remove(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp);
                 EligibilitySessionCache.Instance.Clear();
+                AccessTokenCache.Instance.Clear();
 
                 //For Testing
                 editor.Remove("hasHomeTutorialShown");
