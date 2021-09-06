@@ -1106,11 +1106,11 @@
     "viewYes": "Ya",
     "viewNo": "Tidak",
     "documentPdf": "Dokumen",
-    "thankYouForYourEnquiry": "Pertanyaan anda telah dibatalkan.", //
-    "thankYouForYourEnquiryDescription": "Pertanyaan anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan.", //
+    "thankYouForYourEnquiry": "Permohonan anda telah dibatalkan.", //
+    "thankYouForYourEnquiryDescription": "Permohonan anda untuk tuntutan voltan berlebihan telah dibatalkan.", //
     "thankYouForYourAppointment": "Janji temu anda telah dibatalkan.", //
     "thankYouForYourAppointmentDescription": "Janji temu permohonan tuntutan voltan berlebihan anda telah dibatalkan.", //
-    "thankYouForYourAgree": "Terima kasih atas penyerahan anda.", //
+    "thankYouForYourAgree": "Terima kasih di atas maklum balas anda!", //
     "thankYouForYourAgreeDescription": "Untuk meneruskan pembayaran, hantarkan maklumat pembayaran yang diperlukan di halaman pertanyaan yang dihantar.", //
     "thankYouForYourDisagree": "Permohonan rundingan anda telah dihantar.", //
     "thankYouForYourDisagreeDescription": "Kami akan menghubungi anda tidak lama lagi. Dapatkan maklumat terkini di status pertanyaan anda.", //
@@ -1126,7 +1126,7 @@
     "thankYouForProvidingYourDetailsDescription": "Kami akan menyemak maklumat anda dan akan dimaklumkan setelah kami mengesahkannya. Jumlah pembayaran akan diproses ke akaun bank anda dalam tempoh 14 hari bekerja.", //
     "totalClaimAmount": "Jumlah Tuntutan (RM)", //
     "thankYouForYourSubmission": "Terima kasih di atas semua maklumat yang diberikan!", //
-    "yourRatingWillHelpUsServeYouBetter": "Penilaian anda akan membantu kami melayani anda dengan lebih baik.", //
+    "yourRatingWillHelpUsServeYouBetter": "Penilaian anda akan membantu kami memberikan perkhidmatan yang lebih baik.", //
     "enterPaymentDetailsTitle": "Masukkan Butiran Pembayaran", //
     "rateYourExperienceTitle": "Nilaikan Pengalaman Anda", //
     "setAppointmentTitle": "Tetapkan Janji Temu", //
