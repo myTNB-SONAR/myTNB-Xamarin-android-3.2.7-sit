@@ -1068,7 +1068,7 @@
     "newMailing": "Alamat Surat Menyurat Baharu",
     "newPremisesAdd": "Alamat Premis Baharu",
     "plsEnterAcc": "Sila masukkan atau pilih nombor akaun elektrik anda terlebih dahulu.",
-    "viewSubmitted": "Lihat Pertanyaan yang Dihantar",
+    "viewSubmitted": "Semak Pertanyaan yang Dihantar",
     "title": "Hantar Pertanyaan Baru",
     "scanMessage": "Imbas kod bar pada bil anda untuk mendapatkan butiran akaun.",
     "enquiryTnc": "Dengan menghantar, saya telah membaca dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat</strong></a>",
@@ -1108,16 +1108,16 @@
     "documentPdf": "Dokumen",
     "thankYouForYourEnquiry": "Pertanyaan anda telah dibatalkan.", //
     "thankYouForYourEnquiryDescription": "Pertanyaan anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan.", //
-    "thankYouForYourAppointment": "Temujanji anda telah dibatalkan.", //
-    "thankYouForYourAppointmentDescription": "Perjanjian anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan.", //
+    "thankYouForYourAppointment": "Janji temu anda telah dibatalkan.", //
+    "thankYouForYourAppointmentDescription": "Janji temu permohonan tuntutan voltan berlebihan anda telah dibatalkan.", //
     "thankYouForYourAgree": "Terima kasih atas penyerahan anda.", //
     "thankYouForYourAgreeDescription": "Untuk meneruskan pembayaran, hantarkan maklumat pembayaran yang diperlukan di halaman pertanyaan yang dihantar.", //
     "thankYouForYourDisagree": "Permintaan rundingan anda telah dihantar.", //
     "thankYouForYourDisagreeDescription": "Kami akan menghubungi anda tidak lama lagi. itu dapatkan maklumat terkini dengan mengesan status pertanyaan yang anda kirimkan.", //
     "proccedToPaymentInformation": "Teruskan ke Maklumat Pembayaran", //button name
     "setNewAppointment": "Tetapkan Temujanji Baru", //button name
-    "appointmentSet": "Janji Temu Ditetapkan! ", //
-    "appointmentSetDescription": "Terima kasih! Temujanji anda disahkan dengan perincian di bawah.", //
+    "appointmentSet": "Janji Temu Dijadualkan! ", //
+    "appointmentSetDescription": "Terima kasih! Janji temu anda telah disahkan berdasarkan butiran di bawah.", //
     "serviceReqNum": "NOMBOR PERMINTAAAN PERKHIDMATAN",
     "dateTitle": "TARIKH JANJI TEMU", //
     "technicianName": "NAMA JURUTEKNIK", //
@@ -1145,7 +1145,7 @@
     "overVoltageClaimtemproryUnavailableDescription": "Kami berusaha untuk memulihkan perkhidmatan Tuntutan Voltan Berlebihan secepat mungkin. Sila semak semula tidak lama lagi.",
     "tNC": "Terma dan Syarat",
     "rescheduleAppointment": "Jadualkan Pelantikan",
-    "appointmentUpdate": "Tarikh janji temu anda telah dikemas kini."
+    "appointmentUpdate": "Tarikh janji temu anda telah dikemaskini."
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",
