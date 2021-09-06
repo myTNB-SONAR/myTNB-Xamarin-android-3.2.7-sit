@@ -15,7 +15,6 @@
 		layout="@layout/toolbar"
 		id="@+id/toolbar" />
 	<LinearLayout
-		android:id="@+id/rootview"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_marginTop="?actionBarSize"
@@ -393,7 +392,6 @@
 				</LinearLayout>
 			</LinearLayout>
 		</androidx.core.widget.NestedScrollView>
-
 		<!--Button: Search Application Status-->
 		<LinearLayout
 			android:layout_width="match_parent"
