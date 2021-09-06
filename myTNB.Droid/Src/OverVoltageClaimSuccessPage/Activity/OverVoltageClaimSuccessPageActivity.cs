@@ -246,7 +246,7 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
             else if(comeFromsubmitClaimPage)
             {
                 GetClaimID();
-                comeFromsubmitClaimPage = false;
+                //comeFromsubmitClaimPage = false;
             }
             else if(AppointmentFlag)
             {
@@ -267,7 +267,9 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
                     othersIntent.PutExtra("TITLE", Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
                     othersIntent.PutExtra("ClaimId", ClaimId);
                     StartActivity(othersIntent);
+                    comeFromsubmitClaimPage = false;
                 }
+                
             }
             catch (Exception ex)
             {
