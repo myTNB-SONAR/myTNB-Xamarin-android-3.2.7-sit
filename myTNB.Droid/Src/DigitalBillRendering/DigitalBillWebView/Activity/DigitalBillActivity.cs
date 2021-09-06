@@ -105,11 +105,34 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 SetToolBarTitle(GetLabelByLanguage(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
                     ? "goPaperless"
                     : "updateBillDelivery"));
+                OnTag();
                 ShowDigitalBill(true);
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void OnTag(bool isWebViewClient = false)
+        {
+            if (isWebViewClient)
+            {
+                if (BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Confirm);
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Start_Paperless);
+                }
+                else
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Back_To_Paper_Confirm);
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Back_To_Paper_Success);
+                }
+            }
+            else {
+                DynatraceHelper.OnTrack(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
+                    ? DynatraceConstants.DBR.Screens.Webview.Start_Paperless
+                    : DynatraceConstants.DBR.Screens.Webview.Back_To_Paper);
             }
         }
 
@@ -134,7 +157,9 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DBRWebview", "confirm"))
                 .SetSecondaryCTAaction(() =>
                 {
-                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Close_Confirm);
+                    DynatraceHelper.OnTrack(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
+                        ? DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Close
+                        : DynatraceConstants.DBR.CTAs.Webview.Back_To_Paper_Close);
                     Log.Debug("[DEBUG]", "ShouldBackToHome: " + ShouldBackToHome);
                     if (ShouldBackToHome)
                     {
@@ -306,6 +331,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     if (url.ToString().Contains("BillDelivery/Success"))
                     {
                         mActivity.ShouldBackToHome = true;
+                        mActivity.OnTag(true);
                     }
                     Log.Debug("[DEBUG]", "OnPageStarted ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }

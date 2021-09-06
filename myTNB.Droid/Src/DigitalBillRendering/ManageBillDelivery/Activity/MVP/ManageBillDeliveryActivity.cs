@@ -176,8 +176,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     {
                         mSelectedAccountData = AccountData.Copy(allAccountList[accountIndex], true);
                         txt_ca_name.Text = mSelectedAccountData.AccountNickName + " - " + mSelectedAccountData.AccountNum;
-                        deliveringAddress.Text = mSelectedAccountData.AddStreet;
-                        TenantDeliveringAddress.Text = mSelectedAccountData.AddStreet;
                         selectedAccountNumber = mSelectedAccountData.AccountNum;
                     }
                 }
@@ -210,6 +208,23 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             };
         }
 
+        private void SetAddress()
+        {
+            if (_billRenderingResponse != null
+                && _billRenderingResponse.Content != null
+                && _billRenderingResponse.Content.IsOwnerPostalBill
+                && _billRenderingResponse.Content.OwnerPostalAddress.IsValid())
+            {
+                deliveringAddress.Text = _billRenderingResponse.Content.OwnerPostalAddress;
+                TenantDeliveringAddress.Text = _billRenderingResponse.Content.OwnerPostalAddress;
+            }
+            else
+            {
+                deliveringAddress.Text = mSelectedAccountData.AddStreet;
+                TenantDeliveringAddress.Text = mSelectedAccountData.AddStreet;
+            }
+        }
+
         private void AddViewPager()
         {
             ViewGroup.LayoutParams? viewPagerParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent
@@ -238,7 +253,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 TenantDeliveringAddress.Visibility = ViewStates.Gone;
                 if (getBillRenderingModel.Content.IsInProgress)
                 {
-
                     applicationIndicator.Visibility
                         = btnStartDigitalBillLayout.Visibility
                         = applicationIndicator.Visibility
@@ -503,6 +517,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                             txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "nonOwnerPaperTitle");
                             txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "nonOwnerPaperMessage"));
                         }
+                        SetAddress();
                     }
                     else if (getBillRenderingModel.Content.DBRType == DBRTypeEnum.WhatsApp)
                     {
