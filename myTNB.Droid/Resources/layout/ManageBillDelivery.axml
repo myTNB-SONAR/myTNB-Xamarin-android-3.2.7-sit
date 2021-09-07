@@ -7,7 +7,7 @@
 	android:layout_alignParentBottom="true"
 	android:layout_centerHorizontal="true"
 	android:descendantFocusability="beforeDescendants"
-	android:id="@id/rootSSMRView"
+	android:id="@id/rootView"
 	android:theme="@style/Theme.SMRApplication"
 	android:focusableInTouchMode="true"
 	android:orientation="vertical">
