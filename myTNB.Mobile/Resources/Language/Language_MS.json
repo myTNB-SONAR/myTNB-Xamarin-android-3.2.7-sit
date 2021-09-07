@@ -1133,8 +1133,8 @@
     "negotiationRequestTitle": "Permohonan Rundingan", //
     "compensationAgreementTitle": "Perjanjian Pampasan", //
     "updatePaymentDetailsTitle": "Kemas kini Butiran Pembayaran",
-    "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle": "Tuntutan Voltan Berlebihan pada masa ini tidak diaktifkan untuk ", //
-    "overVoltageClaimIsCurrentlyNotEnabledForKepongDescription": "Nombor akaun yang dipilih pada masa ini tidak diaktifkan untuk Tuntutan Voltan Berlebihan melalui myTNB. Sila hubungi TNB CareLine kami di talian 1300-88-5454 atau hantarkan e-mel kepada kami di tnbcareline@tnb.com.my atau kunjungi Kedai Tenaga.",
+    "overVoltageClaimIsCurrentlyNotEnabledForAccountTitle": "Tuntutan Voltan Berlebihan pada masa ini tidak diaktifkan untuk ", //
+    "overVoltageClaimIsCurrentlyNotEnabledForAccountDescription": "Nombor akaun yang dipilih pada masa ini tidak diaktifkan untuk Tuntutan Voltan Berlebihan melalui myTNB. Sila hubungi TNB CareLine kami di talian 1300-88-5454 atau hantarkan e-mel kepada kami di tnbcareline@tnb.com.my atau kunjungi Kedai Tenaga.",
     "Gotit": "Ok", //,
     "currentlyNotEnabledForMelakaTitle": "Buat masa ini tidak diaktifkan untuk ",
     "overVoltageMaintenanceLabel": "Perkhidmatan Tuntutan Voltan Berlebihan sedang dalam penyelenggaraan",
