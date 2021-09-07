@@ -17,20 +17,20 @@ namespace myTNB.Mobile.API.Services.Rating
     internal interface IRatingService
     {
         [Get("/{urlPrefix}/CustomerRatingMaster?categoryID={categoryID}")]
-        Task<GetCustomerRatingMasterResponse> GetCustomerRatingMaster([Header(Constants.Header_UserInfo)] string userInfo
+        Task<GetCustomerRatingMasterResponse> GetCustomerRatingMaster([Header(MobileConstants.Header_UserInfo)] string userInfo
             , string categoryID
-            , CancellationToken cancelToken
+            , CancellationToken cancellationToken
             , string language
-            , [Header(Constants.Header_Lang)] string lang
-            , string urlPrefix = Constants.ApiUrlPath
-            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+            , [Header(MobileConstants.Header_Lang)] string lang
+            , string urlPrefix = MobileConstants.ApiUrlPath
+            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Post("/{urlPrefix}/SubmitRating")]
         Task<HttpResponseMessage> SubmitRating([Body] PostSubmitRatingRequest request
-           , [Header(Constants.Header_UserInfo)] string userInfo
-           , CancellationToken cancelToken
-           , [Header(Constants.Header_Lang)] string lang
-           , string urlPrefix = Constants.ApiUrlPath
-           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+           , [Header(MobileConstants.Header_UserInfo)] string userInfo
+           , CancellationToken cancellationToken
+           , [Header(MobileConstants.Header_Lang)] string lang
+           , string urlPrefix = MobileConstants.ApiUrlPath
+           , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
     }
 }

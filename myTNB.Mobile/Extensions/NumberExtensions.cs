@@ -36,7 +36,7 @@ namespace myTNB.Mobile.Extensions
         {
             string format = "{0} {1}";
             return string.Format(format
-                , Constants.Constants_Currency
+                , MobileConstants.Constants_Currency
                 , amount);
         }
     }

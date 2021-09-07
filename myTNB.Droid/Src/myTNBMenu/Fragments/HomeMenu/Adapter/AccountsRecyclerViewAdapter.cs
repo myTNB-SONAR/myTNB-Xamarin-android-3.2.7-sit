@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android.Content;
 using Android.Graphics;
 
 
@@ -28,6 +29,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         int MAX_ACCOUNT_PER_CARD = 5;
         Filter accountsFilter;
         static HomeMenuFragment viewListener;
+        private ISharedPreferences mSharedPref;
 
         List<AccountCardModel> accountModelList = new List<AccountCardModel>();
         public List<AccountCardModel> accountCardModelList = new List<AccountCardModel>();
@@ -324,6 +326,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             if (cardModel.AccountType == 2)
             {
                 accountTypeIcon.Visibility = ViewStates.Visible;
+                accountTypeIcon.SetImageResource(Resource.Drawable.re_meter_dashboard);
+            }
+            else if (cardModel.SmartMeterCode.Equals(3) && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            {
+                accountTypeIcon.Visibility = ViewStates.Visible;
+                accountTypeIcon.SetImageResource(Resource.Drawable.smart_meter_icon);
             }
             else
             {

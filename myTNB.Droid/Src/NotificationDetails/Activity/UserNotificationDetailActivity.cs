@@ -56,9 +56,11 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         Models.NotificationDetails notificationDetails;
         UserNotificationData userNotificationData;
+        internal static myTNB.Mobile.NotificationModel Notification;
         int position;
         UserNotificationDetailPresenter mPresenter;
         AlertDialog removeDialog;
+        public bool pushFromDashboard = false;
 
         public override int ResourceId()
         {
@@ -116,6 +118,11 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             base.OnBackPressed();
         }
 
+        public void ReturnToDashboard()
+        {
+            Finish();
+        }
+
         public void OnClickSpan(string textMessage)
         {
             if (textMessage != null && textMessage.Contains("http"))
@@ -168,6 +175,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                         notificationDetails = DeSerialze<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
                     }
 
+                    if (extras.ContainsKey(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM))
+                    {
+                        Notification = DeSerialze<myTNB.Mobile.NotificationModel>(extras.GetString(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM));
+                        pushFromDashboard = true;
+                    }
+
                     if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_LIST_ITEM))
                     {
                         userNotificationData = DeSerialze<UserNotificationData>(extras.GetString(Constants.SELECTED_NOTIFICATION_LIST_ITEM));
@@ -187,8 +200,21 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     notificationMainLayout.SetBackgroundColor(Color.ParseColor("#ffffff"));
                 }
 
-                mPresenter.EvaluateDetail(notificationDetails);
-                RenderUI();
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100
+                        || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_TC || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_RC)
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "EnergyBudgetTitle"));
+                }
+
+                if (pushFromDashboard)
+                {
+                    mPresenter.OnShowNotificationDetails(Notification.Type, Notification.EventId, Notification.RequestTransId);
+                }
+                else
+                {
+                    mPresenter.EvaluateDetail(notificationDetails);
+                    RenderUI();
+                }
             }
             catch (Exception e)
             {
@@ -196,7 +222,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
-        private void RenderUI()
+        public void RenderUI()
         {
             try
             {
@@ -210,7 +236,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     ctaComponent.Visibility = ViewStates.Visible;
 
                     notificationDetailBannerImg.SetImageResource(detailModel.imageResourceBanner);
+
                     notificationDetailTitle.Text = detailModel.title;
+
                     notificationDetailMessage.TextFormatted = GetFormattedText(detailModel.message);
 
                     if (detailModel.message != null)
@@ -374,6 +402,16 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             DashboardIntent.PutExtra("FROM_NOTIFICATION",true);
             MyTNBAccountManagement.GetInstance().SetIsAccessUsageFromNotification(true);
             StartActivity(DashboardIntent);
+        }
+
+        public void ViewTips()
+        {
+            CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_tips);
+            FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_tips);
+            Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+            webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("PushNotificationDetails", "viewTipsURL"));
+            webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("PushNotificationList", "title"));
+            this.StartActivity(webIntent);
         }
 
         public void ViewDetails(AccountData mSelectedAccountData)

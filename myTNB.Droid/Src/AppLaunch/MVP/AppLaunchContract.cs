@@ -6,6 +6,8 @@ using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.NotificationDetails.Models;
+using myTNB_Android.Src.Notifications.Models;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -89,6 +91,50 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void ShowNotification();
 
             /// <summary>
+            /// Show notification details
+            /// </summary>
+            /// <param name="details">NotificationDetails.Models.NotificationDetails</param>
+            /// <param name="notificationData">UserNotificationData</param>
+            /// <param name="position">integer</param>
+            void ShowDetails(NotificationDetails.Models.NotificationDetails details);
+            
+
+            /// <summary>
+            /// Show notification details
+            /// </summary>
+            /// <param name="details">NotificationDetails.Models.NotificationDetails</param>
+            /// <param name="notificationData">UserNotificationData</param>
+            //void ShowDetails(NotificationDetails.Models.NotificationDetails details, UserDetailsNotificationData notificationData);
+
+            /// <summary>
+            /// Show progress dialog
+            /// </summary>
+            void ShowProgress();
+
+            /// <summary>
+            /// Hide progress dialog
+            /// </summary>
+            void HideProgressDialog();
+
+            /// <summary>
+            /// Shows a cancelled exception with an option to retry
+            /// </summary>
+            /// <param name="operationCanceledException">the returned exception</param>
+            void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException);
+
+            /// <summary>
+            /// Shows an api exception with an option to retry
+            /// </summary>
+            /// <param name="apiException">the returned exception</param>
+            void ShowRetryOptionsApiException(ApiException apiException);
+
+            /// <summary>
+            /// Shows an unknown exception with an option to retry
+            /// </summary>
+            /// <param name="exception">the returned exception</param>
+            void ShowRetryOptionsUnknownException(Exception exception);
+
+            /// <summary>
             /// Sets the no. of notification badge
             /// </summary>
             /// <param name="count">integer representation of no of badges</param>
@@ -169,6 +215,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// Show something went wrong Snackbar
             /// </summary>
             void ShowSomethingWrongException();
+            //void OnShowNotificationDetails();
+            void ShowNotificationDetails();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -218,6 +266,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// Lgout function created to update device id after removing persmissin
             ///</summary>
             void OnUpdateApp();
+
+            void OnShowNotificationDetails(string NotificationTypeId, string BCRMNotificationTypeId, string NotificationRequestId);
 
             Task OnGetAppLaunchCache();
 

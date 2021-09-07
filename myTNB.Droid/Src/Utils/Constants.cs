@@ -32,6 +32,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string USER_CREDENTIALS_ENTRY = ".userCredentialsEntry";
         internal static readonly string RETRIEVE_PIN_FROM_SMS = ".retrievedPinFromSMS";
         internal static readonly string SELECTED_NOTIFICATION_DETAIL_ITEM = ".selectedNotificationDetailItem";
+        internal static readonly string SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM = ".selectedFromDashboardNotificationDetailItem";
         internal static readonly string SELECTED_NOTIFICATION_LIST_ITEM = ".selectedNotificationListItem";
         internal static readonly string SELECTED_NOTIFICATION_ITEM_POSITION = ".selectedNotificationItemPosition";
         internal static readonly string ACTION_IS_READ = ".action_is_read";
@@ -126,14 +127,17 @@ namespace myTNB_Android.Src.Utils
 
         internal struct SERVER_URL
         {
+            internal static readonly string END_POINT = myTNB.Mobile.MobileConstants.ApiDomain;
+
 #if DEBUG || STUB
-            internal static readonly string END_POINT = "http://10.215.128.191:89";  //dev
+            //internal static readonly string END_POINT = "http://10.215.128.191:89";  //dev
+            //internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
+            //internal static readonly string END_POINT = "http://10.215.128.191:97";  //dev cep
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
 #elif DEVELOP || SIT
-            internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
+            //internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link";
 #else
-            internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbapp.page.link";
 #endif
         }
@@ -147,7 +151,7 @@ namespace myTNB_Android.Src.Utils
             internal static readonly int IN_SAMPLE_SIZE = 4;
             internal static readonly string ENV = "SIT";
 #else //create new flavour called PROD, SIT, UAT
-            internal static readonly string API_KEY_ID = "E6148656-205B-494C-BC95-CC241423E72F";
+            internal static readonly string API_KEY_ID = myTNB.Mobile.MobileConstants.ApiKeyId;
             internal static readonly int MAX_IMAGE_QUALITY_IN_PERCENT = 100;
             internal static readonly int IN_SAMPLE_SIZE = 4;
             internal static readonly string ENV = "PROD";
@@ -192,6 +196,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string SMART_METER_SYSTEM = "SmartMeter";
         internal static readonly string PG_CC_SYSTEM = "PG_CC";
         internal static readonly string PG_FPX_SYSTEM = "PG_FPX";
+        internal static readonly string Smart_Meter_Daily_SYSTEM = "SmartMeterDaily";
 
         internal static readonly string ACCOUNT_REMOVED_FLAG = "ACCOUNT_REMOVED";
 
@@ -300,8 +305,19 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID = "53";
         public const string BCRM_NOTIFICATION_PAYMENT_FAILED_ID = "71";
         public const string BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID = "72";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET = "11001";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_80 = "CEP AT";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_100 = "CEP TH";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_TC = "CEP TC";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_RC = "CEP RC";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_NEWS = "98";
+
+        public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
 
         public const string ACCOUNT_NICKNAME_PATTERN = "#accountNickname#";
+        public const string ACCOUNT_PROFILENAME_PATTERN = "#profileName#";
+        public const string ACCOUNT_ACCNO_PATTERN = "#accno#";
+        public const string ACCOUNT_FULLNAME_PATTERN = "#accountFullname/accountEmailAddress#";
 
         public const string APP_TUTORIAL_PATTERN = "#dropdown#";
 
@@ -394,5 +410,27 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string DYNA_SITECORE_REFFER_LOCAL = "sitecore_refer_local";
         internal static readonly string DYNA_SITECORE_REFFER_ONLINE = "sitecore_refer_online";
         internal static readonly string DYNA_WHATS_NEW_DEFAULT = "WhatsNewClicked";
+
+
+#if MASTER || SIT || DEBUG
+        internal static readonly string EB_in_app_notification = "EB_in_app_notification_SIT";
+        internal static readonly string EB_initiate_Later = "EB_initiate_Later_SIT";
+        internal static readonly string EB_initiate_Start = "EB_initiate_Start_SIT";
+        internal static readonly string EB_start = "EB_start_SIT";
+        internal static readonly string EB_setup_success = "EB_setup_success_SIT";
+        internal static readonly string EB_edit_budget = "EB_edit_budget_SIT";
+        internal static readonly string EB_tooltip = "EB_tooltip_SIT";
+        internal static readonly string EB_view_tips = "EB_view_tips_SIT";
+#else
+        internal static readonly string EB_in_app_notification = "EB_in_app_notification";
+        internal static readonly string EB_initiate_Later = "EB_initiate_Later";
+        internal static readonly string EB_initiate_Start = "EB_initiate_Start";
+        internal static readonly string EB_start = "EB_start";
+        internal static readonly string EB_setup_success = "EB_setup_success";
+        internal static readonly string EB_edit_budget = "EB_edit_budget";
+        internal static readonly string EB_tooltip = "EB_tooltip";
+        internal static readonly string EB_view_tips = "EB_view_tips";
+#endif
+
     }
 }

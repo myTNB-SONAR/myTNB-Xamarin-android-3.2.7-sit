@@ -5,9 +5,12 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Android.Content;
+using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
@@ -23,6 +26,7 @@ using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 
@@ -36,6 +40,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         SSMRTerminateImpl terminationApi;
         AccountData mSelectedAccountData;
         bool isTaggedSMR = true;
+        private Android.App.Activity mActivity;
 
         public UserNotificationDetailPresenter(UserNotificationDetailContract.IView view)
         {
@@ -216,11 +221,54 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             }
                             break;
                         }
+                    //case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET:
+                    //    {
+                    //        imageResourceBanner = Resource.Drawable.SMRillustration;
+                    //        //pageTitle = "EnergyBudget";
+                    //        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
+                    //            delegate () { ViewMyUsage(notificationDetails); });
+                    //        ctaList.Add(primaryCTA);
+                    //        break;
+                    //    }
+                    case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_reaching_eb_icon;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
+                                delegate () { ViewMyUsage(notificationDetails); });
+                            ctaList.Add(primaryCTA);
+                            
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewTips"),
+                            delegate () { ViewTips(); });
+                            ctaList.Add(secondaryCTA);
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_reached_eb_icon;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
+                                delegate () { ViewMyUsage(notificationDetails); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewTips"),
+                            delegate () { ViewTips(); });
+                            ctaList.Add(secondaryCTA);
+                            break;
+                        }
                     default:
                         imageResourceBanner = Resource.Drawable.notification_generic_banner;
                         break;
                 }
                 notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_NICKNAME_PATTERN, accountName);
+
+                if (notificationDetailMessage.Contains(Constants.ACCOUNT_PROFILENAME_PATTERN))
+                {
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
+                }
+                if (notificationDetailMessage.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
+                {
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + accountName + "\"");
+                }
+
                 notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
                     notificationDetailMessage, ctaList);
             }
@@ -332,6 +380,13 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             {
                 this.mView.ShowRetryOptionsApiException(null);
             }
+        }
+
+
+        //string url= Utility.GetLocalizedLabel("PushNotificationDetails", "linkEB");
+        private void ViewTips()
+        {
+            this.mView.ViewTips();
         }
 
         private async void SubmitMeterReading(Models.NotificationDetails notificationDetails)
@@ -624,6 +679,58 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         public NotificationDetailModel GetNotificationDetailModel()
         {
             return notificationDetailModel;
+        }
+
+        public async void OnShowNotificationDetails(string NotificationTypeId, string BCRMNotificationTypeId, string NotificationRequestId)
+        {
+            try
+            {
+                this.mView.ShowLoadingScreen();
+                UserNotificationDetailsRequestNew request = new UserNotificationDetailsRequestNew(NotificationTypeId, BCRMNotificationTypeId, NotificationRequestId);
+                string dt = JsonConvert.SerializeObject(request);
+                UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetailsByRequestId(request);
+                if (response.IsSuccessResponse())
+                {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
+                    UserNotificationEntity.UpdateIsRead(response.GetData().UserNotificationDetail.Id, true);
+                    UserSessions.ClearNotification();
+                    EvaluateDetail(response.GetData().UserNotificationDetail);
+                    this.mView.RenderUI();
+                }
+                else
+                {
+                    if (response.GetData() == null)
+                    {
+                        this.mView.ReturnToDashboard();
+                    }
+                    //this.mView.ShowRetryOptionsCancelledException(null);
+                }
+
+                ////MOCK RESPONSE
+                //this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
+                this.mView.HideLoadingScreen();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }
