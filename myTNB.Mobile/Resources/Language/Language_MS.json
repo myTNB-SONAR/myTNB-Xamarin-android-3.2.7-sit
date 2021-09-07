@@ -1068,7 +1068,7 @@
     "newMailing": "Alamat Surat Menyurat Baharu",
     "newPremisesAdd": "Alamat Premis Baharu",
     "plsEnterAcc": "Sila masukkan atau pilih nombor akaun elektrik anda terlebih dahulu.",
-    "viewSubmitted": "Lihat Pertanyaan yang Dihantar",
+    "viewSubmitted": "Semak Pertanyaan yang Dihantar",
     "title": "Hantar Pertanyaan Baru",
     "scanMessage": "Imbas kod bar pada bil anda untuk mendapatkan butiran akaun.",
     "enquiryTnc": "Dengan menghantar, saya telah membaca dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat</strong></a>",
@@ -1106,35 +1106,35 @@
     "viewYes": "Ya",
     "viewNo": "Tidak",
     "documentPdf": "Dokumen",
-    "thankYouForYourEnquiry": "Pertanyaan anda telah dibatalkan.", //
-    "thankYouForYourEnquiryDescription": "Pertanyaan anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan.", //
-    "thankYouForYourAppointment": "Temujanji anda telah dibatalkan.", //
-    "thankYouForYourAppointmentDescription": "Perjanjian anda untuk permintaan tuntutan voltan berlebihan berjaya dibatalkan.", //
-    "thankYouForYourAgree": "Terima kasih atas penyerahan anda.", //
+    "thankYouForYourEnquiry": "Permohonan anda telah dibatalkan.", //
+    "thankYouForYourEnquiryDescription": "Permohonan anda untuk tuntutan voltan berlebihan telah dibatalkan.", //
+    "thankYouForYourAppointment": "Janji temu anda telah dibatalkan.", //
+    "thankYouForYourAppointmentDescription": "Janji temu permohonan tuntutan voltan berlebihan anda telah dibatalkan.", //
+    "thankYouForYourAgree": "Terima kasih di atas maklum balas anda!", //
     "thankYouForYourAgreeDescription": "Untuk meneruskan pembayaran, hantarkan maklumat pembayaran yang diperlukan di halaman pertanyaan yang dihantar.", //
-    "thankYouForYourDisagree": "Permintaan rundingan anda telah dihantar.", //
-    "thankYouForYourDisagreeDescription": "Kami akan menghubungi anda tidak lama lagi. itu dapatkan maklumat terkini dengan mengesan status pertanyaan yang anda kirimkan.", //
-    "proccedToPaymentInformation": "Teruskan ke Maklumat Pembayaran", //button name
+    "thankYouForYourDisagree": "Permohonan rundingan anda telah dihantar.", //
+    "thankYouForYourDisagreeDescription": "Kami akan menghubungi anda tidak lama lagi. Dapatkan maklumat terkini di status pertanyaan anda.", //
+    "proccedToPaymentInformation": "Terus ke Maklumat Pembayaran", //button name
     "setNewAppointment": "Tetapkan Temujanji Baru", //button name
-    "appointmentSet": "Janji Temu Ditetapkan! ", //
-    "appointmentSetDescription": "Terima kasih! Temujanji anda disahkan dengan perincian di bawah.", //
+    "appointmentSet": "Janji Temu Dijadualkan! ", //
+    "appointmentSetDescription": "Terima kasih! Janji temu anda telah disahkan berdasarkan butiran di bawah.", //
     "serviceReqNum": "NOMBOR PERMINTAAAN PERKHIDMATAN",
     "dateTitle": "TARIKH JANJI TEMU", //
     "technicianName": "NAMA JURUTEKNIK", //
     "incidentAddress": "ALAMAT KEJADIAN", //
     "thankYouForProvidingYourDetails": "Terima kasih kerana memberikan maklumat anda!", //
-    "thankYouForProvidingYourDetailsDescription": "Kami akan menyemak maklumat anda dan memberitahu anda setelah kami menyetujuinya. Nilai pampasan akan diproses ke akaun bank yang anda hantar dengan masa sekitar 14 hari bekerja.", //
+    "thankYouForProvidingYourDetailsDescription": "Kami akan menyemak maklumat anda dan akan dimaklumkan setelah kami mengesahkannya. Jumlah pembayaran akan diproses ke akaun bank anda dalam tempoh 14 hari bekerja.", //
     "totalClaimAmount": "Jumlah Tuntutan (RM)", //
-    "thankYouForYourSubmission": "Terima kasih atas penyerahan anda!", //
-    "yourRatingWillHelpUsServeYouBetter": "Penilaian anda akan membantu kami melayani anda dengan lebih baik.", //
+    "thankYouForYourSubmission": "Terima kasih di atas semua maklumat yang diberikan!", //
+    "yourRatingWillHelpUsServeYouBetter": "Penilaian anda akan membantu kami memberikan perkhidmatan yang lebih baik.", //
     "enterPaymentDetailsTitle": "Masukkan Butiran Pembayaran", //
     "rateYourExperienceTitle": "Nilaikan Pengalaman Anda", //
     "setAppointmentTitle": "Tetapkan Janji Temu", //
-    "negotiationRequestTitle": "Permintaan Rundingan", //
+    "negotiationRequestTitle": "Permohonan Rundingan", //
     "compensationAgreementTitle": "Perjanjian Pampasan", //
     "updatePaymentDetailsTitle": "Kemas kini Butiran Pembayaran",
     "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle": "Tuntutan Voltan Berlebihan pada masa ini tidak diaktifkan untuk ", //
-    "overVoltageClaimIsCurrentlyNotEnabledForKepongDescription": "Nombor akaun yang dipilih pada masa ini tidak diaktifkan untuk Tuntutan Voltan Berlebihan melalui myTNB,  sila hubungi TNB CareLine kami di talian 1300-88-5454 atau hantarkan e-mel kepada kami di tnbcareline@tnb.com.my atau kunjungi Kedai Tenaga.",
+    "overVoltageClaimIsCurrentlyNotEnabledForKepongDescription": "Nombor akaun yang dipilih pada masa ini tidak diaktifkan untuk Tuntutan Voltan Berlebihan melalui myTNB. Sila hubungi TNB CareLine kami di talian 1300-88-5454 atau hantarkan e-mel kepada kami di tnbcareline@tnb.com.my atau kunjungi Kedai Tenaga.",
     "Gotit": "Ok", //,
     "currentlyNotEnabledForMelakaTitle": "Buat masa ini tidak diaktifkan untuk ",
     "overVoltageMaintenanceLabel": "Perkhidmatan Tuntutan Voltan Berlebihan sedang dalam penyelenggaraan",
@@ -1145,7 +1145,7 @@
     "overVoltageClaimtemproryUnavailableDescription": "Kami berusaha untuk memulihkan perkhidmatan Tuntutan Voltan Berlebihan secepat mungkin. Sila semak semula tidak lama lagi.",
     "tNC": "Terma dan Syarat",
     "rescheduleAppointment": "Jadualkan Pelantikan",
-    "appointmentUpdate": "Tarikh janji temu anda telah dikemas kini."
+    "appointmentUpdate": "Tarikh janji temu anda telah dikemaskini."
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",
