@@ -1115,7 +1115,7 @@
     "thankYouForYourDisagree": "Permohonan rundingan anda telah dihantar.", //
     "thankYouForYourDisagreeDescription": "Kami akan menghubungi anda tidak lama lagi. Dapatkan maklumat terkini di status pertanyaan anda.", //
     "proccedToPaymentInformation": "Terus ke Maklumat Pembayaran", //button name
-    "setNewAppointment": "Tetapkan Temujanji Baru", //button name
+    "setNewAppointment": "Jadualkan Janji Temu Baharu", //button name
     "appointmentSet": "Janji Temu Dijadualkan! ", //
     "appointmentSetDescription": "Terima kasih! Janji temu anda telah disahkan berdasarkan maklumat di bawah.", //
     "serviceReqNum": "NOMBOR PERMINTAAAN PERKHIDMATAN",
@@ -1129,7 +1129,7 @@
     "yourRatingWillHelpUsServeYouBetter": "Penilaian anda akan membantu kami memberikan perkhidmatan yang lebih baik.", //
     "enterPaymentDetailsTitle": "Masukkan Butiran Pembayaran", //
     "rateYourExperienceTitle": "Nilaikan Pengalaman Anda", //
-    "setAppointmentTitle": "Tetapkan Janji Temu", //
+    "setAppointmentTitle": "Jadualkan Janji Temu", //
     "negotiationRequestTitle": "Permohonan Rundingan", //
     "compensationAgreementTitle": "Perjanjian Pampasan", //
     "updatePaymentDetailsTitle": "Kemas kini Butiran Pembayaran",
