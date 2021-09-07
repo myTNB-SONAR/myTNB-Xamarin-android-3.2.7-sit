@@ -588,7 +588,7 @@
     "residential": "Kediaman",
     "commercial": "Komersil",
     "addAccountCTATitle": "Tambah Akaun",
-    "scanMessage": "Imbas kod bar pada bil anda untuk mendapatkan butiran akaun.",
+    "scanMessage": "Imbas barkod di atas bill untuk dapatkan maklumat akaun anda.",
     "invalidBarcode": "Bar kod tidak sah.",
     "addByIDMessage": "Akaun elektrik ini didaftarkan dengan Nombor KP/ROC/Pasport anda?",
     "addByRightsMessage": "Adakah anda berhak untuk melihat semua maklumat berkaitan dengan akaun elektrik ini?",
@@ -978,8 +978,8 @@
     "enquireTitle": "Hantar dan Semak Pertanyaan",
     "submitEnquiryTitle": "Hantar Pertanyaan Baru",
     "submitEnquiryDescription": "Kongsikan bagaimana kami boleh membantu anda",
-    "viewSubmittedEnquiry": "Semak Pertanyaan yang Dihantar",
-    "viewEnquiryTitle": "Lihat kemas kini status pertanyaan anda di sini.",
+    "viewSubmittedEnquiry": "Semak Pertanyaan",
+    "viewEnquiryTitle": "Semak status pertanyaan dan permohonan anda di sini.",
     "accNumberHint": "Nombor Akaun",
     "accNumberInfo": "Dimanakah nombor akaun saya?",
     "enquiringTitle": "Apakah yang anda ingin tanyakan?",
@@ -1077,7 +1077,7 @@
     "imageWhereAcc": "-/media/myTNBapp/SubmitEnquiry/newBillCopy2x.png",
     "imageCopyIC": "-/media/myTNBapp/SubmitEnquiry/imgIcCopy2x.png",
     "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x2.png",
-    "accNumberDetails": "Nombor akaun 12 digit boleh didapati di sudut kiri atas bil kertas bulanan anda.",
+    "accNumberDetails": "Nombor akaun 12-digit anda boleh didapati di bahagian atas dan kiri bil bulanan anda.",
     "updateNoOwnerTitle": "Maklumat mana yang ingin anda kemaskini?",
     "newAccNoOwnerName": "Nama baharu akaun",
     "newAccNoOwnerNameReq": "Nama akaun diperlukan",
@@ -1117,14 +1117,14 @@
     "proccedToPaymentInformation": "Terus ke Maklumat Pembayaran", //button name
     "setNewAppointment": "Tetapkan Temujanji Baru", //button name
     "appointmentSet": "Janji Temu Dijadualkan! ", //
-    "appointmentSetDescription": "Terima kasih! Janji temu anda telah disahkan berdasarkan butiran di bawah.", //
+    "appointmentSetDescription": "Terima kasih! Janji temu anda telah disahkan berdasarkan maklumat di bawah.", //
     "serviceReqNum": "NOMBOR PERMINTAAAN PERKHIDMATAN",
     "dateTitle": "TARIKH JANJI TEMU", //
     "technicianName": "NAMA JURUTEKNIK", //
     "incidentAddress": "ALAMAT KEJADIAN", //
-    "thankYouForProvidingYourDetails": "Terima kasih kerana memberikan maklumat anda!", //
+    "thankYouForProvidingYourDetails": "Terima kasih di atas semua maklumat yang diberikan!", //
     "thankYouForProvidingYourDetailsDescription": "Kami akan menyemak maklumat anda dan akan dimaklumkan setelah kami mengesahkannya. Jumlah pembayaran akan diproses ke akaun bank anda dalam tempoh 14 hari bekerja.", //
-    "totalClaimAmount": "Jumlah Tuntutan (RM)", //
+    "totalClaimAmount": "Jumlah (RM)", //
     "thankYouForYourSubmission": "Terima kasih di atas semua maklumat yang diberikan!", //
     "yourRatingWillHelpUsServeYouBetter": "Penilaian anda akan membantu kami memberikan perkhidmatan yang lebih baik.", //
     "enterPaymentDetailsTitle": "Masukkan Butiran Pembayaran", //
