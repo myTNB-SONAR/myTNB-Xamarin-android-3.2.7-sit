@@ -1117,7 +1117,7 @@
     "proccedToPaymentInformation": "Terus ke Maklumat Pembayaran", //button name
     "setNewAppointment": "Jadualkan Janji Temu Baharu", //button name
     "appointmentSet": "Janji Temu Dijadualkan! ", //
-    "appointmentSetDescription": "Terima kasih! Janji temu anda telah disahkan berdasarkan maklumat di bawah.", //
+    "appointmentSetDescription": "Janji temu anda telah disahkan berdasarkan maklumat di bawah.", //
     "serviceReqNum": "NOMBOR PERMINTAAAN PERKHIDMATAN",
     "dateTitle": "TARIKH JANJI TEMU", //
     "technicianName": "NAMA JURUTEKNIK", //
