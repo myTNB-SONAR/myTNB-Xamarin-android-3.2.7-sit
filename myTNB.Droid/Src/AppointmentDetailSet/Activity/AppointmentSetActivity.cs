@@ -69,6 +69,7 @@ namespace myTNB_Android.Src.AppointmentDetailSet.Activity
 
         [BindView(Resource.Id.buttonBackToHome)]
         TextView _buttonBackToHome;
+        public bool isRescheduleappointment;
         public override int ResourceId()
         {
             return Resource.Layout.AppointmentsetLayout;
@@ -83,7 +84,7 @@ namespace myTNB_Android.Src.AppointmentDetailSet.Activity
 
         private void SetUI()
         {
-            txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "appointmentSet"); //"Your negotiation request has been submitted";
+                 
             txtMessageInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "appointmentSetDescription");
             servicerequestLabel.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceReqNum");
             appointmentLabel.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "dateTitle");
@@ -96,7 +97,15 @@ namespace myTNB_Android.Src.AppointmentDetailSet.Activity
             appointdate = Intent.GetStringExtra("ApptDate");
             techname = Intent.GetStringExtra("TechName");
             incdaddress = Intent.GetStringExtra("IncdAdd");
-
+            isRescheduleappointment = OverVoltageFeedbackDetailActivity.isRescheduleappointment;//Intent.GetStringExtra("isRescheduleappointment");
+            if (isRescheduleappointment)
+            {
+                txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "appointmentUpdate"); //"Your negotiation request has been submitted";
+            }
+            else
+            {
+                txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "appointmentSet"); //"Your negotiation request has been submitted";
+            }
             _servicerequestnumber.Text = requestnumber;
             _appointmentdate.Text = appointdate;
             _technicianname.Text = techname;

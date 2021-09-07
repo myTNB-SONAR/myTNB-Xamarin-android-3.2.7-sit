@@ -51,7 +51,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         string TempTitle,TempStepperTitle;
         DTOWebView data;
         private string accNo = null;
-
+        public static bool isRescheduleappointment;
         bool IsfromPaymentInfoSubmittedSucces = false;
         bool IsfromFeedBackSubmittedSucces = false;
         bool IsfromSetAppointmentSucces = false;
@@ -167,7 +167,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 
                 //const string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
                 //const string domain = "http://192.168.1.157:3000/"; // WebView Local
-                // var domain = "http://192.168.1.157:3000/claimPage/" + ClaimId + "?eid=" + useremail + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel;
+                //var domain = "http://192.168.1.157:3000/claimPage/" + ClaimId + "?eid=" + useremail + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel;
 
                 // WebView Live
                 //const string domain = "http://mytnbwvovis.ap.ngrok.io/";
@@ -379,7 +379,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 {
                     SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "setAppointmentTitle"));
                     TempTitle = "Set Appointment";
-                }                
+                }
 
                 if (data.srNumber != null)
                 {
@@ -435,11 +435,21 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     }
                     else
                     {
+                     
+                        if (TempTitle == "Reschedule Appointment")
+                        {
+                            isRescheduleappointment = true;
+                        }
+                        else
+                        {
+                            isRescheduleappointment = false;
+                        }                       
                         Intent setAppointment = new Intent(this, typeof(AppointmentSetActivity));
                         setAppointment.PutExtra("Sernumbr", data.srNumber);
                         setAppointment.PutExtra("ApptDate", data.appointmentDate);
                         setAppointment.PutExtra("TechName", data.technicianName);
                         setAppointment.PutExtra("IncdAdd", data.incidentAddress);
+                        //setAppointment.PutExtra("isRescheduleappointment", isRescheduleappointment);                      
                         StartActivity(setAppointment);
                     }
 
@@ -547,6 +557,11 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "exGratiaAgreementTitle"));
                     TempTitle = "Ex-gratia Agreement";
                 }
+                else if (data.title == "reschedule-appointment")
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "rescheduleAppointment"));
+                    TempTitle = "Reschedule Appointment";
+                }
             }
             catch (Exception ex)
             {
@@ -561,7 +576,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             try
             {
 
-                if (TempTitle == "Set Appointment")
+                if (TempTitle == "Set Appointment" || TempTitle == "Reschedule Appointment")
                 {
                     webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackAppointment').trigger('click'); },500); })();", null);
                 }

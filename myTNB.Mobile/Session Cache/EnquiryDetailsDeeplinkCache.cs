@@ -22,6 +22,7 @@ namespace myTNB.Mobile.SessionCache
         public bool IsListingDeepLink { private set; get; } = false;
         public bool IsDetailsDeepLink { private set; get; } = false;
         public string ClaimID { private set; get; } = string.Empty;
+        public string UserID { private set; get; } = string.Empty;
         public string SRNumber { private set; get; } = string.Empty;
         public string Type { private set; get; } = string.Empty;
         public string System { private set; get; } = string.Empty;
@@ -36,8 +37,9 @@ namespace myTNB.Mobile.SessionCache
                     string[] detailsArray = claimIdArray[1].Split('/');
                     if (detailsArray.Length > 1)
                     {
-                        SRNumber = detailsArray[0];
-                        ClaimID = detailsArray[2];
+                        UserID = detailsArray[0];
+                        SRNumber = detailsArray[2];
+                        ClaimID = detailsArray[4];
                     }
                 }
             }

@@ -788,7 +788,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             }
                         }
                         else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("applicationDetails"))
-                        {
+                        {                          
                             ShowProgressDialog();
                             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
                             if (searchApplicationTypeResponse == null)
@@ -839,10 +839,19 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         }
                         else if (!string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("enquiryDetails"))
                         {
-                            //Overvoltage detail page
-                            Intent viewReceipt = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
-                            viewReceipt.PutExtra("ClaimId", EnquiryDetailsDeeplinkCache.Instance.ClaimID);
-                            StartActivity(viewReceipt);
+                            UserEntity user = UserEntity.GetActive();
+                            if (user.UserID==EnquiryDetailsDeeplinkCache.Instance.UserID)
+                            {
+                                //Overvoltage detail page
+                                Intent viewReceipt = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+                                viewReceipt.PutExtra("ClaimId", EnquiryDetailsDeeplinkCache.Instance.ClaimID);
+                                StartActivity(viewReceipt);
+                            }
+                            else
+                            {
+
+                            }
+                           
                         }
                     }
                 }

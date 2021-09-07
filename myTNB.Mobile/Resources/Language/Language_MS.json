@@ -1143,7 +1143,9 @@
     "overVoltageClaimtemproryUnavailable": "Perkhidmatan Tuntutan Voltan Berlebihan tidak tersedia buat sementara waktu",
     "overVoltageClaimtemproryUnavailableTitle": "Perkhidmatan tidak tersedia buat sementara waktu",
     "overVoltageClaimtemproryUnavailableDescription": "Kami berusaha untuk memulihkan perkhidmatan Tuntutan Voltan Berlebihan secepat mungkin. Sila semak semula tidak lama lagi.",
-    "tNC": "Terma dan Syarat"
+    "tNC": "Terma dan Syarat",
+    "rescheduleAppointment": "Jadualkan Pelantikan",
+    "appointmentUpdate": "Tarikh janji temu anda telah dikemas kini."
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",
