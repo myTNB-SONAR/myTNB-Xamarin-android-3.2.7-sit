@@ -146,16 +146,12 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 ShowProgressDialog();
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
 
-                string domain = "http://mytnbwvovis.ap.ngrok.io/?CA="+accNo+ "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel;
-                //string domain = "http://mytnbwvovis.ap.ngrok.io/?CA=" + accNo; // WebView Live
-
-                //string domain = "http://192.168.1.157:3000/?CA="+accNo; // WebView Local
-                // WebView Local
-                //string domain = "http://192.168.1.157:3000/?CA="+accNo+ "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel;
-
-                //https://serene-rosalind-a35967.netlify.app/ //https://mytnbwvovis.ap.ngrok.io/  Live https://serene-rosalind-a35967.netlify.app/ //http://192.168.1.158:3000/ //https://mytnbwvovis.ap.ngrok.io/
+                string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
+                // string domain = "http://192.168.1.157:3000/"; // WebView Local
 
                 string url = domain;
+
+                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel;
 
                 if (TextViewUtils.IsLargeFonts)
                 {
