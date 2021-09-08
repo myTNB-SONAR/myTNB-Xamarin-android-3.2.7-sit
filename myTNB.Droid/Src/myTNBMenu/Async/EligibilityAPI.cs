@@ -62,8 +62,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                         editor.PutString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, now.ToString());
                         editor.Apply();
 
-                        GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
-                        FeatureInfoManager.Instance.SetData(data);
+                        FeatureInfoManager.Instance.SetData(response);
                         MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
                         //Use data or any EligibilitySessionCache functionality
                     }

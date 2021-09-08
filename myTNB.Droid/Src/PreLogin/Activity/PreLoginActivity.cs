@@ -228,15 +228,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 EligibilitySessionCache.Instance.Clear();
                 AccessTokenCache.Instance.Clear();
 
-                //For Testing
-                editor.Remove("hasHomeTutorialShown");
-                editor.Remove("hasItemizedBillingNMSMTutorialShown");
-                editor.Remove("hasItemizedBillingRETutorialShown");
-                editor.Remove("hasManageSupplyAccountTutorialShown");
-                editor.Remove("hasManageEBillDeliveryTutorialShown");
-                editor.Remove("hasManageOptedEBillDeliveryTutorialShown");
-                editor.Remove("hasManageEmailBillDeliveryTutorialShown");
-                editor.Remove("hasManageParallelEmailBillDeliveryTutorialShown");
                 editor.Apply();
             }
             catch (Exception ex)
