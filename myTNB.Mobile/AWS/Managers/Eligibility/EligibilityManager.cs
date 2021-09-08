@@ -49,7 +49,7 @@ namespace myTNB.Mobile
             try
             {
                 IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.GetEligibility);
-                HttpResponseMessage rawResponse = await service.GetEligibility(userID.IsValid() ? userID.ToUpper() : string.Empty
+                HttpResponseMessage rawResponse = await service.GetEligibility(userID ?? string.Empty
                    , NetworkService.GetCancellationToken()
                    , accessToken
                    , AppInfoManager.Instance.ViewInfo);

@@ -362,6 +362,22 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         public async void OnShowManageBillDelivery()
         {
             bool isDBREnabled = DBRUtility.Instance.IsAccountDBREligible;
+            if (!isDBREnabled)
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                ISharedPreferences preferences = PreferenceManager.GetDefaultSharedPreferences(this);
+#pragma warning restore CS0618 // Type or member is obsolete
+                if (EligibilityManager.Instance.IsEnabled(AWSConstants.Services.GetEligibility)
+                    && preferences.GetString(MobileConstants.SharePreferenceKey.GetEligibilityData, string.Empty) is string encryptedData
+                    && !string.IsNullOrEmpty(encryptedData)
+                    && !string.IsNullOrWhiteSpace(encryptedData))
+                {
+                    GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
+                    EligibilitySessionCache.Instance.SetData(data);
+                    //Use data or any EligibilitySessionCache functionality
+                }
+                isDBREnabled = DBRUtility.Instance.IsAccountDBREligible;
+            }
             if (!isDBREnabled
                 || string.IsNullOrEmpty(UserSessions.DBROwnerNotificationAccountNumber)
                 || string.IsNullOrWhiteSpace(UserSessions.DBROwnerNotificationAccountNumber))

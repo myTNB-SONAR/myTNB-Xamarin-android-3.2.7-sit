@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Preferences;
 using Android.Widget;
 using CheeseBind;
+using myTNB;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.PreLogin.Activity;
@@ -59,6 +60,7 @@ namespace myTNB_Android.Src.LogoutEnd.Activity
                 LaunchViewActivity.MAKE_INITIAL_CALL = true;
                 Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
                 PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                AppInfoManager.Instance.Clear();
                 StartActivity(PreLoginIntent);
             }
         }
@@ -69,6 +71,7 @@ namespace myTNB_Android.Src.LogoutEnd.Activity
             LaunchViewActivity.MAKE_INITIAL_CALL = true;
             Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
             PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            AppInfoManager.Instance.Clear();
             StartActivity(PreLoginIntent);
         }
 

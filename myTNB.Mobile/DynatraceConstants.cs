@@ -48,6 +48,14 @@
                     public const string Single = "App_Visit_PaymentSuccess_Single";
                     public const string Multiple = "App_Visit_PaymentSuccess_Multiple";
                 }
+
+                public struct Webview
+                {
+                    public const string Start_Paperless = "App_Visit_StartPaperless";
+                    public const string Start_Paperless_Success = "App_Visit_StartPaperlessSuccess";
+                    public const string Back_To_Paper = "App_Visit_OptBackPaperBill";
+                    public const string Back_To_Paper_Success = "App_Visit_OptBackPaperSuccess";
+                }
             }
 
             public struct CTAs
@@ -96,7 +104,10 @@
 
                 public struct Webview
                 {
-                    public const string Close_Confirm = "App_Action_OptBackPaperClose_Confirm";
+                    public const string Start_Paperless_Close = "App_Action_StartPaperlessClose_Confirm";
+                    public const string Back_To_Paper_Close = "App_Action_OptBackPaperClose_Confirm";
+                    public const string Start_Paperless_Confirm = "App_Action_StartPaperless_Confirm";
+                    public const string Back_To_Paper_Confirm = "App_Action_OptBackPaper_Confirm";
                 }
             }
         }

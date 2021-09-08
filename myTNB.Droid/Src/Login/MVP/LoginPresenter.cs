@@ -296,6 +296,7 @@ namespace myTNB_Android.Src.Login.MVP
                                 , UserEntity.GetActive().UserName
                                 , UserSessions.GetDeviceId()
                                 , DeviceIdUtils.GetAppVersionName()
+                                , myTNB.Mobile.MobileConstants.OSType.Android
                                 , TextViewUtils.FontInfo
                                 , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                             AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
@@ -369,18 +370,30 @@ namespace myTNB_Android.Src.Login.MVP
                                 {
                                     this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                                 }
-                            }
 
-                            if (LanguageUtil.GetAppLanguage() == "MS")
-                            {
-                                AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
-                            }
-                            else
-                            {
-                                AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
-                            }
+                                await LanguageUtil.SaveUpdatedLanguagePreference();
+                                AppInfoManager.Instance.SetUserInfo("16"
+                                    , UserEntity.GetActive().UserID
+                                    , UserEntity.GetActive().UserName
+                                    , UserSessions.GetDeviceId()
+                                    , DeviceIdUtils.GetAppVersionName()
+                                    , myTNB.Mobile.MobileConstants.OSType.Android
+                                    , TextViewUtils.FontInfo
+                                    , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+                                AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
 
-                            this.mView.ShowDashboard();
+
+                                if (LanguageUtil.GetAppLanguage() == "MS")
+                                {
+                                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
+                                }
+                                else
+                                {
+                                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
+                                }
+
+                                this.mView.ShowDashboard();
+                            }
                         }
                         else
                         {

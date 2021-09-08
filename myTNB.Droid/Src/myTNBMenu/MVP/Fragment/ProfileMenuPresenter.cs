@@ -255,6 +255,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         , string.Empty
                         , UserSessions.GetDeviceId()
                         , DeviceIdUtils.GetAppVersionName()
+                        , MobileConstants.OSType.Android
                         , TextViewUtils.FontInfo
                         , LanguageUtil.GetAppLanguage() == "MS"
                             ? LanguageManager.Language.MS
@@ -263,7 +264,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     UserSessions.RemoveEligibleData(mPref);
                     EligibilitySessionCache.Instance.Clear();
                     FeatureInfoManager.Instance.Clear();
-                    AccessTokenCache.Instance.ClearToken();
+                    AccessTokenCache.Instance.Clear();
                     UserEntity.RemoveActive();
                     UserRegister.RemoveActive();
                     CustomerBillingAccount.RemoveActive();

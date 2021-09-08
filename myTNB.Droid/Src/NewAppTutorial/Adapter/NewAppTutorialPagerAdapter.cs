@@ -2535,8 +2535,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Email)
                 {
                     float h1 = 130f;
-                    float h2 = 30f;
-                    middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight() - (int)DPUtils.ConvertDPToPx(h2); ;
+                    float h2 = TextViewUtils.IsLargeFonts ? 110 : 105f;
+                    middleHeight = (int)DPUtils.ConvertDPToPx(h2);
                     topHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmail_layoutrHeight()+ ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() +
                                              ((ManageBillDeliveryActivity)this.mContext).GetSelectAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(h1);
                     LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
@@ -2599,10 +2599,12 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 {
                     if (position == 0)
                     {
-                        float h1 = 10f;
-                        middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight() - +(int)DPUtils.ConvertDPToPx(h1);
-                        topHeight = (((ManageBillDeliveryActivity)this.mContext).GetEmail_layoutrHeight() + ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight()) +
-                          (((ManageBillDeliveryActivity)this.mContext).GetSelectAccountContainerHeight()) + (int)DPUtils.ConvertDPToPx(h1);
+                        float h1 = 130f;
+                        float h2 = TextViewUtils.IsLargeFonts ? 110 : 105f;
+                        middleHeight = (int)DPUtils.ConvertDPToPx(h2); ;
+                        topHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmail_layoutrHeight() + ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() +
+                                                 ((ManageBillDeliveryActivity)this.mContext).GetSelectAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(h1);
+
                         LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                         topLayoutParam.Height = topHeight;
                         topLayout.RequestLayout();

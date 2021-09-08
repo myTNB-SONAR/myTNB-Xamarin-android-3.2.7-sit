@@ -283,6 +283,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             , loggedUser.UserName
                                             , UserSessions.GetDeviceId()
                                             , DeviceIdUtils.GetAppVersionName()
+                                            , myTNB.Mobile.MobileConstants.OSType.Android
                                             , TextViewUtils.FontInfo
                                             , LanguageUtil.GetAppLanguage() == "MS"
                                                 ? LanguageManager.Language.MS
@@ -359,6 +360,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         , string.Empty
                                         , UserSessions.GetDeviceId()
                                         , DeviceIdUtils.GetAppVersionName()
+                                        , myTNB.Mobile.MobileConstants.OSType.Android
                                         , TextViewUtils.FontInfo
                                         , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                     mView.ShowPreLogin();
