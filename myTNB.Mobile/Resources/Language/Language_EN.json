@@ -1118,7 +1118,7 @@
     "proccedToPaymentInformation": "Proceed to Payment Infomation", //button name
     "setNewAppointment": "Set New Appointment", //button name
     "appointmentSet": "Appointment Set!",
-    "appointmentSetDescription": "Your appointment is confirmed with details below.",
+    "appointmentSetDescription": "Thank you! Your appointment is confirmed with details below.",
     "serviceReqNum": "SERVICE REQUEST NUMBER",
     "dateTitle": "APPOINTMENT DATE",
     "technicianName": "TECHNICIAN NAME",
