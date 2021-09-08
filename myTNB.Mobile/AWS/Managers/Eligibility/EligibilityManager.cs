@@ -90,7 +90,7 @@ namespace myTNB.Mobile
                 }
 
 
-                List<ContractAccountsModel> dummyData = new List<ContractAccountsModel>();
+               /* List<ContractAccountsModel> dummyData = new List<ContractAccountsModel>();
                 dummyData.Add(new ContractAccountsModel {
                     Acted = false,
                     ModifiedDate = null,
@@ -100,7 +100,7 @@ namespace myTNB.Mobile
                 response.Content.EB = new EBModel
                 {
                     ContractAccounts = dummyData
-                };
+                };*/
 
 
                 Debug.WriteLine("[DEBUG] GetEligibility: " + JsonConvert.SerializeObject(response));

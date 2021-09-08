@@ -274,9 +274,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.accountContainer)]
         ConstraintLayout accountContainer;
 
-        [BindView(Resource.Id.discoverShimmerView)]
-        LinearLayout discoverShimmerView;
-
         [BindView(Resource.Id.discoverView)]
         LinearLayout discoverView;
 
@@ -286,14 +283,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.discoverTitle)]
         TextView discoverTitle;
 
-        [BindView(Resource.Id.shimmerDiscoverView)]
-        ShimmerFrameLayout shimmerDiscoverView;
 
         [BindView(Resource.Id.whatsNewUnreadImg)]
         ImageView whatsNewUnreadImg;
 
-        [BindView(Resource.Id.shimmerPayView)]
-        ShimmerFrameLayout shimmerPayView;
 
         [BindView(Resource.Id.discovercontainer)]
         LinearLayout discovercontainer;
@@ -751,7 +744,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                 }
             }
-            else
+            /*else
             {
                 MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                      .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
@@ -759,7 +752,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                     .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
                      .Build();
                 errorPopup.Show();
-            }
+            }*/
             return account;
         }
         public void SetRefreshLayoutParams()
@@ -1216,7 +1209,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     try
                     {
-                        discoverShimmerView.Visibility = ViewStates.Gone;
                         discoverTitle.Visibility = ViewStates.Gone;
                         discoverView.Visibility = ViewStates.Gone;
                     }
@@ -1255,9 +1247,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                             SetupDiscoverView();
                             discovercontainer.Visibility = ViewStates.Visible;
-                            shimmerDiscoverView.StopShimmer();
-                            shimmerDiscoverView.StopShimmer();
-                            discoverShimmerView.Visibility = ViewStates.Gone;
                             discoverView.Visibility = ViewStates.Visible;
                             UserEntity user = UserEntity.GetActive();
                             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
