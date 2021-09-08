@@ -1525,7 +1525,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
 
                 TextViewUtils.SetMuseoSans500Typeface(searchText, discoverTitle);
-                discoverTitle.Text = Utility.GetLocalizedLabel("DashboardHome", "discoverMore");
+                discoverTitle.Text = Utility.GetLocalizedLabel("DashboardHome", "DiscoverMore");
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     searchText.SetPadding((int)DPUtils.ConvertDPToPx(34f), 0, 0, 0);
