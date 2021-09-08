@@ -415,7 +415,6 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                         Action myAction = () =>
                         {
                             this.dialog.Dismiss();
-                            this.ctaAction?.Invoke();
                             this.secondaryCTAAction();
                         };
                         h.PostDelayed(myAction, 3000);

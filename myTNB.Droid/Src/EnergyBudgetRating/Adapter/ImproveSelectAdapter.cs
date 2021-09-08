@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
     {
 
         private Context mContext;
-        private List<ImproveSelectModel> questions = new List<ImproveSelectModel>();
+        private List<QuestionModel> questions = new List<QuestionModel>();
         public event EventHandler<int> SelectUpdate;
         public int QuestionCount = 1;
         public int SelectedRating = 1;
@@ -29,7 +29,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
 
         public override int ItemCount => questions.Count();
 
-        public ImproveSelectAdapter(Context ctx, List<ImproveSelectModel> items)
+        public ImproveSelectAdapter(Context ctx, List<QuestionModel> items)
         {
             this.mContext = ctx;
             this.questions = items;
@@ -40,42 +40,48 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
         {
             try
             {
-                ImproveSelectViewHolder vh = holder as ImproveSelectViewHolder;
-                ImproveSelectModel question = questions[position];
+                QuestionModelViewHolder vh = holder as QuestionModelViewHolder;
+                QuestionModel question = questions[position];
                 if (question != null)
                 {
-                    if (question.ModelCategories.Equals("feedback_two"))
+                    if (question.ModelCategories.Equals("FeedbackOne"))
                     {
-                        if (question.IconCategories.Equals("1"))
+                        if (question.IconPosition.Equals(1))
                         {
-                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "txtSimplicity");
+                            //vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "txtSimplicity");
+                            vh.txtTitleInfo.Text = question.IconCategories;
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.simplify_icon);
+                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
                             }
                             else
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.active_simplify_icon);
                             }
                         }
-                        else if (question.IconCategories.Equals("2"))
+                        else if (question.IconPosition.Equals(2))
                         {
-                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "txtContent");
+                            //vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "txtContent");
+                            vh.txtTitleInfo.Text = question.IconCategories;
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.content_relevant_icon);
+                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
                             }
                             else
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.active_content_relevant_icon);
                             }
                         }
-                        else if (question.IconCategories.Equals("3"))
+                        else if (question.IconPosition.Equals(3))
                         {
-                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "txtNavigation");
+                            //vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "txtNavigation");
+                            vh.txtTitleInfo.Text = question.IconCategories;
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.navigation_icon);
+                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
                             }
                             else
                             {
@@ -84,10 +90,12 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                         }
                         else
                         {
-                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "txtDesign");
+                            //vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEB", "txtDesign");
+                            vh.txtTitleInfo.Text = question.IconCategories;
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.design_icon);
+                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
                             }
                             else
                             {
@@ -95,38 +103,44 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                             }
                         }
                     }
-                    else
+                    else if (question.ModelCategories.Equals("FeedbackTwoA"))
                     {
-                        if (question.IconCategories.Equals("1"))
+                        if (question.IconPosition.Equals(1))
                         {
-                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "saveOnEBusage");
+                            //vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "saveOnEBusage");
+                            vh.txtTitleInfo.Text = question.IconCategories;
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.saved_EB_usage_ratingEB_icon);
+                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
                             }
                             else
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.active_saved_EB_usage_ratingEB_icon);
                             }
                         }
-                        else if (question.IconCategories.Equals("2"))
+                        else if (question.IconPosition.Equals(2))
                         {
-                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "EBcannotTrusted");
+                            //vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "EBcannotTrusted");
+                            vh.txtTitleInfo.Text = question.IconCategories;
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.cannot_function_ratingEB_icon);
+                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
                             }
                             else
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.active_cannot_function_ratingEB_icon);
                             }
                         }
-                        else if (question.IconCategories.Equals("3"))
+                        else if (question.IconPosition.Equals(3))
                         {
-                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "NotUsingEBagain");
+                            //vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "NotUsingEBagain");
+                            vh.txtTitleInfo.Text = question.IconCategories;
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.will_use_again_ratingEB_icon);
+                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
                             }
                             else
                             {
@@ -135,10 +149,12 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                         }
                         else
                         {
-                            vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "EBtipNotHelpful");
+                            //vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "EBtipNotHelpful");
+                            vh.txtTitleInfo.Text = question.IconCategories;
                             if (!question.IsSelected)
                             {
                                 vh.ImageIcon.SetImageResource(Resource.Drawable.saving_tip_ratingEB_icon);
+                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
                             }
                             else
                             {
@@ -146,10 +162,68 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                             }
                         }
                     }
+                    else if (question.ModelCategories.Equals("FeedbackTwoB"))
+                    {
+                        if (question.IconPosition.Equals(1))
+                        {
+                            //vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "saveOnEBusage");
+                            vh.txtTitleInfo.Text = question.IconCategories;
+                            if (!question.IsSelected)
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.saved_EB_usage_ratingEB_icon);
+                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                            }
+                            else
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.active_saved_EB_usage_ratingEB_icon);
+                            }
+                        }
+                        else if (question.IconPosition.Equals(2))
+                        {
+                            //vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "EBcannotTrusted");
+                            vh.txtTitleInfo.Text = question.IconCategories;
+                            if (!question.IsSelected)
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.cannot_function_ratingEB_icon);
+                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                            }
+                            else
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.active_cannot_function_ratingEB_icon);
+                            }
+                        }
+                        else if (question.IconPosition.Equals(3))
+                        {
+                            //vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "NotUsingEBagain");
+                            vh.txtTitleInfo.Text = question.IconCategories;
+                            if (!question.IsSelected)
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.will_use_again_ratingEB_icon);
+                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                            }
+                            else
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.active_will_use_again_ratingEB_icon);
+                            }
+                        }
+                        else
+                        {
+                            //vh.txtTitleInfo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "EBtipNotHelpful");
+                            vh.txtTitleInfo.Text = question.IconCategories;
+                            if (!question.IsSelected)
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.saving_tip_ratingEB_icon);
+                                vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                            }
+                            else
+                            {
+                                vh.ImageIcon.SetImageResource(Resource.Drawable.active_saving_tip_ratingEB_icon);
+                            }
+                        }
+                    }
+
                     vh.ImageIcon.Click += (o, e) =>
                     {
-                        //vh.ratingBar.Rating = e.Rating;
-                        //int Rating = ((int)e.Rating);
                         if (question.IsSelected == false)
                         {
                             question.IsSelected = true;
@@ -158,9 +232,9 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                         {
                             question.IsSelected = false;
                         }
-                        if (question.ModelCategories.Equals("feedback_two"))
+                        if (question.ModelCategories.Equals("FeedbackOne"))
                         {
-                            if (question.IconCategories.Equals("1"))
+                            if (question.IconPosition.Equals(1))
                             {
                                 if (!question.IsSelected)
                                 {
@@ -173,7 +247,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                                     vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
                                 }
                             }
-                            else if (question.IconCategories.Equals("2"))
+                            else if (question.IconPosition.Equals(2))
                             {
                                 if (!question.IsSelected)
                                 {
@@ -186,7 +260,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                                     vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
                                 }
                             }
-                            else if (question.IconCategories.Equals("3"))
+                            else if (question.IconPosition.Equals(3))
                             {
                                 if (!question.IsSelected)
                                 {
@@ -213,9 +287,9 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                                 }
                             }
                         }
-                        else
+                        else if (question.ModelCategories.Equals("FeedbackTwoA"))
                         {
-                            if (question.IconCategories.Equals("1"))
+                            if (question.IconPosition.Equals(1))
                             {
                                 if (!question.IsSelected)
                                 {
@@ -228,7 +302,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                                     vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
                                 }
                             }
-                            else if (question.IconCategories.Equals("2"))
+                            else if (question.IconPosition.Equals(2))
                             {
                                 if (!question.IsSelected)
                                 {
@@ -241,7 +315,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                                     vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
                                 }
                             }
-                            else if (question.IconCategories.Equals("3"))
+                            else if (question.IconPosition.Equals(3))
                             {
                                 if (!question.IsSelected)
                                 {
@@ -268,6 +342,62 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
                                 }
                             }
                         }
+                        else if (question.ModelCategories.Equals("FeedbackTwoB"))
+                        {
+                            if (question.IconPosition.Equals(1))
+                            {
+                                if (!question.IsSelected)
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.saved_EB_usage_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                                }
+                                else
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.active_saved_EB_usage_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                }
+                            }
+                            else if (question.IconPosition.Equals(2))
+                            {
+                                if (!question.IsSelected)
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.cannot_function_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                                }
+                                else
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.active_cannot_function_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                }
+                            }
+                            else if (question.IconPosition.Equals(3))
+                            {
+                                if (!question.IsSelected)
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.will_use_again_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                                }
+                                else
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.active_will_use_again_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                }
+                            }
+                            else
+                            {
+                                if (!question.IsSelected)
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.saving_tip_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.silverchalice));
+                                }
+                                else
+                                {
+                                    vh.ImageIcon.SetImageResource(Resource.Drawable.active_saving_tip_ratingEB_icon);
+                                    vh.txtTitleInfo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
+                                }
+                            }
+                        }
+
                         //question.InputRating = Rating.ToString();
                         OnSelectUpdate(vh, position);
                     };
@@ -279,7 +409,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
             }
         }
 
-        void OnSelectUpdate(ImproveSelectViewHolder sender, int position)
+        void OnSelectUpdate(QuestionModelViewHolder sender, int position)
         {
             SelectUpdate(sender, position);
         }
@@ -289,7 +419,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
             bool flag = false;
             try
             {
-                foreach (ImproveSelectModel item in questions)
+                foreach (QuestionModel item in questions)
                 {
                     if (item.IsSelected)
                     {
@@ -334,16 +464,16 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
         {
             var id = Resource.Layout.ImproveSelected_EnergyBudget;
             var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
-            return new ImproveSelectViewHolder(itemView, OnSelectUpdate);
+            return new QuestionModelViewHolder(itemView, OnSelectUpdate);
         }
 
-        public class ImproveSelectViewHolder : RecyclerView.ViewHolder //EditText.IOnTouchListener
+        public class QuestionModelViewHolder : RecyclerView.ViewHolder //EditText.IOnTouchListener
         {
 
             public TextView txtTitleInfo;
             public ImageView ImageIcon;
 
-            public ImproveSelectViewHolder(View itemView, Action<ImproveSelectViewHolder, int> listener) : base(itemView)
+            public QuestionModelViewHolder(View itemView, Action<QuestionModelViewHolder, int> listener) : base(itemView)
             {
                 txtTitleInfo = itemView.FindViewById<TextView>(Resource.Id.bodyInfo);
                 ImageIcon = itemView.FindViewById<ImageView>(Resource.Id.img_display_select);

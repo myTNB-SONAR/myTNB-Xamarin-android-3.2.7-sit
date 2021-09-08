@@ -144,12 +144,24 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> SubmitRateUs<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SubmitRateUsV2")]
+        Task<T> SubmitRateUsV2<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdateLinkedAccountNickName")]
         Task<T> UpdateLinkedAccountNickName<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetRateUsQuestions")]
         Task<T> GetRateUsQuestions<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/ShowEnergyBudgetRatingPage")]
+        Task<T> ShowEnergyBudgetRatingPage<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/ExperienceRatingUserLeaveOut")]
+        Task<T> ExperienceRatingUserLeaveOut<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetLanguagePreference")]

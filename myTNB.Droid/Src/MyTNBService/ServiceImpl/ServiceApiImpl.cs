@@ -363,6 +363,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call SubmitRateUs with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SubmitRateUsResponse> SubmitRateUsV2([Body] Request.BaseRequest request)
+        {
+            return api.SubmitRateUsV2<SubmitRateUsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
         /// Call UpdateLinkedAccountNickName with default timeout.
         /// </summary>
         /// <param name="request"></param>
@@ -380,6 +390,26 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<GetRateUsQuestionResponse> GetRateUsQuestions([Body] Request.BaseRequest request)
         {
             return api.GetRateUsQuestions<GetRateUsQuestionResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call ShowEnergyBudgetRatingPage with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<GetRateUsQuestionResponse> ShowEnergyBudgetRatingPage([Body] Request.BaseRequest request)
+        {
+            return api.ShowEnergyBudgetRatingPage<GetRateUsQuestionResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call ShowEnergyBudgetRatingPage with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<GetRateUsQuestionResponse> ExperienceRatingUserLeaveOut([Body] Request.BaseRequest request)
+        {
+            return api.ExperienceRatingUserLeaveOut<GetRateUsQuestionResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>

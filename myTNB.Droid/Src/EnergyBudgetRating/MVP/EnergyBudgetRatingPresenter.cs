@@ -1,9 +1,11 @@
 ﻿using Android.Util;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.EnergyBudgetRating.Model;
+using myTNB_Android.Src.EnergyBudgetRating.Request;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -89,42 +91,12 @@ namespace myTNB_Android.Src.EnergyBudgetRating.MVP
             }
         }
 
-        public void PrepareSubmitRateUsRequest(string referenceId, string deviceID, List<RateUsStar.InputOptionValue> inputAnswerDetails)
-        {
-            try
-            {
-                if (UserEntity.IsCurrentlyActive())
-                {
-                    UserEntity entity = UserEntity.GetActive();
-
-                    Request.SubmitRateUsEBRequest submitRateUsEBRequest = new Request.SubmitRateUsEBRequest()
-                    {
-                        ApiKeyID = Constants.APP_CONFIG.API_KEY_ID
-                    };
-                    submitRateUsEBRequest.InputAnswer = new Request.SubmitRateUsEBRequest.InputAnswerT()
-                    {
-                        ReferenceId = referenceId,
-                        Email = entity.Email,
-                        DeviceId = deviceID,
-                        //InputAnswerDetails = inputAnswerDetails
-                    };
-
-                    SubmitRateUs(submitRateUsEBRequest);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Debug(TAG, e.StackTrace);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
         public void Start()
         {
 
         }
 
-        public async void SubmitRateUs(Request.SubmitRateUsEBRequest submitRateUsEBRequest)
+        public async void SubmitRateUs(List<SubmitDataModel.InputAnswerDetails> inputAnswerDetails, string questionCategoryId)
         {
             if (mView.IsActive())
             {
@@ -133,27 +105,27 @@ namespace myTNB_Android.Src.EnergyBudgetRating.MVP
 
             try
             {
-                MyTNBService.Request.SubmitRateUsRequest rateUsRequest = new MyTNBService.Request.SubmitRateUsRequest(submitRateUsEBRequest.InputAnswer.ReferenceId,
-                    submitRateUsEBRequest.InputAnswer.Email, submitRateUsEBRequest.InputAnswer.DeviceId);
-                submitRateUsEBRequest.InputAnswer.InputAnswerDetails.ForEach(answer =>
+                if (UserEntity.IsCurrentlyActive())
                 {
-                    rateUsRequest.AddAnswerDetails(answer.WLTYQuestionId,
-                        answer.RatingInput, answer.MultilineInput);
-                });
-                var submitRateUsResponse = await ServiceApiImpl.Instance.SubmitRateUs(rateUsRequest);
+                    UserEntity entity = UserEntity.GetActive();
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
+                    EnergyBudgetRating.Request.SubmitRateUsRequest rateUsRequest = new EnergyBudgetRating.Request.SubmitRateUsRequest(string.Empty,
+                    entity.Email, entity.DeviceId, inputAnswerDetails, questionCategoryId);
+                    string dt = JsonConvert.SerializeObject(rateUsRequest);
+                    var submitRateUsResponse = await ServiceApiImpl.Instance.SubmitRateUsV2(rateUsRequest);
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideProgressDialog();
+                    }
 
-                if (!submitRateUsResponse.IsSuccessResponse())
-                {
-                    this.mView.ShowError(submitRateUsResponse.Response.DisplayMessage);
-                }
-                else
-                {
-                    this.mView.ShowSumitRateUsSuccess();
+                    if (!submitRateUsResponse.IsSuccessResponse())
+                    {
+                        this.mView.ShowError(submitRateUsResponse.Response.DisplayMessage);
+                    }
+                    else
+                    {
+                        this.mView.ShowSumitRateUsSuccess();
+                    }
                 }
             }
             catch (System.OperationCanceledException e)

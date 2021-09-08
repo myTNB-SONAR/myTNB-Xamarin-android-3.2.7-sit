@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -29,6 +30,7 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.NotificationDetails.MVP;
 using myTNB_Android.Src.Notifications.Models;
+using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
@@ -65,6 +67,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         AlertDialog removeDialog;
         public bool pushFromDashboard = false;
         IDTXAction dynaTrace;
+        private List<RateUsQuestion> activeQuestionListNo = new List<RateUsQuestion>();
+        private List<RateUsQuestion> activeQuestionListYes = new List<RateUsQuestion>();
 
         public override int ResourceId()
         {
@@ -543,9 +547,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 if (MyTNBAccountManagement.GetInstance().IsFromViewTipsPage())
                 {
                     MyTNBAccountManagement.GetInstance().SetIsFromViewTips(false);
-                    MyTNBAccountManagement.GetInstance().SetIsFromClickAdapter(6);
-                    ShowFeedBackSetupPageRating();
-                    //mPresenter.OnCheckFeedbackCount(notificationDetails);
+                    mPresenter.OnCheckFeedbackCount();
                 }
 
                 if (MyTNBAccountManagement.GetInstance().IsFinishFeedback())
@@ -560,6 +562,56 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
+        public void GetFeedbackTwoQuestionsNo(GetRateUsQuestionResponse response)
+        {
+            try
+            {
+                if (response != null)
+                {
+                    activeQuestionListNo.Clear();
+                    if (response.GetData().Count > 0)
+                    {
+                        foreach (RateUsQuestion que in response.GetData())
+                        {
+                            if (que.IsActive)
+                            {
+                                activeQuestionListNo.Add(que);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void GetFeedbackTwoQuestionsYes(GetRateUsQuestionResponse response)
+        {
+            try
+            {
+                if (response != null)
+                {
+                    activeQuestionListYes.Clear();
+                    if (response.GetData().Count > 0)
+                    {
+                        foreach (RateUsQuestion que in response.GetData())
+                        {
+                            if (que.IsActive)
+                            {
+                                activeQuestionListYes.Add(que);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowFeedBackSetupPageRating()
         {
             try
@@ -569,16 +621,24 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     .SetTitleOtherOne(Utility.GetLocalizedLabel("PushNotificationDetails", "likeButtonDetails"))
                     .SetTitleOtherTwo(Utility.GetLocalizedLabel("PushNotificationDetails", "dislikeButton"))
                     .SetTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "feedback2Title"))
+                    .SetCTAaction(() =>
+                    {
+                        mPresenter.OnCheckUserLeaveOut();
+                    })
                     .SetYesBtnCTAaction(() =>
                     {
                         Intent intent = new Intent(this, typeof(EnergyBudgetRatingActivity));
                         intent.PutExtra("feedbackOne", "Yes");
+                        intent.PutExtra("RateUsQuestionNo", JsonConvert.SerializeObject(activeQuestionListNo));
+                        intent.PutExtra("RateUsQuestionYes", JsonConvert.SerializeObject(activeQuestionListYes));
                         StartActivity(intent);
                     })
                     .SetNoBtnCTAaction(() =>
                     {
                         Intent intent = new Intent(this, typeof(EnergyBudgetRatingActivity));
                         intent.PutExtra("feedbackOne", "No");
+                        intent.PutExtra("RateUsQuestionNo", JsonConvert.SerializeObject(activeQuestionListNo));
+                        intent.PutExtra("RateUsQuestionYes", JsonConvert.SerializeObject(activeQuestionListYes));
                         StartActivity(intent);
                     })
                     .Build().Show();
@@ -594,8 +654,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             try
             {
                 SetupFeedBackFragment.Create(this, SetupFeedBackFragment.ToolTipType.IMAGE_HEADER)
-                    .SetCTALabel(Utility.GetLocalizedLabel("FeedBackEBNotification", "txtOkay"))
-                    .SetTitle(Utility.GetLocalizedLabel("FeedBackEBNotification", "txtTQFeedback"))
+                    .SetCTALabel(Utility.GetLocalizedLabel("PushNotificationDetails", "feedback2SuccessButton"))
+                    .SetTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "feedback2SuccessTitle"))
                     .Build().Show();
             }
             catch (System.Exception e)

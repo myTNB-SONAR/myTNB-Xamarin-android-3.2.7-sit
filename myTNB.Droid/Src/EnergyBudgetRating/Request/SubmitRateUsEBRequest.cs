@@ -1,55 +1,17 @@
-﻿using Refit;
+﻿using myTNB_Android.Src.EnergyBudgetRating.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using Refit;
 using System.Collections.Generic;
 
 namespace myTNB_Android.Src.EnergyBudgetRating.Request
 {
-    public class SubmitRateUsEBRequest
+    public class SubmitRateUsEBRequest : BaseRequest
     {
-        [AliasAs("ApiKeyID")]
-        public string ApiKeyID { get; set; }
+        SubmitDataModel.InputAnswerT InputAnswer;
 
-        [AliasAs("InputAnswer")]
-        public InputAnswerT InputAnswer { get; set; }
-
-        public class InputAnswerT
+        public SubmitRateUsEBRequest(SubmitDataModel.InputAnswerT inputAnswer)
         {
-
-            public InputAnswerT()
-            {
-
-            }
-
-            [AliasAs("ReferenceId")]
-            public string ReferenceId { get; set; }
-
-            [AliasAs("Email")]
-            public string Email { get; set; }
-
-            [AliasAs("DeviceId")]
-            public string DeviceId { get; set; }
-
-            [AliasAs("DeviceId")]
-            public List<InputAnswerDetails> InputAnswerDetails { get; set; }
-
-        }
-
-        public class InputAnswerDetails
-        {
-
-            public InputAnswerDetails()
-            {
-
-            }
-
-            [AliasAs("WLTYQuestionId")]
-            public string WLTYQuestionId { get; set; }
-
-            [AliasAs("RatingInput")]
-            public string RatingInput { get; set; }
-
-            [AliasAs("MultilineInput")]
-            public string MultilineInput { get; set; }
-
+            InputAnswer = inputAnswer;
         }
     }
 }

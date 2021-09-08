@@ -54,6 +54,7 @@ using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
@@ -684,6 +685,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private bool isEBUser = false;
 
         IDTXAction dynaTrace;
+
+        private List<RateUsQuestion> activeQuestionList = new List<RateUsQuestion>();
 
         private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
         private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0", new DecimalFormatSymbols(Java.Util.Locale.Us));
@@ -5388,9 +5391,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SetVirtualHeightParams(6f);
                 ShowSMStatisticCard();
                 energyBudgetRMinput.Enabled = false;
-
-                MyTNBAccountManagement.GetInstance().SetIsFromClickAdapter(6);
-                ShowFeedBackPageRating();
             }
             catch (System.Exception e)
             {
@@ -11022,21 +11022,47 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             errorMessageSnackbar.Show();
         }
 
-        private void ShowFeedBackPageRating()
+        public void GetFeedbackTwoQuestions(GetRateUsQuestionResponse response)
+        {
+            try
+            {
+                if (response != null)
+                {
+                    if (response.GetData().Count > 0)
+                    {
+                        foreach (RateUsQuestion que in response.GetData())
+                        {
+                            if (que.IsActive)
+                            {
+                                activeQuestionList.Add(que);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowFeedBackPageRating()
         {
             try
             {
                 SetupFeedBackFragment.Create(this.Activity, SetupFeedBackFragment.ToolTipType.FEEDBACK_WITH_IMAGES_STAR_RATING_BUTTON)
-                    .SetCTALabel(Utility.GetLocalizedLabel("FeedBackEBNotification", "btnDontAskAgain"))
-                    .SetTitle(Utility.GetLocalizedLabel("FeedBackEBNotification", "txtCongrat"))
+                    .SetCTALabel(Utility.GetLocalizedLabel("Usage", "feedbackDontAskAgain"))
+                    .SetTitle(Utility.GetLocalizedLabel("Usage", "feedback1Title"))
                     .SetCTAaction(() =>
                     {
+                        mPresenter.OnCheckUserLeaveOut();
                     })
                     .SetSecondaryCTAaction(() =>
                     {
                         int startSelect = MyTNBAccountManagement.GetInstance().IsFromClickAdapter();
                         Intent intent = new Intent(Activity, typeof(EnergyBudgetRatingActivity));
                         intent.PutExtra("feedbackTwo", startSelect);
+                        intent.PutExtra("RateUsQuestion", JsonConvert.SerializeObject(activeQuestionList));
                         StartActivity(intent);
                     })
                     .Build().Show();
@@ -11052,8 +11078,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             try
             {
                 SetupFeedBackFragment.Create(this.Activity, SetupFeedBackFragment.ToolTipType.IMAGE_HEADER)
-                    .SetCTALabel(Utility.GetLocalizedLabel("FeedBackEBNotification", "txtOkay"))
-                    .SetTitle(Utility.GetLocalizedLabel("FeedBackEBNotification", "txtTQFeedback"))
+                    .SetCTALabel(Utility.GetLocalizedLabel("Usage", "feedbackSuccessButton"))
+                    .SetTitle(Utility.GetLocalizedLabel("Usage", "feedbackSuccessTitle"))
                     .Build().Show();
             }
             catch (System.Exception e)

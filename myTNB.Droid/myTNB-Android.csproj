@@ -891,12 +891,15 @@
     <Compile Include="Src\EnergyBudgetRating\Fargment\FeedbackTwo.cs" />
     <Compile Include="Src\EnergyBudgetRating\Fargment\FeedbackOne.cs" />
     <Compile Include="Src\EnergyBudgetRating\Fargment\SetupFeedBackFragment.cs" />
-    <Compile Include="Src\EnergyBudgetRating\Model\QuestionCategoryID.cs" />
+    <Compile Include="Src\EnergyBudgetRating\Model\QuestionModel.cs" />
     <Compile Include="Src\EnergyBudgetRating\Model\ImproveSelectModel.cs" />
+    <Compile Include="Src\EnergyBudgetRating\Model\SubmitDataModel.cs" />
     <Compile Include="Src\EnergyBudgetRating\Model\RateUsStar.cs" />
     <Compile Include="Src\EnergyBudgetRating\MVP\EnergyBudgetRatingContract.cs" />
     <Compile Include="Src\EnergyBudgetRating\MVP\EnergyBudgetRatingPresenter.cs" />
+    <Compile Include="Src\EnergyBudgetRating\Request\GetFeedbackTwoQuestionRequest.cs" />
     <Compile Include="Src\EnergyBudgetRating\Request\SubmitRateUsEBRequest.cs" />
+    <Compile Include="Src\EnergyBudgetRating\Request\SubmitRateUsRequest.cs" />
     <Compile Include="Src\EnergyBudgetRating\Response\SubmitRateUsEBResponse.cs" />
     <Compile Include="Src\FAQ\Activity\FAQListActivity.cs" />
     <Compile Include="Src\FAQ\Adapter\FAQListAdapter.cs" />

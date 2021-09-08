@@ -73,7 +73,7 @@ namespace myTNB_Android.Src.Base.Activity
                         SetToolBarTitle(extra.GetString(Constants.IN_APP_TITLE));
                         if (MyTNBAccountManagement.GetInstance().IsFromViewTipsPage())
                         {
-                            SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "EnergyBudgetSavingTips"));
+                            SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "energyBudgetSavingTips"));
                         }
                     }
                 }

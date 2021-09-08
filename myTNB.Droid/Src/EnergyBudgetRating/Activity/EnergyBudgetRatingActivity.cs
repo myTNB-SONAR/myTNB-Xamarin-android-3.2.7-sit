@@ -7,8 +7,11 @@ using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.EnergyBudgetRating.Fargment;
+using myTNB_Android.Src.EnergyBudgetRating.Model;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.EnergyBudgetRating.Activity
@@ -32,6 +35,12 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Activity
         private string PAGE_ID = "Rating";
         private bool fromNotification = false;
         private bool fromSaveEnergyBudget = false;
+
+        private List<RateUsStar> activeQuestionList = new List<RateUsStar>();
+
+        private List<RateUsStar> activeQuestionListNo = new List<RateUsStar>();
+
+        private List<RateUsStar> activeQuestionListYes = new List<RateUsStar>();
 
         public override int ResourceId()
         {
@@ -61,6 +70,18 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Activity
                     {
                         fromSaveEnergyBudget = true;
                         SelectStar = extras.GetInt("feedbackTwo");
+                    }
+                    if (extras.ContainsKey("RateUsQuestion"))
+                    {
+                        activeQuestionList = JsonConvert.DeserializeObject<List<RateUsStar>>(extras.GetString("RateUsQuestion"));
+                    }
+                    if (extras.ContainsKey("RateUsQuestionNo"))
+                    {
+                        activeQuestionListNo = JsonConvert.DeserializeObject<List<RateUsStar>>(extras.GetString("RateUsQuestionNo"));
+                    }
+                    if (extras.ContainsKey("RateUsQuestionYes"))
+                    {
+                        activeQuestionListYes = JsonConvert.DeserializeObject<List<RateUsStar>>(extras.GetString("RateUsQuestionYes"));
                     }
                 }
 
@@ -97,6 +118,8 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Activity
             AndroidX.Fragment.App.Fragment feedbackOne = new FeedbackOne();
             Bundle bundle = new Bundle();
             bundle.PutString("StarFromNotificationDetailPage", SelectYesOrNo);
+            bundle.PutString("StarFromNotificationDetailPageQuestionNo", JsonConvert.SerializeObject(activeQuestionListNo));
+            bundle.PutString("StarFromNotificationDetailPageQuestionYes", JsonConvert.SerializeObject(activeQuestionListYes));
             feedbackOne.Arguments = bundle;
             var fragmentTransaction = SupportFragmentManager.BeginTransaction();
             fragmentTransaction.Add(Resource.Id.fragment_container, feedbackOne);
@@ -109,6 +132,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Activity
             AndroidX.Fragment.App.Fragment feedbackTwo = new FeedbackTwo();
             Bundle bundle = new Bundle();
             bundle.PutInt("StarFromDashboardFragmentPage", SelectStar);
+            bundle.PutString("StarFromDashboardFragmentPageQuestion", JsonConvert.SerializeObject(activeQuestionList));
             feedbackTwo.Arguments = bundle;
             var fragmentTransaction = SupportFragmentManager.BeginTransaction();
             fragmentTransaction.Add(Resource.Id.fragment_container, feedbackTwo);

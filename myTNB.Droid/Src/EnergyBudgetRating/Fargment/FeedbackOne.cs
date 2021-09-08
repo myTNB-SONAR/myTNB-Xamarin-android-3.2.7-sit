@@ -7,6 +7,7 @@ using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.EnergyBudgetRating.Activity;
 using myTNB_Android.Src.EnergyBudgetRating.Adapter;
 using myTNB_Android.Src.EnergyBudgetRating.Model;
@@ -16,6 +17,7 @@ using myTNB_Android.Src.Rating.Adapter;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.Rating.MVP;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using static myTNB_Android.Src.EnergyBudgetRating.Model.RateUsStar;
@@ -70,7 +72,13 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
 
         private List<ImproveSelectModel> activeQuestionList = new List<ImproveSelectModel>();
 
-        private List<ImproveSelectModel> improveSelectModels = new List<ImproveSelectModel>();
+        private List<QuestionModel> improveSelectModels = new List<QuestionModel>();
+
+        private List<RateUsStar> QuestionListing = new List<RateUsStar>();
+
+        private List<RateUsStar> activeQuestionListNo = new List<RateUsStar>();
+
+        private List<RateUsStar> activeQuestionListYes = new List<RateUsStar>();
 
         int initialnumber = 250;
 
@@ -84,6 +92,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
         private bool btnNoClick = false;
         private bool selectStarComplete = false;
         private bool selectIconComplete = false;
+        List<InputOptionValue> InputOptionValueList = new List<InputOptionValue>();
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -101,6 +110,14 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 if (Arguments.ContainsKey("StarFromNotificationDetailPage"))
                 {
                     YesOrNoSelect = Arguments.GetString("StarFromNotificationDetailPage");
+                }
+                if (Arguments.ContainsKey("StarFromNotificationDetailPageQuestionNo"))
+                {
+                    activeQuestionListNo = JsonConvert.DeserializeObject<List<RateUsStar>>(Arguments.GetString("StarFromNotificationDetailPageQuestionNo"));
+                }
+                if (Arguments.ContainsKey("StarFromNotificationDetailPageQuestionYes"))
+                {
+                    activeQuestionListYes = JsonConvert.DeserializeObject<List<RateUsStar>>(Arguments.GetString("StarFromNotificationDetailPageQuestionYes"));
                 }
 
                 recyclerView = mainView.FindViewById<RecyclerView>(Resource.Id.question_recycler_view);
@@ -137,8 +154,8 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 titleYes.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "thumbUpYes");
                 titleNo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "thumbDownNo");
                 titleSetUpFeedback.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "title");
-                titleNumber.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "titleNumberOne");
-                TitleNumberTwo.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "titleNumberTwo");
+                titleNumber.Text = activeQuestionListNo[0].Question; //Utility.GetLocalizedLabel("FeedBackEBNotification", "titleNumberOne");
+                TitleNumberTwo.Text = activeQuestionListNo[6].Question; //Utility.GetLocalizedLabel("FeedBackEBNotification", "titleNumberTwo");
                 titleselectApply.Text = Utility.GetLocalizedLabel("FeedBackEBNotification", "titleSelectApplies");
 
                 txtTellUsMoreHintCount.Text = (initialnumber.ToString() + " " + Utility.GetLocalizedLabel("FeedBackEBNotification", "hinttellusMore"));
@@ -165,6 +182,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                     btnNoClick = false;
                     enableBtnYes();
                     disableBtnNo();
+                    injectSelectDataYes();
                 }
                 else
                 {
@@ -172,10 +190,10 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                     btnYesClick = false;
                     enableBtnNo();
                     disableBtnYes();
+                    injectSelectDataNo();
                 }
 
                 injectStarData();
-                injectSelectData();
                 DisableShareButton();
 
                 btnNoThank.Click += delegate
@@ -186,7 +204,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 btnShare.Click += delegate
                 {
                     MyTNBAccountManagement.GetInstance().SetIsFinishFeedback(true);
-                    ShowSumitRateUsSuccess();
+                    prepareDataSubmit();
                 };
 
             }
@@ -215,6 +233,8 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 {
                     enableBtnYes();
                     disableBtnNo();
+                    injectSelectDataYes();
+                    DisableShareButton();
                 }
             }
             catch (Exception ex)
@@ -241,6 +261,8 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 {
                     enableBtnNo();
                     disableBtnYes();
+                    injectSelectDataNo();
+                    DisableShareButton();
                 }
             }
             catch (Exception ex)
@@ -276,6 +298,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
             img_displayNo.SetImageResource(Resource.Drawable.thumb_down_no_grey);
             titleNo.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverchalice));
         }
+
         private void TxtTellUsMore_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
             try
@@ -407,32 +430,20 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
             btnShare.Background = ContextCompat.GetDrawable(Activity.ApplicationContext, Resource.Drawable.green_button_background);
         }
 
-        /*public void injectDemoData()
-        {
-            List<InputOptionValue> InputOptionValueList = new List<InputOptionValue>();
-            var inputOptionValueList = new InputOptionValue
-            {
-                InputOptionRate = "1",
-                InputOptionValues = "2",
-            };
-            InputOptionValueList.Add(inputOptionValueList);
-
-            var test = new RateUsStar
-            {
-                WLTYQuestionId = "",
-                Question = "How satisfied are you with the myTNB app?",
-                QuestionCategory = "Bill Related",
-                QuestionType = "RatingFeedBackOne",
-                IsActive = true,
-                IsMandatory = true,
-                InputOptionValueList = InputOptionValueList,
-            };
-            activeQuestionList.Add(test);
-            adapter.NotifyDataSetChanged();
-        }*/
-
         public void injectStarData()
         {
+            try
+            {
+                foreach (InputOptionValue data in QuestionListing[0].InputOptionValueList)
+                {
+                    InputOptionValueList.Add(data);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             var data1 = new ImproveSelectModel
             {
                 ModelCategories = "star",
@@ -472,44 +483,150 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 IsSelected = false,
             };
             activeQuestionList.Add(data5);
-            //adapterGrid.NotifyDataSetChanged();
             adapter.NotifyDataSetChanged();
         }
 
-        public void injectSelectData()
+        public void injectSelectDataNo()
         {
-            var data1 = new ImproveSelectModel
+            try
             {
-                ModelCategories = "feedback_one",
-                IconCategories = "1",
-                IsSelected = false,
-            };
-            improveSelectModels.Add(data1);
-
-            var data2 = new ImproveSelectModel
+                int IconPosition = 1;
+                improveSelectModels.Clear();
+                List<RateUsStar> activeQuestionListNoListNew = new List<RateUsStar>();
+                activeQuestionListNoListNew = activeQuestionListNo.GetRange(1, 4);
+                foreach (RateUsStar data in activeQuestionListNoListNew)
+                {
+                    var selectdata = new QuestionModel
+                    {
+                        WLTYQuestionId = data.WLTYQuestionId,
+                        ModelCategories = "FeedbackTwoA",
+                        IconCategories = data.Question,
+                        IconPosition = IconPosition++,
+                        IsSelected = false,
+                    };
+                    improveSelectModels.Add(selectdata);
+                }
+            }
+            catch (Exception e)
             {
-                ModelCategories = "feedback_one",
-                IconCategories = "2",
-                IsSelected = false,
-            };
-            improveSelectModels.Add(data2);
-
-            var data3 = new ImproveSelectModel
-            {
-                ModelCategories = "feedback_one",
-                IconCategories = "3",
-                IsSelected = false,
-            };
-            improveSelectModels.Add(data3);
-
-            var data4 = new ImproveSelectModel
-            {
-                ModelCategories = "feedback_one",
-                IconCategories = "4",
-                IsSelected = false,
-            };
-            improveSelectModels.Add(data4);
+                Utility.LoggingNonFatalError(e);
+            }           
             adapterGrid.NotifyDataSetChanged();
+        }
+
+        public void injectSelectDataYes()
+        {
+            try
+            {
+                int IconPosition = 1;
+                improveSelectModels.Clear();
+                List<RateUsStar> activeQuestionListYesListNew = new List<RateUsStar>();
+                activeQuestionListYesListNew = activeQuestionListYes.GetRange(1, 4);
+                foreach (RateUsStar data in activeQuestionListYesListNew)
+                {
+                    var selectdata = new QuestionModel
+                    {
+                        WLTYQuestionId = data.WLTYQuestionId,
+                        ModelCategories = "FeedbackTwoB",
+                        IconCategories = data.Question,
+                        IconPosition = IconPosition++,
+                        IsSelected = false,
+                    };
+                    improveSelectModels.Add(selectdata);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }            
+            adapterGrid.NotifyDataSetChanged();
+        }
+
+        public void prepareDataSubmit()
+        {
+            try
+            {
+
+                SubmitDataModel.InputAnswerT submitDataModel = new SubmitDataModel.InputAnswerT();
+                List<SubmitDataModel.InputAnswerDetails> inputAnswerDetails = new List<SubmitDataModel.InputAnswerDetails>();
+                SubmitDataModel.InputAnswerDetails yesOrNo = new SubmitDataModel.InputAnswerDetails();
+                if (btnYesClick)
+                {
+                    if (activeQuestionListYes != null)
+                    {
+                        yesOrNo.WLTYQuestionId = activeQuestionListYes[0].WLTYQuestionId;
+                        yesOrNo.RatingInput = string.Empty;
+                        yesOrNo.MultilineInput = activeQuestionListYes[0].InputOptionValueList[0].InputOptionValues;
+                    }
+                }
+                else
+                {
+                    if (activeQuestionListNo != null)
+                    {
+                        yesOrNo.WLTYQuestionId = activeQuestionListNo[0].WLTYQuestionId;
+                        yesOrNo.RatingInput = string.Empty;
+                        yesOrNo.MultilineInput = activeQuestionListYes[0].InputOptionValueList[1].InputOptionValues;
+                    }
+                }
+                inputAnswerDetails.Add(yesOrNo);
+
+                foreach (QuestionModel item in improveSelectModels)
+                {
+                    if (item.IsSelected)
+                    {
+                        var data = new SubmitDataModel.InputAnswerDetails()
+                        {
+                            WLTYQuestionId = item.WLTYQuestionId,
+                            RatingInput = string.Empty,
+                            MultilineInput = item.IsSelected ? "YES" : "NO",
+                        };
+                        inputAnswerDetails.Add(data);
+                    }
+                }
+
+                if (btnYesClick)
+                {
+                    var multiline = new SubmitDataModel.InputAnswerDetails()
+                    {
+                        WLTYQuestionId = activeQuestionListYes[5].WLTYQuestionId,
+                        RatingInput = string.Empty,
+                        MultilineInput = txtTellUsMore.Text.Trim()
+                    };
+                    inputAnswerDetails.Add(multiline);
+
+                    var rating = new SubmitDataModel.InputAnswerDetails()
+                    {
+                        WLTYQuestionId = activeQuestionListYes[6].WLTYQuestionId,
+                        RatingInput = (MyTNBAccountManagement.GetInstance().IsFromClickAdapter() + 1).ToString(),
+                        MultilineInput = string.Empty,
+                    };
+                    inputAnswerDetails.Add(rating);
+                }
+                else
+                {
+                    var multiline = new SubmitDataModel.InputAnswerDetails()
+                    {
+                        WLTYQuestionId = activeQuestionListNo[5].WLTYQuestionId,
+                        RatingInput = string.Empty,
+                        MultilineInput = txtTellUsMore.Text.Trim()
+                    };
+                    inputAnswerDetails.Add(multiline);
+
+                    var rating = new SubmitDataModel.InputAnswerDetails()
+                    {
+                        WLTYQuestionId = activeQuestionListNo[6].WLTYQuestionId,
+                        RatingInput = (MyTNBAccountManagement.GetInstance().IsFromClickAdapter() + 1).ToString(),
+                        MultilineInput = string.Empty,
+                    };
+                    inputAnswerDetails.Add(rating);
+                }
+                string questiontypeId = "6";
+                mPresenter.SubmitRateUs(inputAnswerDetails, questiontypeId);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideProgressDialog()

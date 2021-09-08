@@ -254,7 +254,6 @@
     "selectAnAccount": "Select an account",
     "tncSubscribeFAQ": "By submitting, you are agreeing to the <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Self Meter Reading FAQ</strong></a>, ",
     "tncSubscribeTNC": "<a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy Policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
-    //add new by irul
     "tncsmrNew": "By subscribing to Self Meter Reading, I understand and agree on the <a href=\"\\\"><strong>Self Meter Reading Terms and Conditions</strong></a>, <a href=\"\\\"><strong>TNB's Terms of Use and Personal Data Protection Policy</strong></a>. I also agree to submit meter reading on a monthly basis except non Self Meter Reading month"
   },
   "SSMRApplicationTnc": {
@@ -453,7 +452,11 @@
     "disconnectedEnergyBudget": "Uh-oh, looks like your Energy Budget have been unplugged. Refresh to stay plugged in!",
     "refreshNowEnergyBudgetButton": "Refresh Now",
     "youHaveNotSetBudget": "You have not set up your Energy Budget",
-    "youHaveNotSetBudgetSubtitle": "Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!"
+    "youHaveNotSetBudgetSubtitle": "Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!",
+    "feedback1Title":"Congratulations! How was your Energy Budget set up?",
+    "feedbackDontAskAgain":"Don't Ask Again",
+    "feedbackSuccessTitle":"Thank you for your feedback!",
+    "feedbackSuccessButton":"Okay"
   },
   "Bills": {
     "title": "Bills",
@@ -603,11 +606,13 @@
     "viewTips": "View Tips",
     "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks",
     "EnergyBudgetTitle": "Energy Budget",
-    "EnergyBudgetSavingTips": "Energy Saving Tips",
-    "feedback2Title": "Did you find Energy Budget useful?",
-    "likeButtonDetails": "Yes, Absolutely",
-    "dislikeButton": "Not really",
-    "dontAskAgain": "Don't Ask Again"
+    "energyBudgetSavingTips":"Energy Saving Tips",
+    "feedback2Title":"Did you find Energy Budget useful?",
+    "likeButtonDetails":"Yes, Absolutely",
+    "dislikeButton":"Not really",
+    "dontAskAgain":"Don't Ask Again",
+    "feedback2SuccessTitle":"Thank you for your feedback!",
+    "feedback2SuccessButton":"Okay"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -2353,12 +2358,12 @@
 
   "EnergyBudgetPopup": {
     "title": "Congratulations! You are selected to experience our new Energy Budget feature!",
-    "threeEasyStep": "Saving money in 3 easy steps: ",
+    "threeEasyStep": "Saving money in 3 easy steps:",
     "firstStep": "SET a budget for your existing Smart Meter accounts",
     "secondStep": "MONITOR your energy usage right at your fingertips",
     "thirdStep": "SAVINGS starts with you getting notified when reaching your set budget",
-    "txtLetgetstarted": "Let's Get Started",
-    "txtViewmybudget": "View My Budget",
+    "txtLetgetstarted": "Get Started!",
+    "txtViewmybudget": "View Budget",
     "txtMaybelater": "Maybe Later"
   },
 
@@ -2371,41 +2376,22 @@
 
   "FeedBackEB": {
     "title": "Energy Budget Set-Up Feedback",
-    "starOnetitle": "I don't like this",
-    "starTwotitle": "I did not enjoy it",
-    "starThreetitle": "It was okay",
-    "starFourtitle": "It was good!",
-    "starFivetitle": "It was great!",
     "improveTitle": "What can be improved?",
     "titleSelectApplies": "Select all that applies",
     "tellusMore": "Tell us more (Optional)",
     "hinttellusMore": "characters left",
-    "txtSimplicity": "Set Up Simplicity",
-    "txtContent": "Content Relevance",
-    "txtNavigation": "Navigation",
-    "txtDesign": "Design",
     "btnNoThank": "No Thanks",
     "btnShare": "Share"
   },
 
   "FeedBackEBNotification": {
     "title": "Energy Budget Feedback",
-    "titleNumberOne": "Did you find Energy Budget useful?",
     "thumbUpYes": "Yes, absolutely",
     "thumbDownNo": "Not really",
     "btnNoThank": "No Thanks",
     "btnShare": "Share",
     "titleSelectApplies": "Select all that applies",
-    "saveOnEBusage": "Didn't save on energy usage",
-    "EBcannotTrusted": "Energy Budget can't be trusted",
-    "NotUsingEBagain": "Won't use Energy Budget again",
-    "EBtipNotHelpful": "Energy saving tips weren't helpful",
     "tellusMore": "Tell us more (Optional)",
-    "hinttellusMore": "characters left",
-    "titleNumberTwo": "How likely are you to recommend Energy Budget to your friends/family?",
-    "btnDontAskAgain": "Don't Ask Again",
-    "txtCongrat": "Congratulation! How was your Energy Budget set up?",
-    "txtTQFeedback": "Thank you for your feedback!",
-    "txtOkay": "Okay"
+    "hinttellusMore": "characters left"
   }
 }
