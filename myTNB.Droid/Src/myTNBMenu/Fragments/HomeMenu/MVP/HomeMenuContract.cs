@@ -25,7 +25,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowAccountDetails(string accountNumber);
             void SetMyServiceRecycleView();
             void SetNewFAQRecycleView();
-            //void StopShimmerDiscoverMore();
             void SetMyServiceResult(List<MyService> list);
             void SetNewFAQResult(List<NewFAQ> list);
             void SetDiscoverResult(bool IsAccountDBREligible);
@@ -127,7 +126,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetFAQTimeStamp();
             void ReadNewFAQFromCache();
             Task OnGetFAQs();
-            Task OnGetDBR(bool isDBR);
             void LoadLocalAccounts();
 			void LoadSummaryDetailsInBatch(List<string> accountNumbers);
 

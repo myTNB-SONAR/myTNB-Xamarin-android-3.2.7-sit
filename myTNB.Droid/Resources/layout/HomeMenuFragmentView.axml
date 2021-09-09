@@ -469,13 +469,14 @@
 					android:layout_marginTop="13dp"
 					android:id="@+id/discovercontainer">
 					<TextView
-						android:id="@+id/discoverMoreTitle"
+						android:id="@+id/discoverTitle"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:textSize="14dp"
 						android:text="UI - Discover More"
 						android:layout_marginLeft="16dp"
 						android:layout_marginBottom="8dp"
+						android:visibility="gone"
 						android:textColor="@color/powerBlue"
 						android:layout_gravity="left"/>
 					
@@ -506,11 +507,10 @@
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
 					android:layout_marginTop="13dp"
-					android:layout_marginBottom="13dp"
 					android:visibility="gone"
 					android:id="@+id/discoverMoreContainer">
 					<TextView
-						android:id="@+id/discoverTitle"
+						android:id="@+id/discoverMoreTitle"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:textSize="14dp"

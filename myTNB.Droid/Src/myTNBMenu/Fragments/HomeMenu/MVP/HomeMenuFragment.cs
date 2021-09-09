@@ -491,11 +491,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+                IsAccountDBREligible = DBRUtility.Instance.IsAccountDBREligible; 
                 summaryNestScrollView.SmoothScrollingEnabled = true;
                 isSearchClose = true;
                 isFirstInitiate = true;
                 accountGreetingName.Text = this.presenter.GetAccountDisplay() + "!";
-                SetupDsicoverShimmerEffect();
                 SetNotificationIndicator();
                 SetAccountsRecyclerView();
                 SetAccountActionHeader();
@@ -1133,46 +1133,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public void SetupDsicoverShimmerEffect()
-        {
-            try
-            {
-                Activity.RunOnUiThread(() =>
-                {
-                    try
-                    {
-                        bool IsAccountDBREligible = DBRUtility.Instance.ShouldShowHomeDBRCard;
-                        if (IsAccountDBREligible)
-                        {
-                            this.presenter.OnGetDBR(IsAccountDBREligible);
-                        }
-                    }
-                    catch (System.Exception ex)
-                    {
-                        Utility.LoggingNonFatalError(ex);
-                    }
-                });
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
 
         public void SetDBRDiscoverView()
         {
-            if (DashboardHomeActivity.IsEligibilityAPICalled)
-            {
-                discovercontainer.Visibility = ViewStates.Gone;
-            }
-            if (IsAccountDBREligible)
-            {
-                SetDiscoverResult(IsAccountDBREligible);
-            }
-            else
-            {
-                //HideDiscoverViewView();
-            }
+            SetDiscoverResult(IsAccountDBREligible);
             this.presenter.GetSavedNewFAQTimeStamp();
         }
 
@@ -1210,6 +1174,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     try
                     {
                         discoverTitle.Visibility = ViewStates.Gone;
+                        discoverMoreTitle.Visibility = ViewStates.Gone;
                         discoverView.Visibility = ViewStates.Gone;
                     }
                     catch (System.Exception ex)
@@ -1248,6 +1213,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             SetupDiscoverView();
                             discovercontainer.Visibility = ViewStates.Visible;
                             discoverView.Visibility = ViewStates.Visible;
+                            discoverTitle.Visibility = ViewStates.Visible;
+                            discoverMoreTitle.Visibility = ViewStates.Gone;
                             UserEntity user = UserEntity.GetActive();
                             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
 
@@ -1264,6 +1231,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         else
                         {
                             discovercontainer.Visibility = ViewStates.Gone;
+                            discoverTitle.Visibility = ViewStates.Gone;
                         }
                     }
                     catch (System.Exception ex)
@@ -1401,6 +1369,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             }
                             newFAQShimmerView.Visibility = ViewStates.Gone;
                             newFAQView.Visibility = ViewStates.Visible;
+                            newFAQTitle.Visibility = ViewStates.Visible;
 
                         }
                     }
@@ -2095,18 +2064,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         }
         public void ShowDiscoverView(bool IsAccountDBREligible)
         {
-            Activity.RunOnUiThread(() =>
-            {
-                try
-                {
-                    this.presenter.OnGetDBR(IsAccountDBREligible);
-                }
-                catch (System.Exception ex)
-                {
-                    Utility.LoggingNonFatalError(ex);
-                }
-            });
-
+            SetDiscoverResult(IsAccountDBREligible);
         }
 
         public void ShowFAQFromHide()
@@ -2318,6 +2276,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMaintenanceMsg);
                 }
                 discoverMoreContainer.Visibility = ViewStates.Gone;
+                discoverMoreTitle.Visibility = ViewStates.Gone;
             }
             else
             {
@@ -2335,6 +2294,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
                 string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
                 discoverMoreContainer.Visibility = ViewStates.Gone;
+                discoverMoreTitle.Visibility = ViewStates.Gone;
                 btnRefresh.Text = refreshBtnTxt;
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
@@ -3691,6 +3651,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
             {
                 discoverMoreContainer.Visibility = ViewStates.Visible;
+                if(discoverTitle.Visibility == ViewStates.Visible)
+                {
+                    discoverMoreTitle.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    discoverMoreTitle.Visibility = ViewStates.Visible;
+                }
+                
+               
                 try
                 {
                     //DateTime publishDateTime = DateTime.ParseExact(whatsNewList[position].PublishDate, "yyyyMMddTHHmmss",
@@ -3730,6 +3700,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             else
             {
                 discoverMoreContainer.Visibility = ViewStates.Gone;
+                discoverMoreTitle.Visibility = ViewStates.Gone;
             }
         }
 
