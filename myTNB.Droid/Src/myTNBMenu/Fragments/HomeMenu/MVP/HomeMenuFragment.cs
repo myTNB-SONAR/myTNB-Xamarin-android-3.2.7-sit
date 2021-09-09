@@ -495,7 +495,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 isSearchClose = true;
                 isFirstInitiate = true;
                 accountGreetingName.Text = this.presenter.GetAccountDisplay() + "!";
-                SetupDsicoverShimmerEffect();
                 SetNotificationIndicator();
                 SetAccountsRecyclerView();
                 SetAccountActionHeader();
@@ -1133,47 +1132,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public void SetupDsicoverShimmerEffect()
-        {
-            try
-            {
-                Activity.RunOnUiThread(() =>
-                {
-                    try
-                    {
-                        bool IsAccountDBREligible = DBRUtility.Instance.ShouldShowHomeDBRCard;
-                        if (IsAccountDBREligible)
-                        {
-                            this.presenter.OnGetDBR(IsAccountDBREligible);
-                        }
-                    }
-                    catch (System.Exception ex)
-                    {
-                        Utility.LoggingNonFatalError(ex);
-                    }
-                });
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
 
         public void SetDBRDiscoverView()
         {
-            if (DashboardHomeActivity.IsEligibilityAPICalled)
-            {
-                discovercontainer.Visibility = ViewStates.Gone;
-                discoverTitle.Visibility = ViewStates.Gone;
-            }
-            if (IsAccountDBREligible)
-            {
-                SetDiscoverResult(IsAccountDBREligible);
-            }
-            else
-            {
-                //HideDiscoverViewView();
-            }
+            SetDiscoverResult(IsAccountDBREligible);
             this.presenter.GetSavedNewFAQTimeStamp();
         }
 
@@ -2101,18 +2063,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         }
         public void ShowDiscoverView(bool IsAccountDBREligible)
         {
-            Activity.RunOnUiThread(() =>
-            {
-                try
-                {
-                    this.presenter.OnGetDBR(IsAccountDBREligible);
-                }
-                catch (System.Exception ex)
-                {
-                    Utility.LoggingNonFatalError(ex);
-                }
-            });
-
+            SetDiscoverResult(IsAccountDBREligible);
         }
 
         public void ShowFAQFromHide()

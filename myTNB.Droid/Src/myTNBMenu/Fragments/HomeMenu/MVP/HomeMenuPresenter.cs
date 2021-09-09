@@ -2309,38 +2309,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
             }, new CancellationTokenSource().Token);
         }
-        public Task OnGetDBR(bool IsAccountDBREligible)
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    if (IsAccountDBREligible)
-                    {
-                        this.mView.SetDiscoverResult(IsAccountDBREligible);
-                    }
-                    else
-                    {
-                        HomeMenuFragment.IsFromLogin = true;
-                        this.mView.HideDiscoverViewView();
-                    }
-                }
-                catch (Exception e)
-                {
-                    try
-                    {
-                        this.mView.HideDiscoverViewView();
-                    }
-                    catch (Exception ex)
-                    {
-                        Utility.LoggingNonFatalError(ex);
-                    }
-                    Utility.LoggingNonFatalError(e);
-                }
-            }).ContinueWith((Task previous) =>
-            {
-            }, new CancellationTokenSource().Token);
-        }
 
         public void UpdateNewFAQCompleteState()
         {
