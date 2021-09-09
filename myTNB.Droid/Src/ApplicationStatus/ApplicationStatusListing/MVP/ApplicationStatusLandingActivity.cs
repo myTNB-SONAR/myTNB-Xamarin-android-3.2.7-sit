@@ -37,9 +37,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
     [Activity(Label = "Application Status", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.AppointmentScheduler")]
     public class ApplicationStatusLandingActivity : BaseActivityCustom, ApplicationStatusLandingContract.IView
     {
-        [BindView(Resource.Id.rootview)]
-        LinearLayout rootview;
-
         [BindView(Resource.Id.applicationStatusLandingEmptyLayout)]
         LinearLayout applicationStatusLandingEmptyLayout;
 
@@ -214,8 +211,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 //returns the visible bounds
                 btnSearchApplicationStatus.GetDrawingRect(offsetViewBounds);
                 // calculates the relative coordinates to the parent
-                rootview.OffsetDescendantRectToMyCoords(btnSearchApplicationStatus, offsetViewBounds);
-                i = offsetViewBounds.Top + (int)DPUtils.ConvertDPToPx(14f);
+                rootView.OffsetDescendantRectToMyCoords(btnSearchApplicationStatus, offsetViewBounds);
+                i = offsetViewBounds.Top;
             }
             catch (Exception e)
             {

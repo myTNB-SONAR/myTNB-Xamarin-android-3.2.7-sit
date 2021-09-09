@@ -2245,7 +2245,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 if (model.DisplayMode == "Extra")
                 {
                     int topHeight = (int)DPUtils.ConvertDPToPx(55f);
-                    int middleHeight = (int)DPUtils.ConvertDPToPx(200f);
+                    int middleHeight = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(220f): (int)DPUtils.ConvertDPToPx(200f);
 
                     int leftWidth = 0;
                     int rightWidth = 0;
@@ -2327,8 +2327,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     }
                     else
                     {
-                        int middleHeight = ((ApplicationStatusLandingActivity)this.mContext).GetSearchButtonHeight() + (int)DPUtils.ConvertDPToPx(10f);
-                        int topHeight = ((ApplicationStatusLandingActivity)this.mContext).GetTopSearchHeight() + (int)DPUtils.ConvertDPToPx(37f);
+                        int middleHeight = ((ApplicationStatusLandingActivity)this.mContext).GetSearchButtonHeight() + (int)DPUtils.ConvertDPToPx(35f);
+                        int topHeight = ((ApplicationStatusLandingActivity)this.mContext).GetTopSearchHeight() + (int)DPUtils.ConvertDPToPx(-15f);
 
                         int leftWidth = 0;
                         int rightWidth = 0;
