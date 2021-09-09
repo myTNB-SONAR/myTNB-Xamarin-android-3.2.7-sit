@@ -491,6 +491,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+                IsAccountDBREligible = DBRUtility.Instance.IsAccountDBREligible; 
                 summaryNestScrollView.SmoothScrollingEnabled = true;
                 isSearchClose = true;
                 isFirstInitiate = true;
