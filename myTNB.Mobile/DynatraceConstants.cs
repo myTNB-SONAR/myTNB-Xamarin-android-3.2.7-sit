@@ -21,26 +21,26 @@
             {
                 public struct Bills
                 {
-                    public const string Pre_EBill_Paper = "App_Visit_Bills_EBill&Paper";
-                    public const string Pre_EBill_Email_Paper = "App_Visit_Bills_EBill&Paper&Email";
-                    public const string Post_EBill = "App_Visit_Bills_EBill";
-                    public const string Post_EBill_Email = "App_Visit_Bills_EBill&Email";
+                    public const string EBill_Paper = "App_Visit_Bills_EBill&Paper";
+                    public const string EBill_Email_Paper = "App_Visit_Bills_EBill&Paper&Email";
+                    public const string EBill = "App_Visit_Bills_EBill";
+                    public const string EBill_Email = "App_Visit_Bills_EBill&Email";
                 }
 
                 public struct BillDetails
                 {
-                    public const string Pre_EBill_Paper = "App_Visit_BillDetails_EBill&Paper";
-                    public const string Pre_EBill_Email_Paper = "App_Visit_BillDetails_EBill&Paper&Email";
-                    public const string Post_EBill = "App_Visit_BillDetails_EBill";
-                    public const string Post_EBill_Email = "App_Visit_BillDetails_EBill&Emaill";
+                    public const string EBill_Paper = "App_Visit_BillDetails_EBill&Paper";
+                    public const string EBill_Email_Paper = "App_Visit_BillDetails_EBill&Paper&Email";
+                    public const string EBill = "App_Visit_BillDetails_EBill";
+                    public const string EBill_Email = "App_Visit_BillDetails_EBill&Emaill";
                 }
 
                 public struct ManageBillDelivery
                 {
-                    public const string Pre_EBill_Paper = "App_Visit_ManageBill_EBill&Paper";
-                    public const string Pre_EBill_Email_Paper = "App_Visit_ManageBill_EBill&Paper&Email";
-                    public const string Post_EBill = "App_Visit_ManageBill_Ebill";
-                    public const string Post_EBill_Email = "App_Visit_ManageBill_EBill&Email";
+                    public const string EBill_Paper = "App_Visit_ManageBill_EBill&Paper";
+                    public const string EBill_Email_Paper = "App_Visit_ManageBill_EBill&Paper&Email";
+                    public const string EBill = "App_Visit_ManageBill_Ebill";
+                    public const string EBill_Email = "App_Visit_ManageBill_EBill&Email";
                 }
 
                 public struct PaymentSuccess
@@ -69,26 +69,26 @@
 
                 public struct Bills
                 {
-                    public const string Pre_EBill_Paper = "App_Action_Bills_EBill&Paper_Banner";
-                    public const string Pre_EBill_Email_Paper = "App_Action_Bill_EBill&Paper&Email_Banner";
-                    public const string Post_EBill = "App_Action_Bill_EBill_Banner";
-                    public const string Post_EBill_Email = "App_Action_Bill_EBill&Email_Banner";
+                    public const string EBill_Paper = "App_Action_Bills_EBill&Paper_Banner";
+                    public const string EBill_Email_Paper = "App_Action_Bill_EBill&Paper&Email_Banner";
+                    public const string EBill = "App_Action_Bill_EBill_Banner";
+                    public const string EBill_Email = "App_Action_Bill_EBill&Email_Banner";
                 }
 
                 public struct BillDetails
                 {
-                    public const string Pre_EBill_Paper = "App_Action_BillDetails_EBill&Paper_Banner";
-                    public const string Pre_EBill_Email_Paper = "App_Action_BillDetails_EBill&Paper&Email_Banner";
-                    public const string Post_EBill = "App_Action_BillDetails_EBill_Banner";
-                    public const string Post_EBill_Email = "App_Action_BillDetails_EBill&Email_Banner";
+                    public const string EBill_Paper = "App_Action_BillDetails_EBill&Paper_Banner";
+                    public const string EBill_Email_Paper = "App_Action_BillDetails_EBill&Paper&Email_Banner";
+                    public const string EBill = "App_Action_BillDetails_EBill_Banner";
+                    public const string EBill_Email = "App_Action_BillDetails_EBill&Email_Banner";
                 }
 
                 public struct ManageBillDelivery
                 {
-                    public const string Pre_EBill_Paper = "App_Action_ManageBill_EBill&Paper_JomPaperless";
-                    public const string Pre_EBill_Email_Paper = "App_Action_ManageBill_EBill&Paper&Email_JomPaperless";
-                    public const string Post_EBill = "App_Action_ManageBill_EBill_UpdateMethod";
-                    public const string Post_EBill_Email = "App_Action_ManageBill_EBill&Email_UpdateMethod";
+                    public const string EBill_Paper = "App_Action_ManageBill_EBill&Paper_JomPaperless";
+                    public const string EBill_Email_Paper = "App_Action_ManageBill_EBill&Paper&Email_JomPaperless";
+                    public const string EBill = "App_Action_ManageBill_EBill_UpdateMethod";
+                    public const string EBill_Email = "App_Action_ManageBill_EBill&Email_UpdateMethod";
                 }
 
                 public struct ManageElectricityAccount

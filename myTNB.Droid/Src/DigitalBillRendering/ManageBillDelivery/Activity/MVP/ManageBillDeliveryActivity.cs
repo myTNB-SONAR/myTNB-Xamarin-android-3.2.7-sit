@@ -544,40 +544,38 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             {
                 return;
             }
-            string dynatraceTag = string.Empty;
-            if (billRenderingResponse.Content.IsPostConversion)
+            string dynatraceTag;
+            switch (billRenderingResponse.Content.CurrentRenderingMethod)
             {
-                if (billRenderingResponse.Content.PreviousRenderingMethod == RenderingMethodEnum.None
-                    && billRenderingResponse.Content.CurrentRenderingMethod == RenderingMethodEnum.EBill)
-                {
-                    dynatraceTag = DynatraceConstants.DBR.Screens.ManageBillDelivery.Post_EBill;
-                }
-                else if (billRenderingResponse.Content.PreviousRenderingMethod == RenderingMethodEnum.EBill_Email_Paper
-                   && billRenderingResponse.Content.CurrentRenderingMethod == RenderingMethodEnum.EBill_Email)
-                {
-                    dynatraceTag = DynatraceConstants.DBR.Screens.ManageBillDelivery.Post_EBill_Email;
-                }
+                case MobileEnums.RenderingMethodEnum.EBill:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.Screens.ManageBillDelivery.EBill;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Email:
+                case MobileEnums.RenderingMethodEnum.Email:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.Screens.ManageBillDelivery.EBill_Email;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.Screens.ManageBillDelivery.EBill_Paper;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.Email_Paper:
+                case MobileEnums.RenderingMethodEnum.EBill_Email_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.Screens.ManageBillDelivery.EBill_Email_Paper;
+                        break;
+                    }
+                default:
+                    {
+                        dynatraceTag = string.Empty;
+                        break;
+                    }
             }
-            else
-            {
-                if (billRenderingResponse.Content.CurrentRenderingMethod == RenderingMethodEnum.Paper
-                    || billRenderingResponse.Content.CurrentRenderingMethod == RenderingMethodEnum.EBill_Paper)
-                {
-                    dynatraceTag = DynatraceConstants.DBR.Screens.ManageBillDelivery.Pre_EBill_Paper;
-                }
-                else if (billRenderingResponse.Content.CurrentRenderingMethod == RenderingMethodEnum.EBill_Email_Paper)
-                {
-                    dynatraceTag = DynatraceConstants.DBR.Screens.ManageBillDelivery.Pre_EBill_Email_Paper;
-                }
-                else if (_billRenderingResponse.Content.CurrentRenderingMethod == RenderingMethodEnum.EBill_Email)
-                {
-                    dynatraceTag = DynatraceConstants.DBR.Screens.ManageBillDelivery.Post_EBill_Email;
-                }
-            }
-            if (dynatraceTag.IsValid())
-            {
-                DynatraceHelper.OnTrack(dynatraceTag);
-            }
+            DynatraceHelper.OnTrack(dynatraceTag);
         }
 
         private void SetDynatraceCTATags()
@@ -587,40 +585,38 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             {
                 return;
             }
-            string dynatraceTag = string.Empty;
-            if (_billRenderingResponse.Content.IsPostConversion)
+            string dynatraceTag;
+            switch (_billRenderingResponse.Content.CurrentRenderingMethod)
             {
-                if (_billRenderingResponse.Content.PreviousRenderingMethod == RenderingMethodEnum.None
-                    && _billRenderingResponse.Content.CurrentRenderingMethod == RenderingMethodEnum.EBill)
-                {
-                    dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.Post_EBill;
-                }
-                else if (_billRenderingResponse.Content.PreviousRenderingMethod == RenderingMethodEnum.EBill_Email_Paper
-                   && _billRenderingResponse.Content.CurrentRenderingMethod == RenderingMethodEnum.EBill_Email)
-                {
-                    dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.Post_EBill_Email;
-                }
+                case MobileEnums.RenderingMethodEnum.EBill:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.EBill;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Email:
+                case MobileEnums.RenderingMethodEnum.Email:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.EBill_Email;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.EBill_Paper;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.Email_Paper:
+                case MobileEnums.RenderingMethodEnum.EBill_Email_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.EBill_Email_Paper;
+                        break;
+                    }
+                default:
+                    {
+                        dynatraceTag = string.Empty;
+                        break;
+                    }
             }
-            else
-            {
-                if (_billRenderingResponse.Content.CurrentRenderingMethod == RenderingMethodEnum.Paper
-                    || _billRenderingResponse.Content.CurrentRenderingMethod == RenderingMethodEnum.EBill_Paper)
-                {
-                    dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.Pre_EBill_Paper;
-                }
-                else if (_billRenderingResponse.Content.CurrentRenderingMethod == RenderingMethodEnum.EBill_Email_Paper)
-                {
-                    dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.Pre_EBill_Email_Paper;
-                }
-                else if (_billRenderingResponse.Content.CurrentRenderingMethod == RenderingMethodEnum.EBill_Email)
-                {
-                    dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.Post_EBill_Email;
-                }
-            }
-            if (dynatraceTag.IsValid())
-            {
-                DynatraceHelper.OnTrack(dynatraceTag);
-            }
+            DynatraceHelper.OnTrack(dynatraceTag);
         }
 
         public void OnDisplayMicrosite()
