@@ -121,7 +121,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 if (BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
                 {
                     DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Confirm);
-                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Start_Paperless);
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Start_Paperless_Success);
                 }
                 else
                 {
