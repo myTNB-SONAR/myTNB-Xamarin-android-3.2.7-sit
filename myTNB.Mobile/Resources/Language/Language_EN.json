@@ -2353,7 +2353,8 @@
   "EnregyBudgetListing": {
     "title": "Select Smart Meter Account",
     "tootltipTitle": "Why are some of my accounts not listed?",
-    "tooltipBody": "As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. Once your normal meter has been converted into Smart Meter, it will be automatically added into the list."
+    "tooltipBody": "As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. Once your normal meter has been converted into Smart Meter, it will be automatically added into the list.",
+    "headerTitle": "Let's get started by selecting your Smart Meter account"
   },
 
   "EnergyBudgetPopup": {

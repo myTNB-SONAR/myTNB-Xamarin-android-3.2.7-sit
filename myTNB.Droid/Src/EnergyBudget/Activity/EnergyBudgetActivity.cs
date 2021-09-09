@@ -40,6 +40,9 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
         [BindView(Resource.Id.infoLabelAccNotListed)]
         TextView infoLabelAccNotListed;
 
+        [BindView(Resource.Id.txttitleEBList)]
+        TextView txttitleEBList;
+
         EnergyBudgetContract.IUserActionsListener userActionsListener;
         EnergyBudgetPresenter mPresenter;
 
@@ -81,11 +84,14 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
                 SetToolBarTitle(Utility.GetLocalizedLabel("EnregyBudgetListing", "title"));
-                infoLabelAccNotListed.Text = Utility.GetLocalizedLabel("EnregyBudgetListing", "tootltipTitle");
 
                 TextViewUtils.SetMuseoSans500Typeface(infoLabelAccNotListed);
+                TextViewUtils.SetMuseoSans300Typeface(txttitleEBList);
+                TextViewUtils.SetTextSize14(txttitleEBList);
                 TextViewUtils.SetTextSize13(infoLabelAccNotListed);
-                //infoLabelAccNotListed.TextSize = TextViewUtils.GetFontSize(13f);
+
+                txttitleEBList.Text = Utility.GetLocalizedLabel("EnregyBudgetListing", "headerTitle");
+                infoLabelAccNotListed.Text = Utility.GetLocalizedLabel("EnregyBudgetListing", "tootltipTitle");
 
                 listSmartMeter = UserSessions.GetEnergyBudgetList();
 

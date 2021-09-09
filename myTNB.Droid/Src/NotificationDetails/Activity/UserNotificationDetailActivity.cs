@@ -440,7 +440,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             MyTNBAccountManagement.GetInstance().SetIsFromViewTips(true);
             Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
             webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("PushNotificationDetails", "viewTipsURL"));
-            webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("PushNotificationList", "title"));
+            webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("PushNotificationDetails", "energyBudgetSavingTips"));
             this.StartActivity(webIntent);
         }
 

@@ -2345,7 +2345,8 @@
   "EnregyBudgetListing": {
     "title": "Pilih Akaun Meter Pintar",
     "tootltipTitle": "Mengapakah sesetengah akaun saya tidak disenaraikan?",
-    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Apabila meter anda telah ditukarkan ke meter pintar, akaun tersebut akan ditambah secara automatik ke dalam senarai ini."
+    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Apabila meter anda telah ditukarkan ke meter pintar, akaun tersebut akan ditambah secara automatik ke dalam senarai ini.",
+    "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"
   },
 
   "EnergyBudgetPopup": {
