@@ -197,6 +197,38 @@ namespace myTNB_Android.Src.Database.Model
             return newRecordRow;
         }
 
+        public static int InsertOrReplace(CustomerAccountListResponseAppLaunch.CustomerAccountData accountResponse, bool isSelected)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+
+            var newRecord = new CustomerBillingAccount()
+            {
+                //Type = accountResponse.Type,
+                AccNum = accountResponse.AccountNumber,
+                AccDesc = string.IsNullOrEmpty(accountResponse.AccDesc) == true ? "--" : accountResponse.AccDesc,
+                UserAccountId = accountResponse.UserAccountID,
+                ICNum = accountResponse.IcNum,
+                AmtCurrentChg = accountResponse.AmCurrentChg,
+                IsRegistered = accountResponse.IsRegistered,
+                IsPaid = accountResponse.IsPaid,
+                IsSelected = isSelected,
+                AccountTypeId = accountResponse.AccountTypeId,
+                AccountStAddress = accountResponse.AccountStAddress,
+                OwnerName = accountResponse.OwnerName,
+                AccountCategoryId = accountResponse.AccountCategoryId,
+                SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
+                IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
+                isOwned = accountResponse.IsOwned,
+                IsSMROnBoardingDontShowAgain = false,
+                IsPeriodOpen = false,
+                BudgetAmount = accountResponse.BudgetAmount
+            };
+
+            int newRecordRow = db.InsertOrReplace(newRecord);
+
+            return newRecordRow;
+        }
+
         public static int InsertOrReplace(CustomerBillingAccount account)
         {
 

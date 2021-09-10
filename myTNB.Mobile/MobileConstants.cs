@@ -44,12 +44,21 @@
         private const string SaltKeyPROD = "Salt-IT9LJQ3LJEAK5G2R35L5V6A5FUDO7A5B";
         private const string PassphrasePROD = "PW-myTNB-PROD";
 
+        //AWS GetAccount
+        public static string ApiDomainAWS = "http://core.stg-mytnb.com/api";
+        //"https://mytnb-core-staging-362772745.ap-southeast-1.elb.amazonaws.com/api";  //http://core.stg-mytnb.com/api/v1/account/Getaccountasmx
+
 #if DEBUG
-        public static string ApiDomain = PROD;
-        public const string ApiKeyId = ApiKeyIdPROD;
-        public const string SitecoreURL = SitecoreSIT;
+        public static string ApiDomain = SIT;
+        public const string ApiKeyId = ApiKeyIdDEV;
+        public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKeyDEV;
         internal const string PassPhrase = PassphraseDEV;
+        //public static string ApiDomain = PROD;
+        //public const string ApiKeyId = ApiKeyIdPROD;
+        //public const string SitecoreURL = SitecoreSIT;
+        //internal const string SaltKey = SaltKeyDEV;
+        //internal const string PassPhrase = PassphraseDEV;
 #elif MASTER || SIT
         public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;

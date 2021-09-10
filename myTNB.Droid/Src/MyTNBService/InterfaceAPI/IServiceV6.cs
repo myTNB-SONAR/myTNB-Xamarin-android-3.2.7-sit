@@ -17,6 +17,10 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v1/account/Getaccount")]
+        Task<T> GetCustomerAccountListAppLaunch<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/AddTNBAccountToUserReg")]
         Task<T> AddAccountToCustomer<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
