@@ -312,6 +312,15 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
+        public void ShowExceptionDashboard()
+        {
+
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(DashboardIntent);
+            
+        }
+
         public async void ShowApplicationStatusDetails()
         {
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();

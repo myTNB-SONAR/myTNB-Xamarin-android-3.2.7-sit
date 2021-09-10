@@ -438,19 +438,19 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             {
                                                 Utility.LoggingNonFatalError(apiException);
                                                 EvaluateServiceRetry();
-                                                //this.mView.ShowExceptionDashboard();
+                                                this.mView.ShowExceptionDashboard();
                                             }
                                             catch (JsonReaderException e)
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                                 EvaluateServiceRetry();
-                                                //this.mView.ShowExceptionDashboard();
+                                                this.mView.ShowExceptionDashboard();
                                             }
                                             catch (Exception e)
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                                 EvaluateServiceRetry();
-                                                //this.mView.ShowExceptionDashboard();
+                                                this.mView.ShowExceptionDashboard();
                                             }
                                         }
                                     }
