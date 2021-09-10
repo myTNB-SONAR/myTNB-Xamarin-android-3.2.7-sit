@@ -266,23 +266,30 @@ namespace myTNB_Android.Src.Billing.MVP
                 billRenderingResponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
                 if (billRenderingResponse != null)
                 {
-                    digital_container.Visibility = ViewStates.Visible;
-                    if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBill
-                        || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
+                    if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
                     {
-                        bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
+                        digital_container.Visibility = ViewStates.Gone;
                     }
-                    else if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Email
-                        || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
+                    else
                     {
-                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
+                        digital_container.Visibility = ViewStates.Visible;
+                        if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBill
+                            || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
+                        {
+                            bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
+                        }
+                        else if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Email
+                            || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
+                        {
+                            bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
+                        }
+                        if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+                        {
+                            bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
+                        }
+                        paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
+                        SetDynatraceScreenTags();
                     }
-                    if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
-                    {
-                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
-                    }
-                    paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
-                    SetDynatraceScreenTags();
                 }
             }
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
