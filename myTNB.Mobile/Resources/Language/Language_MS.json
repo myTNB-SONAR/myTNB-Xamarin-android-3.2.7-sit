@@ -2330,6 +2330,17 @@
             "type": "none"
           }
         ],
+        "GetEligibility": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
         "GenerateAccessToken": [
           {
             "code": "7200",
@@ -2463,6 +2474,10 @@
   },
   "ServiceConfiguration": {
     "Eligibility": {
+      "enabled": true,
+      "callInterval": 480
+    },
+    "GetEligibility": {
       "enabled": true,
       "callInterval": 480
     },
