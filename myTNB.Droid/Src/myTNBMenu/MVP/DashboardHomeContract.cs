@@ -36,7 +36,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// </summary>
 			void ShowFeedbackMenu();
 
-			void ShowHomeDBRCard(bool IsAccountDBREligible);
 
 			void ShowWhatsNewMenu();
 
@@ -181,8 +180,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			void OnResetEppTooltip();
 
 			void OnResetWhereIsMyAccNumber();
-
-		}
+        }
 
         public interface IUserActionsListener : IBasePresenter
 		{

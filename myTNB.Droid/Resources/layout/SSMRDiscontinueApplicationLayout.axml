@@ -243,6 +243,36 @@
 			android:gravity="bottom"
 			android:layout_gravity="bottom"
 			android:id="@+id/disconnectionConfirmationContainer">
+			<LinearLayout
+						android:id="@+id/checkBoxfroRegisterlayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="left|center"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="8dp"
+                        android:background="@color/white">
+                        <CheckBox
+                            android:id="@+id/checkboxCondition"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:checked="false"
+                            android:textSize="12dp"
+                            android:paddingTop="-4dp"
+                            android:layout_gravity="top"
+                            android:button="@drawable/checkbox_selector" />
+                        <TextView
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="12dp"
+                            android:id="@+id/txtTermsConditionsNew"
+                            android:textColorLink="@color/powerBlue"
+                            android:paddingLeft="3dp"
+                            android:layout_gravity="center_vertical"/>
+             </LinearLayout>
 			<TextView
 				android:textAppearance="?android:attr/textAppearanceSmall"
 				android:layout_width="match_parent"

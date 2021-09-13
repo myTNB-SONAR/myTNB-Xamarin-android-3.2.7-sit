@@ -56,8 +56,9 @@ namespace myTNB_Android.Src.Base.Activity
                 try
                 {
                     Configuration configuration = Resources.Configuration;
+                    DeviceSizeCache.FontScale = configuration.FontScale;
                     //System.Console.WriteLine("[DEBUG] FONT SCALE 1: " + configuration.FontScale);//2, 1.5, 1.3, 1.1
-                    configuration.FontScale = configuration.FontScale >= 1.3F ? 1.3f : configuration.FontScale;
+                    configuration.FontScale = DeviceSizeCache.FontScale;
                     //System.Console.WriteLine("[DEBUG] FONT SCALE 2: " + configuration.FontScale);//2, 1.5, 1.3, 1.1
 
                     DisplayMetrics metrics = Resources.DisplayMetrics;
@@ -118,7 +119,7 @@ namespace myTNB_Android.Src.Base.Activity
         private void EvaluateRequestPermissions()
         {
 #if DEBUG || DEVELOP
-            CrashManager.Register(this);
+            //CrashManager.Register(this);
 #endif
             if (CameraPermissionRequired())
             {

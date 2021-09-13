@@ -92,17 +92,9 @@ namespace myTNB_Android.Src.Utils
                 siteCoreLanguageId = SitecoreCmsEntity.SITE_CORE_ID.LANGUAGE_MS;
             }
 
-#if DEBUG 
+#if DEBUG
             LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
-            try
-            {// dynatrace
-                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_LOCAL);
-                dynaTrace.LeaveAction();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            DynatraceHelper.OnTrack(DynatraceConstants.SITECORE_REFER_LOCAL);
 #else
             string currentTimestamp = SitecoreCmsEntity.GetItemTimestampById(siteCoreLanguageId);
             string currentLanguageResource = SitecoreCmsEntity.GetItemById(siteCoreLanguageId);

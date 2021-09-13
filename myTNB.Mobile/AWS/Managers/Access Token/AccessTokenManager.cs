@@ -40,7 +40,7 @@ namespace myTNB.Mobile
                 AccessTokenRequest request = new AccessTokenRequest
                 {
                     Channel = AWSConstants.Channel,
-                    UserId = userID.IsValid() ? userID.ToUpper() : string.Empty
+                    UserId = userID ?? string.Empty
                 };
 
                 HttpResponseMessage rawResponse = await service.GenerateAccessToken(request

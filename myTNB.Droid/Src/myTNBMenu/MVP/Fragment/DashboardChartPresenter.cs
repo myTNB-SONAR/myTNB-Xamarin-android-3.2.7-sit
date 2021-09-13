@@ -116,6 +116,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         }
 
+        public void SaveEnergyBudgetAmmount(string accnum, int AmmSaveBudget)
+        {
+            SetEnergyBudget(accnum, AmmSaveBudget);
+        }
+
         private async Task GetAccountStatus()
         {
             try
@@ -662,7 +667,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.SetISMDMSDown(true);
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
-                    this.mView.SetMDMSDownRefreshMessage(usageHistoryResponse);
+                    this.mView.SetMDMSDownRefreshMessage(usageHistoryResponse); 
                     OnByRM();
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "8304")
@@ -691,6 +696,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         this.mView.OnSetBackendTariffDisabled(true);
                     }
+
                     this.mView.SetISMDMSDown(false);
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
                     OnByRM();
@@ -838,6 +844,52 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 else
                 {
                     this.mView.ShowViewBill();
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideProgress();
+                this.mView.ShowLoadBillRetryOptions();
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideProgress();
+                this.mView.ShowLoadBillRetryOptions();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideProgress();
+                this.mView.ShowLoadBillRetryOptions();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public async void SetEnergyBudget(string accnum, int amountEnergybudget)
+        {
+            this.mView.ShowProgress();
+            try
+            {
+                var saveEnergyBudgetResponse = await ServiceApiImpl.Instance.SaveEnergyBudget(new MyTNBService.Request.SaveEnergyBudgetRequest(accnum, amountEnergybudget));
+
+                this.mView.HideProgress();
+
+                if (saveEnergyBudgetResponse.IsSuccessResponse())
+                {
+                    this.mView.UpdateEnergyBudgetLocal(amountEnergybudget.ToString(), accnum);
+                    if (amountEnergybudget > 0)
+                    {
+                        this.mView.ShowEnergyBudgetSuccess();
+                    }
+                    else if (amountEnergybudget == 0)
+                    {
+                        this.mView.ShowSMStatisticCard();
+                    }
+                }
+                else
+                {
+                    this.mView.ShowErrorMessageResponse(saveEnergyBudgetResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

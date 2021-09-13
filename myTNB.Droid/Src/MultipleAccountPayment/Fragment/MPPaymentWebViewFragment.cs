@@ -251,7 +251,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             try
             {
                 Android.Content.Res.Configuration configuration = Resources.Configuration;
-                configuration.FontScale = 1.3F;
+                DeviceSizeCache.FontScale = configuration.FontScale;
+                configuration.FontScale = DeviceSizeCache.FontScale;
                 DisplayMetrics metrics = Resources.DisplayMetrics;
                 metrics.ScaledDensity = configuration.FontScale * metrics.Density;
                 Resources.UpdateConfiguration(configuration, metrics);
@@ -399,8 +400,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 try
                 {
                     if (url.ToLower().Contains("statusreceipt.aspx")
-                        && url.ToLower().Contains("approved")
-                        || url.ToLower().Contains("paystatusreceipt"))
+                        || url.ToLower().Contains("paystatusreceipt")
+                        && url.ToLower().Contains("approved"))
                     {
                         this.mActivity.ShouldBackToHome = true;
                         DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_SUCCESS);
@@ -411,7 +412,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         ((PaymentActivity)mActivity).HideToolBar();
                         progressBar.Visibility = ViewStates.Gone;
                     }
-                    else if (url.ToLower().Contains("statusreceipt.aspx") || url.ToLower().Contains("paystatusreceipt") && url.ToLower().Contains("failed"))
+                    else if (url.ToLower().Contains("statusreceipt.aspx")
+                        || url.ToLower().Contains("paystatusreceipt")
+                        && url.ToLower().Contains("failed"))
                     {
                         this.mActivity.ShouldBackToHome = true;
                         DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_FAIL);

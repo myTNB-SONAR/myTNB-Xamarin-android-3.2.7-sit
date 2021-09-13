@@ -1,7 +1,4 @@
-﻿using System;
-using Android.Content.Res;
-using Android.OS;
-using Android.Util;
+﻿using Android.OS;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.Base.Activity

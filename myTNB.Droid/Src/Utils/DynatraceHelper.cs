@@ -11,6 +11,11 @@ namespace myTNB_Android
         {
             try
             {
+                if (!actionName.IsValid())
+                {
+                    Log.Debug("[DEBUG]", "[Warning] Dynatrace Track: actionName is Empty");
+                    return;
+                }
                 IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(actionName);
                 if (dynaTrace != null)
                 {

@@ -110,7 +110,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         }
 
-        public void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, List<Models.AddAccount> accounts)
+        public void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, List<Models.AddAccountV2> accounts)
         {
             try
             {
@@ -128,7 +128,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
             }
         }
 
-        private async void AddMultipleAccountsAsync(string apiKeyId, string sspUserID, string email, List<Models.AddAccount> accounts)
+        private async void AddMultipleAccountsAsync(string apiKeyId, string sspUserID, string email, List<Models.AddAccountV2> accounts)
         {
             try
             {
@@ -137,7 +137,9 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     mView.ShowAddingAccountProgressDialog();
                 }
 
-                AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts(new AddAccountsRequest(accounts));
+                AddAccountsRequest addaccountsRequest = new AddAccountsRequest(accounts);
+                addaccountsRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
+                AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts(addaccountsRequest);
 
                 if (result.IsSuccessResponse())
                 {

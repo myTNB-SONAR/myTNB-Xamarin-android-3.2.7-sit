@@ -38,6 +38,12 @@ namespace myTNB_Android.Src.Base
         private bool IsNotificationListFromLaunch = false;
         private bool IsUpdateAppLanguage = false;
         private bool IsUpdateAppLargeFont = false;
+        private bool IsFromLogin = false;
+        private bool IsEBUser = false;
+        private bool IsMaybeLater = false;
+        private bool IsFromApiEB = false;
+        private bool IsOnHold = false;
+
 
         private MyTNBAccountManagement()
         {
@@ -617,6 +623,56 @@ namespace myTNB_Android.Src.Base
         public bool IsNotificationsFromLaunch()
         {
             return IsNotificationListFromLaunch;
+        }
+
+        public void SetFromLoginPage(bool isFromLaunch)
+        {
+            IsFromLogin = isFromLaunch;
+        }
+
+        public bool IsFromLoginPage()
+        {
+            return IsFromLogin;
+        }
+
+        public void SetIsEBUser(bool EBuser)
+        {
+            IsEBUser = EBuser;
+        }
+
+        public bool IsEBUserVerify()
+        {
+            return IsEBUser;
+        }
+
+        public void SetMaybeLater(bool maybeLater)
+        {
+            IsMaybeLater = maybeLater;
+        }
+
+        public bool IsMaybeLaterFlag()
+        {
+            return IsMaybeLater;
+        }
+
+        public void SetFinishApiEB(bool isfromapiEb)
+        {
+            IsFromApiEB = isfromapiEb;
+        }
+
+        public bool IsFromApiEBFinish()
+        {
+            return IsFromApiEB;
+        }
+
+        public void OnHoldWhatNew(bool isonhold)
+        {
+            IsOnHold = isonhold;
+        }
+
+        public bool IsOnHoldWhatNew()
+        {
+            return IsOnHold;
         }
     }
 }

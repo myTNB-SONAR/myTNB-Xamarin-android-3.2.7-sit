@@ -31,7 +31,10 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
 using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponse;
 using myTNB;
-using Firebase.Iid;
+using System.Net.Http;
+using myTNB_Android.Src.myTNBMenu.Async;
+using fbm = Firebase.Messaging;
+using Android.Gms.Extensions;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -124,8 +127,17 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
             else
             {
-                fcmToken = FirebaseInstanceId.Instance.Token;
-                FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
+                try
+                {
+                    var token = await fbm.FirebaseMessaging.Instance.GetToken();
+                    fcmToken = token.ToString();
+                    FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
             }
             System.Diagnostics.Debug.WriteLine("[DEBUG] FCM TOKEN: " + fcmToken);
             Log.Debug("[DEBUG]", "FCM TOKEN: " + fcmToken);
@@ -141,6 +153,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             try
             {
                 UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
+
                 AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
                       (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));
                 if (masterDataResponse != null && masterDataResponse.Response != null)
@@ -176,7 +189,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         bool phoneVerified = UserSessions.GetPhoneVerifiedFlag(mSharedPref);
                                         if (!phoneVerified)
                                         {
-                                            var phoneVerifyResponse = await ServiceApiImpl.Instance.PhoneVerifyStatus(new BaseRequest());
+                                            var phoneVerifyResponse = await ServiceApiImpl.Instance.PhoneVerifyStatus(new MyTNBService.Request.BaseRequest());
 
                                             if (phoneVerifyResponse != null && phoneVerifyResponse.Response != null &&
                                                 phoneVerifyResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
@@ -270,9 +283,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             , loggedUser.UserName
                                             , UserSessions.GetDeviceId()
                                             , DeviceIdUtils.GetAppVersionName()
+                                            , myTNB.Mobile.MobileConstants.OSType.Android
                                             , TextViewUtils.FontInfo
-                                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
-                                        AppInfoManager.Instance.SetPlatformUserInfo(new BaseRequest().usrInf);
+                                            , LanguageUtil.GetAppLanguage() == "MS"
+                                                ? LanguageManager.Language.MS
+                                                : LanguageManager.Language.EN);
+                                        AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
+
+                                        bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
 
                                         if (UserSessions.GetNotificationType(mSharedPref) != null
                                             && "APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper())
@@ -289,6 +307,13 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                                             this.mView.OnShowManageBillDelivery();
                                             UserSessions.RemoveNotificationSession(mSharedPref);
+                                        }
+                                        else if (hasNotification && isLoggedInEmail && UserSessions.Notification != null)
+                                        {
+                                            UserSessions.RemoveNotificationSession(mSharedPref);
+                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
+                                            MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
+                                            this.mView.ShowNotificationDetails();
                                         }
                                         else if (hasNotification && (isODNType || isLoggedInEmail))
                                         {
@@ -315,6 +340,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                     DeviceIdNew = this.mView.GetDeviceId()
                                                 }, CancellationTokenSourceWrapper.GetToken());
                                             }
+                                            MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
                                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                                             this.mView.ShowDashboard();
@@ -334,6 +360,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         , string.Empty
                                         , UserSessions.GetDeviceId()
                                         , DeviceIdUtils.GetAppVersionName()
+                                        , myTNB.Mobile.MobileConstants.OSType.Android
                                         , TextViewUtils.FontInfo
                                         , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                     mView.ShowPreLogin();
@@ -393,6 +420,63 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 EvaluateServiceRetry();
             }
         }
+
+        public async void OnShowNotificationDetails(string NotificationTypeId, string BCRMNotificationTypeId, string NotificationRequestId)
+        {
+            try
+            {
+                this.mView.ShowProgress();
+                UserNotificationDetailsRequestNew request = new UserNotificationDetailsRequestNew(NotificationTypeId, BCRMNotificationTypeId, NotificationRequestId);
+                string dt = JsonConvert.SerializeObject(request);
+                UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetailsByRequestId(request);
+                if (response.IsSuccessResponse())
+                {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
+                    UserNotificationEntity.UpdateIsRead(response.GetData().UserNotificationDetail.Id, true);
+                    this.mView.ShowDetails(response.GetData().UserNotificationDetail);
+                    UserSessions.ClearNotification();
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsCancelledException(null);
+                }
+
+                ////MOCK RESPONSE
+                //this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
+                this.mView.HideProgressDialog();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         /// <summary>
         /// Evaluate failed AppLaunchMasterData service for retry.
@@ -456,7 +540,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 if (UserEntity.IsCurrentlyActive())
                 {
-                    this.mView.ShowNotification();
+                    if (UserSessions.Notification != null)
+                    {
+                        this.mView.ShowNotificationDetails();
+                    }
+                    else
+                    {
+                        this.mView.ShowNotification();
+                    }
                 }
             }
             catch (Exception e)

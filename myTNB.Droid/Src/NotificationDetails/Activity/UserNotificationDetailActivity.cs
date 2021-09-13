@@ -51,9 +51,11 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         Models.NotificationDetails notificationDetails;
         UserNotificationData userNotificationData;
+        internal static myTNB.Mobile.NotificationOpenDirectDetails Notification;
         int position;
         UserNotificationDetailPresenter mPresenter;
         AlertDialog removeDialog;
+        public bool pushFromDashboard = false;
 
         public override int ResourceId()
         {
@@ -111,6 +113,11 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             base.OnBackPressed();
         }
 
+        public void ReturnToDashboard()
+        {
+            Finish();
+        }
+
         public void OnClickSpan(string textMessage)
         {
             if (textMessage != null && textMessage.Contains("http"))
@@ -129,7 +136,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                         StartActivity(intent);
                     }
                 }
-            }else if(textMessage != null && textMessage.Contains("faq"))
+            }
+            else if (textMessage != null && textMessage.Contains("faq"))
             {
                 //Lauch FAQ
                 int startIndex = textMessage.LastIndexOf("=") + 1;
@@ -163,6 +171,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                         notificationDetails = DeSerialze<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
                     }
 
+                    if (extras.ContainsKey(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM))
+                    {
+                        Notification = DeSerialze<myTNB.Mobile.NotificationOpenDirectDetails>(extras.GetString(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM));
+                        pushFromDashboard = true;
+                    }
+
                     if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_LIST_ITEM))
                     {
                         userNotificationData = DeSerialze<UserNotificationData>(extras.GetString(Constants.SELECTED_NOTIFICATION_LIST_ITEM));
@@ -182,8 +196,21 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     notificationMainLayout.SetBackgroundColor(Color.ParseColor("#ffffff"));
                 }
 
-                mPresenter.EvaluateDetail(notificationDetails);
-                RenderUI();
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100
+                        || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_TC || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_RC)
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "EnergyBudgetTitle"));
+                }
+
+                if (pushFromDashboard)
+                {
+                    mPresenter.OnShowNotificationDetails(Notification.Type, Notification.EventId, Notification.RequestTransId);
+                }
+                else
+                {
+                    mPresenter.EvaluateDetail(notificationDetails);
+                    RenderUI();
+                }
             }
             catch (Exception e)
             {
@@ -191,7 +218,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
-        private void RenderUI()
+        public void RenderUI()
         {
             try
             {
@@ -205,7 +232,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     ctaComponent.Visibility = ViewStates.Visible;
 
                     notificationDetailBannerImg.SetImageResource(detailModel.imageResourceBanner);
+
                     notificationDetailTitle.Text = detailModel.title;
+
                     notificationDetailMessage.TextFormatted = GetFormattedText(detailModel.message);
 
                     if (detailModel.message != null)
@@ -235,7 +264,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     ctaComponent.Visibility = ViewStates.Gone;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -366,9 +395,19 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             CustomerBillingAccount.SetSelected(mSelectedAccountData.AccountNum);
 
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-            DashboardIntent.PutExtra("FROM_NOTIFICATION",true);
+            DashboardIntent.PutExtra("FROM_NOTIFICATION", true);
             MyTNBAccountManagement.GetInstance().SetIsAccessUsageFromNotification(true);
             StartActivity(DashboardIntent);
+        }
+
+        public void ViewTips()
+        {
+            CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_tips);
+            FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_tips);
+            Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+            webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("PushNotificationDetails", "viewTipsURL"));
+            webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("PushNotificationList", "title"));
+            this.StartActivity(webIntent);
         }
 
         public void ViewDetails(AccountData mSelectedAccountData)
@@ -401,8 +440,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.PutExtra("FROM_NOTIFICATION", true);
-            DashboardIntent.PutExtra("MENU","BillMenu");
-            DashboardIntent.PutExtra("DATA",JsonConvert.SerializeObject(mSelectedAccountData));
+            DashboardIntent.PutExtra("MENU", "BillMenu");
+            DashboardIntent.PutExtra("DATA", JsonConvert.SerializeObject(mSelectedAccountData));
             StartActivity(DashboardIntent);
         }
 

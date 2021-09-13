@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.Content.Res;
 using Android.Net.Http;
 using Android.OS;
+using Android.Util;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
@@ -40,6 +41,8 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         private const string SELECTED_ACCOUNT_KEY = ".selectedAccount";
 
         private string _accountNumber = string.Empty;
+
+        internal bool ShouldBackToHome = false;
 
         public bool IsActive()
         {
@@ -102,11 +105,34 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 SetToolBarTitle(GetLabelByLanguage(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
                     ? "goPaperless"
                     : "updateBillDelivery"));
+                OnTag();
                 ShowDigitalBill(true);
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void OnTag(bool isWebViewClient = false)
+        {
+            if (isWebViewClient)
+            {
+                if (BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Confirm);
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Start_Paperless_Success);
+                }
+                else
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Back_To_Paper_Confirm);
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Back_To_Paper_Success);
+                }
+            }
+            else {
+                DynatraceHelper.OnTrack(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
+                    ? DynatraceConstants.DBR.Screens.Webview.Start_Paperless
+                    : DynatraceConstants.DBR.Screens.Webview.Back_To_Paper);
             }
         }
 
@@ -131,8 +157,18 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DBRWebview", "confirm"))
                 .SetSecondaryCTAaction(() =>
                 {
-                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Close_Confirm);
-                    OnBackPressed();
+                    DynatraceHelper.OnTrack(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
+                        ? DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Close
+                        : DynatraceConstants.DBR.CTAs.Webview.Back_To_Paper_Close);
+                    Log.Debug("[DEBUG]", "ShouldBackToHome: " + ShouldBackToHome);
+                    if (ShouldBackToHome)
+                    {
+                        OnShowDashboard();
+                    }
+                    else
+                    {
+                        OnBackPressed();
+                    }
                 })
                 .IsIconImage(true)
                 .SetContentGravity(GravityFlags.Center)
@@ -160,7 +196,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     , (LanguageUtil.GetAppLanguage() == "MS"
                         ? LanguageManager.Language.MS
                         : LanguageManager.Language.EN).ToString()
-                    , TextViewUtils.FontSelected ?? "N"
+                    , TextViewUtils.FontInfo ?? "N"
                     , BillRendering.Content.OriginURL
                     , BillRendering.Content.RedirectURL
                     , _accountNumber);
@@ -250,8 +286,8 @@ namespace myTNB_Android.Src.DigitalBill.Activity
 
         public class MyTNBWebViewClient : WebViewClient
         {
-            public DigitalBillActivity mActivity;
-            public ProgressBar progressBar;
+            private DigitalBillActivity mActivity;
+            private ProgressBar progressBar;
 
             public MyTNBWebViewClient(DigitalBillActivity mActivity)
             {
@@ -263,6 +299,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 bool shouldOverride = false;
                 if (ConnectionUtils.HasInternetConnection(mActivity))
                 {
+                    Log.Debug("[DEBUG]", "MyTNBWebViewClient url: " + url.ToString());
                     if (url.Contains("mytnbapp://action=backToApp"))
                     {
                         mActivity.OnBackPressed();
@@ -273,6 +310,13 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                         mActivity.OnShowDashboard();
                         shouldOverride = true;
                     }
+
+                    //Update for X button
+                    if (url.ToString().Contains("BillDelivery/Success"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                    }
+                    Log.Debug("[DEBUG]", "MyTNBWebViewClient ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }
                 return shouldOverride;
             }
@@ -282,6 +326,14 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 try
                 {
                     base.OnPageStarted(view, url, favicon);
+                    Log.Debug("[DEBUG]", "OnPageStarted url: " + url.ToString());
+                    //Update for X button
+                    if (url.ToString().Contains("BillDelivery/Success"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                        mActivity.OnTag(true);
+                    }
+                    Log.Debug("[DEBUG]", "OnPageStarted ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }
                 catch (System.Exception e)
                 {
@@ -293,7 +345,13 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             {
                 try
                 {
-
+                    Log.Debug("[DEBUG]", "OnPageFinished url: " + url.ToString());
+                    //Update for X button
+                    if (url.ToString().Contains("BillDelivery/Success"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                    }
+                    Log.Debug("[DEBUG]", "OnPageFinished ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }
                 catch (System.Exception e)
                 {

@@ -171,7 +171,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 this.userActionsListener.OnUpdateNickname();
             }
         }
-
+        
         [OnClick(Resource.Id.btnRemoveAccount)]
         void OnClickRemoveAccount(object sender, EventArgs eventArgs)
         {
@@ -188,6 +188,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

@@ -15,6 +15,7 @@ using myTNB_Android.Src.Base;
 using System.Text.RegularExpressions;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
+using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.Notifications.Adapter
 {
@@ -142,6 +143,14 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.icons_display_digital_bill));
                 }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_listing_eb_icon));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_listing_eb_icon));
+                }
                 else
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_generic));
@@ -151,6 +160,26 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
                 string notificationAccountName = MyTNBAccountManagement.GetInstance().GetNotificationAccountName(notificationData.AccountNum);
                 viewHolder.txtNotificationContent.Text = Regex.Replace(notificationData.Message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
+
+                if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_PROFILENAME_PATTERN))
+                {
+                    viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
+                }
+                if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
+                {
+                    viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + notificationAccountName + "\"");
+                }
+
+                /*if (notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100
+                    || notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_TC || notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_RC)
+                {
+
+                    string message = Regex.Replace(notificationData.Message, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
+                    message = Regex.Replace(message, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + notificationAccountName + "\"");
+                    string ebMessage = Regex.Replace(message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
+                    viewHolder.txtNotificationContent.Text = ebMessage;
+
+                }*/
 
                 if (notificationData.ShowSelectButton)
                 {

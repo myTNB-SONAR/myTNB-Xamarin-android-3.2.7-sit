@@ -44,12 +44,11 @@ namespace myTNB.Mobile
         public async Task<GetEligibilityResponse> GetEligibility(string userID
             , string accessToken)
         {
-            //userID = "0D1568D9-7770-4345-84BD-04C2C56A2069";
             GetEligibilityResponse response = new GetEligibilityResponse();
             try
             {
                 IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.GetEligibility);
-                HttpResponseMessage rawResponse = await service.GetEligibility(userID.IsValid() ? userID.ToUpper() : string.Empty
+                HttpResponseMessage rawResponse = await service.GetEligibility(userID ?? string.Empty
                    , NetworkService.GetCancellationToken()
                    , accessToken
                    , AppInfoManager.Instance.ViewInfo);
@@ -88,6 +87,7 @@ namespace myTNB.Mobile
                         response.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                 }
+
                 Debug.WriteLine("[DEBUG] GetEligibility: " + JsonConvert.SerializeObject(response));
                 return response;
             }

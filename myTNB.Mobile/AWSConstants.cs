@@ -57,8 +57,8 @@
             internal const string GetEligibility = "https://api.mytnb.com.my/Eligibility/api/v1";
             internal const string GetBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
             internal const string GetMultiBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
-            internal const string GetInstallationDetails = "https://dbr.mytnb.com.my/SapPi/api/v1";
-            internal const string GetMultiInstallationDetails = "https://dbr.mytnb.com.my/SapPi/api/v1";
+            internal const string GetInstallationDetails = "https://api.mytnb.com.my/SapPi/api/v1";
+            internal const string GetMultiInstallationDetails = "https://api.mytnb.com.my/SapPi/api/v1";
             internal const string StartDigitalBill = "https://dbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://dbr.mytnb.com.my/PaperBill/OptIn";
             public const string SSO = "https://dbr.mytnb.com.my/Sso?s={0}";

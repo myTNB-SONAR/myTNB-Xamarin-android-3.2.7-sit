@@ -1,6 +1,7 @@
 ﻿using System;
 using Android.Content;
 using Android.Preferences;
+using Android.Util;
 using myTNB.Mobile;
 
 namespace myTNB_Android.Src.DeviceCache
@@ -43,6 +44,7 @@ namespace myTNB_Android.Src.DeviceCache
 #pragma warning restore CS0618 // Type or member is obsolete
                 Token = preferences.GetString(MobileConstants.SharePreferenceKey.AccessToken, string.Empty) ?? string.Empty;
             }
+            Log.Debug("Access Token", Token);
             return Token;
         }
 
@@ -51,6 +53,11 @@ namespace myTNB_Android.Src.DeviceCache
             string tkn = GetAccessToken(activity);
             return !string.IsNullOrEmpty(tkn)
                 && !string.IsNullOrWhiteSpace(tkn);
+        }
+
+        internal void Clear()
+        {
+            Token = string.Empty;
         }
     }
 }

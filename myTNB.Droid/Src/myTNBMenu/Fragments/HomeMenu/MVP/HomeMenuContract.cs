@@ -105,7 +105,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowFAQFromHide();
 
             bool GetHomeTutorialCallState();
-
+            
+            void EBPopupActivity();
+            
+            void ShowDiscoverMoreLayout();
         }
 
         public interface IHomeMenuPresenter
@@ -123,7 +126,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetFAQTimeStamp();
             void ReadNewFAQFromCache();
             Task OnGetFAQs();
-            Task OnGetDBR(bool isDBR);
             void LoadLocalAccounts();
 			void LoadSummaryDetailsInBatch(List<string> accountNumbers);
 

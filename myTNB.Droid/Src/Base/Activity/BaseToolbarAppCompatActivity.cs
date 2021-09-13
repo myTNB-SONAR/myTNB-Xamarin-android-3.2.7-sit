@@ -4,7 +4,6 @@ using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Text;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;

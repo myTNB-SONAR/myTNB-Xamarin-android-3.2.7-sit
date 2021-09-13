@@ -106,6 +106,19 @@ namespace myTNB.Mobile
             public const string AccessToken = "AccessToken";
         }
 
+        public struct PushNotificationTypes
+        {
+            public const string DBR_Owner = "DBROWNER";
+            public const string APPLICATIONSTATUS = "APPLICATIONSTATUS";
+        }
+
+        public struct OSType
+        {
+            public const string Android = "1";
+            public const string iOS = "2";
+            public const string Huawei = "3";
+        }
+
         internal struct BillRenderingCodes
         {
             internal const string Owner_EBill = "ZV04";
@@ -115,12 +128,6 @@ namespace myTNB.Mobile
             internal const string BC_EBill = "ZNTF";
             internal const string BC_EMail = "ZEML";
             internal const string BC_Paper = "ZINV";
-        }
-
-        public struct PushNotificationTypes
-        {
-            public const string DBR_Owner = "DBROWNER";
-            public const string APPLICATIONSTATUS = "APPLICATIONSTATUS";
         }
 
         internal static List<string> ResidentialTariffTypeList = new List<string>

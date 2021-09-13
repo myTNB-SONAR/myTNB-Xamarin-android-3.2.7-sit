@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using myTNB.Mobile;
 using myTNB.Mobile.Extensions;
 using static myTNB.LanguageManager;
@@ -43,6 +44,7 @@ namespace myTNB
             , string userName
             , string deviceToken
             , string appVersion
+            , string osType
             , string fontSize = "N"
             , Language language = Language.EN)
         {
@@ -62,7 +64,8 @@ namespace myTNB
                     : string.Empty,
                 RoleId = roleID,
                 Lang = language.ToString(),
-                FontSize = fontSize.ToUpper() == "L" ? "L" : "N"
+                FontSize = fontSize.ToUpper() == "L" ? "L" : "N",
+                OSType = osType
             };
         }
 
@@ -74,6 +77,8 @@ namespace myTNB
             {
                 try
                 {
+                    ViewInfoHeader.AppVersion = Regex.Replace(ViewInfoHeader.AppVersion, @"\(.*?\)", "");
+                    ViewInfoHeader.AppVersion = Regex.Replace(ViewInfoHeader.AppVersion, @"[^0-9.,]+", "");
                     return Newtonsoft.Json.JsonConvert.SerializeObject(ViewInfoHeader);
                 }
                 catch (Exception e)

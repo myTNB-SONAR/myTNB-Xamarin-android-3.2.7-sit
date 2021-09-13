@@ -91,6 +91,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Image = "walkthrough_img_install_8"
                     });
                 }
+
             }
             else
             {
