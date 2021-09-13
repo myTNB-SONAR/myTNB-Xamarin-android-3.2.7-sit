@@ -20,7 +20,7 @@
             android:id="@+id/rootView"
             android:layout_weight="1"
             android:layout_height="0dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:orientation="vertical"
             android:background="@color/lightGrey">
             <ListView
@@ -35,37 +35,33 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/no_account_layout"
                 android:visibility="visible">
-                <LinearLayout
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-                   <TextView
-                        android:id="@+id/txtMyAccountNoAccountTitle"
-                        android:text="@string/dashboard_chartview_no_account_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="14sp"
-                        android:gravity="center_vertical" />
+              <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="16dp">
+                    <ImageView
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginTop="80dp"
+                        android:layout_marginBottom="8dp"
+                        android:id="@+id/imgEmptyCard"
+                        android:src="@drawable/empty_electricity_accounts" />
                     <TextView
                         android:id="@+id/txtMyAccountNoAccountContent"
-                        android:text="@string/dashboard_chartview_no_account_content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="12sp"
-                        android:gravity="center" />
-                    <Button
-                        android:id="@+id/btnAddAccount"
-                        android:text="@string/dashboard_chartview_no_account_add_account"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAllCaps="false"
-                        android:layout_marginTop="15dp"
-                        style="@style/LightButton"/>
+                        android:padding="16dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="#8b8b8b"
+                        android:textSize="14dp"
+                        android:lineSpacingExtra="3dp"
+                        android:text="@string/manage_cards_no_cards" />
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

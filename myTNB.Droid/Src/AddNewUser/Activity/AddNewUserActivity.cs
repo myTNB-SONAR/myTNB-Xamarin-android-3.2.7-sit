@@ -111,8 +111,9 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtValue, itemTitleFullBill, itemTitleBilling, infoAddress);
                 TextViewUtils.SetMuseoSans500Typeface(txtAddNewUserTitle, txtNewUserOptionalTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnAddUser);
-                TextViewUtils.SetTextSize14(itemTitleFullBill, itemTitleBilling, txtUserEmail, txtValue, infoAddress
-                    , txtAddNewUserTitle, txtNewUserOptionalTitle, btnAddUser);
+
+                TextViewUtils.SetTextSize14(itemTitleFullBill, itemTitleBilling, txtUserEmail, txtValue, infoAddress, txtAddNewUserTitle, txtNewUserOptionalTitle, btnAddUser);
+
 
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("AddUserAccess", "viewFullElec");
                 itemTitleBilling.Text = Utility.GetLocalizedLabel("AddUserAccess", "applyEBilling");
@@ -147,12 +148,19 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             {
                 if (!this.GetIsClicked())
                 {
+                    //string address = "";
                     string email = txtUserEmail.Text.ToString().Trim();
                     this.SetIsClicked(true);
-                    string address = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
-                    this.userActionsListener.OnAddAccount(email, accountData.AccountNum, checkboxfullbill, checkboxbilling, address, accountData.AccountName);
 
-
+                    //if (!checkboxfullbill == true)
+                    //{
+                    //    address = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
+                    //}
+                    //else
+                    //{
+                    //    address = accountData.AddStreet;
+                    //}        
+                    this.userActionsListener.OnAddAccount(email, accountData.AccountNum, checkboxfullbill, checkboxbilling);
                     //ShowAddTNBUserSuccess();
                     //ShowAddNonTNBUserSuccess();
                 }
@@ -291,7 +299,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
         {
 
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                       .SetTitle((string.Format(Utility.GetLocalizedLabel("AddUserAccess", "toottipTitle"))))
+                       .SetTitle(string.Format(Utility.GetLocalizedLabel("AddUserAccess", "toottipTitle")))
                        .SetMessage(string.Format(Utility.GetLocalizedLabel("AddUserAccess", "tooltipBody")))
                        .SetContentGravity(GravityFlags.Left)
                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
@@ -377,20 +385,29 @@ namespace myTNB_Android.Src.AddNewUser.Activity
 
         }
 
-        public void ShowErrorMessageResponse(string error)
+        public void ShowErrorMessageResponse(string errorTitle, string errorDetail)
         {
-            Snackbar errorMessageSnackbar =
-            Snackbar.Make(rootView, error, Snackbar.LengthIndefinite)
-                        .SetAction(Utility.GetLocalizedCommonLabel("close"),
-                         (view) =>
-                         {
-                             // EMPTY WILL CLOSE SNACKBAR
-                         }
-                        );//.Show();
-            View snackbarView = errorMessageSnackbar.View;
-            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
-            textView.SetMaxLines(4);
-            errorMessageSnackbar.Show();
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(errorTitle)
+                        .SetMessage(errorDetail)
+                        .SetContentGravity(GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                        .Build().Show();
+
+          
+
+            //Snackbar errorMessageSnackbar =
+            //Snackbar.Make(rootView, error, Snackbar.LengthIndefinite)
+            //            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+            //             (view) =>
+            //             {
+            //                 // EMPTY WILL CLOSE SNACKBAR
+            //             }
+            //            );//.Show();
+            //View snackbarView = errorMessageSnackbar.View;
+            //TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            //textView.SetMaxLines(4);
+            //errorMessageSnackbar.Show();
         }
 
         public override void OnTrimMemory(TrimMemory level)

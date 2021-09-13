@@ -3,24 +3,27 @@ using Android.App;
 using Android.Content;
 using Android.Util;
 using Firebase.Iid;
+using Firebase.Messaging;
 using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.Firebase.Services
 {
     [Service]
     [IntentFilter(new[] { "com.google.firebase.INSTANCE_ID_EVENT" })]
-    internal class FirebaseTokenService : FirebaseInstanceIdService
+    internal class FirebaseTokenService : FirebaseMessagingService
     {
         readonly string TAG = typeof(FirebaseTokenService).Name;
 
-        public override void OnTokenRefresh()
+        public override void OnNewToken(string refreshToken)
         {
-            base.OnTokenRefresh();
-            var refreshToken = FirebaseInstanceId.Instance.Token;
-            Log.Debug(TAG, "Refreshed token: " + refreshToken);
+            base.OnNewToken(refreshToken);
+            Log.Debug(TAG, "Refreshed token :----------------> new FirebaseMessagingService API " + refreshToken);
 
-            FirebaseTokenEntity.RemoveLatest();
-            FirebaseTokenEntity.InsertOrReplace(refreshToken, true);
+            if (!string.IsNullOrEmpty(refreshToken))
+            {
+                FirebaseTokenEntity.RemoveLatest();
+                FirebaseTokenEntity.InsertOrReplace(refreshToken, true);
+            }
 
         }
     }

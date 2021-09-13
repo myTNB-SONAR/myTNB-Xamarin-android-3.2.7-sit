@@ -115,6 +115,12 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [JsonProperty("accountTypeId")]
         public string AccountTypeId { get; set; }
 
+        [JsonProperty(PropertyName = "IsHaveAccess")]
+        public bool IsHaveAccess { get; set; }
+
+        [JsonProperty(PropertyName = "IsApplyEBilling")]
+        public bool IsApplyEBilling { get; set; }
+
         internal static AccountData Copy(AccountDetails accountDetails, bool isSelected)
         {
             return new AccountData()
@@ -240,7 +246,9 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 AccountCategoryId = accountDetails.AccountCategoryId,
                 AccountTypeId = accountDetails.AccountTypeId,
                 SmartMeterCode = accountDetails.SmartMeterCode,
-                IsSelected = isSelected
+                IsSelected = isSelected,
+                IsHaveAccess = accountDetails.IsHaveAccess,
+                IsApplyEBilling = accountDetails.IsApplyEBilling
 
             };
         }

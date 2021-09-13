@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Text;
 using Android.Util;
 using Firebase.Iid;
+using fbm = Firebase.Messaging ;
 using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
@@ -27,6 +28,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Android.Gms.Extensions;
 
 namespace myTNB_Android.Src.Login.MVP
 {
@@ -35,6 +37,8 @@ namespace myTNB_Android.Src.Login.MVP
         public static readonly string TAG = "LoginPresenter";
         private LoginContract.IView mView;
         private ISharedPreferences mSharedPref;
+        //DateTime referenceDate;
+
 
         CancellationTokenSource cts;
 
@@ -108,13 +112,15 @@ namespace myTNB_Android.Src.Login.MVP
                 }
                 if (string.IsNullOrEmpty(fcmToken) || string.IsNullOrWhiteSpace(fcmToken))
                 {
-                    fcmToken = FirebaseInstanceId.Instance.Token;
+                    var fcmData= await fbm.FirebaseMessaging.Instance.GetToken();
+                    fcmToken = fcmData.ToString();
                     FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
+
                 }
                 Log.Debug(TAG, "[DEBUG] FCM TOKEN: " + fcmToken);
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
                 userAuthRequest.SetUserName(usrNme);
-                //string dt = JsonConvert.SerializeObject(userAuthRequest);
+                string dt = JsonConvert.SerializeObject(userAuthRequest);
                 var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthRequest);
 
                 if (!userResponse.IsSuccessResponse())
@@ -277,9 +283,12 @@ namespace myTNB_Android.Src.Login.MVP
                         int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                         if (Id > 0)
                         {
+                            //string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+                            
                             UserEntity.UpdateDeviceId(deviceId);
 
-                            CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(new BaseRequest());
+                            GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest();
+                            CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
                             if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                             {
                                 if (customerAccountListResponse.GetData().Count > 0)
@@ -528,7 +537,9 @@ namespace myTNB_Android.Src.Login.MVP
                             OwnerName = acc.OwnerName,
                             AccountCategoryId = acc.AccountCategoryId,
                             SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
-                            IsSelected = false
+                            IsSelected = false,
+                            IsHaveAccess = acc.IsHaveAccess,
+                            IsApplyEBilling = acc.IsApplyEBilling
                         };
 
                         if (index != -1)
@@ -567,7 +578,9 @@ namespace myTNB_Android.Src.Login.MVP
                                 OwnerName = newAcc.OwnerName,
                                 AccountCategoryId = newAcc.AccountCategoryId,
                                 SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
-                                IsSelected = false
+                                IsSelected = false,
+                                IsHaveAccess = newAcc.IsHaveAccess,
+                                IsApplyEBilling = newAcc.IsApplyEBilling
                             };
 
                             newExistingList.Add(newRecord);

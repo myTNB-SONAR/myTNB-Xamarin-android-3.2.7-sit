@@ -64,17 +64,18 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 TextViewUtils.SetMuseoSans500Typeface(vh.AccountLabel);
                 MPAccount item = accountList[position];
                 vh.AccountNumber.Text = item.accountNumber;
+                vh.AccountAddress.Text = item.accountAddress;
                 //vh.AccountAddress.Text = item.accountAddress;
 
                 //if not owner mask the address IRUL
-                if (!item.isOwner == true)
-                {
-                    vh.AccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, item.accountAddress);
-                }
-                else
-                {
-                    vh.AccountAddress.Text = item.accountAddress;
-                }
+                //if (!item.isOwner == true)
+                //{
+                //    vh.AccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, item.accountAddress);
+                //}
+                //else
+                //{
+                //    vh.AccountAddress.Text = item.accountAddress;
+                //}
 
 
                 if (string.IsNullOrEmpty(item.accountAddress))

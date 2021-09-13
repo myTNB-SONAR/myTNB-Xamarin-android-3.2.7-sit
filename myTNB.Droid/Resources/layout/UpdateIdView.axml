@@ -103,10 +103,9 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/txtICNumber"
                             android:drawablePadding="6dp"
-                            android:drawableLeft="@drawable/placeholder_ic"
+                            android:drawableLeft="@drawable/placeholder_account_no"
                             android:maxLines="1"
-                            android:paddingTop="5dp"
-                            android:inputType="text" />
+                            android:digits="0123456789-" />
                     </com.google.android.material.textfield.TextInputLayout>                   
                </LinearLayout>
             </LinearLayout>

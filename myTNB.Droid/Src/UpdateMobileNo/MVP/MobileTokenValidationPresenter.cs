@@ -370,7 +370,10 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                     if (Id > 0)
                     {
-                        CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(new MyTNBService.Request.BaseRequest());
+                        //string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+
+                        GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest();
+                        CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
                         if (customerAccountListResponse.IsSuccessResponse())
                         {
                             if (customerAccountListResponse.GetData().Count > 0)

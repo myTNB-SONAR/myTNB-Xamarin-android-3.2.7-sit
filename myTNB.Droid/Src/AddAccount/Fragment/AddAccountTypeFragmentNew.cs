@@ -84,9 +84,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txtNo.Text = Utility.GetLocalizedLabel("AddAccount", "nonOwner");
             txtSkipAcc.Text = Utility.GetLocalizedLabel("AddAccount", "skip");
             txtAccountType.Text = Utility.GetLocalizedLabel("AddAccount", "PremisesHint").ToUpper();
+            
 
-            TextViewUtils.SetTextSize16(txtSkipAcc, txtAccountType);
             TextViewUtils.SetTextSize18(txtTitlePremise, txtYes, txtNo, txtTitle, txtOwnerRights, txtNonOwnerRights);
+            TextViewUtils.SetTextSize16(txtSkipAcc, txtAccountType);
+
 
             AccountType Individual = new AccountType();
             Individual.Id = "1";

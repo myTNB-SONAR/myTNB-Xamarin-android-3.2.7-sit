@@ -67,8 +67,9 @@ namespace myTNB_Android.Src.UpdateNameFull.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNameFull);
                 TextViewUtils.SetMuseoSans300Typeface(txtNameFull);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave);
-                TextViewUtils.SetTextSize12(txtNameFull);
+
                 TextViewUtils.SetTextSize14(btnSave);
+                TextViewUtils.SetTextSize12(txtNameFull);
 
                 txtInputLayoutNameFull.Hint = GetLabelCommonByLanguage("name");
                 btnSave.Text = GetLabelCommonByLanguage("save");

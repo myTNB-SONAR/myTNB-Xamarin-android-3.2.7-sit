@@ -121,7 +121,7 @@
     "eg": "Masukkan Nombor Permohonan 10-digit. Contoh: "
   },
   "Error": {
-    "invalid_email": "Format e-mel tidak sah.",
+    "invalid_email": "Format e-mel tidak sah, sila cuba sekali lagi",
     "invalid_mobileNumber": "Nombor telefon tidak sah.",
     "minimumMandatoryPayment": "Amaun minimum mestilah sekurang-kurangnya {0}",
     "minimumPayAmount": "Amaun minimum perlu melebihi RM 1.00",
@@ -235,7 +235,7 @@
     "titleIcUpdate": "Lengkapkan profil myTNB anda sekarang untuk pengalaman myTNB yang lebih baik!",
     "bodyIcUpdate": "Nombor pengenalan anda tidak tercatat dalam profil myTNB anda. Kemas kini sekarang untuk akses dan kawalan yang lebih menyeluruh atas akaun elektrik anda!",
     "tutorialUpdateNicknameBtn": "Kemas kini Nama Gelaran",
-    "tutorialUsageTitle": "Lihat butiran akaun anda di sini.",
+    "tutorialUsageTitle": "Lihat dan urus akaun di sini.",
     "tutorialUsageDesc": "Lihat butiran akaun anda dengan mudah dan urus pengguna lain yang mempunyai akses pada akaun anda di sini.",
     "tutorialUsageDescNonOwner": "Lihat butiran akaun anda dengan mudah di sini.",
     "tutorialAccountTitleNew": "Lihat semua akaun anda di suatu tempat.",
@@ -271,7 +271,18 @@
     "stateReason": "Sila nyatakan sebab anda",
     "selectAnAccount": "Pilih Akaun",
     "tncSubscribeFAQ": "Dengan menghantar, anda bersetuju pada <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Soalan Lazim Self Meter Reading</strong></a>, ",
-    "tncSubscribeTNC": "<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>."
+    "tncSubscribeTNC": "<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
+    //add new by irul
+    "tncsmrNew": "Dengan melanggan/menghantar Self Meter Reading, saya faham dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat Self Meter Reading</strong></a>, <a href=\"\\\"><strong>Terma Penggunaan dan Polisi Perlindungan Data Peribadi TNB</strong></a>. Saya juga bersetuju untuk menghantar bacaan meter pada setiap bulan kecuali pada bulan bukan Self Meter Reading"
+  },
+  "SSMRApplicationTnc": {
+    "title": "Self Meter Reading",
+    "termsnCondition": "Terma dan Syarat Self Meter Reading",
+    "termsofUse": "Terma Penggunaan TNB",
+    "pdpa": "Polisi Perlindungan Data",
+    "termsofUsePolicy": "https://www.tnb.com.my/terms-policy/",
+    "pdpaPolicy": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
+    "tncData": "<p>1.Setelah berjaya mendaftar, anda dikehendaki untuk menghantar bacaan meter pada setiap bulan kecuali pada bulan April, Ogos dan Disember kerana bacaan meter di premis akan dibuat oleh pihak kami pada bulan-bulan tersebut.</p><p>2.Pada setiap bulan, anda akan menerima notifikasi untuk menghantar bacaan meter kepada pihak kami untuk tujuan pembilan. Anda dinasihatkan untuk menghantar bacaan meter mengikut tarikh bacaan yang telah ditetapkan.</p><p>3.Bacaan meter yang diterima akan disemak untuk pengesahan dengan kadar segera. Setelah pengesahan dibuat, salinan bill elektrik boleh dilihat melalui aplikasi myTNB dan portal myTNB pada keesokan hari.</p><p>4.Anda akan menerima bil anggaran mengikut purata penggunaan sekiranya, bacaan meter yang dihantar tidak dapat disahkan atau bacaan meter tidak dihantar mengikut tarikh bacaan yang telah ditetapkan.</p><p>5.Pihak kami akan membuat pelarasan sekiranya terdapat kejanggalan pada bacaan meter yang diterima.</p><p>6.Perkhidmatan ini akan dihentikan sekiranya:</p><p> a)Bacaan pada meter tidak dihantar selama dua bulan berturut-turut, atau</p><p> b)Sekiranya kriteria perkhidmatan tidak lagi dipenuhi, sebagai contoh, akaun telibat dengan pemotongan bekalan, penutupan akaun, perubahan tarif dan sebagainya.</p>"
   },
   "Status": {
     "feedbackSuccessTitle": "Maklum Balas Berjaya",
@@ -447,7 +458,10 @@
     "tariffLegendNote": "Nota: Blok berwarna di atas mewakili kadar elektrik anda. Untuk melihat pecahan terperinci, sila rujuk bil anda.",
     "prevReadingEmptyTitle": "Maaf, kami tidak dapat melakukan tindakan ini sekarang.",
     "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda.",
-    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
+    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+    //added by yana
+    "accountTypeDialogTitle": "Lihat akaun elektrik ini di Portal myTNB untuk pengalaman yang lebih baik!",
+    "accountTypeDialogMessage": "Anda boleh log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> myTNB menggunakan maklumat log masuk yang sama dan nikmati akses penuh untuk akaun tersebut."
   },
   "Bills": {
     "title": "Bil",
@@ -668,9 +682,10 @@
     "DisclaimerDetails1": "Saya mengesahkan bahawa saya <b>({0})</b> pemilik / orang yang diberi kuasa, mempunyai persetujuan dan kebenaran untuk melihat maklumat akaun yang disenaraikan. Sebagai bukan pemilik, saya bersetuju untuk berkongsi nama dan alamat e-mel dengan pemilik semasa penyerahan permintaan ini.",
     "DisclaimerDetails2": "Dimaklumkan bahawa aplikasi ini adalah untuk keistimewaan penggunaan antara TNB dan pemegang akaunnya dan orang lain dengan persetujuan pemegang akaun. TNB tidak akan bertanggungjawab atas penggunaan yang salah dan penggunaan maklumat yang dijelaskan dan terkandung di dalam ini serta tidak berkewajipan untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengesahkan perkara ini, anda dianggap telah membaca, memahami dan menyetujui penafian seperti yang ditunjukkan.",
     "GovDialogTitle": "Maaf, kami tidak dapat menambah akaun elektrik Kerajaan ke dalam Aplikasi myTNB sekarang.",
-    "GovDialogDetails": "Anda masih boleh menambah dan melihat akaun Kerajaan anda melalui Portal myTNB.",
+    "GovDialogDetails": "Anda masih boleh menambah dan melihat akaun Kerajaan anda melalui <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">myTNB Portal</a>.",
     "titleNonOwnerAddAcc": "Teruskan memasuki akaun anda dan berikan nama gelaran untuk rujukan mudah.",
-    "titleOwnerDetailRegion": "Sila masukkan alamat e-mel atau nombor telefon pemilik akaun ini supaya kami boleh memberikan makluman kepadanya."
+    "titleOwnerDetailRegion": "Sila masukkan alamat e-mel atau nombor telefon pemilik akaun ini supaya kami boleh memberikan makluman kepadanya.",
+    "backToHome": "Pulang ke Muka Hadapan"
   },
   "Profile": {
     "title": "Profil",
@@ -719,12 +734,12 @@
   "NotificationAddAccount": {
     "title": "Notifikasi",
     "notificationTitle": "Akaun elektrik anda ditambah oleh orang lain.",
-    "notificationDetailMessage": "Hello, <nama panggilan akaun> telah ditambahkan oleh <Nama Penuh & / alamat e-mel> ke dalam akaun myTNB mereka.",
+    "notificationDetailMessage": "Hello, {nickname} telah ditambahkan oleh <Nama Penuh & / alamat e-mel> ke dalam akaun myTNB mereka.",
     "notificationDetail": "Check out your account vieweing access settings! You can manage the user if you do not recognise them or wish to change their account access.",
     "btnManageAccess": "Urus Akses",
-    "ownernNotificationnTitle": "BM_You are now an owner to My House",
-    "ownernNotificationDetailMessage": "BM_We want to let you  know that your access to {account nickname} has been changed to Owner access and you can now enjoy full account access like initiating applications!",
-    "ownernNotificationDetail": "BM_Plus, stay in control of your account information and permissions by definig what you let others access as an owner of an electricity account, view your account now!"
+    "ownernNotificationnTitle": "Anda telah menjadi pemiik akaun My House.",
+    "ownernNotificationDetailMessage": "Kami ingin memberitahu bahawa akses {account nickname} anda telah berubah kepada akses pemilik dan anda sekarang boleh menikmati akses penuh akaun anda seperti memohon permohonan!",
+    "ownernNotificationDetail": "Selain itu, kendalikan maklumat dan kebenaran akaun anda dengan menentukan akses yang anda beri kepada pengguna lain sebagai pemilik akaun elektrik!"
   },
 
   "ApplicationSetting": {
@@ -775,7 +790,8 @@
     "noAccounts": "Tiada Akaun Elektrik",
     "addAccountMessage": "Tambah Akaun Elektrik TNB sedia ada untuk melihat butiran penggunaan dan transaksi.",
     "popupremoveAccountTitleSwipe": "Alih Keluar Akaun",
-    "popupremoveAccountMessageSwipe": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda."
+    "popupremoveAccountMessageSwipe": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda.",
+    "emptyListDetails": "Tidak ada akaun elektrik yang ditambahkan. Tambahkan akaun sekarang dan anda akan mendapat akses ke penggunaan, bil dan mengurus akaun anda."
 
   },
   "Prelogin": {
@@ -865,7 +881,7 @@
     "popupremoveAccountMessage": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda.",
     //addby wan
     "detailSectionTitle": "Akaun myTNB",
-    "accountSectionTitle": "BM_TNB Electricity Supply Accounts",
+    "accountSectionTitle": "Akaun Bekalan Elektrik",
     "logout": "Log keluar",
     "logoutMessage": "BM_Are you sure you want to log out from the myTNB app?",
     "mobileNumberVerified": "Anda berjaya mengemas kini nombor telefon anda",
@@ -936,7 +952,7 @@
     "titleNoAutoPay": "BM_You don't have AutoPay yet.",
     "bodyNoAutoPay": "BM_Let us take care your monthly bills automatically. We'll pause AutoPay when your bills are higher than usual",
     "btnStartAutoPay": "BM_Start AutoPay",
-    "titleCard": "BM_My Saved Credit / Debit Cards"
+    "titleCard": "Kad Kredit / Debit Saya yang Disimpan"
   },
   "ViewBill": {
     "titleBill": "Bil",
@@ -1180,7 +1196,7 @@
     "ownerConsentDescription": "Anda sebagai bukan pemilik atau pihak diberi kuasa perlu menyertakan butiran pengesahan pemilik untuk mengemaskini maklumat peribadi pemilik bagi pihak pemilik kerana maklumat ini akan kekal di dalam akaun elektrik TNB pemilik.",
     "stepTitle2of3": "Langkah 2 dari 3",
     "ownerIcOwner": "Salinan kad pengenalan pemilik (IC / Pasport)",
-    "icTitleinfo": "Salinan kad pengenalan anda (IC/Pasport)",
+    "icTitleinfo": "Salinan kad pengenalan anda (IC/Pasport/ID Tentera)",
     "icInfo": "Bagaimanakah contoh salinan pengenalan diri?",
     "consentTitle": "Bukti Persetujuan",
     "consentInfo": "Bagaimanakah contoh bukti persetujuan?",
@@ -1243,7 +1259,21 @@
     "registeredView": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
     "viewYes": "Ya",
     "viewNo": "Tidak",
-    "documentPdf": "Dokumen"
+    "documentPdf": "Dokumen",
+    //update identification details | yana
+    "pageStep1": "Langkah 1 dari 4",
+    "pageStep2": "Langkah 2 dari 4",
+    "pageStep3": "Langkah 3 dari 4",
+    "pageStep4": "Langkah 4 dari 4",
+    "enterYourNewDetails": "Masukkan butiran baru anda:",
+    "skipStep": "Tidak, Saya ingin melangkau langkah ini",
+    "copyOfOwnerLabel": "Salinan pengenalan diri pemilik (IC / Pasport)",
+    "frontIc": "Hadapan",
+    "backIc": "Belakang",
+    "moreInformation": "Adakah anda ingin mengemas kini lebih banyak maklumat?",
+    "idTitle": "Masukkan Nombor Pengenalan Baru",
+    "idHint": "Contoh: IC, Pasport, Tentera / Polis ID"
+
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",
@@ -1269,7 +1299,7 @@
     "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
     "IDUpdateSuccess": "Terima kasih kerana mengemaskini! Aktiviti anda telah dirakam seperti di bawah.",
     //syahmi add
-    "lblID": "IC / ID Askar / Nombor Pasport",
+    "lblID": "IC, Pasport, Tentera / Polis ID ",
     "passwordchange": "Tukar Kata Laluan Saya",
     "gotIt": "Ok",
     "resend": "Hantar semula",
@@ -1381,7 +1411,7 @@
   "UserAccess": {
     "title": "Akses Pengguna",
     "LabelTitle": "Pengguna yang mempunyai akses ke akaun ini:",
-    "LabelEmptyTitle": "BM_Looks like your electricity account is not viewed or accessed by anyone else. You can help them by adding this account to their view below.",
+    "LabelEmptyTitle": "Nampaknya akaun elektrik anda tidak dilihat atau diakses oleh sesiapa. Anda boleh menambah pengguna ke dalam akaun untuk memudahkan pantauan mereka.",
     "addUserBtn": "Tambah Pengguna",
     "AddTitle": "Tambah",
     "RemoveTitle": "Alih Keluar",
@@ -1469,14 +1499,14 @@
     "idtypeTitle": "Jenis Pengenalan",
     "idNumberhint": "Nombor Pengenalan",
     "identificationhint": "Kami akan menggunakan pengenalan ini untuk membantu anda menyiapkan akaun anda.",
-    "mykad": "IC / Mykad",
-    "armyid": "IDTentera/IDPolis",
+    "mykad": "IC / MyKad",
+    "armyid": "Kad Pengenalan Tentera / Polis",
     "passport": "Pasport",
     "mykadhint": "Sila masukkan 12 digit nombor IC / Mykad yang sah.",
     "armyidhint": "ID Tentera mesti antara 5-50 aksara.",
     "passporthint": "Pasport mestilah antara 5-50 aksara.",
     "IdHeaderError": "Nombor kad pengenalan ini telah digunakan untuk akaun yang sedia ada.",
-    "IdBodyError": "Sila pastikan bahawa anda telah memasukkan nombor kad pengenalan yang betul, atau hubungi TNB CareLine untuk bertanya mengenai perkara ini.",
+    "IdBodyError": "Sila pastikan bahawa anda telah memasukkan nombor kad pengenalan yang betul, atau hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> untuk bertanya mengenai perkara ini.",
     "ctaTitleNew": "Daftar Akaun Saya",
     "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat</strong></a>."
   },
@@ -2035,13 +2065,13 @@
   },
 
   "CompleteYourProfile": {
-    "title": "BM_Complete Your Profile",
-    "lblTitle": "BM_Provide us your identification number for better experience!",
-    "lblSubTitle": "BM_Get better access and enjoy more TNB offerings on myTNB by helping us validate your identification.",
+    "title": "Lengkapkan Profil Anda",
+    "lblTitle": "Sediakan kami nombor pengenalan anda untuk pengalaman yang lebih baik!",
+    "lblSubTitle": "Sediakan kami nombor pengenalan anda untuk pengalaman yang lebih baik!",
     "txtFieldIDType": "Jenis Pengenalan",
     "txtFieldID": "Nombor Pengenalan",
-    "mykad": "IC / Mykad",
-    "armyid": "ID Tentera",
+    "mykad": "IC / MyKad",
+    "armyid": "Kad Pengenalan Tentera / Polis",
     "passport": "Pasport",
     "icHint": "Kami akan menggunakan pengenalan ini untuk membantu anda menyiapkan akaun anda.",
     "icError": "Sila masukkan 12 digit nombor IC / Mykad yang sah.",
@@ -2050,7 +2080,7 @@
     "updateIdTitle": "Sahkan Nombor Pengenalan Anda:",
     "confrimButton": "Sahkan",
     "re_enter": "Masukkan semula",
-    "updateIdMessage": "Pastikan nomnor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja."
+    "updateIdMessage": "Pastikan nombor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja."
   },
   "SearchByNumber": {
     "title": "Cari Dengan",
@@ -2059,7 +2089,7 @@
     "whereToGetTheseNumberMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> dan <b>Nombor Notifikasi Perkhidmatan</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine."
   },
   "manageUser": {
-    "title": "BM_Manage User",
+    "title": "Manage User",
     "ManageUserTitle": "Berikan akses kepada pengguna untuk:",
     "fullElectricity": "Lihat bil elektrik penuh",
     "e_billing": "Buat permohonan e-Billing",
@@ -2069,8 +2099,8 @@
     "bodyDialogWhatIsThis": "Untuk melindungi maklumat anda, kami tidak memaparkan maklumat peribadi anda kepada bukan pemilik dan beberapa ciri aplikasi. Walaubagaimanapun, anda boleh memberikan mereka akses yang disenaraikan di sini jika sesuai dan mereka akan dimaklumkan mengenainya.",
     "manageUserDialogTitle": "Anda akan mengubah akses {0}.",
     "manageUserDialogMessage": "Setelah disahkan, akses {0} akan dikemas kini dan pengguna akan dimaklumkan mengenai akses yang telah anda pilih untuknya berkenaan akaun elektrik anda.",
-    "notSaveTitle": "BM_Are you sure you want to leave without saving changes you made to {0}’s access?",
-    "notSaveBody": "BM_The changes to {0}’s access will not be saved if you choose to leave this page and their accesses will remain as before.",
+    "notSaveTitle": "Adakah anda pasti mahu keluar tanpa menyimpan perubahan akses {0} yang anda lakukan??",
+    "notSaveBody": "Perubahan pada akses {0} tidak akan disimpan jika anda memilih untuk keluar dari halaman ini dan akses mereka akan kekal seperti sebelumnya.",
     "saveSuccess": "Perubahan terhadap akses pengguna telah disimpan dan pengguna telah diberitahu tentang kemas kini akses mereka.",
     "manageUserInviteAccessDialogTitle": "Adakah anda mahu menghantar satu lagi jemputan untuk menyertai myTNB?",
     "manageUserInviteAccessDialogMessage": "Kami telah menjemput {0} untuk menyertai myTNB dan melihat akaun elektrik anda. Anda boleh menghantar satu lagi jemputan jika mereka tidak menerimanya.",
@@ -2588,6 +2618,8 @@
     "whatIsThisMean": "Apakah maksud ini?",
     "toottipTitle": "Memberi pengguna anda lebih banyak akses.",
     "tooltipBody": "Untuk melindungi maklumat anda, kami tidak memaparkan maklumat peribadi anda kepada bukan pemilik dan beberapa ciri aplikasi. Walaubagaimanapun, anda boleh memberikan mereka akses yang disenaraikan di sini jika sesuai dan mereka akan dimaklumkan mengenainya.",
-    "addUserButton": "Tambah Penguna"
+    "addUserButton": "Tambah Penguna",
+    "userExistedHeader": "Pengguna ini telah ditambahkan ke senarai pengguna akaun anda sebelum ini.",
+    "userExistedDetails": "Pengguna ini sudah mempunyai akses untuk akaun ini. Cuba alamat e-mel yang lain."
   }
 }

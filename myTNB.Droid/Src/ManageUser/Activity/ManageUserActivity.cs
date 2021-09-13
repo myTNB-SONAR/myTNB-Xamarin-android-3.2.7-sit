@@ -136,8 +136,9 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 TextViewUtils.SetMuseoSans300Typeface(itemTitleFullBill, itemTitleBilling);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave, itemTitle, btnCancelAddAccess, btnResendInviteAccessUser);
                 //TextViewUtils.SetMuseoSans500Typeface(bottomLayout_Cancel_Resend, bottomLayoutSave);
-                TextViewUtils.SetTextSize14(txtInputLayoutEmail, txtNickName, txtEmail, itemTitleFullBill, itemTitleBilling
-                    , infoManageUser, btnSave, itemTitle, btnCancelAddAccess, btnResendInviteAccessUser);
+
+                TextViewUtils.SetTextSize14(txtInputLayoutEmail, txtNickName, txtEmail, itemTitleFullBill, itemTitleBilling, infoManageUser, btnSave, itemTitle, btnCancelAddAccess, btnResendInviteAccessUser);
+
 
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("manageUser", "fullElectricity");
                 itemTitleBilling.Text = Utility.GetLocalizedLabel("manageUser", "e_billing");
@@ -398,7 +399,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     this.SetIsClicked(true);
                     ShowCancelAddAccessDialog(this, () =>
                     {
-                        this.userActionsListener.CancelInvitedUser(account.UserAccountId);
+                        this.userActionsListener.CancelInvitedUser(account.email, account.AccNum, account.UserAccountId);
                     });
                 }
                 this.SetIsClicked(false);

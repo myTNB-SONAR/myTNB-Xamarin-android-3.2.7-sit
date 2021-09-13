@@ -49,6 +49,7 @@ using myTNB.Mobile.SessionCache;
 using myTNB;
 using myTNB.Mobile;
 using AndroidX.ConstraintLayout.Widget;
+using myTNB_Android.Src.MyAccount.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -433,7 +434,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             Utility.LoggingNonFatalError(err);
                         }
-                        Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
+                        //Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
+                        Intent linkAccount = new Intent(this.Activity, typeof(MyAccountActivity));
                         linkAccount.PutExtra("fromDashboard", true);
                         StartActivity(linkAccount);
                     }
@@ -2276,7 +2278,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 this.SetIsClicked(true);
 
-                Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
+                Intent linkAccount = new Intent(this.Activity, typeof(MyAccountActivity));
                 linkAccount.PutExtra("fromDashboard", true);
                 StartActivity(linkAccount);
             }
@@ -2695,7 +2697,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             return topRootView.Height;
         }
-
         public int GetnewFAQContainerHeight()
         {
             return newFAQContainer.Height;
@@ -2704,7 +2705,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             return newFAQTitle.Height;
         }
-
+        
         public int GetloadMoreContainerHeight()
         {
             return loadMoreContainer.Height;

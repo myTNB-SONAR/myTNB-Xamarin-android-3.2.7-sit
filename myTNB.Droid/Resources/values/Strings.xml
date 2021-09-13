@@ -1427,7 +1427,8 @@ Please try again later.]]>
 
 	<string name="invalid_charac">Invalid characters. Use letters or numbers only.</string>
 
-	<string name="name_validation_digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
+    <string name="name_validation_digits">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
+	<string name="name_validation_with_character">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ @/-</string>
 	<string name="invalid_state">Invalid State</string>
 
 	<string name="note_text_sm">Note: Your usage above is before applicable taxes/additional charges.</string>

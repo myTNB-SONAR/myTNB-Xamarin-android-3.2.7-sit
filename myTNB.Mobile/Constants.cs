@@ -44,7 +44,7 @@
         internal const string ApiKeyId = ApiKeyIdDEV;
         internal const string SitecoreURL = SitecoreSIT;
 #elif MASTER || SIT
-        internal static string ApiDomain = DEV3;
+        internal static string ApiDomain = SIT;
         internal const string ApiKeyId = ApiKeyIdDEV;
         internal const string SitecoreURL = SitecorePROD;
 #else

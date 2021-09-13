@@ -88,6 +88,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
 
         private bool isClicked = false;
         private bool fromAddAccPage = false;
+       //private bool fromIDFlag = false;
 
         Snackbar mUpdateIc;
 
@@ -130,6 +131,9 @@ namespace myTNB_Android.Src.UpdateID.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRegister);
 
+                TextViewUtils.SetTextSize14(txtAccountType, identityType, txtICNumber, LabelDetails);
+                TextViewUtils.SetTextSize16(btnRegister);
+
                 txtAccountType.Text = Utility.GetLocalizedLabel("OneLastThing", "idtypeTitle").ToUpper();
                 textInputLayoutICNo.Hint = Utility.GetLocalizedLabel("OneLastThing", "idNumberhint");
                 SetToolBarTitle(Utility.GetLocalizedLabel("UpdateID", "title"));
@@ -147,6 +151,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 //LabelTitle.Text = GetLabelByLanguage("updateIdLabelTitle");
                 //LabelDetails.Text = GetLabelByLanguage("updateIdLabelDetails");
 
+                txtICNumber.FocusChange += txtICNumber_FocusChange;
                 txtICNumber.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
                 txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
                 txtICNumber.InputType = InputTypes.ClassNumber;
@@ -172,13 +177,96 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 txtICNumber.SetOnKeyListener(new KeyListener());
 
                 MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+
                 ClearFields();
+                ClearAllErrorFields();
+
+                txtICNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_account_no, 0, 0, 0);
                 this.userActionsListener.Start();
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void txtICNumber_FocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            try
+            {
+                
+                string Idtype = selectedIdentificationType.Id;
+                string ic_no = txtICNumber.Text.ToString().Trim();
+                
+
+                if (!e.HasFocus)
+                {
+                    ClearICMinimumCharactersError();
+                    ClearICHint();
+                    this.userActionsListener.CheckRequiredFields( ic_no, Idtype);
+
+                    if (ic_no.Equals(""))
+                    {
+                        ClearICMinimumCharactersError();
+                        ClearICHint();
+                    }
+                    else
+                    {
+                        if (Idtype.Equals("1"))
+                        {
+                            ic_no = ic_no.Replace("-", string.Empty);
+                            if (!this.mPresenter.CheckIdentificationIsValid(ic_no))
+                            {
+                                ClearICHint();
+                                ShowFullICError();
+                            }
+                            //else
+                            //{
+                            //    ShowIdentificationHint();
+                            //}
+                        }
+                        else if (Idtype.Equals("2"))
+                        {
+                            if (!this.mPresenter.CheckArmyIdIsValid(ic_no))
+                            {
+                                ClearICHint();
+                                ShowFullArmyIdError();
+                            }
+                            //else
+                            //{
+                            //    ShowIdentificationHint();
+                            //}
+                        }
+                        else if (Idtype.Equals("3"))
+                        {
+                            if (!this.mPresenter.CheckPassportIsValid(ic_no))
+                            {
+                                ClearICHint();
+                                ShowFullPassportError();
+                            }
+                            //else
+                            //{
+                            //    ShowIdentificationHint();
+                            //}
+                        }
+                        else
+                        {
+                            ClearICMinimumCharactersError();
+                            ClearICHint();
+                        }
+
+                    }
+                }
+                else
+                {
+                    ShowIdentificationHint();
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+
         }
 
         public class PhoneTextWatcher : Java.Lang.Object, ITextWatcher
@@ -195,6 +283,29 @@ namespace myTNB_Android.Src.UpdateID.Activity
 
             public void AfterTextChanged(IEditable s)
             {
+                int len = eText.Text.Length;
+                bool dash = eText.Text.Contains("-");
+                string Idtype = idText.Text;
+
+                if (Idtype.Equals("IC / MyKad"))
+                {
+                    if (len == 12 && !dash)
+                    {
+                        string first6digit = eText.Text.Substring(0, 6);
+                        string digit78 = eText.Text.Substring(eText.Text.Length - 6, 2);
+                        string lastdigit = eText.Text.Substring(eText.Text.Length - 4);
+                        eText.Text = first6digit + "-" + digit78 + "-" + lastdigit;
+                        eText.SetSelection(eText.Text.Length);
+                    }
+                }
+                else if (Idtype.Equals("Army / Police ID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
+                {
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
+                }
+                else if (Idtype.Equals("Passport") || Idtype.Equals("Pasport"))
+                {
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
+                }
             }
 
             public void BeforeTextChanged(Java.Lang.ICharSequence s, int start, int count, int after)
@@ -224,7 +335,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
             public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
             {
                 string Idtype = idText.Text;
-                if (Idtype.Equals("IC / Mykad"))
+                if (Idtype.Equals("IC / MyKad"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(14) });
                     if (!flagDel)
@@ -254,7 +365,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                     }
                     flagDel = false;
                 }
-                else if (Idtype.Equals("ArmyID/PoliceID") || Idtype.Equals("IDTentera/IDPolis"))
+                else if (Idtype.Equals("Army / Police ID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
                 }
@@ -283,9 +394,11 @@ namespace myTNB_Android.Src.UpdateID.Activity
             try
             {
                 string ic_no = txtICNumber.Text.ToString().Trim();
+                string Idtype = selectedIdentificationType.Id;
                 ClearICMinimumCharactersError();
                 ClearICHint();
-                EnableRegisterButton();
+                //EnableRegisterButton();
+                this.userActionsListener.validateField(ic_no,Idtype);
             }
             catch (Exception ex)
             {
@@ -343,6 +456,16 @@ namespace myTNB_Android.Src.UpdateID.Activity
             Finish();
         }
 
+        public void ShowInvalidIdentificationError()
+        {
+            this.SetIsClicked(false);
+            Utility.ShowIdentificationErrorDialog(this, () =>
+            {
+                ShowProgressDialog();
+            });
+
+        }
+
         public void ShowEmptyICNoError()
         {
             // ClearICError();
@@ -395,15 +518,18 @@ namespace myTNB_Android.Src.UpdateID.Activity
             {
                 if (!this.GetIsClicked())
                 {
+                    this.SetIsClicked(true);
                     string Idtype = selectedIdentificationType.Id;
                     string ic_no = txtICNumber.Text.ToString().Trim();
-                    this.userActionsListener.CheckRequiredFields(ic_no, Idtype);
+
+                    this.userActionsListener.OnCheckID(ic_no, Idtype);
+                    //this.userActionsListener.CheckRequiredFields(ic_no, Idtype);
 
                     bool hasExistedID = MyTNBAccountManagement.GetInstance().IsIDUpdated();
 
                     if (hasExistedID)
                     {
-                        this.SetIsClicked(true);
+                        //this.userActionsListener.OnUpdateIC(Idtype, ic_no);
                         ShowUpdateIdDialog(this, () =>
                         {
                             // _ = RunUpdateID(idtype,ic_no);
@@ -413,6 +539,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                     }
                     else
                     {
+                        ShowInvalidIdentificationError();
                         DisableRegisterButton();
                         if (Idtype.Equals("1"))
                         {
@@ -710,17 +837,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 textInputLayoutICNo.ErrorEnabled = true;
         }
 
-        public void ShowInvalidIdentificationError()
-        {
-
-            Utility.ShowIdentificationErrorDialog(this, () =>
-            {
-                ShowProgressDialog();
-
-            });
-
-        }
-
+      
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);
@@ -803,6 +920,8 @@ namespace myTNB_Android.Src.UpdateID.Activity
                             }
                         }
                     }
+
+
                 }
             }
             catch (Exception e)

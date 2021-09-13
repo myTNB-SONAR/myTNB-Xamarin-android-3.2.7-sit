@@ -90,6 +90,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 swipeTopDoubleTapLayout = rootView.FindViewById<LinearLayout>(Resource.Id.swipeTopDoubleTapLayout);
                 txtDoubleTapDismiss = rootView.FindViewById<TextView>(Resource.Id.txtDoubleTapDismiss);
                 txtTopDoubleTapDismiss = rootView.FindViewById<TextView>(Resource.Id.txtTopDoubleTapDismiss);
+                TextViewUtils.SetMuseoSans300Typeface(txtDoubleTapDismiss, txtTopDoubleTapDismiss);
                 TextViewUtils.SetTextSize12(txtDoubleTapDismiss, txtTopDoubleTapDismiss);
 
                 if (NewAppTutorialList.Count > 1)
@@ -126,7 +127,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 //     txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
                 }
 
-                TextViewUtils.SetMuseoSans300Typeface(txtDoubleTapDismiss, txtTopDoubleTapDismiss);
+               
 
                 if (this.mFragment != null)
                 {
@@ -221,7 +222,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 {
                     if (NewAppTutorialList.Count > 0)
                     {
-                        int ItemCount = NewAppTutorialList[1].ItemCount;
+                        int ItemCount = NewAppTutorialList[0].ItemCount;
                         if (ItemCount > 0)
                         {
                             int topHeight = (int)DPUtils.ConvertDPToPx(65f);
@@ -439,8 +440,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             if (i == 0)
                             {
                                 image.SetImageResource(Resource.Drawable.white_circle_active);
-                                txtDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
-                                txtTopDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
+                                txtDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Visible : ViewStates.Visible;
+                                txtTopDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Visible : ViewStates.Visible;
                             }
                             else
                             {
@@ -785,8 +786,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                 {
                                                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                                                 }
-                                                txtDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
-                                                txtTopDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
+                                                txtDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Visible : ViewStates.Visible;
+                                                txtTopDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Visible : ViewStates.Visible;
                                             }
                                             else
                                             {
@@ -1005,6 +1006,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     else if (this.mActivity is DashboardHomeActivity)
                     {
                         UserSessions.DoManageAccessIconTutorialShown(this.mPref);
+                        //((DashboardHomeActivity)mActivity).ShowCommercialDialog();
                     }
                     else if (this.mActivity is ManageAccessActivity)
                     {

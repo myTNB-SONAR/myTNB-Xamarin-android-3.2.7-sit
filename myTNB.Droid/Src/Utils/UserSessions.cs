@@ -5,8 +5,10 @@ using Java.Lang;
 using Java.Text;
 using Java.Util;
 using myTNB.Mobile;
+using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using Newtonsoft.Json;
 
@@ -502,13 +504,14 @@ namespace myTNB_Android.Src.Utils
         public static void SaveFeedbackUpdateDetailDisabled(ISharedPreferences prefs, string data)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutString("IsFeedbackUpdateDetailDisabled", data);
+            editor.PutString("IsFeedbackUpdateDetailDisabled2", data);
             editor.Apply();
         }
 
         public static string GetFeedbackUpdateDetailDisabled(ISharedPreferences prefs)
         {
-            return prefs.GetString("IsFeedbackUpdateDetailDisabled", null);
+            var error = prefs.GetString("IsFeedbackUpdateDetailDisabled2", null);
+            return prefs.GetString("IsFeedbackUpdateDetailDisabled2", null);
         }
 
         public static void SaveGetAccountIsExist(ISharedPreferences prefs, string data)
@@ -535,7 +538,29 @@ namespace myTNB_Android.Src.Utils
             return preferences.GetBoolean("loggedOut", false);
         }
 
-        //whitelist setter
+        //maskingaddress setter | yana
+        //public static void SaveAddress(List<NewAccount> newAccount)
+        //{
+        //    ISharedPreferencesEditor editor = mPreferences.Edit();
+        //    string jsonAccountList = JsonConvert.SerializeObject(newAccount);
+        //    editor.PutString("BILL_MASKING", jsonAccountList);
+        //    editor.Apply();
+        //}
+
+        ////maskingaddress getter | yana
+        //public static List<NewAccount> GetAddress()                                  
+        //{
+        //    string accountList = mPreferences.GetString("BILL_MASKING", null);
+        //    List<NewAccount> selectAccountList = new List<NewAccount>();
+        //    if (accountList != null)
+        //    {
+        //        selectAccountList = JsonConvert.DeserializeObject<List<NewAccount>>(accountList);
+        //    }
+        //    return selectAccountList;
+        //}
+
+        
+        //whitelist setter | yana
         public static void SaveWhiteList(ISharedPreferences prefs, bool flag)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
@@ -543,7 +568,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        //whitelist getter
+        //whitelist getter | yana
         public static bool GetWhiteList(ISharedPreferences preferences)
         {
             return preferences.GetBoolean("IsWhiteList", false);
@@ -606,6 +631,25 @@ namespace myTNB_Android.Src.Utils
                 selectAccountList = JsonConvert.DeserializeObject<List<CustomerBillingAccount>>(accountList);
             }
             return selectAccountList;
+        }
+
+        internal static void SetCommercialList(List<AccountData> Accounts)                 //for Commercial dialog | yana
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(Accounts);
+            editor.PutString("COMMERCIAL_ACCOUNT_LIST", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<AccountData> GetCommercialList()                                  //for Commercial dialog | yana
+        {
+            string accountList = mPreferences.GetString("COMMERCIAL_ACCOUNT_LIST", null);
+            List<AccountData> selectCommercialAccountList = new List<AccountData>();
+            if (accountList != null)
+            {
+                selectCommercialAccountList = JsonConvert.DeserializeObject<List<AccountData>>(accountList);
+            }
+            return selectCommercialAccountList;
         }
 
         public static void SetSMRAccountList(List<SMRAccount> sMRAccounts)

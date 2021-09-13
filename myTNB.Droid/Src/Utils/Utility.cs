@@ -56,6 +56,13 @@ namespace myTNB_Android.Src.Utils
             return rg.IsMatch(strToCheck);
         }
 
+        public static bool isSpecialcharacter(string strToCheck)
+        {
+            
+            Regex rg = new Regex(@"^[\w@\-]+$"); ;
+            return rg.IsMatch(strToCheck);
+        }
+
         public static bool isAlpha(string strToCheck)
         {
             Regex rg = new Regex(@"^[a-zA-Z\s,]*$");
@@ -306,15 +313,16 @@ namespace myTNB_Android.Src.Utils
             }).Show();
         }
 
+
         public static void ShowIdentificationUpdateProfileDialog(Activity context, Action confirmAction, Action checkboxAction, Action uncheckboxAction, Action cancelAction = null)
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.DIALOGBOX_WITH_CHECKBOX)
                         .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "titleIcUpdate"))
                         .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "bodyIcUpdate"))
-                        .SetTitleCheckBox("Don't Show This Again")
+                        .SetTitleCheckBox(Utility.GetLocalizedLabel("Common", "dontShowThisAgain"))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "later"))
-                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "update"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "proceed"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();

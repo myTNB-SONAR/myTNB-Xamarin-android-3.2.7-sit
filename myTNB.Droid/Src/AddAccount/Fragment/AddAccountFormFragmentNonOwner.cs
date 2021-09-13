@@ -189,8 +189,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     dialogWhereMyAccountNo.Show();
                 };
 
-                TextViewUtils.SetTextSize16(addAccount);
                 TextViewUtils.SetTextSize18(edtAccountLabel, edtAccountNo, edtOwnerMotherName, btnWhereIsMyAccountNo, txtNonOwnerTitle);
+                TextViewUtils.SetTextSize16(addAccount);
 
                 AccountType Individual = new AccountType();
                 Individual.Id = "1";

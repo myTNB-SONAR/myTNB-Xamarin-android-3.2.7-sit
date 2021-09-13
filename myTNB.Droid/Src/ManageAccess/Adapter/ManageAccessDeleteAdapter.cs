@@ -135,6 +135,8 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtUserAccessBody);
                 TextViewUtils.SetMuseoSans500Typeface(txtUserAccessTitle);
+                TextViewUtils.SetTextSize12(txtUserAccessBody);
+                TextViewUtils.SetTextSize14(txtUserAccessTitle);
             }
         }
 

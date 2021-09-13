@@ -75,6 +75,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private WhatsNewEntity mWhatsNewEntity;
 
+        AccountData selectedAccount;
+
         private static SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager;
         private static SSMRMeterReadingScreensEntity SSMRMeterReadingScreensManager;
         private static SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager;
@@ -241,13 +243,19 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         }
                     }
                 }
-                else if (requestCode == Constants.UPDATE_ID_REQUEST)
+                else if (requestCode == Constants.UPDATE_IC_REQUEST)
                 {
-                    if (resultCode == Result.Ok)
-                    {
-                        this.mView.SetMenuMoreCheck();
-                        OnMenuSelect(Resource.Id.menu_more);
-                    }
+                    this.mView.SetMenuMoreCheck();
+                    OnLoadMoreMenu();
+
+                    //if (resultCode == Result.Ok)
+                    //{
+                    //    this.mView.SetMenuMoreCheck();
+                    //    //this.mView.ShowProfile();
+                    //    //OnMenuSelect(Resource.Id.menu_more);
+                    //    OnLoadMoreMenu();
+                    //    //DoLoadHomeDashBoardFragment();
+                    //}
                 }
             }
             catch (System.Exception e)
@@ -1685,7 +1693,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             wtManager.UpdateReadItem(itemID, flag, formattedDate);
         }
 
-        public List<NewAppModel> OnGeneraNewAppTutorialList(bool isOwner)
+        public List<NewAppModel> OnGeneraNewAppTutorialList(bool isOwner, string accountTypeId)
         {
             List<NewAppModel> newList = new List<NewAppModel>();
             bool isNeedHelpHide = true;
@@ -1704,16 +1712,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
             else
             {
-                newList.Add(new NewAppModel()
+                if (!isOwner || (accountTypeId.Equals("2") || accountTypeId.Equals("3")))
                 {
-                    ContentShowPosition = ContentType.BottomRight,
-                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitle"),
-                    ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageDescNonOwner"),
-                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                    NeedHelpHide = isNeedHelpHide,
-                    IsButtonShow = false
-                });
-            }            
+                    newList.Add(new NewAppModel()
+                    {
+                        ContentShowPosition = ContentType.BottomRight,
+                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitle"),
+                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageDescNonOwner"),
+                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                        NeedHelpHide = isNeedHelpHide,
+                        IsButtonShow = false
+                    });
+                }
+
+            }
             return newList;
         }
 

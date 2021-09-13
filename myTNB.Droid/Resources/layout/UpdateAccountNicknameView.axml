@@ -19,7 +19,7 @@
             android:layout_gravity="top"
             android:layout_margin="18dp"
             app:errorEnabled="true"
-            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
             <EditText
                 android:id="@+id/txtAccountNickname"
                 android:layout_width="match_parent"

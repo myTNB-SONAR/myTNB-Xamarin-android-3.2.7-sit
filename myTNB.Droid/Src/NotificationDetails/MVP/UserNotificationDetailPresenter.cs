@@ -276,12 +276,19 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     
                 }
 
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_UPDATE_ACCESS)
+                {
+                    notificationDetailTitle = Regex.Replace(notificationDetailTitle, Constants.ACCOUNT_NICKNAME_PATTERN, accountName);
+
+                }
+
                 if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_NEW_ACCESS_ADDED)
                 {
-                    CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
-                    string address = Utility.StringSpaceMasking(Utility.Masking.Address, account.AccountStAddress);
-                    string message = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName);
-                    notificationDetailMessage = Regex.Replace(message, Constants.ACCOUNT_ADDRESS_PATTERN, address);
+                    //CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+                    //string address = Utility.StringSpaceMasking(Utility.Masking.Address, account.AccountStAddress);
+                    //string message = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName);
+                    //notificationDetailMessage = Regex.Replace(message, Constants.ACCOUNT_ADDRESS_PATTERN, address);
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName);
                 }
 
                 notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,

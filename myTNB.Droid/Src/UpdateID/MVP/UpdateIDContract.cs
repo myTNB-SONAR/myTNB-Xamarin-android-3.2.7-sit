@@ -116,6 +116,8 @@ namespace myTNB_Android.Src.UpdateID.MVP
 
             void CheckRequiredFields(string icno, string idtype);
 
+            bool validateField(string icno, string idtype);
+
             /// <summary>
             /// The returned permission result
             /// </summary>
@@ -125,6 +127,8 @@ namespace myTNB_Android.Src.UpdateID.MVP
             void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults);
 
             void OnUpdateIC(string no_ic, string idtype);
+
+            void OnCheckID(string icno, string idtype);
 
             /// <summary>
             /// User actions to go back to previous screen

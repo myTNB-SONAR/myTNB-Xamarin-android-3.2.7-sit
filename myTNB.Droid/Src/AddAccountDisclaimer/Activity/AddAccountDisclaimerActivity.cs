@@ -74,8 +74,8 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
 
             TextViewUtils.SetMuseoSans500Typeface(headerText, headerText2, headerText3);
             TextViewUtils.SetMuseoSans300Typeface(detailsText, detailsText2);
+            TextViewUtils.SetTextSize14(headerText, headerText2, headerText3);
             TextViewUtils.SetTextSize12(detailsText, detailsText2);
-            TextViewUtils.SetTextSize14(headerText3, headerText, headerText2);
 
             string email = user.Email;
             string data;

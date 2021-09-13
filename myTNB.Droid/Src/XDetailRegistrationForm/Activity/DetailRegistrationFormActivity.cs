@@ -168,6 +168,11 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRegister);
 
+
+                TextViewUtils.SetTextSize18(txtTitleRegister, btnRegister);
+                TextViewUtils.SetTextSize16(txtAccountType, identityType, txtFullName, txtICNumber, txtTermsConditions, txtBodyRegister);
+                TextViewUtils.SetTextSize14(txtTermsConditions);
+
                 txtTitleRegister.Text = Utility.GetLocalizedLabel("OneLastThing", "dtitleRegister");
                 txtBodyRegister.Text = Utility.GetLocalizedLabel("OneLastThing", "dbodyRegister");
                 txtAccountType.Text = Utility.GetLocalizedLabel("OneLastThing", "idtypeTitle").ToUpper();
@@ -281,11 +286,35 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 idText = idtype;
             }
             private bool flagDel = false;
+            //private bool changed = false;
             private EditText eText;
             private TextView idText;
 
             public void AfterTextChanged(IEditable s)
             {
+                int len = eText.Text.Length;
+                bool dash = eText.Text.Contains("-");
+                string Idtype = idText.Text;
+
+                if (Idtype.Equals("IC / MyKad"))
+                {
+                    if (len == 12 && !dash)
+                    {
+                        string first6digit = eText.Text.Substring(0, 6);
+                        string digit78 = eText.Text.Substring(eText.Text.Length - 6, 2);
+                        string lastdigit = eText.Text.Substring(eText.Text.Length - 4);
+                        eText.Text = first6digit + "-" + digit78 + "-" + lastdigit;
+                        eText.SetSelection(eText.Text.Length);
+                    }
+                }
+                else if (Idtype.Equals("Army / Police ID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
+                {
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
+                }
+                else if (Idtype.Equals("Passport") || Idtype.Equals("Pasport"))
+                {
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
+                }
             }
 
             public void BeforeTextChanged(Java.Lang.ICharSequence s, int start, int count, int after)
@@ -315,8 +344,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
             {
                 string Idtype = idText.Text;
-
-                if (Idtype.Equals("IC / Mykad"))
+                
+                if (Idtype.Equals("IC / MyKad"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(14) });
                     if (!flagDel)
@@ -346,7 +375,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     }
                     flagDel = false;
                 }
-                else if (Idtype.Equals("ArmyID/PoliceID") || Idtype.Equals("IDTentera/IDPolis"))
+                else if (Idtype.Equals("Army / Police ID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
                 }
@@ -1087,17 +1116,17 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         }
 
 
-        public void ShowFullNameError()
-        {
-            // ClearFullNameError();
-            if (textInputLayoutFullName.Error != GetString(Resource.String.name_error))
-            {
-                textInputLayoutFullName.Error = GetString(Resource.String.name_error);
-            }
-            textInputLayoutFullName.Error = GetString(Resource.String.name_error);
-            if (!textInputLayoutFullName.ErrorEnabled)
-                textInputLayoutFullName.ErrorEnabled = true;
-        }
+        //public void ShowFullNameError()
+        //{
+        //    // ClearFullNameError();
+        //    if (textInputLayoutFullName.Error != GetString(Resource.String.name_error))
+        //    {
+        //        textInputLayoutFullName.Error = GetString(Resource.String.name_error);
+        //    }
+        //    textInputLayoutFullName.Error = GetString(Resource.String.name_error);
+        //    if (!textInputLayoutFullName.ErrorEnabled)
+        //        textInputLayoutFullName.ErrorEnabled = true;
+        //}
 
         public void ShowFullICError()
         {

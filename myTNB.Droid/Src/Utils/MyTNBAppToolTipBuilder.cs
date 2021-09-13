@@ -410,6 +410,8 @@ namespace myTNB_Android.Src.Utils
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipSubTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
+                TextViewUtils.SetTextSize14(tooltipTitle, tooltipSubTitle, tooltipMessage);
+                TextViewUtils.SetTextSize16(tooltipPrimaryCTA, tooltipSecondaryCTA);
 
                 tooltipTitle.Gravity = this.mGravityFlag;
                 tooltipSubTitle.Gravity = this.mGravityFlag;
@@ -460,6 +462,8 @@ namespace myTNB_Android.Src.Utils
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA, tooltipCheckBoxText);
+                TextViewUtils.SetTextSize14(tooltipTitle, tooltipCheckBoxText, tooltipMessage);
+                TextViewUtils.SetTextSize16(tooltipPrimaryCTA, tooltipSecondaryCTA);
 
                 tooltipTitle.Gravity = this.mGravityFlag;
                 tooltipMessage.Gravity = this.mGravityFlag;

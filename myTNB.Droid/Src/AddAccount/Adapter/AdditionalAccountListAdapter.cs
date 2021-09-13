@@ -1,6 +1,7 @@
 ﻿using Android.Content;
 using Android.Graphics;
 using Android.Preferences;
+using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -127,8 +128,8 @@ namespace myTNB_Android.Src.AddAccount
             OwnerNoContactLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.layout_owner_no_contact);
             textInputLayoutEmailEditText = itemView.FindViewById<TextInputLayout>(Resource.Id.textInputLayoutEmailReg);
 
-
-            EmailFieldDetail.Click += (sender, e) =>
+            
+            EmailFieldDetail.Click += (sender, e) => 
             {
                 OwnerNoContactLinearLayout.RequestFocus();
                 MobileLinearLayout.Visibility = ViewStates.Gone;
@@ -165,13 +166,18 @@ namespace myTNB_Android.Src.AddAccount
                 : Resource.Style.TextInputLayoutFeedbackCount);
             context = itemView.Context;
             AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
+           
+
+            TextViewUtils.SetTextSize16(AccountLabel, EmailFieldDetail, NoMobileFieldDetail);
+            TextViewUtils.SetTextSize14(AccountNumber, OwnerDetailTitle);
+            TextViewUtils.SetTextSize12(AccountAddress);
 
             OwnerDetailTitle.Text = Utility.GetLocalizedLabel("AddAccount", "titleOwnerDetailRegion");
             textInputLayoutEmailEditText.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
 
-            TextViewUtils.SetTextSize12(AccountAddress);
-            TextViewUtils.SetTextSize14(AccountNumber, OwnerDetailTitle);
-            TextViewUtils.SetTextSize16(AccountLabel, EmailFieldDetail, NoMobileFieldDetail);
+            // TextViewUtils.SetTextSize12(AccountAddress);
+            // TextViewUtils.SetTextSize14(AccountNumber);
+            // TextViewUtils.SetTextSize16(AccountLabel);
 
             //TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel, OwnerDetailTitle);
             //TextViewUtils.SetMuseoSans500Typeface(EmailFieldDetail, NoMobileFieldDetail);
@@ -179,7 +185,10 @@ namespace myTNB_Android.Src.AddAccount
 
             //context = itemView.Context;
             //AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
+            EmailEditText.FocusChange += txtEmailReg_FocusChange;
             EmailEditText.AddTextChangedListener(new InputFilterFormField(EmailEditText, textInputLayoutEmailEditText));
+            EmailEditText.TextChanged += TxtEmailReg_TextChanged;
+            EmailEditText.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_email_new, 0, 0, 0);
 
             AccountLabel.FocusChange += (sender, e) =>
             {
@@ -224,6 +233,94 @@ namespace myTNB_Android.Src.AddAccount
             PreferenceManager.GetDefaultSharedPreferences(context).Edit().Remove("selectedcountry").Apply();
             context.StartActivity(new Intent(context, typeof(SelectCountryActivity)));
         }
+
+        private void txtEmailReg_FocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+            {
+                string email = EmailEditText.Text.ToString().Trim();
+
+                try
+                {
+                    bool isCorrect = true;
+
+                    ShowInvalidEmailError();
+
+                    if (!string.IsNullOrEmpty(email))
+                    {
+
+                        if (!Patterns.EmailAddress.Matcher(email).Matches())
+                        {
+                            ShowInvalidEmailError();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
+            }
+        }
+
+        private void TxtEmailReg_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                ShowInvalidEmailError();
+
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        public void ShowInvalidEmailError()
+        {
+            textInputLayoutEmailEditText.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+               ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+               : Resource.Style.TextInputLayoutBottomErrorHint);
+
+            if (!string.IsNullOrEmpty(EmailEditText.Text))
+            {
+                string email = EmailEditText.Text.ToString().Trim();
+
+                if (!Patterns.EmailAddress.Matcher(email).Matches())
+                {
+                   
+                    textInputLayoutEmailEditText.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+
+                    if (textInputLayoutEmailEditText.Error != Utility.GetLocalizedErrorLabel("invalid_email"))
+                    {
+                        textInputLayoutEmailEditText.Error = Utility.GetLocalizedErrorLabel("invalid_email");  // fix bouncing issue
+                    }
+
+                    textInputLayoutEmailEditText.RequestLayout();
+                    //((LinkAccountActivity)context).DisableConfirmButton();
+                }
+                else
+                {
+                    ClearEmailError();
+                    //((LinkAccountActivity)context).EnableConfirmButton();
+                }
+            }
+        }
+
+        public void ClearEmailError()
+        {
+            if (!string.IsNullOrEmpty(textInputLayoutEmailEditText.Error))
+            {
+                textInputLayoutEmailEditText.Error = null;
+                //textInputLayoutEmailEditText.ErrorEnabled = false;
+            }
+            else
+            {
+                textInputLayoutEmailEditText.Error = null;
+                //textInputLayoutEmailEditText.ErrorEnabled = false;
+            }
+
+        }
+
 
         public void checkingEmailnPhone()
         {
@@ -283,17 +380,17 @@ namespace myTNB_Android.Src.AddAccount
             try
             {
                 AccountNumber.Text = this.item.accountNumber;
+                AccountAddress.Text = this.item.accountAddress;
 
                 //if not owner mask the address IRUL
-                if (!this.item.isOwner == true)
-                {
-                    AccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, this.item.accountAddress);
-                    //AccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, this.item.accountAddress);
-                }
-                else
-                {
-                    AccountAddress.Text = this.item.accountAddress;
-                }
+                //if (!this.item.isOwner == true) {
+                //    AccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, this.item.accountAddress);
+                //    //AccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, this.item.accountAddress);
+                //}
+                //else
+                //{
+                //    AccountAddress.Text = this.item.accountAddress;
+                //}
 
 
                 if (this.item.accountLabel.Equals(EG_ACCOUNT_LABEL))
@@ -308,7 +405,7 @@ namespace myTNB_Android.Src.AddAccount
                 AccountLabel.AfterTextChanged += (sender, args) =>
                 {
                     textInputLayoutAccountLabel.Error = null;
-                    item.accountLabel = AccountLabel.Text.Trim();
+                    //item.accountLabel = AccountLabel.Text.Trim();
                     if (!string.IsNullOrEmpty(item.accountLabel))
                     {
                         textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");

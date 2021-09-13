@@ -89,8 +89,14 @@ namespace myTNB_Android.Src.Database.Model
 
         [Column("IsViewBillShown")]
         public bool IsViewBillShown { get; set; }
-        
-        public static int CreateTable()
+
+        [Column("IsHaveAccess")]
+        public bool IsHaveAccess { get; set; }
+
+        [Column("IsApplyEBilling")]
+        public bool IsApplyEBilling { get; set; }
+
+    public static int CreateTable()
         {
             var db = DBHelper.GetSQLiteConnection();
             return (int)db.CreateTable<CustomerBillingAccount>();
@@ -184,7 +190,9 @@ namespace myTNB_Android.Src.Database.Model
                 IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
                 isOwned = accountResponse.IsOwned,
                 IsSMROnBoardingDontShowAgain = false,
-                IsPeriodOpen = false
+                IsPeriodOpen = false,
+                IsHaveAccess = accountResponse.IsHaveAccess,
+                IsApplyEBilling = accountResponse.IsApplyEBilling
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);

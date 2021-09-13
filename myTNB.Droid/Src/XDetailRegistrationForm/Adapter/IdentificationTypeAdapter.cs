@@ -69,6 +69,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.Adapter
         public AccountTypeViewHolder(View itemView) : base(itemView)
         {
             TextViewUtils.SetMuseoSans300Typeface(txtSupplyAccountName);
+            TextViewUtils.SetTextSize16(txtSupplyAccountName);
         }
     }
 }

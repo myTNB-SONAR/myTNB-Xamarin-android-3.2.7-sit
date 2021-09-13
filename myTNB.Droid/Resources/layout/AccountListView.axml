@@ -153,7 +153,7 @@
                             android:textSize="12dp"
                             android:id="@+id/txtTermsConditions"
                             android:textColorLink="@color/powerBlue"
-                            android:paddingLeft="3dp"
+                            android:paddingLeft="10dp"
                             android:layout_gravity="center_vertical"/>
                     </LinearLayout>
                     <LinearLayout

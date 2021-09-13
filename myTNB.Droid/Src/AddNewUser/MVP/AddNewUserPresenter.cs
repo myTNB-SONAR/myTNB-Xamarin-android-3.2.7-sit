@@ -67,7 +67,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             }
         }
 
-        public async void OnAddAccount(string emailNewUser, string accNo, bool ishaveAccess, bool ishaveEBilling, string accAddress, string accName)
+        public async void OnAddAccount(string emailNewUser, string accNo, bool ishaveAccess, bool ishaveEBilling)
         {
             if (mView.IsActive())
             {
@@ -77,7 +77,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                AddUserAccessAccountRequest addUserAccessAccountRequest = new AddUserAccessAccountRequest(emailNewUser, accNo, ishaveAccess, ishaveEBilling, accAddress, accName);
+                AddUserAccessAccountRequest addUserAccessAccountRequest = new AddUserAccessAccountRequest(emailNewUser, accNo, ishaveAccess, ishaveEBilling);
                 addUserAccessAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(addUserAccessAccountRequest);
 
@@ -135,7 +135,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
                 }
                 else
                 {
-                    this.mView.ShowErrorMessageResponse(AddNewUserAccountResponse.Response.DisplayMessage);
+                    this.mView.ShowErrorMessageResponse(AddNewUserAccountResponse.Response.DisplayTitle,AddNewUserAccountResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

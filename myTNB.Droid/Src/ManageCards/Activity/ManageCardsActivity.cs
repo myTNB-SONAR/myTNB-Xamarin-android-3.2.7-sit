@@ -124,14 +124,20 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 //TextViewUtils.SetMuseoSans300Typeface(txtEmptyCard, txtValue);
                 //TextViewUtils.SetMuseoSans500Typeface(txtManageAutoPayTitle, txtManageCardsTitle, txtTitle);
 
+                TextViewUtils.SetTextSize16(txtManageCardsTitle, txtTitle, txtManageAutoPayTitle);
+                TextViewUtils.SetTextSize14(txtEmptyCard, txtValue);
+
+                //txtManageCardsTitle.Text = GetLabelByLanguage("details");
                 txtManageAutoPayTitle.Text = GetLabelByLanguage("titleAutoPay");
                 txtTitle.Text = GetLabelByLanguage("titleNoAutoPay");
                 txtValue.Text = GetLabelByLanguage("bodyNoAutoPay");
                 txtManageCardsTitle.Text = GetLabelByLanguage("titleCard");
-                TextViewUtils.SetMuseoSans300Typeface(txtManageCardsTitle, txtEmptyCard);
-                TextViewUtils.SetTextSize14(txtEmptyCard, txtValue);
-                TextViewUtils.SetTextSize16(txtTitle, txtManageCardsTitle, txtManageAutoPayTitle);
+                
+                // TextViewUtils.SetMuseoSans300Typeface(txtManageCardsTitle, txtEmptyCard);
+                // TextViewUtils.SetTextSize14(txtEmptyCard);
+                // TextViewUtils.SetTextSize16(txtManageCardsTitle);
 
+                // txtManageCardsTitle.Text = GetLabelByLanguage("details");
                 txtEmptyCard.Text = GetLabelByLanguage("noCards");
 
                 AccAdapter = new MyAccountAdapter(this, false);

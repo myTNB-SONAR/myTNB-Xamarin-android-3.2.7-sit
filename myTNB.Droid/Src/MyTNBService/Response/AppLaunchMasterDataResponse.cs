@@ -10,7 +10,7 @@ using Refit;
 
 namespace myTNB_Android.Src.MyTNBService.Response
 {
-    public class AppLaunchMasterDataResponse : BaseResponse<AppLaunchMasterDataResponse.AppLaunchMasterDataModel>
+    public class AppLaunchMasterDataResponse : BaseResponseV2<AppLaunchMasterDataResponse.AppLaunchMasterDataModel>
     {
         public AppLaunchMasterDataModel GetData()
         {
@@ -63,9 +63,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [AliasAs("ForceUpdateInfo")]
             public ForceUpdateInfoData ForceUpdateInfo { get; set; }
 
-            [JsonProperty(PropertyName = "IsFeedbackUpdateDetailDisabled")]
-            [AliasAs("IsFeedbackUpdateDetailDisabled")]
-            public bool IsFeedbackUpdateDetailDisabled { get; set; }
+            //[JsonProperty(PropertyName = "IsFeedbackUpdateDetailDisabled")]
+            //[AliasAs("IsFeedbackUpdateDetailDisabled")]
+            //public bool IsFeedbackUpdateDetailDisabled { get; set; }
 
             [JsonProperty(PropertyName = "ServicesPreLogin")]
             [AliasAs("ServicesPreLogin")]

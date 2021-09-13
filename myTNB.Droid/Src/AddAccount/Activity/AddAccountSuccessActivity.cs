@@ -91,7 +91,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
             textAddAccountSuccess.Text = Utility.GetLocalizedLabel("AddAccount", "addAcctSuccessMsg");
             txtAddAccVerifyNotification.Text = Utility.GetLocalizedLabel("AddAccount", "addAcctSuccessMsgBody");
-            done.Text = Utility.GetLocalizedCommonLabel("done");
+            done.Text = Utility.GetLocalizedLabel("AddAccount", "backToHome");
 
             appBarLayout = FindViewById<AppBarLayout>(Resource.Id.appBar);
             appBarLayout.Visibility = ViewStates.Gone;

@@ -186,19 +186,29 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     {
                         if (isTaxInvoice)
                         {
+                            getPDFUrl = PaymentManager.Instance.GetTaxInvoiceURL(srNumber);
                             //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                             //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
-                            getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString();
+                            //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString();
                             //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString(), "utf-8");
                             //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum+"&billingNo="+selectedBill.NrBill, "utf-8"));
                         }
                         else
                         {
-                            //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
-                            //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
-                            getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString();
-                            //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString(), "utf-8");
-                            //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum , "utf-8"));
+                            if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
+                            {
+                                //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
+                                //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
+                                getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&contractAccount=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString();
+                                //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString(), "utf-8");
+                            }
+                            else
+                            {
+                                //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
+                                //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
+                                getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill" + selectedAccount.IsOwner.ToString();
+                                //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&contractAccount=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString(), "utf-8");
+                            }
                         }
                         downloadClicked = true;
                         RunOnUiThread(() =>

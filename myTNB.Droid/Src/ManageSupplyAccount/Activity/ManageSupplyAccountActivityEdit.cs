@@ -111,16 +111,26 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName);
                 TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
-                TextViewUtils.SetTextSize14(txtAccountAddress, txtNickName, txtAccountNumber, btnTextUpdateNickName
-                    , btnRemoveAccount, txtInputLayoutNickName);
+
+                TextViewUtils.SetTextSize14(txtAccountAddress, txtNickName, txtAccountNumber, btnTextUpdateNickName, btnRemoveAccount, txtInputLayoutNickName);
+
                 txtAccountNumber.Text = accountData.AccountNum;
                 //txtAccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, accountData.AddStreet);
 
                 //if not owner mask the address IRUL
                 if (!accountData.IsOwner == true)
                 {
-                    txtAccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
-                    infoAddress.Visibility = ViewStates.Visible;
+                    if (!accountData.IsHaveAccess == true)
+                    {
+                        //txtAccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
+                        txtAccountAddress.Text = accountData.AddStreet;
+                        infoAddress.Visibility = ViewStates.Visible;
+                    }
+                    else
+                    {
+                        txtAccountAddress.Text = accountData.AddStreet;
+                        infoAddress.Visibility = ViewStates.Gone;
+                    }
                 }
                 else
                 {

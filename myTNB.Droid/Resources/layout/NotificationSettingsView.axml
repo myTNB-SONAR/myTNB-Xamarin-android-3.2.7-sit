@@ -124,16 +124,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
-                        android:text="Set Your Text Size"
+                        android:text="Select Your Preferred Text Size"
                         android:textColor="@color/blue"
                         android:textSize="16dp"/>
                  </LinearLayout>
                  <LinearLayout
-                    android:id="@+id/textSizeListContainer"
+                    android:id="@+id/appFontListContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical">
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/Font_list_view"
+                        android:background="@color/white"/>
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
        </LinearLayout>

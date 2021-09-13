@@ -138,6 +138,7 @@
                     android:background="@color/platinumGrey"
                     android:divider="?android:listDivider"/>
                 <LinearLayout
+                    android:visibility="gone"
                     android:padding="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -170,7 +171,7 @@
                 </LinearLayout>
                 <View
                     android:id="@+id/manageUserGroupContentSeparator"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/platinumGrey"
@@ -218,7 +219,7 @@
                         android:text="Cancel"
                         android:textSize="16dp"
                         android:textAllCaps="false"
-                        style="@style/LightButton"/>
+                        style="@style/LightButtonRed"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_height="wrap_content"
@@ -232,7 +233,7 @@
                         android:text="Resend"
                         android:textSize="16dp"
                         android:textAllCaps="false"
-                        style="@style/LightButtonRed"/>
+                        style="@style/LightButton"/>
                 </LinearLayout>
         </LinearLayout>
         <LinearLayout

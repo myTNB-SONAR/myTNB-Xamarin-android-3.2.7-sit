@@ -19,7 +19,9 @@
             android:drawablePadding="6dp"
             android:gravity="center_vertical"
             android:paddingTop="1dp"
+            android:paddingRight="20dp"
             android:text="**** "
+            android:textSize="16dp"
             android:textColor="@color/tunaGrey"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true" />
@@ -30,6 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:paddingLeft="30dp"
+            android:layout_marginLeft="10dp"
             app:srcCompat="@drawable/ic_close" />
     </RelativeLayout>
 </LinearLayout>

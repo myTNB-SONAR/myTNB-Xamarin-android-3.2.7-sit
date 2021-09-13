@@ -47,8 +47,10 @@ namespace myTNB_Android.Src.CompoundView
 
             TextViewUtils.SetMuseoSans300Typeface(itemValue, itemValue2);
             TextViewUtils.SetMuseoSans500Typeface(itemTitle);
-            TextViewUtils.SetTextSize12(itemValue, itemValue2);
             TextViewUtils.SetTextSize14(itemTitle);
+            TextViewUtils.SetTextSize12(itemValue, itemValue2);
+            
+
         }
 
         public void SetFlagID(bool FlagID)
