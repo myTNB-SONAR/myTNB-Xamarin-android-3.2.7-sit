@@ -196,7 +196,7 @@
     "payBill": "Bayar<br>Bil Saya",
     "payBills": "Bayar<br>Bil Saya",
     "submitFeedback": "Hantar<br>Maklum Balas",
-    "submitEnquiry": "Hantar dan<br>Semak Pertanyaan",
+    "submitEnquiry": "Hantar &<br>Semak Pertanyaan",
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "Lihat Bil / Makluman Saya",
     "tutorialAccountTitle": "Ringkasan akaun anda.",
@@ -681,7 +681,7 @@
     "findUs": "Temui Kami",
     "callUs": "Hubungi Kami",
     "feedback": "Hantar Maklum Balas",
-    "enquiry": "Hantar Pertanyaan",
+    "enquiry": "Hantar & Semak Pertanyaan",
     "changeLanguage": "Change language to English",
     "applicationStatus": "Status Permohonan"
   },
@@ -975,10 +975,10 @@
   "SubmitEnquiry": {
     "exGratiaAgreementTitle": "Persetujuan Ex-gratia", //
     "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.", //
-    "enquireTitle": "Hantar dan Semak Pertanyaan",
+    "enquireTitle": "Hantar & Semak Pertanyaan",
     "submitEnquiryTitle": "Hantar Pertanyaan Baru",
     "submitEnquiryDescription": "Kongsikan bagaimana kami boleh membantu anda",
-    "viewSubmittedEnquiry": "Semak Pertanyaan",
+    "viewSubmittedEnquiry": "Semak Pertanyaan yang Dihantar",
     "viewEnquiryTitle": "Semak status pertanyaan dan permohonan anda di sini.",
     "accNumberHint": "Nombor Akaun",
     "accNumberInfo": "Dimanakah nombor akaun saya?",
@@ -1123,7 +1123,7 @@
     "technicianName": "NAMA JURUTEKNIK", //
     "incidentAddress": "ALAMAT KEJADIAN", //
     "thankYouForProvidingYourDetails": "Terima kasih di atas semua maklumat yang diberikan!", //
-    "thankYouForProvidingYourDetailsDescription": "Kami akan menyemak maklumat anda dan akan dimaklumkan setelah kami mengesahkannya. Jumlah pembayaran akan diproses ke akaun bank anda dalam tempoh 14 hari bekerja.", //
+    "thankYouForProvidingYourDetailsDescription": "Kami akan menyemak maklumat anda dan anda akan dimaklumkan setelah kami mengesahkannya. Jumlah pembayaran akan diproses ke akaun bank anda dalam tempoh 14 hari bekerja.", //
     "totalClaimAmount": "Jumlah (RM)", //
     "thankYouForYourSubmission": "Terima kasih di atas semua maklumat yang diberikan!", //
     "yourRatingWillHelpUsServeYouBetter": "Penilaian anda akan membantu kami memberikan perkhidmatan yang lebih baik.", //
