@@ -7471,6 +7471,31 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+        <AndroidResource Include="Resources\drawable-hdpi\download_bill_statement.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\download_bill_statement.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\download_bill_statement.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\download_bill_statement.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\download_bill_statement.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\BillStatement.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\BillStatement\MVP\BillStatementActivity.cs" />
     <Compile Include="Src\Device Cache\DeviceSizeCache.cs" />
   </ItemGroup>
   <ItemGroup>
