@@ -152,7 +152,7 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
             SerialNumber = Intent.GetStringExtra("Sernumbr");
             txtFeedbackIdContent.Text = SerialNumber;
             txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourDisagree"); //"Your negotiation request has been submitted";
-            txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourDisagreeDescription"); //"We'll get back to you soon.In the mean time,stay updated by traccking your submitted enquiry status.";
+            txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourDisagreeDescription"); //"We'll get back to you soon. In the meantime,stay updated by traccking your submitted enquiry status.";
             txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
             buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
             btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");

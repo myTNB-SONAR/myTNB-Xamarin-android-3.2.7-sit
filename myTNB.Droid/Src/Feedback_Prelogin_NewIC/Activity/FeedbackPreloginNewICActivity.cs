@@ -758,16 +758,16 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             {
                 if(string.IsNullOrEmpty(AccNoDesc))
                 {
-                    title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle") + txtAccountNo.Text;
+                    title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForAccountTitle") + txtAccountNo.Text;
                 }
                 else
                 {
-                    title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle") + "\"" + AccNoDesc + " - " + txtAccountNo.Text + "\"";
+                    title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForAccountTitle") + "\"" + AccNoDesc + " - " + txtAccountNo.Text + "\"";
                 }
                 
                 leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                  .SetTitle(title)
-                 .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongDescription"))
+                 .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForAccountDescription"))
                  .SetCTALabel(Utility.GetLocalizedLabel("SubmitEnquiry", "Gotit"))
                  .SetCTAaction(() => { leaveDialog.DismissDialog(); })
                  .Build();
@@ -1090,16 +1090,16 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     {
                         if (string.IsNullOrEmpty(AccNoDesc))
                         {
-                            title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle") + txtAccountNo.Text;
+                            title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForAccountTitle") + txtAccountNo.Text;
                         }
                         else
                         {
-                            title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongTitle") + AccNoDesc + " - " + txtAccountNo.Text;
+                            title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForAccountTitle") + AccNoDesc + " - " + txtAccountNo.Text;
                         }
 
                         leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                          .SetTitle(title)
-                         .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForKepongDescription"))
+                         .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForAccountDescription"))
                          .SetCTALabel(Utility.GetLocalizedLabel("SubmitEnquiry", "Gotit"))
                          .SetCTAaction(() => { leaveDialog.DismissDialog(); })
                          .Build();

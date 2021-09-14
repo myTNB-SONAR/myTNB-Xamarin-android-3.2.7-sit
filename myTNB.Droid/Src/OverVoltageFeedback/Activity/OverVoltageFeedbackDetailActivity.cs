@@ -164,15 +164,10 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 var userinfo = new BaseRequest();
                 var useremail = userinfo.usrInf.eid;
 
+                string domain = "https://mytnbwvovis.ap.ngrok.io/"; // WebView Live
+                // string domain = "http://192.168.1.157:3000/"; // WebView Local
 
-                //const string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
-                //const string domain = "http://192.168.1.157:3000/"; // WebView Local
-                //var domain = "http://192.168.1.157:3000/claimPage/" + ClaimId + "?eid=" + useremail + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel;
-
-                // WebView Live
-                //const string domain = "http://mytnbwvovis.ap.ngrok.io/";
-                var domain = "https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId + "?eid=" + useremail + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel;
-                //const string domain = "http://192.168.1.157:3000/"; // WebView Local
+                domain += "claimPage/" + ClaimId + "?eid=" + useremail + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel;
 
                 String queryParams = null;
                 
@@ -235,7 +230,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 // webView.SetWebViewClient(new WebViewClient());
                 ShowProgressDialog();
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
-                webView.LoadUrl(url); //"https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId  //Live https://mytnbwvovis.ap.ngrok.io/claimPage/" + ClaimId// http://192.168.1.158:3000/claimPage/b1683610-34e6-424e-86fd-fce3ae3ab0b //338d6d22-4f04-4065-b7b1-3cb97542faa6 //https://serene-rosalind-a35967.netlify.app/claimPage/" + ClaimId
+                webView.LoadUrl(url);
                 await Task.Delay(0);
                 //HideProgressDialog();
                 //File upload
