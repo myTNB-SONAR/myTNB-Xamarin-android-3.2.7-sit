@@ -6335,6 +6335,7 @@
     <None Include="app.config" />
     <AndroidAsset Include="Assets\fonts\MuseoSans_300.otf" />
     <AndroidAsset Include="Assets\fonts\MuseoSans_500.otf" />
+    <AndroidAsset Include="Assets\Dynatrace.properties" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
