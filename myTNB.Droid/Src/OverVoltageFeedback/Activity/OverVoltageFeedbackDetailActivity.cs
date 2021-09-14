@@ -451,9 +451,10 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 }
                 else if (!string.IsNullOrEmpty(data.crStatus))
                 {
-                    if (data.crStatus != "NULL")
+                    if (data.crStatus != "NULL" && !string.IsNullOrEmpty(data.crStatusCode))// && !string.IsNullOrEmpty(data.crStatusCode)
                     {
                         SelectSubmittedFeedbackActivity.status = data.crStatus;//"Cancelled";
+                        SelectSubmittedFeedbackActivity.crStatusCode =data.crStatusCode;
                     }
                     //NavigationController.SetNavigationBarHidden(false, false);
                     base.OnBackPressed();
@@ -795,5 +796,6 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         public string totalAmount { get; set; }
         public string message { get; set; }
         public string crStatus { get; set; }
-}
+        public string crStatusCode { get; set; }
+    }
 }
