@@ -881,7 +881,7 @@ You acknowledge that you have been provided with and have read and understood th
     <string name="incident_address">Incident address</string>
     <string name="submitICFeedbackSuccessPageThankyouRequest">Thank you for your submission!</string>
     <string name="submitICFeedbackSuccessPageThankyouRequestContent">Your rating will help us serve you better.</string>
-    <!-- end of SubmitICFeedback -->
+  <!-- end of SubmitICFeedback -->
 
   <!-- GeneralEnquiry1of2 -->
   <string name="GeneralEnquiry1of2_app_bar">General Enquiry \n Step 1 of 2</string>
