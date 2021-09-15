@@ -495,7 +495,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     NewAppTutorialUtils.ForceCloseNewAppTutorial(); 
                     if (!UserSessions.HasManageAccessIconTutorialShown(this.mPref))
                     {
-                        OnManageAccessIconTutorialDialog(selected.isOwned);
+                        OnManageAccessIconTutorialDialog(selected.isOwned, selected.AccountTypeId);
                         
                     }
                     //else
@@ -518,12 +518,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             return base.OnCreateOptionsMenu(menu);
         }
 
-        public void OnManageAccessIconTutorialDialog(bool flag)
+        public void OnManageAccessIconTutorialDialog(bool flag, string accountTypeId)
         {
             Handler h = new Handler();
             Action myAction = () =>
             {
-                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.mPresenter.OnGeneraNewAppTutorialList(flag));
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.mPresenter.OnGeneraNewAppTutorialList(flag, accountTypeId));
             };
             h.PostDelayed(myAction, 100);
         }

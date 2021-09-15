@@ -57,7 +57,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 		private string smErrorCode = "204";
 		private string smErrorMessage = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
 
-		private string preSelectedAccount;
+        AccountData selectedAccount;
+
+        private string preSelectedAccount;
 		private UsageHistoryResponse usageHistoryResponse;
         private SMUsageHistoryResponse smUsageHistoryResponse;
 
@@ -1691,11 +1693,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             wtManager.UpdateReadItem(itemID, flag, formattedDate);
         }
 
-        public List<NewAppModel> OnGeneraNewAppTutorialList(bool isOwner)
+        public List<NewAppModel> OnGeneraNewAppTutorialList(bool isOwner, string accountTypeId)
         {
             List<NewAppModel> newList = new List<NewAppModel>();
             bool isNeedHelpHide = true;
-
+            
             if (isOwner)
             {
                 newList.Add(new NewAppModel()
@@ -1710,15 +1712,19 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
             else
             {
-                newList.Add(new NewAppModel()
+                if (!isOwner || (accountTypeId.Equals("2") || accountTypeId.Equals("3")))
                 {
-                    ContentShowPosition = ContentType.BottomRight,
-                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitle"),
-                    ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageDescNonOwner"),
-                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                    NeedHelpHide = isNeedHelpHide,
-                    IsButtonShow = false
-                });
+                    newList.Add(new NewAppModel()
+                    {
+                        ContentShowPosition = ContentType.BottomRight,
+                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitle"),
+                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageDescNonOwner"),
+                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                        NeedHelpHide = isNeedHelpHide,
+                        IsButtonShow = false
+                    });
+                }
+                
             }            
             return newList;
         }

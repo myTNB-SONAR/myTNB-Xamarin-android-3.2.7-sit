@@ -186,10 +186,10 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
                 getICVerify.SetUserName(userEntity.Email);
                 var userResponse = await ServiceApiImpl.Instance.UserAuthenticateIDOnlyNew(getICVerify);
 
-                    //if (userResponse.GetDataAll().isActive)
-                    if (userResponse.Response.Data.isActive)
-                    {
-                    MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+                //if (userResponse.GetDataAll().isActive)
+                if (userResponse.Response.Data.isActive)
+                {
+                     MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
                 }
                 else
                 {

@@ -369,6 +369,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 View v = updateNameBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
+                TextViewUtils.SetTextSize14(tv);
                 updateNameBar.Show();
                 this.SetIsClicked(false);
             }
@@ -395,6 +396,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 View v = updateEmailBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
+                TextViewUtils.SetTextSize14(tv);
                 updateEmailBar.Show();
                 this.SetIsClicked(false);
             }
@@ -409,18 +411,19 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             try
             {
-                Snackbar updateEmailBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "IDUpdateSuccess"), Snackbar.LengthIndefinite)
+                Snackbar updateIdBar =
+                Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "IDUpdateSuccess"), Snackbar.LengthIndefinite)
                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
                              {
                                  // EMPTY WILL CLOSE SNACKBAR
                              }
                             );
-                View v = updateEmailBar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(4);
-                updateEmailBar.Show();
-                this.SetIsClicked(false);
+                View snackbarView = updateIdBar.View;
+                TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+                textView.SetMaxLines(4);
+                TextViewUtils.SetTextSize14(textView);
+                updateIdBar.Show();
             }
             catch (System.Exception e)
             {
@@ -428,6 +431,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+        
 
         private Snackbar mSnackBar;
         public void ShowError(string errorMessage)

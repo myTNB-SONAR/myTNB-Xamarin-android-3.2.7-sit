@@ -203,6 +203,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                         IsHaveAccess = accUser.IsHaveAccess,
                         userId = accUser.userId,
                         email = accUser.email,
+                        IsPreRegister = accUser.IsPreRegister
                     };
                     AccountList.Add(newRecord);
                 }
