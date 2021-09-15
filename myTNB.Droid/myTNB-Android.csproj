@@ -7472,6 +7472,8 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Device Cache\DeviceSizeCache.cs" />
+    <Compile Include="Src\Utils\Deeplink\DeeplinkUtil.cs" />
+    <Compile Include="Src\Utils\Deeplink\Deeplink.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7783,6 +7785,7 @@
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\" />
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\" />
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\" />
+    <Folder Include="Src\Utils\Deeplink\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
