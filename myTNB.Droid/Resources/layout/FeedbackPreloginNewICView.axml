@@ -42,7 +42,6 @@
 					android:layout_height="wrap_content"
 					android:background="@color/white">
 					<com.google.android.material.textfield.TextInputLayout
-						
 						android:id="@+id/txtInputLayoutAccountNo"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -93,6 +92,7 @@
 						android:layout_marginLeft="16dp"
 						android:paddingLeft="4dp"
 						android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
+
 						android:gravity="center|left"
 						android:orientation="horizontal">
 						<TextView
