@@ -30,6 +30,9 @@ using Xamarin.Essentials;
 using myTNB_Android.Src.MyTNBService.Request;
 using BaseRequest = myTNB_Android.Src.MyTNBService.Request.BaseRequest;
 
+using myTNB_Android.Src.AppLaunch.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
+
 namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 {
     [Activity(Label = "OverVoltageFeedbackDetailActivity"
@@ -47,6 +50,9 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         [BindView(Resource.Id.txtstep1of2)]
         TextView txtstep1of2;
 
+        public bool FcmPushNotificationFlagFromBackground;
+        public static bool FcmPushNotificationFlagFromForkground;
+        
         string ClaimId;
         string TempTitle,TempStepperTitle;
         DTOWebView data;
@@ -165,9 +171,9 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 var useremail = userinfo.usrInf.eid;
 
                 string domain = "https://mytnbwvovis.ap.ngrok.io/"; // WebView Live
-                // string domain = "http://192.168.1.157:3000/"; // WebView Local
+                //string domain = "http://192.168.1.157:3000/"; // WebView Local
 
-                domain += "claimPage/" + ClaimId + "?eid=" + useremail + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel;
+                domain += "claimPage/" + ClaimId + "?eid=" + useremail + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.RandomFiveDigit;
 
                 String queryParams = null;
                 
@@ -451,13 +457,24 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 }
                 else if (!string.IsNullOrEmpty(data.crStatus))
                 {
+                    FcmPushNotificationFlagFromBackground = LaunchViewActivity.FcmPushNotificationFlagFromBackground;                   
                     if (data.crStatus != "NULL" && !string.IsNullOrEmpty(data.crStatusCode))// && !string.IsNullOrEmpty(data.crStatusCode)
                     {
                         SelectSubmittedFeedbackActivity.status = data.crStatus;//"Cancelled";
                         SelectSubmittedFeedbackActivity.crStatusCode =data.crStatusCode;
                     }
-                    //NavigationController.SetNavigationBarHidden(false, false);
-                    base.OnBackPressed();
+                    if (FcmPushNotificationFlagFromBackground == true )
+                    {                        
+                        Intent intent = new Intent(this, typeof(DashboardHomeActivity));
+                        intent.SetFlags(ActivityFlags.ClearTop);
+                        StartActivity(intent);
+                        LaunchViewActivity.FcmPushNotificationFlagFromBackground = false;                     
+                    }                   
+                    else
+                    {
+                        base.OnBackPressed();
+                    }
+                    //NavigationController.SetNavigationBarHidden(false, false);                  
                 }
                 else if (data.title == "Compensation Agreement")
                 {
