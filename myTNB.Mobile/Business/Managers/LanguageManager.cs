@@ -60,13 +60,13 @@ namespace myTNB
                     using (StreamReader reader = new StreamReader(stream))
                     {
                         JSONLang = reader.ReadToEnd();
-                        Debug.WriteLine("DEBUG >> JSONLang: " + JSONLang);
+                        Debug.WriteLine("[DEBUG] JSONLang: " + JSONLang);
                     }
-                    Debug.WriteLine("DEBUG >> SUCCESS");
+                    Debug.WriteLine("[DEBUG] SUCCESS");
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine("DEBUG >> SetLanguageData: " + e.Message);
+                    Debug.WriteLine("[DEBUG] Error SetLanguageData: " + e.Message);
                 }
             }
             else
@@ -225,7 +225,7 @@ namespace myTNB
             return valuesDictionary;
         }
 
-        public JToken GetServiceConfig(string pageName, string service)
+        public JToken GetServiceConfig(string pageName, string propertyName)
         {
             try
             {
@@ -233,7 +233,7 @@ namespace myTNB
                 if (jsonObj != null
                     && jsonObj[pageName] is JToken pageJToken
                     && pageJToken != null
-                    && pageJToken[service] is JToken serviceToken
+                    && pageJToken[propertyName] is JToken serviceToken
                     && serviceToken != null)
                 {
                     return serviceToken;
@@ -245,6 +245,11 @@ namespace myTNB
                 Debug.WriteLine("[DEBUG] GetParsedJson Error: ", e.Message);
                 return null;
             }
+        }
+
+        internal JToken GetServiceConfig(object serviceConfiguration, object serviceName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

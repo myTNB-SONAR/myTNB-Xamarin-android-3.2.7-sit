@@ -10,6 +10,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using DynatraceAndroid;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.EBPopupScreen.MVP;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
@@ -152,10 +153,8 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
             {
                 CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_initiate_Later);
                 FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_initiate_Later);
-                Intent result = new Intent();
-                result.PutExtra("MaybeLater", "MaybeLater");
-                SetResult(Result.Ok, result);
-                Finish();
+                MyTNBAccountManagement.GetInstance().OnHoldWhatNew(true);
+                base.OnBackPressed();
             }
             catch (Exception ex)
             {
@@ -208,9 +207,6 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
         public override void OnBackPressed()
         {
             base.OnBackPressed();
-            Intent result = new Intent();
-            SetResult(Result.Ok, result);
-            Finish();
         }
 
         public override void OnTrimMemory(TrimMemory level)

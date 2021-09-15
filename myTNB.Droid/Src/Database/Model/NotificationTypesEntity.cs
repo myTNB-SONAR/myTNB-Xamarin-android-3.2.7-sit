@@ -111,11 +111,19 @@ namespace myTNB_Android.Src.Database.Model
 
         public static NotificationTypesEntity GetById(string Id)
         {
-            //using (var db = new SQLiteConnection(Constants.DB_PATH))
-            //{
-            var db = DBHelper.GetSQLiteConnection();
-            return db.Query<NotificationTypesEntity>("SELECT * FROM NotificationTypesEntity WHERE Id = ?", Id).ToList()[0];
-            //}
+            try
+            {
+                //using (var db = new SQLiteConnection(Constants.DB_PATH))
+                //{
+                var db = DBHelper.GetSQLiteConnection();
+                return db.Query<NotificationTypesEntity>("SELECT * FROM NotificationTypesEntity WHERE Id = ?", Id).ToList()[0];
+                //}
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+                return null;
+            }
 
         }
 

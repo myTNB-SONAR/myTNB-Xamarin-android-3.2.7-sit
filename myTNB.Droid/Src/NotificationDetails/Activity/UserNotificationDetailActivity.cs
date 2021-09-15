@@ -5,10 +5,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
-
-using Android.Text;
-using Android.Text.Method;
-using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -25,7 +21,6 @@ using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.NotificationDetails.MVP;
@@ -61,7 +56,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         Models.NotificationDetails notificationDetails;
         UserNotificationData userNotificationData;
-        internal static myTNB.Mobile.NotificationModel Notification;
+        internal static myTNB.Mobile.NotificationOpenDirectDetails Notification;
         int position;
         UserNotificationDetailPresenter mPresenter;
         AlertDialog removeDialog;
@@ -149,7 +144,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                         StartActivity(intent);
                     }
                 }
-            }else if(textMessage != null && textMessage.Contains("faq"))
+            }
+            else if (textMessage != null && textMessage.Contains("faq"))
             {
                 //Lauch FAQ
                 int startIndex = textMessage.LastIndexOf("=") + 1;
@@ -185,7 +181,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
                     if (extras.ContainsKey(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM))
                     {
-                        Notification = DeSerialze<myTNB.Mobile.NotificationModel>(extras.GetString(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM));
+                        Notification = DeSerialze<myTNB.Mobile.NotificationOpenDirectDetails>(extras.GetString(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM));
                         pushFromDashboard = true;
                     }
 
@@ -276,7 +272,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     ctaComponent.Visibility = ViewStates.Gone;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -418,7 +414,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
 
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-            DashboardIntent.PutExtra("FROM_NOTIFICATION",true);
+            DashboardIntent.PutExtra("FROM_NOTIFICATION", true);
             MyTNBAccountManagement.GetInstance().SetIsAccessUsageFromNotification(true);
             StartActivity(DashboardIntent);
         }
@@ -474,8 +470,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.PutExtra("FROM_NOTIFICATION", true);
-            DashboardIntent.PutExtra("MENU","BillMenu");
-            DashboardIntent.PutExtra("DATA",JsonConvert.SerializeObject(mSelectedAccountData));
+            DashboardIntent.PutExtra("MENU", "BillMenu");
+            DashboardIntent.PutExtra("DATA", JsonConvert.SerializeObject(mSelectedAccountData));
             StartActivity(DashboardIntent);
         }
 

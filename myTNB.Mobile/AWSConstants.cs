@@ -2,80 +2,84 @@
 {
     public static class AWSConstants
     {
-        //AWS DEV
-        private const string SaltKeyDEV = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
-        private const string PassphraseDEV = "PW-myTNBDbrSso";
-        private const string DBROriginURLDEV = "https://test.mytnb.com.my";
-        private const string DBRRedirectURLDEV = "http://EC2Co-EcsEl-11MUE9B1S2T04-1563452123.ap-southeast-1.elb.amazonaws.com/DigitalBill/Start";
-        private const string DBRSSOURLDEV = "http://ec2co-ecsel-11mue9b1s2t04-1563452123.ap-southeast-1.elb.amazonaws.com/Sso?s={0}";
-        //AWS PROD
-        private const string SaltKeyPROD = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
-        private const string PassphrasePROD = "PW-myTNBDbrSso";
-        private const string DBROriginURLPROD = "https://test.mytnb.com.my";
-        private const string DBRRedirectURLPROD = "http://EC2Co-EcsEl-11MUE9B1S2T04-1563452123.ap-southeast-1.elb.amazonaws.com/DigitalBill/Start";
-        private const string DBRSSOURLPROD = "http://ec2co-ecsel-11mue9b1s2t04-1563452123.ap-southeast-1.elb.amazonaws.com/Sso?s={0}";
-
         internal const int TimeOut = 10000;
-
         internal const string Channel = "myTNB_API_Mobile";
-        internal static int RoleID = 16;
+        internal const int RoleID = 16;
 
-        private const string SIT = "SIT";
-        private const string PROD = "Prod";
+        //XAPI Keys
+        private const string XAPIKey_DEV = "KqNPPaCgl913pSLSHBgVT8NjJvTfTdYH6W0R1w78";
+        private const string XAPIKey_SIT = "8BVhUBJIJO9RAFwrxmx0o76n7tfRsPyd4DSChI5r";
+        private const string XAPIKey_PROD = "gpUS5pe4aO2yMbId7bFa13dGfYYnBWbjn3vqn0d7";
 
+        //Salt
+        private const string SaltKey_DEV = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
+        private const string SaltKey_SIT = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
+        private const string SaltKey_PROD = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
 
-        public const string Identity = "Identity";
-        public const string Eligibility = "Eligibility";
+        //Passphrase
+        private const string Passphrase_DEV = "PW-myTNBDbrSso";
+        private const string Passphrase_SIT = "PW-myTNBDbrSso";
+        private const string Passphrase_PROD = "PW-myTNBDbrSso";
 
+        //Environment
+        private const string Environment_DEV = "Prod";
+        private const string Environment_SIT = "Prod";
+        private const string Environment_PROD = "Prod";
 
-        private const string XAPIKeySIT = "8BVhUBJIJO9RAFwrxmx0o76n7tfRsPyd4DSChI5r";
-        private const string XAPIKeyProd = "gpUS5pe4aO2yMbId7bFa13dGfYYnBWbjn3vqn0d7";
+        //WEB Actions
+        internal const string BackToApp = "mytnbapp://action=backToApp";
 
-        private const string AWSEndpoint_SIT = "https://stagingapi.mytnb.com.my";
-        private const string AWSEndpoint_PROD = "https://api.mytnb.com.my";
-
-        ////Domains
-        //internal struct Domains
-        //{
-        //    internal const string GetBillRendering = "https://q7zjjtvkmf.execute-api.ap-southeast-1.amazonaws.com";
-        //}
-
-#if DEBUG
-        internal const string Environment = PROD;
-        internal const string AWS_Endpoint = AWSEndpoint_SIT;
-        internal const string XAPIKey = XAPIKeySIT;
-        public const string SaltKey = SaltKeyDEV;
-        public const string PassPhrase = PassphraseDEV;
-        public const string DBROriginURL = DBROriginURLDEV;
-        public const string DBRRedirectURL = DBRRedirectURLDEV;
-        public const string DBRSSOURL = DBRSSOURLDEV;
-
-        //internal const string Environment = PROD;
-        //internal const string AWS_Endpoint = AWSEndpoint_PROD;
-        //internal const string XAPIKey = XAPIKeyProd;
-        //public const string SaltKey = SaltKeyPROD;
-        //public const string PassPhrase = PassphrasePROD;
-        //public const string DBROriginURL = DBROriginURLPROD;
-        //public const string DBRRedirectURL = DBRRedirectURLPROD;
-        //public const string DBRSSOURL = DBRSSOURLPROD;
-#elif MASTER || SIT
-        internal const string Environment = PROD;
-        internal const string AWS_Endpoint = AWSEndpoint_SIT;
-        internal const string XAPIKey = XAPIKeySIT;
-        public const string SaltKey = SaltKeyDEV;
-        public const string PassPhrase = PassphraseDEV;
-        public const string DBROriginURL = DBROriginURLDEV;
-        public const string DBRRedirectURL = DBRRedirectURLDEV;
-        public const string DBRSSOURL = DBRSSOURLDEV;
+        //Domains
+        public struct Domains
+        {
+#if DEBUGs
+            internal const string GenerateAccessToken = "https://devapi.mytnb.com.my/Identity/api/v1";
+            internal const string GetEligibility = "https://devapi.mytnb.com.my/Eligibility/api/v1";
+            internal const string GetBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetMultiBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetInstallationDetails = "https://devapi.mytnb.com.my/SapPi/api/v1";
+            internal const string GetMultiInstallationDetails = "https://devapi.mytnb.com.my/SapPi/api/v1";
+            internal const string StartDigitalBill = "https://devdbr.mytnb.com.my/DigitalBill/Start";
+            internal const string OptInToPaperBill = "https://devdbr.mytnb.com.my/PaperBill/OptIn";
+            public const string SSO = "https://devdbr.mytnb.com.my/Sso?s={0}";
+#elif MASTER || SIT || DEBUG
+            internal const string GenerateAccessToken = "https://stagingapi.mytnb.com.my/Identity/api/v1";
+            internal const string GetEligibility = "https://stagingapi.mytnb.com.my/Eligibility/api/v1";
+            internal const string GetBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetMultiBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetInstallationDetails = "https://stagingapi.mytnb.com.my/SapPi/api/v1";
+            internal const string GetMultiInstallationDetails = "https://stagingapi.mytnb.com.my/SapPi/api/v1";
+            internal const string StartDigitalBill = "https://stagingdbr.mytnb.com.my/DigitalBill/Start";
+            internal const string OptInToPaperBill = "https://stagingdbr.mytnb.com.my/PaperBill/OptIn";
+            public const string SSO = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
 #else
-        internal const string Environment = PROD;
-        internal const string AWS_Endpoint = AWSEndpoint_PROD;
-        internal const string XAPIKey = XAPIKeyProd;
-        public const string SaltKey = SaltKeyPROD;
-        public const string PassPhrase = PassphrasePROD;
-        public const string DBROriginURL = DBROriginURLPROD;
-        public const string DBRRedirectURL = DBRRedirectURLPROD;
-        public const string DBRSSOURL = DBRSSOURLPROD;
+            internal const string GenerateAccessToken = "https://api.mytnb.com.my/Identity/api/v1";
+            internal const string GetEligibility = "https://api.mytnb.com.my/Eligibility/api/v1";
+            internal const string GetBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetMultiBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetInstallationDetails = "https://api.mytnb.com.my/SapPi/api/v1";
+            internal const string GetMultiInstallationDetails = "https://api.mytnb.com.my/SapPi/api/v1";
+            internal const string StartDigitalBill = "https://dbr.mytnb.com.my/DigitalBill/Start";
+            internal const string OptInToPaperBill = "https://dbr.mytnb.com.my/PaperBill/OptIn";
+            public const string SSO = "https://dbr.mytnb.com.my/Sso?s={0}";
+#endif
+        }
+
+#if DEBUGs
+        internal const string Environment = Environment_DEV;
+        internal const string XAPIKey = XAPIKey_DEV;
+        public const string SaltKey = SaltKey_DEV;
+        public const string PassPhrase = Passphrase_DEV;
+#elif MASTER || SIT || DEBUG
+        internal const string Environment = Environment_SIT;
+        internal const string XAPIKey = XAPIKey_SIT;
+        public const string SaltKey = SaltKey_SIT;
+        public const string PassPhrase = Passphrase_SIT;
+#else
+        internal const string Environment = Environment_PROD;
+        internal const string XAPIKey = XAPIKey_PROD;
+        public const string SaltKey = SaltKey_PROD;
+        public const string PassPhrase = Passphrase_PROD;
 #endif
 
         //Headers
@@ -90,10 +94,11 @@
         public struct Services
         {
             internal const string GenerateAccessToken = "GenerateAccessToken";
-            internal const string GetBillRendering = "GetBillRendering";
-
-            public const string GetEligibility = "GetEligibility";
+            internal const string GetBillRendering = "BillRendering";
+            internal const string PostMultiBillRendering = "MultiBillRendering";
+            internal const string PostInstallationDetails = "InstallationDetails";
+            internal const string PostMultiInstallationDetails = "MultiInstallationDetails";
+            public const string GetEligibility = "Eligibility";
         }
-
     }
 }

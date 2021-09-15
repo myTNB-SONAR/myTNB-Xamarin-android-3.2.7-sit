@@ -7,6 +7,7 @@ using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.AWS.Models.AccessToken;
 using myTNB.Mobile.AWS.Services.AccessToken;
 using myTNB.Mobile.Extensions;
+using Newtonsoft.Json;
 using Refit;
 
 namespace myTNB.Mobile
@@ -35,14 +36,11 @@ namespace myTNB.Mobile
         {
             try
             {
-                //userID = "0D1568D9-7770-4345-84BD-04C2C56A2069";
-                //userID = "1b4d7fa4-f6b8-4743-8dec-5375b135b27469859";
-
-                IAccessTokenService service = RestService.For<IAccessTokenService>(AWSConstants.AWS_Endpoint);
+                IAccessTokenService service = RestService.For<IAccessTokenService>(AWSConstants.Domains.GenerateAccessToken);
                 AccessTokenRequest request = new AccessTokenRequest
                 {
                     Channel = AWSConstants.Channel,
-                    UserId = userID
+                    UserId = userID ?? string.Empty
                 };
 
                 HttpResponseMessage rawResponse = await service.GenerateAccessToken(request
@@ -72,7 +70,7 @@ namespace myTNB.Mobile
                         response.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                 }
-
+                Debug.WriteLine("[DEBUG] GenerateAccessToken: " + JsonConvert.SerializeObject(response));
                 if (response.StatusDetail.IsSuccess)
                 {
                     return response?.Content?.AccessToken ?? string.Empty;
@@ -82,9 +80,17 @@ namespace myTNB.Mobile
                     return string.Empty;
                 }
             }
-            catch (Exception e)
+            catch (ApiException apiEx)
             {
-                Debug.WriteLine("[DEBUG] GenerateAccessToken: " + e.Message);
+#if DEBUG
+                Debug.WriteLine("[DEBUG][GenerateAccessToken]Refit Exception: " + apiEx.Message);
+#endif
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                Debug.WriteLine("[DEBUG][GenerateAccessToken]General Exception: " + ex.Message);
+#endif
             }
             return string.Empty;
         }

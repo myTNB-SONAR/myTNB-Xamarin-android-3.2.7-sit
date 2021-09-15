@@ -99,7 +99,12 @@
     "open": "Buka",
     "paymentPendingMsg": "Pembayaran sedang diproses",
     "processing": "sedang diproses",
-    "dontShowThisAgain": "Jangan paparkan lagi"
+    "dontShowThisAgain": "Jangan paparkan lagi",
+    "dbrPaperBill": "Anda menerima <b>Bil Bercetak</b> untuk akaun ini. <b>Jom paperless hari ini!</b>",
+    "dbrPaperBillNonOwner": "Anda menerima Bil Bercetak untuk akaun ini.",
+    "dbrEmail": "Anda menerima Bil <b>myTNB & E-mel</b> untuk akaun ini.",
+    "dbrWhatsApp": "Anda menerima Bil <b>myTNB & Whatsapp</b> untuk akaun ini.",
+    "dbrViaMyTNB": "Akaun anda adalah mesra alam dengan <b>Bil myTNB!</b>"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -215,6 +220,9 @@
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
     "receivedExtra": "terima lebih",
     "applicationStatus": "Status<br>Permohonan",
+    "dbrReminderPopupTitle": "Jom paperless dengan Bil myTNB hari ini!",
+    "dbrReminderPopupMessage": "Jadilah orang pertama yang memberi impak dengan memilih kaedah paperless untuk bil anda yang seterusnya! Dengan myTNB, anda mempunyai cara yang lebih baik dan mesra alam untuk menerima bil secara digital melalui Aplikasi & Portal myTNB.",
+    "dbrReminderPopupStartNow": "Ketahui Lanjut",
     //EnergyBudget
     "energyBudget": "Energy <br> Budget Saya",
     "tutorialEnergyBudgetTitle": "Mulakan langkah untuk menguruskan tenaga anda",
@@ -256,6 +264,7 @@
     "tncSubscribeTNC": "<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
     "tncsmrNew": "Dengan melanggan/menghantar Self Meter Reading, saya faham dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat Self Meter Reading</strong></a>, <a href=\"\\\"><strong>Terma Penggunaan dan Polisi Perlindungan Data Peribadi TNB</strong></a>. Saya juga bersetuju untuk menghantar bacaan meter pada setiap bulan kecuali pada bulan bukan Self Meter Reading"
   },
+
   "SSMRApplicationTnc": {
     "title": "Self Meter Reading",
     "termsnCondition": "Terma dan Syarat Self Meter Reading",
@@ -265,6 +274,7 @@
     "pdpaPolicy": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
     "tncData": "<p>1.Setelah berjaya mendaftar, anda dikehendaki untuk menghantar bacaan meter pada setiap bulan kecuali pada bulan April, Ogos dan Disember kerana bacaan meter di premis akan dibuat oleh pihak kami pada bulan-bulan tersebut.</p><p>2.Pada setiap bulan, anda akan menerima notifikasi untuk menghantar bacaan meter kepada pihak kami untuk tujuan pembilan. Anda dinasihatkan untuk menghantar bacaan meter mengikut tarikh bacaan yang telah ditetapkan.</p><p>3.Bacaan meter yang diterima akan disemak untuk pengesahan dengan kadar segera. Setelah pengesahan dibuat, salinan bill elektrik boleh dilihat melalui aplikasi myTNB dan portal myTNB pada keesokan hari.</p><p>4.Anda akan menerima bil anggaran mengikut purata penggunaan sekiranya, bacaan meter yang dihantar tidak dapat disahkan atau bacaan meter tidak dihantar mengikut tarikh bacaan yang telah ditetapkan.</p><p>5.Pihak kami akan membuat pelarasan sekiranya terdapat kejanggalan pada bacaan meter yang diterima.</p><p>6.Perkhidmatan ini akan dihentikan sekiranya:</p><p> a)Bacaan pada meter tidak dihantar selama dua bulan berturut-turut, atau</p><p> b)Sekiranya kriteria perkhidmatan tidak lagi dipenuhi, sebagai contoh, akaun telibat dengan pemotongan bekalan, penutupan akaun, perubahan tarif dan sebagainya.</p>"
   },
+
   "Status": {
     "feedbackSuccessTitle": "Maklum Balas Berjaya",
     "feedbackFailTitle": "Maklum Balas Tidak Berjaya",
@@ -402,7 +412,11 @@
   },
   "SelectElectricityAccounts": {
     "title": "Pilih Akaun Elektrik",
-    "accountsMissing": "Mengapa akaun saya tiada di sini?"
+    "accountsMissing": "Mengapa akaun saya tiada di sini?",
+    "dbrAccountsMissingTitlePilot": "Mengapa akaun saya tiada di sini?",
+    "dbrMissingAccountsMessagePilot": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
+    "dbrAccountsMissingTitleNationwide": "Mengapa akaun saya tiada di sini?",
+    "dbrMissingAccountsMessageNationwide": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!"
   },
   "Usage": {
     "title": "Usage",
@@ -426,7 +440,7 @@
     "iWillGetBy": "Terima pada",
     "emptyDateAmount": "- -",
     "viewDetails": "Lihat Butiran",
-    "needToPay": "Jumlah perlu dibayar",
+    "needToPay": "Jumlah bil anda",
     "paidExtra": "Saya telah bayar ekstra",
     "clearedAllBills": "Saya sudah jelaskan semua bil",
     "by": "sebelum",
@@ -463,7 +477,7 @@
     "clearedBills": "Saya sudah jelaskan semua bil",
     "viewMore": "Lihat Butiran",
     "paidExtra": "Saya telah bayar ekstra",
-    "needToPay": "Jumlah Perlu Dibayar",
+    "needToPay": "Jumlah bil anda",
     "by": "sebelum",
     "getBy": "dapat pada",
     "myEarnings": "Pendapatan saya",
@@ -513,7 +527,7 @@
     "billDetails": "Caj Saya",
     "outstandingCharges": "Tunggakan",
     "billThisMonth": "Caj semasa",
-    "needToPay": "Jumlah perlu dibayar",
+    "needToPay": "Jumlah bil anda",
     "by": "sebelum",
     "paidExtra": "Saya telah bayar ekstra",
     "clearedBills": "Saya sudah jelaskan semua bil",
@@ -521,7 +535,7 @@
     "applicationCharges": "Caj sekali bayar",
     "tooltiptitle1": "Perkara daripada bil kertas/PDF anda",
     "tooltiptitle2": "Perkara daripada surat tuntutan anda",
-    "tooltipdesc1": "Jumlah perlu dibayar|Tunggakan|Caj Semasa (penggunaan elektrik sahaja)",
+    "tooltipdesc1": "Jumlah bil anda|Tunggakan|Caj Semasa (penggunaan elektrik sahaja)",
     "tooltipdesc2": "Wang Cagaran|Duti Setem|Caj Pemprosesan|Caj Meter",
     "pay": "Bayar",
     "tutorialTitle": "Lihat Bil anda.",
@@ -804,7 +818,9 @@
     "nicknameUpdateSuccess": "Nama Akaun berjaya dikemas kini.",
     "removeAccount": "Alih Keluar Akaun Ini",
     "popupremoveAccountTitle": "Alih Keluar Akaun",
-    "popupremoveAccountMessage": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda."
+    "popupremoveAccountMessage": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda.",
+    "dbrManageDeliveryMethod": "Urus Cara Penerimaan Bil",
+    "dbrViewBillDelivery": "Cara Penerimaan Bil"
   },
   "Onboarding": {
     "letsStart": "Jom mulakan!",
@@ -1163,7 +1179,19 @@
     "applicationStatusDetailsActionOneTitle": "Lihat perkembangan status anda di sini.",
     "applicationStatusDetailsActionOneMessage": "Ikuti status perkembangan semasa anda. Layari Portal myTNB untuk melihat maklumat penuh permohonan anda.",
     "applicationStatusDetailsActionTwoTitle": "Ketahui bila tindakan perlu diambil.",
-    "applicationStatusDetailsActionTwoMessage": "Ambil tindakan yang diperlukan untuk permohonan anda dengan mudah di sini."
+    "applicationStatusDetailsActionTwoMessage": "Ambil tindakan yang diperlukan untuk permohonan anda dengan mudah di sini.",
+    "dbrBillTitle": "Cara penerimaan bil anda.",
+    "dbrBillMessage": "Semak cara penerimaan bil anda di sini dan klik untuk uruskan tetapan anda.",
+    "dbrBillTitleTenant": "Cara penerimaan bil akaun anda.",
+    "dbrBillMessageTenant": "Semak cara penerimaan bil anda di sini dan klik untuk butiran lanjut.",
+    "manageCAManageBillDeliveryTitle": "Cara penerimaan bil anda.",
+    "manageCAManageBillDeliveryMessage": "Semak dan urus cara penerimaan bil anda di sini.",
+    "manageCAViewBillDeliveryTitle": "Cara penerimaan bil akaun anda.",
+    "manageCAViewBillDeliveryMessage": "Semak cara penerimaan bil anda di sini.",
+    "manageDeliveryMethodUpdateCTATitle": "Uruskan cara penerimaan bil anda.",
+    "manageDeliveryMethodUpdateCTAMessage": "Kemas kini cara penerimaan bil anda untuk akaun ini di sini.",
+    "manageDeliveryMethodEmailTitle": "Penerima bil e-mel.",
+    "manageDeliveryMethodEmailMessage": "Semak penerima e-mel yang menerima bil bulanan untuk akaun ini."
   },
   "ApplicationStatusLanding": {
     "title": "Status Permohonan",
@@ -2302,6 +2330,17 @@
             "type": "none"
           }
         ],
+        "Eligibility": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
         "GetEligibility": [
           {
             "code": "7200",
@@ -2314,6 +2353,50 @@
           }
         ],
         "GenerateAccessToken": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "BillRendering": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "MultiBillRendering": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "InstallationDetails": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "MultiInstallationDetails": [
           {
             "code": "7200",
             "title": "",
@@ -2341,14 +2424,56 @@
       }
     ]
   },
-
+  "ManageDigitalBillLanding": {
+    "title": "Urus Cara Penerimaan Bil",
+    "dbrViewBillDelivery": "Cara Penerimaan Bil",
+    "dbrInfoTitle0": "Anda menerima Bil Bercetak untuk akaun ini.",
+    "dbrInfoTitle1": "Ke arah bumi yang lebih hijau.",
+    "dbrInfoTitle2": "Paparan bil yang pantas dan mudah.",
+    "dbrInfoTitle3": "Terima bil anda dengan senang hati.",
+    "dbrInfoDescription0": "Leret ke kiri untuk mengetahui kelebihan dengan memilih kaedah 'paperless' hari ini!",
+    "dbrInfoDescription1": "Kurangkan pembaziran kertas anda dan jadilah yang pertama memberi impak di dalam usaha kolektif kita semua ke arah masa depan yang lebih mesra alam.",
+    "dbrInfoDescription2": "Alami penghantaran bil elektrik bulanan anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB, bila-bila masa dan di mana sahaja.",
+    "dbrInfoDescription3": "Dapatkan bil anda dengan terjamin di myTNB. Tidak perlu risau lagi bil anda terdedah, dicuri atau tercicir.",
+    "anotherDeliveryMethod": "Bagaimana jika saya mahu cara penerimaan bil lain?",
+    "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "Bagaimana jika saya mahu cara penerimaan bil lain?",
+    "nonOwnerPreLaunchAnotherDeliveryMethodDetails": "Bil anda akan sentiasa tersedia untuk dilihat di Aplikasi & Portal myTNB. Jika anda mahu cara penerimaan bil lain, anda boleh menghubungi TNB Careline di <a href=\"tel: 1300885454\">1-300-88-5454</a> atau mengunjungi Kedai Tenaga supaya kami dapat membantu anda.",
+    "goPaperlessCTA": "Jom Paperless",
+    "updateBillDeliveryMethodCTA": "Kemas Kini Cara Penerimaan Bil",
+    "deliveringToTitle": "Diterima oleh",
+    "you": "(You)",
+    "eBillTitle": "Akaun anda adalah mesra alam dengan Bil myTNB!",
+    "emailBillTitle": "Anda menerima Bil myTNB & E-mel.",
+    "eBillDescription": "Bil anda dihantar di Aplikasi & Portal myTNB. Terima kasih kerana memilih 'paperless'!",
+    "emailBillDescription": "Bil anda dihantar melalui Aplikasi & Portal myTNB dan e-mel untuk akaun ini.",
+    "updatingTitle": "Kami sedang mengemaskini cara penerimaan bil anda.",
+    "updatingDescription": "Akaun anda sedang dikemaskinikan dan dijangka mengambil masa sehingga 5 minit. Kembali semula nanti!",
+    "selectAccount": "PILIH AKAUN ANDA",
+    "notEligibleAccountsTitlePilot": "Mengapa akaun saya tidak ada di sini?",
+    "notEligibleAccountsMessagePilot": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
+    "notEligibleAccountsTitleNationwide": "Mengapa akaun saya tidak ada di sini?",
+    "notEligibleAccountsMessageNationwide": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
+    "nonOwnerPaperTitle": "Anda menerima Bil Bercetak untuk akaun ini.",
+    "nonOwnerPaperMessage": "Bil anda dihantar ke alamat premis akaun ini.",
+    "nonOwnerEBillTitle": "Akaun anda adalah mesra alam dengan Bil myTNB!",
+    "nonOwnerEmailBillTitle": "Anda menerima Bil myTNB & E-mel.",
+    "nonOwnerEBillDescription": "Bil anda dihantar di Aplikasi & Portal myTNB. Terima kasih di atas sokongan anda!",
+    "nonOwnerEmailBillDescription": "Bil anda dihantar di Aplikasi & Portal myTNB dan e-mel untuk akaun ini."
+  },
+  "DBRWebview": {
+    "goPaperless": "Jom Paperless!",
+    "updateBillDelivery": "Kemas Kini Cara Penerimaan Bil",
+    "confirmPopupTitle": "Tutup halaman ini?",
+    "confirmPopupMessage": "Anda akan menutup halaman ini dan menamatkan sesi anda.",
+    "nevermind": "Tidak Mengapa",
+    "confirm": "Sahkan"
+  },
   "EnregyBudgetListing": {
     "title": "Pilih Akaun Meter Pintar",
     "tootltipTitle": "Mengapakah sesetengah akaun saya tidak disenaraikan?",
     "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Apabila meter anda telah ditukarkan ke meter pintar, akaun tersebut akan ditambah secara automatik ke dalam senarai ini.",
     "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"
   },
-
   "EnergyBudgetPopup": {
     "title": "Tahniah! Rasai pengalaman baru dalam mengawal penggunaan elektrik bersama Energy Budget!",
     "threeEasyStep": "Penjimatan wang melalui 3 cara mudah:",
@@ -2359,11 +2484,18 @@
     "txtViewmybudget": "Lihat Budget Saya",
     "txtMaybelater": "Kemudian"
   },
-
   "ServiceConfiguration": {
+    "Eligibility": {
+      "enabled": true,
+      "callInterval": 480
+    },
     "GetEligibility": {
       "enabled": true,
       "callInterval": 480
+    },
+    "ForceHideDBRBanner": false,
+    "BillRendering": {
+      "enabled": true
     }
   },
 

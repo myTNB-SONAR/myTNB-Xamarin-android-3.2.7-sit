@@ -276,8 +276,10 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string ENERGY_DISCONNECTION_KEY = "AVAILABLE";
 
         internal static readonly int SELECT_ACCOUNT_PDF_REQUEST_CODE = 9078;
+        internal static readonly int SELECT_ACCOUNT_DBR_REQUEST_CODE = 9079;
 
         internal static readonly string CODE_KEY = "CODE_KEY";
+        internal static readonly string DBR_KEY = "DBR_KEY";
 
         public enum GREETING
         {
@@ -307,6 +309,14 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID = "53";
         public const string BCRM_NOTIFICATION_PAYMENT_FAILED_ID = "71";
         public const string BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID = "72";
+        
+        //DBR
+        public const string BCRM_NOTIFICATION_DBR_EMAIL = "21003";
+        public const string BCRM_NOTIFICATION_DBR_EBILL = "21001";
+        public const string BCRM_NOTIFICATION_DBR_PAPER = "21002";
+        public const string BCRM_NOTIFICATION_DBR_EMAIL_REMOVED = "21004";
+
+        //Energy Budget
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET = "11001";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_80 = "CEP AT";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_100 = "CEP TH";

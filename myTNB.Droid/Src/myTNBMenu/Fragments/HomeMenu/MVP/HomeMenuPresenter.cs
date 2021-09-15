@@ -103,7 +103,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 catch (System.Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
-
                 }
             }
         }
@@ -2528,6 +2527,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }, new CancellationTokenSource().Token);
         }
 
+        /*public void UserNotificationsCount()
+        {
+            try
+            {
+                _ = Task.Run(() =>
+                 {
+                     bool hasNoti = false;
+                     int noticount = UserNotificationEntity.Count();
+                     if (noticount > 0)
+                     {
+                         hasNoti = true;
+                     }
+                     this.mView.OnSetNotificationNewLabel(hasNoti, noticount);
+                 });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }*/
 
         private async Task InvokeGetUserNotifications()
         {
@@ -2773,36 +2792,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             else
             {
-                    //Energy budget
+                //Energy budget
                 if (UserSessions.GetEnergyBudgetList().Count > 0)
-                    {
+                {
 
-                        newList.Add(new NewAppModel()
-                        {
-                            ContentShowPosition = ContentType.TopLeft,
-                            ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
-                            ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
-                            ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                            NeedHelpHide = isNeedHelpHide,
-                            IsButtonShow = false
-                        });
+                    newList.Add(new NewAppModel()
+                    {
+                        ContentShowPosition = ContentType.TopLeft,
+                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
+                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
+                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                        NeedHelpHide = isNeedHelpHide,
+                        IsButtonShow = false
+                    });
 
 
                     //Overlay EnergyBudget removed
 
                     newList.Add(new NewAppModel()
-                        {
-                            ContentShowPosition = ContentType.TopLeft,
-                            ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpTitle"),//"Need help?",
-                            ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpDesc"),//"We’ve highlighted some of the<br/>most commonly asked questions<br/>for you to browse through.",
-                            ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                            NeedHelpHide = isNeedHelpHide,
-                            IsButtonShow = false
-                        });
-                    }
-                    else
                     {
-                        newList.Add(new NewAppModel()
+                        ContentShowPosition = ContentType.TopLeft,
+                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpTitle"),//"Need help?",
+                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpDesc"),//"We’ve highlighted some of the<br/>most commonly asked questions<br/>for you to browse through.",
+                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                        NeedHelpHide = isNeedHelpHide,
+                        IsButtonShow = false
+                    });
+                }
+                else
+                {
+                    newList.Add(new NewAppModel()
                     {
                         ContentShowPosition = ContentType.TopLeft,
                         ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",

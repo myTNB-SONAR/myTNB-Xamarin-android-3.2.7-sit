@@ -47,8 +47,8 @@ namespace myTNB.Mobile
             GetEligibilityResponse response = new GetEligibilityResponse();
             try
             {
-                IDBRService service = RestService.For<IDBRService>(AWSConstants.AWS_Endpoint);
-                HttpResponseMessage rawResponse = await service.GetEligibility(userID
+                IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.GetEligibility);
+                HttpResponseMessage rawResponse = await service.GetEligibility(userID ?? string.Empty
                    , NetworkService.GetCancellationToken()
                    , accessToken
                    , AppInfoManager.Instance.ViewInfo); 
@@ -87,6 +87,8 @@ namespace myTNB.Mobile
                         response.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                 }
+
+                Debug.WriteLine("[DEBUG] GetEligibility: " + JsonConvert.SerializeObject(response));
                 return response;
             }
             catch (ApiException apiEx)

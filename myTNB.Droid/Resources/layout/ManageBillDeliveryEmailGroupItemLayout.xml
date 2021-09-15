@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:background="@color/white">
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:id="@+id/ManageBillDeliveryEmailListLayout"
+		android:padding="16dp">
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.5"
+			android:orientation="vertical"
+			android:layout_gravity="left">
+			<TextView
+				android:id="@+id/deliveryEmail"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/tunaGrey"
+				android:textSize="12dp"
+				android:text="UI-adam.hussein@gmail.com"/>
+			<TextView
+				android:id="@+id/deliveryUserName"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="4dp"
+				android:textColor="@color/receipt_note_text"
+				android:textSize="12dp"
+				android:singleLine="true"
+				android:maxLines="1"
+				android:ellipsize="end"
+				android:text="UI-Adam Hussein (You)"/>
+		</LinearLayout>
+	</LinearLayout>
+	<View
+		android:id="@+id/applicationStatusItemGroupContentSeparator"
+		android:visibility="visible"
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="@color/lightGrey"/>
+</LinearLayout>

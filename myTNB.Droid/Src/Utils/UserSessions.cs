@@ -8,6 +8,7 @@ using myTNB.Mobile;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.Utils
@@ -18,7 +19,9 @@ namespace myTNB_Android.Src.Utils
 
         private static ISharedPreferences mPreferences;
         internal static ApplicationStatusNotificationModel ApplicationStatusNotification { private set; get; }
-        internal static NotificationModel Notification { private set; get; }
+        public static MobileEnums.DBRTypeEnum ManageBillDelivery { set; get; }
+        internal static NotificationOpenDirectDetails Notification { private set; get; }
+        internal static string DBROwnerNotificationAccountNumber { set; get; } = string.Empty;
 
         public static void SetCurrentImageCount(ISharedPreferences prefs, int count)
         {
@@ -111,12 +114,11 @@ namespace myTNB_Android.Src.Utils
         {
             if (!string.IsNullOrEmpty(type) && (!string.IsNullOrEmpty(requestTransID) || !string.IsNullOrEmpty(eventID)))
             {
-                Notification = new NotificationModel
+                Notification = new NotificationOpenDirectDetails
                 {
                     Type = type,
                     RequestTransId = requestTransID,
                     EventId = eventID
-                   
                 };
             }
             else
@@ -128,7 +130,10 @@ namespace myTNB_Android.Src.Utils
         public static void RemoveNotificationSession(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.Remove("hasNotification").Remove("notificationEmail").Apply();
+            editor.Remove("hasNotification")
+                .Remove("notificationEmail")
+                .Remove("notificationType")
+                .Apply();
         }
 
         public static bool HasSkipped(ISharedPreferences prefs)
@@ -355,6 +360,58 @@ namespace myTNB_Android.Src.Utils
             editor.PutBoolean("hasItemizedBillingDetailTutorialShown", true);
             editor.Apply();
         }
+        public static void DoManageSupplyAccountTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageSupplyAccountTutorialShown", true);
+            editor.Apply();
+        }
+        public static void DoManageEBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageEBillDeliveryTutorialShown", true);
+            editor.Apply();
+        }
+        public static bool HasManageEBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasManageEBillDeliveryTutorialShown", false);
+        }
+        public static void DoManagepoptedEBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageOptedEBillDeliveryTutorialShown", true);
+            editor.Apply();
+        }
+        public static bool HasManageOptedEBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasManageOptedEBillDeliveryTutorialShown", false);
+        }
+        public static void DoManageEmailBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageEmailBillDeliveryTutorialShown", true);
+            editor.Apply();
+        }
+        public static bool HasManageEmailBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasManageEmailBillDeliveryTutorialShown", false);
+        }
+        public static void DoManageParallelEmailBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageParallelEmailBillDeliveryTutorialShown", true);
+            editor.Apply();
+        }
+        public static bool HasManageParallelEmailBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasManageParallelEmailBillDeliveryTutorialShown", false);
+        }
+
+        public static bool HasManageSupplyAccountTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasManageSupplyAccountTutorialShown", false);
+        }
+
 
         public static bool HasSMRMeterHistoryTutorialShown(ISharedPreferences prefs)
         {
@@ -627,7 +684,7 @@ namespace myTNB_Android.Src.Utils
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.Remove("SMR_ACCOUNT_LIST_ENERGY_BUDGET").Apply();
         }
-    
+        
         public static void SetSMREligibilityAccountList(List<SMRAccount> sMRAccounts)
         {
             ISharedPreferencesEditor editor = mPreferences.Edit();
@@ -654,7 +711,13 @@ namespace myTNB_Android.Src.Utils
             editor.PutString("SMR_REAL_ELIGIBILITY_ACCOUNT_LIST", jsonAccountList);
             editor.Apply();
         }
-
+        public static void SetRealDBREligibilityAccountList(List<DBRAccount> dBRccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(dBRccounts);
+            editor.PutString("DBR_REAL_ELIGIBILITY_ACCOUNT_LIST", jsonAccountList);
+            editor.Apply();
+        }
         public static List<SMRAccount> GetRealSMREligibilityAccountList()
         {
             string accountList = mPreferences.GetString("SMR_REAL_ELIGIBILITY_ACCOUNT_LIST", null);

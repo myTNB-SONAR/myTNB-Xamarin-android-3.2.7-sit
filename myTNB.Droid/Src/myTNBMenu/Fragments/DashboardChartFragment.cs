@@ -48,6 +48,7 @@ using myTNB_Android.Src.myTNBMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.ChartRenderer;
 using myTNB_Android.Src.myTNBMenu.Charts.Formatter;
 using myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Listener;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
@@ -64,6 +65,12 @@ using static MikePhil.Charting.Components.XAxis;
 using static MikePhil.Charting.Components.YAxis;
 using static myTNB_Android.Src.myTNBMenu.Listener.NMRESMDashboardScrollView;
 using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
+using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
+using System.Linq;
+using myTNB_Android.Src.SessionCache;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -74,6 +81,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         , MikePhil.Charting.Listener.IOnChartValueSelectedListenerSupport
         , View.IOnTouchListener
     {
+        GetBillRenderingResponse billrenderingresponse;
 
         [BindView(Resource.Id.totalPayableLayout)]
         RelativeLayout totalPayableLayout;
@@ -568,6 +576,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private bool isBackendTariffDisabled = false;
 
         private static bool isREAccount = false;
+        bool _isOwner;
 
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy", LocaleUtils.GetDefaultLocale());
@@ -1287,7 +1296,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else
                 {
                     rmKwhSelection.Enabled = true;
-                    rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                    rmKwhLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
                     imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle);
                     tarifToggle.Enabled = true;
                     btnToggleDay.Enabled = true;
@@ -1692,7 +1701,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isTariffAvailable = false;
                         rmKwhSelection.Enabled = false;
                         smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
-                        rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.silverChalice)));
+                        rmKwhLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.silverChalice)));
                         imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle_disable);
                         if (isEBUser)
                         {
@@ -1846,7 +1855,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
                     tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_white_outline_rounded_button_bg);
-                    txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
+                    txtTarifToggle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                     txtTarifToggle.Alpha = 1f;
                     txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                 }
@@ -1854,7 +1863,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
                     tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_rounded_button_bg);
-                    txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                    txtTarifToggle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
                     txtTarifToggle.Alpha = 1f;
                     txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                 }
@@ -1881,7 +1890,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 imgTarifToggle.SetImageResource(Resource.Drawable.eye_disable);
                 tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_white_outline_disable_rounded_button_bg);
-                txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
+                txtTarifToggle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                 txtTarifToggle.Alpha = 0.7f;
                 txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
             }
@@ -2469,9 +2478,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             XAxis xAxis = mChart.XAxis;
             xAxis.Position = XAxisPosition.Bottom;
-            xAxis.TextColor = Color.ParseColor("#ffffff");
+            xAxis.TextColor = Android.Graphics.Color.ParseColor("#ffffff");
             xAxis.AxisLineWidth = 2f;
-            xAxis.AxisLineColor = Color.ParseColor("#4cffffff");
+            xAxis.AxisLineColor = Android.Graphics.Color.ParseColor("#4cffffff");
             xAxis.TextSize = 11f;
 
             xAxis.SetDrawGridLines(false);
@@ -2645,9 +2654,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             XAxis xAxis = mChart.XAxis;
             xAxis.Position = XAxisPosition.Bottom;
-            xAxis.TextColor = Color.ParseColor("#ffffff");
+            xAxis.TextColor = Android.Graphics.Color.ParseColor("#ffffff");
             xAxis.AxisLineWidth = 2f;
-            xAxis.AxisLineColor = Color.ParseColor("#4cffffff");
+            xAxis.AxisLineColor = Android.Graphics.Color.ParseColor("#4cffffff");
             xAxis.TextSize = 11f;
 
             xAxis.SetDrawGridLines(false);
@@ -3014,7 +3023,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 if (selectedHistoryData.ByMonth.Months[i].DPCIndicator || (float)selectedHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
                                 {
-                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                 }
                                 else
                                 {
@@ -3038,12 +3047,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                     if (System.Math.Abs(val) > 0)
                                                     {
                                                         isSetColor = true;
-                                                        listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                        listOfColor.Add(Android.Graphics.Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
                                                     }
                                                     else if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count == 1)
                                                     {
                                                         isSetColor = true;
-                                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                        listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                     }
                                                     break;
                                                 }
@@ -3052,26 +3061,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             if (!isFound)
                                             {
                                                 isSetColor = true;
-                                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                             }
 
                                         }
                                         else
                                         {
                                             isSetColor = true;
-                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                            listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                         }
                                     }
 
                                     if (!isSetColor)
                                     {
-                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                     }
                                 }
                             }
                             else
                             {
-                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                             }
                         }
 
@@ -3174,7 +3183,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         for (int i = 0; i < barLength; i++)
                         {
-                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                         }
 
                         int[] colorSet = new int[listOfColor.Count];
@@ -3490,14 +3499,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 if (i == barLength - 1 && GetIsMDMSDown())
                                 {
-                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                 }
                                 else if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null
                                     && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                                 {
                                     if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator || (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal <= 0.00)
                                     {
-                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                     }
                                     else
                                     {
@@ -3523,12 +3532,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                         if (System.Math.Abs(val) > 0)
                                                         {
                                                             isSetColor = true;
-                                                            listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                            listOfColor.Add(Android.Graphics.Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
                                                         }
                                                         else if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count == 1)
                                                         {
                                                             isSetColor = true;
-                                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                            listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                         }
                                                         break;
                                                     }
@@ -3537,26 +3546,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                 if (!isFound)
                                                 {
                                                     isSetColor = true;
-                                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                    listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                 }
 
                                             }
                                             else
                                             {
                                                 isSetColor = true;
-                                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                             }
                                         }
 
                                         if (!isSetColor)
                                         {
-                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                            listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                 }
                             }
                         }
@@ -3594,12 +3603,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                                 if (System.Math.Abs(val) > 0)
                                                                 {
                                                                     isSetColor = true;
-                                                                    listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                                    listOfColor.Add(Android.Graphics.Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
                                                                 }
                                                                 else if (IndividualDayData.TariffBlocksList.Count == 1)
                                                                 {
                                                                     isSetColor = true;
-                                                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                                    listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                                 }
                                                                 break;
                                                             }
@@ -3608,37 +3617,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                         if (!isFound)
                                                         {
                                                             isSetColor = true;
-                                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                            listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                         }
 
                                                     }
                                                     else
                                                     {
                                                         isSetColor = true;
-                                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                        listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                     }
                                                 }
 
                                                 if (!isSetColor)
                                                 {
-                                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                    listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                 }
                                             }
                                             else
                                             {
-                                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                     }
                                 }
                             }
                             else
                             {
-                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                             }
 
                             if (isZoomIn)
@@ -3647,7 +3656,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                 for (int i = 0; i < 4; i++)
                                 {
-                                    listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                    listOfColorNew.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                 }
 
                                 for (int i = 0; i < listOfColor.Count; i++)
@@ -3658,7 +3667,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                 for (int i = 0; i < 4; i++)
                                 {
-                                    listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                    listOfColorNew.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                 }
 
                                 listOfColor = listOfColorNew;
@@ -3826,11 +3835,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (ChartType == ChartType.Month)
                             {
-                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                             }
                             else if (ChartType == ChartType.Day)
                             {
-                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                             }
                         }
 
@@ -3840,7 +3849,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                             for (int i = 0; i < 4; i++)
                             {
-                                listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                listOfColorNew.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                             }
 
                             for (int i = 0; i < listOfColor.Count; i++)
@@ -3851,7 +3860,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                             for (int i = 0; i < 4; i++)
                             {
-                                listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                listOfColorNew.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                             }
 
                             listOfColor = listOfColorNew;
@@ -4055,12 +4064,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                 if (System.Math.Abs(val) > 0)
                                                 {
                                                     isSetColor = true;
-                                                    listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                    listOfColor.Add(Android.Graphics.Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
                                                 }
                                                 else if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count == 1)
                                                 {
                                                     isSetColor = true;
-                                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                    listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                 }
                                                 break;
                                             }
@@ -4069,25 +4078,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         if (!isFound)
                                         {
                                             isSetColor = true;
-                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                            listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                         }
 
                                     }
                                     else
                                     {
                                         isSetColor = true;
-                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                     }
                                 }
 
                                 if (!isSetColor)
                                 {
-                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                 }
                             }
                             else
                             {
-                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                             }
                         }
 
@@ -4173,7 +4182,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         for (int i = 0; i < barLength; i++)
                         {
-                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                         }
 
                         int[] colorSet = new int[listOfColor.Count];
@@ -4453,7 +4462,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 if (i == barLength - 1 && GetIsMDMSDown())
                                 {
-                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                 }
                                 else if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
                                 {
@@ -4479,12 +4488,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                     if (System.Math.Abs(val) > 0)
                                                     {
                                                         isSetColor = true;
-                                                        listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                        listOfColor.Add(Android.Graphics.Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
                                                     }
                                                     else if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count == 1)
                                                     {
                                                         isSetColor = true;
-                                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                        listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                     }
                                                     break;
                                                 }
@@ -4493,25 +4502,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             if (!isFound)
                                             {
                                                 isSetColor = true;
-                                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                             }
 
                                         }
                                         else
                                         {
                                             isSetColor = true;
-                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                            listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                         }
                                     }
 
                                     if (!isSetColor)
                                     {
-                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                     }
                                 }
                                 else
                                 {
-                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                 }
                             }
                         }
@@ -4548,12 +4557,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                                 if (System.Math.Abs(val) > 0)
                                                                 {
                                                                     isSetColor = true;
-                                                                    listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                                    listOfColor.Add(Android.Graphics.Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
                                                                 }
                                                                 else if (IndividualDayData.TariffBlocksList.Count == 1)
                                                                 {
                                                                     isSetColor = true;
-                                                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                                    listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                                 }
                                                                 break;
                                                             }
@@ -4562,37 +4571,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                         if (!isFound)
                                                         {
                                                             isSetColor = true;
-                                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                            listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                         }
 
                                                     }
                                                     else
                                                     {
                                                         isSetColor = true;
-                                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                        listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                     }
                                                 }
 
                                                 if (!isSetColor)
                                                 {
-                                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                    listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                                 }
                                             }
                                             else
                                             {
-                                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                     }
                                 }
                             }
                             else
                             {
-                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                             }
 
                             if (isZoomIn)
@@ -4601,7 +4610,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                 for (int i = 0; i < 4; i++)
                                 {
-                                    listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                    listOfColorNew.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                 }
 
                                 for (int i = 0; i < listOfColor.Count; i++)
@@ -4612,7 +4621,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                 for (int i = 0; i < 4; i++)
                                 {
-                                    listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                    listOfColorNew.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                                 }
 
                                 listOfColor = listOfColorNew;
@@ -4770,11 +4779,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (ChartType == ChartType.Month)
                             {
-                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                             }
                             else if (ChartType == ChartType.Day)
                             {
-                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                listOfColor.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                             }
                         }
 
@@ -4784,7 +4793,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                             for (int i = 0; i < 4; i++)
                             {
-                                listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                listOfColorNew.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                             }
 
                             for (int i = 0; i < listOfColor.Count; i++)
@@ -4795,7 +4804,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                             for (int i = 0; i < 4; i++)
                             {
-                                listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                listOfColorNew.Add(Android.Graphics.Color.Argb(50, 255, 255, 255));
                             }
 
                             listOfColor = listOfColorNew;
@@ -4901,7 +4910,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mChart.Visibility = ViewStates.Visible;
 
             rmKwhSelection.Enabled = true;
-            rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+            rmKwhLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
             imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle);
             tarifToggle.Enabled = true;
             btnToggleDay.Enabled = true;
@@ -4921,7 +4930,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mChart.Visibility = ViewStates.Visible;
 
             rmKwhSelection.Enabled = true;
-            rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+            rmKwhLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
             imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle);
             tarifToggle.Enabled = true;
             btnToggleDay.Enabled = true;
@@ -5019,10 +5028,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 this.SetIsClicked(true);
                 isGoToBillingDetail = true;
-                Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
-                intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
-                intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
-                StartActivity(intent);
+                GetBillRenderingAsync(selectedAccount);
                 try
                 {
                     FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Details Buttom Clicked");
@@ -5147,7 +5153,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
                     tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_white_outline_rounded_button_bg);
-                    txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
+                    txtTarifToggle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                     txtTarifToggle.Alpha = 1f;
                     txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                     isToggleTariff = false;
@@ -5166,7 +5172,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
                     tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_rounded_button_bg);
-                    txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                    txtTarifToggle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
                     txtTarifToggle.Alpha = 1f;
                     txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                     isToggleTariff = true;
@@ -5199,6 +5205,127 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(ne);
             }
+        }
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+        private async void GetBillRenderingAsync(AccountData selectedAccount)
+        {
+            try
+            {
+                ShowProgressDialog();
+                bool isEligible = DBRUtility.Instance.IsAccountDBREligible;
+                if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                    , EligibilitySessionCache.FeatureProperty.TargetGroup))
+                {
+                    isEligible = isEligible
+                        && AccountTypeCache.Instance.IsAccountEligible(selectedAccount.AccountNum);
+                    Console.WriteLine("[DEBUG] DashboardFrag IsDBREnabled 0: " + isEligible);
+                    if (isEligible)
+                    {
+                        PostInstallationDetailsResponse installationDetailsResponse = await DBRManager.Instance.PostInstallationDetails(selectedAccount.AccountNum
+                            , AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                        Console.WriteLine("[DEBUG] DashboardFrag RateCategory: " + installationDetailsResponse.RateCategory);
+                        Console.WriteLine("[DEBUG] DashboardFrag IsResidential: " + installationDetailsResponse.IsResidential);
+                        if (installationDetailsResponse != null
+                            && installationDetailsResponse.StatusDetail != null
+                            && installationDetailsResponse.StatusDetail.IsSuccess
+                            && installationDetailsResponse.IsResidential)
+                        {
+                            isEligible = true;
+                        }
+                        else
+                        {
+                            isEligible = false;
+                        }
+                    }
+                }
+
+                Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
+                intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
+                intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
+
+                if (isEligible)
+                {
+                    GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
+                    AccountData dbrAccount = selectedAccount;
+                    if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                    {
+                        string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                        AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                    }
+                    billrenderingresponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                    //Nullity Check
+                    if (billrenderingresponse != null
+                       && billrenderingresponse.StatusDetail != null
+                       && billrenderingresponse.StatusDetail.IsSuccess)
+                    {
+                        _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
+                            ? selectedAccount.IsOwner
+                            : DBRUtility.Instance.IsCADBREligible(dbrAccount.AccountNum);
+
+                        intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
+                        intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
+                    }
+                    else
+                    {
+                        intent.PutExtra("_isOwner", JsonConvert.SerializeObject(selectedAccount.IsOwner));
+                    }
+                }
+                else
+                {
+                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(selectedAccount.IsOwner));
+                }
+                StartActivity(intent);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            HideProgressDialog();
+        }
+        public string GetEligibleDBRAccount(AccountData selectedAccount)
+        {
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+            List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                        , EligibilitySessionCache.FeatureProperty.TargetGroup)
+                ? DBRUtility.Instance.GetDBRCAs()
+                : AccountTypeCache.Instance.DBREligibleCAs;
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            CustomerBillingAccount account = new CustomerBillingAccount();
+            string dbraccount = string.Empty;
+            if (dBRCAs.Count > 0)
+            {
+                foreach (var dbrca in dBRCAs)
+                {
+                    dbraccount = dBRCAs.Where(x => x == selectedAccount.AccountNum).FirstOrDefault();
+                    if (dbraccount != null)
+                    {
+                        return dbraccount;
+                    }
+                }
+            }
+            return dbraccount;
         }
 
         //Edit Budget button //wan
@@ -10033,6 +10160,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
             intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(accountData));
             intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
+            intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
             StartActivity(intent);
         }
 
@@ -10611,7 +10739,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
                     tarifToggle.SetBackgroundResource(Resource.Drawable.rectangle_white_outline_rounded_button_bg);
-                    txtTarifToggle.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
+                    txtTarifToggle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                     txtTarifToggle.Alpha = 1f;
                     txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                     isToggleTariff = false;

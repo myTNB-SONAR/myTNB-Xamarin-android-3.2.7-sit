@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Preferences;
 using Android.Text;
 using Android.Util;
 using Android.Views;
@@ -18,6 +19,7 @@ using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Feedback_PreLogin_Menu.Activity;
 using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.Login.Activity;
@@ -216,6 +218,17 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 GenerateCallUsCardLayout();
                 GenerateCheckStatusCardLayout();
                 GenerateFeedbackCardLayout();
+
+                ISharedPreferences preferences = PreferenceManager.GetDefaultSharedPreferences(this);
+                ISharedPreferencesEditor editor = preferences.Edit();
+                editor.Remove("SyncSRAPIKey");
+                editor.Remove(MobileConstants.SharePreferenceKey.AccessToken);
+                editor.Remove(MobileConstants.SharePreferenceKey.GetEligibilityData);
+                editor.Remove(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp);
+                EligibilitySessionCache.Instance.Clear();
+                AccessTokenCache.Instance.Clear();
+
+                editor.Apply();
             }
             catch (Exception ex)
             {

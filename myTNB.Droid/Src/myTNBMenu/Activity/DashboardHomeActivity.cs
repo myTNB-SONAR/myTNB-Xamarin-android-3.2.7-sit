@@ -55,7 +55,7 @@ using myTNB.Mobile.AWS.Models;
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
     [Activity(Label = "@string/dashboard_activity_title"
-              , Icon = "@drawable/ic_launcher"
+        , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.DashboardHome"
         , WindowSoftInputMode = SoftInput.AdjustPan)]
@@ -64,7 +64,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         internal readonly string TAG = typeof(DashboardHomeActivity).Name;
 
         public readonly static int PAYMENT_RESULT_CODE = 5451;
-
         public static DashboardHomeActivity dashboardHomeActivity;
 
         private DashboardHomeContract.IUserActionsListener userActionsListener;
@@ -344,7 +343,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 System.Diagnostics.Debug.WriteLine("[DEBUG] GetNotificationTypesList Error: " + e.Message);
             }
+
         }
+
 
         private async void RouteToApplicationLanding()
         {
@@ -519,6 +520,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 .Replace(Resource.Id.content_layout, currentFragment)
                 .CommitAllowingStateLoss();
         }
+
 
         public void SetToolbarTitle(int stringResourceId)
         {
@@ -1432,8 +1434,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
             currentFragment = new HomeMenuFragment();
             SupportFragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, currentFragment)
-                           .CommitAllowingStateLoss();
+                .Replace(Resource.Id.content_layout, currentFragment)
+                .CommitAllowingStateLoss();
+
+            if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
+            {
+                isWhatNewDialogOnHold = true;
+            }
 
             if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
             {
@@ -1446,6 +1453,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 OnCheckWhatsNewTab();
             }
         }
+
+       
 
         public override void OnTrimMemory(TrimMemory level)
         {
@@ -2103,7 +2112,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                     bool flag = fragment.GetHomeTutorialCallState();
-
                     if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag() || MyTNBAccountManagement.GetInstance().IsOnHoldWhatNew())
                     {
                         MyTNBAccountManagement.GetInstance().OnHoldWhatNew(false);
@@ -2113,8 +2121,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     else if (SetEligibleEBUser())
                     {
                         flag = false;
-                    }                    
-
+                    }
                     if (flag)
                     {
                         this.mPresenter.SetIsWhatsNewDialogShowNeed(false);
@@ -2357,7 +2364,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             OnShowBCRMPopup(bcrmEntity);
                         }
                     }
-                    else if(SetEligibleEBUser())
+                    else if (SetEligibleEBUser())
                     {
                         isWhatNewDialogOnHold = true;
 
@@ -2390,7 +2397,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             OnCheckEnergyBudgetUser();
                         };
                         h.PostDelayed(myAction, 5);
-                    }                    
+                    }
                 }
             }
             catch (Exception e)
@@ -2643,7 +2650,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public bool SetEligibleEBUser()
         {
-            return UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
+            return UserSessions.GetEnergyBudgetList().Count > 0
+                && MyTNBAccountManagement.GetInstance().IsEBUserVerify()
+                && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
         }
 
         public bool SetEligibleEBUserExtra()
@@ -2657,7 +2666,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         }
 
         public void CheckStatusEligibleEB()
-        {            
+        {
             if (MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
             {
                 EBModel isEbfeature = new EBModel();
@@ -2684,7 +2693,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             if (SetEligibleEBUserExtra())
             {
-
                 if (UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals(string.Empty))
                 {
                     UserSessions.SavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this), "1");

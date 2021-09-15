@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using myTNB.Mobile;
+using myTNB.Mobile.Extensions;
 using static myTNB.LanguageManager;
 
 namespace myTNB
@@ -43,6 +44,7 @@ namespace myTNB
             , string userName
             , string deviceToken
             , string appVersion
+            , string osType
             , string fontSize = "N"
             , Language language = Language.EN)
         {
@@ -57,10 +59,13 @@ namespace myTNB
             ViewInfoHeader = new ViewInfoHeader
             {
                 DeviceToken = deviceToken,
-                AppVersion = appVersion,
+                AppVersion = appVersion.IsValid()
+                    ? appVersion.Replace("v", string.Empty)
+                    : string.Empty,
                 RoleId = roleID,
                 Lang = language.ToString(),
-                FontSize = fontSize.ToUpper() == "L" ? "L" : "N"
+                FontSize = fontSize.ToUpper() == "L" ? "L" : "N",
+                OSType = osType
             };
         }
 

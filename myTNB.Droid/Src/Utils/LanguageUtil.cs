@@ -3,14 +3,11 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Android.App;
-using Android.Util;
-using DynatraceAndroid;
 using myTNB;
+using myTNB.Mobile;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
-using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SiteCore;
@@ -97,15 +94,7 @@ namespace myTNB_Android.Src.Utils
 
 #if DEBUG || SIT 
             LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
-            try
-            {// dynatrace
-                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_LOCAL);
-                dynaTrace.LeaveAction();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            DynatraceHelper.OnTrack(DynatraceConstants.SITECORE_REFER_LOCAL);
 #else
             string currentTimestamp = SitecoreCmsEntity.GetItemTimestampById(siteCoreLanguageId);
             string currentLanguageResource = SitecoreCmsEntity.GetItemById(siteCoreLanguageId);
@@ -120,15 +109,7 @@ namespace myTNB_Android.Src.Utils
                     if (!string.IsNullOrEmpty(currentLanguageResource))
                     {
                         LanguageManager.Instance.SetLanguage(currentLanguageResource);
-                        try
-                        {// dynatrace
-                            IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_ONLINE);
-                            dynaTrace.LeaveAction();
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
+                        DynatraceHelper.OnTrack(DynatraceConstants.SITECORE_REFER_ONLINE);
                     }
                     else
                     {
@@ -137,28 +118,12 @@ namespace myTNB_Android.Src.Utils
                         {
                             SitecoreCmsEntity.InsertSiteCoreItem(siteCoreLanguageId, updatedLanguageResource, currentTimestamp);
                             LanguageManager.Instance.SetLanguage(updatedLanguageResource);
-                            try
-                            {// dynatrace
-                                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_ONLINE);
-                                dynaTrace.LeaveAction();
-                            }
-                            catch (System.Exception e)
-                            {
-                                Utility.LoggingNonFatalError(e);
-                            }
+                            DynatraceHelper.OnTrack(DynatraceConstants.SITECORE_REFER_ONLINE);
                         }
                         else
                         {
                             LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
-                            try
-                            {// dynatrace
-                                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_LOCAL);
-                                dynaTrace.LeaveAction();
-                            }
-                            catch (System.Exception e)
-                            {
-                                Utility.LoggingNonFatalError(e);
-                            }
+                            DynatraceHelper.OnTrack(DynatraceConstants.SITECORE_REFER_LOCAL);
                         }
                     }
                 }
@@ -169,28 +134,12 @@ namespace myTNB_Android.Src.Utils
                     {
                         SitecoreCmsEntity.InsertSiteCoreItem(siteCoreLanguageId, updatedLanguageResource, updatedTimestamp);
                         LanguageManager.Instance.SetLanguage(updatedLanguageResource);
-                        try
-                        {// dynatrace
-                            IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_ONLINE);
-                            dynaTrace.LeaveAction();
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
+                        DynatraceHelper.OnTrack(DynatraceConstants.SITECORE_REFER_ONLINE);
                     }
                     else
                     {
                         LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
-                        try
-                        {// dynatrace
-                            IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_LOCAL);
-                            dynaTrace.LeaveAction();
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
+                        DynatraceHelper.OnTrack(DynatraceConstants.SITECORE_REFER_LOCAL);
                     }
                 }
             }
@@ -202,28 +151,12 @@ namespace myTNB_Android.Src.Utils
                 {
                     SitecoreCmsEntity.InsertSiteCoreItem(siteCoreLanguageId, updatedLanguageResource, updatedTimestamp);
                     LanguageManager.Instance.SetLanguage(updatedLanguageResource);
-                    try
-                    {// dynatrace
-                        IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_ONLINE);
-                        dynaTrace.LeaveAction();
-                    }
-                    catch (System.Exception e)
-                    {
-                        Utility.LoggingNonFatalError(e);
-                    }
+                    DynatraceHelper.OnTrack(DynatraceConstants.SITECORE_REFER_ONLINE);
                 }
                 else
                 {
                     LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
-                    try
-                    {// dynatrace
-                        IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_LOCAL);
-                        dynaTrace.LeaveAction();
-                    }
-                    catch (System.Exception e)
-                    {
-                        Utility.LoggingNonFatalError(e);
-                    }
+                    DynatraceHelper.OnTrack(DynatraceConstants.SITECORE_REFER_LOCAL);
                 }
             }
 #endif

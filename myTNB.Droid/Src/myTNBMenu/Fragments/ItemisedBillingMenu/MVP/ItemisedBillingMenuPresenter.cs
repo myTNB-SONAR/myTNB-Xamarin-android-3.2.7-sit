@@ -22,6 +22,7 @@ using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using Android.Content;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
@@ -646,7 +647,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             return mainBillingHistoryList != null && mainAccountChargeModelList != null;
         }
 
-        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        public List<NewAppModel> OnGeneraNewAppTutorialList(bool _isOwner)
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
@@ -701,7 +702,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     DisplayMode = DisplayMode,
                     IsButtonShow = false
                 });
-
+                if (DBRUtility.Instance.IsAccountDBREligible)
+                {
+                    if (_isOwner)
+                    {
+                        newList.Add(new NewAppModel()
+                        {
+                            ContentShowPosition = ContentType.TopLeft,
+                            ContentTitle = Utility.GetLocalizedLabel("Tutorial", "dbrBillTitle"),
+                            ContentMessage = Utility.GetLocalizedLabel("Tutorial", "dbrBillMessage"),
+                            ItemCount = ItemCount,
+                            DisplayMode = DisplayMode,
+                            IsButtonShow = false
+                        });
+                    }
+                    else
+                    {
+                        newList.Add(new NewAppModel()
+                        {
+                            ContentShowPosition = ContentType.TopLeft,
+                            ContentTitle = Utility.GetLocalizedLabel("Tutorial", "dbrBillTitleTenant"),
+                            ContentMessage = Utility.GetLocalizedLabel("Tutorial", "dbrBillMessageTenant"),
+                            ItemCount = ItemCount,
+                            DisplayMode = DisplayMode,
+                            IsButtonShow = false
+                        });
+                    }
+                }
                 newList.Add(new NewAppModel()
                 {
                     ContentShowPosition = ContentType.TopLeft,
@@ -743,7 +770,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     DisplayMode = DisplayMode,
                     IsButtonShow = false
                 });
-
+                if (DBRUtility.Instance.IsAccountDBREligible)
+                {
+                    if (_isOwner)
+                    {
+                        newList.Add(new NewAppModel()
+                        {
+                            ContentShowPosition = ContentType.TopLeft,
+                            ContentTitle = Utility.GetLocalizedLabel("Tutorial", "dbrBillTitle"),
+                            ContentMessage = Utility.GetLocalizedLabel("Tutorial", "dbrBillMessage"),
+                            ItemCount = ItemCount,
+                            DisplayMode = DisplayMode,
+                            IsButtonShow = false
+                        });
+                    }
+                    else
+                    {
+                        newList.Add(new NewAppModel()
+                        {
+                            ContentShowPosition = ContentType.TopLeft,
+                            ContentTitle = Utility.GetLocalizedLabel("Tutorial", "dbrBillTitleTenant"),
+                            ContentMessage = Utility.GetLocalizedLabel("Tutorial", "dbrBillMessageTenant"),
+                            ItemCount = ItemCount,
+                            DisplayMode = DisplayMode,
+                            IsButtonShow = false
+                        });
+                    }
+                }
                 newList.Add(new NewAppModel()
                 {
                     ContentShowPosition = ContentType.TopLeft,

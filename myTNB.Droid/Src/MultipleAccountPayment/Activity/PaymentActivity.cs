@@ -4,7 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Content.Res;
 using Android.OS;
-using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -13,13 +12,20 @@ using myTNB.Mobile;
 using myTNB.Mobile.API.DisplayModel.Scheduler;
 using myTNB.Mobile.API.Managers.Scheduler;
 using myTNB.Mobile.API.Models.ApplicationStatus;
+using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.MultipleAccountPayment.Fragment;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.SessionCache;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -56,8 +62,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private string StatusId = string.Empty;
         private string StatusCode = string.Empty;
         internal GetApplicationStatusDisplay ApplicationDetailDisplay;
-
+        private GetBillRenderingResponse billRenderingResponse;
+        private bool _isOwner;
         public bool paymentReceiptGenerated = false;
+
+        internal bool ShouldBackToHome { set; get; } = false;
+        internal bool IsMultiplePayment;
+        internal static List<string> CAsWithPaperBillList;
 
         public override int ResourceId()
         {
@@ -117,7 +128,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
                 coordinatorLayout = FindViewById<AndroidX.CoordinatorLayout.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
                 Bundle extras = Intent.Extras;
-
+                CAsWithPaperBillList = new List<string>();
                 if (extras != null)
                 {
                     if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
@@ -128,6 +139,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     if (extras.ContainsKey("PAYMENT_ITEMS"))
                     {
                         accounts = DeSerialze<List<MPAccount>>(extras.GetString("PAYMENT_ITEMS"));
+                        IsMultiplePayment = accounts != null && accounts.Count > 1;
                     }
 
                     if (extras.ContainsKey("ACCOUNT_CHARGES_LIST"))
@@ -203,6 +215,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 Bundle bundle = new Bundle();
                 if (IsApplicationPayment)
                 {
+                    UpdateApplicationPayment();
                     bundle.PutBoolean("ISAPPLICATIONPAYMENT", IsApplicationPayment);
                     bundle.PutString("APPLICATIONPAYMENTDETAILS", JsonConvert.SerializeObject(ApplicationPaymentDetail));
                     bundle.PutString("ApplicationType", ApplicationType);
@@ -224,6 +237,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 fragmentTransaction.Commit();
                 currentFragment = selectPaymentFragment;
             }
+        }
+
+        private async void UpdateApplicationPayment()
+        {
+            ApplicationPaymentDetail = await AccountTypeCache.Instance.UpdateApplicationPayment(ApplicationPaymentDetail, this);
         }
 
         internal void SetPaymentReceiptFlag(bool flag, SummaryDashBordRequest summaryDashBoardRequest)
@@ -294,18 +312,29 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     Log.Debug("MakePaymentActivity", "Current Fragment :" + currentFragment.Class);
                     if (currentFragment is MPPaymentWebViewFragment)
                     {
-                        MyTNBAppToolTipBuilder cancelPaymentPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                            .SetTitle(Utility.GetLocalizedLabel("MakePayment", "abortTitle"))
-                            .SetMessage(Utility.GetLocalizedLabel("MakePayment", "abortMessage"))
-                            .SetCTALabel(Utility.GetLocalizedCommonLabel("no"))
-                            .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("yes"))
-                            .SetSecondaryCTAaction(() =>
-                            {
-                                this.SupportFragmentManager.PopBackStack();
-                                this.SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
-                            })
-                            .Build();
-                        cancelPaymentPopup.Show();
+                        if (ShouldBackToHome)
+                        {
+                            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                            HomeMenuUtils.ResetAll();
+                            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                            this.StartActivity(DashboardIntent);
+                        }
+                        else
+                        {
+                            MyTNBAppToolTipBuilder cancelPaymentPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                                .SetTitle(Utility.GetLocalizedLabel("MakePayment", "abortTitle"))
+                                .SetMessage(Utility.GetLocalizedLabel("MakePayment", "abortMessage"))
+                                .SetCTALabel(Utility.GetLocalizedCommonLabel("no"))
+                                .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("yes"))
+                                .SetSecondaryCTAaction(() =>
+                                {
+                                    this.SupportFragmentManager.PopBackStack();
+                                    this.SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
+                                })
+                                .Build();
+                            cancelPaymentPopup.Show();
+                        }
                     }
                     else
                     {
@@ -390,6 +419,90 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
+        private bool GetIsOwnerTag(string ca)
+        {
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            int accountIndex = allAccountList.FindIndex(x => x.AccNum == ca);
+            if (accountIndex > -1 && allAccountList[accountIndex] != null)
+            {
+                return allAccountList[accountIndex].isOwned;
+            }
+            return false;
+        }
+
+        public async void GetBillRenderingAsync()
+        {
+            try
+            {
+                DynatraceHelper.OnTrack(IsMultiplePayment
+                    ? DynatraceConstants.DBR.CTAs.PaymentSuccess.Multiple
+                    : DynatraceConstants.DBR.CTAs.PaymentSuccess.Single);
+                if (CAsWithPaperBillList != null && CAsWithPaperBillList.Count > 0)
+                {
+                    ShowProgressDialog();
+
+                    string dbrAccount = CAsWithPaperBillList[0];
+                    _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
+                            ? GetIsOwnerTag(dbrAccount)
+                            : DBRUtility.Instance.IsCADBREligible(dbrAccount);
+
+                    if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                    {
+                        string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                        AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
+                    }
+                    billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount, AccessTokenCache.Instance.GetAccessToken(this));
+
+                    //Nullity Check
+                    if (billRenderingResponse != null
+                       && billRenderingResponse.StatusDetail != null
+                       && billRenderingResponse.StatusDetail.IsSuccess
+                       && billRenderingResponse.Content != null
+                       && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
+                    {
+                        Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                        intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                        intent.PutExtra("accountNumber", dbrAccount);
+                        intent.PutExtra("isOwner", _isOwner);
+                        StartActivity(intent);
+                    }
+                    else
+                    {
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(billRenderingResponse?.StatusDetail?.Title ?? string.Empty)
+                            .SetMessage(billRenderingResponse?.StatusDetail?.Message ?? string.Empty)
+                            .SetCTALabel(billRenderingResponse?.StatusDetail?.PrimaryCTATitle ?? string.Empty)
+                            .Build();
+                        errorPopup.Show();
+                    }
+                    HideProgressDialog();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public string GetEligibleDBRAccount()
+        {
+            List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                        , EligibilitySessionCache.FeatureProperty.TargetGroup)
+                ? DBRUtility.Instance.GetDBRCAs()
+                : AccountTypeCache.Instance.DBREligibleCAs;
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            string account = string.Empty;
+            if (dBRCAs.Count > 0)
+            {
+                foreach (var paymentCa in accounts)
+                {
+                    account = dBRCAs.Where(x => x == paymentCa.accountNumber).FirstOrDefault();
+                    break;
+                }
+            }
+
+            return account;
+        }
         public async void OnSetAppointment()
         {
             ShowProgressDialog();

@@ -45,6 +45,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void ShowApplicationStatusDetails();
 
             /// <summary>
+            /// Reddirect to Manage Bill Delivery Page
+            /// </summary>
+            void OnShowManageBillDelivery();
+
+            /// <summary>
             /// The unique id of the device
             /// </summary>
             /// <returns>unique id alphanumeric strings</returns>

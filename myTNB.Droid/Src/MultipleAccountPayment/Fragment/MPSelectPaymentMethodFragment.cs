@@ -30,7 +30,10 @@ using static myTNB_Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
 using System.Globalization;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile.API.Models.ApplicationStatus;
-using DynatraceAndroid;
+using myTNB.Mobile;
+using myTNB_Android.Src.SessionCache;
+using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.DeviceCache;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -182,46 +185,90 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     List<MPAccount> accounts = JsonConvert.DeserializeObject<List<MPAccount>>(Arguments.GetString("PAYMENT_ITEMS"));
                     if (accounts != null)
                     {
-                        foreach (MPAccount item in accounts)
+                        Activity.RunOnUiThread(async () =>
                         {
-                            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(item.accountNumber);
-                            AccountChargeModel chargeModel = accountChargeList.Find(accountCharge =>
+                            if (DBRUtility.Instance.ShouldShowHomeDBRCard)
                             {
-                                return accountCharge.ContractAccount == item.accountNumber;
-                            });
-
-                            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                            if (chargeModel != null)
-                            {
-                                if (chargeModel.MandatoryCharges.TotalAmount > 0f)
+                                List<string> dbrCAForPaymentList = new List<string>();
+                                List<string> dbrCAList = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                                        , EligibilitySessionCache.FeatureProperty.TargetGroup)
+                                    ? DBRUtility.Instance.GetDBRCAs()
+                                    : AccountTypeCache.Instance.DBREligibleCAs;
+                                for (int i = 0; i < dbrCAList.Count; i++)
                                 {
-                                    PaymentItemAccountPayment paymentItemAccountPayment = new PaymentItemAccountPayment();
-                                    paymentItemAccountPayment.AccountOwnerName = customerBillingAccount.OwnerName;
-                                    paymentItemAccountPayment.AccountNo = chargeModel.ContractAccount;
-                                    paymentItemAccountPayment.AccountAmount = item.amount.ToString(currCult);
-
-                                    List<AccountPayment> accountPaymentList = new List<AccountPayment>();
-                                    chargeModel.MandatoryCharges.ChargeModelList.ForEach(charge =>
+                                    int index = accounts.FindIndex(x => x.accountNumber == dbrCAList[i]);
+                                    if (index > -1)
                                     {
-                                        AccountPayment accountPayment = new AccountPayment();
-                                        accountPayment.PaymentType = charge.Key;
-                                        accountPayment.PaymentAmount = charge.Amount.ToString(currCult);
-                                        accountPaymentList.Add(accountPayment);
-                                    });
-                                    paymentItemAccountPayment.AccountPayments = accountPaymentList;
-                                    selectedPaymentItemList.Add(paymentItemAccountPayment);
+                                        dbrCAForPaymentList.Add(accounts[index].accountNumber);
+                                    }
                                 }
-                                else
+
+                                if (dbrCAForPaymentList != null && dbrCAForPaymentList.Count > 0)
                                 {
-                                    PaymentItem payItem = new PaymentItem();
-                                    payItem.AccountOwnerName = customerBillingAccount.OwnerName;
-                                    payItem.AccountNo = chargeModel.ContractAccount;
-                                    payItem.AccountAmount = item.amount.ToString(currCult);
-                                    selectedPaymentItemList.Add(payItem);
+                                    PostMultiBillRenderingResponse multiBillRenderingResponse = await DBRManager.Instance.PostMultiBillRendering(dbrCAForPaymentList
+                                        , AccessTokenCache.Instance.GetAccessToken(Activity));
+                                    if (multiBillRenderingResponse != null
+                                        && multiBillRenderingResponse.StatusDetail != null
+                                        && multiBillRenderingResponse.StatusDetail.IsSuccess
+                                        && multiBillRenderingResponse.Content != null
+                                        && multiBillRenderingResponse.Content.Count > 0)
+                                    {
+                                        for (int j = 0; j < dbrCAForPaymentList.Count; j++)
+                                        {
+                                            int index = multiBillRenderingResponse.Content.FindIndex(x =>
+                                                x.ContractAccountNumber == dbrCAForPaymentList[j]
+                                                && x.DBRType == MobileEnums.DBRTypeEnum.Paper);
+                                            if (index > -1)
+                                            {
+                                                PaymentActivity.CAsWithPaperBillList.Add(dbrCAForPaymentList[index]);
+                                            }
+                                        }
+                                    }
                                 }
                             }
 
-                        }
+                            foreach (MPAccount item in accounts)
+                            {
+                                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(item.accountNumber);
+                                AccountChargeModel chargeModel = accountChargeList.Find(accountCharge =>
+                                {
+                                    return accountCharge.ContractAccount == item.accountNumber;
+                                });
+
+                                CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                                if (chargeModel != null)
+                                {
+                                    if (chargeModel.MandatoryCharges.TotalAmount > 0f)
+                                    {
+                                        PaymentItemAccountPayment paymentItemAccountPayment = new PaymentItemAccountPayment();
+                                        paymentItemAccountPayment.AccountOwnerName = customerBillingAccount.OwnerName;
+                                        paymentItemAccountPayment.AccountNo = chargeModel.ContractAccount;
+                                        paymentItemAccountPayment.AccountAmount = item.amount.ToString(currCult);
+                                        paymentItemAccountPayment.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1;
+
+                                        List<AccountPayment> accountPaymentList = new List<AccountPayment>();
+                                        chargeModel.MandatoryCharges.ChargeModelList.ForEach(charge =>
+                                        {
+                                            AccountPayment accountPayment = new AccountPayment();
+                                            accountPayment.PaymentType = charge.Key;
+                                            accountPayment.PaymentAmount = charge.Amount.ToString(currCult);
+                                            accountPaymentList.Add(accountPayment);
+                                        });
+                                        paymentItemAccountPayment.AccountPayments = accountPaymentList;
+                                        selectedPaymentItemList.Add(paymentItemAccountPayment);
+                                    }
+                                    else
+                                    {
+                                        PaymentItem payItem = new PaymentItem();
+                                        payItem.AccountOwnerName = customerBillingAccount.OwnerName;
+                                        payItem.AccountNo = chargeModel.ContractAccount;
+                                        payItem.AccountAmount = item.amount.ToString(currCult);
+                                        payItem.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1;
+                                        selectedPaymentItemList.Add(payItem);
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
                 if (Arguments.ContainsKey("TOTAL"))
@@ -287,21 +334,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         HideErrorMessageSnakebar();
                         AddNewCard();
-
-                        try
-                        {// dynatrace
-
-                            IDTXAction WEBVIEW_PAYMENT_CC = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_CC);
-                            WEBVIEW_PAYMENT_CC.LeaveAction();
-
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
+                        DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_CC);
                     }
-
-
                 };
 
                 btnFPXPayment = rootView.FindViewById<Button>(Resource.Id.btnFPXPayment);
@@ -318,18 +352,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         selectedPaymentMethod = METHOD_FPX;
                         selectedCard = null;
                         InitiatePaymentRequest();
-
-                        try
-                        {   //dynatrace
-
-                            IDTXAction WEBVIEW_PAYMENT_FPX = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_FPX);
-                            WEBVIEW_PAYMENT_FPX.LeaveAction();
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
-
+                        DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_FPX);
                     }
                 };
 
@@ -621,7 +644,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 Utility.LoggingNonFatalError(e);
             }
         }
-
 
         public override void OnActivityResult(int requestCode, int resultCode, Intent data)
         {

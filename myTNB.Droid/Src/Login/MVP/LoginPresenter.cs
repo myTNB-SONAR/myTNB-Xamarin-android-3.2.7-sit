@@ -4,7 +4,7 @@ using Android.OS;
 using Android.Text;
 using Android.Util;
 using Firebase.Iid;
-using fbm = Firebase.Messaging ;
+using fbm = Firebase.Messaging;
 using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
@@ -113,7 +113,7 @@ namespace myTNB_Android.Src.Login.MVP
                 }
                 if (string.IsNullOrEmpty(fcmToken) || string.IsNullOrWhiteSpace(fcmToken))
                 {
-                    var fcmData= await fbm.FirebaseMessaging.Instance.GetToken();
+                    var fcmData = await fbm.FirebaseMessaging.Instance.GetToken();
                     fcmToken = fcmData.ToString();
                     FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
 
@@ -273,6 +273,19 @@ namespace myTNB_Android.Src.Login.MVP
                         }
 
                         int Id = UserEntity.InsertOrReplace(userResponse.GetData());
+                        try
+                        {
+                            int loginCount = UserLoginCountEntity.GetLoginCount(userResponse.GetData().Email);
+                            int recordId;
+                            if (loginCount < 2)
+                            {
+                                recordId = UserLoginCountEntity.InsertOrReplace(userResponse.GetData(), loginCount + 1);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
                         if (Id > 0)
                         {
                             UserEntity.UpdateDeviceId(deviceId);
@@ -283,6 +296,7 @@ namespace myTNB_Android.Src.Login.MVP
                                 , UserEntity.GetActive().UserName
                                 , UserSessions.GetDeviceId()
                                 , DeviceIdUtils.GetAppVersionName()
+                                , myTNB.Mobile.MobileConstants.OSType.Android
                                 , TextViewUtils.FontInfo
                                 , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                             AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
@@ -296,7 +310,6 @@ namespace myTNB_Android.Src.Login.MVP
                                 if (customerAccountListResponse.GetData().Count > 0)
                                 {
                                     ProcessCustomerAccount(customerAccountListResponse.GetData());
-
                                 }
                                 else
                                 {
@@ -317,7 +330,7 @@ namespace myTNB_Android.Src.Login.MVP
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
                                 UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new BaseRequest());
-                                if(response.IsSuccessResponse())
+                                if (response.IsSuccessResponse())
                                 {
                                     if (response.GetData() != null)
                                     {
@@ -356,7 +369,19 @@ namespace myTNB_Android.Src.Login.MVP
                                 if (this.mView.IsActive())
                                 {
                                     this.mView.ShowNotificationCount(UserNotificationEntity.Count());
-                                }                               
+                                }
+
+                                await LanguageUtil.SaveUpdatedLanguagePreference();
+                                AppInfoManager.Instance.SetUserInfo("16"
+                                    , UserEntity.GetActive().UserID
+                                    , UserEntity.GetActive().UserName
+                                    , UserSessions.GetDeviceId()
+                                    , DeviceIdUtils.GetAppVersionName()
+                                    , myTNB.Mobile.MobileConstants.OSType.Android
+                                    , TextViewUtils.FontInfo
+                                    , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+                                AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
+
 
                                 if (LanguageUtil.GetAppLanguage() == "MS")
                                 {
@@ -369,26 +394,22 @@ namespace myTNB_Android.Src.Login.MVP
 
                                 this.mView.ShowDashboard();
                             }
-                            else
-                            {
-                                if (this.mView.IsActive())
-                                {
-                                    this.mView.HideProgressDialog();
-                                    this.mView.ShowRetryOptionsCancelledException(null);
-                                }
-                                ClearDataCache();
-                            }
                         }
-                        if (this.mView.IsActive())
+                        else
                         {
-                            this.mView.HideProgressDialog();
+                            if (this.mView.IsActive())
+                            {
+                                this.mView.HideProgressDialog();
+                                this.mView.ShowRetryOptionsCancelledException(null);
+                            }
+                            ClearDataCache();
                         }
                     }
-
-
-
+                    if (this.mView.IsActive())
+                    {
+                        this.mView.HideProgressDialog();
+                    }
                 }
-
             }
             catch (System.OperationCanceledException e)
             {
@@ -421,7 +442,6 @@ namespace myTNB_Android.Src.Login.MVP
                 {
                     this.mView.HideProgressDialog();
                     this.mView.ShowRetryOptionsUnknownException(e);
-
                 }
                 ClearDataCache();
                 Utility.LoggingNonFatalError(e);
@@ -432,8 +452,6 @@ namespace myTNB_Android.Src.Login.MVP
                 this.mView.EnableLoginButton();
                 //this.mView.HideProgressDialog();
             }
-
-
         }
 
         private void ClearDataCache()

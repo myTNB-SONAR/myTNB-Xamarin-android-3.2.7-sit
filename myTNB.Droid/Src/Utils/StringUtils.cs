@@ -10,5 +10,11 @@ namespace myTNB_Android.Src.Utils
             Array.Reverse(charArray);
             return new string(charArray);
         }
+
+        public static bool IsValid(this string str)
+        {
+            return !string.IsNullOrEmpty(str)
+                && !string.IsNullOrWhiteSpace(str);
+        }
     }
 }

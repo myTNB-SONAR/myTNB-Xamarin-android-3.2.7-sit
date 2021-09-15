@@ -1,4 +1,6 @@
-﻿namespace myTNB.Mobile
+﻿using System.Collections.Generic;
+
+namespace myTNB.Mobile
 {
     public static class MobileConstants
     {
@@ -39,17 +41,17 @@
         private const string ApiKeyIdPROD = "E6148656-205B-494C-BC95-CC241423E72F";
 
         //Encrypt / Decrypt
-        private const string SaltKeyDEV = "Salt-4NHF1XP910G8NN6GRH23PD12N9X6T5DW";
-        private const string PassphraseDEV = "PW-myTNB-DEV";
-        private const string SaltKeyPROD = "Salt-IT9LJQ3LJEAK5G2R35L5V6A5FUDO7A5B";
-        private const string PassphrasePROD = "PW-myTNB-PROD";
+        private const string SaltKey_DEV = "Salt-4NHF1XP910G8NN6GRH23PD12N9X6T5DW";
+        private const string SaltKey_PROD = "Salt-IT9LJQ3LJEAK5G2R35L5V6A5FUDO7A5B";
+        private const string Passphrase_DEV = "PW-myTNB-DEV";
+        private const string Passphrase_PROD = "PW-myTNB-PROD";
 
 #if DEBUG
-        public static string ApiDomain = PROD;
-        public const string ApiKeyId = ApiKeyIdPROD;
-        public const string SitecoreURL = SitecoreSIT;
-        internal const string SaltKey = SaltKeyDEV;
-        internal const string PassPhrase = PassphraseDEV;
+        public static string ApiDomain = DEV3;
+        public const string ApiKeyId = ApiKeyIdDEV;
+        public const string SitecoreURL = SitecorePROD;
+        internal const string SaltKey = SaltKey_DEV;
+        internal const string PassPhrase = Passphrase_DEV;
 #elif MASTER || SIT
         /*public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
@@ -57,17 +59,17 @@
         internal const string SaltKey = SaltKeyDEV;
         internal const string PassPhrase = PassphraseDEV;*/
 
-        public static string ApiDomain = PROD;
-        public const string ApiKeyId = ApiKeyIdPROD;
+        public static string ApiDomain = SIT;
+        public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
-        internal const string SaltKey = SaltKeyPROD;
-        internal const string PassPhrase = PassphrasePROD;
+        internal const string SaltKey = SaltKey_DEV;
+        internal const string PassPhrase = Passphrase_DEV;
 #else
         public static string ApiDomain = PROD;
         public const string ApiKeyId = ApiKeyIdPROD;
         public const string SitecoreURL = SitecorePROD;
-        internal const string SaltKey = SaltKeyPROD;
-        internal const string PassPhrase = PassphrasePROD;
+        internal const string SaltKey = SaltKey_PROD;
+        internal const string PassPhrase = Passphrase_PROD;
 #endif
 
         //Service Name
@@ -110,5 +112,37 @@
             public const string GetEligibilityData = "GetEligibilityData";
             public const string AccessToken = "AccessToken";
         }
+
+        public struct PushNotificationTypes
+        {
+            public const string DBR_Owner = "DBROWNER";
+            public const string APPLICATIONSTATUS = "APPLICATIONSTATUS";
+        }
+
+        public struct OSType
+        {
+            public const string Android = "1";
+            public const string iOS = "2";
+            public const string Huawei = "3";
+        }
+
+        internal struct BillRenderingCodes
+        {
+            internal const string Owner_EBill = "ZV04";
+            internal const string Owner_EMail = "ZV03";
+            internal const string Owner_Paper = "ZV02";
+
+            internal const string BC_EBill = "ZNTF";
+            internal const string BC_EMail = "ZEML";
+            internal const string BC_Paper = "ZINV";
+        }
+
+        internal static List<string> ResidentialTariffTypeList = new List<string>
+        {
+            "A_LV"
+            , "A_LV_D"
+            , "A_LV_D_I"
+            , "A_LV_I"
+        };
     }
 }

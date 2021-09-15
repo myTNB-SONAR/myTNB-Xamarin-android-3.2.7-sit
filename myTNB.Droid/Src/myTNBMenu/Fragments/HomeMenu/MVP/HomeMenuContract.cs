@@ -28,6 +28,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             //void StopShimmerDiscoverMore();
             void SetMyServiceResult(List<MyService> list);
             void SetNewFAQResult(List<NewFAQ> list);
+            void SetDiscoverResult(bool IsAccountDBREligible);
             string GetDeviceId();
             void ShowMyServiceRetryOptions(string msg);
             void OnSavedTimeStamp(string savedTimeStamp);
@@ -88,6 +89,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void HideNewFAQ();
 
+            void HideDiscoverViewView();
+
+            void ShowDiscoverView(bool IsAccountDBREligible);
+
             bool CheckNeedHelpHide();
 
             void SetMyServiceRefreshView(string contentTxt, string buttonTxt);
@@ -105,6 +110,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void EBPopupActivity();
             
             void ShowDiscoverMoreLayout();
+            void OnSetNotificationNewLabel(bool hasNoti, int noticount);
         }
 
         public interface IHomeMenuPresenter
@@ -172,7 +178,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             bool GetIsLoadedHomeDone();
 
             void OnCheckNewFAQState();
+            
 
+            //void UserNotificationsCount();
         }
 
         public interface IHomeMenuService

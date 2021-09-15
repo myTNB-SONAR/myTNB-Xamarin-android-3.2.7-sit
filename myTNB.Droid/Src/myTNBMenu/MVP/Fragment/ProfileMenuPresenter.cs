@@ -241,6 +241,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             UserEntity userEntity = UserEntity.GetActive();
             try
             {
+                EligibilitySessionCache.Instance.Clear();
                 if (userEntity != null)
                 {
                     var logoutResponse = await ServiceApiImpl.Instance.LogoutUser(new LogoutUserRequest());
@@ -254,6 +255,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         , string.Empty
                         , UserSessions.GetDeviceId()
                         , DeviceIdUtils.GetAppVersionName()
+                        , MobileConstants.OSType.Android
                         , TextViewUtils.FontInfo
                         , LanguageUtil.GetAppLanguage() == "MS"
                             ? LanguageManager.Language.MS
@@ -262,7 +264,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     UserSessions.RemoveEligibleData(mPref);
                     EligibilitySessionCache.Instance.Clear();
                     FeatureInfoManager.Instance.Clear();
-                    AccessTokenCache.Instance.ClearToken();
+                    AccessTokenCache.Instance.Clear();
                     UserEntity.RemoveActive();
                     UserRegister.RemoveActive();
                     CustomerBillingAccount.RemoveActive();
@@ -278,6 +280,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     SummaryDashBoardAccountEntity.RemoveAll();
                     SelectBillsEntity.RemoveAll();
                     LanguageUtil.SetIsLanguageChanged(false);
+                    UserLoginCountEntity.RemoveAll();
+
                     this.mView.ShowLogout();
                 }
             }
