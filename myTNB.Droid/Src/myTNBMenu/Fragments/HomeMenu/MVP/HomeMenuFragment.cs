@@ -1230,10 +1230,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         MyService selectedService = currentMyServiceList[position];
                         if (selectedService.ServiceCategoryId == "1003")
                         {
-                            //if (!UserSessions.HasSubmitEnquiry(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
-                            //{
-                            //    UserSessions.DoSubmitEnquiry(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
-                            //}
                             ShowFeedbackMenu();
                         }
                         else if (selectedService.ServiceCategoryId == "1001")

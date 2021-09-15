@@ -53,7 +53,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         MaterialDialog progressDialog;
         public static string status, crStatusCode;
         public static string srNumber;
-        public static string AccountNumber;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
