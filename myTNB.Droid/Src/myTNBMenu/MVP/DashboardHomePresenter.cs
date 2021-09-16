@@ -1717,7 +1717,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     newList.Add(new NewAppModel()
                     {
                         ContentShowPosition = ContentType.BottomRight,
-                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitle"),
+                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitleNonOwner"),
                         ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageDescNonOwner"),
                         ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                         NeedHelpHide = isNeedHelpHide,
