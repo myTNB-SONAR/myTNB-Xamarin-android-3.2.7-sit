@@ -397,7 +397,7 @@ namespace myTNB_Android.Src.Utils
 
         //Dynatrace test
         public static string TOUCH_ON_VIEW_SUBMITTED_ENQUIRY = "VIEW_SUBMITTED_ENQUIRY"; //Touch on View Submitted Enquiry
-        public static string TOUCH_ON_SUBMIT_AND_TRACK_ENQUIRY = "SUBMIT_&_TRACK_ENQUIRY";//Touch on Submit & Track Enquiry
+        public static string TOUCH_ON_SUBMIT_AND_TRACK_ENQUIRY = "SUBMIT_AND_TRACK_ENQUIRY";//Touch on Submit & Track Enquiry
         public static string TOUCH_ON_SUBMIT_NEW_ENQUIRY = "SUBMIT_NEW_ENQUIRY"; //Touch on Submit New Enquiry
     }
 }
