@@ -2468,9 +2468,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.ShowAddAccount();
         }
 
-        public void NavigateToViewAccountStatement(string accountNumber)
+        public void NavigateToViewAccountStatement(CustomerBillingAccount account)
         {
-            this.ShowViewAccountStatement(accountNumber);
+            this.ShowViewAccountStatement(account);
         }
     }
 }

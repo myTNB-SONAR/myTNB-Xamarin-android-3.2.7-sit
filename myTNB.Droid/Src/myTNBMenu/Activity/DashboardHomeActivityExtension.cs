@@ -6,8 +6,10 @@ using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.BillStatement.MVP;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Deeplink;
 using Newtonsoft.Json;
@@ -186,9 +188,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             mainActivity.StartActivity(linkAccount);
         }
 
-        internal static void ShowViewAccountStatement(this DashboardHomeActivity mainActivity, string accountNum)
+        internal static void ShowViewAccountStatement(this DashboardHomeActivity mainActivity, CustomerBillingAccount account)
         {
-            //Start activity for View Account Statement Screen
+            AccountData accountData = AccountData.Copy(account, true);
+            Intent newIntent = new Intent(mainActivity, typeof(BillStatementActivity));
+            newIntent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(accountData));
+            mainActivity.StartActivity(newIntent);
         }
     }
 }

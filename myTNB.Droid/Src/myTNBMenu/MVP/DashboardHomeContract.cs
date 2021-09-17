@@ -183,7 +183,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void NavigateToAddAccount();
 
-            void NavigateToViewAccountStatement(string accountNumber);
+            void NavigateToViewAccountStatement(CustomerBillingAccount account);
         }
 
         public interface IUserActionsListener : IBasePresenter

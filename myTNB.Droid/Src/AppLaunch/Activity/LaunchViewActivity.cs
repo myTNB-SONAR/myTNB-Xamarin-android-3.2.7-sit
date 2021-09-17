@@ -1211,10 +1211,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             PendingDynamicLinkData pendingResult = result.JavaCast<PendingDynamicLinkData>();
 
-            Android.Net.Uri deepLink = null;
             if (pendingResult != null)
             {
-                deepLink = pendingResult.Link;
                 DeeplinkUtil.Instance.InitiateDeepLink(pendingResult.Link);
             }
         }

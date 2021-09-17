@@ -1721,7 +1721,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountNumber);
                 if (customerBillingAccount != null)
                 {
-                    this.mView.NavigateToViewAccountStatement(accountNumber);
+                    this.mView.NavigateToViewAccountStatement(customerBillingAccount);
                 }
                 else
                 {
