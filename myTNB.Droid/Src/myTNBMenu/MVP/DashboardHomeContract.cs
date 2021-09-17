@@ -11,43 +11,43 @@ using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP
 {
-	public class DashboardHomeContract
-	{
-		public interface IView : IBaseView<IUserActionsListener>
-		{
-			/// <summary>
-			/// Shows the bill menu
-			/// </summary>
-			/// <param name="selectedAccount">AccountData</param>
-			void ShowBillMenu(AccountData selectedAccount);
+    public class DashboardHomeContract
+    {
+        public interface IView : IBaseView<IUserActionsListener>
+        {
+            /// <summary>
+            /// Shows the bill menu
+            /// </summary>
+            /// <param name="selectedAccount">AccountData</param>
+            void ShowBillMenu(AccountData selectedAccount);
 
-			/// <summary>
-			/// Enable bill menu
-			/// </summary>
-			void EnableBillMenu();
+            /// <summary>
+            /// Enable bill menu
+            /// </summary>
+            void EnableBillMenu();
 
-			/// <summary>
-			/// Disable bill menu
-			/// </summary>
-			void DisableBillMenu();
+            /// <summary>
+            /// Disable bill menu
+            /// </summary>
+            void DisableBillMenu();
 
-			/// <summary>
-			/// Show feedback menu
-			/// </summary>
-			void ShowFeedbackMenu();
+            /// <summary>
+            /// Show feedback menu
+            /// </summary>
+            void ShowFeedbackMenu();
 
 
-			void ShowWhatsNewMenu();
+            void ShowWhatsNewMenu();
 
-			/// <summary>
-			/// Show more menu
-			/// </summary>
-			void ShowMoreMenu();
+            /// <summary>
+            /// Show more menu
+            /// </summary>
+            void ShowMoreMenu();
 
-			/// <summary>
-			/// Show select account activity
-			/// </summary>
-			void ShowSelectSupplyAccount();
+            /// <summary>
+            /// Show select account activity
+            /// </summary>
+            void ShowSelectSupplyAccount();
 
             /// <summary>
             /// Set toolbar title
@@ -68,42 +68,42 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// <param name="enable">Boolean</param>
             void EnableDropDown(Boolean enable);
 
-			/// <summary>
-			/// Shows the leaf account icon in drop down
-			/// Enable dropdown
-			/// </summary>
-			void ShowREAccount(Boolean enable);
+            /// <summary>
+            /// Shows the leaf account icon in drop down
+            /// Enable dropdown
+            /// </summary>
+            void ShowREAccount(Boolean enable);
 
-			/// <summary>
-			/// Set the account name
-			/// </summary>
-			/// <param name="accountName">string</param>
-			void SetAccountName(string accountName);
+            /// <summary>
+            /// Set the account name
+            /// </summary>
+            /// <param name="accountName">string</param>
+            void SetAccountName(string accountName);
 
-			/// <summary>
-			/// Show the prelogin
-			/// </summary>
-			void ShowPreLogin();
+            /// <summary>
+            /// Show the prelogin
+            /// </summary>
+            void ShowPreLogin();
 
-			/// <summary>
-			/// Show progress dialog
-			/// </summary>
-			void ShowProgressDialog();
+            /// <summary>
+            /// Show progress dialog
+            /// </summary>
+            void ShowProgressDialog();
 
-			/// <summary>
-			/// Hide progress dialog
-			/// </summary>
-			void HideProgressDialog();
+            /// <summary>
+            /// Hide progress dialog
+            /// </summary>
+            void HideProgressDialog();
 
-			/// <summary>
-			/// Hide account name
-			/// </summary>
-			void HideAccountName();
+            /// <summary>
+            /// Hide account name
+            /// </summary>
+            void HideAccountName();
 
-			/// <summary>
-			/// Show account name
-			/// </summary>
-			void ShowAccountName();
+            /// <summary>
+            /// Show account name
+            /// </summary>
+            void ShowAccountName();
 
             void ShowUnreadWhatsNew(bool flag);
 
@@ -113,13 +113,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void HideUnreadWhatsNew();
 
-			void ShowHomeDashBoard();
+            void ShowHomeDashBoard();
 
 
-			void ShowBackButton(bool flag);
+            void ShowBackButton(bool flag);
 
 
-			string GetDeviceId();
+            string GetDeviceId();
 
             void SetDashboardHomeCheck();
 
@@ -147,7 +147,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void OnCheckRewardTab();
 
-            void OnDataSchemeShow();
+            void OnCheckDeeplink();
 
             void OnCheckUserReward(bool isSitecoreApiFailed);
 
@@ -177,43 +177,47 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void SetAlreadyStarted(bool flag);
 
-			void OnResetEppTooltip();
+            void OnResetEppTooltip();
 
-			void OnResetWhereIsMyAccNumber();
+            void OnResetWhereIsMyAccNumber();
+
+            void NavigateToAddAccount();
+
+            void NavigateToViewAccountStatement(string accountNumber);
         }
 
         public interface IUserActionsListener : IBasePresenter
-		{
-			/// <summary>
-			/// Action to logout NOT USED
-			/// </summary>
-			void Logout();
+        {
+            /// <summary>
+            /// Action to logout NOT USED
+            /// </summary>
+            void Logout();
 
-			/// <summary>
-			/// Action to navigate to select accuont
-			/// </summary>
-			void SelectSupplyAccount();
+            /// <summary>
+            /// Action to navigate to select accuont
+            /// </summary>
+            void SelectSupplyAccount();
 
-			/// <summary>
-			/// Action to select menu
-			/// </summary>
-			/// <param name="resourceId">integer</param>
-			void OnMenuSelect(int resourceId);
+            /// <summary>
+            /// Action to select menu
+            /// </summary>
+            /// <param name="resourceId">integer</param>
+            void OnMenuSelect(int resourceId);
 
-			/// <summary>
-			/// The returned result from another activity
-			/// </summary>
-			/// <param name="requestCode">integer</param>
-			/// <param name="resultCode">enum</param>
-			/// <param name="data">intent</param>
-			void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data);
+            /// <summary>
+            /// The returned result from another activity
+            /// </summary>
+            /// <param name="requestCode">integer</param>
+            /// <param name="resultCode">enum</param>
+            /// <param name="data">intent</param>
+            void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data);
 
-			/// <summary>
-			/// Handles actions triggered by real time data
-			/// </summary>
-			void OnValidateData();
+            /// <summary>
+            /// Handles actions triggered by real time data
+            /// </summary>
+            void OnValidateData();
 
-			void OnTapToRefresh();
+            void OnTapToRefresh();
 
             int CheckCurrentDashboardMenu();
 
@@ -261,15 +265,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void OnLoadMoreMenu();
 
-			bool GetIsWhatsNewDialogShowNeed();
+            bool GetIsWhatsNewDialogShowNeed();
 
-			void SetIsWhatsNewDialogShowNeed(bool flag);
+            void SetIsWhatsNewDialogShowNeed(bool flag);
 
-			Task OnGetEPPTooltipContentDetail();
+            Task OnGetEPPTooltipContentDetail();
 
-			Task OnWhereIsMyAccNumberContentDetail();
-			Task OnGetBillTooltipContent();
+            Task OnWhereIsMyAccNumberContentDetail();
+            Task OnGetBillTooltipContent();
 
-		}
-	}
+            void OnGetBillValidateWithCA(string accountNumber);
+        }
+    }
 }
