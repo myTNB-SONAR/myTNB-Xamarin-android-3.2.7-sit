@@ -2482,6 +2482,7 @@
       "callInterval": 480
     },
     "ForceHideDBRBanner": false,
+    "ForceHideBillRedesignBanner": false,
     "BillRendering": {
       "enabled": true
     }
