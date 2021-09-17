@@ -95,6 +95,12 @@ namespace myTNB_Android.Src.Utils.Deeplink
             }
         }
 
+        public void ClearDeeplinkData()
+        {
+            TargetScreen = Screen.None;
+            ScreenKey = string.Empty;
+        }
+
         private void SaveDeeplinkDetailsForQR(Uri deeplink)
         {
             string deepLinkUrlString = deeplink.ToString().ToLower();

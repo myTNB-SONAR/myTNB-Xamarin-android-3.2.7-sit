@@ -180,6 +180,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void OnResetEppTooltip();
 
             void OnResetWhereIsMyAccNumber();
+
+            void NavigateToAddAccount();
+
+            void NavigateToViewAccountStatement(string accountNumber);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -270,6 +274,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             Task OnWhereIsMyAccNumberContentDetail();
             Task OnGetBillTooltipContent();
 
+            void OnGetBillValidateWithCA(string accountNumber);
         }
     }
 }

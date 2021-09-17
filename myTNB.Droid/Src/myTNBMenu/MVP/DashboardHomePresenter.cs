@@ -1713,6 +1713,26 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
+        public void OnGetBillValidateWithCA(string accountNumber)
+        {
+            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+            if (accountList.Count > 0)
+            {
+                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountNumber);
+                if (customerBillingAccount != null)
+                {
+                    this.mView.NavigateToViewAccountStatement(accountNumber);
+                }
+                else
+                {
+                    this.mView.NavigateToAddAccount();
+                }
+            }
+            else
+            {
+                this.mView.NavigateToAddAccount();
+            }
+        }
     }
 
 }

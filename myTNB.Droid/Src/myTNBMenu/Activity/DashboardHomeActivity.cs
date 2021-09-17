@@ -52,6 +52,7 @@ using myTNB.Mobile;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Utils.Deeplink;
+using myTNB_Android.Src.AddAccount.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -760,6 +761,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 errorPopup.Show();
                             }
                             HideProgressDialog();
+                        }
+                        break;
+                    case Deeplink.ScreenEnum.GetBill:
+                        {
+                            string accountNum = DeeplinkUtil.Instance.ScreenKey;
+                            this.mPresenter.OnGetBillValidateWithCA(accountNum);
+                            DeeplinkUtil.Instance.ClearDeeplinkData();
                         }
                         break;
                     default:
@@ -1701,7 +1709,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 HideProgressDialog();
                                 if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.Rewards)
                                 {
-                                    DeeplinkUtil.Instance.TargetScreen = Deeplink.ScreenEnum.None;
+                                    DeeplinkUtil.Instance.ClearDeeplinkData();
                                     ShowRewardFailedTooltip();
                                 }
                             }
@@ -1766,7 +1774,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 this.mPresenter.CheckWhatsNewCache();
                                 if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.WhatsNew)
                                 {
-                                    DeeplinkUtil.Instance.TargetScreen = Deeplink.ScreenEnum.None;
+                                    DeeplinkUtil.Instance.ClearDeeplinkData();
                                     ShowWhatsNewFailedTooltip();
                                 }
                                 else
@@ -1827,7 +1835,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.Rewards)
                 {
                     HideProgressDialog();
-                    DeeplinkUtil.Instance.TargetScreen = Deeplink.ScreenEnum.None;
+                    DeeplinkUtil.Instance.ClearDeeplinkData();
                     ShowRewardFailedTooltip();
                 }
             }
@@ -1860,8 +1868,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.Rewards)
                 {
                     HideProgressDialog();
-                    DeeplinkUtil.Instance.TargetScreen = Deeplink.ScreenEnum.None;
                     string rewardID = DeeplinkUtil.Instance.ScreenKey;
+                    DeeplinkUtil.Instance.ClearDeeplinkData();
                     if (rewardID.IsValid())
                     {
                         rewardID = "{" + rewardID + "}";
@@ -1953,8 +1961,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.WhatsNew)
                 {
                     HideProgressDialog();
-                    DeeplinkUtil.Instance.TargetScreen = Deeplink.ScreenEnum.None;
                     string whatsNewID = DeeplinkUtil.Instance.ScreenKey;
+                    DeeplinkUtil.Instance.ClearDeeplinkData();
                     if (!string.IsNullOrEmpty(whatsNewID))
                     {
                         whatsNewID = "{" + whatsNewID + "}";
@@ -2596,6 +2604,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     Utility.LoggingNonFatalError(e);
                 }
             }
+        }
+
+        public void NavigateToAddAccount()
+        {
+            Intent linkAccount = new Intent(this, typeof(LinkAccountActivity));
+            linkAccount.PutExtra("fromDashboard", true);
+            StartActivity(linkAccount);
+        }
+
+        public void NavigateToViewAccountStatement(string accountNumber)
+        {
+            //Start activity for View Account Statement Screen
         }
     }
 }
