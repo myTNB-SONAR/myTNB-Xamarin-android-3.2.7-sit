@@ -7474,6 +7474,7 @@
     <Compile Include="Src\Device Cache\DeviceSizeCache.cs" />
     <Compile Include="Src\Utils\Deeplink\DeeplinkUtil.cs" />
     <Compile Include="Src\Utils\Deeplink\Deeplink.cs" />
+    <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivityExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -69,7 +69,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public static DashboardHomeActivity dashboardHomeActivity;
 
         private DashboardHomeContract.IUserActionsListener userActionsListener;
-        private DashboardHomePresenter mPresenter;
+        public DashboardHomePresenter mPresenter;
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -84,7 +84,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         TextView txtAccountName;
 
         [BindView(Resource.Id.bottom_navigation)]
-        BottomNavigationView bottomNavigationView;
+        public BottomNavigationView bottomNavigationView;
 
         AccountData SelectedAccountData;
 
@@ -110,7 +110,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private bool isSetToolbarClick = false;
 
-        private bool IsRootTutorialShown = false;
+        public bool IsRootTutorialShown = false;
 
         private static bool isFirstInitiate = false;
 
@@ -625,154 +625,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        public async void OnCheckDeeplink()
+        public void OnCheckDeeplink()
         {
             if (DeeplinkUtil.Instance.TargetScreen != Deeplink.ScreenEnum.None)
             {
-                switch (DeeplinkUtil.Instance.TargetScreen)
-                {
-                    case Deeplink.ScreenEnum.Rewards:
-                        {
-                            bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
-                            if (!IsRewardsDisabled && bottomNavigationView.Menu.FindItem(Resource.Id.menu_reward) != null)
-                            {
-                                string rewardID = DeeplinkUtil.Instance.ScreenKey;
-                                if (!string.IsNullOrEmpty(rewardID))
-                                {
-                                    rewardID = "{" + rewardID + "}";
-                                    RewardsEntity wtManager = new RewardsEntity();
-                                    RewardsEntity item = wtManager.GetItem(rewardID);
-                                    this.mPresenter.OnStartRewardThread();
-                                }
-                            }
-                            else
-                            {
-                                IsRootTutorialShown = true;
-                                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                    .SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
-                                    .SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
-                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
-                                    .SetCTAaction(() =>
-                                    {
-                                        IsRootTutorialShown = false;
-                                        if (currentFragment.GetType() == typeof(HomeMenuFragment))
-                                        {
-                                            HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
-                                            fragment.CallOnCheckShowHomeTutorial();
-                                        }
-                                    })
-                                    .Build().Show();
-                            }
-                        }
-                        break;
-                    case Deeplink.ScreenEnum.WhatsNew:
-                        {
-                            string whatsNewID = DeeplinkUtil.Instance.ScreenKey;
-                            if (!string.IsNullOrEmpty(whatsNewID))
-                            {
-                                whatsNewID = "{" + whatsNewID + "}";
-                                WhatsNewEntity wtManager = new WhatsNewEntity();
-                                WhatsNewEntity item = wtManager.GetItem(whatsNewID);
-                                this.mPresenter.OnStartWhatsNewThread();
-                            }
-                        }
-                        break;
-                    case Deeplink.ScreenEnum.ApplicationListing:
-                        {
-                            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
-                            if (searchApplicationTypeResponse == null)
-                            {
-                                ShowProgressDialog();
-                                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
-                                if (searchApplicationTypeResponse != null
-                                    && searchApplicationTypeResponse.StatusDetail != null
-                                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
-                                {
-                                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
-                                }
-                                HideProgressDialog();
-                            }
-                            if (searchApplicationTypeResponse != null
-                                && searchApplicationTypeResponse.StatusDetail != null
-                                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
-                            {
-                                AllApplicationsCache.Instance.Clear();
-                                AllApplicationsCache.Instance.Reset();
-                                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
-                                StartActivity(applicationLandingIntent);
-                            }
-                            else
-                            {
-                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
-                                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
-                                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
-                                     .Build();
-                                errorPopup.Show();
-                            }
-                        }
-                        break;
-                    case Deeplink.ScreenEnum.ApplicationDetails:
-                        {
-                            ShowProgressDialog();
-                            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
-                            if (searchApplicationTypeResponse == null)
-                            {
-                                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
-                                if (searchApplicationTypeResponse != null
-                                    && searchApplicationTypeResponse.StatusDetail != null
-                                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
-                                {
-                                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
-                                }
-                            }
-                            if (searchApplicationTypeResponse != null
-                                && searchApplicationTypeResponse.StatusDetail != null
-                                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
-                            {
-                                ApplicationDetailDisplay detailsResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(ApplicationDetailsDeeplinkCache.Instance.SaveID
-                                    , ApplicationDetailsDeeplinkCache.Instance.ID
-                                    , ApplicationDetailsDeeplinkCache.Instance.Type
-                                    , ApplicationDetailsDeeplinkCache.Instance.System);
-
-                                if (detailsResponse.StatusDetail.IsSuccess)
-                                {
-                                    Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
-                                    applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(detailsResponse.Content));
-                                    StartActivity(applicationStatusDetailIntent);
-                                }
-                                else
-                                {
-                                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                     .SetTitle(detailsResponse.StatusDetail.Title)
-                                     .SetMessage(detailsResponse.StatusDetail.Message)
-                                     .SetCTALabel(detailsResponse.StatusDetail.PrimaryCTATitle)
-                                     .Build();
-                                    errorPopup.Show();
-                                }
-                            }
-                            else
-                            {
-                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
-                                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
-                                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
-                                     .Build();
-                                errorPopup.Show();
-                            }
-                            HideProgressDialog();
-                        }
-                        break;
-                    case Deeplink.ScreenEnum.GetBill:
-                        {
-                            string accountNum = DeeplinkUtil.Instance.ScreenKey;
-                            this.mPresenter.OnGetBillValidateWithCA(accountNum);
-                            DeeplinkUtil.Instance.ClearDeeplinkData();
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                this.DeeplinkValidation();
             }
         }
 
@@ -2608,14 +2465,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void NavigateToAddAccount()
         {
-            Intent linkAccount = new Intent(this, typeof(LinkAccountActivity));
-            linkAccount.PutExtra("fromDashboard", true);
-            StartActivity(linkAccount);
+            this.ShowAddAccount();
         }
 
         public void NavigateToViewAccountStatement(string accountNumber)
         {
-            //Start activity for View Account Statement Screen
+            this.ShowViewAccountStatement(accountNumber);
         }
     }
 }
