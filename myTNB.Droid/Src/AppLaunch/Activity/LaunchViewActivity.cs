@@ -58,7 +58,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
     {
         [BindView(Resource.Id.rootView)]
         RelativeLayout rootView;
-
+        public static bool FcmPushNotificationFlagFromBackground;
         public static readonly string TAG = typeof(LaunchViewActivity).Name;
         private AppLaunchPresenter mPresenter;
         private AppLaunchContract.IUserActionsListener userActionsListener;
@@ -87,10 +87,18 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private Snackbar mUnknownExceptionSnackBar;
 
         private AppLaunchNavigation currentNavigation = AppLaunchNavigation.Nothing;
+        public static string RandomFiveDigit;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            //Random number for webview dynatrace
+            Random r = new Random();
+            int randNum = r.Next(100000);
+            RandomFiveDigit = randNum.ToString("D5");
+            Console.WriteLine(RandomFiveDigit);
+
             Utility.SetAppUpdateId(this);
             LanguageUtil.SetInitialAppLanguage();
             try
@@ -146,7 +154,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     if (Intent.Extras.ContainsKey("claimId"))
                     {
                        ClaimId = Intent.Extras.GetString("claimId");
-                    
+                       currentNavigation = AppLaunchNavigation.Notification;
                     }
 
                     // Get CategoryBrowsable intent data
@@ -163,7 +171,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
-        }
+        }        
 
         public bool IsActive()
         {
@@ -560,6 +568,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             if(!string.IsNullOrEmpty(ClaimId))
             {
+                FcmPushNotificationFlagFromBackground = true;
                 isAppLaunchDone = true;
                 Intent Intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
                 Intent.AddFlags(ActivityFlags.ClearTop);

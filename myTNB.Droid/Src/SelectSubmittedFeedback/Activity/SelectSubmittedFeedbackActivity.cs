@@ -49,7 +49,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         List<SubmittedFeedback> listData;
 
         MaterialDialog progressDialog;
-        public static string status;
+        public static string status, crStatusCode;
         public static string srNumber;
         public static string AccountNumber;
 
@@ -138,12 +138,13 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             base.OnResume();
             try
             {
-                if (!string.IsNullOrEmpty(status))
+                if (!string.IsNullOrEmpty(status) && !string.IsNullOrEmpty(crStatusCode))
                 {
                     int index = listData.FindIndex(s => s.FeedbackId.Equals(srNumber));
                     if (index != -1)
                     {
                         listData[index].StatusDesc = status;
+                        listData[index].StatusCode = crStatusCode;
                         //SubmittedFeedback.d.data[index].StatusDesc = status;
                         //SubmittedFeedback.d.data[index].StatusCode = statusCode;
                         //srNumber = null;

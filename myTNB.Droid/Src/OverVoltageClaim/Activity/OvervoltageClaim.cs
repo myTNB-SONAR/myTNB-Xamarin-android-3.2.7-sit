@@ -13,6 +13,7 @@ using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MyTNBService.Request;
@@ -151,7 +152,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
 
                 string url = domain;
 
-                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel;
+                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.RandomFiveDigit;
 
                 if (TextViewUtils.IsLargeFonts)
                 {
