@@ -20,6 +20,7 @@ namespace myTNB_Android.Src.Utils.Deeplink
             Rewards,
             WhatsNew,
             ApplicationListing,
+            ApplicationDetails,
             QR,
             GetBill,
             None

@@ -45,6 +45,7 @@ using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile.AWS.Models;
 using Firebase.Iid;
 using myTNB_Android.Src.NotificationDetails.Activity;
+using myTNB_Android.Src.Utils.Deeplink;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -82,8 +83,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         private AppLaunchMasterDataResponse cacheResponseData = null;
 
-        private string urlSchemaData = "";
-        private string urlSchemaPath = "";
         private Snackbar mSnackBar;
         private Snackbar mNoInternetSnackbar;
         private Snackbar mUnknownExceptionSnackBar;
@@ -156,14 +155,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         }
-                    }
-
-                    // Get CategoryBrowsable intent data
-                    var data = Intent?.Data?.EncodedAuthority;
-                    if (!string.IsNullOrEmpty(data))
-                    {
-                        urlSchemaData = data;
-                        urlSchemaPath = Intent?.Data?.EncodedPath;
                     }
                 }
             }
@@ -298,14 +289,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
                     DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                    if (!string.IsNullOrEmpty(urlSchemaData))
-                    {
-                        DashboardIntent.PutExtra("urlSchemaData", urlSchemaData);
-                        if (!string.IsNullOrEmpty(urlSchemaPath))
-                        {
-                            DashboardIntent.PutExtra("urlSchemaPath", urlSchemaPath);
-                        }
-                    }
                     StartActivity(DashboardIntent);
                 }
                 else
@@ -1232,31 +1215,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             if (pendingResult != null)
             {
                 deepLink = pendingResult.Link;
-                string deepLinkUrl = deepLink.ToString();
-                if (!string.IsNullOrEmpty(deepLinkUrl))
-                {
-                    if (deepLinkUrl.Contains("rewards"))
-                    {
-                        urlSchemaData = "rewards";
-                        string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
-                        urlSchemaPath = "rewardId=" + id;
-                    }
-                    else if (deepLinkUrl.Contains("whatsnew"))
-                    {
-                        urlSchemaData = "whatsnew";
-                        string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
-                        urlSchemaPath = "whatsNewId=" + id;
-                    }
-                    else if (deepLinkUrl.Contains("applicationListing"))
-                    {
-                        urlSchemaData = "applicationListing";
-                    }
-                    else if (deepLinkUrl.Contains("applicationDetails"))
-                    {
-                        urlSchemaData = "applicationDetails";
-                        ApplicationDetailsDeeplinkCache.Instance.SetData(deepLinkUrl);
-                    }
-                }
+                DeeplinkUtil.Instance.InitiateDeepLink(pendingResult.Link);
             }
         }
 

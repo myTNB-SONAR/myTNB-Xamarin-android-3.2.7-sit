@@ -12,8 +12,8 @@ namespace myTNB_Android.Src.Utils.Deeplink
     {
         static DeeplinkUtil instance;
 
-        public string screenKey = string.Empty;
-        public Screen targetScreen = Screen.None;
+        public string ScreenKey = string.Empty;
+        public Screen TargetScreen = Screen.None;
 
         public static DeeplinkUtil Instance
         {
@@ -35,25 +35,25 @@ namespace myTNB_Android.Src.Utils.Deeplink
                     if (deeplink.Query.IsValid())
                     {
                         var deeplinkQuery = HttpUtility.ParseQueryString(deeplink.Query);
-                        screenKey = deeplinkQuery[Constant.RewardsIDKey];
+                        ScreenKey = deeplinkQuery[Constant.RewardsIDKey];
                     }
                     else
                     {
-                        screenKey = GetParamValueFromKey(Constant.RewardsIDKey, deeplink);
+                        ScreenKey = GetParamValueFromKey(Constant.RewardsIDKey, deeplink);
                     }
                     break;
                 case Screen.WhatsNew:
                     if (deeplink.Query.IsValid())
                     {
                         var deeplinkQuery = HttpUtility.ParseQueryString(deeplink.Query);
-                        screenKey = deeplinkQuery[Constant.WhatsNewIDKey];
+                        ScreenKey = deeplinkQuery[Constant.WhatsNewIDKey];
                     }
                     else
                     {
-                        screenKey = GetParamValueFromKey(Constant.WhatsNewIDKey, deeplink);
+                        ScreenKey = GetParamValueFromKey(Constant.WhatsNewIDKey, deeplink);
                     }
                     break;
-                case Screen.ApplicationListing:
+                case Screen.ApplicationDetails:
                     ApplicationDetailsDeeplinkCache.Instance.SetData(deeplink.ToString());
                     break;
                 default:
@@ -74,18 +74,22 @@ namespace myTNB_Android.Src.Utils.Deeplink
                     }
                     else if (deepLinkUrlString.Contains(Screen.Rewards.ToString().ToLower()))
                     {
-                        targetScreen = Screen.Rewards;
+                        TargetScreen = Screen.Rewards;
                         SaveDeeplinkDetails(Screen.Rewards, deeplink);
                     }
                     else if (deepLinkUrlString.Contains(Screen.WhatsNew.ToString().ToLower()))
                     {
-                        targetScreen = Screen.WhatsNew;
+                        TargetScreen = Screen.WhatsNew;
                         SaveDeeplinkDetails(Screen.WhatsNew, deeplink);
                     }
                     else if (deepLinkUrlString.Contains(Screen.ApplicationListing.ToString().ToLower()))
                     {
-                        targetScreen = Screen.ApplicationListing;
-                        SaveDeeplinkDetails(Screen.ApplicationListing, deeplink);
+                        TargetScreen = Screen.ApplicationListing;
+                    }
+                    else if (deepLinkUrlString.Contains(Screen.ApplicationDetails.ToString().ToLower()))
+                    {
+                        TargetScreen = Screen.ApplicationDetails;
+                        SaveDeeplinkDetails(Screen.ApplicationDetails, deeplink);
                     }
                 }
             }
@@ -97,15 +101,15 @@ namespace myTNB_Android.Src.Utils.Deeplink
             {
                 if (deepLinkUrlString.Contains(Screen.GetBill.ToString().ToLower()))
                 {
-                    targetScreen = Screen.GetBill;
+                    TargetScreen = Screen.GetBill;
                     if (deeplink.Query.IsValid())
                     {
                         var deeplinkQuery = HttpUtility.ParseQueryString(deeplink.Query);
-                        screenKey = deeplinkQuery[Constant.GetBillIDKey];
+                        ScreenKey = deeplinkQuery[Constant.GetBillIDKey];
                     }
                     else
                     {
-                        screenKey = GetParamValueFromKey(Constant.GetBillIDKey, deeplink);
+                        ScreenKey = GetParamValueFromKey(Constant.GetBillIDKey, deeplink);
                     }
                 }
             }

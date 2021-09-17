@@ -51,6 +51,7 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.Utils.Deeplink;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -68,10 +69,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private DashboardHomeContract.IUserActionsListener userActionsListener;
         private DashboardHomePresenter mPresenter;
-
-        private bool urlSchemaCalled = false;
-        private string urlSchemaData = "";
-        private string urlSchemaPath = "";
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -285,16 +282,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     mPresenter.OnAccountSelectDashBoard();
                     isFromNotification = true;
                     alreadyStarted = true;
-                }
-            }
-
-            if (extras != null && extras.ContainsKey("urlSchemaData"))
-            {
-                urlSchemaCalled = true;
-                urlSchemaData = extras.GetString("urlSchemaData");
-                if (extras != null && extras.ContainsKey("urlSchemaPath"))
-                {
-                    urlSchemaPath = extras.GetString("urlSchemaPath");
                 }
             }
 
@@ -637,53 +624,23 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        public async void OnDataSchemeShow()
+        public async void OnCheckDeeplink()
         {
-            try
+            if (DeeplinkUtil.Instance.TargetScreen != Deeplink.ScreenEnum.None)
             {
-                if (urlSchemaCalled)
+                switch (DeeplinkUtil.Instance.TargetScreen)
                 {
-                    if (urlSchemaData != null)
-                    {
-                        if (urlSchemaData.Contains("receipt"))
-                        {
-
-                            string transID = urlSchemaData.Substring(urlSchemaData.LastIndexOf("=") + 1);
-                            if (!String.IsNullOrEmpty(transID))
-                            {
-                                Intent viewReceipt = new Intent(this, typeof(ViewReceiptMultiAccountNewDesignActivty));
-                                viewReceipt.PutExtra("merchantTransId", transID);
-                                StartActivity(viewReceipt);
-                                urlSchemaCalled = false;
-                            }
-                        }
-                        else if (urlSchemaData.Contains("rating"))
-                        {
-                            int ratings = int.Parse(urlSchemaData.Substring(urlSchemaData.LastIndexOf("=") + 1));
-                            int lastIndexOfMerchantID = (urlSchemaData.IndexOf("&") - 1) - urlSchemaData.IndexOf("=");
-                            string merchantTransId = urlSchemaData.Substring(urlSchemaData.IndexOf("=") + 1, lastIndexOfMerchantID);
-                            Intent payment_activity = new Intent(this, typeof(RatingActivity));
-                            payment_activity.PutExtra(Constants.MERCHANT_TRANS_ID, merchantTransId);
-                            payment_activity.PutExtra(Constants.SELECTED_RATING, ratings);
-                            payment_activity.PutExtra(Constants.QUESTION_ID_CATEGORY, ((int)QuestionCategoryID.Payment));
-                            StartActivity(payment_activity);
-                            urlSchemaCalled = false;
-                        }
-                        else if (urlSchemaData.Contains("rewards") && !string.IsNullOrEmpty(urlSchemaPath))
+                    case Deeplink.ScreenEnum.Rewards:
                         {
                             bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
-
                             if (!IsRewardsDisabled && bottomNavigationView.Menu.FindItem(Resource.Id.menu_reward) != null)
                             {
-                                string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                                string rewardID = DeeplinkUtil.Instance.ScreenKey;
                                 if (!string.IsNullOrEmpty(rewardID))
                                 {
                                     rewardID = "{" + rewardID + "}";
-
                                     RewardsEntity wtManager = new RewardsEntity();
-
                                     RewardsEntity item = wtManager.GetItem(rewardID);
-
                                     this.mPresenter.OnStartRewardThread();
                                 }
                             }
@@ -706,74 +663,20 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                     .Build().Show();
                             }
                         }
-                        else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("rewards"))
+                        break;
+                    case Deeplink.ScreenEnum.WhatsNew:
                         {
-                            bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
-
-                            if (!IsRewardsDisabled && bottomNavigationView.Menu.FindItem(Resource.Id.menu_reward) != null)
-                            {
-                                urlSchemaData = "rewards";
-                                string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
-                                if (!string.IsNullOrEmpty(rewardID))
-                                {
-                                    rewardID = "{" + rewardID + "}";
-
-                                    RewardsEntity wtManager = new RewardsEntity();
-
-                                    RewardsEntity item = wtManager.GetItem(rewardID);
-
-                                    this.mPresenter.OnStartRewardThread();
-                                }
-                            }
-                            else
-                            {
-                                IsRootTutorialShown = true;
-                                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                    .SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
-                                    .SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
-                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
-                                    .SetCTAaction(() =>
-                                    {
-                                        IsRootTutorialShown = false;
-                                        if (currentFragment.GetType() == typeof(HomeMenuFragment))
-                                        {
-                                            HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
-                                            fragment.CallOnCheckShowHomeTutorial();
-                                        }
-                                    })
-                                    .Build().Show();
-                            }
-                        }
-                        else if (urlSchemaData.Contains("whatsnew") && !string.IsNullOrEmpty(urlSchemaPath))
-                        {
-                            string whatsNewID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
+                            string whatsNewID = DeeplinkUtil.Instance.ScreenKey;
                             if (!string.IsNullOrEmpty(whatsNewID))
                             {
                                 whatsNewID = "{" + whatsNewID + "}";
-
                                 WhatsNewEntity wtManager = new WhatsNewEntity();
-
                                 WhatsNewEntity item = wtManager.GetItem(whatsNewID);
-
                                 this.mPresenter.OnStartWhatsNewThread();
                             }
                         }
-                        else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("whatsnew"))
-                        {
-                            urlSchemaData = "whatsnew";
-                            string whatsNewID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
-                            if (!string.IsNullOrEmpty(whatsNewID))
-                            {
-                                whatsNewID = "{" + whatsNewID + "}";
-
-                                WhatsNewEntity wtManager = new WhatsNewEntity();
-
-                                WhatsNewEntity item = wtManager.GetItem(whatsNewID);
-
-                                this.mPresenter.OnStartWhatsNewThread();
-                            }
-                        }
-                        else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("applicationListing"))
+                        break;
+                    case Deeplink.ScreenEnum.ApplicationListing:
                         {
                             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
                             if (searchApplicationTypeResponse == null)
@@ -807,7 +710,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 errorPopup.Show();
                             }
                         }
-                        else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("applicationDetails"))
+                        break;
+                    case Deeplink.ScreenEnum.ApplicationDetails:
                         {
                             ShowProgressDialog();
                             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
@@ -857,12 +761,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             }
                             HideProgressDialog();
                         }
-                    }
+                        break;
+                    default:
+                        break;
                 }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -1449,7 +1351,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-       
+
 
         public override void OnTrimMemory(TrimMemory level)
         {
@@ -1797,9 +1699,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             try
                             {
                                 HideProgressDialog();
-                                if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("rewards"))
+                                if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.Rewards)
                                 {
-                                    urlSchemaCalled = false;
+                                    DeeplinkUtil.Instance.TargetScreen = Deeplink.ScreenEnum.None;
                                     ShowRewardFailedTooltip();
                                 }
                             }
@@ -1862,9 +1764,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 HideProgressDialog();
                                 MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
                                 this.mPresenter.CheckWhatsNewCache();
-                                if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("whatsnew"))
+                                if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.WhatsNew)
                                 {
-                                    urlSchemaCalled = false;
+                                    DeeplinkUtil.Instance.TargetScreen = Deeplink.ScreenEnum.None;
                                     ShowWhatsNewFailedTooltip();
                                 }
                                 else
@@ -1922,10 +1824,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             try
             {
                 RewardsMenuUtils.OnSetRewardLoading(false);
-                if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("rewards"))
+                if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.Rewards)
                 {
                     HideProgressDialog();
-                    urlSchemaCalled = false;
+                    DeeplinkUtil.Instance.TargetScreen = Deeplink.ScreenEnum.None;
                     ShowRewardFailedTooltip();
                 }
             }
@@ -1955,67 +1857,59 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             try
             {
-                if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("rewards"))
+                if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.Rewards)
                 {
                     HideProgressDialog();
-                    urlSchemaCalled = false;
-                    if (urlSchemaData != null)
+                    DeeplinkUtil.Instance.TargetScreen = Deeplink.ScreenEnum.None;
+                    string rewardID = DeeplinkUtil.Instance.ScreenKey;
+                    if (rewardID.IsValid())
                     {
-                        if (urlSchemaData.Contains("rewards"))
+                        rewardID = "{" + rewardID + "}";
+                        RewardsEntity wtManager = new RewardsEntity();
+                        RewardsEntity item = wtManager.GetItem(rewardID);
+
+                        if (item != null)
                         {
-                            string rewardID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
-                            if (!string.IsNullOrEmpty(rewardID))
+                            if (!item.Read)
                             {
-                                rewardID = "{" + rewardID + "}";
+                                this.mPresenter.UpdateRewardRead(item.ID, true);
+                            }
 
-                                RewardsEntity wtManager = new RewardsEntity();
+                            Intent activity = new Intent(this, typeof(RewardDetailActivity));
+                            activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardID);
+                            activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
+                            StartActivity(activity);
+                        }
+                        else
+                        {
+                            IsRootTutorialShown = true;
 
-                                RewardsEntity item = wtManager.GetItem(rewardID);
-
-                                if (item != null)
-                                {
-                                    if (!item.Read)
+                            bool isExpired = wtManager.CheckIsExpired(rewardID);
+                            if (!isExpired)
+                            {
+                                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                    .SetTitle(Utility.GetLocalizedLabel("Error", "usedRewardTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Error", "usedRewardMsg"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
+                                    .SetCTAaction(() =>
                                     {
-                                        this.mPresenter.UpdateRewardRead(item.ID, true);
-                                    }
-
-                                    Intent activity = new Intent(this, typeof(RewardDetailActivity));
-                                    activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardID);
-                                    activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
-                                    StartActivity(activity);
-                                }
-                                else
-                                {
-                                    IsRootTutorialShown = true;
-
-                                    bool isExpired = wtManager.CheckIsExpired(rewardID);
-                                    if (!isExpired)
+                                        IsRootTutorialShown = false;
+                                        OnSelectReward();
+                                    })
+                                    .Build().Show();
+                            }
+                            else
+                            {
+                                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                    .SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
+                                    .SetCTAaction(() =>
                                     {
-                                        MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                            .SetTitle(Utility.GetLocalizedLabel("Error", "usedRewardTitle"))
-                                            .SetMessage(Utility.GetLocalizedLabel("Error", "usedRewardMsg"))
-                                            .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
-                                            .SetCTAaction(() =>
-                                            {
-                                                IsRootTutorialShown = false;
-                                                OnSelectReward();
-                                            })
-                                            .Build().Show();
-                                    }
-                                    else
-                                    {
-                                        MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                            .SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
-                                            .SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
-                                            .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
-                                            .SetCTAaction(() =>
-                                            {
-                                                IsRootTutorialShown = false;
-                                                OnSelectReward();
-                                            })
-                                            .Build().Show();
-                                    }
-                                }
+                                        IsRootTutorialShown = false;
+                                        OnSelectReward();
+                                    })
+                                    .Build().Show();
                             }
                         }
                     }
@@ -2056,50 +1950,42 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     Utility.LoggingNonFatalError(exe);
                 }
 
-                if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("whatsnew"))
+                if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.WhatsNew)
                 {
                     HideProgressDialog();
-                    urlSchemaCalled = false;
-                    if (urlSchemaData != null)
+                    DeeplinkUtil.Instance.TargetScreen = Deeplink.ScreenEnum.None;
+                    string whatsNewID = DeeplinkUtil.Instance.ScreenKey;
+                    if (!string.IsNullOrEmpty(whatsNewID))
                     {
-                        if (urlSchemaData.Contains("whatsnew"))
+                        whatsNewID = "{" + whatsNewID + "}";
+                        WhatsNewEntity wtManager = new WhatsNewEntity();
+                        WhatsNewEntity item = wtManager.GetItem(whatsNewID);
+
+                        if (item != null)
                         {
-                            string whatsNewID = urlSchemaPath.Substring(urlSchemaPath.LastIndexOf("=") + 1);
-                            if (!string.IsNullOrEmpty(whatsNewID))
+                            if (!item.Read)
                             {
-                                whatsNewID = "{" + whatsNewID + "}";
-
-                                WhatsNewEntity wtManager = new WhatsNewEntity();
-
-                                WhatsNewEntity item = wtManager.GetItem(whatsNewID);
-
-                                if (item != null)
-                                {
-                                    if (!item.Read)
-                                    {
-                                        this.mPresenter.UpdateWhatsNewRead(item.ID, true);
-                                    }
-
-                                    Intent activity = new Intent(this, typeof(WhatsNewDetailActivity));
-                                    activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsNewID);
-                                    activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
-                                    StartActivity(activity);
-                                }
-                                else
-                                {
-                                    IsRootTutorialShown = true;
-                                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                    .SetTitle(Utility.GetLocalizedLabel("Error", "whatsNewExpiredTitle"))
-                                    .SetMessage(Utility.GetLocalizedLabel("Error", "whatsNewExpiredMsg"))
-                                    .SetCTALabel(Utility.GetLocalizedLabel("Error", "whatsNewExpiredBtnText"))
-                                    .SetCTAaction(() =>
-                                    {
-                                        IsRootTutorialShown = false;
-                                        OnSelectWhatsNew();
-                                    })
-                                    .Build().Show();
-                                }
+                                this.mPresenter.UpdateWhatsNewRead(item.ID, true);
                             }
+
+                            Intent activity = new Intent(this, typeof(WhatsNewDetailActivity));
+                            activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsNewID);
+                            activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
+                            StartActivity(activity);
+                        }
+                        else
+                        {
+                            IsRootTutorialShown = true;
+                            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(Utility.GetLocalizedLabel("Error", "whatsNewExpiredTitle"))
+                            .SetMessage(Utility.GetLocalizedLabel("Error", "whatsNewExpiredMsg"))
+                            .SetCTALabel(Utility.GetLocalizedLabel("Error", "whatsNewExpiredBtnText"))
+                            .SetCTAaction(() =>
+                            {
+                                IsRootTutorialShown = false;
+                                OnSelectWhatsNew();
+                            })
+                            .Build().Show();
                         }
                     }
                 }
