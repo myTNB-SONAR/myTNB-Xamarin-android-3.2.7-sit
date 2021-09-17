@@ -22,8 +22,8 @@ namespace myTNB.Mobile
         public enum Features
         {
             DBR,
-            DS,
-            EB
+            EB,
+            BillRedesign
             //Add Other Features
         }
 

@@ -251,5 +251,11 @@ namespace myTNB
         {
             throw new NotImplementedException();
         }
+
+        public Dictionary<string, List<T>> GetSelectorsByPage<T>(string pageName) where T : new()
+        {
+            pageName += SELECTOR;
+            return GetValues<Dictionary<string, List<T>>>(pageName);
+        }
     }
 }
