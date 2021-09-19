@@ -55,7 +55,7 @@
 					android:layout_height="wrap_content"
 					android:orientation="vertical">
 					<LinearLayout
-						android:id="@+id/ratingBarContainer"
+						android:id="@+id/viewontainer"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:background="@color/lightGrey"
@@ -73,30 +73,29 @@
 							android:textSize="16dp" />
 					</LinearLayout>
 					<LinearLayout
-						android:id="@+id/sixMonthsContainer"
+						android:id="@+id/threeMonthsContainer"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
+						android:paddingBottom="13dp"
+						android:paddingTop="19dp"
 						android:background="@color/white"
 						android:orientation="vertical">
 						<RelativeLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content">
 						<TextView
-							android:id="@+id/txtSixMonths"
+							android:id="@+id/txtThreeMonths"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:layout_marginTop="19dp"
-							android:layout_marginBottom="13dp"
 							android:layout_marginLeft="16dp"
 							android:layout_marginRight="16dp"
-							android:text="Past 6 months"
+							android:text="Past 3 months"
 							android:textColor="#49494a"
 							android:textSize="16dp" />
 						<ImageView
-							android:id="@+id/imgSixMonthsAction"
-							android:layout_width="24dp"
-							android:layout_height="24dp"
-							android:layout_marginTop="29dp"
+							android:id="@+id/imgTheeMonthsAction"
+							android:layout_width="22dp"
+							android:layout_height="wrap_content"
 							android:layout_marginRight="16dp"
 							android:visibility="gone"
 							android:src="@drawable/ic_action_tick"
@@ -109,128 +108,37 @@
 						android:layout_height="1dp"       
 						android:background="#e4e4e4" />
 					<LinearLayout
-						android:id="@+id/reasonListContainer"
+						android:id="@+id/sixMonthContainer"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:background="@color/white"
-						android:orientation="vertical">
-						<ListView
-							android:minWidth="25px"
-							android:minHeight="25px"
-							android:layout_width="match_parent"
-							android:layout_height="match_parent"
-							android:id="@+id/rating_list_view"
-							android:background="@color/white"/>
-					</LinearLayout>
-					<LinearLayout
-						android:id="@+id/customPeriodContainer"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
+						android:paddingBottom="17dp"
+						android:paddingTop="16dp"
 						android:background="@color/white"
 						android:orientation="vertical">
 						<RelativeLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content">
 						<TextView
-							android:id="@+id/txtCustomPeriod"
+							android:id="@+id/txtSixMonth"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:layout_marginTop="19dp"
-							android:layout_marginBottom="13dp"
 							android:layout_marginLeft="16dp"
 							android:layout_marginRight="16dp"
-							android:text="Custom Period"
+							android:text="Past 6 months"
 							android:textColor="#49494a"
 							android:textSize="16dp" />
-							<ImageView
-								android:id="@+id/imgCustomPeriodAction"
-								android:layout_width="24dp"
-								android:layout_height="24dp"
-								android:layout_marginTop="29dp"
-								android:layout_marginRight="16dp"
-								android:visibility="gone"
-								android:src="@drawable/ic_action_tick"
-								android:layout_centerInParent="true"
-								android:layout_alignParentEnd="true" />
+						<ImageView
+							android:id="@+id/imgSixMonthsAction"
+							android:layout_width="22dp"
+							android:layout_height="wrap_content"
+							android:layout_marginRight="16dp"
+							android:visibility="gone"
+							android:src="@drawable/ic_action_tick"
+							android:layout_centerInParent="true"
+							android:layout_alignParentEnd="true" />
 						</RelativeLayout>
 					</LinearLayout>
-					<LinearLayout
-						android:id="@+id/customDateContainer"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:background="@color/lightGrey"
-						android:orientation="vertical">
-						<TextView
-							android:id="@+id/txtCustomPeriod"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:layout_marginTop="16dp"
-							android:layout_marginBottom="8dp"
-							android:layout_marginLeft="16dp"
-							android:layout_marginRight="16dp"
-							android:text="Within 6 months: "
-							android:textColor="@color/powerBlue"
-							android:textSize="16dp" />
-					</LinearLayout>
-					 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="12dp"
-                    android:paddingStart="16dp"
-                    android:background="@color/white"
-                    android:id="@+id/filterDateMainLayout">
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.ColorFix"
-                        android:id="@+id/txtInputLayoutFromDate"
-                        android:layout_marginTop="10dp"
-                        app:errorEnabled="true"
-                        android:layout_marginRight="20dp">
-                        <EditText
-                            android:hint="From"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/card_exp"
-							android:drawableRight="@drawable/ic_action_dropdown1"
-                            android:id="@+id/txtFromDate"
-                            android:textSize="16dp"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:paddingTop="5dp"
-                            android:drawablePadding="6dp"
-                            android:enabled="false"
-                            android:focusable="false"
-                            android:inputType="text" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.ColorFix"
-                        android:id="@+id/txtInputLayoutToDate"
-                        app:errorEnabled="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp">
-                        <EditText
-                            android:hint="To"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/card_exp"
-                            android:id="@+id/txtToDate"
-                            android:textSize="16dp"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:paddingTop="5dp"
-                            android:drawablePadding="6dp"
-							android:drawableRight="@drawable/ic_action_dropdown1"
-                            android:enabled="false"
-                            android:focusable="false"
-                            android:inputType="text" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
 				</LinearLayout>
-
 			</ScrollView>
 			<LinearLayout
 				android:layout_width="match_parent"
