@@ -9,5 +9,6 @@
         public bool IsZoomable { set; get; }
         public bool IsHeader { set; get; }
         public bool IsFooter { set; get; }
+        public bool IsSitecore { set; get; }
     }
 }
