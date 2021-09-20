@@ -307,6 +307,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                             return true;                            
                         }
             }
+            IsServerDown = true;
             return false;
         }
 
@@ -418,19 +419,37 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                         }
                         else
                         {
-                            overvoltageClaimVisible = false;
+                            if (CANumberVerifyResponce.d == null)
+                            {
+                                IsServerDown = true;
+                                overvoltageclaimConstraint.Visibility = ViewStates.Visible;
+                                txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
+                                txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
+                                updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
+                                updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
+                                overvoltageclaimConstraint.Clickable = true;
+                                accountLayout4.Visibility = ViewStates.Visible;
+                                var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailable");
+                                InfoLabel.Text = infoValue;
+                                HideProgressDialog();
+                            }
+                            else
+                            {
+                                overvoltageClaimVisible = false;
+                            }
                         }
                     }
                     else
                     {
                         overvoltageClaimVisible = false;
+                        //server down
                     }
                 }              
                 HideProgressDialog();
             }
             catch (Exception ex)
             {
-                if(ex.Message.Contains("Internal Server Error"))
+                if (ex.Message.Contains("Internal Server Error"))
                 {
                     IsServerDown = true;
                     overvoltageclaimConstraint.Visibility = ViewStates.Visible;
@@ -444,7 +463,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     InfoLabel.Text = infoValue;
                     HideProgressDialog();
                 }
-                
+
             }
         }
 
