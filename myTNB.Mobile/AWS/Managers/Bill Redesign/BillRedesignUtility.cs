@@ -75,6 +75,26 @@ namespace myTNB.Mobile
             }
         }
 
+        public bool IsCAEligible(string ca)
+        {
+            try
+            {
+                DBRModel brContent = EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.BR);
+                if (brContent != null
+                    && brContent.ContractAccounts != null
+                    && brContent.ContractAccounts.Count > 0)
+                {
+                    int index = brContent.ContractAccounts.FindIndex(x => x.ContractAccount == ca);
+                    return index > -1;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG]IsCAEligible Exception: " + e.Message);
+            }
+            return false;
+        }
+
         public bool ShouldShowHomeCard
         {
             get
