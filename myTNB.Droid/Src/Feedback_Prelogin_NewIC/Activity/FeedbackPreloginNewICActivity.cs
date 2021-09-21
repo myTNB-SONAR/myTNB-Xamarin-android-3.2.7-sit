@@ -323,7 +323,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     AccNoDesc = "";
                     //verifyCADetailsExt Endpoint
                     CancellationTokenSourceWrapper.EnquiryTimeout = true;
-                    TriggerOVISServicesResponse = await ServiceApiImpl.Instance.TriggerOVISServices(new CAVerifyRequestModel(usin.sspuid, "POST", "/claim/verifyCADetailsExt", listData));//verifyCADetailsExt
+                    TriggerOVISServicesResponse = await ServiceApiImpl.Instance.TriggerOVISServices(new TriggerOVISServicesRequestModel(usin.sspuid, "POST", "/claim/verifyCADetailsExt", listData));//verifyCADetailsExt
                     CancellationTokenSourceWrapper.EnquiryTimeout = false;
                     if (TriggerOVISServicesResponse != null)
                     {

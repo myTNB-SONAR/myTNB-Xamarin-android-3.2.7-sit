@@ -6311,7 +6311,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\MyTNBService\Request\CAVerifyRequestModel.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\overvoltagedisableicon.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -6330,6 +6329,7 @@
     </AndroidResource>
     <Compile Include="Src\MyTNBService\Response\TriggerOVISServicesResponseModel.cs" />
     <Compile Include="Src\MyTNBService\Response\GetOvervoltageClaimDetailModel.cs" />
+    <Compile Include="Src\MyTNBService\Request\TriggerOVISServicesRequestModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
