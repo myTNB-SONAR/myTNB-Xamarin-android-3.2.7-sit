@@ -27,6 +27,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void SetNewFAQRecycleView();
             void SetMyServiceResult(List<MyService> list);
             void SetNewFAQResult(List<NewFAQ> list);
+            void SetDiscoverResult(bool IsAccountDBREligible);
             string GetDeviceId();
             void ShowMyServiceRetryOptions(string msg);
             void OnSavedTimeStamp(string savedTimeStamp);
@@ -87,6 +88,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void HideNewFAQ();
 
+            void HideDiscoverViewView();
+
+            void ShowDiscoverView(bool IsAccountDBREligible);
+
             bool CheckNeedHelpHide();
 
             void SetMyServiceRefreshView(string contentTxt, string buttonTxt);
@@ -100,7 +105,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowFAQFromHide();
 
             bool GetHomeTutorialCallState();
-
+            
+            void EBPopupActivity();
+            
+            void ShowDiscoverMoreLayout();
         }
 
         public interface IHomeMenuPresenter

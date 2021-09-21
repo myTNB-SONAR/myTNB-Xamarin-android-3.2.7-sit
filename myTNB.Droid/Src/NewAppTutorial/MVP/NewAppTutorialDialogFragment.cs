@@ -26,6 +26,9 @@ using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB_Android.Src.ManageSupplyAccount.Activity;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.NewAppTutorial.MVP
 {
@@ -67,7 +70,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
             if (Dialog != null)
             {
-                Dialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.Transparent));
+                Dialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
                 Dialog.Window.SetDimAmount(0.0f);
                 Dialog.SetCancelable(false);
                 Dialog.SetCanceledOnTouchOutside(false);
@@ -510,7 +513,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                     swipeDoubleTapLayout.Visibility = ViewStates.Gone;
                                 }
                             }
-
+                            
                             if (e.Position == NewAppTutorialList.Count - 1)
                  {
                                 txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "skip"));
@@ -532,6 +535,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                 txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                             }
                             if (this.mContext != null && this.mContext is ApplicationStatusDetailActivity)
+                            {
+                                txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                                txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
+                            }
+                            if (this.mContext != null && this.mContext is ManageBillDeliveryActivity && UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EmailWithCTA)
                             {
                                 txtDoubleTapDismiss.Visibility = ViewStates.Visible;
                                 txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
@@ -798,7 +806,13 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                 }
                             }
                         };
+                        if (this.mContext != null && this.mContext is ManageBillDeliveryActivity && UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EmailWithCTA)
+                        {
+                            txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                            txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
+                        }
                     }
+                    
                 }
                 else
                 {
@@ -1012,6 +1026,29 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     {
                         UserSessions.DoManageAccessPageTutorialShown(this.mPref);
                     }
+                    else if (this.mActivity is ManageSupplyAccountActivityEdit)
+                    {
+                        UserSessions.DoManageSupplyAccountTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is ManageBillDeliveryActivity)
+                    {
+                        if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBill)
+                        {
+                            UserSessions.DoManageEBillDeliveryTutorialShown(this.mPref);
+                        }
+                        else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBillWithCTA)
+                        {
+                            UserSessions.DoManagepoptedEBillDeliveryTutorialShown(this.mPref);
+                        }
+                        else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Email)
+                        {
+                            UserSessions.DoManageEmailBillDeliveryTutorialShown(this.mPref);
+                        }
+                        else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EmailWithCTA)
+                        {
+                            UserSessions.DoManageParallelEmailBillDeliveryTutorialShown(this.mPref);
+                        }
+                    }
                 }
                 return true;
             }
@@ -1083,6 +1120,29 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     else if (this.mActivity is ManageAccessActivity)
                     {
                         UserSessions.DoManageAccessPageTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is ManageSupplyAccountActivityEdit)
+                    {
+                        UserSessions.DoManageSupplyAccountTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is ManageBillDeliveryActivity)
+                    {
+                        if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBill)
+                        {
+                            UserSessions.DoManageEBillDeliveryTutorialShown(this.mPref);
+                        }
+                        else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBillWithCTA)
+                        {
+                            UserSessions.DoManagepoptedEBillDeliveryTutorialShown(this.mPref);
+                        }
+                        else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.Email)
+                        {
+                            UserSessions.DoManageEmailBillDeliveryTutorialShown(this.mPref);
+                        }
+                        else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EmailWithCTA)
+                        {
+                            UserSessions.DoManageParallelEmailBillDeliveryTutorialShown(this.mPref);
+                        }
                     }
                 }
                 return true;

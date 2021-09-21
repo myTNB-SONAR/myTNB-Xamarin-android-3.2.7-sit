@@ -40,7 +40,11 @@ using myTNB;
 using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using Newtonsoft.Json;
+using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB.Mobile.AWS.Models;
 using Firebase.Iid;
+using myTNB_Android.Src.NotificationDetails.Activity;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -102,7 +106,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-
+#pragma warning disable CS0618 // Type or member is obsolete
             try
             {
                 if (Intent != null && Intent.Extras != null)
@@ -111,7 +115,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         string notifType = Intent.Extras.GetString("Type");
                         UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
-                        if (notifType.ToUpper() == ApplicationStatusNotificationModel.TYPE_APPLICATIONSTATUS
+                        if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.APPLICATIONSTATUS
                             && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID)
                             && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONID)
                             && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE))
@@ -124,10 +128,23 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                 : string.Empty;
                             UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
                         }
+                        else if (notifType.ToUpper() == "DBROWNER")
+                        {
+                            string accountNumber = Intent.Extras.GetString("AccountNumber");
+                            UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
+                        }
                         else
                         {
                             UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         }
+                    }
+
+                    if (Intent.Extras.ContainsKey("Type") && Intent.Extras.ContainsKey("RequestTransId") && Intent.Extras.ContainsKey("EventId"))
+                    {
+                        string type = Intent.Extras.GetString(NotificationOpenDirectDetails.TYPE);
+                        string requestTransID = Intent.Extras.GetString(NotificationOpenDirectDetails.PARAM_REQUESTTRANSID);
+                        string eventID = Intent.Extras.GetString(NotificationOpenDirectDetails.Param_EVENTID);
+                        UserSessions.SetNotification(type, requestTransID, eventID);
                     }
 
                     if (Intent.Extras.ContainsKey("Email"))
@@ -154,7 +171,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         public bool IsActive()
@@ -320,9 +337,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 ApplicationStatusNotificationModel notificationObj = UserSessions.ApplicationStatusNotification;
                 ApplicationDetailDisplay detailResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(notificationObj.SaveApplicationID
-                       , notificationObj.ApplicationID
-                       , notificationObj.ApplicationType
-                       , notificationObj.System);
+                    , notificationObj.ApplicationID
+                    , notificationObj.ApplicationType
+                    , notificationObj.System);
 
                 if (detailResponse.StatusDetail.IsSuccess)
                 {
@@ -338,6 +355,79 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
             else
             {
+                ShowDashboard();
+            }
+        }
+
+        public async void OnShowManageBillDelivery()
+        {
+            bool isDBREnabled = DBRUtility.Instance.IsAccountDBREligible;
+            if (!isDBREnabled)
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                ISharedPreferences preferences = PreferenceManager.GetDefaultSharedPreferences(this);
+#pragma warning restore CS0618 // Type or member is obsolete
+                if (EligibilityManager.Instance.IsEnabled(AWSConstants.Services.GetEligibility)
+                    && preferences.GetString(MobileConstants.SharePreferenceKey.GetEligibilityData, string.Empty) is string encryptedData
+                    && !string.IsNullOrEmpty(encryptedData)
+                    && !string.IsNullOrWhiteSpace(encryptedData))
+                {
+                    GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
+                    EligibilitySessionCache.Instance.SetData(data);
+                    //Use data or any EligibilitySessionCache functionality
+                }
+                isDBREnabled = DBRUtility.Instance.IsAccountDBREligible;
+            }
+            if (!isDBREnabled
+                || string.IsNullOrEmpty(UserSessions.DBROwnerNotificationAccountNumber)
+                || string.IsNullOrWhiteSpace(UserSessions.DBROwnerNotificationAccountNumber))
+            {
+                ShowDashboard();
+                return;
+            }
+            try
+            {
+                ShowProgressDialog();
+                if (isDBREnabled
+                    && CustomerBillingAccount.List() is List<CustomerBillingAccount> accountList
+                    && accountList != null
+                    && accountList.Count > 0
+                    && accountList.FindIndex(y => y.AccNum == UserSessions.DBROwnerNotificationAccountNumber) is int caIndex
+                    && caIndex > -1)
+                {
+                    if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                    {
+                        string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                        AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
+                    }
+                    GetBillRenderingResponse? billRenderingResponse = await DBRManager.Instance.GetBillRendering(UserSessions.DBROwnerNotificationAccountNumber
+                        , AccessTokenCache.Instance.GetAccessToken(this));
+                    if (billRenderingResponse != null
+                        && billRenderingResponse.StatusDetail != null
+                        && billRenderingResponse.StatusDetail.IsSuccess
+                        && billRenderingResponse.Content != null
+                        && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
+                    {
+                        Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                        intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                        intent.PutExtra("accountNumber", UserSessions.DBROwnerNotificationAccountNumber);
+                        intent.PutExtra("isOwner", true);
+                        StartActivity(intent);
+                    }
+                    else
+                    {
+                        ShowDashboard();
+                    }
+                }
+                else
+                {
+                    ShowDashboard();
+                }
+                HideProgressDialog();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
                 ShowDashboard();
             }
         }
@@ -378,7 +468,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             return this.DeviceId();
         }
-
 
         public void ShowDeviceNotSupported()
         {
@@ -548,6 +637,41 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Intent notificationIntent = new Intent(this, typeof(NotificationActivity));
                 notificationIntent.PutExtra(Constants.HAS_NOTIFICATION, true);
                 StartActivity(notificationIntent);
+            }
+        }
+
+        public void ShowNotificationDetails()
+        {
+            var usrsession = UserSessions.Notification;
+            mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);
+        }
+
+        public void ShowDetails(NotificationDetails.Models.NotificationDetails details)
+        {
+            try
+            {
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_in_app_notification);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_in_app_notification);
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+            isAppLaunchDone = true;
+            Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
+            notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+            StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+        }
+
+        public void ShowProgress()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -831,7 +955,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 };
 
                 if (IsActive())
+                {
                     appUpdateDialog.Show();
+                }
             }
             catch (Exception e)
             {
@@ -1189,5 +1315,69 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         //    this.SetIsClicked(false);
 
         //}
+        //private Snackbar mApiExcecptionSnackBar;
+        public void ShowRetryOptionsApiException(ApiException apiException)
+        {
+            if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+            {
+                mApiExcecptionSnackBar.Dismiss();
+            }
+
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+                mApiExcecptionSnackBar.Dismiss();
+            });
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mApiExcecptionSnackBar.Show();
+            this.SetIsClicked(false);
+        }
+
+        private Snackbar mCancelledExceptionSnackBar;
+        public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
+        {
+            if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+            {
+                mCancelledExceptionSnackBar.Dismiss();
+            }
+
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mCancelledExceptionSnackBar.Dismiss();
+
+            }
+            );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
+        }
+
+        private Snackbar mUknownExceptionSnackBar;
+        public void ShowRetryOptionsUnknownException(Exception exception)
+        {
+            if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
+            {
+                mUknownExceptionSnackBar.Dismiss();
+
+            }
+
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+                mUknownExceptionSnackBar.Dismiss();
+            }
+            );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mUknownExceptionSnackBar.Show();
+            this.SetIsClicked(false);
+        }
     }
 }

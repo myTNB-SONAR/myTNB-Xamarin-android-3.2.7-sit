@@ -6,9 +6,11 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.Content;
+using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
@@ -24,6 +26,7 @@ using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 
@@ -38,6 +41,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         AccountData mSelectedAccountData;
         private ISharedPreferences mSharedPref;
         bool isTaggedSMR = true;
+        private Android.App.Activity mActivity;
 
         public UserNotificationDetailPresenter(UserNotificationDetailContract.IView view, ISharedPreferences mSharedPref)
         {
@@ -221,47 +225,96 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED:
                         {
-                            
-                                imageResourceBanner = Resource.Drawable.noti_nonowner_to_owner;
-                                primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewManageAccess"),
-                                    delegate () { ViewManageAccess(notificationDetails); });
-                                primaryCTA.SetSolidCTA(true);
-                                ctaList.Add(primaryCTA);
-                            
+
+                            imageResourceBanner = Resource.Drawable.noti_nonowner_to_owner;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewManageAccess"),
+                                delegate () { ViewManageAccess(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_REMOVE_ACCESS:
                         {
-                            
-                                imageResourceBanner = Resource.Drawable.noti_removed_by_owner;
-                            
+
+                            imageResourceBanner = Resource.Drawable.noti_removed_by_owner;
+
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_NEW_ACCESS_ADDED:
                         {
-                            
-                                imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
-                                primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewMyUsage"),
-                                   delegate () { ViewMyUsage(notificationDetails); });
-                                ctaList.Add(primaryCTA);
-                                if (notificationDetails.MerchantTransId != null)
-                                {
-                                    secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "addNickname"),
-                                    delegate () { ViewManageAccess(notificationDetails); });
-                                    ctaList.Add(secondaryCTA);
-                                }
-                            
+
+                            imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewMyUsage"),
+                               delegate () { ViewMyUsage(notificationDetails); });
+                            ctaList.Add(primaryCTA);
+                            if (notificationDetails.MerchantTransId != null)
+                            {
+                                secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "addNickname"),
+                                delegate () { ViewManageAccess(notificationDetails); });
+                                ctaList.Add(secondaryCTA);
+                            }
+
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_UPDATE_ACCESS:
                         {
-                            
-                                imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
-                                primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewAccount"),
-                                    delegate () { ViewManageAccess(notificationDetails); });
-                                primaryCTA.SetSolidCTA(true);
-                                ctaList.Add(primaryCTA);
-                            
+
+                            imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewAccount"),
+                                delegate () { ViewManageAccess(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+                            break;
+                        }
+
+                    case Constants.BCRM_NOTIFICATION_DBR_PAPER:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_dbr_banner_paper;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_DBR_EMAIL:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_dbr_banner_email;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_DBR_EBILL:
+                    case Constants.BCRM_NOTIFICATION_DBR_EMAIL_REMOVED:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_dbr_banner_ebill;
+                            break;
+                        }
+                    //case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET:
+                    //    {
+                    //        imageResourceBanner = Resource.Drawable.SMRillustration;
+                    //        //pageTitle = "EnergyBudget";
+                    //        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
+                    //            delegate () { ViewMyUsage(notificationDetails); });
+                    //        ctaList.Add(primaryCTA);
+                    //        break;
+                    //    }
+                    case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_reaching_eb_icon;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
+                                delegate () { ViewMyUsage(notificationDetails); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewTips"),
+                            delegate () { ViewTips(); });
+                            ctaList.Add(secondaryCTA);
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_reached_eb_icon;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
+                                delegate () { ViewMyUsage(notificationDetails); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewTips"),
+                            delegate () { ViewTips(); });
+                            ctaList.Add(secondaryCTA);
                             break;
                         }
                     default:
@@ -272,8 +325,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
                 if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED)
                 {
-                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_EMAIL_PATTERN, UserEntity.GetActive().DisplayName+"/"+ UserEntity.GetActive().Email);
-                    
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_EMAIL_PATTERN, UserEntity.GetActive().DisplayName + "/" + UserEntity.GetActive().Email);
+
                 }
 
                 if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_UPDATE_ACCESS)
@@ -289,10 +342,18 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     //string message = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName);
                     //notificationDetailMessage = Regex.Replace(message, Constants.ACCOUNT_ADDRESS_PATTERN, address);
                     notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName);
-                }
+                    if (notificationDetailMessage.Contains(Constants.ACCOUNT_PROFILENAME_PATTERN))
+                    {
+                        notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
+                    }
+                    if (notificationDetailMessage.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
+                    {
+                        notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + accountName + "\"");
+                    }
 
-                notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
-                    notificationDetailMessage, ctaList);
+                    notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
+                        notificationDetailMessage, ctaList);
+                }
             }
             catch (Exception e)
             {
@@ -404,6 +465,13 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             }
         }
 
+
+        //string url= Utility.GetLocalizedLabel("PushNotificationDetails", "linkEB");
+        private void ViewTips()
+        {
+            this.mView.ViewTips();
+        }
+
         private async void SubmitMeterReading(Models.NotificationDetails notificationDetails)
         {
             try
@@ -430,7 +498,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(httpClient);
 
 #else
-            var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
+                var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
                 SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(new myTNB_Android.Src.myTNBMenu.Requests.SMRAccountActivityInfoRequest()
@@ -660,7 +728,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             {
                 GetPaymentReceiptResponse result = await ServiceApiImpl.Instance.GetPaymentReceipt(new GetPaymentReceiptRequest(selectedAccountNumber, detailedInfoNumber, isOwnedAccount, showAllReceipt),
                     CancellationTokenSourceWrapper.GetTokenWithDelay(Constants.PAYMENT_RECEIPT_TIMEOUT));
-                
+
                 if (result.IsSuccessResponse())
                 {
                     this.mView.ShowPaymentReceipt(result);
@@ -710,6 +778,58 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         public NotificationDetailModel GetNotificationDetailModel()
         {
             return notificationDetailModel;
+        }
+
+        public async void OnShowNotificationDetails(string NotificationTypeId, string BCRMNotificationTypeId, string NotificationRequestId)
+        {
+            try
+            {
+                this.mView.ShowLoadingScreen();
+                UserNotificationDetailsRequestNew request = new UserNotificationDetailsRequestNew(NotificationTypeId, BCRMNotificationTypeId, NotificationRequestId);
+                string dt = JsonConvert.SerializeObject(request);
+                UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetailsByRequestId(request);
+                if (response.IsSuccessResponse())
+                {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
+                    UserNotificationEntity.UpdateIsRead(response.GetData().UserNotificationDetail.Id, true);
+                    UserSessions.ClearNotification();
+                    EvaluateDetail(response.GetData().UserNotificationDetail);
+                    this.mView.RenderUI();
+                }
+                else
+                {
+                    if (response.GetData() == null)
+                    {
+                        this.mView.ReturnToDashboard();
+                    }
+                    //this.mView.ShowRetryOptionsCancelledException(null);
+                }
+
+                ////MOCK RESPONSE
+                //this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
+                this.mView.HideLoadingScreen();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

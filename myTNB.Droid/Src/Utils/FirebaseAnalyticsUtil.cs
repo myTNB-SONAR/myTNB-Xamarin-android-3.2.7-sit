@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Android.OS;
 using Android.Widget;
+using DynatraceAndroid;
 using Firebase.Analytics;
 
 namespace myTNB_Android.Src.Utils
@@ -35,6 +36,19 @@ namespace myTNB_Android.Src.Utils
 			mAnalytics.LogEvent(FirebaseAnalytics.Event.ScreenView, bundle); //new firebase api
 
 
+		}
+
+		public static void SetScreenNameDynaTrace(string screenName)
+		{
+            try
+            {
+				IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(screenName);
+				dynaTrace.LeaveAction();
+			}
+            catch (System.Exception)
+            {
+                throw;
+            }
 		}
 
 		public static List<FirebaseCustomEvent> GetFormattedEvent(string objectList)

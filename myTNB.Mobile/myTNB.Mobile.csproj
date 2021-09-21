@@ -30,7 +30,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\Release\netstandard2.0\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -103,6 +103,26 @@
     <Folder Include="API\Display Model\Scheduler\" />
     <Folder Include="API\Managers\Scheduler\Utilities\" />
     <Folder Include="API\Models\Application Status\Post Sync SR Application\" />
+    <Folder Include="API\Models\Notification\Notification Details\" />
+    <Folder Include="AWS\" />
+    <Folder Include="AWS\Managers\" />
+    <Folder Include="AWS\Models\" />
+    <Folder Include="AWS\Models\Access Token\" />
+    <Folder Include="AWS\Models\SSO\" />
+    <Folder Include="AWS\Services\" />
+    <Folder Include="AWS\Managers\SSO\" />
+    <Folder Include="AWS\Services\Access Token\" />
+    <Folder Include="AWS\Models\DBR\" />
+    <Folder Include="AWS\Models\DBR\Get Bill Rendering\" />
+    <Folder Include="AWS\Models\DBR\Get Eligibility\" />
+    <Folder Include="AWS\Managers\DBR\" />
+    <Folder Include="AWS\Services\DBR\" />
+    <Folder Include="AWS\Managers\Eligibility\" />
+    <Folder Include="AWS\Models\DBR\Post Multi Bill Rendering\" />
+    <Folder Include="AWS\Models\DBR\Post Installation Details\" />
+    <Folder Include="AWS\Models\DBR\Post Multi Installation Details\" />
+    <Folder Include="API\Managers\FeatureInfo\" />
+    <Folder Include="API\Models\Feature Info\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -154,6 +174,12 @@
     <None Remove="Resources\Notification\NotificationInfo_10071.json" />
     <None Remove="Resources\Notification\NotificationInfo_10072.json" />
     <None Remove="Test Data\Application Search\Search01.json" />
+    <None Remove="AWS\Models\DBR\Get Multi Bill Rendering\" />
+    <None Remove="AWS\Models\DBR\Post Installation Details\" />
+    <None Remove="AWS\Models\DBR\Post Multi Installation Details\" />
+    <None Remove="API\Models\Notification\Notification Details\" />
+    <None Remove="API\Managers\FeatureInfo\" />
+    <None Remove="API\Models\Feature Info\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />

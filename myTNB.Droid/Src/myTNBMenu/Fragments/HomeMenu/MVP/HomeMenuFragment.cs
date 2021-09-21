@@ -27,7 +27,6 @@ using myTNB_Android.Src.Base;
 using Android.Text;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using Android.Runtime;
-using Android.Util;
 using Android.Views.Animations;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
@@ -48,14 +47,28 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile.SessionCache;
 using myTNB;
 using myTNB.Mobile;
+using myTNB_Android.Src.EnergyBudget.Activity;
 using AndroidX.ConstraintLayout.Widget;
 using myTNB_Android.Src.MyAccount.Activity;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
+using System.Linq;
+using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.SessionCache;
+using myTNB_Android.Src.EBPopupScreen.Activity;
+using AndroidX.CardView.Widget;
+using System.Globalization;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
-    public class HomeMenuFragment : BaseFragmentCustom, HomeMenuContract.IHomeMenuView
-            , ViewTreeObserver.IOnGlobalLayoutListener, View.IOnFocusChangeListener
+    public class HomeMenuFragment : BaseFragmentCustom
+        , HomeMenuContract.IHomeMenuView
+        , ViewTreeObserver.IOnGlobalLayoutListener
+        , View.IOnFocusChangeListener
     {
+        internal static bool IsFromLogin;
+        GetBillRenderingResponse billRenderingResponse;
+
         [BindView(Resource.Id.newFAQShimmerView)]
         LinearLayout newFAQShimmerView;
 
@@ -74,9 +87,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.newFAQContainer)]
         LinearLayout newFAQContainer;
 
-
         [BindView(Resource.Id.myServiceShimmerView)]
         LinearLayout myServiceShimmerView;
+
+        //[BindView(Resource.Id.DiscoverMoreShimmerImgLayout)]
+        //LinearLayout DiscoverMoreShimmerImgLayout;
+
+        //[BindView(Resource.Id.DiscoverMoreShimmerTxtLayout)]
+        //LinearLayout DiscoverMoreShimmerTxtLayout;
+
+        [BindView(Resource.Id.NewDiscoverMoreShimmerImgLayout)]
+        LinearLayout NewDiscoverMoreShimmerImgLayout;
+
+        [BindView(Resource.Id.discoverMoreContainer)]
+        LinearLayout discoverMoreContainer;
+
+        [BindView(Resource.Id.newDiscoverMoreShimmerTxtLayout)]
+        RelativeLayout newDiscoverMoreShimmerTxtLayout;
+
+        //[BindView(Resource.Id.shimmerDiscoverMoreImageLayout)]
+        //ShimmerFrameLayout shimmerDiscoverMoreImageLayout;
+
+        //[BindView(Resource.Id.shimmerDiscoverMoreTxtLayout)]
+        //ShimmerFrameLayout shimmerDiscoverMoreTxtLayout;
 
         [BindView(Resource.Id.myServiceList)]
         RecyclerView myServiceListRecycleView;
@@ -95,6 +128,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.accountGreetingName)]
         TextView accountGreetingName;
+
+        [BindView(Resource.Id.txtDate)]
+        TextView txtDate;
 
         [BindView(Resource.Id.searchAction)]
         ImageView searchActionIcon;
@@ -192,6 +228,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.bottomContainer)]
         LinearLayout bottomContainer;
 
+        [BindView(Resource.Id.discoverMoreTitle)]
+        TextView discoverMoreTitle;
+
+        [BindView(Resource.Id.txtTitleDiscoverMore)]
+        TextView txtTitleDiscoverMore;
+
         ImageView closeImageView;
 
         [BindView(Resource.Id.myServiceLoadMoreContainer)]
@@ -233,6 +275,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.accountContainer)]
         ConstraintLayout accountContainer;
 
+        [BindView(Resource.Id.discoverView)]
+        LinearLayout discoverView;
+
+        [BindView(Resource.Id.img_discover_digital_bill)]
+        ImageView img_discover_digital_bill;
+
+        [BindView(Resource.Id.discoverTitle)]
+        TextView discoverTitle;
+
+
+        [BindView(Resource.Id.whatsNewUnreadImg)]
+        ImageView whatsNewUnreadImg;
+
+
+        [BindView(Resource.Id.discovercontainer)]
+        LinearLayout discovercontainer;
+
+        bool IsAccountDBREligible;
         AccountsRecyclerViewAdapter accountsAdapter;
 
         private NewFAQScrollListener mListener;
@@ -244,6 +304,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
 
         public readonly static int REARRANGE_ACTIVITY_CODE = 8806;
+
+        internal static readonly int SELECT_SM_ACCOUNT_REQUEST_CODE = 8809;
+
+        internal static readonly int SELECT_SM_POPUP_REQUEST_CODE = 8810;
 
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
@@ -269,6 +333,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private bool isInitiate = false;
 
+        bool _isOwner;
         HomeMenuContract.IHomeMenuPresenter presenter;
         ISummaryFragmentToDashBoardActivtyListener mCallBack;
 
@@ -373,6 +438,50 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     RestartHomeMenu();
                 }
             }
+            else if (requestCode == SELECT_SM_ACCOUNT_REQUEST_CODE)
+            {
+                if (resultCode == (int)Result.Ok)
+                {
+                    MyTNBAccountManagement.GetInstance().OnHoldWhatNew(true);
+                    Bundle extras = data.Extras;
+
+                    SMRAccount selectedAccount = JsonConvert.DeserializeObject<SMRAccount>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                    this.SetIsClicked(false);
+                    ShowAccountDetails(selectedAccount.accountNumber);
+                }
+            }
+            else if (requestCode == SELECT_SM_POPUP_REQUEST_CODE)
+            {
+                if (resultCode == (int)Result.Ok)
+                {
+                    this.SetIsClicked(false);
+                    Bundle extras = data.Extras;
+
+                    if (extras.ContainsKey("EBList"))
+                    {
+                        if (UserSessions.GetEnergyBudgetList().Count == 1)
+                        {
+                            this.SetIsClicked(false);
+                            List<SMRAccount> smaccEB = new List<SMRAccount>();
+                            smaccEB = UserSessions.GetEnergyBudgetList();
+                            ShowAccountDetails(smaccEB[0].accountNumber);
+                        }
+                        else if (UserSessions.GetEnergyBudgetList().Count > 1)
+                        {
+                            Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
+                            StartActivityForResult(energy_budget_activity, SELECT_SM_ACCOUNT_REQUEST_CODE);
+                        }
+                    }
+                    else
+                    {
+                       
+                        MyTNBAccountManagement.GetInstance().OnHoldWhatNew(true);
+                        /*MyTNBAccountManagement.GetInstance().SetMaybeLater(true);
+                        ShowDiscoverMoreLayout();
+                        RestartHomeMenu();*/
+                    }
+                }
+            }
         }
 
         private void SetNotificationIndicator()
@@ -385,6 +494,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+                IsAccountDBREligible = DBRUtility.Instance.IsAccountDBREligible; 
                 summaryNestScrollView.SmoothScrollingEnabled = true;
                 isSearchClose = true;
                 isFirstInitiate = true;
@@ -393,15 +503,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountsRecyclerView();
                 SetAccountActionHeader();
                 SetupMyServiceView();
+                SetDBRDiscoverView();
                 SetupNewFAQView();
+
+                
+
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
-                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
+                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, discoverMoreTitle, btnRefresh, txtAdd
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
-                    , myServiceLoadMoreLabel, txtNewLabel, btnMyServiceRefresh);
+                    , myServiceLoadMoreLabel, txtNewLabel, txtDate, txtTitleDiscoverMore, btnMyServiceRefresh);
                 TextViewUtils.SetTextSize8(txtNewLabel);
-                TextViewUtils.SetTextSize12(addActionLabel, searchActionLabel, rearrangeLabel
+                TextViewUtils.SetTextSize10(txtDate);
+                TextViewUtils.SetTextSize12(addActionLabel, txtTitleDiscoverMore, searchActionLabel, rearrangeLabel
                     , loadMoreLabel, myServiceLoadMoreLabel, txtMyServiceRefreshMessage);
-                TextViewUtils.SetTextSize14(refreshMsg, txtAdd, newFAQTitle, accountHeaderTitle);
+                TextViewUtils.SetTextSize14(refreshMsg, discoverMoreTitle, txtAdd, newFAQTitle, accountHeaderTitle);
                 TextViewUtils.SetTextSize16(accountGreeting, accountGreetingName, btnMyServiceRefresh, btnRefresh);
                 SearchView searchView = new SearchView(this.Context);
                 LinearLayout linearLayout1 = (LinearLayout)searchView.GetChildAt(0);
@@ -416,6 +531,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 newFAQTitle.Text = GetLabelByLanguage("needHelp");
                 rearrangeLabel.Text = GetLabelByLanguage("rearrangeAccts");
                 loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
+                discoverMoreTitle.Text = GetLabelByLanguage("DiscoverMore");
+                txtTitleDiscoverMore.Text = GetLabelByLanguage("DiscoverMoreTitle");
                 myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
 
                 addActionContainer.SetOnClickListener(null);
@@ -511,7 +628,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
-
+                ShowDiscoverMoreLayout();
+                
             }
             catch (System.Exception e)
             {
@@ -521,9 +639,127 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 StartActivity(LaunchViewIntent);
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
+        [OnClick(Resource.Id.discoverView)]
+        void OnManageBillDelivery(object sender, EventArgs eventArgs)
+        {
+            if (DBRUtility.Instance.IsAccountDBREligible)
+            {
+                DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Home_Banner);
+                GetBillRenderingAsync();
+            }
+        }
+        private async void GetBillRenderingAsync()
+        {
+            try
+            {
+                ShowProgressDialog();
+                string caNumber = string.Empty;
+                if (DBRUtility.Instance.IsAccountDBREligible
+                   && !EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                       , EligibilitySessionCache.FeatureProperty.TargetGroup))
+                {
+                    List<string> caList = AccountTypeCache.Instance.DBREligibleCAs;
+                    caNumber = caList != null && caList.Count > 0
+                        ? caList[0]
+                        : string.Empty;
+                    _isOwner = true;
+                }
+                else
+                {
+                    CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                    _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount.AccNum);
+                    caNumber = dbrAccount.AccNum;
+                }
+
+                if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                }
+                billRenderingResponse = await DBRManager.Instance.GetBillRendering(caNumber
+                    , AccessTokenCache.Instance.GetAccessToken(this.Activity));
+
+                //Nullity Check
+                if (billRenderingResponse != null
+                   && billRenderingResponse.StatusDetail != null
+                   && billRenderingResponse.StatusDetail.IsSuccess
+                   && billRenderingResponse.Content != null
+                   && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
+                {
+                    Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                    intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                    intent.PutExtra("accountNumber", caNumber);
+                    intent.PutExtra("isOwner", _isOwner);
+                    StartActivity(intent);
+                }
+                else
+                {
+                    string? title = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.Title.IsValid()
+                        ? billRenderingResponse?.StatusDetail?.Title
+                        : Utility.GetLocalizedLabel("Error", "defaultErrorTitle");
+
+                    string? message = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.Message.IsValid()
+                       ? billRenderingResponse?.StatusDetail?.Message
+                       : Utility.GetLocalizedLabel("Error", "defaultErrorMessage");
+
+                    string? cta = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.PrimaryCTATitle.IsValid()
+                       ? billRenderingResponse?.StatusDetail?.PrimaryCTATitle
+                       : Utility.GetLocalizedLabel("Common", "ok");
+
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(title ?? string.Empty)
+                        .SetMessage(message ?? string.Empty)
+                        .SetCTALabel(cta ?? string.Empty)
+                        .Build();
+                    errorPopup.Show();
+                }
+
+                HideProgressDialog();
+
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+        public CustomerBillingAccount GetEligibleDBRAccount()
+        {
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+            List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                        , EligibilitySessionCache.FeatureProperty.TargetGroup)
+                ? DBRUtility.Instance.GetDBRCAs()
+                : AccountTypeCache.Instance.DBREligibleCAs;
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            CustomerBillingAccount account = new CustomerBillingAccount();
+            if (dBRCAs.Count > 0)
+            {
+                var dbrSelected = dBRCAs.Where(x => x == customerAccount.AccNum).FirstOrDefault();
+                if (dbrSelected != string.Empty)
+                {
+                    account = allAccountList.Where(x => x.AccNum == dbrSelected).FirstOrDefault();
+                }
+                if (account == null)
+                {
+                    foreach (var dbrca in dBRCAs)
+                    {
+                        account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
+                        break;
+                    }
+                }
+            }
+            /*else
+            {
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                     .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+                                    .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
+                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                     .Build();
+                errorPopup.Show();
+            }*/
+            return account;
+        }
         public void SetRefreshLayoutParams()
         {
             LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
@@ -687,7 +923,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return IsAdded && IsVisible && !IsDetached && !IsRemoving;
         }
 
-        private void OnLoadAccount()
+        public void OnLoadAccount()
         {
             this.presenter.LoadAccounts();
         }
@@ -724,6 +960,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             shimmerSnapHelper.AttachToRecyclerView(newFAQShimmerList);
         }
 
+
+        private void SetupDiscoverView()
+        {
+            discoverView.Visibility = ViewStates.Visible;
+            discoverView.SetBackgroundResource(LanguageUtil.GetAppLanguage() == "MS"
+                ? Resource.Drawable.banner_home_voluntary_ms
+                : Resource.Drawable.banner_home_voluntary_en);
+
+            LinearLayout.LayoutParams layout = discoverView.LayoutParameters as LinearLayout.LayoutParams;
+            int imgWidth = GetDeviceHorizontalScaleInPixel(0.917f);
+            float heightRatio = 55f / 128f;
+            int imgHeight = (int)(imgWidth * (heightRatio));
+            if (layout != null)
+            {
+                layout.Width = imgWidth;
+                layout.Height = imgHeight;
+            }
+        }
+
         public void SetMyServiceRecycleView()
         {
             myServiceShimmerAdapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(3), this.Activity);
@@ -731,6 +986,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
+
             this.presenter.InitiateMyService();
         }
 
@@ -798,6 +1054,58 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             this.presenter.GetSavedNewFAQTimeStamp();
         }
 
+        //private void StartShimmerDiscoverMore()
+        //{
+        //    try
+        //    {
+        //        DiscoverMoreShimmerImgLayout.Visibility = ViewStates.Visible;
+        //        DiscoverMoreShimmerTxtLayout.Visibility = ViewStates.Visible;
+        //        NewDiscoverMoreShimmerImgLayout.Visibility = ViewStates.Gone;
+        //        newDiscoverMoreShimmerTxtLayout.Visibility = ViewStates.Gone;
+        //        var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+        //        if (shimmerBuilder != null)
+        //        {
+        //            shimmerDiscoverMoreImageLayout.SetShimmer(shimmerBuilder?.Build());
+        //            shimmerDiscoverMoreTxtLayout.SetShimmer(shimmerBuilder?.Build());
+        //        }
+        //        shimmerDiscoverMoreImageLayout.StartShimmer();
+        //        shimmerDiscoverMoreTxtLayout.StartShimmer();
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        Utility.LoggingNonFatalError(ex);
+        //    }
+        //}
+
+        //public void StopShimmerDiscoverMore()
+        //{
+        //    try
+        //    {
+        //        Activity.RunOnUiThread(() =>
+        //        {
+        //            try
+        //            {
+
+        //                shimmerDiscoverMoreImageLayout.StopShimmer();
+        //                shimmerDiscoverMoreTxtLayout.StopShimmer();
+        //            }
+        //            catch (System.Exception ex)
+        //            {
+        //                Utility.LoggingNonFatalError(ex);
+        //            }
+        //            NewDiscoverMoreShimmerImgLayout.Visibility = ViewStates.Visible;
+        //            newDiscoverMoreShimmerTxtLayout.Visibility = ViewStates.Visible;
+        //            DiscoverMoreShimmerImgLayout.Visibility = ViewStates.Gone;
+        //            DiscoverMoreShimmerTxtLayout.Visibility = ViewStates.Gone;
+        //        });
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        Utility.LoggingNonFatalError(ex);
+        //    }
+
+        //}
+
         private void SetupNewFAQShimmerEffect()
         {
             try
@@ -831,6 +1139,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void SetDBRDiscoverView()
+        {
+            SetDiscoverResult(IsAccountDBREligible);
+            this.presenter.GetSavedNewFAQTimeStamp();
+        }
+
         public void HideNewFAQ()
         {
             try
@@ -856,12 +1170,124 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+        public void HideDiscoverViewView()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        discoverTitle.Visibility = ViewStates.Gone;
+                        discoverMoreTitle.Visibility = ViewStates.Gone;
+                        discoverView.Visibility = ViewStates.Gone;
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         public bool CheckNeedHelpHide()
         {
             return newFAQTitle.Visibility == ViewStates.Gone;
         }
+        public bool CheckDBRDiscoverHide()
+        {
+            return discovercontainer.Visibility == ViewStates.Gone;
+        }
 
+        public void SetDiscoverResult(bool IsAccountDBREligible)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        this.IsAccountDBREligible = IsAccountDBREligible;
+                        if (IsAccountDBREligible)
+                        {
+
+                            SetupDiscoverView();
+                            discovercontainer.Visibility = ViewStates.Visible;
+                            discoverView.Visibility = ViewStates.Visible;
+                            discoverTitle.Visibility = ViewStates.Visible;
+                            discoverMoreTitle.Visibility = ViewStates.Gone;
+                            UserEntity user = UserEntity.GetActive();
+                            int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
+
+                            if (IsFromLogin && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeDBRCard && GetHomeTutorialCallState())
+                            {
+                                ShowMarketingTooltip();
+                                IsFromLogin = false;
+                            }
+                            if (!GetHomeTutorialCallState())
+                            {
+                                IsFromLogin = true;
+                            }
+                        }
+                        else
+                        {
+                            discovercontainer.Visibility = ViewStates.Gone;
+                            discoverTitle.Visibility = ViewStates.Gone;
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        // TODO: To Hide the FAQ
+                        // HideNewFAQ();
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                // TODO: To Hide the FAQ
+                // HideNewFAQ();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+        public void ShowMarketingTooltip()
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                    .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
+                    .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupTitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupMessage"))
+                    .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "gotIt"))
+                    .SetCTAaction(() =>
+                    {
+                        this.SetIsClicked(false);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
+                    })
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupStartNow"))
+                    .SetSecondaryCTAaction(() => ShowManageBill())
+                    .Build();
+                marketingTooltip.Show();
+            }
+        }
+
+        public void ShowManageBill()
+        {
+            try
+            {
+                DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_Viewmore);
+                GetBillRenderingAsync();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
         public void SetNewFAQResult(List<NewFAQ> list)
         {
             try
@@ -948,6 +1374,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             }
                             newFAQShimmerView.Visibility = ViewStates.Gone;
                             newFAQView.Visibility = ViewStates.Visible;
+                            newFAQTitle.Visibility = ViewStates.Visible;
+
                         }
                     }
                     catch (System.Exception ex)
@@ -1050,7 +1478,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 searchText.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                 searchText.SetHintTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sixty_opacity_white)));
                 TextViewUtils.SetTextSize12(searchText);
-                TextViewUtils.SetMuseoSans500Typeface(searchText);
+                if (TextViewUtils.IsLargeFonts)
+                {
+                    TextViewUtils.SetTextSize16(discoverTitle);
+                }
+                else
+                {
+                    TextViewUtils.SetTextSize14(discoverTitle);
+                }
+
+                TextViewUtils.SetMuseoSans500Typeface(searchText, discoverTitle);
+                discoverTitle.Text = Utility.GetLocalizedLabel("DashboardHome", "DiscoverMore");
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     searchText.SetPadding((int)DPUtils.ConvertDPToPx(34f), 0, 0, 0);
@@ -1163,20 +1601,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 actionBar.Hide();
                 ShowBackButton(false);
 
+                if (newLabel != null)
+                {
+                    if (!MyTNBAccountManagement.GetInstance().IsOnHoldWhatNew())
+                    {
+                        SetNotificationIndicator();
+                    }
+                    //OnSetupNotificationNewLabel(true, 0);
+                }
+
                 if (this.presenter != null)
                 {
-                    this.presenter.GetUserNotifications();
+                    if (!MyTNBAccountManagement.GetInstance().IsOnHoldWhatNew())
+                    {
+                        this.presenter.GetUserNotifications();
+                    }
+
                     UpdateGreetingsHeader(this.presenter.GetGreeting());
                 }
 
-                if (newLabel != null)
-                {
-                    SetNotificationIndicator();
-                }
                 if (summaryNestScrollView != null)
                 {
                     HomeMenuCustomScrolling(0);
                 }
+
                 if (HomeMenuUtils.GetIsShowRearrangeAccountSuccessfulNeed())
                 {
                     HomeMenuUtils.SetIsShowRearrangeAccountSuccessfulNeed(false);
@@ -1186,6 +1634,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ((DashboardHomeActivity)Activity).EnableDropDown(false);
                 ((DashboardHomeActivity)Activity).HideAccountName();
                 ((DashboardHomeActivity)Activity).RemoveHeaderDropDown();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                if (MyTNBAccountManagement.GetInstance().IsOnHoldWhatNew())
+                {
+                    WhatNewCheckAgain();
+                    SetDBRDiscoverView();
+                }
             }
             catch (System.Exception e)
             {
@@ -1310,6 +1771,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 errorPopup.Show();
                             }
                             this.SetIsClicked(false);
+                        }
+                        else if (selectedService.ServiceCategoryId == "1007" && (Utility.IsMDMSDownEnergyBudget() && !isRefreshShown))
+                        {
+                            if (!UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            {
+                                UserSessions.DoSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                            }
+                            if (UserSessions.GetEnergyBudgetList().Count == 1)
+                            {
+                                this.SetIsClicked(false);
+                                List<SMRAccount> smacc = new List<SMRAccount>();
+                                smacc = UserSessions.GetEnergyBudgetList();
+                                ShowAccountDetails(smacc[0].accountNumber);
+                            }
+                            else if (UserSessions.GetEnergyBudgetList().Count > 1)
+                            {
+                                Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
+                                StartActivityForResult(energy_budget_activity, SELECT_SM_ACCOUNT_REQUEST_CODE);
+                            }
                         }
                         else
                         {
@@ -1610,6 +2090,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+        public void ShowDiscoverView(bool IsAccountDBREligible)
+        {
+            SetDiscoverResult(IsAccountDBREligible);
+        }
 
         public void ShowFAQFromHide()
         {
@@ -1819,6 +2303,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMaintenanceMsg);
                 }
+                discoverMoreContainer.Visibility = ViewStates.Gone;
+                discoverMoreTitle.Visibility = ViewStates.Gone;
             }
             else
             {
@@ -1835,6 +2321,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
                 string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
+                discoverMoreContainer.Visibility = ViewStates.Gone;
+                discoverMoreTitle.Visibility = ViewStates.Gone;
                 btnRefresh.Text = refreshBtnTxt;
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
@@ -1856,7 +2344,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private void OnStartLoadAccount()
+        public void OnStartLoadAccount()
         {
             IsLoadMoreButtonVisible(false, false);
 
@@ -1868,9 +2356,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
                 List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+                List<CustomerBillingAccount> smartmeterAccounts = CustomerBillingAccount.SMeterBudgetAccountList();        //smart meter ca
                 List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
                 List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
                 List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
+                List<SMRAccount> SMeterAccountList = new List<SMRAccount>();
                 if (eligibleSMRBillingAccounts.Count > 0)
                 {
                     foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
@@ -1894,6 +2384,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         smrAccount.accountAddress = billingAccount.AccountStAddress;
                         smrAccount.accountSelected = false;
                         currentSmrAccountList.Add(smrAccount);
+                    }
+                }
+
+                if (smartmeterAccounts.Count > 0)
+                {
+                    foreach (CustomerBillingAccount billingAccount in smartmeterAccounts)
+                    {
+                        SMRAccount smrAccount = new SMRAccount();
+                        smrAccount.accountNumber = billingAccount.AccNum;
+                        smrAccount.accountName = billingAccount.AccDesc;
+                        smrAccount.accountAddress = billingAccount.AccountStAddress;
+                        smrAccount.accountSelected = false;
+                        smrAccount.BudgetAmount = billingAccount.BudgetAmount;
+                        SMeterAccountList.Add(smrAccount);
                     }
                 }
 
@@ -1925,8 +2429,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SetBottmLayoutParams(21f);
                 }
 
+                List<SMRAccount> allSMRBlillingAccounts = new List<SMRAccount>();       //energy budget
+                allSMRBlillingAccounts.AddRange(SMeterAccountList);
+
                 UserSessions.SetSMRAccountList(currentSmrAccountList);
                 UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
+                UserSessions.EnergyBudget(allSMRBlillingAccounts);                  //energy budget
 
                 accountListRefreshContainer.Visibility = ViewStates.Gone;
                 accountListViewContainer.Visibility = ViewStates.Visible;
@@ -1945,9 +2453,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
                 List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+                List<CustomerBillingAccount> smartmeterAccounts = CustomerBillingAccount.SMeterBudgetAccountList();        //smart meter ca
                 List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
                 List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
                 List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
+                List<SMRAccount> SMeterAccountList = new List<SMRAccount>();
                 if (eligibleSMRBillingAccounts.Count > 0)
                 {
                     foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
@@ -1971,6 +2481,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         smrAccount.accountAddress = billingAccount.AccountStAddress;
                         smrAccount.accountSelected = false;
                         currentSmrAccountList.Add(smrAccount);
+                    }
+                }
+
+                if (smartmeterAccounts.Count > 0)
+                {
+                    foreach (CustomerBillingAccount billingAccount in smartmeterAccounts)
+                    {
+                        SMRAccount smrAccount = new SMRAccount();
+                        smrAccount.accountNumber = billingAccount.AccNum;
+                        smrAccount.accountName = billingAccount.AccDesc;
+                        smrAccount.accountAddress = billingAccount.AccountStAddress;
+                        smrAccount.accountSelected = false;
+                        smrAccount.BudgetAmount = billingAccount.BudgetAmount;
+                        SMeterAccountList.Add(smrAccount);
                     }
                 }
 
@@ -2002,8 +2526,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SetBottmLayoutParams(21f);
                 }
 
+                List<SMRAccount> allSMRBlillingAccounts = new List<SMRAccount>();       //energy budget
+                allSMRBlillingAccounts.AddRange(SMeterAccountList);
+
                 UserSessions.SetSMRAccountList(currentSmrAccountList);
                 UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
+                UserSessions.EnergyBudget(allSMRBlillingAccounts);                  //energy budget
 
                 accountListRefreshContainer.Visibility = ViewStates.Gone;
                 accountListViewContainer.Visibility = ViewStates.Visible;
@@ -2048,7 +2576,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.presenter.RestoreCurrentAccountState();
                 }
-
                 this.presenter.ReadNewFAQFromCache();
             }
         }
@@ -2281,6 +2808,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Intent linkAccount = new Intent(this.Activity, typeof(MyAccountActivity));
                 linkAccount.PutExtra("fromDashboard", true);
                 StartActivity(linkAccount);
+            }
+        }
+
+        [OnClick(Resource.Id.discoverMoreContainer)]
+        internal void OndiscoverMoreCardView(object sender, EventArgs e)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                try
+                {
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Energy Budget Screen Popup");
+                    Intent EBPopupPage = new Intent(this.Activity, typeof(EBPopupScreenActivity));
+                    EBPopupPage.PutExtra("fromDashboard", true);
+                    StartActivityForResult(EBPopupPage, SELECT_SM_POPUP_REQUEST_CODE);
+                }
+                catch (System.Exception err)
+                {
+                    Utility.LoggingNonFatalError(err);
+                }
             }
         }
 
@@ -2714,6 +3261,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             return accountCard.Height;
         }
+        public int GetDiscovercontainerHeight()
+        {
+            return discovercontainer.Height;
+        }
 
         public void ResetNewFAQScroll()
         {
@@ -3121,6 +3672,91 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         count++;
                     }
                 }
+            }
+        }
+
+        public void ShowDiscoverMoreLayout()
+        {
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            {
+                discoverMoreContainer.Visibility = ViewStates.Visible;
+                if(discoverTitle.Visibility == ViewStates.Visible)
+                {
+                    discoverMoreTitle.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    discoverMoreTitle.Visibility = ViewStates.Visible;
+                }
+                
+               
+                try
+                {
+                    //DateTime publishDateTime = DateTime.ParseExact(whatsNewList[position].PublishDate, "yyyyMMddTHHmmss",
+                    DateTime publishDateTime = DateTime.UtcNow;
+                    //CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                    /*if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                    {
+                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
+                        txtDate.Text = publishDateTime.ToString("dd MMM yyyy", currCult);
+                        isDateAvailable = true;
+                    }
+                    else
+                    {
+                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                        txtDate.Text = publishDateTime.ToString("dd MMM yyyy", currCult);
+                        isDateAvailable = true;
+                    }*/
+                    txtDate.Text = GetLabelByLanguage("DiscoverMoreDate");
+
+                    if (UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                    {
+                        whatsNewUnreadImg.Visibility = ViewStates.Gone;
+                    }
+                    else
+                    {
+                        whatsNewUnreadImg.Visibility = ViewStates.Visible;
+                    }
+
+                }
+                catch (System.Exception e)
+                {
+                    txtDate.Text = "";
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+            else
+            {
+                discoverMoreContainer.Visibility = ViewStates.Gone;
+                discoverMoreTitle.Visibility = ViewStates.Gone;
+            }
+        }
+
+        public void EBPopupActivity()
+        {
+            try
+            {
+                Intent eb_popup_activity = new Intent(this.Activity, typeof(EBPopupScreenActivity));
+                eb_popup_activity.PutExtra("fromLogin", "fromLogin");
+                StartActivityForResult(eb_popup_activity, SELECT_SM_POPUP_REQUEST_CODE);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public bool CheckWhatNewPopupAlready()
+        {
+            return ((DashboardHomeActivity)Activity).CheckWhatNewPopupCount();
+        }
+
+        public void WhatNewCheckAgain()
+        {
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && MyTNBAccountManagement.GetInstance().IsOnHoldWhatNew())
+            {
+                ((DashboardHomeActivity)Activity).OnCheckWhatsNewTab();
             }
         }
     }

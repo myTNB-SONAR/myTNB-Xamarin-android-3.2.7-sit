@@ -28,6 +28,12 @@ using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.ManageAccess.Activity;
 using myTNB_Android.Src.Database.Model;
 using Android.Preferences;
+using myTNB.Mobile;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.SessionCache;
+using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 
 namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 {
@@ -57,11 +63,33 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [BindView(Resource.Id.profileMenuItemsContent)]
         LinearLayout profileMenuItemsContent;
 
+        [BindView(Resource.Id.ManageBill_container)]
+        LinearLayout ManageBill_container;
+
+        [BindView(Resource.Id.manageBillTitle)]
+        TextView manageBillTitle;
+
+        [BindView(Resource.Id.icon_myaccount_new)]
+        LinearLayout icon_myaccount_new;
+
         [BindView(Resource.Id.btnRemoveAccount)]
         Button btnRemoveAccount;
 
+        [BindView(Resource.Id.txtNewLabel)]
+        TextView txtNewLabel;
+
         [BindView(Resource.Id.infoAddress)]
         TextView infoAddress;
+
+        [BindView(Resource.Id.view3)]
+        View view3;
+
+        [BindView(Resource.Id.accountLayout)]
+        LinearLayout accountLayout;
+
+        [BindView(Resource.Id.layoutNickName)]
+        FrameLayout layoutNickName;
+
 
         private IMenu ManageSupplyAccountMenu;
         AccountData accountData;
@@ -74,6 +102,10 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         MaterialDialog progress;
 
         const string PAGE_ID = "ManageAccount";
+        private bool _isOwner;
+        private GetBillRenderingResponse _billRenderingResponse;
+
+        ISharedPreferences mPref;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -91,8 +123,12 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
                         accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
 
+                        position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
+                        _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
+                            ? accountData.IsOwner
+                            : DBRUtility.Instance.IsCADBREligible(accountData.AccountNum);
                     }
-                    position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
+                    //position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
                 }
 
 
@@ -107,12 +143,22 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 profileMenuItemsContent.AddView(manageSupplyItem);
 
 
+                //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
+                //TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
+                //TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName, manageBillTitle);
+                //TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
+
+                //TextViewUtils.SetTextSize14(txtAccountAddress, txtNickName, txtAccountNumber, btnTextUpdateNickName, btnRemoveAccount, txtInputLayoutNickName);
+
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
-                TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName);
+                TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName, manageBillTitle, txtNewLabel);
+                //txtInputLayoutNickName.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                //    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                //    : Resource.Style.TextInputLayout_TextAppearance_Small);
                 TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
-
-                TextViewUtils.SetTextSize14(txtAccountAddress, txtNickName, txtAccountNumber, btnTextUpdateNickName, btnRemoveAccount, txtInputLayoutNickName);
+                TextViewUtils.SetTextSize14(txtAccountNumber, txtAccountAddress, btnTextUpdateNickName, manageBillTitle);
+                TextViewUtils.SetTextSize16(btnRemoveAccount, txtNickName);
 
                 txtAccountNumber.Text = accountData.AccountNum;
                 //txtAccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, accountData.AddStreet);
@@ -144,6 +190,13 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 btnTextUpdateNickName.Text = GetLabelCommonByLanguage("update");
                 btnRemoveAccount.Text = Utility.GetLocalizedLabel("ManageAccount", "removeAccount");
                 infoAddress.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogAddrress");
+                txtNewLabel.Text = Utility.GetLocalizedLabel("Common", "new");
+
+                mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+                if (UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
+                {
+                    icon_myaccount_new.Visibility = ViewStates.Gone;
+                }
 
                 //txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
                 //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
@@ -152,6 +205,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData, PreferenceManager.GetDefaultSharedPreferences(this));
                 this.userActionsListener.Start();
+                GetBillRenderingAsync(accountData);
             }
             catch (Exception e)
             {
@@ -169,6 +223,16 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             }
         }
 
+        [OnClick(Resource.Id.ManageBill_container)]
+        void OnManageBillDelivery(object sender, EventArgs eventArgs)
+        {
+            DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.ManageElectricityAccount.Manage);
+            Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+            intent.PutExtra("isOwner", _isOwner);
+            intent.PutExtra("accountNumber", accountData.AccountNum);
+            intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(_billRenderingResponse));
+            StartActivity(intent);
+        }
 
         [OnClick(Resource.Id.btnRemoveAccount)]
         void OnClickRemoveAccount(object sender, EventArgs eventArgs)
@@ -313,6 +377,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 manageUser.SetItemActionVisibility(true);
                 manageUser.SetItemActionCall(ShowManageUser);
                 manageItems.Add(manageUser);
+
+                view3.Visibility = ViewStates.Gone;
             }
 
             //SupplyAccMenuItemSingleContentComponent autoPay = new SupplyAccMenuItemSingleContentComponent(this);
@@ -324,6 +390,128 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
             manageItem.AddComponentView(manageItems);
             return manageItem;
+        }
+
+        private async void GetBillRenderingAsync(AccountData selectedAccount)
+        {
+            try
+            {
+                ShowProgressDialog();
+                bool isEligible = DBRUtility.Instance.IsAccountDBREligible;
+                if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                            , EligibilitySessionCache.FeatureProperty.TargetGroup))
+                {
+                    isEligible = isEligible
+                        && AccountTypeCache.Instance.IsAccountEligible(selectedAccount.AccountNum);
+                    Console.WriteLine("[DEBUG] Profile IsDBREnabled 0: " + isEligible);
+                    if (isEligible)
+                    {
+                        PostInstallationDetailsResponse installationDetailsResponse = await DBRManager.Instance.PostInstallationDetails(selectedAccount.AccountNum
+                            , AccessTokenCache.Instance.GetAccessToken(this));
+                        Console.WriteLine("[DEBUG] Profile RateCategory: " + installationDetailsResponse.RateCategory);
+                        Console.WriteLine("[DEBUG] Profile IsResidential: " + installationDetailsResponse.IsResidential);
+                        if (installationDetailsResponse != null
+                            && installationDetailsResponse.StatusDetail != null
+                            && installationDetailsResponse.StatusDetail.IsSuccess
+                            && installationDetailsResponse.IsResidential)
+                        {
+                            isEligible = true;
+                        }
+                        else
+                        {
+                            isEligible = false;
+                        }
+                    }
+                }
+                if (isEligible)
+                {
+                    GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
+                    AccountData dbrAccount = selectedAccount;
+
+                    if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                    {
+                        string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                        AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
+                    }
+                    _billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this));
+
+                    //Nullity Check
+                    if (_billRenderingResponse != null
+                        && _billRenderingResponse.StatusDetail != null
+                        && _billRenderingResponse.StatusDetail.IsSuccess
+                        && _billRenderingResponse.Content != null
+                        && _billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
+                    {
+                        manageBillTitle.Text = Utility.GetLocalizedLabel("ManageAccount", _isOwner
+                            ? "dbrManageDeliveryMethod"
+                            : "dbrViewBillDelivery");
+                        ManageBill_container.Visibility = ViewStates.Visible;
+                        view3.Visibility = ViewStates.Gone;
+
+
+                        Handler handler = new Handler();
+                        Action myAction = () =>
+                        {
+                            NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                            if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
+                            {
+                                OnShowManageSupplyAccountTutorialDialog();
+                            }
+                        };
+                        handler.PostDelayed(myAction, 50);
+                    }
+                    else
+                    {
+                        ManageBill_container.Visibility = ViewStates.Gone;
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            HideProgressDialog();
+        }
+
+        public void OnShowManageSupplyAccountTutorialDialog()
+        {
+            Handler h = new Handler();
+            Action myAction = () =>
+            {
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.OnGeneraNewAppTutorialList(), false);
+            };
+            h.PostDelayed(myAction, 100);
+        }
+
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            if (_isOwner)
+            {
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = Utility.GetLocalizedLabel("Tutorial", "manageCAManageBillDeliveryTitle"),
+                    ContentMessage = Utility.GetLocalizedLabel("Tutorial", "manageCAManageBillDeliveryMessage"),
+                    ItemCount = 0,
+                    DisplayMode = "",
+                    IsButtonShow = false
+                });
+            }
+            else
+            {
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = Utility.GetLocalizedLabel("Tutorial", "manageCAViewBillDeliveryTitle"),
+                    ContentMessage = Utility.GetLocalizedLabel("Tutorial", "manageCAViewBillDeliveryMessage"),
+                    ItemCount = 0,
+                    DisplayMode = "",
+                    IsButtonShow = false
+                });
+            }
+            return newList;
         }
 
         private void ShowManageUser()
@@ -548,6 +736,53 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public int GetAccountLayoutHeight()
+        {
+            int height = accountLayout.Height;
+            return height;
+        }
+
+        public int GetLayoutNickNameHeight()
+        {
+            int height = layoutNickName.Height;
+            return height;
+        }
+
+        public int GetLayoutManageBillHeight()
+        {
+            int height = ManageBill_container.Height;
+            return height;
+        }
+        public int GetLayoutManageBillWidth()
+        {
+            int height = ManageBill_container.Width;
+            return height;
         }
     }
 }

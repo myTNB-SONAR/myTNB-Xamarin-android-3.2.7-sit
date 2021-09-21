@@ -22,6 +22,11 @@ namespace myTNB_Android.Src.MyTNBService.Request
         {
             usrInf.sspuid = sspID;
         }
+
+        public void SetSesParam1(string Name)
+        {
+            usrInf.ses_param1 = Name;
+        }
     }
 
     public class BaseRequestV2

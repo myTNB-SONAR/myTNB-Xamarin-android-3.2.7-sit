@@ -102,7 +102,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 catch (System.Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
-
                 }
             }
         }
@@ -192,7 +191,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         isSummaryDone = true;
                         OnCheckToCallHomeMenuTutorial();
-
+                        this.mView.ShowDiscoverMoreLayout();
                         OnCleanUpNotifications(summaryDetails);
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "8400")
@@ -293,8 +292,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             /*****/
                         }
                         MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
-                        this.mView.UpdateAccountListCards(updateDashboardInfoList);
-
+                        if (true)
+                        {
+                            this.mView.UpdateAccountListCards(updateDashboardInfoList);
+                        }
                         if (billingAccoutCount > 3)
                         {
                             if (billingAccoutCount == updateDashboardInfoList.Count())
@@ -310,7 +311,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             this.mView.IsLoadMoreButtonVisible(false, false);
                         }
-
+                        this.mView.ShowDiscoverMoreLayout();
                         OnCleanUpNotifications(summaryDetails);
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "8400")
@@ -646,6 +647,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
+                this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -661,6 +663,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             HomeMenuUtils.SetQueryWord(string.Empty);
             trackCurrentLoadMoreCount = 0;
             HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
+
             LoadAccounts();
         }
 
@@ -808,6 +811,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.mView.IsLoadMoreButtonVisible(false, false);
                     }
                 }
+                this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -953,6 +957,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
+                this.mView.ShowDiscoverMoreLayout();
             }
             else
             {
@@ -1275,6 +1280,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
+                this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -1440,6 +1446,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             queryTokenSource = new CancellationTokenSource();
             isMyServiceExpanded = false;
             HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
+
             this.mView.SetMyServiceRecycleView();
             this.mView.SetNewFAQRecycleView();
         }
@@ -1767,6 +1774,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             List<MyService> fetchList = new List<MyService>();
             List<MyService> filterList = new List<MyService>();
+            var energyBudget = new MyService();
             for (int i = 0; i < currentMyServiceList.Count; i++)
             {
                 if (currentMyServiceList[i].ServiceCategoryId == "1001")
@@ -1777,12 +1785,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         MyServiceEntity.InsertOrReplace(currentMyServiceList[i]);
                     }
                 }
+                else if (currentMyServiceList[i].ServiceCategoryId == "1007")
+                {
+                    energyBudget = new MyService()
+                    {
+                        ServiceCategoryId = currentMyServiceList[i].ServiceCategoryId,
+                        serviceCategoryName = currentMyServiceList[i].serviceCategoryName,
+                        serviceCategoryIcon = currentMyServiceList[i].serviceCategoryIcon,
+                        serviceCategoryIconUrl = currentMyServiceList[i].serviceCategoryIconUrl,
+                        serviceCategoryDesc = currentMyServiceList[i].serviceCategoryDesc,
+                    };
+                }
                 else
                 {
                     filterList.Add(currentMyServiceList[i]);
                     MyServiceEntity.InsertOrReplace(currentMyServiceList[i]);
                 }
+
+                //this.mView.StopShimmerDiscoverMore();
             }
+
+            //testing adding icon
+            /*var testicon = new MyService()
+            {
+                ServiceCategoryId = "1007",
+                serviceCategoryName = "My Energy Budget",
+                serviceCategoryIcon = "test",
+                serviceCategoryIconUrl = "test",
+                serviceCategoryDesc = "test",
+            };*/
+            //filterList.Add(testicon);
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            {
+                filterList.Insert(2, energyBudget);
+            }
+
+            MyServiceEntity.InsertOrReplace(energyBudget);
+
             currentMyServiceList = filterList;
             fetchList = currentMyServiceList;
 
@@ -1802,16 +1841,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void RestoreCurrentMyServiceState()
         {
             List<MyServiceEntity> cachedDBList = new List<MyServiceEntity>();
-
+            var energyBudget = new MyService();
             List<MyService> cachedList = new List<MyService>();
             cachedDBList = MyServiceEntity.GetAll();
             for (int i = 0; i < cachedDBList.Count; i++)
             {
-                cachedList.Add(new MyService()
+                if (cachedDBList[i].ServiceCategoryId.Contains("1007"))
                 {
-                    ServiceCategoryId = cachedDBList[i].ServiceCategoryId,
-                    serviceCategoryName = cachedDBList[i].serviceCategoryName
-                });
+                    energyBudget = new MyService()
+                    {
+                        ServiceCategoryId = cachedDBList[i].ServiceCategoryId,
+                        serviceCategoryName = cachedDBList[i].serviceCategoryName
+                    };
+                }
+                else
+                {
+                    cachedList.Add(new MyService()
+                    {
+                        ServiceCategoryId = cachedDBList[i].ServiceCategoryId,
+                        serviceCategoryName = cachedDBList[i].serviceCategoryName
+                    });
+                }
+            }
+
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            {
+                cachedList.Insert(2, energyBudget);
             }
 
             currentMyServiceList = cachedList;
@@ -2481,7 +2536,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
 
                 List<Notifications.Models.UserNotificationData> ToBeDeleteList = new List<Notifications.Models.UserNotificationData>();
-                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new MyTNBService.Request.BaseRequest());
+                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new MyTNBService.Request.BaseRequest());
                 if (response.IsSuccessResponse())
                 {
                     if (response.GetData() != null && response.GetData().UserNotificationList != null)
@@ -2575,6 +2630,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void OnCheckToCallHomeMenuTutorial()
         {
+            bool EBUser = false;
+
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            {
+                EBUser = true;
+                UserSessions.DoHomeTutorialShown(this.mPref);
+
+                if (isAllDone())
+                {
+                    HomeMenuUtils.SetIsLoadedHomeMenu(true);
+                }
+            }
+
             if (isAllDone() && !isHomeMenuTutorialShown && !this.mView.OnGetIsRootTooltipShown())
             {
                 isHomeMenuTutorialShown = true;

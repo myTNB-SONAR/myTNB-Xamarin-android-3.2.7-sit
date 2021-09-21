@@ -32,6 +32,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string USER_CREDENTIALS_ENTRY = ".userCredentialsEntry";
         internal static readonly string RETRIEVE_PIN_FROM_SMS = ".retrievedPinFromSMS";
         internal static readonly string SELECTED_NOTIFICATION_DETAIL_ITEM = ".selectedNotificationDetailItem";
+        internal static readonly string SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM = ".selectedFromDashboardNotificationDetailItem";
         internal static readonly string SELECTED_NOTIFICATION_LIST_ITEM = ".selectedNotificationListItem";
         internal static readonly string SELECTED_NOTIFICATION_ITEM_POSITION = ".selectedNotificationItemPosition";
         internal static readonly string ACTION_IS_READ = ".action_is_read";
@@ -134,17 +135,18 @@ namespace myTNB_Android.Src.Utils
 
         internal struct SERVER_URL
         {
+            internal static readonly string END_POINT = myTNB.Mobile.MobileConstants.ApiDomain;
+
 #if DEBUG || STUB
-            internal static readonly string END_POINT = "http://10.215.128.191:99";  //dev
+            //internal static readonly string END_POINT = "http://10.215.128.191:99";  //dev
             //internal static readonly string END_POINT = "http://10.215.128.191:89";  //dev
             //internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
 #elif DEVELOP || SIT
             //internal static readonly string END_POINT = "http://10.215.128.191:99";  //dev
-            internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
+            //internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link";
 #else
-            internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbapp.page.link";
 #endif
         }
@@ -158,7 +160,7 @@ namespace myTNB_Android.Src.Utils
             internal static readonly int IN_SAMPLE_SIZE = 4;
             internal static readonly string ENV = "SIT";
 #else //create new flavour called PROD, SIT, UAT
-            internal static readonly string API_KEY_ID = "E6148656-205B-494C-BC95-CC241423E72F";
+            internal static readonly string API_KEY_ID = myTNB.Mobile.MobileConstants.ApiKeyId;
             internal static readonly int MAX_IMAGE_QUALITY_IN_PERCENT = 100;
             internal static readonly int IN_SAMPLE_SIZE = 4;
             internal static readonly string ENV = "PROD";
@@ -203,6 +205,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string SMART_METER_SYSTEM = "SmartMeter";
         internal static readonly string PG_CC_SYSTEM = "PG_CC";
         internal static readonly string PG_FPX_SYSTEM = "PG_FPX";
+        internal static readonly string Smart_Meter_Daily_SYSTEM = "SmartMeterDaily";
 
         internal static readonly string ACCOUNT_REMOVED_FLAG = "ACCOUNT_REMOVED";
 
@@ -283,8 +286,10 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string ENERGY_DISCONNECTION_KEY = "AVAILABLE";
 
         internal static readonly int SELECT_ACCOUNT_PDF_REQUEST_CODE = 9078;
+        internal static readonly int SELECT_ACCOUNT_DBR_REQUEST_CODE = 9079;
 
         internal static readonly string CODE_KEY = "CODE_KEY";
+        internal static readonly string DBR_KEY = "DBR_KEY";
 
         public enum GREETING
         {
@@ -314,7 +319,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID = "53";
         public const string BCRM_NOTIFICATION_PAYMENT_FAILED_ID = "71";
         public const string BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID = "72";
-        public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
+
         public const string BCRM_NOTIFICATION_REMOVE_ACCESS = "10002";
         public const string BCRM_NOTIFICATION_NEW_ACCESS_ADDED = "10003";
         public const string BCRM_NOTIFICATION_UPDATE_ACCESS = "10004";
@@ -323,6 +328,27 @@ namespace myTNB_Android.Src.Utils
         public const string ACCOUNT_FULLNAME_EMAIL_PATTERN = "#accountFullname/accountEmailAddress#";
         public const string ACCOUNT_FULLNAME_PATTERN = "#OwnerName#";
         public const string ACCOUNT_ADDRESS_PATTERN = "#MaskedAddress#";
+
+        //DBR
+        public const string BCRM_NOTIFICATION_DBR_EMAIL = "21003";
+        public const string BCRM_NOTIFICATION_DBR_EBILL = "21001";
+        public const string BCRM_NOTIFICATION_DBR_PAPER = "21002";
+        public const string BCRM_NOTIFICATION_DBR_EMAIL_REMOVED = "21004";
+
+        //Energy Budget
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET = "11001";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_80 = "CEP AT";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_100 = "CEP TH";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_TC = "CEP TC";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_RC = "CEP RC";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_NEWS = "98";
+
+        public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
+
+        
+        public const string ACCOUNT_PROFILENAME_PATTERN = "#profileName#";
+        public const string ACCOUNT_ACCNO_PATTERN = "#accno#";
+        //public const string ACCOUNT_FULLNAME_PATTERN = "#accountFullname/accountEmailAddress#";
 
         public const string APP_TUTORIAL_PATTERN = "#dropdown#";
 
@@ -406,14 +432,28 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE = 29807;
         internal static readonly int APPLICATION_STATUS_DETAILS_SCHEDULER_REQUEST_CODE = 29808;
 
-        internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
-        internal static readonly string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";
-        internal static readonly string WEBVIEW_PAYMENT_CC = "WebViewPaymentCC";
-        internal static readonly string WEBVIEW_PAYMENT_SUCCESS = "WebViewPayment_Success";
-        internal static readonly string WEBVIEW_PAYMENT_FAIL = "WebViewPayment_Fail";
-        internal static readonly string WEBVIEW_PAYMENT_FINISH_DASHBOARD = "WebViewPaymentFINISH_DASHBOARD";
+#if MASTER || SIT || DEBUG
+        internal static readonly string EB_in_app_notification = "EB_in_app_notification_SIT";
+        internal static readonly string EB_initiate_Later = "EB_initiate_Later_SIT";
+        internal static readonly string EB_initiate_Start = "EB_initiate_Start_SIT";
+        internal static readonly string EB_start = "EB_start_SIT";
+        internal static readonly string EB_setup_success = "EB_setup_success_SIT";
+        internal static readonly string EB_edit_budget = "EB_edit_budget_SIT";
+        internal static readonly string EB_tooltip = "EB_tooltip_SIT";
+        internal static readonly string EB_view_tips = "EB_view_tips_SIT";
+
         internal static readonly string DYNA_SITECORE_REFFER_LOCAL = "sitecore_refer_local";
         internal static readonly string DYNA_SITECORE_REFFER_ONLINE = "sitecore_refer_online";
         internal static readonly string DYNA_WHATS_NEW_DEFAULT = "WhatsNewClicked";
+#else
+        internal static readonly string EB_in_app_notification = "EB_in_app_notification";
+        internal static readonly string EB_initiate_Later = "EB_initiate_Later";
+        internal static readonly string EB_initiate_Start = "EB_initiate_Start";
+        internal static readonly string EB_start = "EB_start";
+        internal static readonly string EB_setup_success = "EB_setup_success";
+        internal static readonly string EB_edit_budget = "EB_edit_budget";
+        internal static readonly string EB_tooltip = "EB_tooltip";
+        internal static readonly string EB_view_tips = "EB_view_tips";
+#endif
     }
 }

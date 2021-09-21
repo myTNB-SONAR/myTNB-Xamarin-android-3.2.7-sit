@@ -625,6 +625,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     string email = UserEntity.GetActive().Email;
                     string name = UserEntity.GetActive().DisplayName;
                     List<Models.AddAccount> accounts = new List<Models.AddAccount>();
+                    //List<Models.AddAccount> accounts = new List<Models.AddAccount>();
+                    //List<Models.AddAccountV2> accounts = new List<Models.AddAccountV2>();
                     foreach (NewAccount item in newList)
                     {
                         Models.AddAccount account = new Models.AddAccount();
@@ -1110,6 +1112,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             newAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
                             newAccount.isOwned = item.isOwned;
                             newAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
+                            newAccount.BudgetAmount = item.smartMeterCode == null ? "0" : item.BudgetAmount;
                             finalAccountList.Add(newAccount);
 
                             //UserSessions.SaveAddress(mSharedPref, false);
@@ -1130,6 +1133,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.isOwned = item.isOwned;
                             extraAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             extraAccount.accountTypeId = item.accountTypeId == null ? string.Empty : item.accountTypeId;
+                            extraAccount.BudgetAmount = item.smartMeterCode == null ? "0" : item.BudgetAmount;
                             finalAccountList.Add(extraAccount);
                         }
                     }

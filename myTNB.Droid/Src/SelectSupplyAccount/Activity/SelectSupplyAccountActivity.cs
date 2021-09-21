@@ -4,7 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -25,9 +24,9 @@ using System.Runtime;
 namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 {
     [Activity(Label = "Select Electricity Account"
-              , Icon = "@drawable/ic_launcher"
-    , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.Dashboard")]
+        , Icon = "@drawable/ic_launcher"
+        , ScreenOrientation = ScreenOrientation.Portrait
+        , Theme = "@style/Theme.Dashboard")]
     public class SelectSupplyAccountActivity : BaseActivityCustom, SelectSupplyAccountContract.IView
     {
 
@@ -359,7 +358,6 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
             StartActivity(viewBill);
         }
-
 
         public override void OnTrimMemory(TrimMemory level)
         {

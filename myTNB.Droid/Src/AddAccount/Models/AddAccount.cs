@@ -84,5 +84,9 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty(PropertyName = "state")]
         [AliasAs("state")]
         public string state { get; set; }
+
+        [JsonProperty(PropertyName = "BudgetAmount")]
+        [AliasAs("BudgetAmount")]
+        public string BudgetAmount { get; set; }
     }
 }

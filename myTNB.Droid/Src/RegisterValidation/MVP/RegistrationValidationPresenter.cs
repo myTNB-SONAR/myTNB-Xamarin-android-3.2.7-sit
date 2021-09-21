@@ -127,7 +127,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         {
                             BaseRequest getUserNotificationRequest = new BaseRequest();
                             getUserNotificationRequest.usrInf.eid = userCredentialsEntity.Email;
-                            UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(getUserNotificationRequest);
+                            UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(getUserNotificationRequest);
                             if (response.IsSuccessResponse())
                             {
                                 try

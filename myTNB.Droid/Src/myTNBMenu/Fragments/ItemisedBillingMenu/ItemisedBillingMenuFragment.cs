@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Android.App;
@@ -8,11 +7,6 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
-using Android.Runtime;
-
-
-
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
@@ -22,7 +16,6 @@ using CheeseBind;
 using Facebook.Shimmer;
 using Google.Android.Material.Snackbar;
 using Java.Text;
-using Java.Util;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.Common;
@@ -32,11 +25,16 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
 using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB.Mobile;
+using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.Database.Model;
+using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.SessionCache;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
@@ -125,7 +123,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         [BindView(Resource.Id.chargeAvailableNoCTAContainer)]
         LinearLayout chargeAvailableNoCTAContainer;
-        
+
 
         [BindView(Resource.Id.unavailableChargeContainer)]
         LinearLayout unavailableChargeContainer;
@@ -151,15 +149,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [BindView(Resource.Id.accountSelectionRefresh)]
         TextView accountSelectionRefresh;
 
+        [BindView(Resource.Id.digital_container)]
+        LinearLayout digital_container;
+
+        [BindView(Resource.Id.bill_paperless_icon)]
+        ImageView bill_paperless_icon;
+
+        [BindView(Resource.Id.paperlessTitle)]
+        TextView paperlessTitle;
 
         ItemisedBillingMenuPresenter mPresenter;
         AccountData mSelectedAccountData;
+
+        GetBillRenderingResponse billRenderingResponse;
 
         List<AccountChargeModel> selectedAccountChargesModelList;
         List<Item> itemFilterList = new List<Item>();
         List<AccountBillPayHistoryModel> selectedBillingHistoryModelList;
         List<AccountBillPayFilter> billPayFilterList;
-
+        internal bool _isOwner { get; set; }
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
 
@@ -188,6 +196,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
             {
                 mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
+                GetBillRenderingAsync(mSelectedAccountData);
             }
         }
 
@@ -263,6 +272,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
+        [OnClick(Resource.Id.digital_container)]
+        void OnManageBillDelivery(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                SetDynatraceCTATags();
+                this.SetIsClicked(true);
+                Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                intent.PutExtra("accountNumber", mSelectedAccountData.AccountNum);
+                intent.PutExtra("isOwner", _isOwner);
+                StartActivity(intent);
+            }
+        }
+
         [OnClick(Resource.Id.btnViewDetails)]
         void OnViewDetails(object sender, EventArgs eventArgs)
         {
@@ -274,6 +298,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
                 intent.PutExtra("PENDING_PAYMENT", isPendingPayment);
                 intent.PutExtra("IS_VIEW_BILL_DISABLE", isViewBillDisable);
+                intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billRenderingResponse));
+                intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
+
                 StartActivity(intent);
             }
         }
@@ -412,11 +439,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
-        internal static ItemisedBillingMenuFragment NewInstance(AccountData selectedAccount)
+        internal static ItemisedBillingMenuFragment NewInstance(AccountData selectedAccount
+            , GetBillRenderingResponse billRenderingModel = null
+            , bool _isOwner = false)
         {
             ItemisedBillingMenuFragment billsMenuFragment = new ItemisedBillingMenuFragment();
             Bundle args = new Bundle();
             args.PutString(SELECTED_ACCOUNT_KEY, JsonConvert.SerializeObject(selectedAccount));
+            if (billRenderingModel != null)
+            {
+                args.PutString("billrenderingresponse", JsonConvert.SerializeObject(billRenderingModel));
+                args.PutString("_isOwner", JsonConvert.SerializeObject(_isOwner));
+            }
             billsMenuFragment.Arguments = args;
             return billsMenuFragment;
         }
@@ -425,6 +459,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             base.OnViewCreated(view, savedInstanceState);
             itemisedBillingInfoShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.itemisedBillingInfoShimmer);
+            paperlessTitle = view.FindViewById<TextView>(Resource.Id.paperlessTitle);
+            paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
             itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
             itemisedBillingInfoShimmer.StartShimmer();
             billFilterIcon.Enabled = false;
@@ -434,9 +470,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
                 btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle, btnRefresh,
                 btnChargeRefresh, btnBillingHistoryRefresh, accountSelectionRefresh);
-            TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount, emptyBillingHistoryMessage, unavailableBillMsg,
-                                            unavailableChargeMsg, refreshBillingHistoryMessage);
-            TextViewUtils.SetTextSize12(refreshBillingHistoryMessage);
+            TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount
+                , emptyBillingHistoryMessage, unavailableBillMsg, unavailableChargeMsg, refreshBillingHistoryMessage, paperlessTitle);
+            TextViewUtils.SetTextSize12(refreshBillingHistoryMessage, paperlessTitle);
             TextViewUtils.SetTextSize14(unavailableChargeMsg, itemisedBillingInfoNote, itemisedBillingInfoDate
                 , emptyBillingHistoryMessage, unavailableBillMsg);
             TextViewUtils.SetTextSize16(itemisedBillingInfoAmountCurrency, btnViewDetails, btnPayBill, myBillHistoryTitle
@@ -445,6 +481,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             RenderUI();
 
             mPresenter.GetBillingHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
+            digital_container.Visibility = ViewStates.Gone;
+
+
 
             try
             {
@@ -482,27 +521,199 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 accountSelectionRefresh.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
         }
+
+        private async void GetBillRenderingAsync(AccountData selectedAccount)
+        {
+            try
+            {
+                Activity.RunOnUiThread(async () =>
+                {
+                    try
+                    {
+                        GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
+                        AccountData dbrAccount = selectedAccount;
+                        bool isEligible = DBRUtility.Instance.IsAccountDBREligible;
+                        if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
+                            , EligibilitySessionCache.FeatureProperty.TargetGroup))
+                        {
+                            isEligible = isEligible
+                                && AccountTypeCache.Instance.IsAccountEligible(dbrAccount.AccountNum);
+                            Console.WriteLine("[DEBUG] Bills IsDBREnabled 0: " + isEligible);
+                            if (isEligible)
+                            {
+                                PostInstallationDetailsResponse installationDetailsResponse = await DBRManager.Instance.PostInstallationDetails(dbrAccount.AccountNum
+                                    , AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                                Console.WriteLine("[DEBUG] Bills RateCategory: " + installationDetailsResponse.RateCategory);
+                                Console.WriteLine("[DEBUG] Bills IsResidential: " + installationDetailsResponse.IsResidential);
+                                if (installationDetailsResponse != null
+                                    && installationDetailsResponse.StatusDetail != null
+                                    && installationDetailsResponse.StatusDetail.IsSuccess
+                                    && installationDetailsResponse.IsResidential)
+                                {
+                                    isEligible = true;
+                                }
+                                else
+                                {
+                                    isEligible = false;
+                                }
+                            }
+                        }
+
+                        if (isEligible)
+                        {
+                            if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                            {
+                                string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                                AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                            }
+                            billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum
+                                , AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                            _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
+                                ? selectedAccount.IsOwner
+                                : DBRUtility.Instance.IsCADBREligible(dbrAccount.AccountNum);
+
+                            if (billRenderingResponse != null
+                                && billRenderingResponse.StatusDetail != null
+                                && billRenderingResponse.StatusDetail.IsSuccess
+                                && billRenderingResponse.Content != null)
+                            {
+                                if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
+                                {
+                                    digital_container.Visibility = ViewStates.Gone;
+                                }
+                                else
+                                {
+                                    digital_container.Visibility = ViewStates.Visible;
+                                    if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBill
+                                        || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
+                                    {
+                                        bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
+                                    }
+                                    else if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Email
+                                        || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
+                                    {
+                                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
+                                    }
+                                    if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+                                    {
+                                        bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
+                                    }
+                                    paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
+                                    SetDynatraceScreenTags();
+                                }
+                            }
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public int GetItemisedBillingHeaderImageHeight()
         {
             return itemisedBillingHeaderImage.Height;
         }
+
         public int GetitemisedBillingInfoContainerHeight()
         {
             return itemisedBillingInfoContainer.Height;
         }
+
         public int GetitemisedBillingInfoShimmerHeight()
         {
             return itemisedBillingInfoShimmer.Height;
         }
+
         public int GetChargeAvailableContainerHeight()
         {
             return chargeAvailableContainer.Height;
         }
+
         public int GetchargeAvailableNoCTAContainerHeight()
         {
             return chargeAvailableNoCTAContainer.Height;
         }
-        
+
+        private void SetDynatraceScreenTags()
+        {
+            string dynatraceTag;
+            switch (billRenderingResponse.Content.CurrentRenderingMethod)
+            {
+                case MobileEnums.RenderingMethodEnum.EBill:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.Screens.Bills.EBill;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Email:
+                case MobileEnums.RenderingMethodEnum.Email:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.Screens.Bills.EBill_Email;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.Screens.Bills.EBill_Paper;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.Email_Paper:
+                case MobileEnums.RenderingMethodEnum.EBill_Email_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.Screens.Bills.EBill_Email_Paper;
+                        break;
+                    }
+                default:
+                    {
+                        dynatraceTag = string.Empty;
+                        break;
+                    }
+            }
+            DynatraceHelper.OnTrack(dynatraceTag);
+        }
+
+        private void SetDynatraceCTATags()
+        {
+            string dynatraceTag;
+            switch (billRenderingResponse.Content.CurrentRenderingMethod)
+            {
+                case MobileEnums.RenderingMethodEnum.EBill:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.Bills.EBill;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Email:
+                case MobileEnums.RenderingMethodEnum.Email:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.Bills.EBill_Email;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.Bills.EBill_Paper;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.Email_Paper:
+                case MobileEnums.RenderingMethodEnum.EBill_Email_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.Bills.EBill_Email_Paper;
+                        break;
+                    }
+                default:
+                    {
+                        dynatraceTag = string.Empty;
+                        break;
+                    }
+            }
+            DynatraceHelper.OnTrack(dynatraceTag);
+        }
+
         public void ShowShimmerLoading()
         {
             itemisedBillingHeaderImage.SetImageResource(Resource.Drawable.bill_menu_loading_banner);
@@ -701,9 +912,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingCTAContainer.Visibility = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId) ? ViewStates.Gone : ViewStates.Visible;
             itemisedBillingInfoNote.Text = GetLabelByLanguage("needToPay");
             itemisedBillingInfoAmount.Text = "0.00";
-            itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
-            itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
-            itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
+            itemisedBillingInfoNote.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
+            itemisedBillingInfoAmount.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
+            itemisedBillingInfoAmountCurrency.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
             itemisedBillingInfoDate.Visibility = ViewStates.Gone;
             itemisedBillingHeaderImage.SetImageResource(imageResource);
 
@@ -721,12 +932,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
             if (isEnable)
             {
-                btnViewDetails.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
+                btnViewDetails.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
                 btnViewDetails.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_button_background);
             }
             else
             {
-                btnViewDetails.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.silverChalice)));
+                btnViewDetails.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.silverChalice)));
                 btnViewDetails.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_button_background_disabled);
             }
 
@@ -872,9 +1083,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 {
                     itemisedBillingInfoNote.Text = GetLabelByLanguage("clearedBills");
                 }
-                itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
-                itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
-                itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
+                itemisedBillingInfoNote.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
+                itemisedBillingInfoAmount.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
+                itemisedBillingInfoAmountCurrency.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
                 itemisedBillingInfoDate.Visibility = ViewStates.Gone;
             }
             else if (accountChargeModel.IsPaidExtra)
@@ -886,17 +1097,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     itemisedBillingInfoDate.Text = GetLabelByLanguage("getBy") + " " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
                     itemisedBillingInfoDate.Visibility = ViewStates.Visible;
 
-                    itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
-                    itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
-                    itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
+                    itemisedBillingInfoNote.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmount.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmountCurrency.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
                 }
                 else
                 {
                     itemisedBillingInfoNote.Text = GetLabelByLanguage("paidExtra");
 
-                    itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
-                    itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#20bd4c"));
-                    itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#20bd4c"));
+                    itemisedBillingInfoNote.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmount.SetTextColor(Android.Graphics.Color.ParseColor("#20bd4c"));
+                    itemisedBillingInfoAmountCurrency.SetTextColor(Android.Graphics.Color.ParseColor("#20bd4c"));
                     itemisedBillingInfoDate.Visibility = ViewStates.Gone;
                 }
                 itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00", currCult);
@@ -908,9 +1119,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     imageResource = Resource.Drawable.bill_paid_extra_re_banner;
                     itemisedBillingInfoNote.Text = GetLabelByLanguage("beenPaidExtra");
                     itemisedBillingInfoDate.Visibility = ViewStates.Gone;
-                    itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
-                    itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
-                    itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
+                    itemisedBillingInfoNote.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmount.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmountCurrency.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
                 }
                 else
                 {
@@ -919,9 +1130,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     itemisedBillingInfoDate.Text = GetLabelByLanguage("by") + " " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
                     itemisedBillingInfoDate.Visibility = ViewStates.Visible;
 
-                    itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
-                    itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
-                    itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
+                    itemisedBillingInfoNote.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmount.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmountCurrency.SetTextColor(Android.Graphics.Color.ParseColor("#49494a"));
                 }
                 itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00", currCult);
             }
@@ -1218,7 +1429,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         Utility.LoggingNonFatalError(e);
                     }
                 });
-                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList());
+                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(_isOwner));
+
             }
             catch (System.Exception ex)
             {
@@ -1264,6 +1476,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public int GetButtonHeight()
         {
             return btnPayBill.Height;
+        }
+
+        public int GetDigitalContainerHeight()
+        {
+            return digital_container.Height;
         }
 
         public int OnGetEndOfScrollView()

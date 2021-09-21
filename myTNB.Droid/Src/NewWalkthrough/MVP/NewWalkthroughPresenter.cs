@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
@@ -153,6 +154,40 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
                     Image = "walkthrough_img_install_9"
                 });
+               /* UserEntity activeUser = UserEntity.GetActive();
+
+                if (activeUser != null)
+                {
+                    bool IsDigitalBillApplied = false; // MyTNBAccountManagement.GetInstance().IsDigitalBilApplied();
+                    bool IsBillPostConversion = true;
+                    if (IsDigitalBillApplied)
+                    {
+                        newWalkthroughList.Add(new NewWalkthroughModel()
+                        {
+                            Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
+                            Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
+                            Image = "walkthrough_img_install_9"
+                        });
+                    }
+                    else if (IsBillPostConversion)
+                    {
+                        newWalkthroughList.Add(new NewWalkthroughModel()
+                        {
+                            Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
+                            Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
+                            Image = "walkthrough_img_install_9"
+                        });
+                    }
+                    else
+                    {
+                        newWalkthroughList.Add(new NewWalkthroughModel()
+                        {
+                            Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
+                            Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
+                            Image = "walkthrough_img_install_9"
+                        });
+                    }
+                }*/
             }
 
             return newWalkthroughList;

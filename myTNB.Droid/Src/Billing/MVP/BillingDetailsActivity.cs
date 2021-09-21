@@ -7,8 +7,6 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Preferences;
-using Android.Text;
-using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
@@ -16,10 +14,12 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Java.Text;
+using myTNB.Mobile;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.CompoundView;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
@@ -28,6 +28,7 @@ using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
+using myTNB.Mobile.AWS.Models;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -70,6 +71,9 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.accountMinChargeLabel)]
         TextView accountMinChargeLabel;
 
+        [BindView(Resource.Id.paperlessTitle)]
+        TextView paperlessTitle;
+
         [BindView(Resource.Id.otherChargesExpandableView)]
         ExpandableTextViewComponent otherChargesExpandableView;
 
@@ -111,6 +115,16 @@ namespace myTNB_Android.Src.Billing.MVP
 
         [BindView(Resource.Id.infoLabelDetailEPP)]
         TextView infoLabelDetailEPP;
+
+        [BindView(Resource.Id.digital_container)]
+        LinearLayout digital_container;
+
+        [BindView(Resource.Id.bill_paperless_icon)]
+        ImageView bill_paperless_icon;
+
+        bool _isOwner;
+
+        GetBillRenderingResponse billRenderingResponse;
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
@@ -181,14 +195,13 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             return true;
         }
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetTheme(TextViewUtils.IsLargeFonts
                 ? Resource.Style.Theme_DashboardLarge
                 : Resource.Style.Theme_Dashboard);
-            TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, refreshBillingDetailMessage);
+            TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, refreshBillingDetailMessage, paperlessTitle);
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency,
                 accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
@@ -206,7 +219,7 @@ namespace myTNB_Android.Src.Billing.MVP
             }
 
             TextViewUtils.SetTextSize11(infoLabelDetailEPP);
-            TextViewUtils.SetTextSize12(accountAddress, refreshBillingDetailMessage, accountMinChargeLabel);
+            TextViewUtils.SetTextSize12(accountAddress, refreshBillingDetailMessage, accountMinChargeLabel, paperlessTitle);
             TextViewUtils.SetTextSize14(accountPayAmountDate, accountName, accountChargeLabel, accountChargeValue
                 , accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel);
             TextViewUtils.SetTextSize16(myBillDetailsLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
@@ -217,7 +230,9 @@ namespace myTNB_Android.Src.Billing.MVP
             accountMinChargeLabel.Text = GetLabelByLanguage("minimumChargeDescription");
             btnViewBill.Text = GetLabelCommonByLanguage("viewBill");
             btnPayBill.Text = GetLabelByLanguage("pay");
+            paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+            digital_container.Visibility = ViewStates.Gone;
             Bundle extras = Intent.Extras;
 
             if (extras.ContainsKey("SELECTED_ACCOUNT"))
@@ -245,6 +260,37 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 isCheckPendingPaymentNeeded = true;
                 isPendingPayment = false;
+            }
+            if (extras.ContainsKey("billrenderingresponse"))
+            {
+                billRenderingResponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
+                if (billRenderingResponse != null)
+                {
+                    if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
+                    {
+                        digital_container.Visibility = ViewStates.Gone;
+                    }
+                    else
+                    {
+                        digital_container.Visibility = ViewStates.Visible;
+                        if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBill
+                            || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
+                        {
+                            bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
+                        }
+                        else if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Email
+                            || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
+                        {
+                            bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
+                        }
+                        if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+                        {
+                            bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
+                        }
+                        paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
+                        SetDynatraceScreenTags();
+                    }
+                }
             }
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
@@ -301,6 +347,94 @@ namespace myTNB_Android.Src.Billing.MVP
             }
         }
 
+        private void SetDynatraceCTATags()
+        {
+            string dynatraceTag;
+            switch (billRenderingResponse.Content.CurrentRenderingMethod)
+            {
+                case MobileEnums.RenderingMethodEnum.EBill:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.BillDetails.EBill;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Email:
+                case MobileEnums.RenderingMethodEnum.Email:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.BillDetails.EBill_Email;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.BillDetails.EBill_Paper;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.Email_Paper:
+                case MobileEnums.RenderingMethodEnum.EBill_Email_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.BillDetails.EBill_Email_Paper;
+                        break;
+                    }
+                default:
+                    {
+                        dynatraceTag = string.Empty;
+                        break;
+                    }
+            }
+            DynatraceHelper.OnTrack(dynatraceTag);
+        }
+
+        private void SetDynatraceScreenTags()
+        {
+            string dynatraceTag;
+            switch (billRenderingResponse.Content.CurrentRenderingMethod)
+            {
+                case MobileEnums.RenderingMethodEnum.EBill:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.Screens.BillDetails.EBill;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Email:
+                case MobileEnums.RenderingMethodEnum.Email:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.Screens.BillDetails.EBill_Email;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.Screens.BillDetails.EBill_Paper;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.Email_Paper:
+                case MobileEnums.RenderingMethodEnum.EBill_Email_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.Screens.BillDetails.EBill_Email_Paper;
+                        break;
+                    }
+                default:
+                    {
+                        dynatraceTag = string.Empty;
+                        break;
+                    }
+            }
+            DynatraceHelper.OnTrack(dynatraceTag);
+        }
+
+        [OnClick(Resource.Id.digital_container)]
+        void OnManageBillDelivery(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                SetDynatraceCTATags();
+                _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
+                    ? selectedAccountData.IsOwner
+                    : DBRUtility.Instance.IsCADBREligible(selectedAccountData.AccountNum);
+                Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                intent.PutExtra("accountNumber", selectedAccountData.AccountNum);
+                intent.PutExtra("isOwner", _isOwner);
+                StartActivity(intent);
+            }
+        }
         private void EnableEppTooltip(bool isTooltipShown)
         {
             if (isTooltipShown == true)
@@ -712,7 +846,7 @@ namespace myTNB_Android.Src.Billing.MVP
             Handler h = new Handler();
             Action myAction = () =>
             {
-                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.billingDetailsPresenter.OnGeneraNewAppTutorialList(),true);
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.billingDetailsPresenter.OnGeneraNewAppTutorialList(), true);
             };
             h.PostDelayed(myAction, 100);
         }

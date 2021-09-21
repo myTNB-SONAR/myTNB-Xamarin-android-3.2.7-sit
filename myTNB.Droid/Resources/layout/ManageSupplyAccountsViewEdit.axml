@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:padding="18dp">
+            android:padding="18dp"
+            android:id="@+id/layoutNickName">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -68,7 +69,8 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical"
-            android:padding="18dp">
+            android:padding="18dp"
+            android:id="@+id/accountLayout">
             <TextView
                 android:id="@+id/txtAccountNumber"
                 android:layout_width="match_parent"
@@ -107,6 +109,70 @@
             android:minHeight="25px"
             android:minWidth="25px"
             android:orientation="vertical"/>
+
+        <View
+			android:id="@+id/view3"
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:background="@color/platinumGrey"
+            android:visibility="gone"/>
+
+        <LinearLayout
+				android:id="@+id/ManageBill_container"
+				android:layout_width="match_parent"
+				android:layout_height="50dp"
+				android:layout_marginTop="8dp"
+				android:paddingLeft="24dp"
+				android:orientation="horizontal"
+				android:background="@color/white"
+				android:paddingBottom="12dp"
+				android:visibility="gone">
+				<ImageView
+					android:id="@+id/display_insights_paperless"
+					android:layout_marginTop="12dp"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="24dp"
+					android:src="@drawable/icons_display_paperless"/>
+				<TextView
+					android:id="@+id/manageBillTitle"
+					android:layout_marginTop="16dp"
+					android:text="Manage Bill Delivery"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:textSize="14dp"
+					android:textColor="@color/tunaGrey"/>
+				
+				<LinearLayout
+					android:id="@+id/icon_myaccount_new"
+					android:layout_width="26dp"
+					android:layout_height="wrap_content"
+					android:background="@drawable/new_label"
+					android:layout_marginTop="18dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:visibility="visible"
+					android:gravity="center">
+				<TextView
+					android:id="@+id/txtNewLabel"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/charcoalGrey"
+					android:textSize="8dp"
+					android:gravity="center"
+					android:layout_gravity="center|center_vertical"
+					android:text="New"/>
+				</LinearLayout>
+					<ImageView
+						android:id="@+id/imgRightArrow"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginRight="16dp"
+						android:layout_marginTop="16dp"
+						android:src="@drawable/expand_right_arrow"/>
+	    </LinearLayout>
+	
 
         <FrameLayout
             android:layout_width="match_parent"

@@ -14,6 +14,7 @@ using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.PreLogin.Activity;
@@ -87,11 +88,27 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         selectedDot.SetImageResource(Resource.Drawable.onboarding_circle_inactive);
                     }
                 }
-
+                //UserEntity activeUser = UserEntity.GetActive();
                 //if (position == (MyTNBAccountManagement.GetInstance().IsAppointmentDisabled
+                //   ? (newWalkthroughAdapter.Count - 1)
+                //   : (newWalkthroughAdapter.Count - 2)))
+                //{
+                //    ShowSubmitButton(true);
+                //}
+                //else
+                //{
+                //    ShowSubmitButton(false);
+                //}
+                //if (position == (MyTNBAccountManagement.GetInstance().IsDigitalBillDisabled
                 //    ? (newWalkthroughAdapter.Count - 1)
-                //    : (newWalkthroughAdapter.Count - 2)))
-                if(position == newWalkthroughAdapter.Count - 2)
+                //    : (newWalkthroughAdapter.Count - 2)) && activeUser != null)
+                //{
+                //    ISharedPreferences mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+                //    ISharedPreferencesEditor editor = mPref.Edit();
+                //    editor.PutBoolean("hasItemizedBillingNMSMTutorialShown", false);
+                //    editor.Apply();
+                //}
+                if (position == newWalkthroughAdapter.Count - 2)
                 {
                     ShowSubmitButton(true);
                 }

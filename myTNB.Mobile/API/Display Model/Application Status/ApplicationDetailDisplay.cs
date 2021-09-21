@@ -920,7 +920,7 @@ namespace myTNB.Mobile
             {
                 string format = "{0} {1}";
                 string amountString = Amount.IsValid() ? Amount : "0.00";
-                return string.Format(format, Constants.Constants_Currency, amountString);
+                return string.Format(format, MobileConstants.Constants_Currency, amountString);
             }
         }
     }

@@ -6,6 +6,7 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
+using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
@@ -112,8 +113,13 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                         {
                             //string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
 
-                            GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest();
-                            CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
+                            // GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest();
+                            // CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
+                            bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
+
+                            GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
+                            baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
+                            CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
                             if (customerAccountListResponse.IsSuccessResponse())
                             {
                                 if (customerAccountListResponse.GetData().Count > 0)
@@ -135,7 +141,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                                     NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
                                 }
                             }
-                            UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new BaseRequest());
+                            UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new BaseRequest());
                             if (response.IsSuccessResponse())
                             {
                                 try

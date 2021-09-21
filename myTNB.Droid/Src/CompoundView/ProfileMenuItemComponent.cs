@@ -62,6 +62,16 @@ namespace myTNB_Android.Src.CompoundView
                 metrics.ScaledDensity = configuration.FontScale * metrics.Density;
 
                 Resources.UpdateConfiguration(configuration, metrics);
+
+
+                //Configuration configuration = Resources.Configuration;
+                //DeviceSizeCache.FontScale = configuration.FontScale;
+                //configuration.FontScale = DeviceSizeCache.FontScale;
+
+                //DisplayMetrics metrics = Resources.DisplayMetrics;
+                //metrics.ScaledDensity = configuration.FontScale * metrics.Density;
+
+                //Resources.UpdateConfiguration(configuration, metrics);
             }
             catch (Java.Lang.Exception javaEx)
             {

@@ -12,6 +12,10 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using myTNB;
+using myTNB.Mobile;
+using myTNB_Android.Src.AppLaunch.Models;
+using Android.Content;
+using myTNB_Android.Src.DeviceCache;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -21,9 +25,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         private readonly string TAG = typeof(ProfileMenuPresenter).Name;
         private List<CreditCardData> cardList = new List<CreditCardData>();
         CancellationTokenSource cts;
+       // private ISharedPreferences mPref;
 
+        //public ProfileMenuPresenter(ProfileMenuContract.IView mView, ISharedPreferences pref)
         public ProfileMenuPresenter(ProfileMenuContract.IView mView)
         {
+            //this.mPref = pref;
             this.mView = mView;
         }
 
@@ -138,6 +145,24 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         {
                             int newRecord = UserNotificationTypesEntity.InsertOrReplace(notificationType);
                             Console.WriteLine(string.Format("New Type Created {0}", newRecord));
+
+                            if (notificationType.MasterId == "1000020")
+                            {
+                                NotificationTypes type = new NotificationTypes()
+                                {
+                                    MasterId = notificationType.Id,
+                                    Title = notificationType.Title,
+                                    Code = notificationType.Code,
+                                    PreferenceMode = notificationType.PreferenceMode,
+                                    Type = notificationType.Type,
+                                    CreatedDate = notificationType.CreatedDate,
+                                    Id = notificationType.MasterId,
+                                    IsOpted = notificationType.IsOpted,
+                                    ShowInPreference = notificationType.ShowInPreference,
+                                    ShowInFilterList = notificationType.ShowInFilterList
+                                };
+                                NotificationTypesEntity.InsertOrReplace(type);
+                            }
                         }
 
                         foreach (UserNotificationChannel notificationChannel in notificationChannelApi.GetData())
@@ -204,6 +229,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             UserEntity userEntity = UserEntity.GetActive();
             try
             {
+                EligibilitySessionCache.Instance.Clear();
                 if (userEntity != null)
                 {
                     var logoutResponse = await ServiceApiImpl.Instance.LogoutUser(new LogoutUserRequest());
@@ -215,6 +241,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     AppInfoManager.Instance.SetUserInfo("0"
                         , string.Empty
                         , string.Empty
+                        , UserSessions.GetDeviceId()
+                        , DeviceIdUtils.GetAppVersionName()
+                        , MobileConstants.OSType.Android
+                        , TextViewUtils.FontInfo
                         , LanguageUtil.GetAppLanguage() == "MS"
                             ? LanguageManager.Language.MS
                             : LanguageManager.Language.EN);

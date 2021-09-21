@@ -109,6 +109,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
             /// </summary>
             /// <param name="exception"></param>
             void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, string name, List<Models.AddAccount> accounts);
+            //void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, List<Models.AddAccountV2> accounts);
 
             void InsertingInSummarydashBoard(List<CustomerBillingAccount> customerBillingAccounts);
 

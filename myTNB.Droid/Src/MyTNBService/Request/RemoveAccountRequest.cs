@@ -14,8 +14,8 @@ namespace myTNB_Android.Src.MyTNBService.Request
             deviceInf = new DeviceInfoRequest();
             this.AccountNo = accNum;
             removeAccounts = accountList;
-            
+
         }
-        
+
     }
 }

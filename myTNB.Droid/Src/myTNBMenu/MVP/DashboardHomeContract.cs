@@ -188,7 +188,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			void OnResetEppTooltip();
 
 			void OnResetWhereIsMyAccNumber();
+
             void SetMenuMoreCheck();
+			
             void PopulateIdentificationDetails();
         }
 

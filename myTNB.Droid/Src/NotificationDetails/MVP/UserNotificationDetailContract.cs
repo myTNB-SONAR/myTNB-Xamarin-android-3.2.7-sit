@@ -25,6 +25,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void ShowPaymentReceiptError();
             void ShowLoadingScreen();
             void HideLoadingScreen();
+            void ViewTips();
 
             /// <summary>
             /// 
@@ -48,6 +49,10 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             /// Show notification list as deleted
             /// </summary>
             void ShowNotificationListAsDeleted();
+            
+            void RenderUI();
+            
+            void ReturnToDashboard();
         }
     }
 }

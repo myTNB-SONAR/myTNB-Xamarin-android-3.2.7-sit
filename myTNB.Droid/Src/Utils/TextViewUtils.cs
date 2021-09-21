@@ -117,6 +117,14 @@ namespace myTNB_Android.Src.Utils
             }
         }
 
+        public static string FontInfo
+        {
+            get
+            {
+                return IsLargeFonts ? "L" : "N";
+            }
+        }
+
         private static float GetFontSize(float font)
         {
             var Key = SelectedFontSize();

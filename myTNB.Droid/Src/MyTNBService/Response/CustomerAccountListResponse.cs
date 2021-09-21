@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -93,6 +93,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "state")]
             public string state { get; set; }
+
+            [JsonProperty(PropertyName = "BudgetAmount")]
+            public string BudgetAmount { get; set; }
 
         }
     }

@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
+using myTNB.Mobile;
+using myTNB.Mobile.Extensions;
 using static myTNB.LanguageManager;
 
 namespace myTNB
@@ -31,17 +35,58 @@ namespace myTNB
         /// <param name="roleID">0 for All 16 for Consumers</param>
         /// <param name="userID">SSPUID</param>
         /// <param name="userName">Email or EID</param>
+        /// <param name="deviceToken">UUDID</param>
+        /// <param name="appVersion">ie: 2.3.3</param>
+        /// <param name="fontSize">App Font size N or L</param>
         /// <param name="language">Language Selected in the App</param>
         public void SetUserInfo(string roleID
             , string userID
             , string userName
+            , string deviceToken
+            , string appVersion
+            , string osType
+            , string fontSize = "N"
             , Language language = Language.EN)
         {
+            //App Info
             this.Language = language;
             RoleId = roleID ?? string.Empty;
             UserId = userID ?? string.Empty;
             UserName = userName ?? string.Empty;
             Lang = this.Language.ToString();
+
+            //View Info
+            ViewInfoHeader = new ViewInfoHeader
+            {
+                DeviceToken = deviceToken,
+                AppVersion = appVersion.IsValid()
+                    ? appVersion.Replace("v", string.Empty)
+                    : string.Empty,
+                RoleId = roleID,
+                Lang = language.ToString(),
+                FontSize = fontSize.ToUpper() == "L" ? "L" : "N",
+                OSType = osType
+            };
+        }
+
+        private ViewInfoHeader ViewInfoHeader { set; get; }
+
+        internal string ViewInfo
+        {
+            get
+            {
+                try
+                {
+                    ViewInfoHeader.AppVersion = Regex.Replace(ViewInfoHeader.AppVersion, @"\(.*?\)", "");
+                    ViewInfoHeader.AppVersion = Regex.Replace(ViewInfoHeader.AppVersion, @"[^0-9.,]+", "");
+                    return Newtonsoft.Json.JsonConvert.SerializeObject(ViewInfoHeader);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("[DEBUG] ViewInfo Error: " + e.Message);
+                }
+                return string.Empty;
+            }
         }
 
         public void SetPlatformUserInfo(object userInfo)

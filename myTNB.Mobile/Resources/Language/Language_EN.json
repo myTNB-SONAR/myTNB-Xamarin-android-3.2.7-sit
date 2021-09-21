@@ -105,8 +105,13 @@
 
     //Irul Add
     "tutorialSwipeTextNew": "Swipe to see more, double tap to dismiss.",
-    "tutorialSwipeTextlastNew": "Double tap to dismiss."
+    "tutorialSwipeTextlastNew": "Double tap to dismiss.",
 
+    "dbrPaperBill": "You’re receiving <b>Paper Bill</b> for this account. <b>Jom paperless today!</b>",
+    "dbrPaperBillNonOwner": "You’re receiving Paper Bill for this account.",
+    "dbrEmail": "You’re receiving <b>myTNB & Email Bills</b> for this account.",
+    "dbrWhatsApp": "You’re receiving <b>myTNB & Whatsapp Bills</b> for this account.",
+    "dbrViaMyTNB": "Your account is environmentally friendly with <b>myTNB Bill!</b>"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -241,7 +246,18 @@
     "tutorialAccountTitleNew": "View your accounts all in one place.",
     "tutorialMoreAcctsDescNew": "An account under your name has been added into your myTNB! Give your account a nickname for your easy reference.",
     "tutorialAccountTitleNewSec": "View and add your accounts all in one place.",
-    "tutorialNoAcctDescNew": "View and add your accounts all in one place. Add an electricity account to myTNB now and you’ll have access to your usage, bills and manage your account."
+    "tutorialNoAcctDescNew": "View and add your accounts all in one place. Add an electricity account to myTNB now and you’ll have access to your usage, bills and manage your account.",
+    "dbrReminderPopupTitle": "Jom paperless with myTNB Bill today!",
+    "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill onwards! With myTNB, you have a better and more environmentally friendly way to receive your paperless bills digitally via myTNB App & Portal.",
+    "dbrReminderPopupStartNow": "View More",
+    //EnergyBudget
+    "energyBudget": "My Energy<br>Budget",
+    "tutorialEnergyBudgetTitle": "Begin your Energy Budget journey",
+    "tutorialEnergyBudgetDesc": "Access Energy Budget easily from homepage to start setting up your desired monthly bill amount",
+    //DiscoverMore
+    "DiscoverMore": "Discover More",
+    "DiscoverMoreTitle": "The new Energy Budget feature is here!",
+    "DiscoverMoreDate": "07 May 2021"
   },
   "Tabbar": {
     "home": "Home",
@@ -275,6 +291,7 @@
     //add new by irul
     "tncsmrNew": "By subscribing to Self Meter Reading, I understand and agree on the <a href=\"\\\"><strong>Self Meter Reading Terms and Conditions</strong></a>, <a href=\"\\\"><strong>TNB's Terms of Use and Personal Data Protection Policy</strong></a>. I also agree to submit meter reading on a monthly basis except non Self Meter Reading month"
   },
+
   "SSMRApplicationTnc": {
     "title": "Self Meter Reading",
     "termsnCondition": "Self Meter Reading Terms and Conditions",
@@ -282,8 +299,10 @@
     "pdpa": "Personal Data Protection Policy",
     "termsofUsePolicy": "https://www.tnb.com.my/terms-policy/",
     "pdpaPolicy": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
-    "tncData": "<p>1.Upon successful registration, you are required to submit your reading for all months except for April, August and December where we will do the reading.</p><p>2.Every month, you will receive a notification from us to submit your reading. Kindly submit the readings within the specified date.</p><p>3.We will validate your readings immediately upon submission. Once validated, you can view your bill via myTNB Portal and myTNB App on the following day.</p><p>4.We will estimate your reading based on average consumption; if the validation is unsuccessful or not submitted within the specified period.</p><p>5.We shall make the necessary adjustments if there are any differences found in the readings submitted.</p><p>6.You may no longer enjoy this service if:</p><p> a)There are no readings submitted for 2 consecutive months.</p><p> b)If you no longer meet the requirements (E.g. Supply disconnected, Close of Account, Change of Tariff and others)</p>"
+    "tncData": "<p>1.Upon successful registration, you are required to submit your reading for all months except for April, August and December where we will do the reading.</p><p>2.Every month, you will receive a notification from us to submit your reading. Kindly submit the readings within the specified date.</p><p>3.We will validate your readings immediately upon submission. Once validated, you can view your bill via myTNB Portal and myTNB App on the following day.</p><p>4.We will estimate your reading based on average consumption; if the validation is unsuccessful or not submitted within the specified period.</p><p>5.We shall make the necessary adjustments if there are any differences found in the readings submitted.</p><p>6.You may no longer enjoy this service if:</p><p> a)There are no readings submitted for 2 consecutive months.</p><p> b)If you no longer meet the requirements (E.g. Supply disconnected, Close of Account, Change of Tariff and others)</p>",
+    "tncsmrNew": "By subscribing to Self Meter Reading, I understand and agree on the <a href=\"\\\"><strong>Self Meter Reading Terms and Conditions</strong></a>, <a href=\"\\\"><strong>TNB's Terms of Use and Personal Data Protection Policy</strong></a>. I also agree to submit meter reading on a monthly basis except non Self Meter Reading month"
   },
+
   "Status": {
     "feedbackSuccessTitle": "Feedback Successful",
     "feedbackFailTitle": "Feedback Unsuccessful",
@@ -421,7 +440,11 @@
   },
   "SelectElectricityAccounts": {
     "title": "Select Electricity Account",
-    "accountsMissing": "Why are some of my accounts not here?"
+    "accountsMissing": "Why are some of my accounts not here?",
+    "dbrAccountsMissingTitlePilot": "Why are some of my accounts not here?",
+    "dbrMissingAccountsMessagePilot": "In our push for a more sustainable future, we’re introducing this as a pilot program for Smart Meter accounts in smaller areas of Malaysia and are showing you only <b>electricity accounts that are eligible for digital bills</b>. We’re working hard for the program to expand nationwide and be available to all your other accounts soon!",
+    "dbrAccountsMissingTitleNationwide": "Why are some of my accounts not here?",
+    "dbrMissingAccountsMessageNationwide": "In our push for a more sustainable future, we’re introducing this as a pilot program for Smart Meter accounts in smaller areas of Malaysia and are showing you only <b>electricity accounts that are eligible for digital bills</b>. We’re working hard for the program to expand nationwide and be available to all your other accounts soon!"
   },
   "Usage": {
     "title": "Usage",
@@ -445,7 +468,7 @@
     "iWillGetBy": "I will get by",
     "emptyDateAmount": "- -",
     "viewDetails": "View Details",
-    "needToPay": "I need to pay",
+    "needToPay": "My amount due",
     "paidExtra": "I've paid extra",
     "clearedAllBills": "I've cleared all bills",
     "by": "by",
@@ -461,14 +484,27 @@
     "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
     //added by yana
     "accountTypeDialogTitle": "View this electricity account on myTNB Portal for a better experience!",
-    "accountTypeDialogMessage": "You can log in to myTNB <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> using the same login details and enjoy full access to the account."
+    "accountTypeDialogMessage": "You can log in to myTNB <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> using the same login details and enjoy full access to the account.",
+    //EnergyBudget
+    "myMonthlyBudget": "My monthly budget is",
+    "whyIsAmountDiff": "Will this be my final bill amount?",
+    "whyIsAmountDiffBody": "Its simple! The amount displayed is your usage which is the energy used so far. Your final bill will include tax, discounts or additional charges.",
+    "editEnergyButton": "Edit Budget",
+    "setEnergyButton": "Set Now",
+    "saveEnergyButton": "Save New Budget",
+    "toastSaveBudgetuccessfull": "You've successfully saved your monthly budget!",
+    "myUsageSoFar": "My usage so far",
+    "disconnectedEnergyBudget": "Uh-oh, looks like your Energy Budget have been unplugged. Refresh to stay plugged in!",
+    "refreshNowEnergyBudgetButton": "Refresh Now",
+    "youHaveNotSetBudget": "You have not set up your Energy Budget",
+    "youHaveNotSetBudgetSubtitle": "Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!"
   },
   "Bills": {
     "title": "Bills",
     "clearedBills": "I’ve cleared all bills",
     "viewMore": "View Details",
     "paidExtra": "I’ve paid extra",
-    "needToPay": "I need to pay",
+    "needToPay": "My amount due",
     "by": "by",
     "getBy": "get by",
     "myEarnings": "My earnings",
@@ -518,7 +554,7 @@
     "billDetails": "My Charges",
     "outstandingCharges": "My outstanding charges",
     "billThisMonth": "My latest bill",
-    "needToPay": "I need to pay",
+    "needToPay": "My amount due",
     "by": "by",
     "paidExtra": "I’ve paid extra",
     "clearedBills": "I’ve cleared all bills",
@@ -608,7 +644,12 @@
     "viewReceipt": "View Receipt",
     "viewManageAccess": "Manage Access",
     "viewAccount": "View Account",
-    "addNickname": "Add Nickname"
+    "addNickname": "Add Nickname",
+    //EnergyBudget
+    "viewBudget": "View Budget",
+    "viewTips": "View Tips",
+    "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks",
+    "EnergyBudgetTitle": "Energy Budget"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -896,9 +937,9 @@
     "manageUserBackTitle": "Are you sure want to leave without saving changes you made to {0}'s access?",
     "manageUserBackMessage": "The changes to {0}'success will not be saved if you choose to leave this page and their accesses will remain as before.",
     "manageUserAccess": "Manage User Access",
-    "manageAutopay": "Manage Autopay"
-
-
+    "manageAutopay": "Manage Autopay",
+    "dbrManageDeliveryMethod": "Manage Bill Delivery",
+    "dbrViewBillDelivery": "View Bill Delivery"
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
@@ -1291,7 +1332,19 @@
     "applicationStatusDetailsActionOneTitle": "View your status progress here.",
     "applicationStatusDetailsActionOneMessage": "Stay updated with your real-time status. Visit the myTNB Portal to continue or update your application.",
     "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
-    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submitted application here."
+    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submitted application here.",
+    "dbrBillTitle": "Your account bill delivery method.",
+    "dbrBillMessage": "View your bill delivery method here and tap to manage your preference.",
+    "dbrBillTitleTenant": "Your account bill delivery method.",
+    "dbrBillMessageTenant": "View your bill delivery method here and tap for more details.",
+    "manageCAManageBillDeliveryTitle": "Your account bill delivery method.",
+    "manageCAManageBillDeliveryMessage": "View and directly manage your bill delivery method here.",
+    "manageCAViewBillDeliveryTitle": "Your account bill delivery method.",
+    "manageCAViewBillDeliveryMessage": "View your bill delivery method here.",
+    "manageDeliveryMethodUpdateCTATitle": "Manage your bill delivery method.",
+    "manageDeliveryMethodUpdateCTAMessage": "Update your bill delivery method for this account here.",
+    "manageDeliveryMethodEmailTitle": "Recipient(s) of email bills.",
+    "manageDeliveryMethodEmailMessage": "View email recipients who are receiving monthly bills for this account."
   },
   "Tnb_Profile": {
     "title": "myTNB Profile",
@@ -2588,6 +2641,83 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "Eligibility": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "GetEligibility": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "GenerateAccessToken": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "BillRendering": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "MultiBillRendering": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "InstallationDetails": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "MultiInstallationDetails": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -2606,7 +2736,6 @@
       }
     ]
   },
-
   "AddUserAccess": {
     "title": "Add New User",
     "titleAddNewUser": "Provide user’s email address they use for their myTNB account.",
@@ -2621,5 +2750,80 @@
     "addUserButton": "Add User",
     "userExistedHeader": "This user has already been added to your account user list.",
     "userExistedDetails": "This user already has access to your account. Try another email address."
+  },
+
+  "ManageDigitalBillLanding": {
+    "title": "Manage Bill Delivery",
+    "dbrViewBillDelivery": "View Bill Delivery",
+    "dbrInfoTitle0": "You’re receiving Paper Bill for this account.",
+    "dbrInfoTitle1": "A step towards a greener earth.",
+    "dbrInfoTitle2": "Fast and convenient bill viewing.",
+    "dbrInfoTitle3": "Secure billing for peace of mind.",
+    "dbrInfoDescription0": "Swipe left to learn how you can benefit from going paperless today!",
+    "dbrInfoDescription1": "Reduce your paper waste and be the first to make your impact in our collective move towards a more sustainable future.",
+    "dbrInfoDescription2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills conveniently on myTNB App & Portal, anytime, anywhere.",
+    "dbrInfoDescription3": "Get your bills directly and securely on myTNB. No more worries about others seeing your bills, risk getting stolen or lost in the mail.",
+    "anotherDeliveryMethod": "What if I want another bill delivery method?",
+    "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "What if I want another bill delivery method?",
+    "nonOwnerPreLaunchAnotherDeliveryMethodDetails": "Your bills will always be available on myTNB App & Portal. However, if you prefer another method you may call TNB Careline at <a href=\"tel: 1300885454\">1-300-88-5454</a> or visit any Kedai Tenaga so we can assist you.",
+    "goPaperlessCTA": "Jom Paperless Now",
+    "updateBillDeliveryMethodCTA": "Update Bill Delivery Method",
+    "deliveringToTitle": "Delivering to",
+    "you": "(You)",
+    "eBillTitle": "Your account is environmentally friendly with myTNB Bill!",
+    "emailBillTitle": "You’re receiving myTNB & Email Bills.",
+    "eBillDescription": "Your bills are being delivered on myTNB App & Portal. Thank you for going paperless!",
+    "emailBillDescription": "Your bills are being delivered on myTNB App & Portal and email for this account.",
+    "updatingTitle": "We’re currently updating your bill delivery method.",
+    "updatingDescription": "It may take up to 5 minutes to reflect the changes on your myTNB account and you won’t be able to view it during this time. Check back later!",
+    "selectAccount": "SELECT YOUR ACCOUNT",
+    "notEligibleAccountsTitlePilot": "Why are some of my accounts not here?",
+    "notEligibleAccountsMessagePilot": "We're introducing this as a pilot program for Smart Meter accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We’re working hard towards expanding it nationwide, so it'll be available to all your other accounts soon! Please stay tuned!",
+    "notEligibleAccountsTitleNationwide": "Why are some of my accounts not here?",
+    "notEligibleAccountsMessageNationwide": "We're introducing this as a pilot program for Smart Meter accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We’re working hard towards expanding it nationwide, so it'll be available to all your other accounts soon! Please stay tuned!",
+    "nonOwnerPaperTitle": "You’re receiving Paper Bill for this account.",
+    "nonOwnerPaperMessage": "Your bills are being delivered to its premises address.",
+    "nonOwnerEBillTitle": "Your account is environmentally friendly with myTNB Bill!",
+    "nonOwnerEmailBillTitle": "You’re receiving myTNB & Email Bills.",
+    "nonOwnerEBillDescription": "Your bills are being delivered on myTNB App & Portal. Thank you for playing your part!",
+    "nonOwnerEmailBillDescription": "Your bills are being delivered on myTNB App & Portal and email for this account."
+  },
+  "DBRWebview": {
+    "goPaperless": "Jom Paperless!",
+    "updateBillDelivery": "Update Bill Delivery Method",
+    "confirmPopupTitle": "Leave this page?",
+    "confirmPopupMessage": "You are about to close this page and end your session.",
+    "nevermind": "Nevermind",
+    "confirm": "Confirm"
+  },
+  "EnregyBudgetListing": {
+    "title": "Select Smart Meter Account",
+    "tootltipTitle": "Why are some of my accounts not listed?",
+    "tooltipBody": "As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. Once your normal meter has been converted into Smart Meter, it will be automatically added into the list."
+  },
+  "EnergyBudgetPopup": {
+    "title": "Take control of your energy usage with the new Energy Budget feature!",
+    "threeEasyStep": "Saving money in 3 easy steps:",
+    "firstStep": "SET a budget for your monthly energy usage",
+    "secondStep": "MONITOR your energy usage right at your fingertips",
+    "thirdStep": "SAVINGS starts with you getting notified when reaching your set budget",
+    "txtLetgetstarted": "Let's Get Started",
+    "txtViewmybudget": "View My Budget",
+    "txtMaybelater": "Maybe Later"
+  },
+  "ServiceConfiguration": {
+    "Eligibility": {
+      "enabled": true,
+      "callInterval": 480
+    },
+    "GetEligibility": {
+      "enabled": true,
+      "callInterval": 480
+    },
+    "ForceHideDBRBanner": false,
+    "BillRendering": {
+      "enabled": true
+    }
+
   }
 }

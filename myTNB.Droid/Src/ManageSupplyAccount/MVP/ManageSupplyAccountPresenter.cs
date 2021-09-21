@@ -59,6 +59,15 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                 this.mView.ShowRemoveProgress();
             }
 
+            bool isTaggedSmartMeter = false;
+            for (int i = 0; i < UserSessions.GetEnergyBudgetList().Count; i++)
+            {
+                if (UserSessions.GetEnergyBudgetList()[i].accountNumber == accountData.AccountNum)
+                {
+                    isTaggedSmartMeter = true;
+                }
+            }
+
             UserEntity user = UserEntity.GetActive();
             try
             {
@@ -69,6 +78,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                 string dt = JsonConvert.SerializeObject(removeAccountRequest);
 
                 var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(removeAccountRequest);
+                //var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(accountData.AccountNum, isTaggedSmartMeter));
 
                 if (mView.IsActive())
                 {

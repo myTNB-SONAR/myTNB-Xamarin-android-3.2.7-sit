@@ -31,15 +31,14 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
 using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponse;
 using myTNB;
-using Firebase.Iid;
 using System.Net.Http;
 using DynatraceAndroid;
+using myTNB_Android.Src.myTNBMenu.Async;
 using fbm = Firebase.Messaging;
 using Android.Gms.Extensions;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
-
     public class AppLaunchPresenter : AppLaunchContract.IUserActionsListener
     {
         private AppLaunchContract.IView mView;
@@ -66,8 +65,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             this.mView.ShowWalkThrough();
         }
-
-
 
         /// <summary>
         /// Load accounts from API
@@ -137,14 +134,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     fcmToken = token.ToString();
                     FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
                 }
-             catch (Exception e)
-             {
-                 Utility.LoggingNonFatalError(e);
-             }
-            
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
             }
             System.Diagnostics.Debug.WriteLine("[DEBUG] FCM TOKEN: " + fcmToken);
-            Console.WriteLine("[CONSOLE] FCM TOKEN: " + fcmToken);
+            Log.Debug("[DEBUG]", "FCM TOKEN: " + fcmToken);
             //Testing End
             this.mView.SetAppLaunchSuccessfulFlag(false, AppLaunchNavigation.Nothing);
             cts = new CancellationTokenSource();
@@ -196,7 +193,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         bool phoneVerified = UserSessions.GetPhoneVerifiedFlag(mSharedPref);
                                         if (!phoneVerified)
                                         {
-                                            var phoneVerifyResponse = await ServiceApiImpl.Instance.PhoneVerifyStatus(new BaseRequest());
+                                            var phoneVerifyResponse = await ServiceApiImpl.Instance.PhoneVerifyStatus(new MyTNBService.Request.BaseRequest());
 
                                             if (phoneVerifyResponse != null && phoneVerifyResponse.Response != null &&
                                                 phoneVerifyResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
@@ -242,7 +239,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     if (proceed)
                                     {
                                         UserEntity loggedUser = UserEntity.GetActive();
-                                                                          
+
                                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                                         HomeMenuUtils.ResetAll();
                                         SummaryDashBoardAccountEntity.RemoveAll();
@@ -288,14 +285,39 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         AppInfoManager.Instance.SetUserInfo("16"
                                             , loggedUser.UserID
                                             , loggedUser.UserName
-                                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
-                                        AppInfoManager.Instance.SetPlatformUserInfo(new BaseRequest().usrInf);
+                                            , UserSessions.GetDeviceId()
+                                            , DeviceIdUtils.GetAppVersionName()
+                                            , myTNB.Mobile.MobileConstants.OSType.Android
+                                            , TextViewUtils.FontInfo
+                                            , LanguageUtil.GetAppLanguage() == "MS"
+                                                ? LanguageManager.Language.MS
+                                                : LanguageManager.Language.EN);
+                                        AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
+
+                                        bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
 
                                         if (UserSessions.GetNotificationType(mSharedPref) != null
                                             && "APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper())
                                             && UserSessions.ApplicationStatusNotification != null)
                                         {
+                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                                             this.mView.ShowApplicationStatusDetails();
+                                            UserSessions.RemoveNotificationSession(mSharedPref);
+
+                                        }
+                                        else if (UserSessions.GetNotificationType(mSharedPref) != null
+                                           && "DBROWNER".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper()))
+                                        {
+                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
+                                            this.mView.OnShowManageBillDelivery();
+                                            UserSessions.RemoveNotificationSession(mSharedPref);
+                                        }
+                                        else if (hasNotification && isLoggedInEmail && UserSessions.Notification != null)
+                                        {
+                                            UserSessions.RemoveNotificationSession(mSharedPref);
+                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
+                                            MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
+                                            this.mView.ShowNotificationDetails();
                                         }
                                         else if (hasNotification && (isODNType || isLoggedInEmail))
                                         {
@@ -306,7 +328,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         }
                                         else
                                         {
-                                            if (!UserSessions.IsDeviceIdUpdated(mSharedPref) || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
+                                            if (!UserSessions.IsDeviceIdUpdated(mSharedPref)
+                                                || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
                                             {
                                                 //If DeviceId is not the same with the saved, call UpdateAppUserDevice service.
                                                 var updateAppDeviceResponse = await updateAppUserDeviceApi.UpdateAppUserDevice(new UpdateAppUserDeviceRequest()
@@ -397,9 +420,15 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                 await LanguageUtil.SaveUpdatedLanguagePreference();
 
                                                 AppInfoManager.Instance.SetUserInfo("16"
-                                                            , UserEntity.GetActive().UserID
-                                                            , UserEntity.GetActive().UserName
-                                                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+                                                    , loggedUser.UserID
+                                                    , loggedUser.UserName
+                                                    , UserSessions.GetDeviceId()
+                                                    , DeviceIdUtils.GetAppVersionName()
+                                                    , myTNB.Mobile.MobileConstants.OSType.Android
+                                                    , TextViewUtils.FontInfo
+                                                    , LanguageUtil.GetAppLanguage() == "MS"
+                                                        ? LanguageManager.Language.MS
+                                                        : LanguageManager.Language.EN);
                                                 AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
 
                                                 if (LanguageUtil.GetAppLanguage() == "MS")
@@ -417,6 +446,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                 this.mView.ShowDashboard();
                                             }
 
+                                            MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
                                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                                             this.mView.ShowDashboard();
@@ -431,8 +461,13 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         UserSessions.SaveDeviceId(mSharedPref, this.mView.GetDeviceId());
                                     }
                                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.PreLogin);
-
-                                    AppInfoManager.Instance.SetUserInfo("0", string.Empty, string.Empty
+                                    AppInfoManager.Instance.SetUserInfo("0"
+                                        , string.Empty
+                                        , string.Empty
+                                        , UserSessions.GetDeviceId()
+                                        , DeviceIdUtils.GetAppVersionName()
+                                        , myTNB.Mobile.MobileConstants.OSType.Android
+                                        , TextViewUtils.FontInfo
                                         , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                     mView.ShowPreLogin();
                                 }
@@ -492,44 +527,62 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
         }
 
-        //private void ClearDataCache()
-        //{
-        //    try
-        //    {
-        //        UserEntity.RemoveActive();
-        //        UserRegister.RemoveActive();
-        //        CustomerBillingAccount.RemoveActive();
-        //        UserManageAccessAccount.RemoveActive();
-        //        LogUserAccessEntity.RemoveAll();
-        //        NotificationFilterEntity.RemoveAll();
-        //        UserNotificationEntity.RemoveAll();
-        //        SubmittedFeedbackEntity.Remove();
-        //        SMUsageHistoryEntity.RemoveAll();
-        //        UsageHistoryEntity.RemoveAll();
-        //        BillHistoryEntity.RemoveAll();
-        //        PaymentHistoryEntity.RemoveAll();
-        //        REPaymentHistoryEntity.RemoveAll();
-        //        AccountDataEntity.RemoveAll();
-        //        SummaryDashBoardAccountEntity.RemoveAll();
-        //        SelectBillsEntity.RemoveAll();
-        //        NewFAQParentEntity NewFAQParentManager = new NewFAQParentEntity();
-        //        NewFAQParentManager.DeleteTable();
-        //        SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
-        //        SSMRMeterReadingScreensParentManager.DeleteTable();
-        //        SSMRMeterReadingScreensOCROffParentEntity SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
-        //        SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
-        //        SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
-        //        SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
-        //        SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
-        //        SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
-        //        EnergySavingTipsParentEntity EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
-        //        EnergySavingTipsParentManager.DeleteTable();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Utility.LoggingNonFatalError(e);
-        //    }
-        //}
+        public async void OnShowNotificationDetails(string NotificationTypeId, string BCRMNotificationTypeId, string NotificationRequestId)
+        {
+            try
+            {
+                this.mView.ShowProgress();
+                UserNotificationDetailsRequestNew request = new UserNotificationDetailsRequestNew(NotificationTypeId, BCRMNotificationTypeId, NotificationRequestId);
+                string dt = JsonConvert.SerializeObject(request);
+                UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetailsByRequestId(request);
+                if (response.IsSuccessResponse())
+                {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
+                    UserNotificationEntity.UpdateIsRead(response.GetData().UserNotificationDetail.Id, true);
+                    this.mView.ShowDetails(response.GetData().UserNotificationDetail);
+                    UserSessions.ClearNotification();
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsCancelledException(null);
+                }
+
+                ////MOCK RESPONSE
+                //this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
+                this.mView.HideProgressDialog();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         /// <summary>
         /// Evaluate failed AppLaunchMasterData service for retry.
@@ -537,7 +590,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         private void EvaluateServiceRetry()
         {
             serviceCallCounter++;
-            Log.Debug(TAG, string.Format("AppLaunchMasterData Service failed in {0} seconds: Retry: {1} ", appLaunchMasterDataTimeout, serviceCallCounter));
+            if (serviceCallCounter == 1)
+            {
+                DynatraceHelper.IdentifyUser();
+            }
+            DynatraceHelper.OnTrack(myTNB.Mobile.DynatraceConstants.App_Launch_Master_Fail);
+            Log.Debug(TAG, string.Format("AppLaunchMasterData Service failed in {0} seconds: Retry: {1} "
+                , appLaunchMasterDataTimeout
+                , serviceCallCounter));
             if (serviceCallCounter == 1)//If first failed, do auto-retry.
             {
                 appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT;
@@ -586,7 +646,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 if (UserEntity.IsCurrentlyActive())
                 {
-                    this.mView.ShowNotification();
+                    if (UserSessions.Notification != null)
+                    {
+                        this.mView.ShowNotificationDetails();
+                    }
+                    else
+                    {
+                        this.mView.ShowNotification();
+                    }
                 }
             }
             catch (Exception e)
@@ -625,8 +692,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 }
             });
         }
-
-
 
         public void GetSavedTimeStamp()
         {
@@ -813,8 +878,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     try
                     {
-                         //imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);  
-                         imageCache = ImageUtils.GetImageBitmapFromUrlWithTimeOut(item.Image);   
+                        //imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);  
+                        imageCache = ImageUtils.GetImageBitmapFromUrlWithTimeOut(item.Image);
                         sw.Stop();
                         AppLaunchTimeOutMillisecond = 0;
 
@@ -933,8 +998,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-
 
         public void OnGetAppLaunchTimeStamp()
         {

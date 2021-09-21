@@ -297,7 +297,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                         {
                             try
                             {
-                                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new BaseRequest());
+                                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new BaseRequest());
                                 if (response != null && response.Response != null && response.Response.ErrorCode == "7200")
                                 {
                                     if (response.GetData() != null && response.GetData().UserNotificationList != null)
@@ -502,35 +502,55 @@ namespace myTNB_Android.Src.Notifications.MVP
                     {
                         if (!TextUtils.IsEmpty(entity.NotificationTypeId))
                         {
-                            NotificationTypesEntity notificationTypesEntity = new NotificationTypesEntity();
-                            notificationTypesEntity = NotificationTypesEntity.GetById(entity.NotificationTypeId);
-                            if (!TextUtils.IsEmpty(notificationTypesEntity.Code))
+                            //NotificationTypesEntity notificationTypesEntity = new NotificationTypesEntity();
+                            //notificationTypesEntity = NotificationTypesEntity.GetById(entity.NotificationTypeId);
+                            if (!TextUtils.IsEmpty(entity.NotificationTypeId))
                             {
-                                UserNotificationData userNotificationData = UserNotificationData.Get(entity, notificationTypesEntity.Code);
+                                UserNotificationData userNotificationData = UserNotificationData.Get(entity, entity.NotificationTypeId);
                                 if (!userNotificationData.IsDeleted)
                                 {
                                     if (userNotificationData.IsForceDisplay)
                                     {
-                                        listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                     }
                                     else if (userNotificationData.NotificationType != "ODN")
                                     {
                                         if (userNotificationData.ODNBatchSubcategory == "ODNAsBATCH")
                                         {
-                                            listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                            if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+                                            {
+                                                if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                                                {
+                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                }
+                                            }
+                                            else
+                                            {
+                                                listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                            }
                                         }
                                         else
                                         {
                                             if (UserEntity.GetActive().Email.Equals(userNotificationData.Email)
                                                 && MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
                                             {
-                                                listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                                if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+                                                {
+                                                    if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                                                    {
+                                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                }
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                     }
                                 }
                             }

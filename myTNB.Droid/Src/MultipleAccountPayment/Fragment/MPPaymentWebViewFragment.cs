@@ -7,11 +7,11 @@ using Android.Util;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
-using DynatraceAndroid;
 using Google.Android.Material.Snackbar;
 using Java.IO;
 using Java.Lang;
 using Java.Net;
+using myTNB.Mobile;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -251,7 +251,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             try
             {
                 Android.Content.Res.Configuration configuration = Resources.Configuration;
-                configuration.FontScale = 1.3F;
+                DeviceSizeCache.FontScale = configuration.FontScale;
+                configuration.FontScale = DeviceSizeCache.FontScale;
                 DisplayMetrics metrics = Resources.DisplayMetrics;
                 metrics.ScaledDensity = configuration.FontScale * metrics.Density;
                 Resources.UpdateConfiguration(configuration, metrics);
@@ -328,15 +329,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else if (url.ToLower().Contains("mytnbapp://payment/"))
                     {
-                        try
-                        {
-                            IDTXAction WEBVIEW_PAYMENT_FINISH_DASHBOARD = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_FINISH_DASHBOARD);  // DYNA
-                            WEBVIEW_PAYMENT_FINISH_DASHBOARD.LeaveAction();
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
+                        DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_FINISH_DASHBOARD);
                         isRedirected = true;
                         /* This call inject JavaScript into the page which just finished loading. */
                         //((PaymentActivity)this.mActivity).SetResult(Result.Ok);
@@ -368,6 +361,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         isRedirected = true;
                         mActivity.OnSetAppointment();
                     }
+                    else if (url.Contains("mytnbapp://action=startDigitalBilling"))
+                    {
+                        isRedirected = true;
+                        mActivity.GetBillRenderingAsync();
+                    }
                     else
                     {
                         view.LoadUrl(url);
@@ -389,10 +387,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         ShowErrorMessage(url);
                     }
-
-                    IDTXAction DynAction = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT);  // DYNA
-                    DynAction.LeaveAction();
-
+                    DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT);
                 }
                 catch (System.Exception e)
                 {
@@ -404,34 +399,25 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             {
                 try
                 {
-                    if (url.ToLower().Contains("statusreceipt.aspx") && url.ToLower().Contains("approved") || url.ToLower().Contains("paystatusreceipt"))
+                    if (url.ToLower().Contains("statusreceipt.aspx")
+                        || url.ToLower().Contains("paystatusreceipt")
+                        && url.ToLower().Contains("approved"))
                     {
-                        try
-                        {
-                            IDTXAction WEBVIEW_PAYMENT_SUCCESS = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_SUCCESS);  // DYNA
-                            WEBVIEW_PAYMENT_SUCCESS.LeaveAction();
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
-
+                        this.mActivity.ShouldBackToHome = true;
+                        DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_SUCCESS);
+                        DynatraceHelper.OnTrack(this.mActivity.IsMultiplePayment
+                            ? DynatraceConstants.DBR.Screens.PaymentSuccess.Multiple
+                            : DynatraceConstants.DBR.Screens.PaymentSuccess.Single);
                         ((PaymentActivity)mActivity).SetPaymentReceiptFlag(true, summaryDashBoardRequest);
-                        //((PaymentActivity)mActivity).SetToolBarTitle("Success");
                         ((PaymentActivity)mActivity).HideToolBar();
                         progressBar.Visibility = ViewStates.Gone;
                     }
-                    else if (url.ToLower().Contains("statusreceipt.aspx") || url.ToLower().Contains("paystatusreceipt") && url.ToLower().Contains("failed"))
+                    else if (url.ToLower().Contains("statusreceipt.aspx")
+                        || url.ToLower().Contains("paystatusreceipt")
+                        && url.ToLower().Contains("failed"))
                     {
-                        try
-                        {
-                            IDTXAction WEBVIEW_PAYMENT_FAIL = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_FAIL);  // DYNA
-                            WEBVIEW_PAYMENT_FAIL.LeaveAction();
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
+                        this.mActivity.ShouldBackToHome = true;
+                        DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_FAIL);
                         progressBar.Visibility = ViewStates.Gone;
                         ((PaymentActivity)mActivity).SetPaymentReceiptFlag(false, null);
                         //((PaymentActivity)mActivity).SetToolBarTitle("Unsuccessful");
@@ -439,15 +425,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else if (url.ToLower().Contains("mytnbapp://payment/") && !isRedirected)
                     {
-                        try
-                        {
-                            IDTXAction WEBVIEW_PAYMENT_FINISH_DASHBOARD = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_FINISH_DASHBOARD);  // DYNA
-                            WEBVIEW_PAYMENT_FINISH_DASHBOARD.LeaveAction();
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
+                        DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_FINISH_DASHBOARD);
                         isRedirected = true;
                         progressBar.Visibility = ViewStates.Gone;
                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();

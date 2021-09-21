@@ -5,6 +5,7 @@ using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
@@ -65,6 +66,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            //mPresenter = new ProfileMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
             mPresenter = new ProfileMenuPresenter(this);
         }
 

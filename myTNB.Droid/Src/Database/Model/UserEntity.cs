@@ -191,4 +191,85 @@ namespace myTNB_Android.Src.Database.Model
 
 
     }
+
+    [Table("UserLoginCountEntity")]
+    public class UserLoginCountEntity
+    {
+        [PrimaryKey, AutoIncrement]
+        public int? Id { get; set; }
+
+        [Column("email")]
+        public string Email { get; set; }
+
+        [Column("loginCount")]
+        public int LoginCount { get; set; }
+
+        [Column("dateCreated")]
+        public string DateCreated { get; set; }
+
+        [Column("lastLoginDate")]
+        public string LastLoginDate { get; set; }
+
+
+        public static int CreateTable()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            return (int)db.CreateTable<UserLoginCountEntity>();
+        }
+
+        public static void CreateTableAsync(SQLiteAsyncConnection db)
+        {
+            db.CreateTableAsync<UserLoginCountEntity>();
+        }
+
+        public static int InsertOrReplace(User user, int userLoginCount)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            var newRecord = new UserLoginCountEntity()
+            {
+                
+                Email = user.Email,
+                LoginCount = userLoginCount,
+                DateCreated = user.DateCreated ?? "",
+                LastLoginDate = user.LastLoginDate ?? ""
+            };
+
+            int newRecordId = db.InsertOrReplace(newRecord);
+            if (newRecordId > 0)
+            {
+                return newRecord.Id ?? 0;
+            }
+
+            return 0;
+        }
+
+        public static int GetLoginCount(string email)
+        {
+            int count =0;
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                List<UserLoginCountEntity> userLoginCountEntity = db.Query<UserLoginCountEntity>("select * from UserLoginCountEntity where Email= ?", email);
+
+                count = userLoginCountEntity.Count > 0 ? userLoginCountEntity.Count : 0;
+            }
+            catch(Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return count;
+        }
+        public static void RemoveAll()
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM UserLoginCountEntity");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+        }
+    }
 }
