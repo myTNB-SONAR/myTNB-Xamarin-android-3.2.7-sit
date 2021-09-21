@@ -23,7 +23,7 @@ namespace myTNB.Mobile
         {
             DBR,
             EB,
-            BillRedesign
+            BR
             //Add Other Features
         }
 

@@ -17,6 +17,8 @@ namespace myTNB.Mobile.AWS.Models
         public DBRModel DBR { set; get; }
         [JsonProperty("eb")]
         public EBModel EB { set; get; }
+        [JsonProperty("br")]
+        public DBRModel BR { set; get; }
     }
 
     public class EligibileFeaturesModel
