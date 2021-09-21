@@ -184,6 +184,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void NavigateToAddAccount();
 
             void NavigateToViewAccountStatement(CustomerBillingAccount account);
+
+            void TriggerIneligiblePopUp();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -274,7 +276,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             Task OnWhereIsMyAccNumberContentDetail();
             Task OnGetBillTooltipContent();
 
-            void OnGetBillValidateWithCA(string accountNumber);
+            void OnGetBillEligibilityCheck(string accountNumber);
         }
     }
 }

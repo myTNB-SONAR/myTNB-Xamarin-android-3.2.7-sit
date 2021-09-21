@@ -2,18 +2,14 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
-using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
@@ -22,20 +18,15 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.myTNBMenu.Requests;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
-using myTNB_Android.Src.SummaryDashBoard;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using Refit;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -47,9 +38,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         CancellationTokenSource cts;
 
-
-
-        private DashboardHomeContract.IView mView;
+        public DashboardHomeContract.IView mView;
         private ISharedPreferences mSharedPref;
 
         internal int currentBottomNavigationMenu = Resource.Id.menu_dashboard;
@@ -1713,25 +1702,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
-        public void OnGetBillValidateWithCA(string accountNumber)
+        public void OnGetBillEligibilityCheck(string accountNumber)
         {
-            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-            if (accountList.Count > 0)
-            {
-                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountNumber);
-                if (customerBillingAccount != null)
-                {
-                    this.mView.NavigateToViewAccountStatement(customerBillingAccount);
-                }
-                else
-                {
-                    this.mView.NavigateToAddAccount();
-                }
-            }
-            else
-            {
-                this.mView.NavigateToAddAccount();
-            }
+            this.GetBillEligibilityCheck(accountNumber);
         }
     }
 

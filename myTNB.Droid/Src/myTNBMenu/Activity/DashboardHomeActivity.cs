@@ -2472,5 +2472,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             this.ShowViewAccountStatement(account);
         }
+
+        public void TriggerIneligiblePopUp()
+        {
+            this.ShowIneligiblePopUp();
+        }
     }
 }

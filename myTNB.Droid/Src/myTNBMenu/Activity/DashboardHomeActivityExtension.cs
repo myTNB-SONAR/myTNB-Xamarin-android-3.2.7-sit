@@ -60,9 +60,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 mainActivity.IsRootTutorialShown = true;
                 MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                    .SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
-                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                    .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.RWDS_UNAVAILABLE_TITLE))
+                    .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.RWDS_UNAVAILABLE_MSG))
+                    .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.GOT_IT))
                     .SetCTAaction(() =>
                     {
                         mainActivity.IsRootTutorialShown = false;
@@ -177,7 +177,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         private static void DeeplinkGetBillValidation(DashboardHomeActivity mainActivity)
         {
             string accountNum = DeeplinkUtil.Instance.ScreenKey;
-            mainActivity.mPresenter.OnGetBillValidateWithCA(accountNum);
+            mainActivity.mPresenter.OnGetBillEligibilityCheck(accountNum);
             DeeplinkUtil.Instance.ClearDeeplinkData();
         }
 
@@ -194,6 +194,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             Intent newIntent = new Intent(mainActivity, typeof(BillStatementActivity));
             newIntent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(accountData));
             mainActivity.StartActivity(newIntent);
+        }
+
+        internal static void ShowIneligiblePopUp(this DashboardHomeActivity mainActivity)
+        {
+            MyTNBAppToolTipBuilder whatIsThisTooltip = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.BILLS, LanguageConstants.Bills.TOOLTIP_ACT_STMT_TITLE))
+                .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.BILLS, LanguageConstants.Bills.TOOLTIP_ACT_STMT_MSG))
+                .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.GOT_IT))
+                .Build();
+            whatIsThisTooltip.Show();
         }
     }
 }

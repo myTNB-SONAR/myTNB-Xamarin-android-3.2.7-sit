@@ -7500,6 +7500,8 @@
     <Compile Include="Src\Utils\Deeplink\DeeplinkUtil.cs" />
     <Compile Include="Src\Utils\Deeplink\Deeplink.cs" />
     <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivityExtension.cs" />
+    <Compile Include="Src\Utils\LanguageConstants.cs" />
+    <Compile Include="Src\myTNBMenu\MVP\DashboardHomePresenterExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
