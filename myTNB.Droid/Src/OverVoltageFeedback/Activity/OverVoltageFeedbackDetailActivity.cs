@@ -173,7 +173,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 string domain = "https://mytnbwvovis.ap.ngrok.io/"; // WebView Live
                 //string domain = "http://192.168.1.157:3000/"; // WebView Local
 
-                domain += "claimPage/" + ClaimId + "?eid=" + useremail + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.RandomFiveDigit;
+                domain += "claimPage/" + ClaimId + "?eid=" + useremail + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
 
                 String queryParams = null;
                 

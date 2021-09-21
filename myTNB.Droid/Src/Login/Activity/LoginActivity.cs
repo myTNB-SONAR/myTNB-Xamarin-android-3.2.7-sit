@@ -11,6 +11,7 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB.Mobile.SessionCache;
+using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ForgetPassword.Activity;
 using myTNB_Android.Src.Login.MVP;
@@ -419,6 +420,10 @@ namespace myTNB_Android.Src.Login.Activity
 
         public void ShowDashboard()
         {
+            //Guid
+            Guid myuuid = Guid.NewGuid();
+            LaunchViewActivity.UUID = myuuid.ToString();
+
             // TODO : START ACTIVITY DASHBOARD
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
