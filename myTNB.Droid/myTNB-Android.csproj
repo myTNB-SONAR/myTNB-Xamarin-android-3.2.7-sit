@@ -7472,6 +7472,21 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Device Cache\DeviceSizeCache.cs" />
+    <Compile Include="Src\Bills\NewBillRedesign\Activity\NBRDiscoverMoreActivity.cs" />
+    <Compile Include="Src\Bills\NewBillRedesign\MVP\NBRDiscoverMoreContract.cs" />
+    <Compile Include="Src\Bills\NewBillRedesign\MVP\NBRDiscoverMorePresenter.cs" />
+    <Compile Include="Src\Bills\NewBillRedesign\Model\NBRDiscoverMoreModel.cs" />
+    <Compile Include="Src\Bills\NewBillRedesign\Fragment\NBRDiscoverMoreListItemComponent.cs" />
+    <AndroidResource Include="Resources\layout\NBRDiscoverMoreView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\NBRDiscoverMoreListItemView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SitecoreCMS\Model\NewBillDesignModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\NewBillDesignService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7783,6 +7798,12 @@
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\" />
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\" />
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\" />
+    <Folder Include="Src\Bills\" />
+    <Folder Include="Src\Bills\NewBillRedesign\" />
+    <Folder Include="Src\Bills\NewBillRedesign\Activity\" />
+    <Folder Include="Src\Bills\NewBillRedesign\MVP\" />
+    <Folder Include="Src\Bills\NewBillRedesign\Model\" />
+    <Folder Include="Src\Bills\NewBillRedesign\Fragment\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

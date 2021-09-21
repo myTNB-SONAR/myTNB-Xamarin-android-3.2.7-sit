@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:theme="@style/Theme.Dashboard"
+    android:id="@+id/rootView"
+	android:background="@color/lightGrey">
+	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+		android:background="@color/lightGrey">
+        <include
+        layout="@layout/toolbar"
+        id="@+id/toolbar" />
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/white"
+			android:visibility="gone"
+			android:id="@+id/nbrDiscoverMoreShimmerContainer">
+			<com.facebook.shimmer.ShimmerFrameLayout
+				android:id="@+id/applicationStatusLandingListContentShimmer"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginRight="16dp"
+				android:layout_marginLeft="16dp">
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+					<View
+						android:background="@color/shimmer_color_second"
+						android:layout_width="match_parent"
+						android:layout_height="20dp"
+						android:layout_marginTop="16dp"/>
+					<View
+						android:background="@color/shimmer_color_second"
+						android:layout_marginTop="16dp"
+						android:layout_width="match_parent"
+						android:layout_height="64dp"/>
+					<View
+						android:background="@color/shimmer_color_second"
+						android:layout_marginTop="16dp"
+						android:layout_width="match_parent"
+						android:layout_height="196dp"
+						android:layout_marginBottom="16dp"/>
+				</LinearLayout>
+			</com.facebook.shimmer.ShimmerFrameLayout>
+		</LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:fillViewport="true"
+            android:background="@color/white"
+			android:id="@+id/nbrDiscoverMoreScrollView">
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/nbrDiscoverMoreContainer" >
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingTop="16dp"
+					android:paddingLeft="16dp"
+					android:paddingRight="16dp"
+					android:id="@+id/nbrDiscoverMoreHeader" >
+					<TextView
+						android:text="Introducing your new TNB bill!"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textColor="@color/powerBlue"
+						android:id="@+id/nbrDiscoverMoreTitle" />
+					<TextView
+						android:text="Your freshly improved TNB bill is now in an easy-to-read and simplified 2-page format! Here’s how you can understand your new bill:"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:paddingTop="16dp"
+						android:textColor="@color/charcoalGrey"
+						android:id="@+id/nbrDiscoverMoreDesc" />
+					<ImageView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="16dp"
+						android:scaleType="fitXY"
+						android:adjustViewBounds="true"
+						android:id="@+id/nbrDiscoverMoreBanner"
+						android:src="@drawable/banner_home_voluntary_en" />
+				</LinearLayout>
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingLeft="16dp"
+					android:paddingRight="16dp"
+					android:id="@+id/nbrDiscoverMoreViewList"/>
+				<LinearLayout
+					android:orientation="vertical"
+					android:minWidth="25px"
+					android:minHeight="25px"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingTop="16dp"
+					android:paddingLeft="16dp"
+					android:paddingRight="16dp"
+					android:id="@+id/linearLayout3">
+					<TextView
+						android:text="Go to your bill page to view your bill or learn more about the new bill here. "
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textColor="@color/charcoalGrey"
+						android:id="@+id/nbrDiscoverMoreFooterMsg" />
+				</LinearLayout>
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingTop="16dp"
+					android:paddingLeft="16dp"
+					android:paddingBottom="16dp"
+					android:paddingRight="16dp"
+					android:id="@+id/linearLayout1">
+					<Button
+						android:id="@+id/btnGoToBills"
+						android:text="Go To Bills"
+						android:layout_width="match_parent"
+						android:layout_height="48dp"
+						style="@style/DarkButton"
+						android:textAllCaps="false" />
+				</LinearLayout>
+				
+			</LinearLayout>
+        </ScrollView>
+	</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
