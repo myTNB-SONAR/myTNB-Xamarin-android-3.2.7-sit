@@ -17,7 +17,7 @@ namespace myTNB_Android.Src.Utils
         {
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             //cancellationTokenSource.CancelAfter(Constants.SERVICE_TIMEOUT_DEFAULT);
-            cancellationTokenSource.CancelAfter(EnquiryTimeout ? 25000 : Constants.SERVICE_TIMEOUT_DEFAULT);
+            cancellationTokenSource.CancelAfter(EnquiryTimeout ? 29000 : Constants.SERVICE_TIMEOUT_DEFAULT);
             return cancellationTokenSource.Token;
         }
 
