@@ -7933,6 +7933,21 @@
     <Folder Include="Src\UpdateMobileNo\Api\" />
     <Folder Include="Src\UpdateNickname\Api\" />
     <Folder Include="Src\UpdatePassword\Api\" />
+    <Folder Include="Src\Utils\PDFView\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\" />
+    <Folder Include="Src\Utils\ZoomImageView\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\MVP\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\Adapter\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusRating\" />
+    <Folder Include="Src\Device Cache\" />
+    <Folder Include="Src\Session Cache\" />
+    <Folder Include="Src\DigitalBillRendering\DigitalBillWebView\" />
+    <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\" />
+    <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\" />
+    <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
@@ -8527,51 +8542,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\raw\GetAccountBillingDetailsResponse220223313703.txt" />
-    <Folder Include="AppLaunch\" />
-    <Folder Include="Resources\mipmap-hdpi\" />
-    <Folder Include="Resources\mipmap-mdpi\" />
-    <Folder Include="Resources\mipmap-xhdpi\" />
-    <Folder Include="Resources\mipmap-xxhdpi\" />
-    <Folder Include="Resources\mipmap-xxxhdpi\" />
-    <Folder Include="Src\AddAccount\Api\" />
-    <Folder Include="Src\EnergyBudget\Models\" />
-    <Folder Include="Src\FeedbackDetails\Model\" />
-    <Folder Include="Src\Feedback_Prelogin_NewIC\Adapter\" />
-    <Folder Include="Src\ForgetPassword\Api\" />
-    <Folder Include="Src\Login\Api\" />
-    <Folder Include="Src\LogoutRate\Api\" />
-    <Folder Include="Src\ManageCards\Api\" />
-    <Folder Include="Src\ManageSupplyAccount\Api\" />
-    <Folder Include="Src\MultipleAccountPayment\Api\" />
-    <Folder Include="Src\MyAccount\Models\" />
-    <Folder Include="Src\MyTNBService\Account\" />
-    <Folder Include="Src\MyTNBService\Billing\" />
-    <Folder Include="Src\MyTNBService\Notification\" />
-    <Folder Include="Src\NotificationDetails\Activity\Base\" />
-    <Folder Include="Src\NotificationDetails\Api\" />
-    <Folder Include="Src\NotificationSettings\Api\" />
-    <Folder Include="Src\Rating\Api\" />
-    <Folder Include="Src\RegistrationForm\Api\" />
-    <Folder Include="Src\ResetPassword\Api\" />
-    <Folder Include="Src\SelectNotification\Models\" />
-    <Folder Include="Src\UpdateMobileNo\Api\" />
-    <Folder Include="Src\UpdateNickname\Api\" />
-    <Folder Include="Src\UpdatePassword\Api\" />
-    <Folder Include="Src\Utils\PDFView\" />
-    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\" />
-    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\" />
-    <Folder Include="Src\Utils\ZoomImageView\" />
-    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\" />
-    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\MVP\" />
-    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\" />
-    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\Adapter\" />
-    <Folder Include="Src\ApplicationStatus\ApplicationStatusRating\" />
-    <Folder Include="Src\Device Cache\" />
-    <Folder Include="Src\Session Cache\" />
-    <Folder Include="Src\DigitalBillRendering\DigitalBillWebView\" />
-    <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\" />
-    <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\" />
-    <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\raw\GetAccountBillingDetailsResponse220595158104.txt" />
@@ -9668,12 +9638,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_empty_archived_message.png" />
-    <GoogleServicesJson Include="google-services-sit.json" Condition=" '$(Configuration)' == 'Develop' " />
-    <GoogleServicesJson Include="google-services-sit.json" Condition=" '$(Configuration)' == 'SIT' " />
-    <GoogleServicesJson Include="google-services-sit.json" Condition=" '$(Configuration)' == 'Debug' " />
-    <GoogleServicesJson Include="google-services-debug.json" Condition=" '$(Configuration)' == 'Stub' " />
-    <GoogleServicesJson Include="google-services.json" Condition=" '$(Configuration)' == 'Release' " />
-    <!-- <GoogleServicesJson Include="google-services.json" /> -->
+
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_empty_archived_message.png" />

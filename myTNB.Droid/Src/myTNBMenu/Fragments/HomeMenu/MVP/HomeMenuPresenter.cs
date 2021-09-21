@@ -312,7 +312,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             this.mView.IsLoadMoreButtonVisible(false, false);
                         }
-                        this.mView.ShowDiscoverMoreLayout();
+                        //this.mView.ShowDiscoverMoreLayout();
                         OnCleanUpNotifications(summaryDetails);
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "8400")
@@ -648,7 +648,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
-                this.mView.ShowDiscoverMoreLayout();
+                //this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -812,7 +812,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.mView.IsLoadMoreButtonVisible(false, false);
                     }
                 }
-                this.mView.ShowDiscoverMoreLayout();
+                //this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -958,7 +958,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
-                this.mView.ShowDiscoverMoreLayout();
+                //this.mView.ShowDiscoverMoreLayout();
             }
             else
             {
@@ -1281,7 +1281,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
-                this.mView.ShowDiscoverMoreLayout();
+                //this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -1806,19 +1806,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 //this.mView.StopShimmerDiscoverMore();
             }
 
-            //testing adding icon
-            /*var testicon = new MyService()
-            {
-                ServiceCategoryId = "1007",
-                serviceCategoryName = "My Energy Budget",
-                serviceCategoryIcon = "test",
-                serviceCategoryIconUrl = "test",
-                serviceCategoryDesc = "test",
-            };*/
-            //filterList.Add(testicon);
             if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
             {
-                filterList.Insert(2, energyBudget);
+                if (!MyTNBAccountManagement.GetInstance().COMCLandNEM())
+                { 
+                    filterList.Insert(2, energyBudget);
+                }
             }
 
             MyServiceEntity.InsertOrReplace(energyBudget);
@@ -1867,7 +1860,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
             {
-                cachedList.Insert(2, energyBudget);
+                if (!MyTNBAccountManagement.GetInstance().COMCLandNEM())
+                {
+                    cachedList.Insert(2, energyBudget);
+                }
             }
 
             currentMyServiceList = cachedList;
@@ -2653,13 +2649,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             bool EBUser = false;
 
-            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify()
+                && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
             {
                 EBUser = true;
                 UserSessions.DoHomeTutorialShown(this.mPref);
+                if (isAllDone())
+                {
+                    HomeMenuUtils.SetIsLoadedHomeMenu(true);
+                }
             }
 
-            if (isAllDone() && !isHomeMenuTutorialShown && !this.mView.OnGetIsRootTooltipShown() && !EBUser)
+            if (isAllDone() && !isHomeMenuTutorialShown && !this.mView.OnGetIsRootTooltipShown())
             {
                 isHomeMenuTutorialShown = true;
                 HomeMenuUtils.SetIsLoadedHomeMenu(true);

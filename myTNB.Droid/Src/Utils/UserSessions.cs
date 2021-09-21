@@ -678,12 +678,6 @@ namespace myTNB_Android.Src.Utils
             }
             return selectAccountList;
         }
-
-        public static void DeleteEnergyBudgetList(ISharedPreferences prefs)
-        {
-            ISharedPreferencesEditor editor = prefs.Edit();
-            editor.Remove("SMR_ACCOUNT_LIST_ENERGY_BUDGET").Apply();
-        }
         
         public static void SetSMREligibilityAccountList(List<SMRAccount> sMRAccounts)
         {

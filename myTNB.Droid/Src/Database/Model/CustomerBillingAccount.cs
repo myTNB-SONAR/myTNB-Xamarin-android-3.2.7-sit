@@ -1207,7 +1207,15 @@ namespace myTNB_Android.Src.Database.Model
         {
             var db = DBHelper.GetSQLiteConnection();
             List<CustomerBillingAccount> eligibleSMAccounts = new List<CustomerBillingAccount>();
-            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode != '0' AND accountCategoryId != 2").ToList().OrderBy(x => x.AccDesc).ToList();
+            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode != '0' AND accountTypeId == 1").ToList().OrderBy(x => x.AccDesc).ToList();
+            return eligibleSMAccounts;
+        }
+
+        public static List<CustomerBillingAccount> SMeterBudgetAccountListALL()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            List<CustomerBillingAccount> eligibleSMAccounts = new List<CustomerBillingAccount>();
+            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode != '0'").ToList().OrderBy(x => x.AccDesc).ToList();
             return eligibleSMAccounts;
         }
 

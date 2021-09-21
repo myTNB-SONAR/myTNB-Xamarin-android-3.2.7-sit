@@ -110,7 +110,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void EBPopupActivity();
             
             void ShowDiscoverMoreLayout();
+            
             void OnSetNotificationNewLabel(bool hasNoti, int noticount);
+            
+            void FilterCOMCLandNEM();
         }
 
         public interface IHomeMenuPresenter

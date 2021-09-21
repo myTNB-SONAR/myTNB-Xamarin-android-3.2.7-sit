@@ -502,18 +502,18 @@ namespace myTNB_Android.Src.Notifications.MVP
                     {
                         if (!TextUtils.IsEmpty(entity.NotificationTypeId))
                         {
-                            NotificationTypesEntity notificationTypesEntity = new NotificationTypesEntity();
-                            notificationTypesEntity = NotificationTypesEntity.GetById(entity.NotificationTypeId);
-                            if (notificationTypesEntity != null)
-                            {
-                                if (!TextUtils.IsEmpty(notificationTypesEntity.Code))
+                            /*NotificationTypesEntity notificationTypesEntity = new NotificationTypesEntity();
+                            notificationTypesEntity = NotificationTypesEntity.GetById(entity.NotificationTypeId);*/
+                            //if (notificationTypesEntity != null)
+                            //{
+                                if (!TextUtils.IsEmpty(entity.NotificationTypeId))
                                 {
-                                    UserNotificationData userNotificationData = UserNotificationData.Get(entity, notificationTypesEntity.Code);
+                                    UserNotificationData userNotificationData = UserNotificationData.Get(entity, entity.NotificationTypeId);
                                     if (!userNotificationData.IsDeleted)
                                     {
                                         if (userNotificationData.IsForceDisplay)
                                         {
-                                            listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                            listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                         }
                                         else if (userNotificationData.NotificationType != "ODN")
                                         {
@@ -523,12 +523,12 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                 {
                                                     if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
                                                     {
-                                                        listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                     }
                                                 }
                                                 else
                                                 {
-                                                    listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                 }
                                             }
                                             else
@@ -540,22 +540,22 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                     {
                                                         if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
                                                         {
-                                                            listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                                            listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                     }
                                                 }
                                             }
                                         }
                                         else
                                         {
-                                            listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                            listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                         }
                                     }
-                                }
+                               // }
                             }
                         }
 

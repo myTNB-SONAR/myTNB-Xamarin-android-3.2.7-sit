@@ -50,7 +50,7 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
 
         SmartMeterListAdapter adapter;
 
-        List<SMRAccount> listSmartMeter;
+        List<SMRAccount> listSmartMeter = new List<SMRAccount>();
 
         SMRAccount accountData;
 
@@ -93,8 +93,7 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
                 txttitleEBList.Text = Utility.GetLocalizedLabel("EnregyBudgetListing", "headerTitle");
                 infoLabelAccNotListed.Text = Utility.GetLocalizedLabel("EnregyBudgetListing", "tootltipTitle");
 
-                listSmartMeter = UserSessions.GetEnergyBudgetList();
-
+                GetAccountList();
                 mPresenter = new EnergyBudgetPresenter(this);
                 this.userActionsListener.Start();
             }
@@ -120,11 +119,36 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
                     SMeterAccountList.Add(item);
                 }
 
-                UserSessions.DeleteEnergyBudgetList(mSharedPref);
-                UserSessions.EnergyBudget(SMeterAccountList);
                 adapter.Clear();
-                this.userActionsListener.Start();
+                mPresenter.ResfreshPageList(SMeterAccountList);
                 selectedsmaccount();
+            }
+        }
+
+        public void GetAccountList()
+        {
+            try
+            {
+                List<SMRAccount> smartmeterAccounts = UserSessions.GetEnergyBudgetList();
+                List<SMRAccount> SMeterAccountList = new List<SMRAccount>();
+                if (smartmeterAccounts.Count > 0)
+                {
+                    foreach (SMRAccount billingAccount in smartmeterAccounts)
+                    {
+                        SMRAccount smrAccount = new SMRAccount();
+                        smrAccount.accountNumber = billingAccount.accountNumber;
+                        smrAccount.accountName = billingAccount.accountName;
+                        smrAccount.accountAddress = billingAccount.accountAddress;
+                        smrAccount.accountSelected = false;
+                        smrAccount.BudgetAmount = billingAccount.BudgetAmount;
+                        listSmartMeter.Add(smrAccount);
+                    }
+                }
+                ShowAccountList(listSmartMeter);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 

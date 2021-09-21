@@ -9431,13 +9431,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
 
                     StopSMStatisticShimmer();
+                    string acctypeID;
+                    if (selectedCusBillAcc.AccountTypeId == null )
+                    {
+                        acctypeID = "1";
+                    }
+                    else
+                    {
+                        acctypeID = selectedCusBillAcc.AccountTypeId;
+                    }
 
-                    if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                    if (MyTNBAccountManagement.GetInstance().IsEBUserVerify() && acctypeID.Equals("1"))
                     {
 
                         if (ChartDataType == ChartDataType.RM)
                         {
-                            smStatisticTooltip.Visibility = ViewStates.Visible;
+                            smStatisticTooltip.Visibility = ViewStates.Visible; 
                             smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
                             smStatisticBill.Visibility = ViewStates.Visible;
                             smStatisticBillCurrency.Visibility = ViewStates.Visible;

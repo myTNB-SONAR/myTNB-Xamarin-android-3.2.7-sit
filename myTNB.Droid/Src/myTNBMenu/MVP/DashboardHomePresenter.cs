@@ -1671,50 +1671,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         {
             UserSessions.DoHomeTutorialShown(this.mSharedPref);
         }
-
-        public void GetNotificationTypesList()
-        {
-            try
-            {
-                Task.Factory.StartNew(() =>
-                {
-                    _ = InvokeGetNotificationTypes();
-                });
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        private async Task InvokeGetNotificationTypes()
-        {
-            var appNotificationTypesResponse = await ServiceApiImpl.Instance.AppNotificationTypes(new MyTNBService.Request.BaseRequest());
-
-            if (appNotificationTypesResponse != null
-                && appNotificationTypesResponse.Response != null
-                && appNotificationTypesResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
-            {
-                foreach (AppNotificationTypesResponse.ResponseData notificationTypes in appNotificationTypesResponse.GetData())
-                {
-                    NotificationTypes type = new NotificationTypes()
-                    {
-                        Id = notificationTypes.Id,
-                        Title = notificationTypes.Title,
-                        Code = notificationTypes.Code,
-                        PreferenceMode = notificationTypes.PreferenceMode,
-                        Type = notificationTypes.Type,
-                        CreatedDate = notificationTypes.CreatedDate,
-                        MasterId = notificationTypes.MasterId,
-                        IsOpted = notificationTypes.IsOpted == "true" ? true : false,
-                        ShowInPreference = notificationTypes.ShowInPreference == "true" ? true : false,
-                        ShowInFilterList = notificationTypes.ShowInFilterList == "true" ? true : false
-                    };
-                    NotificationTypesEntity.InsertOrReplace(type);
-                }
-            }
-        }
-
     }
 
 }

@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.Base
         private int fromClick = 0;
         private bool IsFromViewTips = false;
         private bool IsFromDashboard = false;
-
+        private bool IsCOMCLandNEM = false;
 
         private MyTNBAccountManagement()
         {
@@ -706,6 +706,16 @@ namespace myTNB_Android.Src.Base
         public bool IsFinishFeedback()
         {
             return IsFromDashboard;
+        }
+
+        public void SetIsCOMCLandNEM(bool isExist)
+        {
+            IsCOMCLandNEM = isExist;
+        }
+
+        public bool COMCLandNEM()
+        {
+            return IsCOMCLandNEM;
         }
     }
 }

@@ -166,7 +166,7 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                     {
                         if (type.MasterId == "1000020")
                         {
-                            if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                            if (MyTNBAccountManagement.GetInstance().IsEBUserVerify() && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
                             {
                                 typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
                             }

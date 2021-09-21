@@ -97,9 +97,9 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
                 string combineAgainSavings = string.Join(" ", OneWordSavings);
                 txtSavingbudget.TextFormatted = GetFormattedText(combineAgainSavings);
 
-                if (UserSessions.GetEnergyBudgetList().Count > 0)
+                List<SMRAccount> list = UserSessions.GetEnergyBudgetList();
+                if (list.Count > 0)
                 {
-                    List<SMRAccount> list = UserSessions.GetEnergyBudgetList();
                     foreach (SMRAccount smrAccount in list)
                     {
                         if (smrAccount.BudgetAmount != null)

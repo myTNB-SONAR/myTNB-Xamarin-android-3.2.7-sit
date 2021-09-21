@@ -228,10 +228,9 @@
     "tutorialEnergyBudgetTitle": "Mulakan langkah untuk menguruskan tenaga anda",
     "tutorialEnergyBudgetDesc": "Anda boleh mengakses Energy Budget dari laman utama untuk mula menetapkan jumlah bil yang anda inginkan",
     //DiscoverMore
-    "DiscoverMore": "Temui lebih banyak lagi",
+    "DiscoverMore": "Terokai",
     "DiscoverMoreTitle": "Energy Budget kini telah tiba!",
     "DiscoverMoreDate": "07 May 2021"
-
   },
   "Tabbar": {
     "home": "Utama",
@@ -456,12 +455,12 @@
     "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     //EnergyBudget
     "myMonthlyBudget": "Energy Budget saya adalah",
-    "whyIsAmountDiff": "Mengapakah jumlah penggunaan saya lain daripada jumlah bil saya?",
+    "whyIsAmountDiff": "Adakah ini akan menjadi jumlah bil saya?",
     "whyIsAmountDiffBody": "Jumlah penggunaan terkini anda adalah jumlah tenaga yang anda telah guna setakat ini. Oleh kerana jumlah ini belum dibilkan mengikuti kitaran pembilan anda, ia belum tertakluk kepada cukai, diskaun atau caj tambahan dari kami.",
     "editEnergyButton": "Tetapkan Energy Budget anda",
     "setEnergyButton": "Tetapkan Sekarang",
     "saveEnergyButton": "Simpan Energy Budget baharu",
-    "toastSaveBudgetuccessfull": "Anda telah berjaya menetapkan Energy Budget anda!",
+    "toastSaveBudgetuccessfull": "Anda telah menetapkan had Energy Budget bulanan anda!",
     "myUsageSoFar": "Penggunaan saya setakat ini",
     "disconnectedEnergyBudget": "Nampaknya Energy Budget anda terputus sambungan. Refresh untuk sambung semula!",
     "refreshNowEnergyBudgetButton": "'Refresh' Sekarang",
@@ -2424,6 +2423,25 @@
       }
     ]
   },
+
+  "EnregyBudgetListing": {
+    "title": "Pilih Akaun Meter Pintar",
+    "tootltipTitle": "Kenapa sesetengah akaun saya yang tidak tersenarai?",
+    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
+    "headerTitle":"Mari mulakan dengan memilih akaun Smart Meter anda"
+  },
+
+  "EnergyBudgetPopup": {
+    "title": "Tahniah! Rasai pengalaman baru dalam mengawal penggunaan elektrik bersama Energy Budget!",
+    "threeEasyStep": "Penjimatan wang melalui 3 cara mudah:",
+    "firstStep": "TETAPKAN tahap penggunaan bulanan meter pintar terpilih anda",
+    "secondStep": "PANTAU penggunaan harian dengan mudah",
+    "thirdStep": "BERJIMAT apabila anda menghampiri penggunaan yang anda tetapkan",
+    "txtLetgetstarted": "Mula Sekarang",
+    "txtViewmybudget": "Lihat Budget Saya",
+    "txtMaybelater": "Kemudian"
+  },
+
   "ManageDigitalBillLanding": {
     "title": "Urus Cara Penerimaan Bil",
     "dbrViewBillDelivery": "Cara Penerimaan Bil",
@@ -2468,22 +2486,6 @@
     "nevermind": "Tidak Mengapa",
     "confirm": "Sahkan"
   },
-  "EnregyBudgetListing": {
-    "title": "Pilih Akaun Meter Pintar",
-    "tootltipTitle": "Mengapakah sesetengah akaun saya tidak disenaraikan?",
-    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Apabila meter anda telah ditukarkan ke meter pintar, akaun tersebut akan ditambah secara automatik ke dalam senarai ini.",
-    "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"
-  },
-  "EnergyBudgetPopup": {
-    "title": "Tahniah! Rasai pengalaman baru dalam mengawal penggunaan elektrik bersama Energy Budget!",
-    "threeEasyStep": "Penjimatan wang melalui 3 cara mudah:",
-    "firstStep": "TETAPKAN tahap penggunaan bulanan meter pintar terpilih anda",
-    "secondStep": "PANTAU penggunaan harian dengan mudah",
-    "thirdStep": "BERJIMAT apabila anda menghampiri penggunaan yang anda tetapkan",
-    "txtLetgetstarted": "Mula Sekarang",
-    "txtViewmybudget": "Lihat Budget Saya",
-    "txtMaybelater": "Kemudian"
-  },
   "ServiceConfiguration": {
     "Eligibility": {
       "enabled": true,
@@ -2505,7 +2507,7 @@
     "titleSelectApplies": "Sila pilih apa yang berkenaan",
     "tellusMore": "Berikan butiran penuh (Jika ada)",
     "hinttellusMore": "baki aksara",
-    "btnNoThank": "Mungkin tidak",
+    "btnNoThank": "Tidak",
     "btnShare": "Kongsikan"
   },
 
@@ -2513,7 +2515,7 @@
     "title": "Maklum balas Energy Budget",
     "thumbUpYes": "Ya",
     "thumbDownNo": "Tidak",
-    "btnNoThank": "Mungkin tidak",
+    "btnNoThank": "Tidak",
     "btnShare": "Kongsikan",
     "titleSelectApplies": "Sila pilih apa yang berkenaan",
     "tellusMore": "Berikan butiran penuh (Jika ada)",

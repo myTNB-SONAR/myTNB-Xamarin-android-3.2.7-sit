@@ -334,16 +334,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 System.Diagnostics.Debug.WriteLine("[DEBUG] Sync SR Error: " + e.Message);
             }
-
-            try
-            {
-                this.mPresenter.GetNotificationTypesList();
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("[DEBUG] GetNotificationTypesList Error: " + e.Message);
-            }
-
         }
 
 
@@ -1442,20 +1432,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 isWhatNewDialogOnHold = true;
             }
 
-            if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
-            {
-                isWhatNewDialogOnHold = true;
-            }
-
             if (isWhatNewDialogOnHold)
             {
                 isWhatNewDialogOnHold = false;
                 OnCheckWhatsNewTab();
             }
         }
-
-       
-
+      
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);
@@ -1866,7 +1849,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             {
                                 HideProgressDialog();
                                 MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
-                                this.mPresenter.CheckWhatsNewCache();
+                                //this.mPresenter.CheckWhatsNewCache();
                                 if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("whatsnew"))
                                 {
                                     urlSchemaCalled = false;
@@ -2124,6 +2107,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     if (flag)
                     {
+                        MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
                         this.mPresenter.SetIsWhatsNewDialogShowNeed(false);
                         WhatsNewEntity wtManager = new WhatsNewEntity();
                         List<WhatsNewEntity> items = wtManager.GetActivePopupItems(
@@ -2398,6 +2382,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         };
                         h.PostDelayed(myAction, 5);
                     }
+                    MyTNBAccountManagement.GetInstance().OnHoldWhatNew(false);
                 }
             }
             catch (Exception e)
@@ -2648,11 +2633,34 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             alreadyStarted = flag;
         }
 
+        public bool FilterComAndNEM()
+        {
+            try 
+            {
+                bool flag = false;
+                int totalSMCA = UserSessions.GetEnergyBudgetList().Count;
+                int totalSMCACOMCLandNEM = CustomerBillingAccount.SMeterBudgetAccountListALL().Count;
+                int diffSMCA = totalSMCA - totalSMCACOMCLandNEM;
+                if (totalSMCACOMCLandNEM > 0 && diffSMCA == 0)
+                {
+                    flag = true;
+                }
+                MyTNBAccountManagement.GetInstance().SetIsCOMCLandNEM(flag);
+                return flag;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                return false;
+            }
+        }
+
         public bool SetEligibleEBUser()
         {
             return UserSessions.GetEnergyBudgetList().Count > 0
                 && MyTNBAccountManagement.GetInstance().IsEBUserVerify()
-                && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
+                && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2")
+                && !MyTNBAccountManagement.GetInstance().COMCLandNEM();
         }
 
         public bool SetEligibleEBUserExtra()
