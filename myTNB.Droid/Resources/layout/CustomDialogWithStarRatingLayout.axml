@@ -4,12 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_gravity="center"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <androidx.cardview.widget.CardView
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_width="284dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="6dp"
         app:cardBackgroundColor="@color/white"
@@ -31,7 +33,9 @@
                 android:id="@+id/txtToolTipTitleBlue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="center"   
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:textColor="@color/powerBlue"
                 android:text="Congratulations! How was your Energy Budget set up?"
                 android:layout_gravity="center_vertical"/>
@@ -43,7 +47,7 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:clickable="true"
                     android:id="@+id/btnFirst">
             <TextView

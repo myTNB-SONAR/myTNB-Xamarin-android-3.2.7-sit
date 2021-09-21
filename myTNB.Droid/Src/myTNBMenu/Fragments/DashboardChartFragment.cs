@@ -9434,7 +9434,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     string acctypeID;
                     if (selectedCusBillAcc.AccountTypeId == null )
                     {
-                        acctypeID = "1";
+                        acctypeID = "0";
                     }
                     else
                     {

@@ -2638,10 +2638,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             try 
             {
                 bool flag = false;
-                int totalSMCA = UserSessions.GetEnergyBudgetList().Count;
-                int totalSMCACOMCLandNEM = CustomerBillingAccount.SMeterBudgetAccountListALL().Count;
-                int diffSMCA = totalSMCA - totalSMCACOMCLandNEM;
-                if (totalSMCACOMCLandNEM > 0 && diffSMCA == 0)
+                int totalSMCAEB = UserSessions.GetEnergyBudgetList().Count;
+                int totalSMCA = CustomerBillingAccount.SMeterBudgetAccountListALL().Count;
+                int diffSMCA = totalSMCA - totalSMCAEB;
+                if (diffSMCA > 0 && totalSMCAEB == 0)
                 {
                     flag = true;
                 }

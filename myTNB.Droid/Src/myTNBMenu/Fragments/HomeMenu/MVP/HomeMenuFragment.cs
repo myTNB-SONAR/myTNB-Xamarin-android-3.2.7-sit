@@ -458,6 +458,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         if (UserSessions.GetEnergyBudgetList().Count == 1)
                         {
+                            MyTNBAccountManagement.GetInstance().OnHoldWhatNew(true);
                             this.SetIsClicked(false);
                             List<SMRAccount> smaccEB = new List<SMRAccount>();
                             smaccEB = UserSessions.GetEnergyBudgetList();

@@ -162,7 +162,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
 
-                AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
+                 AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
                       (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));
                 if (masterDataResponse != null && masterDataResponse.Response != null)
                 {
@@ -355,10 +355,119 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                     DeviceIdNew = this.mView.GetDeviceId()
                                                 }, CancellationTokenSourceWrapper.GetToken());
                                             }
-                                            MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
-                                            this.mView.ShowNotificationCount(UserNotificationEntity.Count());
-                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
-                                            this.mView.ShowDashboard();
+
+                                            try
+                                            {
+                                                GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
+                                                baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
+                                                string dt = JsonConvert.SerializeObject(baseRequest);
+                                                CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
+                                                //CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
+                                                if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null)
+                                                {
+                                                    if (customerAccountListResponse.customerAccountData.Count > 0)
+                                                    {
+                                                        ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
+
+                                                    }
+                                                    else
+                                                    {
+                                                        AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+                                                    }
+
+                                                    List<NotificationTypesEntity> notificationTypes = NotificationTypesEntity.List();
+                                                    NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Utility.GetLocalizedCommonLabel("allNotifications"), true);
+                                                    foreach (NotificationTypesEntity notificationType in notificationTypes)
+                                                    {
+                                                        if (notificationType.ShowInFilterList)
+                                                        {
+                                                            NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
+                                                        }
+                                                    }
+                                                    UserNotificationEntity.RemoveAll();
+                                                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
+                                                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
+                                                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
+                                                    UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new myTNB_Android.Src.MyTNBService.Request.BaseRequest());
+                                                    if (response.IsSuccessResponse())
+                                                    {
+                                                        if (response.GetData() != null)
+                                                        {
+                                                            try
+                                                            {
+                                                                UserNotificationEntity.RemoveAll();
+                                                            }
+                                                            catch (System.Exception ne)
+                                                            {
+                                                                Utility.LoggingNonFatalError(ne);
+                                                            }
+
+                                                            foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                                                            {
+                                                                // tODO : SAVE ALL NOTIFICATIONs
+                                                                int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                                            }
+
+                                                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
+                                                        }
+                                                        else
+                                                        {
+                                                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                                                        }
+                                                    }
+                                                    else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                                                    {
+                                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
+                                                    }
+                                                    else
+                                                    {
+                                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                                                    }
+
+                                                    //Console.WriteLine(string.Format("Rows updated {0}" , CustomerBillingAccount.List().Count));
+                                                    if (this.mView.IsActive())
+                                                    {
+                                                        this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                                                    }
+
+                                                    if (LanguageUtil.GetAppLanguage() == "MS")
+                                                    {
+                                                        AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
+                                                    }
+                                                    else
+                                                    {
+                                                        AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
+                                                    }
+
+                                                    MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
+                                                    this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                                                    this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
+                                                    this.mView.ShowDashboard();
+                                                }
+                                                else
+                                                {
+                                                    MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
+                                                    this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                                                    this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
+                                                    this.mView.ShowDashboard();
+                                                }
+
+                                            }
+                                            catch (ApiException apiException)
+                                            {
+                                                Utility.LoggingNonFatalError(apiException);
+                                                EvaluateServiceRetryAWS();
+                                            }
+                                            catch (JsonReaderException e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                                EvaluateServiceRetryAWS();
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                                EvaluateServiceRetryAWS();
+                                            }
                                         }
                                     }
                                 }
@@ -520,6 +629,34 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             if (serviceCallCounter == 3)//If still failed after auto-retry, inform the user.
             {
                 this.mView.ShowSomethingWrongException();
+                serviceCallCounter = 0;
+            }
+        }
+
+         /// <summary>
+        /// Evaluate failed AppLaunchMasterData service for retry.
+        /// </summary>
+        private void EvaluateServiceRetryAWS()
+        {
+            serviceCallCounter++;
+            if (serviceCallCounter == 1)
+            {
+                DynatraceHelper.IdentifyUser();
+            }
+            Log.Debug(TAG, string.Format("AWSGetAccount Service failed in {0} seconds: Retry: {1} "
+                , appLaunchMasterDataTimeout
+                , serviceCallCounter));
+            if (serviceCallCounter == 1)//If first failed, do auto-retry.
+            {
+                LoadAppMasterData();
+            }
+            if (serviceCallCounter == 2)//If still failed, do auto-retry.
+            {
+                LoadAppMasterData();
+            }
+            if (serviceCallCounter == 3)//If still failed after auto-retry, inform the user.
+            {
+                this.mView.ShowExceptionDashboard();
                 serviceCallCounter = 0;
             }
         }
@@ -1031,6 +1168,133 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 CountryUtil.Instance.SetCountryList();
             });
+        }
+
+        private void ProcessCustomerAccount(List<CustomerAccountListResponseAppLaunch.CustomerAccountData> list)
+        {
+            try
+            {
+                int ctr = 0;
+                if (AccountSortingEntity.HasItems(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV))
+                {
+                    List<CustomerBillingAccount> existingSortedList = AccountSortingEntity.List(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+
+                    List<CustomerBillingAccount> fetchList = new List<CustomerBillingAccount>();
+
+                    List<CustomerBillingAccount> newExistingList = new List<CustomerBillingAccount>();
+                    List<int> newExisitingListArray = new List<int>();
+                    List<CustomerBillingAccount> newAccountList = new List<CustomerBillingAccount>();
+
+                    foreach (CustomerAccountListResponseAppLaunch.CustomerAccountData acc in list)
+                    {
+                        int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
+
+                        var newRecord = new CustomerBillingAccount()
+                        {
+                            //Type = acc.Type,
+                            AccNum = acc.AccountNumber,
+                            AccDesc = string.IsNullOrEmpty(acc.AccDesc) == true ? "--" : acc.AccDesc,
+                            UserAccountId = acc.UserAccountID,
+                            ICNum = acc.IcNum,
+                            AmtCurrentChg = acc.AmCurrentChg,
+                            IsRegistered = acc.IsRegistered,
+                            IsPaid = acc.IsPaid,
+                            isOwned = acc.IsOwned,
+                            AccountTypeId = acc.AccountTypeId,
+                            AccountStAddress = acc.AccountStAddress,
+                            OwnerName = acc.OwnerName,
+                            AccountCategoryId = acc.AccountCategoryId,
+                            SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
+                            IsSelected = false,
+                            BudgetAmount = acc.BudgetAmount
+                        };
+
+                        if (index != -1)
+                        {
+                            newExisitingListArray.Add(index);
+                        }
+                        else
+                        {
+                            newAccountList.Add(newRecord);
+                        }
+                    }
+
+                    if (newExisitingListArray.Count > 0)
+                    {
+                        newExisitingListArray.Sort();
+
+                        foreach (int index in newExisitingListArray)
+                        {
+                            CustomerBillingAccount oldAcc = existingSortedList[index];
+
+                            CustomerAccountListResponseAppLaunch.CustomerAccountData newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
+
+                            var newRecord = new CustomerBillingAccount()
+                            {
+                                //Type = newAcc.Type,
+                                AccNum = newAcc.AccountNumber,
+                                AccDesc = string.IsNullOrEmpty(newAcc.AccDesc) == true ? "--" : newAcc.AccDesc,
+                                UserAccountId = newAcc.UserAccountID,
+                                ICNum = newAcc.IcNum,
+                                AmtCurrentChg = newAcc.AmCurrentChg,
+                                IsRegistered = newAcc.IsRegistered,
+                                IsPaid = newAcc.IsPaid,
+                                isOwned = newAcc.IsOwned,
+                                AccountTypeId = newAcc.AccountTypeId,
+                                AccountStAddress = newAcc.AccountStAddress,
+                                OwnerName = newAcc.OwnerName,
+                                AccountCategoryId = newAcc.AccountCategoryId,
+                                SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
+                                IsSelected = false,
+                                BudgetAmount = newAcc.BudgetAmount
+                            };
+
+                            newExistingList.Add(newRecord);
+                        }
+                    }
+
+                    if (newExistingList.Count > 0)
+                    {
+                        newExistingList[0].IsSelected = true;
+                        foreach (CustomerBillingAccount acc in newExistingList)
+                        {
+                            int rowChange = CustomerBillingAccount.InsertOrReplace(acc);
+                            ctr++;
+                        }
+
+                        string accountList = JsonConvert.SerializeObject(newExistingList);
+
+                        AccountSortingEntity.InsertOrReplace(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV, accountList);
+                    }
+                    else
+                    {
+                        AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+                    }
+
+                    if (newAccountList.Count > 0)
+                    {
+                        newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
+                        foreach (CustomerBillingAccount acc in newAccountList)
+                        {
+                            int rowChange = CustomerBillingAccount.InsertOrReplace(acc);
+                            ctr++;
+                        }
+                    }
+                }
+                else
+                {
+
+                    foreach (CustomerAccountListResponseAppLaunch.CustomerAccountData acc in list)
+                    {
+                        int rowChange = CustomerBillingAccount.InsertOrReplace(acc, false);
+                    }
+                    CustomerBillingAccount.MakeFirstAsSelected();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

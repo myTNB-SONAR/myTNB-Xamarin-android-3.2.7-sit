@@ -128,6 +128,7 @@ namespace myTNB_Android.Src.Utils
         internal struct SERVER_URL
         {
             internal static readonly string END_POINT = myTNB.Mobile.MobileConstants.ApiDomain;
+            internal static readonly string END_POINT_AWS = myTNB.Mobile.MobileConstants.AWSApiDomain;
 
 #if DEBUG || STUB
             //internal static readonly string END_POINT = "http://10.215.128.191:89";  //dev

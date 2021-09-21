@@ -557,6 +557,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                     }
                                // }
                             }
+                            
                         }
 
                     }

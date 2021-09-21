@@ -5,11 +5,11 @@
     android:orientation="vertical"
     android:layout_gravity="center"
     android:layout_width="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     android:layout_height="wrap_content">
     <androidx.cardview.widget.CardView
-        android:layout_width="284dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         app:cardCornerRadius="6dp"
@@ -17,7 +17,7 @@
         app:cardElevation="0dp">
         <LinearLayout
           android:orientation="vertical"
-          android:layout_width="284dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
           android:id="@+id/rootView">
@@ -29,7 +29,8 @@
                 android:text="Did you find Energy Budget useful?"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="6dp"
                 android:textColor="@color/powerBlue"
                 android:textSize="16dp"
                 android:lineSpacingExtra="3dp"/>
