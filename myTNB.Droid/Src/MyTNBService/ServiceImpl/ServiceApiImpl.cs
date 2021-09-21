@@ -177,9 +177,9 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<SubmittedFeedbeckDetailModel> SubmittedFeedbackClaimIdDetail([Body] Request.BaseRequest request)
+        public Task<GetOvervoltageClaimDetailModel> OvervoltageClaimDetail([Body] Request.BaseRequest request)
         {
-            return api.SubmittedFeedbackClaimIdDetail<SubmittedFeedbeckDetailModel>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.OvervoltageClaimDetail<GetOvervoltageClaimDetailModel>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -187,9 +187,9 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<CAVerifyResponseModel> CAVerify([Body] Request.BaseRequest request)
+        public Task<TriggerOVISServicesResponseModel> TriggerOVISServices([Body] Request.BaseRequest request)
         {
-            return api.CAVerify<CAVerifyResponseModel>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.TriggerOVISServices<TriggerOVISServicesResponseModel>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>

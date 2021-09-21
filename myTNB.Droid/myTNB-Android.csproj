@@ -6275,7 +6275,6 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\MyTNBService\Request\SubmittedFeedbeckClaimIdDetailRequestModel.cs" />
-    <Compile Include="Src\MyTNBService\Response\SubmittedFeedbeckDetailModel.cs" />
     <Compile Include="Src\AppointmentDetailSet\Activity\AppointmentSetActivity.cs" />
     <Compile Include="Src\OverVoltageFeedback\Activity\OverVoltageFeedbackDetailActivity.cs" />
     <AndroidResource Include="Resources\layout\FeedBackSubmittedSuccessView.xml">
@@ -6313,7 +6312,6 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\MyTNBService\Request\CAVerifyRequestModel.cs" />
-    <Compile Include="Src\MyTNBService\Response\CAVerifyResponseModel.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\overvoltagedisableicon.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -6330,6 +6328,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\MyTNBService\Response\TriggerOVISServicesResponseModel.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetOvervoltageClaimDetailModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

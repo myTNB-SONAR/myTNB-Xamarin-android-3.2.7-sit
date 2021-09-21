@@ -51,7 +51,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                 {
                     if (submittedFeedback.FeedbackCategoryId.Equals("11"))
                     {
-                        var claimDetailResponce = await ServiceApiImpl.Instance.SubmittedFeedbackClaimIdDetail(new SubmittedFeedbeckClaimIdDetailRequestModel(submittedFeedback.FeedbackId));
+                        var claimDetailResponce = await ServiceApiImpl.Instance.OvervoltageClaimDetail(new SubmittedFeedbeckClaimIdDetailRequestModel(submittedFeedback.FeedbackId));
 
                         if (claimDetailResponce.d.data != null)
                         {

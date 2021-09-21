@@ -258,7 +258,7 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
         {
             try
             {
-                var claimDetailResponce = await ServiceApiImpl.Instance.SubmittedFeedbackClaimIdDetail(new SubmittedFeedbeckClaimIdDetailRequestModel(SerialNumber));
+                var claimDetailResponce = await ServiceApiImpl.Instance.OvervoltageClaimDetail(new SubmittedFeedbeckClaimIdDetailRequestModel(SerialNumber));
 
                 if (claimDetailResponce.d.data != null)
                 {
