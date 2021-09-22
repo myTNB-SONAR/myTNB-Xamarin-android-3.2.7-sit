@@ -131,6 +131,16 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 var Manufacturer = DeviceInfo.Manufacturer;
                 var data = new BaseRequest();
                 var usin = data.usrInf;
+                UserEntity user = UserEntity.GetActive();
+                string langFinal;
+                if (usin.lang == "MS")
+                {
+                    langFinal = "bm";
+                }
+                else
+                {
+                    langFinal = usin.lang;
+                }
 #if DEBUG
                 //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
 #endif
@@ -155,20 +165,21 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
 
                 string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
-                // string domain = "http://192.168.1.157:3000/"; // WebView Local
+                //string domain = "http://192.168.1.157:3000/"; // WebView Local
 
                 string url = domain;
-
-                url += "?CA=" + accNo + "&eid=" + usin.eid + "&lang=" + usin.lang + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
-
+                
+                //url += "?CA=" + accNo + "&eid=" + usin.eid + "&lang=" + usin.lang + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
+                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.RandomFiveDigit + "&IDCN=" + user.IdentificationNo + "&userID=" + user.UserID + "&name=" + user.DisplayName + "&eid=" + usin.eid + "&lang=" + langFinal + "&sec_auth_k1=" + usin.sec_auth_k1 + "&mobileNo=" + user.MobileNo;
+                url = url.Replace(" ", "%20");
+                //url = System.Web.HttpUtility.UrlEncode(url);
                 if (TextViewUtils.IsLargeFonts)
                 {
                     url += "&large";
                 }
 
                 webView.LoadUrl(url); 
-                await Task.Delay(0);
-                //PassData();
+                await Task.Delay(0);               
                 //HideProgressDialog();
             }
             catch (Exception ex)
@@ -364,27 +375,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             }
         }
 
-        internal void PassData()
-        {
-            try
-            {
-                var data = new BaseRequest();
-                var usin = data.usrInf;
-                var ac = accNo.Trim();
-                var datajson = JsonConvert.SerializeObject(usin);
-                Console.WriteLine(datajson);
-                
-                UserEntity user = UserEntity.GetActive();
-                //webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { getUserInfo('" + ac +"', '" + user.IdentificationNo + "', '" + user.UserID + "', '" + user.DisplayName + "','" + datajson + "') },100); })();", null);
-                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { getUserInfo('" + ac + "', '" + user.IdentificationNo + "', '" + user.UserID + "', '" + user.DisplayName + "','" + usin.eid + "','" + usin.lang + "','" + usin.sec_auth_k1 + "','" + Utility.GetLocalizedLabel("SubmitEnquiry", "defaultErrorMessage") + "', '" + user.MobileNo + "') },100); })();", null);
-
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
+       
     }
 
     internal class WebViewClient :  WebChromeClient
@@ -414,8 +405,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
 
             if (newProgress == 100)
             {
-                this.overVoltageClaim.HideProgressDialog();
-                overVoltageClaim.PassData();
+                this.overVoltageClaim.HideProgressDialog();               
             
             }
            
