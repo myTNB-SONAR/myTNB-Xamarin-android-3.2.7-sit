@@ -170,7 +170,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 string url = domain;
                 
                 //url += "?CA=" + accNo + "&eid=" + usin.eid + "&lang=" + usin.lang + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
-                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.RandomFiveDigit + "&IDCN=" + user.IdentificationNo + "&userID=" + user.UserID + "&name=" + user.DisplayName + "&eid=" + usin.eid + "&lang=" + langFinal + "&sec_auth_k1=" + usin.sec_auth_k1 + "&mobileNo=" + user.MobileNo;
+                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.RandomFiveDigit + "&IDCN=" + user.IdentificationNo + "&userID=" + user.UserID + "&name=" + user.DisplayName  + "&lang=" + langFinal + "&sec_auth_k1=" + usin.sec_auth_k1 + "&mobileNo=" + user.MobileNo;
                 url = url.Replace(" ", "%20");
                 //url = System.Web.HttpUtility.UrlEncode(url);
                 if (TextViewUtils.IsLargeFonts)
