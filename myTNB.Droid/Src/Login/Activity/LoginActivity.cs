@@ -422,7 +422,7 @@ namespace myTNB_Android.Src.Login.Activity
         {
             //Guid
             Guid myuuid = Guid.NewGuid();
-            LaunchViewActivity.UUID = myuuid.ToString();
+            LaunchViewActivity.DynatraceSessionUUID = myuuid.ToString();
 
             // TODO : START ACTIVITY DASHBOARD
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
