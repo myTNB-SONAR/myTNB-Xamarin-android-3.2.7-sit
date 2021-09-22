@@ -159,11 +159,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
 
                 string url = domain;
 
-<<<<<<< HEAD
                 url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.DynatraceSessionUUID;
-=======
-                url += "?CA=" + accNo + "&eid=" + usin.eid + "&lang=" + usin.lang + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
->>>>>>> origin/feature/android/ACME-II/OVIS-main
 
                 if (TextViewUtils.IsLargeFonts)
                 {
