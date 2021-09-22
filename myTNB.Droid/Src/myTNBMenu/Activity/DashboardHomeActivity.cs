@@ -2477,5 +2477,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             this.ShowIneligiblePopUp();
         }
+
+        public void NavigateToNBR()
+        {
+            this.ShowNewBillRedesign();
+        }
     }
 }

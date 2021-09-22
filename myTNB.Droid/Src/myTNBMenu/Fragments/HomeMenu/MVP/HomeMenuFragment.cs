@@ -3739,5 +3739,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        [OnClick(Resource.Id.newBillRedesignBanner)]
+        void NewBillRedesignBannerOnClick(object sender, EventArgs eventArgs)
+        {
+            ((DashboardHomeActivity)Activity).NavigateToNBR();
+        }
     }
 }

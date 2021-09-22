@@ -6,6 +6,7 @@ using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Bills.NewBillRedesign;
 using myTNB_Android.Src.BillStatement.MVP;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
@@ -204,6 +205,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.GOT_IT))
                 .Build();
             whatIsThisTooltip.Show();
+        }
+
+        internal static void ShowNewBillRedesign(this DashboardHomeActivity mainActivity)
+        {
+            Intent nbrDiscoverMoreIntent = new Intent(mainActivity, typeof(NBRDiscoverMoreActivity));
+            mainActivity.StartActivity(nbrDiscoverMoreIntent);
         }
     }
 }

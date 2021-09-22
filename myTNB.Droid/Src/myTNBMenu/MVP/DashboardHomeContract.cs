@@ -186,6 +186,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void NavigateToViewAccountStatement(CustomerBillingAccount account);
 
             void TriggerIneligiblePopUp();
+
+            void NavigateToNBR();
         }
 
         public interface IUserActionsListener : IBasePresenter
