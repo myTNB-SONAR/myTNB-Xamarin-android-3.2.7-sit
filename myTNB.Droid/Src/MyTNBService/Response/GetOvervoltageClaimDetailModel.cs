@@ -21,7 +21,8 @@ namespace myTNB_Android.Src.MyTNBService.Response
         public string RefreshBtnText { get; set; }
         public bool IsPayEnabled { get; set; }
     }
-    public class SubmittedFeedbeckDetailModel
+
+    public class GetOvervoltageClaimDetailModel
     {
         public D d { get; set; }
     }

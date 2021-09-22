@@ -12,10 +12,8 @@ namespace myTNB_Android.Src.MyTNBService.Response
         //[JsonProperty("overvoltageClaimSupported")]
         public Dictionary<string, string> OvervoltageClaimSupported { get; set; }
     }
-
-    public class CAVerifyResponseModel
+    public class TriggerOVISServicesResponseModel
     {
         public CANumberData d { get; set; }
-        //public bool OvervoltageClaimEnabled { get; set; }
     }
 }

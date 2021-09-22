@@ -7,14 +7,13 @@ namespace myTNB_Android.Src.MyTNBService.Request
     {
         public List<string> contactAccountNumbers { get; set; }
     }
-
-    public class CAVerifyRequestModel : BaseRequest
+    public class TriggerOVISServicesRequestModel : BaseRequest
     {
         public string userID { get; set; }
         public string action { get; set; }
         public string actionUrl { get; set; }
         public OVISRequest OVISRequest { get; set; }
-        public CAVerifyRequestModel(string userID, string action, string actionUrl, OVISRequest OVISRequest)
+        public TriggerOVISServicesRequestModel(string userID, string action, string actionUrl, OVISRequest OVISRequest)
         {
             this.userID = userID;
             this.action = action;

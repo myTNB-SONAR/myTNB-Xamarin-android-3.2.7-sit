@@ -159,7 +159,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         public bool IsPilot = false;
         public bool OvisUnderMaintenance = false;
         public bool IsServerDown = false;
-        CAVerifyResponseModel CANumberVerifyResponce;
+        TriggerOVISServicesResponseModel TriggerOVISServicesResponse;
         List<CustomerBillingAccount> accountList;
         List<string> contactAccountNumbers;
         OVISRequest listData;
@@ -322,14 +322,15 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     var usin = data.usrInf;
                     AccNoDesc = "";
                     //verifyCADetailsExt Endpoint
-                    CANumberVerifyResponce = await ServiceApiImpl.Instance.CAVerify(new CAVerifyRequestModel(usin.sspuid, "POST", "/claim/verifyCADetailsExt", listData));
-
-                    if (CANumberVerifyResponce != null)
+                    CancellationTokenSourceWrapper.EnquiryTimeout = true;
+                    TriggerOVISServicesResponse = await ServiceApiImpl.Instance.TriggerOVISServices(new TriggerOVISServicesRequestModel(usin.sspuid, "POST", "/claim/verifyCADetailsExt", listData));//verifyCADetailsExt
+                    CancellationTokenSourceWrapper.EnquiryTimeout = false;
+                    if (TriggerOVISServicesResponse != null)
                     {
-                        if (CANumberVerifyResponce.d != null)
+                        if (TriggerOVISServicesResponse.d != null)
                         {
-                            IsPilot = CANumberVerifyResponce.d.OvervoltageClaimEnabled;
-                            OvisUnderMaintenance = CANumberVerifyResponce.d.IsOvisUnderMaintenance;
+                            IsPilot = TriggerOVISServicesResponse.d.OvervoltageClaimEnabled;
+                            OvisUnderMaintenance = TriggerOVISServicesResponse.d.IsOvisUnderMaintenance;
 
                             if (OvisUnderMaintenance)
                             {
@@ -347,13 +348,13 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                             else
                             {
                                 //Non Pilot
-                                if (!CANumberVerifyResponce.d.OvervoltageClaimEnabled)
+                                if (!TriggerOVISServicesResponse.d.OvervoltageClaimEnabled)
                                 {
                                     overvoltageClaimVisible = false;
                                 }
 
                                 //Pilot
-                                else if (CANumberVerifyResponce.d.OvervoltageClaimEnabled)
+                                else if (TriggerOVISServicesResponse.d.OvervoltageClaimEnabled)
                                 {
                                     overvoltageClaimVisible = true;
                                     IsWhiteListedArea = true;
@@ -363,13 +364,13 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                                     if (!string.IsNullOrEmpty(txtAccountNo.Text))
                                     {
                                         string isValid = null;
-                                        if (CANumberVerifyResponce.d.OvervoltageClaimSupported.ContainsKey(txtAccountNo.Text))
+                                        if (TriggerOVISServicesResponse.d.OvervoltageClaimSupported.ContainsKey(txtAccountNo.Text))
                                         {
-                                            for (int i = 0; i < CANumberVerifyResponce.d.OvervoltageClaimSupported.Count(); i++)
+                                            for (int i = 0; i < TriggerOVISServicesResponse.d.OvervoltageClaimSupported.Count(); i++)
                                             {
-                                                if (CANumberVerifyResponce.d.OvervoltageClaimSupported.ElementAt(i).Key == txtAccountNo.Text)
+                                                if (TriggerOVISServicesResponse.d.OvervoltageClaimSupported.ElementAt(i).Key == txtAccountNo.Text)
                                                 {
-                                                    isValid = CANumberVerifyResponce.d.OvervoltageClaimSupported.ElementAt(i).Value;
+                                                    isValid = TriggerOVISServicesResponse.d.OvervoltageClaimSupported.ElementAt(i).Value;
                                                     //return;
                                                 }
                                             }
@@ -419,7 +420,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                         }
                         else
                         {
-                            if (CANumberVerifyResponce.d == null)
+                            if (TriggerOVISServicesResponse.d == null)
                             {
                                 IsServerDown = true;
                                 overvoltageclaimConstraint.Visibility = ViewStates.Visible;
@@ -449,20 +450,17 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Internal Server Error"))
-                {
-                    IsServerDown = true;
-                    overvoltageclaimConstraint.Visibility = ViewStates.Visible;
-                    txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
-                    txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
-                    updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
-                    updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                    overvoltageclaimConstraint.Clickable = true;
-                    accountLayout4.Visibility = ViewStates.Visible;
-                    var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailable");
-                    InfoLabel.Text = infoValue;
-                    HideProgressDialog();
-                }
+                IsServerDown = true;
+                overvoltageclaimConstraint.Visibility = ViewStates.Visible;
+                txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
+                txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
+                updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
+                updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
+                overvoltageclaimConstraint.Clickable = true;
+                accountLayout4.Visibility = ViewStates.Visible;
+                var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailable");
+                InfoLabel.Text = infoValue;
+                HideProgressDialog();
 
             }
         }
@@ -945,13 +943,13 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                         else if (IsPilot)
                         {
                             string isValid = null;
-                            if (CANumberVerifyResponce.d.OvervoltageClaimSupported.ContainsKey(txtAccountNo.Text))
+                            if (TriggerOVISServicesResponse.d.OvervoltageClaimSupported.ContainsKey(txtAccountNo.Text))
                             {
-                                for (int i = 0; i < CANumberVerifyResponce.d.OvervoltageClaimSupported.Count(); i++)
+                                for (int i = 0; i < TriggerOVISServicesResponse.d.OvervoltageClaimSupported.Count(); i++)
                                 {
-                                    if (CANumberVerifyResponce.d.OvervoltageClaimSupported.ElementAt(i).Key == txtAccountNo.Text)
+                                    if (TriggerOVISServicesResponse.d.OvervoltageClaimSupported.ElementAt(i).Key == txtAccountNo.Text)
                                     {
-                                        isValid = CANumberVerifyResponce.d.OvervoltageClaimSupported.ElementAt(i).Value;
+                                        isValid = TriggerOVISServicesResponse.d.OvervoltageClaimSupported.ElementAt(i).Value;
                                         //return;
                                     }
                                 }
