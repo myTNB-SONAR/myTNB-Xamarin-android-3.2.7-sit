@@ -7471,6 +7471,31 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+        <AndroidResource Include="Resources\drawable-hdpi\download_bill_statement.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\download_bill_statement.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\download_bill_statement.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\download_bill_statement.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\download_bill_statement.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\BillStatement.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\BillStatement\MVP\BillStatementActivity.cs" />
     <Compile Include="Src\Device Cache\DeviceSizeCache.cs" />
     <Compile Include="Src\Bills\NewBillRedesign\Activity\NBRDiscoverMoreActivity.cs" />
     <Compile Include="Src\Bills\NewBillRedesign\MVP\NBRDiscoverMoreContract.cs" />
@@ -7527,6 +7552,11 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Utils\Deeplink\DeeplinkUtil.cs" />
+    <Compile Include="Src\Utils\Deeplink\Deeplink.cs" />
+    <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivityExtension.cs" />
+    <Compile Include="Src\Utils\LanguageConstants.cs" />
+    <Compile Include="Src\myTNBMenu\MVP\DashboardHomePresenterExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7844,6 +7874,7 @@
     <Folder Include="Src\Bills\NewBillRedesign\MVP\" />
     <Folder Include="Src\Bills\NewBillRedesign\Model\" />
     <Folder Include="Src\Bills\NewBillRedesign\Fragment\" />
+    <Folder Include="Src\Utils\Deeplink\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

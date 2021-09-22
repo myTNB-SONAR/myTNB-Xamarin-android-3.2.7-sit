@@ -35,6 +35,7 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Database.Model;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.SessionCache;
+using myTNB_Android.Src.BillStatement.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
@@ -60,6 +61,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         [BindView(Resource.Id.bill_filter_icon)]
         ImageView billFilterIcon;
+
+        [BindView(Resource.Id.download_bill_icon)]
+        ImageView download_bill_icon;
+        
 
         [BindView(Resource.Id.itemisedBillingInfoNote)]
         TextView itemisedBillingInfoNote;
@@ -350,7 +355,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
-                    Intent newIntent = new Intent(this.Activity, typeof(FilterBillHistoryActivity));
+                    Intent newIntent = new Intent(this.Activity, typeof(SelectItemActivity));
                     string filterDescription = "NONRE";
                     bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
                     if (isREAccount)
@@ -368,10 +373,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
+        private void ShowDownloadBill()
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent newIntent = new Intent(this.Activity, typeof(BillStatementActivity));
+                    newIntent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
+                    StartActivity(newIntent);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         [OnClick(Resource.Id.bill_filter_icon)]
         void OnFilterBillHistory(object sender, EventArgs eventArgs)
         {
             ShowSelectFilter();
+        }
+        [OnClick(Resource.Id.download_bill_icon)]
+        void OnDownloadBillHistory(object sender, EventArgs eventArgs)
+        {
+            ShowDownloadBill();
         }
 
         [OnClick(Resource.Id.btnRefresh)]
@@ -428,7 +456,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 {
                     if (resultCode == (int)Result.Ok)
                     {
-                        UpdateBillingHistory(data.GetStringExtra("SELECTED_ITEM_FILTER"));
+                        itemFilterList = JsonConvert.DeserializeObject<List<Item>>(data.GetStringExtra("SELECTED_ITEM_LIST"));
+                        Item selectedFilter = itemFilterList.Find(itemFilter =>
+                        {
+                            return itemFilter.selected;
+                        });
+
+                        UpdateBillingHistory(selectedFilter);
                         itemisedBillingScrollView.ScrollTo(0, 0);
                     }
                 }
@@ -725,9 +759,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer.Visibility = ViewStates.Visible;
         }
 
-        public void UpdateBillingHistory(string filterItemString)
-        {
-            Item selectedFilter = JsonConvert.DeserializeObject<Item>(filterItemString);
+        public void UpdateBillingHistory(Item selectedFilter)
+        { 
             itemFilterList.ForEach(filterItem =>
             {
                 filterItem.selected = (filterItem.type == selectedFilter.type) ? true : false;
@@ -982,6 +1015,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 emptyItemisedBillingList.Visibility = ViewStates.Gone;
                 itemisedBillingList.Visibility = ViewStates.Visible;
                 billFilterIcon.Visibility = ViewStates.Visible;
+                download_bill_icon.Visibility = ViewStates.Visible;
                 billFilterIcon.Enabled = true;
                 EnableActionButtons(true);
                 RenderBillingHistoryList(null);
@@ -1016,6 +1050,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             else
             {
                 billFilterIcon.Visibility = ViewStates.Gone;
+                download_bill_icon.Visibility = ViewStates.Gone;
                 billFilterIcon.Enabled = true;
                 bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
                 if (isREAccount)
