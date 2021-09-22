@@ -131,16 +131,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 var Manufacturer = DeviceInfo.Manufacturer;
                 var data = new BaseRequest();
                 var usin = data.usrInf;
-                UserEntity user = UserEntity.GetActive();
-                string langFinal;
-                if (usin.lang == "MS")
-                {
-                    langFinal = "bm";
-                }
-                else
-                {
-                    langFinal = usin.lang;
-                }
+                UserEntity user = UserEntity.GetActive();               
 #if DEBUG
                 //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
 #endif
@@ -168,9 +159,8 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 //string domain = "http://192.168.1.157:3000/"; // WebView Local
 
                 string url = domain;
-                
-                //url += "?CA=" + accNo + "&eid=" + usin.eid + "&lang=" + usin.lang + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
-                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.RandomFiveDigit + "&IDCN=" + user.IdentificationNo + "&userID=" + user.UserID + "&name=" + user.DisplayName  + "&lang=" + langFinal + "&sec_auth_k1=" + usin.sec_auth_k1 + "&mobileNo=" + user.MobileNo;
+                                
+                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.RandomFiveDigit + "&IDCN=" + user.IdentificationNo + "&userID=" + user.UserID + "&name=" + user.DisplayName  + "&lang=" + usin.lang + "&sec_auth_k1=" + usin.sec_auth_k1 + "&mobileNo=" + user.MobileNo;
                 url = url.Replace(" ", "%20");
                 //url = System.Web.HttpUtility.UrlEncode(url);
                 if (TextViewUtils.IsLargeFonts)

@@ -170,19 +170,11 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 var data = new BaseRequest();
                 var usin = data.usrInf;
                 UserEntity user = UserEntity.GetActive();
-                string langFinal;
-                if (usin.lang == "MS")
-                {
-                    langFinal = "bm";
-                }
-                else
-                {
-                    langFinal = usin.lang;
-                }
+                
                 string domain = "https://mytnbwvovis.ap.ngrok.io/"; // WebView Live
                 //string domain = "http://192.168.1.157:3000/"; // WebView Local
 
-                domain += "claimPage/" + ClaimId + "?eid=" + usin.eid + "&lang=" + langFinal + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID+ "&IDCN=" + user.IdentificationNo + "&userID=" + user.UserID + "&name=" + user.DisplayName + "&sec_auth_k1=" + usin.sec_auth_k1 + "&mobileNo=" + user.MobileNo;                
+                domain += "claimPage/" + ClaimId + "?eid=" + usin.eid + "&lang=" + usin.lang + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID+ "&IDCN=" + user.IdentificationNo + "&userID=" + user.UserID + "&name=" + user.DisplayName + "&sec_auth_k1=" + usin.sec_auth_k1 + "&mobileNo=" + user.MobileNo;                
                 domain = domain.Replace(" ", "%20");
                 String queryParams = null;
                 
