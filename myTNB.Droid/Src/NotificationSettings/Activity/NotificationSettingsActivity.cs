@@ -738,6 +738,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 View v = mLanguageSnackbar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(5);
+                TextViewUtils.SetTextSize14(tv);
                 mLanguageSnackbar.Show();
                 this.SetIsClicked(false);
             }
@@ -847,6 +848,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             );
             View v = mCancelledExceptionSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            TextViewUtils.SetTextSize14(tv);
             tv.SetMaxLines(5);
             mCancelledExceptionSnackBar.Show();
         }
@@ -869,6 +871,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             );
             View v = mApiExcecptionSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            TextViewUtils.SetTextSize14(tv);
             tv.SetMaxLines(5);
             mApiExcecptionSnackBar.Show();
         }
@@ -892,6 +895,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             );
             View v = mUknownExceptionSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            TextViewUtils.SetTextSize14(tv);
             tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
         }
@@ -914,6 +918,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             View v = mCancelledExceptionSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
+            TextViewUtils.SetTextSize14(tv);
             mCancelledExceptionSnackBar.Show();
         }
 
@@ -936,6 +941,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             View v = mApiExcecptionSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
+            TextViewUtils.SetTextSize14(tv);
             mApiExcecptionSnackBar.Show();
         }
 
@@ -959,6 +965,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             View v = mUknownExceptionSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
+            TextViewUtils.SetTextSize14(tv);
             mUknownExceptionSnackBar.Show();
         }
 

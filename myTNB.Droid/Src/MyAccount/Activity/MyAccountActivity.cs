@@ -243,6 +243,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 View v = mCancelledExceptionSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(5);
+                TextViewUtils.SetTextSize14(tv);
                 mCancelledExceptionSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -273,6 +274,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 View v = mApiExcecptionSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(5);
+                TextViewUtils.SetTextSize14(tv);
                 mApiExcecptionSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -304,6 +306,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 View v = mUknownExceptionSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(5);
+                TextViewUtils.SetTextSize14(tv);
                 mUknownExceptionSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -439,6 +442,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             View snackbarView = errorMessageSnackbar.View;
             TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
             textView.SetMaxLines(4);
+            TextViewUtils.SetTextSize14(textView);
             errorMessageSnackbar.Show();
         }
 
@@ -565,6 +569,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 View v = removeSupplySnackbar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(5);
+                TextViewUtils.SetTextSize14(tv);
                 removeSupplySnackbar.Show();
                 this.SetIsClicked(false);
             }
@@ -599,6 +604,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 View v = updatePassWordBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
+                TextViewUtils.SetTextSize14(tv);
                 updatePassWordBar.Show();
                 this.SetIsClicked(false);
             }

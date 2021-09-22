@@ -495,7 +495,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     if (!UserSessions.HasManageAccessIconTutorialShown(this.mPref))
                     {
                         OnManageAccessIconTutorialDialog(selected.isOwned, selected.AccountTypeId);
-
+                        
                     }
                     //else
                     //{

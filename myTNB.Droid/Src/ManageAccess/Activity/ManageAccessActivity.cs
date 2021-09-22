@@ -212,7 +212,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             ShowDeleteAccDialog(this, () =>
             {
                 UserManageAccessAccount account = adapter.GetItemObject(position);
-                UserManageAccessAccount.SetSelected(account.AccNum, true, account.UserAccountId, account.email);
+                UserManageAccessAccount.SetSelected(account.AccNum, true, account.UserAccountId, account.email, account.IsPreRegister);
                 List<UserManageAccessAccount> DeletedSelectedUser = UserManageAccessAccount.ListIsSelected(accountData?.AccountNum);
                 List<DeleteAccessAccount> accountList = new List<DeleteAccessAccount>();
                 mPresenter.OnRemoveAccountMultiple(DeletedSelectedUser, false, accountList, accountData.AccountNum);
@@ -435,6 +435,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 View v = saveSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
+                TextViewUtils.SetTextSize14(tv);
                 saveSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -445,7 +446,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             }
         }
 
-        //patut modify untuk papar di page manageAccess
+        
         public void ShowAddNonTNBUserSuccess(string email)
         {
             try
@@ -461,6 +462,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 View v = saveSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
+                TextViewUtils.SetTextSize14(tv);
                 saveSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -492,6 +494,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 View v = mCancelledExceptionSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(5);
+                TextViewUtils.SetTextSize14(tv);
                 mCancelledExceptionSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -522,6 +525,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 View v = mApiExcecptionSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(5);
+                TextViewUtils.SetTextSize14(tv);
                 mApiExcecptionSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -553,6 +557,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 View v = mUknownExceptionSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(5);
+                TextViewUtils.SetTextSize14(tv);
                 mUknownExceptionSnackBar.Show();
                 this.SetIsClicked(false);
             }
@@ -631,6 +636,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             View snackbarView = errorMessageSnackbar.View;
             TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
             textView.SetMaxLines(4);
+            TextViewUtils.SetTextSize14(textView);
             errorMessageSnackbar.Show();
         }
 
@@ -679,6 +685,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             View snackbarView = errorMessageSnackbar.View;
             TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
             textView.SetMaxLines(4);
+            TextViewUtils.SetTextSize14(textView);
             errorMessageSnackbar.Show();
         }
 

@@ -519,11 +519,12 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
-                    string Idtype = selectedIdentificationType.Id;
+                    string Idtype = selectedIdentificationType.Id.ToString().Trim();
                     string ic_no = txtICNumber.Text.ToString().Trim();
 
-                    this.userActionsListener.OnCheckID(ic_no, Idtype);
+
                     //this.userActionsListener.CheckRequiredFields(ic_no, Idtype);
+                    this.userActionsListener.OnCheckID(ic_no, Idtype);
 
                     bool hasExistedID = MyTNBAccountManagement.GetInstance().IsIDUpdated();
 

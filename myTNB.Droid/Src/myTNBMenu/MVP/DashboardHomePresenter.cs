@@ -59,7 +59,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 		private string smErrorCode = "204";
 		private string smErrorMessage = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
 
-		private string preSelectedAccount;
+        AccountData selectedAccount;
+
+        private string preSelectedAccount;
 		private UsageHistoryResponse usageHistoryResponse;
         private SMUsageHistoryResponse smUsageHistoryResponse;
 
@@ -76,8 +78,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         private WhatsNewCategoryEntity mWhatsNewCategoryEntity;
 
         private WhatsNewEntity mWhatsNewEntity;
-
-        AccountData selectedAccount;
 
         private static SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager;
         private static SSMRMeterReadingScreensEntity SSMRMeterReadingScreensManager;
@@ -1710,7 +1710,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         {
             List<NewAppModel> newList = new List<NewAppModel>();
             bool isNeedHelpHide = true;
-
+            
             if (isOwner)
             {
                 newList.Add(new NewAppModel()
@@ -1730,15 +1730,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     newList.Add(new NewAppModel()
                     {
                         ContentShowPosition = ContentType.BottomRight,
-                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitle"),
+                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitleNonOwner"),
                         ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageDescNonOwner"),
                         ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                         NeedHelpHide = isNeedHelpHide,
                         IsButtonShow = false
                     });
                 }
-
-            }
+                
+            }            
             return newList;
         }
 

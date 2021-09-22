@@ -105,7 +105,7 @@ namespace myTNB_Android.Src.myTNBMenu.Models
 
         [JsonProperty("IsOwner")]
         public bool IsOwner { get; set; }
-
+        
         [JsonProperty("AccountCategoryId")]
         public string AccountCategoryId { get; set; }
 
@@ -252,7 +252,6 @@ namespace myTNB_Android.Src.myTNBMenu.Models
 
             };
         }
-
 
     }
 }

@@ -575,10 +575,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                      // EMPTY WILL CLOSE SNACKBAR
                  }
                );
-                View v = updateSnackbar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(5);
-                updateSnackbar.Show();
+            View v = updateSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            TextViewUtils.SetTextSize14(tv);
+            updateSnackbar.Show();
                 SetResult(Result.Ok);
             }
             catch (Exception e)
@@ -645,6 +646,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             View snackbarView = mCancelledExceptionSnackBar.View;
             TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
             textView.SetMaxLines(4);
+            TextViewUtils.SetTextSize14(textView);
             mCancelledExceptionSnackBar.Show();
 
         }
@@ -667,6 +669,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             View snackbarView = mApiExcecptionSnackBar.View;
             TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
             textView.SetMaxLines(4);
+            TextViewUtils.SetTextSize14(textView);
             mApiExcecptionSnackBar.Show();
 
         }
@@ -690,6 +693,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             View snackbarView = mUknownExceptionSnackBar.View;
             TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
             textView.SetMaxLines(4);
+            TextViewUtils.SetTextSize14(textView);
             mUknownExceptionSnackBar.Show();
 
         }
@@ -707,6 +711,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             View snackbarView = errorMessageSnackbar.View;
             TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
             textView.SetMaxLines(4);
+            TextViewUtils.SetTextSize14(textView);
             errorMessageSnackbar.Show();
         }
 

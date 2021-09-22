@@ -24,6 +24,9 @@ namespace myTNB_Android.Src.ManageAccess.Models
         [JsonProperty("userId")]
         public string userId { get; set; }
 
+        [JsonProperty("IsPreRegister")]
+        public bool IsPreRegister { get; set; }
+
 
 
     }
