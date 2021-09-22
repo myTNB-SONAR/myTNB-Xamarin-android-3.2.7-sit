@@ -159,7 +159,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
 
                 string url = domain;
 
-                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
+                url += "?CA=" + accNo + "&eid=" + usin.eid + "&lang=" + usin.lang + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
 
                 if (TextViewUtils.IsLargeFonts)
                 {
