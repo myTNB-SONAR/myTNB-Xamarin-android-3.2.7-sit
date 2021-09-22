@@ -159,10 +159,9 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 //string domain = "http://192.168.1.157:3000/"; // WebView Local
 
                 string url = domain;
-                                
-                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.RandomFiveDigit + "&IDCN=" + user.IdentificationNo + "&userID=" + user.UserID + "&name=" + user.DisplayName  + "&lang=" + usin.lang + "&sec_auth_k1=" + usin.sec_auth_k1 + "&mobileNo=" + user.MobileNo;
-                url = url.Replace(" ", "%20");
-                //url = System.Web.HttpUtility.UrlEncode(url);
+                                                
+                url += $"?CA={accNo}&eid={usin.eid}&appVersion={AppVersion}&os={OsVersion}&Manufacturer={Manufacturer}&model={DeviceModel}&session_id={LaunchViewActivity.UUID}&IDCN={user.UserID}&name={user.DisplayName}&lang={usin.lang}&sec_auth_k1={usin.sec_auth_k1}&mobileNo={user.MobileNo}";
+                url = Uri.EscapeUriString(url);               
                 if (TextViewUtils.IsLargeFonts)
                 {
                     url += "&large";
