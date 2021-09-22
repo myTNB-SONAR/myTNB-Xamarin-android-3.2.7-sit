@@ -322,9 +322,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     var usin = data.usrInf;
                     AccNoDesc = "";
                     //verifyCADetailsExt Endpoint
-                    CancellationTokenSourceWrapper.EnquiryTimeout = true;
+                    CancellationTokenSourceWrapper.isOvervoltageClaimPilotNonPilotTimeout = true;
                     TriggerOVISServicesResponse = await ServiceApiImpl.Instance.TriggerOVISServices(new TriggerOVISServicesRequestModel(usin.sspuid, "POST", "/claim/verifyCADetailsExt", listData));//verifyCADetailsExt
-                    CancellationTokenSourceWrapper.EnquiryTimeout = false;
+                    CancellationTokenSourceWrapper.isOvervoltageClaimPilotNonPilotTimeout = false;
                     if (TriggerOVISServicesResponse != null)
                     {
                         if (TriggerOVISServicesResponse.d != null)
