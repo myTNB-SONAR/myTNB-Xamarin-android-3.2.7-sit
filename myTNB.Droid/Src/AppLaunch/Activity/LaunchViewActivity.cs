@@ -87,17 +87,21 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private Snackbar mUnknownExceptionSnackBar;
 
         private AppLaunchNavigation currentNavigation = AppLaunchNavigation.Nothing;
-        public static string RandomFiveDigit;
+        public static string RandomFiveDigit, UUID;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             //Random number for webview dynatrace
-            Random r = new Random();
-            int randNum = r.Next(100000);
-            RandomFiveDigit = randNum.ToString("D5");
-            Console.WriteLine(RandomFiveDigit);
+            //Random r = new Random();
+            //int randNum = r.Next(100000);
+            //RandomFiveDigit = randNum.ToString("D5");
+            //Console.WriteLine(RandomFiveDigit);
+
+            //UUID number for dynatrace webview navigation	
+            Guid myuuid = Guid.NewGuid();
+            UUID = myuuid.ToString();
 
             Utility.SetAppUpdateId(this);
             LanguageUtil.SetInitialAppLanguage();

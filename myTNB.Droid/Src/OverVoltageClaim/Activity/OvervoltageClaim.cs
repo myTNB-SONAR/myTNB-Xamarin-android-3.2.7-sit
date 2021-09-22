@@ -13,6 +13,7 @@ using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
+using DynatraceAndroid;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
@@ -70,6 +71,12 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                     }
                
                 }
+                //Dyanatrace
+                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_SUBMIT_OVERVOLTAGE_CLAIM);  // DYNA
+                dynaTrace.ReportValue("session_id", LaunchViewActivity.UUID);
+                dynaTrace.ReportValue("ca_number", accNo);
+                dynaTrace.LeaveAction();
+
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
                 SetUI();
                 Xamarin.Essentials.Platform.Init(this, savedInstanceState);
@@ -152,7 +159,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
 
                 string url = domain;
 
-                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.RandomFiveDigit;
+                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
 
                 if (TextViewUtils.IsLargeFonts)
                 {
