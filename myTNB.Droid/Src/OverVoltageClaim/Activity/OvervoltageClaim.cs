@@ -17,6 +17,7 @@ using DynatraceAndroid;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Helper;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity;
 using myTNB_Android.Src.Utils;
@@ -155,13 +156,28 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 ShowProgressDialog();
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
 
-                string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
-                //string domain = "http://192.168.1.157:3000/"; // WebView Local
+                //string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
+                string domain = "http://192.168.1.157:3000/"; // WebView Local
 
-                string url = domain;
-                                                
-                url += $"?CA={accNo}&eid={usin.eid}&appVersion={AppVersion}&os={OsVersion}&Manufacturer={Manufacturer}&model={DeviceModel}&session_id={LaunchViewActivity.UUID}&IDCN={user.UserID}&name={user.DisplayName}&lang={usin.lang}&sec_auth_k1={usin.sec_auth_k1}&mobileNo={user.MobileNo}";
-                url = Uri.EscapeUriString(url);               
+                UrlUtility urlUtility = new UrlUtility();
+                urlUtility.AddQueryParams("CA", accNo);
+                urlUtility.AddQueryParams("eid", usin.eid);
+                urlUtility.AddQueryParams("appVersion", AppVersion);
+                urlUtility.AddQueryParams("os", OsVersion);
+                urlUtility.AddQueryParams("Manufacturer", Manufacturer);
+                urlUtility.AddQueryParams("model", DeviceModel);
+                urlUtility.AddQueryParams("session_id", LaunchViewActivity.UUID);
+                urlUtility.AddQueryParams("lang", usin.lang);
+                urlUtility.AddQueryParams("IDCN", user.IdentificationNo);
+                urlUtility.AddQueryParams("userID", user.UserID);
+                urlUtility.AddQueryParams("name", user.DisplayName);
+                urlUtility.AddQueryParams("sec_auth_k1", usin.sec_auth_k1);
+                urlUtility.AddQueryParams("mobileNo", user.MobileNo);
+
+                string url = urlUtility.EncodeURL(domain);
+                //string url = domain;                                                
+                //url += $"?CA={accNo}&eid={usin.eid}&appVersion={AppVersion}&os={OsVersion}&Manufacturer={Manufacturer}&model={DeviceModel}&session_id={LaunchViewActivity.UUID}&IDCN={user.UserID}&name={user.DisplayName}&lang={usin.lang}&sec_auth_k1={usin.sec_auth_k1}&mobileNo={user.MobileNo}";
+                //url = Uri.EscapeUriString(url);               
                 if (TextViewUtils.IsLargeFonts)
                 {
                     url += "&large";

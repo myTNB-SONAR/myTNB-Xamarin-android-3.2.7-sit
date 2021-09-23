@@ -32,6 +32,7 @@ using BaseRequest = myTNB_Android.Src.MyTNBService.Request.BaseRequest;
 
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.Helper;
 
 namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 {
@@ -171,26 +172,43 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 var usin = data.usrInf;
                 UserEntity user = UserEntity.GetActive();
                 
-                string domain = "https://mytnbwvovis.ap.ngrok.io/"; // WebView Live
-                //string domain = "http://192.168.1.157:3000/"; // WebView Local
-                
-                domain += $"claimPage/{ClaimId}?eid={usin.eid}&lang={usin.lang}&appVersion={AppVersion}&os={OsVersion}&Manufacturer={Manufacturer}&model={DeviceModel}&session_id={LaunchViewActivity.UUID}&IDCN={user.IdentificationNo}&userID={user.UserID}&name={user.DisplayName}&sec_auth_k1={usin.sec_auth_k1}&mobileNo={user.MobileNo}";                
-                domain = Uri.EscapeUriString(domain);               
-                String queryParams = null;
+                //string domain = "https://mytnbwvovis.ap.ngrok.io/claimPage"+ClaimId; //WebView Live
+                string domain = "http://192.168.1.157:3000/claimPage/"+ClaimId; // WebView Local
+
+                UrlUtility urlUtility = new UrlUtility();
+                urlUtility.AddQueryParams("eid", usin.eid);
+                urlUtility.AddQueryParams("appVersion", AppVersion);
+                urlUtility.AddQueryParams("os", OsVersion);
+                urlUtility.AddQueryParams("Manufacturer", Manufacturer);
+                urlUtility.AddQueryParams("model", DeviceModel);
+                urlUtility.AddQueryParams("session_id", LaunchViewActivity.UUID);
+                urlUtility.AddQueryParams("lang", usin.lang);
+                urlUtility.AddQueryParams("IDCN", user.IdentificationNo);
+                urlUtility.AddQueryParams("userID", user.UserID);
+                urlUtility.AddQueryParams("name", user.DisplayName);
+                urlUtility.AddQueryParams("sec_auth_k1", usin.sec_auth_k1);
+                urlUtility.AddQueryParams("mobileNo", user.MobileNo);
+
+               
+               // domain += $"claimPage/{ClaimId}?eid={usin.eid}&lang={usin.lang}&appVersion={AppVersion}&os={OsVersion}&Manufacturer={Manufacturer}&model={DeviceModel}&session_id={LaunchViewActivity.UUID}&IDCN={user.IdentificationNo}&userID={user.UserID}&name={user.DisplayName}&sec_auth_k1={usin.sec_auth_k1}&mobileNo={user.MobileNo}";                
+                //domain = Uri.EscapeUriString(domain);               
+                //String queryParams = null;
                 
                 
                 if (proccedToPaymentFlag)
                 {
                     //queryParams += queryParams == null ? "?" : "&";
                     //queryParams += "paymentInfo=true";
-                    queryParams = "&paymentInfo=true";
+                    urlUtility.AddQueryParams("paymentInfo", "true");
+                    //queryParams = "&paymentInfo=true";
                     proccedToPaymentFlag = false;
                 }
                 else if (setAppointmentFlag)
                 {
                     //queryParams += queryParams == null ? "?" : "&";
                     //queryParams += "setAppointment=true";
-                    queryParams = "&setAppointment=true";
+                    urlUtility.AddQueryParams("setAppointment", "true");
+                    //queryParams = "&setAppointment=true";
                     setAppointmentFlag = false;
                 }
                 //else if (backFromAppointmentFlag)
@@ -204,15 +222,16 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
                     TempTitle = "Overvoltage Claim";
                 }
+                string url = urlUtility.EncodeURL(domain);
 
                 if (TextViewUtils.IsLargeFonts)
                 {
                     //queryParams += queryParams == null ? "?" : "&";
                     //queryParams += "large";
-                    queryParams = "&large";
+                    url += "&large";
                 }
 
-                string url = domain + queryParams;
+                //string url = domain + queryParams;
                // string url = domain + "claimPage/" + ClaimId + queryParams;
 
                 #if DEBUG
