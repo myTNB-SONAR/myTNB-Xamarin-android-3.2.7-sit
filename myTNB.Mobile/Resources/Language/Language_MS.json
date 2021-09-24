@@ -262,9 +262,7 @@
     "tncSubscribeFAQ": "Dengan menghantar, anda bersetuju pada <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Soalan Lazim Self Meter Reading</strong></a>, ",
     "tncSubscribeTNC": "<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
     "tncsmrNew": "Dengan melanggan/menghantar Self Meter Reading, saya faham dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat Self Meter Reading</strong></a>, <a href=\"\\\"><strong>Terma Penggunaan dan Polisi Perlindungan Data Peribadi TNB</strong></a>. Saya juga bersetuju untuk menghantar bacaan meter pada setiap bulan kecuali pada bulan bukan Self Meter Reading"
-
   },
-
   "SSMRApplicationTnc": {
     "title": "Self Meter Reading",
     "termsnCondition": "Terma dan Syarat Self Meter Reading",
@@ -274,7 +272,6 @@
     "pdpaPolicy": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
     "tncData": "<p>1.Setelah berjaya mendaftar, anda dikehendaki untuk menghantar bacaan meter pada setiap bulan kecuali pada bulan April, Ogos dan Disember kerana bacaan meter di premis akan dibuat oleh pihak kami pada bulan-bulan tersebut.</p><p>2.Pada setiap bulan, anda akan menerima notifikasi untuk menghantar bacaan meter kepada pihak kami untuk tujuan pembilan. Anda dinasihatkan untuk menghantar bacaan meter mengikut tarikh bacaan yang telah ditetapkan.</p><p>3.Bacaan meter yang diterima akan disemak untuk pengesahan dengan kadar segera. Setelah pengesahan dibuat, salinan bill elektrik boleh dilihat melalui aplikasi myTNB dan portal myTNB pada keesokan hari.</p><p>4.Anda akan menerima bil anggaran mengikut purata penggunaan sekiranya, bacaan meter yang dihantar tidak dapat disahkan atau bacaan meter tidak dihantar mengikut tarikh bacaan yang telah ditetapkan.</p><p>5.Pihak kami akan membuat pelarasan sekiranya terdapat kejanggalan pada bacaan meter yang diterima.</p><p>6.Perkhidmatan ini akan dihentikan sekiranya:</p><p> a)Bacaan pada meter tidak dihantar selama dua bulan berturut-turut, atau</p><p> b)Sekiranya kriteria perkhidmatan tidak lagi dipenuhi, sebagai contoh, akaun telibat dengan pemotongan bekalan, penutupan akaun, perubahan tarif dan sebagainya.</p>"
   },
-
   "Status": {
     "feedbackSuccessTitle": "Maklum Balas Berjaya",
     "feedbackFailTitle": "Maklum Balas Tidak Berjaya",
@@ -500,7 +497,9 @@
     "emptyBillHistory": "Anda belum lagi ada bil. Setelah ada, sejarah bil anda akan dipaparkan di sini.",
     "emptyHistoryRE": "Sejarah transaksi anda kosong pada masa ini. Setelah ada, makluman dan sejarah pembayaran anda akan dipaparkan di sini.",
     "emptyPaymentHistoryRE": "Kami belum lagi buat bayaran. Setelah dibuat, sejarah pembayaran anda akan dipaparkan di sini.",
-    "emptyBillHistoryRE": "Anda belum lagi ada makluman. Setelah ada, sejarah makluman anda akan dipaparkan di sini."
+    "emptyBillHistoryRE": "Anda belum lagi ada makluman. Setelah ada, sejarah makluman anda akan dipaparkan di sini.",
+    "accountStatementTenantTitle": "MS_Your account is ineligible to view the account statement.",
+    "accountStatementTenantMessage": "MS_It looks like your account is a tenant account. You have to be the electricity account owner in order to view the account statement.<br><br>If you would like to view the account statement, you may contact your account owner."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
@@ -521,8 +520,9 @@
   "BillDetails": {
     "title": "Butiran",
     "billDetails": "Caj Saya",
-    "outstandingCharges": "Tunggakan",
+    "outstandingCharges": "Baki terdahulu",
     "billThisMonth": "Caj semasa",
+    "roundingAdjustment": "Pelarasan penggenapan",
     "needToPay": "Jumlah bil anda",
     "by": "sebelum",
     "paidExtra": "Saya telah bayar ekstra",
@@ -533,6 +533,10 @@
     "tooltiptitle2": "Perkara daripada surat tuntutan anda",
     "tooltipdesc1": "Jumlah bil anda|Tunggakan|Caj Semasa (penggunaan elektrik sahaja)",
     "tooltipdesc2": "Wang Cagaran|Duti Setem|Caj Pemprosesan|Caj Meter",
+    "tooltiptitle1V2": "Perkara daripada bil kertas/PDF anda",
+    "tooltiptitle2V2": "Perkara daripada surat tuntutan anda",
+    "tooltipdesc1V2": "Jumlah bil anda|Baki terdahulu|Caj semasa|Pelarasan penggenapan",
+    "tooltipdesc2V2": "Wang Cagaran|Duti Setem|Caj Pemprosesan|Caj Meter",
     "pay": "Bayar",
     "tutorialTitle": "Lihat Bil anda.",
     "tutorialDesc": "Tekan sini untuk mengakses bil versi PDF anda.",
@@ -540,8 +544,10 @@
   },
   "BillFilter": {
     "title": "Tapis Paparan",
+    "selectViewTitle": "MS_Select View",
     "description": "Lihat bil anda, resit pembayaran atau kedua-duanya.",
     "descriptionRE": "Lihat makluman anda, resit pembayaran atau kedua-duanya.",
+    "descriptionRedesign": "MS_View your  bills, payment receipts or both.",
     "filterBy": "Pilihan Mengikut",
     "applyFilter": "Gunakan Pilihan",
     "selectFilter": "Pilih Tapis"
@@ -635,6 +641,8 @@
     "rocNumber": "ROC Nombor",
     "whereIsMyAccountTitle": "Di mana nombor akaun saya?",
     "whereIsMyAccountDetails": "Nombor akaun 12 digit boleh didapati di bahagian atas sebelah kiri bil elektrik anda.",
+    "whereIsMyAccountTitleV2": "Di mana nombor akaun saya?",
+    "whereIsMyAccountDetailsV2": "Nombor akaun 12 digit boleh didapati si sudut kanan bil kertas bulanan anda.",
     "selectAccountType": "Pilih Jenis Akaun",
     "residential": "Kediaman",
     "commercial": "Komersil",
@@ -1123,6 +1131,7 @@
     "imageCopyIC": "-/media/myTNBapp/SubmitEnquiry/imgIcCopy2x.png",
     "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x2.png",
     "accNumberDetails": "Nombor akaun 12 digit boleh didapati di sudut kiri atas bil kertas bulanan anda.",
+    "accNumberDetailsV2": "Nombor akaun 12 digit boleh didapati si sudut kanan bil kertas bulanan anda.",
     "updateNoOwnerTitle": "Maklumat mana yang ingin anda kemaskini?",
     "newAccNoOwnerName": "Nama baharu akaun",
     "newAccNoOwnerNameReq": "Nama akaun diperlukan",
@@ -1150,7 +1159,30 @@
     "registeredView": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
     "viewYes": "Ya",
     "viewNo": "Tidak",
-    "documentPdf": "Dokumen"
+    "documentPdf": "Dokumen",
+    "aboutMyBillTitle": "Berkaitan Bil Saya",
+    "aboutMyBillDescription": "Saya ingin bertanya mengenai bil dan pembayaran.",
+    "selectEnquiryType": "Pilih Jenis Pertanyaan"
+  },
+  "SubmitEnquiry_selector": {
+    "enquiryType": [
+      {
+        "key": "billCalculationCharges",
+        "description": "Pengiraan / Caj Bil"
+      },
+      {
+        "key": "billDeliveryMethod",
+        "description": "Cara Penerimaan Bil"
+      },
+      {
+        "key": "paymentHistoryReceipt",
+        "description": "Sejarah Pembayaran / Resit"
+      },
+      {
+        "key": "others",
+        "description": "Lain-lain"
+      }
+    ]
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",
@@ -1180,7 +1212,9 @@
     "manageDeliveryMethodUpdateCTATitle": "Uruskan cara penerimaan bil anda.",
     "manageDeliveryMethodUpdateCTAMessage": "Kemas kini cara penerimaan bil anda untuk akaun ini di sini.",
     "manageDeliveryMethodEmailTitle": "Penerima bil e-mel.",
-    "manageDeliveryMethodEmailMessage": "Semak penerima e-mel yang menerima bil bulanan untuk akaun ini."
+    "manageDeliveryMethodEmailMessage": "Semak penerima e-mel yang menerima bil bulanan untuk akaun ini.",
+    "billStatementTitle": "MS_Download your account statement.",
+    "billStatementMessage": "MS_You can now download a summary of your accounts monthly statements and bills by your preferred statement period."
   },
   "ApplicationStatusLanding": {
     "title": "Status Permohonan",
@@ -1204,6 +1238,8 @@
     "whereToGetThisNumber": "Di manakah boleh saya perolehi nombor ini?",
     "whereToGetThisNumberTitleCA": "Di manakah boleh saya perolehi nombor ini?",
     "whereToGetThisNumberMessageCA": "Nombor akaun elektrik anda juga tertera pada bahagian atas kiri bil kertas bulanan anda.",
+    "whereToGetThisNumberTitleCAV2": "Di manakah boleh saya perolehi nombor ini?",
+    "whereToGetThisNumberMessageCAV2": "Nombor akaun 12 digit boleh didapati si sudut kanan bil kertas bulanan anda.",
     "whereToGetThisNumberTitle": "Di manakah boleh saya perolehi nombor ini?",
     "whereToGetThisNumberMessage": "Anda boleh memperolehi <b>{0}</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’ dan juga boleh diperolehi dengan menghubungi TNB CareLine."
   },
@@ -1912,6 +1948,14 @@
       }
     ]
   },
+
+
+
+
+
+
+
+
   "SelectCreationDate": {
     "title": "Pilih Tarikh Permintaan",
     "apply": "Gunakan Pilihan",
@@ -2485,6 +2529,81 @@
     "ForceHideBillRedesignBanner": false,
     "BillRendering": {
       "enabled": true
-    }
+    },
+    "IsAboutMyBillEnquiryEnabled": true,
+    "IsUpdatePersonalDetailsEnquiryEnabled": true
+  },
+  "StatementPeriod": {
+    "title": "MS_View Account Statement",
+    "ctaTitle": "MS_View Account Statement",
+    "iWantToViewTitle": "MS_I want to view:",
+    "past3Months": "MS_Past 3 months",
+    "past6Months": "MS_Past 6 months"
+  },
+  "AccountStatement": {
+    "past6MonthsTitle": "MS_Past 6 Months Statement",
+    "past3MonthsTitle": "MS_Past 3 Months Statement"
+  },
+  "NewBillDesignComms": {
+    "title": "Wajah Bil TNB Baharu",
+    "viewYourBills": "Semak Bil Anda"
+  },
+  "NewBillDesignComms_selector": {
+    "newBillDesignContent": [
+      {
+        "Title": "Bil TNB kini berwajah baharu!",
+        "Description": "TNB bil berwajah baharu kini di dalam bentuk format yang berinformasi dan lebih mudah dibaca! Lihat bagaimana anda boleh memahami bil baharu anda di sini:",
+        "Image1": "New-Bill-Design-Header-1",
+        "Image2": "New-Bill-Design-Header-2",
+        "IsZoomable": true,
+        "IsHeader": true,
+        "IsFooter": false
+      },
+      {
+        "Title": "Ringkasan bil akaun anda",
+        "Description": "Berdasarkan infografik di atas, anda boleh menyemak jumlah bil anda, tarikh bayaran akhir, baki terdahulu, caj semasa, dan pelarasan penggenapan.",
+        "Image1": "New-Bill-Design-Content-1",
+        "Image2": "",
+        "IsZoomable": false,
+        "IsHeader": false,
+        "IsFooter": false
+      },
+      {
+        "Title": "Sejarah penggunaan tenaga",
+        "Description": "Anda kini boleh merujuk penggunaan elektrik dan purata penggunaan sepanjang tempoh 6 bulan untuk memahami cara penggunaan dan caj bil anda dengan lebih baik.",
+        "Image1": "New-Bill-Design-Content-2",
+        "Image2": "",
+        "IsZoomable": false,
+        "IsHeader": false,
+        "IsFooter": false
+      },
+      {
+        "Title": "Penyata penuh akaun anda",
+        "Description": "Anda boleh mengimbas kod QR ini untuk mengakses ringkasan bil dan pembayaran anda untuk tempoh 6 bulan terakhir.",
+        "Image1": "New-Bill-Design-Content-3",
+        "Image2": "",
+        "IsZoomable": false,
+        "IsHeader": false,
+        "IsFooter": false
+      },
+      {
+        "Title": "Penggunaan elektrik dan tarif anda",
+        "Description": "Fahami caj penggunaan anda dalam unit kWh & RM berdasarkan blok tarif TNB yang lebih mudah dibaca. Lihat maklumat lanjut mengenai kadar tarif anda di <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/pricing-tariff\">sini</a>.",
+        "Image1": "New-Bill-Design-Content-4",
+        "Image2": "",
+        "IsZoomable": false,
+        "IsHeader": false,
+        "IsFooter": false
+      },
+      {
+        "Title": "",
+        "Description": "Semak bil anda di halaman bil atau ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/bill-layout\">sini</a>.",
+        "Image1": "",
+        "Image2": "",
+        "IsZoomable": false,
+        "IsHeader": false,
+        "IsFooter": true
+      }
+    ]
   }
 }

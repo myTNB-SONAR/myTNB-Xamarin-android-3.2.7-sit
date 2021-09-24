@@ -263,7 +263,6 @@
     "tncSubscribeTNC": "<a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy Policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
     "tncsmrNew": "By subscribing to Self Meter Reading, I understand and agree on the <a href=\"\\\"><strong>Self Meter Reading Terms and Conditions</strong></a>, <a href=\"\\\"><strong>TNB's Terms of Use and Personal Data Protection Policy</strong></a>. I also agree to submit meter reading on a monthly basis except non Self Meter Reading month"
   },
-
   "SSMRApplicationTnc": {
     "title": "Self Meter Reading",
     "termsnCondition": "Self Meter Reading Terms and Conditions",
@@ -273,7 +272,6 @@
     "pdpaPolicy": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
     "tncData": "<p>1.Upon successful registration, you are required to submit your reading for all months except for April, August and December where we will do the reading.</p><p>2.Every month, you will receive a notification from us to submit your reading. Kindly submit the readings within the specified date.</p><p>3.We will validate your readings immediately upon submission. Once validated, you can view your bill via myTNB Portal and myTNB App on the following day.</p><p>4.We will estimate your reading based on average consumption; if the validation is unsuccessful or not submitted within the specified period.</p><p>5.We shall make the necessary adjustments if there are any differences found in the readings submitted.</p><p>6.You may no longer enjoy this service if:</p><p> a)There are no readings submitted for 2 consecutive months.</p><p> b)If you no longer meet the requirements (E.g. Supply disconnected, Close of Account, Change of Tariff and others)</p>"
   },
-
   "Status": {
     "feedbackSuccessTitle": "Feedback Successful",
     "feedbackFailTitle": "Feedback Unsuccessful",
@@ -499,7 +497,9 @@
     "emptyBillHistory": "Looks like you have no bills yet. This will appear here once you have any.",
     "emptyHistoryRE": "Looks like your history is empty at the moment. The advice and payment history will appear here once you have any.",
     "emptyPaymentHistoryRE": "Looks like we have not made any payments yet. Once we have, the payment history will appear here.",
-    "emptyBillHistoryRE": "Looks like you have no advices yet. Once you do, your advice history will appear here."
+    "emptyBillHistoryRE": "Looks like you have no advices yet. Once you do, your advice history will appear here.",
+    "accountStatementTenantTitle": "Your account is ineligible to view the account statement.",
+    "accountStatementTenantMessage": "It looks like your account is a tenant account. You have to be the electricity account owner in order to view the account statement.<br><br>If you would like to view the account statement, you may contact your account owner."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
@@ -520,8 +520,9 @@
   "BillDetails": {
     "title": "Details",
     "billDetails": "My Charges",
-    "outstandingCharges": "My outstanding charges",
-    "billThisMonth": "My latest bill",
+    "outstandingCharges": "My previous balance",
+    "billThisMonth": "My current charges",
+    "roundingAdjustment": "Rounding adjustment",
     "needToPay": "My amount due",
     "by": "by",
     "paidExtra": "I’ve paid extra",
@@ -640,6 +641,8 @@
     "rocNumber": "ROC Number",
     "whereIsMyAccountTitle": "Where is my account number?",
     "whereIsMyAccountDetails": "Your 12-digit account number can be found on the top left corner of your monthly paper bill.",
+    "whereIsMyAccountTitleV2": "Where is my account number?",
+    "whereIsMyAccountDetailsV2": "Your 12-digit account number can be found at the top right corner of your monthly paper bill.",
     "selectAccountType": "Select Account Type",
     "residential": "Residential",
     "commercial": "Commercial",
@@ -1128,6 +1131,7 @@
     "imageCopyIC": "-/media/myTNBapp/SubmitEnquiry/imgIcCopy2x.png",
     "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x2.png",
     "accNumberDetails": "Your 12-digit account no. can be found at the top left corner of your monthly paper bill.",
+    "accNumberDetailsV2": "Your 12-digit account number can be found at the top right corner of your monthly paper bill.",
     "updateNoOwnerTitle": "Which information you would like to update?",
     "newAccNoOwnerName": "Enter New Account Name",
     "newAccNoOwnerNameReq": "Account name is required",
@@ -1155,7 +1159,30 @@
     "registeredView": "Is this electricity account registered under your name?",
     "viewYes": "Yes",
     "viewNo": "No",
-    "documentPdf": "Document"
+    "documentPdf": "Document",
+    "aboutMyBillTitle": "About My Bill",
+    "aboutMyBillDescription": "I want to enquire about my bill and payment.",
+    "selectEnquiryType": "Select Enquiry Type"
+  },
+  "SubmitEnquiry_selector": {
+    "enquiryType": [
+      {
+        "key": "billCalculationCharges",
+        "description": "Bill Calculation / Charges"
+      },
+      {
+        "key": "billDeliveryMethod",
+        "description": "Bill Delivery Method"
+      },
+      {
+        "key": "paymentHistoryReceipt",
+        "description": "Payment History / Receipt"
+      },
+      {
+        "key": "others",
+        "description": "Others"
+      }
+    ]
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
@@ -1185,7 +1212,9 @@
     "manageDeliveryMethodUpdateCTATitle": "Manage your bill delivery method.",
     "manageDeliveryMethodUpdateCTAMessage": "Update your bill delivery method for this account here.",
     "manageDeliveryMethodEmailTitle": "Recipient(s) of email bills.",
-    "manageDeliveryMethodEmailMessage": "View email recipients who are receiving monthly bills for this account."
+    "manageDeliveryMethodEmailMessage": "View email recipients who are receiving monthly bills for this account.",
+    "billStatementTitle": "Download your account statement.",
+    "billStatementMessage": "You can now download a summary of your accounts monthly statements and bills by your preferred statement period."
   },
   "ApplicationStatusLanding": {
     "title": "Application Status",
@@ -1209,6 +1238,8 @@
     "whereToGetThisNumber": "Where do I get this number?",
     "whereToGetThisNumberTitleCA": "Where do I get these numbers?",
     "whereToGetThisNumberMessageCA": "Your 12-digit electricity account number can be found at the top left corner of your monthly paper bill.",
+    "whereToGetThisNumberTitleCAV2": "Where do I get these numbers?",
+    "whereToGetThisNumberMessageCAV2": "Your 12-digit account number can be found at the top right corner of your monthly paper bill.",
     "whereToGetThisNumberTitle": "Where do I get these numbers?",
     "whereToGetThisNumberMessage": "You can find the <b>{0}</b> in your submitted application details at ‘Application Status’ page and is available upon request by contacting TNB CareLine."
   },
@@ -2498,7 +2529,9 @@
     "ForceHideBillRedesignBanner": false,
     "BillRendering": {
       "enabled": true
-    }
+    },
+    "IsAboutMyBillEnquiryEnabled": true,
+    "IsUpdatePersonalDetailsEnquiryEnabled": true
   },
   "StatementPeriod": {
     "title": "View Account Statement",
@@ -2555,7 +2588,7 @@
       },
       {
         "Title": "Your electricity usage and tariff",
-        "Description": "Understand your usage charges in kWh & RM units based on this easy-to-read TNB’s tariff block. View more information on your tariff rates here.",
+        "Description": "Understand your usage charges in kWh & RM units based on this easy-to-read TNB’s tariff block. View more information on your tariff rates <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/pricing-tariff\">here</a>.",
         "Image1": "New-Bill-Design-Content-4",
         "Image2": "",
         "IsZoomable": false,

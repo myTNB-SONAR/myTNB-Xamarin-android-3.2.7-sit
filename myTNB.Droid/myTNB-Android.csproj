@@ -7557,6 +7557,27 @@
     <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivityExtension.cs" />
     <Compile Include="Src\Utils\LanguageConstants.cs" />
     <Compile Include="Src\myTNBMenu\MVP\DashboardHomePresenterExtension.cs" />
+    <AndroidResource Include="Resources\menu\ViewBillStatementMenu.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\icons_ic_header_share.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\icons_ic_header_share.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\icons_ic_header_share.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\icons_ic_header_share.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icons_ic_header_share.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\Banner_New_Bill_1.png">
       <SubType></SubType>
       <Generator></Generator>

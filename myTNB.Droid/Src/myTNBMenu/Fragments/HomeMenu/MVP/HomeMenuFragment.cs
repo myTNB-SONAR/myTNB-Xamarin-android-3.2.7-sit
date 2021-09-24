@@ -638,7 +638,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        [OnClick(Resource.Id.discoverView)]
+        [OnClick(Resource.Id.img_discover_digital_bill)]
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
             if (DBRUtility.Instance.IsAccountDBREligible)
@@ -961,19 +961,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private void SetupDiscoverView()
         {
             discoverView.Visibility = ViewStates.Visible;
-            discoverView.SetBackgroundResource(LanguageUtil.GetAppLanguage() == "MS"
+            img_discover_digital_bill.Visibility = ViewStates.Visible;
+            img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS"
                 ? Resource.Drawable.banner_home_voluntary_ms
                 : Resource.Drawable.banner_home_voluntary_en);
-
-            LinearLayout.LayoutParams layout = discoverView.LayoutParameters as LinearLayout.LayoutParams;
-            int imgWidth = GetDeviceHorizontalScaleInPixel(0.917f);
-            float heightRatio = 55f / 128f;
-            int imgHeight = (int)(imgWidth * (heightRatio));
-            if (layout != null)
-            {
-                layout.Width = imgWidth;
-                layout.Height = imgHeight;
-            }
         }
 
         public void SetMyServiceRecycleView()
@@ -1176,6 +1167,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     try
                     {
                         discoverView.Visibility = ViewStates.Gone;
+                        img_discover_digital_bill.Visibility = ViewStates.Gone;
                     }
                     catch (System.Exception ex)
                     {
@@ -1213,6 +1205,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             SetupDiscoverView();
                             discovercontainer.Visibility = ViewStates.Visible;
                             discoverView.Visibility = ViewStates.Visible;
+                            img_discover_digital_bill.Visibility = ViewStates.Visible;
                             discoverMoreSectionTitle.Visibility = ViewStates.Visible;
                             UserEntity user = UserEntity.GetActive();
                             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);

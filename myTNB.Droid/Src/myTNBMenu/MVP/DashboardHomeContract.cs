@@ -279,6 +279,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             Task OnGetBillTooltipContent();
 
             void OnGetBillEligibilityCheck(string accountNumber);
+
+            void ShowBillMenuWithAccount(CustomerBillingAccount account);
         }
     }
 }

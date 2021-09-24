@@ -1,4 +1,4 @@
-﻿using Android.App;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using myTNB_Android.Src.Utils;
@@ -26,7 +26,15 @@ namespace myTNB_Android.Src.BillStatement.MVP
 
         [BindView(Resource.Id.imgTheeMonthsAction)]
         ImageView imgTheeMonthsAction;
-        
+
+        [BindView(Resource.Id.txtThreeMonths)]
+        TextView txtThreeMonths;
+
+        [BindView(Resource.Id.txtPageTitleInfo)]
+        TextView txtPageTitleInfo;
+
+        [BindView(Resource.Id.txtSixMonth)]
+        TextView txtSixMonth;
 
         [BindView(Resource.Id.btnSubmit)]
         Button btnSubmit;
@@ -147,7 +155,15 @@ namespace myTNB_Android.Src.BillStatement.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-           
+
+            
+            txtThreeMonths.Text = Utility.GetLocalizedLabel("StatementPeriod", "past3Months");
+            txtPageTitleInfo.Text = Utility.GetLocalizedLabel("StatementPeriod", "iWantToViewTitle");
+            txtSixMonth.Text = Utility.GetLocalizedLabel("StatementPeriod", "past6Months");
+
+            TextViewUtils.SetMuseoSans500Typeface(txtPageTitleInfo, btnSubmit);
+            TextViewUtils.SetMuseoSans300Typeface(txtThreeMonths, txtSixMonth);
+            TextViewUtils.SetTextSize16(txtPageTitleInfo, txtThreeMonths, btnSubmit);
 
             SetToolBarTitle("View Account Statement");
 
@@ -161,7 +177,8 @@ namespace myTNB_Android.Src.BillStatement.MVP
                     selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString("SELECTED_ACCOUNT")); 
                 }
             }
-
+            imgTheeMonthsAction.SetMaxHeight(txtThreeMonths.Height);
+            imgSixMonthsAction.SetMaxHeight(txtSixMonth.Height);
 
             SetCTAEnable();
         }

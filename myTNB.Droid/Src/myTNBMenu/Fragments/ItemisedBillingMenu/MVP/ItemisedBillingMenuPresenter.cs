@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
@@ -647,7 +647,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             return mainBillingHistoryList != null && mainAccountChargeModelList != null;
         }
 
-        public List<NewAppModel> OnGeneraNewAppTutorialList(bool _isOwner)
+        public List<NewAppModel> OnGeneraNewAppTutorialList(bool _isOwner,bool _isCADBREligible, bool _isBillStatement)
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
@@ -702,7 +702,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     DisplayMode = DisplayMode,
                     IsButtonShow = false
                 });
-                if (DBRUtility.Instance.IsAccountDBREligible)
+                if (_isCADBREligible)
                 {
                     if (_isOwner)
                     {
@@ -770,7 +770,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     DisplayMode = DisplayMode,
                     IsButtonShow = false
                 });
-                if (DBRUtility.Instance.IsAccountDBREligible)
+                if (_isCADBREligible)
                 {
                     if (_isOwner)
                     {
@@ -796,6 +796,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                             IsButtonShow = false
                         });
                     }
+                }
+                if(_isBillStatement)
+                {
+                    newList.Add(new NewAppModel()
+                    {
+                        ContentShowPosition = ContentType.TopRight,
+                        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "billStatementTitle"),
+                        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "billStatementMessage"),
+                        ItemCount = ItemCount,
+                        DisplayMode = DisplayMode,
+                        IsButtonShow = false
+                    });
                 }
                 newList.Add(new NewAppModel()
                 {
