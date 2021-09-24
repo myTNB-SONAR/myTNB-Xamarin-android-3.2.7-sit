@@ -210,7 +210,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         internal static void ShowNewBillRedesign(this DashboardHomeActivity mainActivity)
         {
             Intent nbrDiscoverMoreIntent = new Intent(mainActivity, typeof(NBRDiscoverMoreActivity));
-            mainActivity.StartActivity(nbrDiscoverMoreIntent);
+            mainActivity.StartActivityForResult(nbrDiscoverMoreIntent, Constants.NEW_BILL_REDESIGN_REQUEST_CODE);
         }
     }
 }

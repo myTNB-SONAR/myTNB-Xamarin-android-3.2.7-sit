@@ -5,6 +5,7 @@
         internal static readonly string BILLS = "Bills";
         internal static readonly string COMMON = "Common";
         internal static readonly string ERROR = "Error";
+        internal static readonly string NBR_COMMS = "NewBillDesignComms";
 
         internal struct Common
         {
@@ -21,6 +22,12 @@
         {
             internal static readonly string TOOLTIP_ACT_STMT_TITLE = "accountStatementTenantTitle";
             internal static readonly string TOOLTIP_ACT_STMT_MSG = "accountStatementTenantMessage";
+        }
+
+        internal struct NBRComms
+        {
+            internal static readonly string NBR_TITLE = "title";
+            internal static readonly string NBR_BTN_TITLE = "viewYourBills";
         }
     }
 }

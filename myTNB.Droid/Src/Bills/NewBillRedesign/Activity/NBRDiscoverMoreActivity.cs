@@ -9,6 +9,13 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Bills.NewBillRedesign.MVP;
 using myTNB_Android.Src.Bills.NewBillRedesign.Fragment;
 using myTNB_Android.Src.Bills.NewBillRedesign.Model;
+using Android.Graphics;
+using System.Net;
+using System;
+using System.Threading.Tasks;
+using System.Threading;
+using Android.Content;
+using myTNB_Android.Src.Bills.NewBillRedesign.Activity;
 
 namespace myTNB_Android.Src.Bills.NewBillRedesign
 {
@@ -36,7 +43,22 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
         [BindView(Resource.Id.btnGoToBills)]
         readonly Button nbrDiscoverMoreBtn;
 
+        [BindView(Resource.Id.headerBannerShimmerContainer)]
+        LinearLayout headerBannerShimmerContainer;
+
+        [BindView(Resource.Id.headerBannerContainer)]
+        LinearLayout headerBannerContainer;
+
+        [BindView(Resource.Id.nbrDiscoverMoreBannerLeft)]
+        ImageView nbrDiscoverMoreBannerLeft;
+
+        [BindView(Resource.Id.nbrDiscoverMoreBannerRight)]
+        ImageView nbrDiscoverMoreBannerRight;
+
         private const string PAGE_ID = "NBRDiscoverMore";
+        private const string PLACEHOLDER_IMG = "Banner_NBR_Placeholder_{0}";
+        private const string ITEM_NO = "{0}";
+        private string leftImagePath, rightImagePath;
         private NBRDiscoverMoreContract.IUserActionsListener userActionsListener;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -50,7 +72,6 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
         protected override void OnStart()
         {
             base.OnStart();
-            this.userActionsListener.OnStart();
         }
 
         public override string GetPageId()
@@ -96,9 +117,10 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
             {
                 TextViewUtils.SetMuseoSans500Typeface(nbrDiscoverMoreBtn);
                 TextViewUtils.SetTextSize16(nbrDiscoverMoreBtn);
+                nbrDiscoverMoreBtn.Text = Utility.GetLocalizedLabel(LanguageConstants.NBR_COMMS, LanguageConstants.NBRComms.NBR_BTN_TITLE);
             }
 
-            SetToolBarTitle("TNB New Bill Design");
+            SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.NBR_COMMS, LanguageConstants.NBRComms.NBR_TITLE));
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
         }
@@ -119,39 +141,158 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
             nbrDiscoverMoreScrollView.Visibility = isLoading ? ViewStates.Gone : ViewStates.Visible;
         }
 
+        [OnClick(Resource.Id.nbrDiscoverMoreBannerLeft)]
+        void LeftBannerOnClick(object sender, EventArgs eventArgs)
+        {
+            if (leftImagePath.IsValid())
+            {
+                Intent nbrDiscoverMoreIntent = new Intent(this, typeof(NBRDiscoverMoreBannerFullViewActivity));
+                nbrDiscoverMoreIntent.PutExtra("IMAGE_PATH", leftImagePath);
+                StartActivity(nbrDiscoverMoreIntent);
+            }
+        }
+
+        [OnClick(Resource.Id.nbrDiscoverMoreBannerRight)]
+        void RightBannerOnClick(object sender, EventArgs eventArgs)
+        {
+            if (rightImagePath.IsValid())
+            {
+                Intent nbrDiscoverMoreIntent = new Intent(this, typeof(NBRDiscoverMoreBannerFullViewActivity));
+                nbrDiscoverMoreIntent.PutExtra("IMAGE_PATH", rightImagePath);
+                StartActivity(nbrDiscoverMoreIntent);
+            }
+        }
+
+        [OnClick(Resource.Id.btnGoToBills)]
+        void GoToBillsOnClick(object sender, EventArgs eventArgs)
+        {
+            SetResult(Result.Ok);
+            Finish();
+        }
+
+        public override void OnBackPressed()
+        {
+            Finish();
+        }
+
         public void RenderContent(NBRDiscoverMoreModel model)
         {
             RunOnUiThread(() =>
             {
-                nbrDiscoverMoreTitle.Text = model.Title;
-                nbrDiscoverMoreDesc.Text = model.Description;
-                nbrDiscoverMoreFooterMsg.Text = model.FooterMessage;
-
-                nbrDiscoverMoreFooterMsg.TextFormatted = GetFormattedText(model.FooterMessage);
-                nbrDiscoverMoreFooterMsg = LinkRedirectionUtils
-                        .Create(this, Title)
-                        .SetTextView(nbrDiscoverMoreFooterMsg)
-                        .SetMessage(model.FooterMessage)
-                        .Build()
-                        .GetProcessedTextView();
-
-                if (model.DiscoverMoreItemList != null)
+                try
                 {
-                    for (int j = 0; j < model.DiscoverMoreItemList.Count; j++)
+                    _ = GetImageAsync(model);
+                    nbrDiscoverMoreTitle.Text = model.Title;
+                    nbrDiscoverMoreDesc.Text = model.Description;
+                    nbrDiscoverMoreFooterMsg.Text = model.FooterMessage;
+
+                    nbrDiscoverMoreFooterMsg.TextFormatted = GetFormattedText(model.FooterMessage);
+                    nbrDiscoverMoreFooterMsg = LinkRedirectionUtils
+                            .Create(this, Utility.GetLocalizedLabel(LanguageConstants.NBR_COMMS, LanguageConstants.NBRComms.NBR_TITLE))
+                            .SetTextView(nbrDiscoverMoreFooterMsg)
+                            .SetMessage(model.FooterMessage)
+                            .Build()
+                            .GetProcessedTextView();
+
+                    if (model.DiscoverMoreItemList != null && model.DiscoverMoreItemList.Count > 0)
                     {
-                        NBRDiscoverMoreModel.DiscoverMoreItem discoverMoreItem = model.DiscoverMoreItemList[j];
+                        nbrDiscoverMoreViewList.Visibility = ViewStates.Visible;
+                        for (int j = 0; j < model.DiscoverMoreItemList.Count; j++)
+                        {
+                            NBRDiscoverMoreModel.DiscoverMoreItem discoverMoreItem = model.DiscoverMoreItemList[j];
 
-                        NBRDiscoverMoreListItemComponent itemListComponent = new NBRDiscoverMoreListItemComponent(this);
-                        itemListComponent.SetItemNumber("" + (j + 1));
-                        itemListComponent.SetItemTitle(discoverMoreItem.Title);
-                        itemListComponent.SetItemContent(discoverMoreItem.Content);
-                        itemListComponent.SetBannerImage(discoverMoreItem.Banner);
+                            NBRDiscoverMoreListItemComponent itemListComponent = new NBRDiscoverMoreListItemComponent(this);
+                            itemListComponent.SetBannerPlaceholder(string.Format(PLACEHOLDER_IMG, j));
+                            itemListComponent.SetItemNumber(string.Format(ITEM_NO, j + 1));
+                            itemListComponent.SetItemTitle(discoverMoreItem.Title);
+                            itemListComponent.SetItemContent(discoverMoreItem.Content);
+                            itemListComponent.itemContentText = LinkRedirectionUtils
+                                .Create(this, Utility.GetLocalizedLabel(LanguageConstants.NBR_COMMS, LanguageConstants.NBRComms.NBR_TITLE))
+                                .SetTextView(itemListComponent.itemContentText)
+                                .SetMessage(discoverMoreItem.Content)
+                                .Build()
+                                .GetProcessedTextView();
+                            itemListComponent.SetBannerImage(discoverMoreItem.Banner);
 
-                        nbrDiscoverMoreViewList?.AddView(itemListComponent);
+                            nbrDiscoverMoreViewList?.AddView(itemListComponent);
+                        }
+                    }
+                    UpdateView(false);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
+        }
+
+        public async Task GetImageAsync(NBRDiscoverMoreModel model)
+        {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            Bitmap leftImageBitmap = null;
+            Bitmap rightImageBitmap = null;
+            try
+            {
+                await Task.Run(() =>
+                {
+                    leftImageBitmap = GetImageBitmapFromUrl(model.Banner1);
+                }, cts.Token);
+
+                await Task.Run(() =>
+                {
+                    rightImageBitmap = GetImageBitmapFromUrl(model.Banner2);
+                }, cts.Token);
+
+                headerBannerShimmerContainer.Visibility = ViewStates.Gone;
+                headerBannerContainer.Visibility = ViewStates.Visible;
+
+                leftImagePath = model.IsZoomable ? model.Banner1 : string.Empty;
+                rightImagePath = model.IsZoomable ? model.Banner2 : string.Empty;
+
+                if (leftImageBitmap != null)
+                {
+                    nbrDiscoverMoreBannerLeft.SetImageBitmap(leftImageBitmap);
+                }
+                else
+                {
+                    nbrDiscoverMoreBannerLeft.SetImageResource(Resource.Drawable.Banner_New_Bill_1);
+                }
+                if (rightImageBitmap != null)
+                {
+                    nbrDiscoverMoreBannerRight.SetImageBitmap(rightImageBitmap);
+                }
+                else
+                {
+                    nbrDiscoverMoreBannerRight.SetImageResource(Resource.Drawable.Banner_New_Bill_2);
+                }
+            }
+            catch (Exception e)
+            {
+                nbrDiscoverMoreBannerLeft.SetImageResource(Resource.Drawable.Banner_New_Bill_1);
+                nbrDiscoverMoreBannerRight.SetImageResource(Resource.Drawable.Banner_New_Bill_2);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private Bitmap GetImageBitmapFromUrl(string url)
+        {
+            Bitmap image = null;
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    var imageBytes = webClient.DownloadData(url);
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
                     }
                 }
-                UpdateView(false);
-            });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return image;
         }
     }
 }

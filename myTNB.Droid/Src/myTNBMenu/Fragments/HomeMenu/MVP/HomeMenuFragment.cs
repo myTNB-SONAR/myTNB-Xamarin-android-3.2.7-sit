@@ -1471,15 +1471,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 searchText.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                 searchText.SetHintTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sixty_opacity_white)));
                 TextViewUtils.SetTextSize12(searchText);
-                if (TextViewUtils.IsLargeFonts)
-                {
-                    TextViewUtils.SetTextSize16(discoverMoreSectionTitle);
-                }
-                else
-                {
-                    TextViewUtils.SetTextSize14(discoverMoreSectionTitle);
-                }
-
+                TextViewUtils.SetTextSize14(discoverMoreSectionTitle);
                 TextViewUtils.SetMuseoSans500Typeface(searchText, discoverMoreSectionTitle);
                 discoverMoreSectionTitle.Text = Utility.GetLocalizedLabel("DashboardHome", "DiscoverMore");
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)

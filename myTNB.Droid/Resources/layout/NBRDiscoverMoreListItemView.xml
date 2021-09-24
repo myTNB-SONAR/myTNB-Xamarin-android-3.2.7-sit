@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	android:paddingTop="17dp"
-	android:background="@color/white">
+	android:background="@android:color/transparent">
 	<LinearLayout
 		android:orientation="horizontal"
 		android:layout_width="match_parent"
@@ -27,13 +27,40 @@
 			android:text="Your account’s bill summary"
 			android:id="@+id/nbrDiscoverMoreTitle" />
 	</LinearLayout>
-	<ImageView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+	<LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 		android:layout_marginTop="17dp"
-		android:scaleType="fitXY"
-		android:adjustViewBounds="true"
-		android:id="@id/nbrDiscoverMoreBanner" />
+        android:id="@+id/bannerImageLayout">
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/bannerShimmerContainer">
+			<com.facebook.shimmer.ShimmerFrameLayout
+				android:id="@+id/bannerShimmer"
+				android:layout_height="match_parent"
+				android:layout_width="match_parent">
+				<View
+					android:background="@color/shimmer_color_second"
+					android:layout_width="match_parent"
+					android:layout_height="94dp"/>
+			</com.facebook.shimmer.ShimmerFrameLayout>
+		</LinearLayout>
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			<ImageView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:scaleType="fitXY"
+				android:adjustViewBounds="true"
+				android:visibility="gone"
+				android:id="@+id/nbrDiscoverMoreBanner" />
+		</LinearLayout>
+	</LinearLayout>
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

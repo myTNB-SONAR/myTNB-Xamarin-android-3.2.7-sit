@@ -4,14 +4,23 @@ using Android.Util;
 using Android.OS;
 using Android.Text;
 using myTNB_Android.Src.Utils;
+using Android.Graphics;
+using System.Net;
+using System;
+using System.Threading.Tasks;
+using System.Threading;
+using Android.Views;
 
 namespace myTNB_Android.Src.Bills.NewBillRedesign.Fragment
 {
     public class NBRDiscoverMoreListItemComponent : LinearLayout
     {
         private readonly Context mContext;
-        TextView itemNumberText, itemTitleText, itemContentText;
+        public TextView itemContentText;
+        TextView itemNumberText, itemTitleText;
         ImageView itemBannerView;
+        LinearLayout bannerShimmerLayout;
+        private string placeholderImage;
 
         public NBRDiscoverMoreListItemComponent(Context context) : base(context)
         {
@@ -38,6 +47,7 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.Fragment
             itemTitleText = FindViewById<TextView>(Resource.Id.nbrDiscoverMoreTitle);
             itemBannerView = FindViewById<ImageView>(Resource.Id.nbrDiscoverMoreBanner);
             itemContentText = FindViewById<TextView>(Resource.Id.nbrDiscoverMoreContent);
+            bannerShimmerLayout = FindViewById<LinearLayout>(Resource.Id.bannerShimmerContainer);
 
             SetUpViews();
         }
@@ -75,19 +85,125 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.Fragment
 
         public void SetItemContent(string itemContent)
         {
-            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            try
             {
-                itemContentText.TextFormatted = Html.FromHtml(itemContent, FromHtmlOptions.ModeLegacy);
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    itemContentText.TextFormatted = Html.FromHtml(itemContent, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    itemContentText.TextFormatted = Html.FromHtml(itemContent);
+                }
+            }
+            catch (Exception e)
+            {
+                ShowImagePlaceholder();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void SetBannerImage(string imageName)
+        {
+            if (imageName.IsValid())
+            {
+                _ = GetImageAsync(imageName);
             }
             else
             {
-                itemContentText.TextFormatted = Html.FromHtml(itemContent);
+                HideBannerImage();
             }
         }
-        public void SetBannerImage(string imageName)
+
+        public void SetBannerPlaceholder(string placeholderImg)
         {
-            int resImage = Resources.GetIdentifier(imageName, "drawable", Context.PackageName);
-            itemBannerView.SetImageResource(resImage);
+            placeholderImage = placeholderImg;
+        }
+
+        public async Task GetImageAsync(string imageName)
+        {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            Bitmap imageBitmap = null;
+            try
+            {
+                await Task.Run(() =>
+                {
+                    imageBitmap = GetImageBitmapFromUrl(imageName);
+                }, cts.Token);
+
+                if (imageBitmap != null)
+                {
+                    itemBannerView.SetImageBitmap(imageBitmap);
+                    bannerShimmerLayout.Visibility = ViewStates.Gone;
+                    itemBannerView.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    ShowImagePlaceholder();
+                }
+            }
+            catch (Exception e)
+            {
+                ShowImagePlaceholder();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private Bitmap GetImageBitmapFromUrl(string url)
+        {
+            Bitmap image = null;
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    var imageBytes = webClient.DownloadData(url);
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return image;
+        }
+
+        private void ShowImagePlaceholder()
+        {
+            if (placeholderImage.IsValid())
+            {
+                try
+                {
+                    bannerShimmerLayout.Visibility = ViewStates.Gone;
+                    itemBannerView.Visibility = ViewStates.Visible;
+                    var resImage = (int)typeof(Resource.Drawable).GetField(placeholderImage).GetValue(null);
+                    if (resImage > 0)
+                    {
+                        itemBannerView.SetImageResource(resImage);
+                    }
+                    else
+                    {
+                        HideBannerImage();
+                    }
+                }
+                catch (Exception e)
+                {
+                    HideBannerImage();
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+            else
+            {
+                HideBannerImage();
+            }
+        }
+
+        private void HideBannerImage()
+        {
+            bannerShimmerLayout.Visibility = ViewStates.Gone;
+            itemBannerView.Visibility = ViewStates.Gone;
         }
     }
 }

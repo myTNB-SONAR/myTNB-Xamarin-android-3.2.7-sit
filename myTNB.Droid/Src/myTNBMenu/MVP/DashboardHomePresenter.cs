@@ -236,6 +236,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         }
                     }
                 }
+                else if (requestCode == Constants.NEW_BILL_REDESIGN_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                        OnBillsMenuSelected(accountList);
+                    }
+                }
             }
             catch (System.Exception e)
             {
@@ -293,53 +301,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     break;
                 case Resource.Id.menu_bill:
                     OnUpdateWhatsNewUnRead();
-                    if (accountList.Count > 0)
-                    {
-                        trackBottomNavigationMenu = Resource.Id.menu_bill;
-                        CustomerBillingAccount selected;
-                        if (CustomerBillingAccount.HasSelected())
-                        {
-                            selected = CustomerBillingAccount.GetSelected();
-                            PreNavigateBllMenu(selected);
-                            this.mView.SetAccountName(selected.AccDesc);
-                        }
-                        else
-                        {
-                            CustomerBillingAccount.SetSelected(accountList[0].AccNum);
-                            selected = accountList[0];
-                            PreNavigateBllMenu(selected);
-                            this.mView.SetAccountName(accountList[0].AccDesc);
-                        }
-                        if (selected != null)
-                        {
-                            List<CustomerBillingAccount> list = CustomerBillingAccount.List();
-                            bool enableDropDown = accountList.Count > 0 ? true : false;
-
-                            if (selected.AccountCategoryId.Equals("2"))
-                            {
-                                this.mView.ShowREAccount(enableDropDown);
-                            }
-                            else
-                            {
-                                this.mView.EnableDropDown(enableDropDown);
-                            }
-                        }
-
-                        AccountData accountData = new AccountData();
-                        CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);
-                        accountData.AccountNickName = selected.AccDesc;
-                        accountData.AccountName = selected.OwnerName;
-                        accountData.AddStreet = selected.AccountStAddress;
-                        accountData.IsOwner = customerBillingAccount.isOwned;
-                        accountData.AccountNum = selected.AccNum;
-                        accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
-                        this.mView.ShowBillMenu(accountData);
-                    }
-                    else
-                    {
-                        this.mView.DisableBillMenu();
-                    }
-
+                    OnBillsMenuSelected(accountList);
                     OnUpdateRewardUnRead();
                     break;
                 case Resource.Id.menu_promotion:
@@ -389,6 +351,56 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 case Resource.Id.menu_more:
                     OnLoadMoreMenu();
                     break;
+            }
+        }
+
+        private void OnBillsMenuSelected(List<CustomerBillingAccount> accountList)
+        {
+            if (accountList.Count > 0)
+            {
+                trackBottomNavigationMenu = Resource.Id.menu_bill;
+                CustomerBillingAccount selected;
+                if (CustomerBillingAccount.HasSelected())
+                {
+                    selected = CustomerBillingAccount.GetSelected();
+                    PreNavigateBllMenu(selected);
+                    this.mView.SetAccountName(selected.AccDesc);
+                }
+                else
+                {
+                    CustomerBillingAccount.SetSelected(accountList[0].AccNum);
+                    selected = accountList[0];
+                    PreNavigateBllMenu(selected);
+                    this.mView.SetAccountName(accountList[0].AccDesc);
+                }
+                if (selected != null)
+                {
+                    _ = CustomerBillingAccount.List();
+                    bool enableDropDown = accountList.Count > 0 ? true : false;
+
+                    if (selected.AccountCategoryId.Equals("2"))
+                    {
+                        this.mView.ShowREAccount(enableDropDown);
+                    }
+                    else
+                    {
+                        this.mView.EnableDropDown(enableDropDown);
+                    }
+                }
+
+                AccountData accountData = new AccountData();
+                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);
+                accountData.AccountNickName = selected.AccDesc;
+                accountData.AccountName = selected.OwnerName;
+                accountData.AddStreet = selected.AccountStAddress;
+                accountData.IsOwner = customerBillingAccount.isOwned;
+                accountData.AccountNum = selected.AccNum;
+                accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+                this.mView.ShowBillMenu(accountData);
+            }
+            else
+            {
+                this.mView.DisableBillMenu();
             }
         }
 

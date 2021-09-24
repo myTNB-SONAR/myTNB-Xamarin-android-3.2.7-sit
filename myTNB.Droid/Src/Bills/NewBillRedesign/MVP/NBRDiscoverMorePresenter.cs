@@ -29,6 +29,7 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.MVP
         public void OnInitialize()
         {
             this.view?.SetUpViews();
+            OnStart();
         }
 
         public void OnStart()
