@@ -6330,6 +6330,8 @@
     <Compile Include="Src\MyTNBService\Response\TriggerOVISServicesResponseModel.cs" />
     <Compile Include="Src\MyTNBService\Response\GetOvervoltageClaimDetailModel.cs" />
     <Compile Include="Src\MyTNBService\Request\TriggerOVISServicesRequestModel.cs" />
+    <Compile Include="Src\OverVoltageFeedback\Model\DTOWebView.cs" />
+    <Compile Include="Src\OverVoltageClaim\Model\DTOWebView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -6665,9 +6667,6 @@
     <Folder Include="Src\ApplicationStatus\ApplicationStatusRating\" />
     <Folder Include="Src\OverVoltageClaim\" />
     <Folder Include="Src\OverVoltageClaim\Activity\" />
-    <Folder Include="Src\OverVoltageClaim\Adapter\" />
-    <Folder Include="Src\OverVoltageClaim\MVP\" />
-    <Folder Include="Src\OverVoltageClaim\WebView\" />
     <Folder Include="Src\OverVoltageClaimSuccessPage\" />
     <Folder Include="Src\OverVoltageClaimSuccessPage\Activity\" />
     <Folder Include="Src\OverVoltageFeedback\" />
@@ -6680,6 +6679,8 @@
     <Folder Include="Src\PaymentInfoSunmittedSuccess\Activity\" />
     <Folder Include="Src\FeedBackSubmittedSucess\Activity\" />
     <Folder Include="Src\PaymentInfoSunmittedSuccess\Activity\" />
+    <Folder Include="Src\OverVoltageFeedback\Model\" />
+    <Folder Include="Src\OverVoltageClaim\Model\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
