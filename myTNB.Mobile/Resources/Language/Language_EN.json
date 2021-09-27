@@ -1,4 +1,4 @@
-﻿{
+{
   "Common": {
     "eppToolTipTitle": "What about Easy Payment Plan (EPP)?",
     "account": "Account",
@@ -1162,24 +1162,25 @@
     "documentPdf": "Document",
     "aboutMyBillTitle": "About My Bill",
     "aboutMyBillDescription": "I want to enquire about my bill and payment.",
-    "selectEnquiryType": "Select Enquiry Type"
+    "selectEnquiryType": "Select Enquiry Type",
+    "iNeedHelpWith": "I NEED HELP WITH"
   },
   "SubmitEnquiry_selector": {
     "enquiryType": [
       {
-        "key": "billCalculationCharges",
+        "key": "01",
         "description": "Bill Calculation / Charges"
       },
       {
-        "key": "billDeliveryMethod",
+        "key": "02",
         "description": "Bill Delivery Method"
       },
       {
-        "key": "paymentHistoryReceipt",
+        "key": "03",
         "description": "Payment History / Receipt"
       },
       {
-        "key": "others",
+        "key": "04",
         "description": "Others"
       }
     ]
@@ -2463,10 +2464,12 @@
     "dbrInfoTitle0": "You’re receiving Paper Bill for this account.",
     "dbrInfoTitle1": "A step towards a greener earth.",
     "dbrInfoTitle2": "Fast and convenient bill viewing.",
+    "dbrInfoTitle2V2": "Fast bill viewing with the all-new bill layout.",
     "dbrInfoTitle3": "Secure billing for peace of mind.",
     "dbrInfoDescription0": "Swipe left to learn how you can benefit from going paperless today!",
     "dbrInfoDescription1": "Reduce your paper waste and be the first to make your impact in our collective move towards a more sustainable future.",
     "dbrInfoDescription2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills conveniently on myTNB App & Portal, anytime, anywhere.",
+    "dbrInfoDescription2V2": "Enjoy faster and on-the-dot delivery of your freshly improved TNB bills directly on myTNB App & Portal. Learn more about the new bill layout <a style=\"text-decoration:none\" href =\"inAppScreen=NewBillDesignComms\">here</a>.",
     "dbrInfoDescription3": "Get your bills directly and securely on myTNB. No more worries about others seeing your bills, risk getting stolen or lost in the mail.",
     "anotherDeliveryMethod": "What if I want another bill delivery method?",
     "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "What if I want another bill delivery method?",
@@ -2555,7 +2558,7 @@
         "Description": "The all-new TNB bill is now in an easy-to-read and simplified format to help you make better decisions on managing your energy usage! Let's see what's new:",
         "Image1": "New-Bill-Design-Header-1",
         "Image2": "New-Bill-Design-Header-2",
-        "IsZoomable": true,
+        "IsZoomable": false,
         "IsHeader": true,
         "IsFooter": false
       },

@@ -544,10 +544,10 @@
   },
   "BillFilter": {
     "title": "Tapis Paparan",
-    "selectViewTitle": "MS_Select View",
+    "selectViewTitle": "Pilih Paparan",
     "description": "Lihat bil anda, resit pembayaran atau kedua-duanya.",
     "descriptionRE": "Lihat makluman anda, resit pembayaran atau kedua-duanya.",
-    "descriptionRedesign": "MS_View your  bills, payment receipts or both.",
+    "descriptionRedesign": "Semak bil anda, resit pembayaran atau kedua-duanya.",
     "filterBy": "Pilihan Mengikut",
     "applyFilter": "Gunakan Pilihan",
     "selectFilter": "Pilih Tapis"
@@ -1162,24 +1162,25 @@
     "documentPdf": "Dokumen",
     "aboutMyBillTitle": "Berkaitan Bil Saya",
     "aboutMyBillDescription": "Saya ingin bertanya mengenai bil dan pembayaran.",
-    "selectEnquiryType": "Pilih Jenis Pertanyaan"
+    "selectEnquiryType": "Pilih Jenis Pertanyaan",
+    "iNeedHelpWith": "SAYA PERLU BANTUAN MENGENAI"
   },
   "SubmitEnquiry_selector": {
     "enquiryType": [
       {
-        "key": "billCalculationCharges",
+        "key": "01",
         "description": "Pengiraan / Caj Bil"
       },
       {
-        "key": "billDeliveryMethod",
+        "key": "02",
         "description": "Cara Penerimaan Bil"
       },
       {
-        "key": "paymentHistoryReceipt",
+        "key": "03",
         "description": "Sejarah Pembayaran / Resit"
       },
       {
-        "key": "others",
+        "key": "04",
         "description": "Lain-lain"
       }
     ]
@@ -1213,8 +1214,8 @@
     "manageDeliveryMethodUpdateCTAMessage": "Kemas kini cara penerimaan bil anda untuk akaun ini di sini.",
     "manageDeliveryMethodEmailTitle": "Penerima bil e-mel.",
     "manageDeliveryMethodEmailMessage": "Semak penerima e-mel yang menerima bil bulanan untuk akaun ini.",
-    "billStatementTitle": "MS_Download your account statement.",
-    "billStatementMessage": "MS_You can now download a summary of your accounts monthly statements and bills by your preferred statement period."
+    "billStatementTitle": "Muat turun penyata akaun anda.",
+    "billStatementMessage": "Anda boleh memuat turun ringkasan penyata bulanan dan bil akaun anda mengikut tempoh penyata pilihan anda."
   },
   "ApplicationStatusLanding": {
     "title": "Status Permohonan",
@@ -2463,10 +2464,12 @@
     "dbrInfoTitle0": "Anda menerima Bil Bercetak untuk akaun ini.",
     "dbrInfoTitle1": "Ke arah bumi yang lebih hijau.",
     "dbrInfoTitle2": "Paparan bil yang pantas dan mudah.",
+    "dbrInfoTitle2V2": "Semak bil lebih pantas dengan perincian terbaharu bil TNB.",
     "dbrInfoTitle3": "Terima bil anda dengan senang hati.",
     "dbrInfoDescription0": "Leret ke kiri untuk mengetahui kelebihan dengan memilih kaedah 'paperless' hari ini!",
     "dbrInfoDescription1": "Kurangkan pembaziran kertas anda dan jadilah yang pertama memberi impak di dalam usaha kolektif kita semua ke arah masa depan yang lebih mesra alam.",
     "dbrInfoDescription2": "Alami penghantaran bil elektrik bulanan anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB, bila-bila masa dan di mana sahaja.",
+    "dbrInfoDescription2V2": "Alami penghantaran bil terbaharu anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB. Ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppScreen=NewBillDesignComms\">sini</a>.",
     "dbrInfoDescription3": "Dapatkan bil anda dengan terjamin di myTNB. Tidak perlu risau lagi bil anda terdedah, dicuri atau tercicir.",
     "anotherDeliveryMethod": "Bagaimana jika saya mahu cara penerimaan bil lain?",
     "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "Bagaimana jika saya mahu cara penerimaan bil lain?",
@@ -2534,15 +2537,15 @@
     "IsUpdatePersonalDetailsEnquiryEnabled": true
   },
   "StatementPeriod": {
-    "title": "MS_View Account Statement",
-    "ctaTitle": "MS_View Account Statement",
-    "iWantToViewTitle": "MS_I want to view:",
-    "past3Months": "MS_Past 3 months",
-    "past6Months": "MS_Past 6 months"
+    "title": "Semak Penyata Akaun",
+    "ctaTitle": "Semak Penyata Akaun",
+    "iWantToViewTitle": "Saya mahu semak:",
+    "past3Months": "3 bulan lepas",
+    "past6Months": "6 bulan lepas"
   },
   "AccountStatement": {
-    "past6MonthsTitle": "MS_Past 6 Months Statement",
-    "past3MonthsTitle": "MS_Past 3 Months Statement"
+    "past6MonthsTitle": "Penyata 6 Bulan Lepas ",
+    "past3MonthsTitle": "Penyata 3 Bulan Lepas "
   },
   "NewBillDesignComms": {
     "title": "Wajah Bil TNB Baharu",
