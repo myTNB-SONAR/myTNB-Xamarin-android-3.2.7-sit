@@ -179,7 +179,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
             {
                 ImageStar = itemView.FindViewById<ImageView>(Resource.Id.ratingBar_custom);
 
-                ImageStar.Click += (s, e) => listener((this), base.LayoutPosition);
+                //ImageStar.Click += (s, e) => listener((this), base.LayoutPosition);
             }            
         }
     }

@@ -53,7 +53,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
         private List<ImproveSelectModel> SelectStarPosition = new List<ImproveSelectModel>();
         private GridLayoutManager layoutManager;
         private RateUsStarsCustomAdapter adaptercustom;
-
+        private int countClick = 0;
         private SetupFeedBackFragment(Android.App.Activity context)
         {
             this.mContext = context;
@@ -256,6 +256,7 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                 tooltipBlueTitle.Text = this.title;
                 tooltipCTA.Text = this.ctaLabel;
 
+                countClick = 0;
                 injectData();
                 layoutManager = new GridLayoutManager(this.mContext, 5);
                 adaptercustom = new RateUsStarsCustomAdapter(this.mContext, SelectStarPosition, selectedRating);
@@ -305,13 +306,13 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                     btnYes.Background = ContextCompat.GetDrawable(this.mContext, Resource.Drawable.blue_out_line_thin);
                     img_displayYes.SetImageResource(Resource.Drawable.thumb_up_blue_yes);
                     titleYes.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
-                    Handler h = new Handler(Looper.MyLooper());
+                    Handler h = new Handler();
                     Action myAction = () =>
                     {
                         this.dialog.Dismiss();
                         this.ctaYesAction?.Invoke();
                     };
-                    h.PostDelayed(myAction, 3000);
+                    h.PostDelayed(myAction, 300);
                 };
 
                 btnNo.Click += delegate
@@ -319,13 +320,13 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                     btnNo.Background = ContextCompat.GetDrawable(this.mContext, Resource.Drawable.blue_out_line_thin);
                     img_displayNo.SetImageResource(Resource.Drawable.thumb_down_no_blue);
                     titleNo.SetTextColor(ContextCompat.GetColorStateList(this.mContext, Resource.Color.powerBlue));
-                                     Handler h = new Handler(Looper.MyLooper());
+                    Handler h = new Handler();
                     Action myAction = () =>
                     {
                         this.dialog.Dismiss();
                         this.ctaNoAction?.Invoke();
                     };
-                    h.PostDelayed(myAction, 3000);
+                    h.PostDelayed(myAction, 300);
                 };
             }
             return this;
@@ -383,9 +384,10 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
         {
             try
             {
+                countClick++;
                 if (adaptercustom != null)
                 {
-                    if (MyTNBAccountManagement.GetInstance().IsFromClickAdapter() != position)
+                    if (MyTNBAccountManagement.GetInstance().IsFromClickAdapter() != position && countClick == 1)
                     {
                         RecyclerView recyclerView = this.dialog.FindViewById<RecyclerView>(Resource.Id.dialogRecyclerView);
                         MyTNBAccountManagement.GetInstance().SetIsFromClickAdapter(position);
@@ -406,18 +408,14 @@ namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
                         }
                         SelectStarPosition = null;
                         SelectStarPosition = activeStarSelectList;
-                        layoutManager = new GridLayoutManager(this.mContext, 5);
-                        adaptercustom = new RateUsStarsCustomAdapter(this.mContext, SelectStarPosition, position);
-                        recyclerView.SetLayoutManager(layoutManager);
-                        recyclerView.SetAdapter(adaptercustom);
-                        //adaptercustom.RatingUpdate += OnRatingUpdate;
-                        Handler h = new Handler(Looper.MyLooper());
+                        adaptercustom.NotifyDataSetChanged();
+                        Handler h = new Handler();
                         Action myAction = () =>
                         {
                             this.dialog.Dismiss();
                             this.secondaryCTAAction();
                         };
-                        h.PostDelayed(myAction, 3000);
+                        h.PostDelayed(myAction, 300);
                     }
                 }
             }

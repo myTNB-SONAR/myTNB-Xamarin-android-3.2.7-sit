@@ -648,10 +648,12 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 , serviceCallCounter));
             if (serviceCallCounter == 1)//If first failed, do auto-retry.
             {
+                appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT;
                 LoadAppMasterData();
             }
             if (serviceCallCounter == 2)//If still failed, do auto-retry.
             {
+                appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT;
                 LoadAppMasterData();
             }
             if (serviceCallCounter == 3)//If still failed after auto-retry, inform the user.

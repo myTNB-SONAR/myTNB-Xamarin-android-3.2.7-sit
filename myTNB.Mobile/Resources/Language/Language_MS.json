@@ -419,7 +419,7 @@
   },
   "Usage": {
     "title": "Usage",
-    "accountsMissing": "Why are some of my accounts not here?",
+    "accountsMissing": "Mengapa akaun saya tiada di sini?",
     "gotIt": "Ok!",
     "disconnectionMsg": "<strong>Apakah maksudnya?</strong><br><br>Bekalan elektrik anda telah dipotong. Pemotongan ini mungkin disebabkan oleh permintaan pemilik premis, atau tunggakan bayaran bil.<br><br>Sekiranya anda telah memohon untuk sambungan semula, atau telah membuat bayaran, bekalan anda akan disambung dalam masa terdekat.",
     "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
@@ -466,10 +466,10 @@
     "refreshNowEnergyBudgetButton": "'Refresh' Sekarang",
     "youHaveNotSetBudget": "Anda belum menetapkan Energy Budget anda",
     "youHaveNotSetBudgetSubtitle": "Tetapkan Energy Budget anda, pantau penggunaan anda dan terima pemberitahuan apabila berdekatan dengan Energy Budget anda!",
-    "feedback1Title":"Tahniah! Bagaimanakan pengalaman penetapan Energy Budget anda?",
-    "feedbackDontAskAgain":"Tidak Berminat",
-    "feedbackSuccessTitle":"Terima kasih atas maklumbalas anda",
-    "feedbackSuccessButton":"OK"
+    "feedback1Title": "Tahniah! Bagaimanakah pengalaman penetapan Energy Budget anda?",
+    "feedbackDontAskAgain": "Tidak Berminat",
+    "feedbackSuccessTitle": "Terima kasih atas maklumbalas anda",
+    "feedbackSuccessButton": "OK"
   },
   "Bills": {
     "title": "Bil",
