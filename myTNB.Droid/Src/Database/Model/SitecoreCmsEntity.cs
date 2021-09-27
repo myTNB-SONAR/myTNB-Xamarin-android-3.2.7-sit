@@ -19,6 +19,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             APPLY_SSMR_WALKTHROUGH,
             BILL_TOOLTIP,
+            BILL_TOOLTIPV2,
             LANGUAGE_URL,
             LANGUAGE_EN,
             LANGUAGE_MS,

@@ -30,7 +30,7 @@ namespace myTNB_Android.Src.Base
         private List<EppToolTipModel> mEppToolTipModelList = new List<EppToolTipModel>();
         private static MyTNBAppToolTipData Instance;
 
-        private MyTNBAppToolTipData(){}
+        private MyTNBAppToolTipData() { }
 
         public static MyTNBAppToolTipData GetInstance()
         {
@@ -175,7 +175,8 @@ namespace myTNB_Android.Src.Base
             SMREligibiltyPopUpDetailData eligibiltyPopUpDetails = null;
             if (mSMREligibilityPopupDetailList.Count > 0)
             {
-                SMREligibiltyPopUpDetails details = mSMREligibilityPopupDetailList.Find(x => {
+                SMREligibiltyPopUpDetails details = mSMREligibilityPopupDetailList.Find(x =>
+                {
                     return x.Type == "Not_SMR_CA";
                 });
                 if (details != null)
@@ -202,13 +203,13 @@ namespace myTNB_Android.Src.Base
             return eligibiltyPopUpDetails;
         }
 
-        public static List<UnderstandTooltipModel> GetUnderstandBillTooltipData(BaseActivityCustom baseActivity)
+        public static List<UnderstandTooltipModel> GetUnderstandBillTooltipData(BaseActivityCustom baseActivity, SitecoreCmsEntity.SITE_CORE_ID itemId)
         {
             List<UnderstandTooltipModel> tooltipModelDataList = new List<UnderstandTooltipModel>();
             UnderstandTooltipModel tooltipModel;
             try
             {
-                string jsonData = SitecoreCmsEntity.GetItemById(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP);
+                string jsonData = SitecoreCmsEntity.GetItemById(itemId);
                 if (jsonData != null)
                 {
                     List<BillsTooltipModelEntity> billTooltipDataList = JsonConvert.DeserializeObject<List<BillsTooltipModelEntity>>(jsonData);
@@ -245,34 +246,52 @@ namespace myTNB_Android.Src.Base
             return tooltipModelDataList;
         }
 
-        public static  List<EPPTooltipResponse> GetEppToolTipData()
+        public static List<EPPTooltipResponse> GetEppToolTipData(BaseToolbarAppCompatActivity activity, int imagePlaceholderId)
         {
             List<EPPTooltipResponse> tooltipModelDataList = new List<EPPTooltipResponse>();
             EPPTooltipResponse tooltipModel;
             string jsonData = SitecoreCmsEntity.GetItemById(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP);
             //syahmi modified
-            if (jsonData != null && jsonData!="null")
+            if (jsonData != null && jsonData != "null")
             {
                 List<EPPToolTipEntity> EPPTooltipDataList = JsonConvert.DeserializeObject<List<EPPToolTipEntity>>(jsonData);
-                
+
                 EPPTooltipDataList.ForEach(data =>
                 {
-                    tooltipModel = new EPPTooltipResponse();
-                    tooltipModel.Title = data.Title;
-                    tooltipModel.PopUpTitle = data.PopUpTitle;
-                    tooltipModel.PopUpBody = data.PopUpBody;
-                    tooltipModel.ImageBitmap = Base64ToBitmap(data.ImageBase64);
+                    tooltipModel = new EPPTooltipResponse
+                    {
+                        Title = data.Title,
+                        PopUpTitle = data.PopUpTitle,
+                        PopUpBody = data.PopUpBody,
+                        ImageBitmap = Base64ToBitmap(data.ImageBase64)
+                    };
+                    var imageBitmap = Base64ToBitmap(data.ImageBase64);
+                    if (imageBitmap != null)
+                    {
+                        tooltipModel.ImageBitmap = imageBitmap;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            tooltipModel.ImageBitmap = BitmapFactory.DecodeResource(activity.Resources, imagePlaceholderId);
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
                     tooltipModelDataList.Add(tooltipModel);
                 });
             }
-    
+
 
             return tooltipModelDataList;
         }
 
         public static Bitmap Base64ToBitmap(string base64String)
         {
-            Bitmap convertedBitmap = null;
+            Bitmap convertedBitmap;
             try
             {
                 byte[] imageAsBytes = Base64.Decode(base64String, Base64Flags.Default);
@@ -368,7 +387,7 @@ namespace myTNB_Android.Src.Base
                     tooltipModel = new whoIsRegisteredOwnerResponseModel();
                     tooltipModel.PopUpTitle = data.PopUpTitle;
                     tooltipModel.PopUpBody = data.PopUpBody;
-              
+
                     tooltipModelDataList.Add(tooltipModel);
                 });
             }

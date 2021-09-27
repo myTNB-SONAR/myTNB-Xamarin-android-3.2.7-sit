@@ -1579,25 +1579,29 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 try
                 {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-
-                    BillDetailsTooltipTimeStampResponseModel timestampModel = getItemsService.GetBillDetailsTooltipTimestampItem();
-                    if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
-                    {
-                        if (SitecoreCmsEntity.IsNeedUpdates(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP, timestampModel.Data[0].Timestamp))
-                        {
-                            BillDetailsTooltipResponseModel responseModel = getItemsService.GetBillDetailsTooltipItem();
-
-                            SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
-                        }
-                    }
+                    GetBillTooltip(BillsTooltipVersionEnum.V1, SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP);
+                    GetBillTooltip(BillsTooltipVersionEnum.V2, SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIPV2);
                 }
                 catch (Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
                 }
             });
+        }
+
+        private void GetBillTooltip(BillsTooltipVersionEnum billsTooltipVersionEnum, SitecoreCmsEntity.SITE_CORE_ID siteCoreId)
+        {
+            string density = DPUtils.GetDeviceDensity(Application.Context);
+            GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
+            BillDetailsTooltipTimeStampResponseModel timestampModel = getItemsService.GetBillDetailsTooltipTimestampItem(billsTooltipVersionEnum);
+            if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
+            {
+                if (SitecoreCmsEntity.IsNeedUpdates(siteCoreId, timestampModel.Data[0].Timestamp))
+                {
+                    BillDetailsTooltipResponseModel responseModel = getItemsService.GetBillDetailsTooltipItem(billsTooltipVersionEnum);
+                    SitecoreCmsEntity.InsertSiteCoreItem(siteCoreId, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
+                }
+            }
         }
 
         private async Task OnUpdateReward(string itemID)

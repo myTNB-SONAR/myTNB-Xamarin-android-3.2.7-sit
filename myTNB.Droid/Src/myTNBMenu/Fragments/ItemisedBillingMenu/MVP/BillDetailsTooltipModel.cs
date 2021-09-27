@@ -45,4 +45,11 @@ namespace myTNB.SitecoreCMS.Model
         public string Timestamp { set; get; }
         public string ID { set; get; }
     }
+
+    public enum BillsTooltipVersionEnum
+    {
+        V1,
+        V2,
+        None
+    }
 }

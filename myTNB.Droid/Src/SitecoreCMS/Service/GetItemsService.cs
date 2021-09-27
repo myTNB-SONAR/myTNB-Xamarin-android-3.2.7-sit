@@ -418,13 +418,13 @@ namespace myTNB.SitecoreCMS.Services
             return respModel;
         }
 
-        public BillDetailsTooltipResponseModel GetBillDetailsTooltipItem()
+        public BillDetailsTooltipResponseModel GetBillDetailsTooltipItem(BillsTooltipVersionEnum version)
         {
             BillDetailsTooltipResponseModel respModel = new BillDetailsTooltipResponseModel();
             try
             {
                 BillDetailsTooltipService service = new BillDetailsTooltipService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
+                var data = service.GetItems(version);
                 var resp = CheckData(data.ToList<object>());
                 string serializedObj = JsonConvert.SerializeObject(resp);
                 respModel = JsonConvert.DeserializeObject<BillDetailsTooltipResponseModel>(serializedObj);
@@ -454,13 +454,13 @@ namespace myTNB.SitecoreCMS.Services
             }
             return respModel;
         }
-        public BillDetailsTooltipTimeStampResponseModel GetBillDetailsTooltipTimestampItem()
+        public BillDetailsTooltipTimeStampResponseModel GetBillDetailsTooltipTimestampItem(BillsTooltipVersionEnum version)
         {
             BillDetailsTooltipTimeStampResponseModel respModel = new BillDetailsTooltipTimeStampResponseModel();
             try
             {
                 BillDetailsTooltipService service = new BillDetailsTooltipService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
+                var data = service.GetTimeStamp(version);
                 var listData = AddDataToList(data);
                 var resp = CheckData(listData);
                 string serializedObj = JsonConvert.SerializeObject(resp);
