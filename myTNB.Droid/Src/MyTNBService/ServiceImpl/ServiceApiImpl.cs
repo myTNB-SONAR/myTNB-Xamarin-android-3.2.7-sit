@@ -27,6 +27,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             apiAws = RestService.For<IServiceV6>(httpClientAws);
 #else
             api = RestService.For<IServiceV6>(Constants.SERVER_URL.END_POINT);
+            apiAws = RestService.For<IServiceV6>(Constants.SERVER_URL.END_POINT_AWS);
 #endif
         }
 
