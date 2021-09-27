@@ -1142,7 +1142,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void SetDBRDiscoverView()
         {
             SetDiscoverResult(IsAccountDBREligible);
-            this.presenter.GetSavedNewFAQTimeStamp();
+            //this.presenter.GetSavedNewFAQTimeStamp();
         }
 
         public void HideNewFAQ()

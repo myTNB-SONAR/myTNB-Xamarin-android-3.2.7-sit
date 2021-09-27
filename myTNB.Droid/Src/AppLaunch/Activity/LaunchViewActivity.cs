@@ -45,6 +45,7 @@ using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile.AWS.Models;
 using Firebase.Iid;
 using myTNB_Android.Src.NotificationDetails.Activity;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -319,7 +320,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowExceptionDashboard()
         {
-
+            MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);

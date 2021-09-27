@@ -817,7 +817,9 @@
     "nicknameUpdateSuccess": "Account nickname has been updated successfully.",
     "removeAccount": "Remove This Account",
     "popupremoveAccountTitle": "Remove Account",
-    "popupremoveAccountMessage": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity account. Visit the myTNB Portal or Kedai Tenaga to close your electricity supply account."
+    "popupremoveAccountMessage": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity account. Visit the myTNB Portal or Kedai Tenaga to close your electricity supply account.",
+    "dbrManageDeliveryMethod": "Manage Bill Delivery",
+    "dbrViewBillDelivery": "View Bill Delivery"
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
