@@ -492,7 +492,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         {
             if (!txtboxcondition.Checked)
             {
-                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tnc"));
+                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("OneLastThing", "tnc"));
                 //txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
                 StripUnderlinesFromLinks(txtTermsConditions);
                 mobileNumberInputComponent.ClearError();
@@ -656,9 +656,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         public void ShowInvalidEmailError()
         {
             //ClearInvalidEmailError();
-            if(textInputLayoutEmail.Error != Utility.GetLocalizedErrorLabel("invalid_email"))
+            if(textInputLayoutEmail.Error != Utility.GetLocalizedLabel("RegisterNew", "invalidEmailTryAgain"))
             {
-                textInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
+                textInputLayoutEmail.Error = Utility.GetLocalizedLabel("RegisterNew", "invalidEmailTryAgain");
             }
            
             if (!textInputLayoutEmail.ErrorEnabled)

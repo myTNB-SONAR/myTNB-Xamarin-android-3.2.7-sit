@@ -384,9 +384,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
             try
             {
                 string Email = "";
-                UserEntity userEntity = UserEntity.GetActive(); 
+                UserEntity userEntity = UserEntity.GetActive();
                 Email = userEntity.Email;
-                Snackbar updateEmailBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "toast_email_send") + Email, Snackbar.LengthIndefinite)
+                Snackbar updateEmailBar = Snackbar.Make(rootView, string.Format(Utility.GetLocalizedLabel("Tnb_Profile", "toast_email_send"), Email), Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
                              {

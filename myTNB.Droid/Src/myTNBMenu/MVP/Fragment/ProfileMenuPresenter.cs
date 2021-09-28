@@ -25,12 +25,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         private readonly string TAG = typeof(ProfileMenuPresenter).Name;
         private List<CreditCardData> cardList = new List<CreditCardData>();
         CancellationTokenSource cts;
-       // private ISharedPreferences mPref;
+        private ISharedPreferences mPref;
 
-        //public ProfileMenuPresenter(ProfileMenuContract.IView mView, ISharedPreferences pref)
-        public ProfileMenuPresenter(ProfileMenuContract.IView mView)
+        public ProfileMenuPresenter(ProfileMenuContract.IView mView, ISharedPreferences pref)
+        //public ProfileMenuPresenter(ProfileMenuContract.IView mView)
         {
-            //this.mPref = pref;
+            this.mPref = pref;
             this.mView = mView;
         }
 
@@ -251,6 +251,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                     if (logoutResponse.IsSuccessResponse())
                     {
+                        UserSessions.RemoveEligibleData(mPref);
+                        EligibilitySessionCache.Instance.Clear();
+                        FeatureInfoManager.Instance.Clear();
+                        AccessTokenCache.Instance.Clear();
                         UserEntity.RemoveActive();
                         UserRegister.RemoveActive();
                         CustomerBillingAccount.RemoveActive();
@@ -268,6 +272,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         SummaryDashBoardAccountEntity.RemoveAll();
                         SelectBillsEntity.RemoveAll();
                         LanguageUtil.SetIsLanguageChanged(false);
+                        UserLoginCountEntity.RemoveAll();
                         this.mView.ShowLogout();
                     }
                     else

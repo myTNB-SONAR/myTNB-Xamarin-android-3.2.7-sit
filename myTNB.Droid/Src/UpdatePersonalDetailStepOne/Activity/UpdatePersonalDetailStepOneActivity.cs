@@ -1528,9 +1528,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 txtInputLayoutNewEmailAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
 
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewEmailAddress.FindViewById<TextView>(Resource.Id.textinput_error));
-                if (txtInputLayoutNewEmailAddress.Error != Utility.GetLocalizedErrorLabel("invalid_email"))
+                if (txtInputLayoutNewEmailAddress.Error != Utility.GetLocalizedLabel("RegisterNew", "invalidEmailTryAgain"))
                 {
-                    txtInputLayoutNewEmailAddress.Error = Utility.GetLocalizedErrorLabel("invalid_email");
+                    txtInputLayoutNewEmailAddress.Error = Utility.GetLocalizedLabel("RegisterNew", "invalidEmailTryAgain");
                 }
 
 

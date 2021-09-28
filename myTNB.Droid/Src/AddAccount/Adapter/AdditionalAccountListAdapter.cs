@@ -290,9 +290,9 @@ namespace myTNB_Android.Src.AddAccount
                    
                     textInputLayoutEmailEditText.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
 
-                    if (textInputLayoutEmailEditText.Error != Utility.GetLocalizedErrorLabel("invalid_email"))
+                    if (textInputLayoutEmailEditText.Error != Utility.GetLocalizedLabel("RegisterNew", "invalidEmailTryAgain"))
                     {
-                        textInputLayoutEmailEditText.Error = Utility.GetLocalizedErrorLabel("invalid_email");  // fix bouncing issue
+                        textInputLayoutEmailEditText.Error = Utility.GetLocalizedLabel("RegisterNew", "invalidEmailTryAgain");  // fix bouncing issue
                     }
 
                     textInputLayoutEmailEditText.RequestLayout();

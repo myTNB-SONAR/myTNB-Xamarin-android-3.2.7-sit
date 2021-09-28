@@ -179,10 +179,12 @@ namespace myTNB_Android.Src.Notifications.Adapter
                     viewHolder.txtNotificationContent.Text = message;
 
                 }
+
                 if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_PROFILENAME_PATTERN))
                 {
                     viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
                 }
+
                 if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
                 {
                     viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + notificationAccountName + "\"");

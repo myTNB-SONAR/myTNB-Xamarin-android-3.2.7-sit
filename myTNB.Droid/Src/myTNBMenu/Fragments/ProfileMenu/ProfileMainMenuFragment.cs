@@ -82,7 +82,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            mPresenter = new ProfileMenuPresenter(this);
+            mPresenter = new ProfileMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+            //mPresenter = new ProfileMenuPresenter(this);
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

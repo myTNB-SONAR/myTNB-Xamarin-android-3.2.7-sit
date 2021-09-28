@@ -48,13 +48,13 @@ namespace myTNB.Mobile
         private const string Passphrase_PROD = "PW-myTNB-PROD";
 
 #if DEBUG
-        public static string ApiDomain = SIT;
+        public static string ApiDomain = DEV3;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
 #elif MASTER || SIT
-        public static string ApiDomain = SIT;
+        public static string ApiDomain = DEV3;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;

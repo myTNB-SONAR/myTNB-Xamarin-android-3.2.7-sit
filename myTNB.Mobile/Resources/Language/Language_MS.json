@@ -31,7 +31,7 @@
     "confirm": "Sahkan",
     "ok": "Ok",
     "acctNickname": "Nama Akaun",
-    "name": "NAMA",
+    "name": "Nama",
     "done": "Selesai",
     "yes": "Ya",
     "no": "Tidak",
@@ -125,7 +125,7 @@
     "eg": "Masukkan Nombor Permohonan 10-digit. Contoh: "
   },
   "Error": {
-    "invalid_email": "Format e-mel tidak sah, sila cuba sekali lagi",
+    "invalid_email": "Format e-mel tidak sah.",
     "invalid_mobileNumber": "Nombor telefon tidak sah.",
     "minimumMandatoryPayment": "Amaun minimum mestilah sekurang-kurangnya {0}",
     "minimumPayAmount": "Amaun minimum perlu melebihi RM 1.00",
@@ -298,9 +298,7 @@
     "pdpa": "Polisi Perlindungan Data",
     "termsofUsePolicy": "https://www.tnb.com.my/terms-policy/",
     "pdpaPolicy": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
-    "tncData": "<p>1.Setelah berjaya mendaftar, anda dikehendaki untuk menghantar bacaan meter pada setiap bulan kecuali pada bulan April, Ogos dan Disember kerana bacaan meter di premis akan dibuat oleh pihak kami pada bulan-bulan tersebut.</p><p>2.Pada setiap bulan, anda akan menerima notifikasi untuk menghantar bacaan meter kepada pihak kami untuk tujuan pembilan. Anda dinasihatkan untuk menghantar bacaan meter mengikut tarikh bacaan yang telah ditetapkan.</p><p>3.Bacaan meter yang diterima akan disemak untuk pengesahan dengan kadar segera. Setelah pengesahan dibuat, salinan bill elektrik boleh dilihat melalui aplikasi myTNB dan portal myTNB pada keesokan hari.</p><p>4.Anda akan menerima bil anggaran mengikut purata penggunaan sekiranya, bacaan meter yang dihantar tidak dapat disahkan atau bacaan meter tidak dihantar mengikut tarikh bacaan yang telah ditetapkan.</p><p>5.Pihak kami akan membuat pelarasan sekiranya terdapat kejanggalan pada bacaan meter yang diterima.</p><p>6.Perkhidmatan ini akan dihentikan sekiranya:</p><p> a)Bacaan pada meter tidak dihantar selama dua bulan berturut-turut, atau</p><p> b)Sekiranya kriteria perkhidmatan tidak lagi dipenuhi, sebagai contoh, akaun telibat dengan pemotongan bekalan, penutupan akaun, perubahan tarif dan sebagainya.</p>",
-    "tncsmrNew": "Dengan melanggan/menghantar Self Meter Reading, saya faham dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat Self Meter Reading</strong></a>, <a href=\"\\\"><strong>Terma Penggunaan dan Polisi Perlindungan Data Peribadi TNB</strong></a>. Saya juga bersetuju untuk menghantar bacaan meter pada setiap bulan kecuali pada bulan bukan Self Meter Reading"
-
+    "tncData": "<p>1.Setelah berjaya mendaftar, anda dikehendaki untuk menghantar bacaan meter pada setiap bulan kecuali pada bulan April, Ogos dan Disember kerana bacaan meter di premis akan dibuat oleh pihak kami pada bulan-bulan tersebut.</p><p>2.Pada setiap bulan, anda akan menerima notifikasi untuk menghantar bacaan meter kepada pihak kami untuk tujuan pembilan. Anda dinasihatkan untuk menghantar bacaan meter mengikut tarikh bacaan yang telah ditetapkan.</p><p>3.Bacaan meter yang diterima akan disemak untuk pengesahan dengan kadar segera. Setelah pengesahan dibuat, salinan bill elektrik boleh dilihat melalui aplikasi myTNB dan portal myTNB pada keesokan hari.</p><p>4.Anda akan menerima bil anggaran mengikut purata penggunaan sekiranya, bacaan meter yang dihantar tidak dapat disahkan atau bacaan meter tidak dihantar mengikut tarikh bacaan yang telah ditetapkan.</p><p>5.Pihak kami akan membuat pelarasan sekiranya terdapat kejanggalan pada bacaan meter yang diterima.</p><p>6.Perkhidmatan ini akan dihentikan sekiranya:</p><p> a)Bacaan pada meter tidak dihantar selama dua bulan berturut-turut, atau</p><p> b)Sekiranya kriteria perkhidmatan tidak lagi dipenuhi, sebagai contoh, akaun telibat dengan pemotongan bekalan, penutupan akaun, perubahan tarif dan sebagainya.</p>"
   },
 
   "Status": {
@@ -497,7 +495,12 @@
     "disconnectedEnergyBudget": "Nampaknya Energy Budget anda terputus sambungan. Refresh untuk sambung semula!",
     "refreshNowEnergyBudgetButton": "'Refresh' Sekarang",
     "youHaveNotSetBudget": "Anda belum menetapkan Energy Budget anda",
-    "youHaveNotSetBudgetSubtitle": "Tetapkan Energy Budget anda, pantau penggunaan anda dan terima pemberitahuan apabila berdekatan dengan Energy Budget anda!"
+    "youHaveNotSetBudgetSubtitle": "Tetapkan Energy Budget anda, pantau penggunaan anda dan terima pemberitahuan apabila berdekatan dengan Energy Budget anda!",
+    //add by lop
+    "tutorialUsageTitle": "Lihat butiran akaun anda di sini.",
+    "tutorialUsageDesc": "Lihat butiran akaun anda dengan mudah dan urus pengguna lain yang mempunyai akses pada akaun anda di sini.",
+    "tutorialUsageDescNonOwner": "Lihat butiran akaun anda dengan mudah di sini.",
+    "skip": "Tekan untuk melangkau."
   },
   "Bills": {
     "title": "Bil",
@@ -726,7 +729,8 @@
     "GovDialogDetails": "Anda masih boleh menambah dan melihat akaun Kerajaan anda melalui <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">myTNB Portal</a>.",
     "titleNonOwnerAddAcc": "Teruskan memasuki akaun anda dan berikan nama gelaran untuk rujukan mudah.",
     "titleOwnerDetailRegion": "Sila masukkan alamat e-mel atau nombor telefon pemilik akaun ini supaya kami boleh memberikan makluman kepadanya.",
-    "backToHome": "Pulang ke Muka Hadapan"
+    //Add by lop
+    "accountNickNameError": "Akaun anda harus mempunyai nama panggilan. Anda boleh menggunakan huruf, angka dan simbol untuk nama panggilan akaun tersebut."
   },
   "Profile": {
     "title": "Profil",
@@ -759,16 +763,12 @@
     "myElecttricityAcc": "Akaun Elektrik Saya",
     "appSetting": "Tetapan Aplikasi",
     "learnMore": "Ketahui Lebih Lanjut mengenai TNB"
-
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
     "typeDescription": "Pilih jenis pemberitahuan yang ingin diterima daripada TNB",
     "modeDescription": "Pilih cara anda mahu menerima pemberitahuan",
-    "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
-    //addby syahmi 
-    "selectApplang": "Pilih bahasa aplikasi pilihan anda:"
-
+    "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah."
   },
 
   //new added
@@ -832,8 +832,10 @@
     "addAccountMessage": "Tambah Akaun Elektrik TNB sedia ada untuk melihat butiran penggunaan dan transaksi.",
     "popupremoveAccountTitleSwipe": "Alih Keluar Akaun",
     "popupremoveAccountMessageSwipe": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda.",
-    "emptyListDetails": "Tidak ada akaun elektrik yang ditambahkan. Tambahkan akaun sekarang dan anda akan mendapat akses ke penggunaan, bil dan mengurus akaun anda."
-
+    "emptyListDetails": "Tidak ada akaun elektrik yang ditambahkan. Tambahkan akaun sekarang dan anda akan mendapat akses ke penggunaan, bil dan mengurus akaun anda.",
+    //Add by lop
+    "titleMyElectricityAccounts": "Akaun Elektrik Saya",
+    "addAccount": "Tambah Akaun"
   },
   "Prelogin": {
     "welcomeTitle": "Selamat datang ke myTNB",
@@ -861,7 +863,13 @@
   "ForgotPassword": {
     "title": "Set Semula Kata Laluan",
     "subTitle": "Sila masukkan e-mel anda.",
-    "details": "Kod pengesahan 4 digit akan dihantar ke alamat e-mel ini."
+    "details": "Kod pengesahan 4 digit akan dihantar ke alamat e-mel ini.",
+    //add by lop
+    "gotIt": "Ok",
+    "resend": "Hantar semula",
+    "verifyEmailPopupTitle": "Pengesahan E-mel Belum Selesai",
+    "verifyEmailPopupBody": "Sila sahkan alamat e-mel anda dengan pautan yang telah kami kirimkan. Anda juga boleh meminta kiriman semula jika anda tidak menerima pautan tersebut.",
+    "toast_email_send": "Pengesahan e-mel telah dihantar ke {0}"
   },
   "EnterCode": {
     "title": "Masukkan Kod",
@@ -920,6 +928,8 @@
     "removeAccount": "Alih Keluar Akaun Ini",
     "popupremoveAccountTitle": "Alih Keluar Akaun",
     "popupremoveAccountMessage": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda.",
+    "dbrManageDeliveryMethod": "Urus Cara Penerimaan Bil",
+    "dbrViewBillDelivery": "Cara Penerimaan Bil",
     //addby wan
     "detailSectionTitle": "Akaun myTNB",
     "accountSectionTitle": "Akaun Bekalan Elektrik",
@@ -938,9 +948,8 @@
     "manageUserBackTitle": "Adakah anda pasti mahu meninggalkan halaman ini tanpa menyimpan perubahan yang telah anda lakukan terhadap akses {0}?",
     "manageUserBackMessage": "Perubahan terhadap akses {0} tidak akan disimpan jika anda memilih untuk meninggalkan halaman ini dan akses pengguna akan kekal seperti biasa.",
     "manageUserAccess": "Menguruskan Akses Pengguna",
-    "manageAutopay": "BM_Manage Autopay",
-    "dbrManageDeliveryMethod": "Urus Cara Penerimaan Bil",
-    "dbrViewBillDelivery": "Cara Penerimaan Bil"
+    "manageAutopay": "BM_Manage Autopay"
+
   },
   "Onboarding": {
     "letsStart": "Jom mulakan!",
@@ -966,7 +975,6 @@
     "description8": "Anda boleh jejaki semua status permohonan dengan mudah, pada bila-bila masa dan di mana-mana sahaja.",
     "description9": "Ubah suai myTNB anda dengan saiz teks paparan bersesuaian untuk pengendalian yang lebih selesa. Anda boleh memilih antara saiz normal atau besar dan boleh mengubah tetapan ini pada bila-bila masa di Profil anda.",
     "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai.",
-
     //addby irul
     "title11": "Peningkatan kawalan akses untuk melindungi maklumat anda.",
     "description11": "Sebagai pemilik akaun elektrik, pastikan anda mempunyai kawalan terhadap maklumat dan permintaan akaun dengan menetapkan akses yang anda beri kepada pihak lain."
@@ -1358,7 +1366,7 @@
     "resend": "Hantar semula",
     "verifyEmailPopupBody": "Sila sahkan alamat e-mel anda dengan pautan yang telah kami kirimkan. Anda juga boleh meminta kiriman semula jika anda tidak menerima pautan tersebut.",
     "verifyEmailPopupTitle": "Pengesahan E-mel Belum Selesai",
-    "toast_email_send": "Pengesahan e-mel telah dihantar ke ",
+    "toast_email_send": "Pengesahan e-mel telah dihantar ke {0}",
     "toast_SuccessUpdateName": "Anda telah berjaya mengemaskini nama anda!"
   },
   "ApplicationStatusLanding": {
@@ -1519,7 +1527,8 @@
     "EmailBodyError": "Sila cuba lagi dengan alamat e-mel yang lain. Sebagai alternatif, anda boleh menukar semula kata laluan anda untuk menggunakan alamat e-mel yang sama.",
     "Reset": "Tukar",
     "emailRequired": "Sila masukkan alamat email.",
-    "passwordRequired": "Sila masukkan kata laluan."
+    "passwordRequired": "Sila masukkan kata laluan.",
+    "invalidEmailTryAgain": "Format e-mel tidak sah, sila cuba sekali lagi"
   },
   "ApplicationStatusPaymentDetails_selector": {
     "chargesMapping": [
@@ -1561,7 +1570,10 @@
     "IdHeaderError": "Nombor kad pengenalan ini telah digunakan untuk akaun yang sedia ada.",
     "IdBodyError": "Sila pastikan bahawa anda telah memasukkan nombor kad pengenalan yang betul, atau hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> untuk bertanya mengenai perkara ini.",
     "ctaTitleNew": "Daftar Akaun Saya",
-    "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat</strong></a>."
+    "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
+    //add by lop
+    "tnc": "Dengan mengesahkan, saya telah membaca dan bersetuju dengan <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
+    "idtypeSelectTitle": "Pilih Jenis Pengenalan"
   },
   "ApplicationStatusDetails_selector": {
     "applicationTypeMapping": [
@@ -2120,7 +2132,7 @@
   "CompleteYourProfile": {
     "title": "Lengkapkan Profil Anda",
     "lblTitle": "Sediakan kami nombor pengenalan anda untuk pengalaman yang lebih baik!",
-    "lblSubTitle": "Sediakan kami nombor pengenalan anda untuk pengalaman yang lebih baik!",
+    "lblSubTitle": "Dapatkan akses dan kawalan yang lebih menyeluruh atas akaun elektrik anda di myTNB dengan membantu kami mengesahkan pengenalan diri anda.",
     "txtFieldIDType": "Jenis Pengenalan",
     "txtFieldID": "Nombor Pengenalan",
     "mykad": "IC / MyKad",
@@ -2142,7 +2154,7 @@
     "whereToGetTheseNumberMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> dan <b>Nombor Notifikasi Perkhidmatan</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine."
   },
   "manageUser": {
-    "title": "Manage User",
+    "title": "Urus Pengguna",
     "ManageUserTitle": "Berikan akses kepada pengguna untuk:",
     "fullElectricity": "Lihat bil elektrik penuh",
     "e_billing": "Buat permohonan e-Billing",

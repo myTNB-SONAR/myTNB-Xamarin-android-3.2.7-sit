@@ -74,18 +74,14 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Post("/v6/mytnbappws.asmx/GetLocationsByKeyword")]
         Task<T> LocationsByKeyword<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
-        [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/IsUserAuth")]
-        Task<T> UserAuthenticate<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
-
         //[Headers("Content-Type:application/json; charset=utf-8")]
-        //[Post("/v6/mytnbappws.asmx/IsUserAuthV2")]
+        //[Post("/v6/mytnbappws.asmx/IsUserAuth")]
         //Task<T> UserAuthenticate<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
-        //[Headers("Content-Type:application/json; charset=utf-8")]
-        //[Post("/v6/mytnbappws.asmx/SaveUserNotificationTypePreference")]
-        //Task<T> SaveUserNotificationTypePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
-
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/IsUserAuthV2")]
+        Task<T> UserAuthenticate<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/CancelInvitation_OT")]
         Task<T> CancelInvitation_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //wan //api cancel invited user
@@ -275,6 +271,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/RemoveAccountV3")]
         Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);       //lyana //merge DBR
+
         //[Post("/v6/mytnbappws.asmx/RemoveAccount")]
         //Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 

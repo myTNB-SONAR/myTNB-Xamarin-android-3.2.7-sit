@@ -40,8 +40,6 @@ namespace myTNB_Android.Src.Login.MVP
         public static readonly string TAG = "LoginPresenter";
         private LoginContract.IView mView;
         private ISharedPreferences mSharedPref;
-        //DateTime referenceDate;
-
 
         CancellationTokenSource cts;
 
@@ -123,11 +121,8 @@ namespace myTNB_Android.Src.Login.MVP
                 Log.Debug(TAG, "[DEBUG] FCM TOKEN: " + fcmToken);
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
                 userAuthRequest.SetUserName(usrNme);
-                string dt = JsonConvert.SerializeObject(userAuthRequest);
+                string s = JsonConvert.SerializeObject(userAuthRequest);
                 var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthRequest);
-
-                // string s = JsonConvert.SerializeObject(userAuthRequest);
-                // var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthRequest);
 
                 if (!userResponse.IsSuccessResponse())
                 {
@@ -135,8 +130,6 @@ namespace myTNB_Android.Src.Login.MVP
                     {
                         this.mView.HideProgressDialog();
                         this.mView.ShowInvalidEmailPasswordError(userResponse.Response.DisplayMessage);
-
-                        UserSessions.SaveWhiteList(mSharedPref, false);
                     }
                 }
                 else
@@ -173,13 +166,6 @@ namespace myTNB_Android.Src.Login.MVP
                     {
                         UserSessions.SaveUserEmail(mSharedPref, "");
                     }
-
-
-                    ///<summary>
-                    ///THIS TO SAVE WHITELIST
-                    ///</summary>
-                    UserSessions.SaveWhiteList(mSharedPref, userResponse.GetData().IsWhiteList);
-                   
 
                     // TODO : REMOVE PASSWORD PERSISTANCE INSTEAD FOLLOW IOS WORKFLOW
                     // TODO : IF THERES AN EXISTING FORGET PASSWORD DO NOT SAVE USER
@@ -219,8 +205,6 @@ namespace myTNB_Android.Src.Login.MVP
                         UserEntity.RemoveActive();
                         UserNotificationEntity.RemoveAll();
                         CustomerBillingAccount.RemoveActive();
-                        UserManageAccessAccount.RemoveActive();
-                        LogUserAccessEntity.RemoveAll();
                         SMUsageHistoryEntity.RemoveAll();
                         UsageHistoryEntity.RemoveAll();
                         BillHistoryEntity.RemoveAll();
@@ -304,12 +288,7 @@ namespace myTNB_Android.Src.Login.MVP
                         }
                         if (Id > 0)
                         {
-                            //string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
-                            
                             UserEntity.UpdateDeviceId(deviceId);
-
-                            // GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest();
-                            // CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
                             await LanguageUtil.SaveUpdatedLanguagePreference();
 
                             AppInfoManager.Instance.SetUserInfo("16"

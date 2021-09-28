@@ -685,7 +685,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepFour.Activity
 
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);
-            txtInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
+            txtInputLayoutEmail.Error = Utility.GetLocalizedLabel("RegisterNew", "invalidEmailTryAgain");
             var handleBounceError = txtInputLayoutEmail.FindViewById<TextView>(Resource.Id.textinput_error);
             handleBounceError.SetPadding(top: 4, left: 0, right: 0, bottom: 0);
 

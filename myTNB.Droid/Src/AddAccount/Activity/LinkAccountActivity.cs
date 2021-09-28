@@ -625,7 +625,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     string email = UserEntity.GetActive().Email;
                     string name = UserEntity.GetActive().DisplayName;
                     List<Models.AddAccount> accounts = new List<Models.AddAccount>();
-                    //List<Models.AddAccount> accounts = new List<Models.AddAccount>();
                     //List<Models.AddAccountV2> accounts = new List<Models.AddAccountV2>();
                     foreach (NewAccount item in newList)
                     {

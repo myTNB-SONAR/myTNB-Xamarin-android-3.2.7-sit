@@ -342,18 +342,21 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     //string message = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName);
                     //notificationDetailMessage = Regex.Replace(message, Constants.ACCOUNT_ADDRESS_PATTERN, address);
                     notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName);
-                    if (notificationDetailMessage.Contains(Constants.ACCOUNT_PROFILENAME_PATTERN))
-                    {
-                        notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
-                    }
-                    if (notificationDetailMessage.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
-                    {
-                        notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + accountName + "\"");
-                    }
-
-                    notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
-                        notificationDetailMessage, ctaList);
                 }
+
+                if (notificationDetailMessage.Contains(Constants.ACCOUNT_PROFILENAME_PATTERN))
+                {
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
+                }
+
+                if (notificationDetailMessage.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
+                {
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + accountName + "\"");
+                }
+
+                notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
+                    notificationDetailMessage, ctaList);
+                
             }
             catch (Exception e)
             {

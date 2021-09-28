@@ -402,9 +402,9 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
             ClearInvalidEmailHint();
             textInputLayoutEmailReg.Error = null;
-            if (textInputLayoutEmailReg.Error != Utility.GetLocalizedErrorLabel("invalid_email"))
+            if (textInputLayoutEmailReg.Error != Utility.GetLocalizedLabel("RegisterNew", "invalidEmailTryAgain"))
             {
-                textInputLayoutEmailReg.Error = Utility.GetLocalizedErrorLabel("invalid_email");
+                textInputLayoutEmailReg.Error = Utility.GetLocalizedLabel("RegisterNew", "invalidEmailTryAgain");
             }
             if (!textInputLayoutEmailReg.ErrorEnabled)
                 textInputLayoutEmailReg.ErrorEnabled = true;

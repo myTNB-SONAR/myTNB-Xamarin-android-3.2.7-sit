@@ -157,9 +157,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             //    txtInputLayoutEmail.ErrorEnabled = false;
             //}
 
-            if (txtInputLayoutEmail.Error != Utility.GetLocalizedLabel("Error", "invalid_email"))
+            if (txtInputLayoutEmail.Error != Utility.GetLocalizedLabel("RegisterNew", "invalidEmailTryAgain"))
             {
-                txtInputLayoutEmail.Error = Utility.GetLocalizedLabel("Error", "invalid_email");
+                txtInputLayoutEmail.Error = Utility.GetLocalizedLabel("RegisterNew", "invalidEmailTryAgain");
             }
 
 
@@ -270,15 +270,15 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         }
 
-        public void ShowEmailUpdateSuccess(string message)
+        public void ShowEmailUpdateSuccess(string message, string email)
         {
             try
             {
                 //string Email = "";
                 //UserEntity userEntity = UserEntity.GetActive();
                 //Email = userEntity.Email;
-                string Email = txtEmail.Text;
-                Snackbar updateEmailBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "toast_email_send") + Email, Snackbar.LengthIndefinite)
+                //string Email = txtEmail.Text;
+                Snackbar updateEmailBar = Snackbar.Make(rootView, string.Format(Utility.GetLocalizedLabel("ForgotPassword", "toast_email_send"),email), Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
                              {

@@ -353,7 +353,7 @@ namespace myTNB_Android.Src.Login.Activity
             }
             else
             {
-                string errorText = Utility.GetLocalizedErrorLabel("invalid_email");
+                string errorText = Utility.GetLocalizedLabel("RegisterNew", "invalidEmailTryAgain");
                 if (!errorText.Contains("."))
                 {
                     errorText = errorText + ".";

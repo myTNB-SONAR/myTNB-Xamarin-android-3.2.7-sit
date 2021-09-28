@@ -654,36 +654,12 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowEmailResendSuccess()
         {
-
-           
+            //throw new NotImplementedException();
         }
-
-        public void ShowEmailUpdateSuccess(string message)
+       
+        public void ShowEmailUpdateSuccess(string message, string email)
         {
-            //try
-            //{
-            //    //string Email = "";
-            //    //UserEntity userEntity = UserEntity.GetActive();
-            //    //Email = userEntity.Email;
-            //    string Email = txtEmail.Text;
-            //    Snackbar updateEmailBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "toast_email_send") + Email, Snackbar.LengthIndefinite)
-            //                .SetAction(Utility.GetLocalizedCommonLabel("close"),
-            //                 (view) =>
-            //                 {
-            //                     // EMPTY WILL CLOSE SNACKBAR
-            //                 }
-            //                );
-            //    View v = updateEmailBar.View;
-            //    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            //    tv.SetMaxLines(4);
-            //    updateEmailBar.Show();
-            //    this.SetIsClicked(false);
-            //}
-            //catch (System.Exception e)
-            //{
-            //    this.SetIsClicked(false);
-            //    Utility.LoggingNonFatalError(e);
-            //}
+            //throw new NotImplementedException();
         }
     }
 }

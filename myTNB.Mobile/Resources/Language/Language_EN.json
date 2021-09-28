@@ -31,7 +31,7 @@
     "confirm": "Confirm",
     "ok": "Ok",
     "acctNickname": "Account Nickname",
-    "name": "NAME",
+    "name": "Name",
     "done": "Done",
     "yes": "Yes",
     "no": "No",
@@ -126,7 +126,7 @@
     "eg": "Enter a 10-digit Application Number. eg. "
   },
   "Error": {
-    "invalid_email": "Invalid email address, please try again",
+    "invalid_email": "Invalid email address",
     "invalid_mobileNumber": "Invalid mobile number",
     "minimumMandatoryPayment": "Minimum amount must be at least {0}",
     "minimumPayAmount": "Minimum amount cannot be lower than RM 1.00",
@@ -300,8 +300,7 @@
     "pdpa": "Personal Data Protection Policy",
     "termsofUsePolicy": "https://www.tnb.com.my/terms-policy/",
     "pdpaPolicy": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
-    "tncData": "<p>1.Upon successful registration, you are required to submit your reading for all months except for April, August and December where we will do the reading.</p><p>2.Every month, you will receive a notification from us to submit your reading. Kindly submit the readings within the specified date.</p><p>3.We will validate your readings immediately upon submission. Once validated, you can view your bill via myTNB Portal and myTNB App on the following day.</p><p>4.We will estimate your reading based on average consumption; if the validation is unsuccessful or not submitted within the specified period.</p><p>5.We shall make the necessary adjustments if there are any differences found in the readings submitted.</p><p>6.You may no longer enjoy this service if:</p><p> a)There are no readings submitted for 2 consecutive months.</p><p> b)If you no longer meet the requirements (E.g. Supply disconnected, Close of Account, Change of Tariff and others)</p>",
-    "tncsmrNew": "By subscribing to Self Meter Reading, I understand and agree on the <a href=\"\\\"><strong>Self Meter Reading Terms and Conditions</strong></a>, <a href=\"\\\"><strong>TNB's Terms of Use and Personal Data Protection Policy</strong></a>. I also agree to submit meter reading on a monthly basis except non Self Meter Reading month"
+    "tncData": "<p>1.Upon successful registration, you are required to submit your reading for all months except for April, August and December where we will do the reading.</p><p>2.Every month, you will receive a notification from us to submit your reading. Kindly submit the readings within the specified date.</p><p>3.We will validate your readings immediately upon submission. Once validated, you can view your bill via myTNB Portal and myTNB App on the following day.</p><p>4.We will estimate your reading based on average consumption; if the validation is unsuccessful or not submitted within the specified period.</p><p>5.We shall make the necessary adjustments if there are any differences found in the readings submitted.</p><p>6.You may no longer enjoy this service if:</p><p> a)There are no readings submitted for 2 consecutive months.</p><p> b)If you no longer meet the requirements (E.g. Supply disconnected, Close of Account, Change of Tariff and others)</p>"
   },
 
   "Status": {
@@ -498,7 +497,13 @@
     "disconnectedEnergyBudget": "Uh-oh, looks like your Energy Budget have been unplugged. Refresh to stay plugged in!",
     "refreshNowEnergyBudgetButton": "Refresh Now",
     "youHaveNotSetBudget": "You have not set up your Energy Budget",
-    "youHaveNotSetBudgetSubtitle": "Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!"
+    "youHaveNotSetBudgetSubtitle": "Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!",
+    //add by lop
+    "tutorialUsageTitle": "View and manage your account details here.",
+    "tutorialUsageDesc": "Easily view your account details and manage who has access to your account from here.",
+    "tutorialUsageTitleNonOwner": "View your account details here.",
+    "tutorialUsageDescNonOwner": "Easily view your account details from here.",
+    "skip": "Tap to skip."
   },
   "Bills": {
     "title": "Bills",
@@ -727,7 +732,8 @@
     "GovDialogDetails": "You can still add and view your Government account through <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">myTNB Portal</a>.",
     "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference.",
     "titleOwnerDetailRegion": "Please provide the owner’s email or mobile number for the account above so we can notify them.",
-    "backToHome": "Back to Home"
+    //Add by lop
+    "accountNickNameError": "You must have a nickname for your account. You can use letters, numbers and special characters for the account nickname."
   },
   "Profile": {
     "title": "Profile",
@@ -765,10 +771,7 @@
     "title": "Notification Settings",
     "typeDescription": "Select the type of notifications you wish to receive from TNB",
     "modeDescription": "Select how you wish to receive your notifications",
-    "changeLanguageSuccess": "Your language preference has been changed successfully.",
-    //addby syahmi
-    "selectApplang": "Select your preferred app language:"
-
+    "changeLanguageSuccess": "Your language preference has been changed successfully."
   },
 
   //new added
@@ -832,8 +835,10 @@
     "addAccountMessage": "Add your existing TNB Electricity Supply Account to view usage and transaction details.",
     "popupremoveAccountTitleSwipe": "Remove Account",
     "popupremoveAccountMessageSwipe": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity account. Visit the myTNB Portal or Kedai Tenaga to close your electricity supply account.",
-    "emptyListDetails": "There is no electricity account added. Add an account now and you’ll have access to your usage, bills and manage your account."
-
+    "emptyListDetails": "There is no electricity account added. Add an account now and you’ll have access to your usage, bills and manage your account.",
+    //Add by lop
+    "titleMyElectricityAccounts": "My Electricity Accounts",
+    "addAccount": "Add Account"
   },
   "Prelogin": {
     "welcomeTitle": "Welcome to myTNB",
@@ -861,7 +866,13 @@
   "ForgotPassword": {
     "title": "Reset Password",
     "subTitle": "Please enter your email address.",
-    "details": "A 4 digit verification code will be sent to this email address."
+    "details": "A 4 digit verification code will be sent to this email address.",
+    //add by lop
+    "gotIt": "Got It",
+    "resend": "Resend",
+    "verifyEmailPopupTitle": "Pending Email Verification",
+    "verifyEmailPopupBody": "Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
+    "toast_email_send": "An email verification link has been sent to {0}"
   },
   "EnterCode": {
     "title": "Enter Code",
@@ -920,6 +931,8 @@
     "removeAccount": "Remove This Account",
     "popupremoveAccountTitle": "Remove Account",
     "popupremoveAccountMessage": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity account. Visit the myTNB Portal or Kedai Tenaga to close your electricity supply account.",
+    "dbrManageDeliveryMethod": "Manage Bill Delivery",
+    "dbrViewBillDelivery": "View Bill Delivery",
     //addby wan
     "detailSectionTitle": "myTNB Account",
     "accountSectionTitle": "TNB Electricity Supply Accounts",
@@ -938,9 +951,7 @@
     "manageUserBackTitle": "Are you sure want to leave without saving changes you made to {0}'s access?",
     "manageUserBackMessage": "The changes to {0}'success will not be saved if you choose to leave this page and their accesses will remain as before.",
     "manageUserAccess": "Manage User Access",
-    "manageAutopay": "Manage Autopay",
-    "dbrManageDeliveryMethod": "Manage Bill Delivery",
-    "dbrViewBillDelivery": "View Bill Delivery"
+    "manageAutopay": "Manage Autopay"
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
@@ -966,7 +977,6 @@
     "description8": "You can now track all your application status with zero hassle, anytime and anywhere.",
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
     "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot.",
-
     //addby irul
     "title11": "Enhanced access controls to safeguard your information.",
     "description11": "Stay in control of your account information and permissions by defining what you let others access as an owner of an electricity account."
@@ -1315,7 +1325,6 @@
     "icHintStep1": "Example: IC, Passport, Army / Police ID",
     "idTitle": "Enter New Identification Number",
     "idHint": "Example: IC, Passport, Army / Police ID"
-
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
@@ -1358,8 +1367,8 @@
     "gotIt": "Got It",
     "resend": "Resend",
     "verifyEmailPopupBody": "Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
-    "verifyEmailPopupTitle": "Pending Email Verification ",
-    "toast_email_send": "An email verification link has been sent to ",
+    "verifyEmailPopupTitle": "Pending Email Verification",
+    "toast_email_send": "An email verification link has been sent to {0}",
     "toast_SuccessUpdateName": "You’ve successfully updated your name!"
   },
   "ApplicationStatusLanding": {
@@ -1470,7 +1479,7 @@
     "AddTitle": "Add",
     "RemoveTitle": "Remove",
     "HeaderRemoveTitle": "Select users you want to remove:",
-    "cancleBtn": "Cancle",
+    "cancleBtn": "Cancel",
     "deleteSuccessMessage": "User(s) has been removed successfully.",
     "deleteUserTitle": "Are you sure you want to remove the current user(s)?",
     "deleteUserBody": "Once removed, the selected user(s) will be revoked of all access and unable to view any information related to this account.",
@@ -1520,7 +1529,8 @@
     "EmailBodyError": "Please try again with a different email address. Alternatively, you may also reset your password below to use the same email address.",
     "Reset": "Reset",
     "emailRequired": "Please enter an email address.",
-    "passwordRequired": "Please enter a password."
+    "passwordRequired": "Please enter a password.",
+    "invalidEmailTryAgain": "Invalid email address, please try again"
   },
   "ApplicationStatusPaymentDetails_selector": {
     "chargesMapping": [
@@ -1548,7 +1558,7 @@
   },
   "OneLastThing": {
     "title": "Register",
-    "dtitleRegister": "One last Thing",
+    "dtitleRegister": "One Last Thing",
     "dbodyRegister": "Please provide us your personal details so that we can get to know you better.",
     "idtypeTitle": "Identification Type",
     "idNumberhint": "Identification Number",
@@ -1557,12 +1567,15 @@
     "armyid": "Army / Police ID",
     "passport": "Passport",
     "mykadhint": "Please enter a valid 12 digits IC / Mykad number.",
-    "armyidhint": "The Army ID must be between 5-50 characters.",
-    "passporthint": "The Passport must be between 5-50 characters.",
+    "armyidhint": "The Army ID number must be between 5-50 characters.",
+    "passporthint": "The Passport number must be between 5-50 characters.",
     "IdHeaderError": "This identification number has been used for an existing account.",
     "IdBodyError": "Please ensure that you’ve entered the correct identification number, or contact <b><a href=\"tel: 1300885454\">TNB Careline</a></b> to enquire further about this matter.",
     "ctaTitleNew": "Create My Account",
-    "tnc_checked": "I have read and agreed to the <a href=\"\\\"><strong>TNB Terms and Conditions</strong></a>"
+    "tnc_checked": "I have read and agreed to the <a href=\"\\\"><strong>TNB Terms and Conditions</strong></a>",
+    //add by lop
+    "tnc": "By registering, I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>.",
+    "idtypeSelectTitle": "Select Identification Type"
   },
   "ApplicationStatusDetails_selector": {
     "applicationTypeMapping": [
@@ -2129,8 +2142,8 @@
     "passport": "Passport",
     "icHint": "We'll use this identification to help you set up your account.",
     "icError": "Please enter a valid 12 digits IC / Mykad number.",
-    "armyError": "The Army ID must be between 5-50 characters.",
-    "passportError": "The Passport must be between 5-50 characters.",
+    "armyError": "The Army ID number must be between 5-50 characters.",
+    "passportError": "The Passport number must be between 5-50 characters.",
     "updateIdTitle": "Confirm your identification Number:",
     "confrimButton": "Confirm",
     "re_enter": "Re-enter",

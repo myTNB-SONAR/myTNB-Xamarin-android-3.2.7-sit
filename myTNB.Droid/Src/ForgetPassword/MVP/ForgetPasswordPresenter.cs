@@ -120,7 +120,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 if (emailVerificationResponse.IsSuccessResponse())
                 {
                     string message = emailVerificationResponse.Response.Message;
-                    this.mView.ShowEmailUpdateSuccess(message);
+                    this.mView.ShowEmailUpdateSuccess(message, email);
                 }
                 else
                 {

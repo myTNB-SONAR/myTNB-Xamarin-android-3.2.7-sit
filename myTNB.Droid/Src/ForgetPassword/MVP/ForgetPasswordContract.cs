@@ -29,7 +29,7 @@ namespace myTNB_Android.Src.ForgetPassword.MVP
             /// <summary>
             /// Shows a snackbar after success resend email verification
             /// </summary>
-            void ShowEmailUpdateSuccess(string message);
+            void ShowEmailUpdateSuccess(string message, string email);
 
             /// <summary>
             /// Shows error message
