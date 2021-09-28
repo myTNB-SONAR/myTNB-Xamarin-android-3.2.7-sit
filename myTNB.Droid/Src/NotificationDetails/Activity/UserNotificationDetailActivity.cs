@@ -540,11 +540,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
             try
             {
-                if (MyTNBAccountManagement.GetInstance().IsFromViewTipsPage())
+                if (MyTNBAccountManagement.GetInstance().IsFromViewTipsPage() && notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80)
                 {
                     MyTNBAccountManagement.GetInstance().SetIsFromViewTips(false);
                     mPresenter.OnCheckFeedbackCount();
                 }
+                else
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsFromViewTips(false);
+                }    
 
                 if (MyTNBAccountManagement.GetInstance().IsFinishFeedback())
                 {
