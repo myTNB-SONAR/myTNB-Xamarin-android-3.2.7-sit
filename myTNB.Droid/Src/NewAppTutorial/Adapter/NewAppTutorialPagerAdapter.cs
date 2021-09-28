@@ -1540,7 +1540,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
-                        else if (DBRUtility.Instance.IsAccountDBREligible && position == 3)
+                        else if (((ItemisedBillingMenuFragment)this.mFragment).IsCADBREligible() && position == 3)
                         {
                             int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(95f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight() - (int)DPUtils.ConvertDPToPx(5f);
@@ -1624,6 +1624,43 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                            innerTopLayout.RequestLayout();
+                        }
+                        else if (((ItemisedBillingMenuFragment)this.mFragment)._isBillStatement && position == 4)
+                        {
+                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight() + (int)DPUtils.ConvertDPToPx(95f);
+                            int middleHeight = (int)DPUtils.ConvertDPToPx(35f);
+                            int middleWidth = (int)DPUtils.ConvertDPToPx(35f);
+                            float h2 = 35f;
+                            int rightWidth = (int)DPUtils.ConvertDPToPx(h2);
+                            
+
+                            int leftWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - rightWidth - middleWidth;// (int)DPUtils.ConvertDPToPx(h1);
+                           
+
+                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            topLayoutParam.Height = topHeight;
+                            topLayout.RequestLayout();
+                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            middleLayoutParam.Height = middleHeight;
+                            middleLayout.RequestLayout();
+                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            highlightedLeftLayoutParam.Width = leftWidth;
+                            highlightedLeftLayout.RequestLayout();
+                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            highlightedLayoutParam.Width = middleWidth;
+                            highlightedLayout.RequestLayout();
+                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            highlightedRightLayoutParam.Width = rightWidth;
+                            highlightedRightLayout.RequestLayout();
+                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                            bottomLayout.RequestLayout();
+
+                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(97f);
+                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0f);
+                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(46f);
                             innerTopLayout.RequestLayout();
                         }
                         else

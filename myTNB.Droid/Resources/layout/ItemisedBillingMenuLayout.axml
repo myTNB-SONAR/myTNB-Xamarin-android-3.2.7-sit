@@ -269,6 +269,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginRight="12dp"
+						android:visibility="gone"
 						android:src="@drawable/download_bill_statement"/>
 					<ImageView
 						android:id="@+id/bill_filter_icon"

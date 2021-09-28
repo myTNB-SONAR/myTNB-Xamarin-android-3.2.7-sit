@@ -86,7 +86,7 @@
 						<TextView
 							android:id="@+id/txtThreeMonths"
 							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
+							android:layout_height="24dp"
 							android:layout_marginLeft="16dp"
 							android:layout_marginRight="16dp"
 							android:text="Past 3 months"
@@ -121,7 +121,7 @@
 						<TextView
 							android:id="@+id/txtSixMonth"
 							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
+							android:layout_height="24dp"
 							android:layout_marginLeft="16dp"
 							android:layout_marginRight="16dp"
 							android:text="Past 6 months"

@@ -173,6 +173,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         List<AccountBillPayHistoryModel> selectedBillingHistoryModelList;
         List<AccountBillPayFilter> billPayFilterList;
         internal bool _isOwner { get; set; }
+        public bool _isBillStatement { get; set; }
+        
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
 
@@ -327,6 +329,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             try
             {
+                download_bill_icon.Visibility = ViewStates.Gone;
                 ((DashboardHomeActivity)Activity).OnSelectAccount();
             }
             catch (System.Exception e)
@@ -675,6 +678,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             return chargeAvailableNoCTAContainer.Height;
         }
+        public bool IsCADBREligible()
+        {
+            return DBRUtility.Instance.IsCADBREligible(mSelectedAccountData.AccountNum);
+        }
+       
 
         private void SetDynatraceScreenTags()
         {
@@ -998,7 +1006,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             });
             itemFilterList[0].selected = true;
         }
+        private void SetShowAccountStatementIcon()
+        {
+            if(EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR,EligibilitySessionCache.FeatureProperty.Enabled)
+                && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR,EligibilitySessionCache.FeatureProperty.TargetGroup))
+            {
+                _isBillStatement = BillRedesignUtility.Instance.IsCAEligible(mSelectedAccountData.AccountNum);
+            }
+            else
+            {
+                _isBillStatement = mSelectedAccountData.IsOwner && mSelectedAccountData.SmartMeterCode != "0";
+            }
 
+            download_bill_icon.Visibility = _isBillStatement ? ViewStates.Visible : ViewStates.Gone;
+        }
         public void PopulateBillingHistoryList(List<AccountBillPayHistoryModel> billingHistoryModelList, List<AccountBillPayFilter> billPayFilters)
         {
             itemisedBillingListShimmer.Visibility = ViewStates.Gone;
@@ -1014,8 +1035,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 selectedBillingHistoryModelList = billingHistoryModelList;
                 emptyItemisedBillingList.Visibility = ViewStates.Gone;
                 itemisedBillingList.Visibility = ViewStates.Visible;
+                SetShowAccountStatementIcon();
                 billFilterIcon.Visibility = ViewStates.Visible;
-                download_bill_icon.Visibility = ViewStates.Visible;
                 billFilterIcon.Enabled = true;
                 EnableActionButtons(true);
                 RenderBillingHistoryList(null);
@@ -1464,7 +1485,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         Utility.LoggingNonFatalError(e);
                     }
                 });
-                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(_isOwner));
+                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(_isOwner, IsCADBREligible(), _isBillStatement));
 
             }
             catch (System.Exception ex)
