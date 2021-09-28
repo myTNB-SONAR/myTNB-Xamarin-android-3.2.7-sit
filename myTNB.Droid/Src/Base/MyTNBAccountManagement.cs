@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.Base
         private bool IsNotificationMaintenance = false;
         private bool IsNotificationComplete = false;
         private static MasterDataResponse currentMasterDataRes = null;
-        private static AppLaunchMasterDataResponse appMasterDataResponse = null;
+        private static AppLaunchMasterDataResponseAWS appMasterDataResponse = null;
         private List<string> UpdatedAccountNumberList = new List<string>();
         private int appLaunchMasterDataTimeout;
         private bool IsUpdatedMobileNumber = false;
@@ -282,12 +282,12 @@ namespace myTNB_Android.Src.Base
             return currentMasterDataRes;
         }
 
-        public void SetMasterDataResponse(AppLaunchMasterDataResponse data)
+        public void SetMasterDataResponse(AppLaunchMasterDataResponseAWS data)
         {
             appMasterDataResponse = data;
         }
 
-        public AppLaunchMasterDataResponse GetMasterDataResponse()
+        public AppLaunchMasterDataResponseAWS GetMasterDataResponse()
         {
             return appMasterDataResponse;
         }
@@ -448,10 +448,9 @@ namespace myTNB_Android.Src.Base
         {
             try
             {
-                Task<AppLaunchMasterDataResponse> appLaunchMasterDataTask = Task.Run(async () => await ServiceApiImpl.Instance.GetAppLaunchMasterData
-                    (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout)));
+                Task<AppLaunchMasterDataResponseAWS> appLaunchMasterDataTask = Task.Run(async () => await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest()));
                 //appLaunchMasterDataTask.Wait();
-                AppLaunchMasterDataResponse masterDataResponse = appLaunchMasterDataTask.Result;
+                AppLaunchMasterDataResponseAWS masterDataResponse = appLaunchMasterDataTask.Result;
                 if (masterDataResponse != null && masterDataResponse.Response != null && masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     SetMasterDataResponse(masterDataResponse);

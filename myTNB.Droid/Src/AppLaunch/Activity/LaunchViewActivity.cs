@@ -81,7 +81,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private bool isAppLaunchLoadSuccessful = false;
         private bool isAppLaunchDone = false;
 
-        private AppLaunchMasterDataResponse cacheResponseData = null;
+        private AppLaunchMasterDataResponseAWS cacheResponseData = null;
 
         private string urlSchemaData = "";
         private string urlSchemaPath = "";
@@ -1009,7 +1009,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
-        public void ShowMaintenance(AppLaunchMasterDataResponse masterDataResponse)
+        public void ShowMaintenance(AppLaunchMasterDataResponseAWS masterDataResponse)
         {
             try
             {

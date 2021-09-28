@@ -27,6 +27,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             apiAws = RestService.For<IServiceV6>(httpClientAws);
 #else
             api = RestService.For<IServiceV6>(Constants.SERVER_URL.END_POINT);
+            apiAws = RestService.For<IServiceV6>(Constants.SERVER_URL.END_POINT_AWS);
 #endif
         }
 
@@ -50,6 +51,18 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<AppLaunchMasterDataResponse> GetAppLaunchMasterData([Body] Request.BaseRequest request, CancellationToken token)
         {
             return api.GetAppLaunchMasterData<AppLaunchMasterDataResponse>(request, token);
+        }
+
+        /// <summary>
+        /// Call GetAppLaunchMasterDataAWS with timeout set.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public Task<AppLaunchMasterDataResponseAWS> GetAppLaunchMasterDataAWS([Body] Request.BaseRequest request)
+        {
+            Console.WriteLine("APIWAS call :" + apiAws.GetAppLaunchMasterDataAWS<AppLaunchMasterDataResponseAWS>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
+            return apiAws.GetAppLaunchMasterDataAWS<AppLaunchMasterDataResponseAWS>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>

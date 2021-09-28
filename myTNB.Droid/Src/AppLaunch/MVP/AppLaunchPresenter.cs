@@ -29,7 +29,7 @@ using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
-using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponse;
+using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponseAWS;
 using myTNB;
 using System.Net.Http;
 using DynatraceAndroid;
@@ -162,9 +162,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
 
-                 AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
-                      (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));
-                if (masterDataResponse != null && masterDataResponse.Response != null)
+                AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest());
+
+                /*AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
+                      (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));*/
+                if (masterDataResponse != null && masterDataResponse.Response.ErrorCode != null)
                 {
                     if (masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                     {
@@ -173,7 +175,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         bool proceed = true;
 
                         bool appUpdateAvailable = false;
-                        AppLaunchMasterDataModel responseData = masterDataResponse.GetData();
+                        AppLaunchMasterDataModel responseData = masterDataResponse.Response.Data;
 
                         UserSessions.SaveFeedbackUpdateDetailDisabled(mSharedPref, responseData.IsFeedbackUpdateDetailDisabled.ToString());  //save sharedpref cater prelogin & after login
 

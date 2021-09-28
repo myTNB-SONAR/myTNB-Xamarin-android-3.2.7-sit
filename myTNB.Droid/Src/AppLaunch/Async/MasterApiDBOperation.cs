@@ -13,10 +13,10 @@ namespace myTNB_Android.Src.AppLaunch.Async
     public class MasterApiDBOperation : AsyncTask
     {
 
-        private AppLaunchMasterDataResponse masterDataResponse = null;
+        private AppLaunchMasterDataResponseAWS masterDataResponse = null;
         private ISharedPreferences preferences = null;
 
-        public MasterApiDBOperation(AppLaunchMasterDataResponse masterDataResponse, ISharedPreferences preferences)
+        public MasterApiDBOperation(AppLaunchMasterDataResponseAWS masterDataResponse, ISharedPreferences preferences)
         {
             this.preferences = preferences;
             this.masterDataResponse = masterDataResponse;
