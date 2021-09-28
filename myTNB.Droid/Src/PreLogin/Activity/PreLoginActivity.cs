@@ -203,7 +203,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
                 AppLaunchMasterDataResponseAWS masterDataResponse = MyTNBAccountManagement.GetInstance().GetMasterDataResponse();
                 if (masterDataResponse != null
-                    && masterDataResponse.GetData().ServicesPreLogin is List<MyService> services
+                    && masterDataResponse.Data.ServicesPreLogin is List<MyService> services
                     && services != null
                     && services.Count > 0)
                 {

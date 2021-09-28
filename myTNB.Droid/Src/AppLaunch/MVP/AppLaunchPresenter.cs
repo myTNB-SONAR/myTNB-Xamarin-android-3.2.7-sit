@@ -163,19 +163,18 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
 
                 AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest());
-
                 /*AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
                       (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));*/
-                if (masterDataResponse != null && masterDataResponse.Response.ErrorCode != null)
+                if (masterDataResponse != null && masterDataResponse.ErrorCode != null)
                 {
-                    if (masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                    if (masterDataResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                     {
                         new MasterApiDBOperation(masterDataResponse, mSharedPref).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 
                         bool proceed = true;
 
                         bool appUpdateAvailable = false;
-                        AppLaunchMasterDataModel responseData = masterDataResponse.Response.Data;
+                        AppLaunchMasterDataModel responseData = masterDataResponse.Data;
 
                         UserSessions.SaveFeedbackUpdateDetailDisabled(mSharedPref, responseData.IsFeedbackUpdateDetailDisabled.ToString());  //save sharedpref cater prelogin & after login
 
@@ -396,9 +395,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             EvaluateServiceRetry();
                         }
                     }
-                    else if (masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_MAINTENANCE)
+                    else if (masterDataResponse.ErrorCode == Constants.SERVICE_CODE_MAINTENANCE)
                     {
-                        if (masterDataResponse.Response.DisplayMessage != null && masterDataResponse.Response.DisplayTitle != null)
+                        if (masterDataResponse.DisplayMessage != null && masterDataResponse.DisplayTitle != null)
                         {
                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Maintenance);
                             this.mView.ShowMaintenance(masterDataResponse);
