@@ -227,7 +227,6 @@ namespace myTNB_Android.Src.Billing.MVP
 
             billingDetailsPresenter = new BillingDetailsPresenter(this);
             myBillDetailsLabel.Text = GetLabelByLanguage("billDetails");
-            accountBillThisMonthLabel.Text = GetLabelByLanguage("billThisMonth");
             accountMinChargeLabel.Text = GetLabelByLanguage("minimumChargeDescription");
             btnViewBill.Text = GetLabelCommonByLanguage("viewBill");
             btnPayBill.Text = GetLabelByLanguage("pay");
@@ -298,6 +297,10 @@ namespace myTNB_Android.Src.Billing.MVP
 
             accountName.Text = selectedAccountData.AccountNickName;
             accountAddress.Text = selectedAccountData.AddStreet;
+            var billThisMonthString = BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum) ? GetLabelByLanguage(LanguageConstants.BillDetails.BILL_THIS_MONTH_V2)
+                : GetLabelByLanguage(LanguageConstants.BillDetails.BILL_THIS_MONTH);
+            accountBillThisMonthLabel.Text = billThisMonthString;
+
             if (selectedAccountChargeModel != null && !isCheckPendingPaymentNeeded)
             {
                 topLayout.Visibility = ViewStates.Visible;
@@ -574,7 +577,9 @@ namespace myTNB_Android.Src.Billing.MVP
             }
             else
             {
-                accountChargeLabel.Text = GetLabelByLanguage("outstandingCharges");// "My outstanding charges";
+                var accountChargeString = BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum) ? GetLabelByLanguage(LanguageConstants.BillDetails.OUTSTANDING_CHARGES_V2)
+                    : GetLabelByLanguage(LanguageConstants.BillDetails.OUTSTANDING_CHARGES);
+                accountChargeLabel.Text = accountChargeString;// "My outstanding charges";
                 accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
 
