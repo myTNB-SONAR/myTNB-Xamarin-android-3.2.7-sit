@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -48,7 +47,6 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
         [BindView(Resource.Id.btnViewSubmitted)]
         Button btnViewSubmitted;
 
-
         string SerialNumber;
         string ClaimId;
         public bool AppointmentFlag = false;
@@ -62,47 +60,29 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
             return Resource.Layout.OverVoltageClaimSuccessPage;
         }
 
-
         public override void OnBackPressed()
         {
             try
             {
-
                 if (AppointmentFlag == true | EnuiryFlag == true | AgreeFlag == true | DisAgreeFlag == true)
                 {
                     base.OnBackPressed();
-                }
-                //else if (EnuiryFlag == true)
-                //{
-                //    base.OnBackPressed();
-                //}
-                //else if (AgreeFlag == true)
-                //{
-                //    base.OnBackPressed();
-                //}
-                //else if (DisAgreeFlag == true)
-                //{
-                //    base.OnBackPressed();
-                //}
+                }                
                 else
                 {
-                    Intent intent = new Intent(this, typeof(DashboardHomeActivity));
-                    // generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());           
+                    Intent intent = new Intent(this, typeof(DashboardHomeActivity));                          
                     intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                     StartActivity(intent);
-                }
-              
+                }              
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Utility.LoggingNonFatalError(e);
             }        
-
         }
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
             try
             {
                 AppointmentFlag = Convert.ToBoolean(Intent.GetStringExtra("AppointmentFlag"));
@@ -135,20 +115,16 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
                     txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
                     buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
                     btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");                  
-                }
-                // string SerialNumber =  Intent.GetStringExtra("SerialNumber");
-                
+                }              
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Utility.LoggingNonFatalError(e);
             }
-
         }
 
         private void SetDataForNegotationScreen()
         {
-
             SerialNumber = Intent.GetStringExtra("Sernumbr");
             txtFeedbackIdContent.Text = SerialNumber;
             txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourDisagree"); //"Your negotiation request has been submitted";
@@ -189,21 +165,13 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
             txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
             buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "setAppointmentTitle");
             btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
-        }
-
-        private void SetUI()
-        {
-            //buttonBackToHome.Click += ButtonBackToHome_Click;
-        }
-
-      
-
+        }       
+        
         [OnClick(Resource.Id.buttonBackToHome)]
         void OnToHome(object sender, EventArgs eventArgs)
         {
             if (AppointmentFlag)
             {
-
                 Intent intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
                 intent.PutExtra("setAppointmentFlag", "True");
                 intent.PutExtra("ClaimId", ClaimId);
@@ -233,20 +201,10 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
             {
                 OverVoltageFeedbackDetailActivity.proccedToPaymentFlag=true;
                 base.OnBackPressed();
-
-            }
-            //else if (AppointmentFlag == true  | AppointmentFlag == true)
-            //{
-            //    Intent intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
-            //    intent.PutExtra("setAppointmentFlag", "True");
-            //    intent.PutExtra("ClaimId", ClaimId);
-            //    intent.SetFlags(ActivityFlags.ClearTop);
-            //    StartActivity(intent);
-            //}
+            }           
             else if(comeFromsubmitClaimPage)
             {
-                GetClaimID();
-                //comeFromsubmitClaimPage = false;
+                GetClaimID();             
             }
             else if(AppointmentFlag)
             {
@@ -268,12 +226,11 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
                     othersIntent.PutExtra("ClaimId", ClaimId);
                     StartActivity(othersIntent);
                     comeFromsubmitClaimPage = false;
-                }
-                
+                }                
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Utility.LoggingNonFatalError(e);
             }
         }
     }
