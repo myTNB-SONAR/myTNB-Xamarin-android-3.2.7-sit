@@ -172,6 +172,7 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
 
         public override void OnBackPressed()
         {
+            SetResult(Result.Canceled);
             Finish();
         }
 

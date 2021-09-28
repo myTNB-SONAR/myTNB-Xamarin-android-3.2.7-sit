@@ -6080,7 +6080,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\AppointmentTimeSelectorBackground.xml" />
-    <Compile Include="Src\Utils\LinkRedirectionUtils.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailContract.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailPresenter.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\Img_application_Active_Payment.png">
@@ -7783,6 +7782,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Utils\LinkRedirection\LinkRedirection.cs" />
+    <Compile Include="Src\Utils\LinkRedirection\LinkRedirectionUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -8101,6 +8102,7 @@
     <Folder Include="Src\Bills\NewBillRedesign\Model\" />
     <Folder Include="Src\Bills\NewBillRedesign\Fragment\" />
     <Folder Include="Src\Utils\Deeplink\" />
+    <Folder Include="Src\Utils\LinkRedirection\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
