@@ -154,7 +154,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 urlUtility.AddQueryParams("os", OsVersion);
                 urlUtility.AddQueryParams("Manufacturer", Manufacturer);
                 urlUtility.AddQueryParams("model", DeviceModel);
-                urlUtility.AddQueryParams("session_id", LaunchViewActivity.UUID);
+                urlUtility.AddQueryParams("session_id", LaunchViewActivity.DynatraceSessionUUID);
                 urlUtility.AddQueryParams("lang", usin.lang);
                 urlUtility.AddQueryParams("IDCN", user.IdentificationNo);
                 urlUtility.AddQueryParams("userID", user.UserID);
@@ -162,17 +162,6 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 urlUtility.AddQueryParams("sec_auth_k1", usin.sec_auth_k1);
                 urlUtility.AddQueryParams("mobileNo", user.MobileNo);
 
-<<<<<<< HEAD
-=======
-                string domain = "https://mytnbwvovis.ap.ngrok.io/"; // WebView Live
-                //string domain = "http://192.168.1.157:3000/"; // WebView Local
-
-
-                domain += "claimPage/" + ClaimId + "?eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.DynatraceSessionUUID;
-
-                String queryParams = null;
-                                
->>>>>>> origin/feature/android/ACME-II/OVIS-main
                 if (proccedToPaymentFlag)
                 {                   
                     urlUtility.AddQueryParams("paymentInfo", "true");                   

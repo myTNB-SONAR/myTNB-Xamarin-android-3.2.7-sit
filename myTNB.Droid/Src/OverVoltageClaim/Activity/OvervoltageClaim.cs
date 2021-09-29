@@ -156,7 +156,6 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
 
                 string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
-<<<<<<< HEAD
                 //string domain = "http://192.168.1.157:3000/"; // WebView Local
 
                 UrlUtility urlUtility = new UrlUtility();
@@ -166,7 +165,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 urlUtility.AddQueryParams("os", OsVersion);
                 urlUtility.AddQueryParams("Manufacturer", Manufacturer);
                 urlUtility.AddQueryParams("model", DeviceModel);
-                urlUtility.AddQueryParams("session_id", LaunchViewActivity.UUID);
+                urlUtility.AddQueryParams("session_id", LaunchViewActivity.DynatraceSessionUUID);
                 urlUtility.AddQueryParams("lang", usin.lang);
                 urlUtility.AddQueryParams("IDCN", user.IdentificationNo);
                 urlUtility.AddQueryParams("userID", user.UserID);
@@ -175,17 +174,6 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 urlUtility.AddQueryParams("mobileNo", user.MobileNo);
 
                 string url = urlUtility.EncodeURL(domain);
-                //string url = domain;                                                
-                //url += $"?CA={accNo}&eid={usin.eid}&appVersion={AppVersion}&os={OsVersion}&Manufacturer={Manufacturer}&model={DeviceModel}&session_id={LaunchViewActivity.UUID}&IDCN={user.UserID}&name={user.DisplayName}&lang={usin.lang}&sec_auth_k1={usin.sec_auth_k1}&mobileNo={user.MobileNo}";
-                //url = Uri.EscapeUriString(url);               
-=======
-                // string domain = "http://192.168.1.157:3000/"; // WebView Local
-
-                string url = domain;
-
-                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.DynatraceSessionUUID;
-
->>>>>>> origin/feature/android/ACME-II/OVIS-main
                 if (TextViewUtils.IsLargeFonts)
                 {
                     url += "&large";
