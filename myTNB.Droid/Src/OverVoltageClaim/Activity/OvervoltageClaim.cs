@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +19,7 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Helper;
 using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.OverVoltageClaim.Model;
 using myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -85,15 +86,14 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 //Enabled Javascript in Websettings  
 
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Utility.LoggingNonFatalError(e);
             } 
         }
 
         public override void OnBackPressed()
-        {
-            //bool SetOnBack = false;
+        {           
             if(!IsINZeroStepTab)
             {
                 webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBack').trigger('click'); },500); })();", null);
@@ -118,8 +118,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
               .Build();
               leaveDialog.Show();
               
-            }
-           // ;
+            }          
         }
 
         public async void SetUI()
@@ -185,19 +184,24 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
 
                 webView.LoadUrl(url); 
                 await Task.Delay(0);               
+<<<<<<< HEAD
                 //HideProgressDialog();
+=======
+>>>>>>> origin/feature/android/ACME-II/OVIS-main
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Utility.LoggingNonFatalError(e);
             }
         }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
         public void ShowProgressDialog()
         {
             try
@@ -209,6 +213,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         public void HideProgressDialog()
         {
             try
@@ -220,6 +225,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         internal async Task ResponseFromWebviewAsync(string message)
             {
             try
@@ -232,10 +238,6 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                     //txtstep1of2.Text = "Step 1 of 2";
                     txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
 
-
-                    //Intent OverVoltagClaim = new Intent(this, typeof(OverVoltageClaimSuccessPageActivity));
-                    //OverVoltagClaim.PutExtra("SerialNumber", "ABC");
-                    //StartActivity(OverVoltagClaim);
                 }
                 else if (data.currentScreen == "step1-screen" && data.nextScreen == "step0-screen")
                 {
@@ -395,6 +397,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             this.webview = webview;
            
         }
+
         public override bool OnJsAlert(WebView view, string url, string message, JsResult result)
             {
             //return base.OnJsAlert(view, url, message, result);
@@ -404,6 +407,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             return true;
 
         }
+
         public override void OnProgressChanged(WebView view, int newProgress)
         {
             base.OnProgressChanged(view, newProgress);
@@ -412,17 +416,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             {
                 this.overVoltageClaim.HideProgressDialog();               
             
-            }
-           
+            }           
         }
-
-
-    }
-
-    public class DTOWebView
-    {
-        public string currentScreen { get; set; }
-        public string nextScreen { get; set; }
-        public string serviceNumber { get; set; }
-    }
+    }   
 }
