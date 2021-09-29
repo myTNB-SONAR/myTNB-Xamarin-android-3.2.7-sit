@@ -42,8 +42,13 @@
     </AndroidSupportedAbis>
     <MandroidI18n />
     <LangVersion>8.0</LangVersion>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <BundleAssemblies>false</BundleAssemblies>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
     <DebugSymbols>true</DebugSymbols>
     <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
@@ -74,6 +79,10 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <MandroidI18n>West</MandroidI18n>
     <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <BundleAssemblies>false</BundleAssemblies>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
     <AndroidUseAapt2>true</AndroidUseAapt2>
   </PropertyGroup>
@@ -6071,7 +6080,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\AppointmentTimeSelectorBackground.xml" />
-    <Compile Include="Src\Utils\LinkRedirectionUtils.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailContract.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailPresenter.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\Img_application_Active_Payment.png">
@@ -7488,9 +7496,66 @@
     </AndroidResource>
     <Compile Include="Src\BillStatement\MVP\BillStatementActivity.cs" />
     <Compile Include="Src\Device Cache\DeviceSizeCache.cs" />
+    <Compile Include="Src\Bills\NewBillRedesign\Activity\NBRDiscoverMoreActivity.cs" />
+    <Compile Include="Src\Bills\NewBillRedesign\MVP\NBRDiscoverMoreContract.cs" />
+    <Compile Include="Src\Bills\NewBillRedesign\MVP\NBRDiscoverMorePresenter.cs" />
+    <Compile Include="Src\Bills\NewBillRedesign\Model\NBRDiscoverMoreModel.cs" />
+    <Compile Include="Src\Bills\NewBillRedesign\Fragment\NBRDiscoverMoreListItemComponent.cs" />
+    <AndroidResource Include="Resources\layout\NBRDiscoverMoreView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\NBRDiscoverMoreListItemView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SitecoreCMS\Model\NewBillDesignModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\NewBillDesignService.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_Home_NBR_EN.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_Home_NBR_MS.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_Home_NBR_MS.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_Home_NBR_EN.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_Home_NBR_EN.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_Home_NBR_MS.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_Home_NBR_MS.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_Home_NBR_EN.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_Home_NBR_EN.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_Home_NBR_MS.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <Compile Include="Src\Utils\Deeplink\DeeplinkUtil.cs" />
     <Compile Include="Src\Utils\Deeplink\Deeplink.cs" />
     <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivityExtension.cs" />
+    <Compile Include="Src\Utils\LanguageConstants.cs" />
+    <Compile Include="Src\myTNBMenu\MVP\DashboardHomePresenterExtension.cs" />
     <AndroidResource Include="Resources\menu\ViewBillStatementMenu.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\icons_ic_header_share.png">
       <SubType></SubType>
@@ -7512,38 +7577,213 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\icons_display_bill_related.png">
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_New_Bill_1.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\icons_display_bill_related.png">
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_New_Bill_2.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\icons_display_bill_related.png">
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_New_Bill_1.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\icons_display_bill_related.png">
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_New_Bill_2.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\icons_display_bill_related.png">
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_New_Bill_1.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\FeedbackAboutBillEnquiryStepOneActivityView.axml">
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_New_Bill_2.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\Activity\FeedbackAboutBillEnquiryStepOneActivity.cs" />
-    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\Adapter\FeedbackAboutBillEnquiryStepOneImageRecyclerAdapter.cs" />
-    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\MVP\FeedbackAboutBillEnquiryStepOneContract.cs" />
-    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\MVP\FeedbackAboutBillEnquiryStepOnePresenter.cs" />
-    <Compile Include="Src\FeedbackAboutBillEnquiryStepTwo\Activity\FeedbackGeneralEnquiryStepTwoActivity.cs" />
-    <Compile Include="Src\FeedbackAboutBillEnquiryStepTwo\Model\FeedbackUpdateDetailsModel.cs" />
-    <Compile Include="Src\FeedbackAboutBillEnquiryStepTwo\MVP\FeedbackGeneralEnquiryStepTwoContract.cs" />
-    <Compile Include="Src\FeedbackAboutBillEnquiryStepTwo\MVP\FeedbackGeneralEnquiryStepTwoPresenter.cs" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_New_Bill_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_New_Bill_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_New_Bill_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_New_Bill_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_NBR_Placeholder_0.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_NBR_Placeholder_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_NBR_Placeholder_0.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_NBR_Placeholder_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_NBR_Placeholder_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_NBR_Placeholder_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_NBR_Placeholder_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_NBR_Placeholder_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_NBR_Placeholder_0.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_NBR_Placeholder_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_NBR_Placeholder_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_NBR_Placeholder_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_NBR_Placeholder_0.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_NBR_Placeholder_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_NBR_Placeholder_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_NBR_Placeholder_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_NBR_Placeholder_0.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_NBR_Placeholder_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_NBR_Placeholder_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_NBR_Placeholder_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Bills\NewBillRedesign\Activity\NBRDiscoverMoreBannerFullViewActivity.cs" />
+    <AndroidResource Include="Resources\layout\NBRDiscoverMoreBannerFullView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_Bill_Redesign_Tooltip_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_Bill_Redesign_Tooltip_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_Bill_Redesign_Tooltip_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_Bill_Redesign_Tooltip_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_Bill_Redesign_Tooltip_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_Bill_Redesign_Tooltip_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_Bill_Redesign_Tooltip_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_Bill_Redesign_Tooltip_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_Bill_Redesign_Tooltip_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_Bill_Redesign_Tooltip_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_EPP_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_EPP_BR_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_EPP_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_EPP_BR_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_EPP_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_EPP_BR_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_EPP_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_EPP_BR_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_EPP_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_EPP_BR_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Utils\LinkRedirection\LinkRedirection.cs" />
+    <Compile Include="Src\Utils\LinkRedirection\LinkRedirectionUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7855,9 +8095,14 @@
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\" />
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\" />
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\" />
+    <Folder Include="Src\Bills\" />
+    <Folder Include="Src\Bills\NewBillRedesign\" />
+    <Folder Include="Src\Bills\NewBillRedesign\Activity\" />
+    <Folder Include="Src\Bills\NewBillRedesign\MVP\" />
+    <Folder Include="Src\Bills\NewBillRedesign\Model\" />
+    <Folder Include="Src\Bills\NewBillRedesign\Fragment\" />
     <Folder Include="Src\Utils\Deeplink\" />
-    <Folder Include="Src\FeedbackAboutBillEnquiryStepOne\" />
-    <Folder Include="Src\FeedbackAboutBillEnquiryStepTwo\" />
+    <Folder Include="Src\Utils\LinkRedirection\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

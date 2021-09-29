@@ -35,6 +35,7 @@ using System.Net.Http;
 using myTNB_Android.Src.myTNBMenu.Async;
 using fbm = Firebase.Messaging;
 using Android.Gms.Extensions;
+using myTNB_Android.Src.Utils.Deeplink;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -174,6 +175,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             appUpdateAvailable = IsAppNeedsUpdate(responseData.ForceUpdateInfo);
                             if (appUpdateAvailable)
                             {
+                                DeeplinkUtil.Instance.ClearDeeplinkData();
                                 string modalTitle = responseData.ForceUpdateInfo.ModalTitle;
                                 string modalMessage = responseData.ForceUpdateInfo.ModalBody;
                                 string modalBtnLabel = responseData.ForceUpdateInfo.ModalBtnText;
@@ -349,6 +351,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 }
                                 else if (UserSessions.HasSkipped(mSharedPref))
                                 {
+                                    DeeplinkUtil.Instance.ClearDeeplinkData();
                                     if (!UserSessions.IsDeviceIdUpdated(mSharedPref) || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
                                     {
                                         UserSessions.UpdateDeviceId(mSharedPref);
@@ -367,6 +370,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 }
                                 else
                                 {
+                                    DeeplinkUtil.Instance.ClearDeeplinkData();
                                     if (!UserSessions.IsDeviceIdUpdated(mSharedPref) || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
                                     {
                                         UserSessions.UpdateDeviceId(mSharedPref);
@@ -386,6 +390,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         if (masterDataResponse.Response.DisplayMessage != null && masterDataResponse.Response.DisplayTitle != null)
                         {
+                            DeeplinkUtil.Instance.ClearDeeplinkData();
                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Maintenance);
                             this.mView.ShowMaintenance(masterDataResponse);
                         }
@@ -504,6 +509,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
             if (serviceCallCounter == 3)//If still failed after auto-retry, inform the user.
             {
+                DeeplinkUtil.Instance.ClearDeeplinkData();
                 this.mView.ShowSomethingWrongException();
                 serviceCallCounter = 0;
             }

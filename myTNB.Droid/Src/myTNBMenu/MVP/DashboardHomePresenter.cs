@@ -2,18 +2,14 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
-using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
@@ -22,20 +18,15 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.myTNBMenu.Requests;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
-using myTNB_Android.Src.SummaryDashBoard;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using Refit;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -47,9 +38,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         CancellationTokenSource cts;
 
-
-
-        private DashboardHomeContract.IView mView;
+        public DashboardHomeContract.IView mView;
         private ISharedPreferences mSharedPref;
 
         internal int currentBottomNavigationMenu = Resource.Id.menu_dashboard;
@@ -247,6 +236,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         }
                     }
                 }
+                else if (requestCode == Constants.NEW_BILL_REDESIGN_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        OnMenuSelect(Resource.Id.menu_bill);
+                    }
+                }
             }
             catch (System.Exception e)
             {
@@ -323,7 +319,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         }
                         if (selected != null)
                         {
-                            List<CustomerBillingAccount> list = CustomerBillingAccount.List();
+                            _ = CustomerBillingAccount.List();
                             bool enableDropDown = accountList.Count > 0 ? true : false;
 
                             if (selected.AccountCategoryId.Equals("2"))
@@ -350,7 +346,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     {
                         this.mView.DisableBillMenu();
                     }
-
                     OnUpdateRewardUnRead();
                     break;
                 case Resource.Id.menu_promotion:
@@ -401,6 +396,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     OnLoadMoreMenu();
                     break;
             }
+        }
+
+        public void ShowBillMenuWithAccount(CustomerBillingAccount account)
+        {
+            CustomerBillingAccount.SetSelected(account.AccNum);
+            OnMenuSelect(Resource.Id.menu_bill);
         }
 
         public void OnLoadMoreMenu()
@@ -1578,25 +1579,29 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 try
                 {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-
-                    BillDetailsTooltipTimeStampResponseModel timestampModel = getItemsService.GetBillDetailsTooltipTimestampItem();
-                    if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
-                    {
-                        if (SitecoreCmsEntity.IsNeedUpdates(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP, timestampModel.Data[0].Timestamp))
-                        {
-                            BillDetailsTooltipResponseModel responseModel = getItemsService.GetBillDetailsTooltipItem();
-
-                            SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
-                        }
-                    }
+                    GetBillTooltip(BillsTooltipVersionEnum.V1, SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP);
+                    GetBillTooltip(BillsTooltipVersionEnum.V2, SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIPV2);
                 }
                 catch (Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
                 }
             });
+        }
+
+        private void GetBillTooltip(BillsTooltipVersionEnum billsTooltipVersionEnum, SitecoreCmsEntity.SITE_CORE_ID siteCoreId)
+        {
+            string density = DPUtils.GetDeviceDensity(Application.Context);
+            GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
+            BillDetailsTooltipTimeStampResponseModel timestampModel = getItemsService.GetBillDetailsTooltipTimestampItem(billsTooltipVersionEnum);
+            if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
+            {
+                if (SitecoreCmsEntity.IsNeedUpdates(siteCoreId, timestampModel.Data[0].Timestamp))
+                {
+                    BillDetailsTooltipResponseModel responseModel = getItemsService.GetBillDetailsTooltipItem(billsTooltipVersionEnum);
+                    SitecoreCmsEntity.InsertSiteCoreItem(siteCoreId, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
+                }
+            }
         }
 
         private async Task OnUpdateReward(string itemID)
@@ -1713,25 +1718,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
-        public void OnGetBillValidateWithCA(string accountNumber)
+        public void OnGetBillEligibilityCheck(string accountNumber)
         {
-            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-            if (accountList.Count > 0)
-            {
-                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountNumber);
-                if (customerBillingAccount != null)
-                {
-                    this.mView.NavigateToViewAccountStatement(customerBillingAccount);
-                }
-                else
-                {
-                    this.mView.NavigateToAddAccount();
-                }
-            }
-            else
-            {
-                this.mView.NavigateToAddAccount();
-            }
+            this.GetBillEligibilityCheck(accountNumber);
         }
     }
 

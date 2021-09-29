@@ -112,6 +112,16 @@
                     public const string Image = "Image";
                 }
 
+                public struct NewBillDesignDiscoverMore
+                {
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string Image1 = "Image1";
+                    public const string Image2 = "Image2";
+                    public const string IsZoomable = "IsZoomable";
+                    public const string IsHeader = "IsHeader";
+                    public const string IsFooter = "IsFooter";
+                }
 
                 public struct ImageName
                 {
@@ -253,6 +263,7 @@
                 public const string SSMRMeterReadingOnePhaseWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase";
                 public const string SSMRMeterReadingThreePhaseWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase";
                 public const string BillDetailsTooltip = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip";
+                public const string BillDetailsTooltipV2 = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip V2";
 
                 public const string SSMRMeterReadingOnePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase OCR Off";
                 public const string SSMRMeterReadingThreePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase OCR Off";
@@ -268,6 +279,8 @@
                 public const string DoIneedOwnerConsentToolTip = "/sitecore/content/myTNBapp/Contents/DoINeedOwnerConsentToolTip";
                 public const string HowDoesCopyOfIdentification = "/sitecore/content/myTNBapp/Contents/HowDoesCopyOfIdentificationToolTip";
                 public const string HowDoesProofOfConsent = "/sitecore/content/myTNBapp/Contents/ProofOwnerConsentToolTips";
+
+                public const string NewBillDesignDiscoverMore = "/sitecore/content/myTNBapp/Contents/New Bill Design";
             }
         }
     }

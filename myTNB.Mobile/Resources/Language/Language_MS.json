@@ -520,8 +520,10 @@
   "BillDetails": {
     "title": "Butiran",
     "billDetails": "Caj Saya",
-    "outstandingCharges": "Baki terdahulu",
+    "outstandingCharges": "Tunggakan",
+    "outstandingChargesV2": "Baki terdahulu",
     "billThisMonth": "Caj semasa",
+    "billThisMonthV2": "Caj semasa",
     "roundingAdjustment": "Pelarasan penggenapan",
     "needToPay": "Jumlah bil anda",
     "by": "sebelum",
@@ -2558,7 +2560,7 @@
         "Description": "TNB bil berwajah baharu kini di dalam bentuk format yang berinformasi dan lebih mudah dibaca! Lihat bagaimana anda boleh memahami bil baharu anda di sini:",
         "Image1": "New-Bill-Design-Header-1",
         "Image2": "New-Bill-Design-Header-2",
-        "IsZoomable": true,
+        "IsZoomable": false,
         "IsHeader": true,
         "IsFooter": false
       },

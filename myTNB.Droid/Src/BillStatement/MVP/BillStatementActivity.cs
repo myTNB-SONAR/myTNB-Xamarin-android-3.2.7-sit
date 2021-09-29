@@ -1,4 +1,4 @@
-﻿using Android.App;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using myTNB_Android.Src.Utils;
@@ -38,7 +38,7 @@ namespace myTNB_Android.Src.BillStatement.MVP
 
         [BindView(Resource.Id.btnSubmit)]
         Button btnSubmit;
-        
+
         bool isSixMonthSelected = false;
         bool isThreeMonthSelected = false;
 
@@ -156,7 +156,7 @@ namespace myTNB_Android.Src.BillStatement.MVP
         {
             base.OnCreate(savedInstanceState);
 
-            
+
             txtThreeMonths.Text = Utility.GetLocalizedLabel("StatementPeriod", "past3Months");
             txtPageTitleInfo.Text = Utility.GetLocalizedLabel("StatementPeriod", "iWantToViewTitle");
             txtSixMonth.Text = Utility.GetLocalizedLabel("StatementPeriod", "past6Months");
@@ -174,7 +174,7 @@ namespace myTNB_Android.Src.BillStatement.MVP
             {
                 if (extras.ContainsKey("SELECTED_ACCOUNT"))
                 {
-                    selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString("SELECTED_ACCOUNT")); 
+                    selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString("SELECTED_ACCOUNT"));
                 }
             }
             imgTheeMonthsAction.SetMaxHeight(txtThreeMonths.Height);
@@ -197,11 +197,11 @@ namespace myTNB_Android.Src.BillStatement.MVP
             Intent viewBill = new Intent(this, typeof(ViewBillActivity));
             viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_STATEMENT_PDF_REQUEST_CODE);
-            if(isSixMonthSelected)
+            if (isSixMonthSelected)
             {
                 selectedMonths = "6";
             }
-            if(isThreeMonthSelected)
+            if (isThreeMonthSelected)
             {
                 selectedMonths = "3";
             }

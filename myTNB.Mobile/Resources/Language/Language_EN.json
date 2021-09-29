@@ -520,8 +520,10 @@
   "BillDetails": {
     "title": "Details",
     "billDetails": "My Charges",
-    "outstandingCharges": "My previous balance",
-    "billThisMonth": "My current charges",
+    "outstandingCharges": "My outstanding charges",
+    "outstandingChargesV2": "My previous balance",
+    "billThisMonth": "My latest bill",
+    "billThisMonthV2": "My current charges",
     "roundingAdjustment": "Rounding adjustment",
     "needToPay": "My amount due",
     "by": "by",
@@ -1163,7 +1165,14 @@
     "aboutMyBillTitle": "About My Bill",
     "aboutMyBillDescription": "I want to enquire about my bill and payment.",
     "selectEnquiryType": "Select Enquiry Type",
-    "iNeedHelpWith": "I NEED HELP WITH"
+    "iNeedHelpWith": "I NEED HELP WITH",
+    "gslTitle": "Guaranteed Service Level (GSL) Rebate",
+    "gslDescription": "I want to claim for GSL Rebate",
+    "gslHeaderTitle": "GSL Rebate",
+    "pageTitle": "Step {0} of {1}",
+    "rebateClaimTitle": "What type of rebate are you claiming?",
+    "rebateTypeTitle": "TYPE OF REBATE",
+    "tenantInfoTitle": "Your Tenant Information"
   },
   "SubmitEnquiry_selector": {
     "enquiryType": [
@@ -1182,6 +1191,12 @@
       {
         "key": "04",
         "description": "Others"
+      }
+    ],
+    "rebateType": [
+      {
+        "key": "01",
+        "description": "GSL 1: Frequency of interruption"
       }
     ]
   },
@@ -2534,7 +2549,8 @@
       "enabled": true
     },
     "IsAboutMyBillEnquiryEnabled": true,
-    "IsUpdatePersonalDetailsEnquiryEnabled": true
+    "IsUpdatePersonalDetailsEnquiryEnabled": true,
+    "IsGSLRebateEnabled": false
   },
   "StatementPeriod": {
     "title": "View Account Statement",
@@ -2558,7 +2574,7 @@
         "Description": "The all-new TNB bill is now in an easy-to-read and simplified format to help you make better decisions on managing your energy usage! Let's see what's new:",
         "Image1": "New-Bill-Design-Header-1",
         "Image2": "New-Bill-Design-Header-2",
-        "IsZoomable": true,
+        "IsZoomable": false,
         "IsHeader": true,
         "IsFooter": false
       },

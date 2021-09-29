@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;

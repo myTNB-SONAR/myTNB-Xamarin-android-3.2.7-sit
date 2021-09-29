@@ -93,6 +93,48 @@ namespace myTNB_Android.Src.Database.Model
         [Column("BudgetAmount")]
         public string BudgetAmount { get; set; }
 
+        [JsonIgnore]
+        public bool IsNormalMeter
+        {
+            get
+            {
+                var res = true;
+
+                if (!string.IsNullOrEmpty(SmartMeterCode))
+                {
+                    res = string.Compare(SmartMeterCode, "0") == 0;
+                }
+                return res;
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsREAccount
+        {
+            get
+            {
+                return AccountCategoryId != null && AccountCategoryId.Equals("2");
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsSmartMeter
+        {
+            get
+            {
+                return !IsNormalMeter && !IsREAccount;
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsSSMR
+        {
+            get
+            {
+                return IsTaggedSMR;
+            }
+        }
+
         public static int CreateTable()
         {
             var db = DBHelper.GetSQLiteConnection();

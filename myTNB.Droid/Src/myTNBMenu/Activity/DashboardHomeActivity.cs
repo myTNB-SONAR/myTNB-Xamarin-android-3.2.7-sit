@@ -2470,7 +2470,19 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void NavigateToViewAccountStatement(CustomerBillingAccount account)
         {
+            userActionsListener.ShowBillMenuWithAccount(account);
             this.ShowViewAccountStatement(account);
+        }
+
+        public void TriggerIneligiblePopUp()
+        {
+            userActionsListener.OnMenuSelect(Resource.Id.menu_bill);
+            this.ShowIneligiblePopUp();
+        }
+
+        public void NavigateToNBR()
+        {
+            this.ShowNewBillRedesign();
         }
     }
 }

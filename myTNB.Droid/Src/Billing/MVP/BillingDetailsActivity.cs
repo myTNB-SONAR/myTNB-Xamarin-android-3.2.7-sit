@@ -29,6 +29,7 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
 using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -226,7 +227,6 @@ namespace myTNB_Android.Src.Billing.MVP
 
             billingDetailsPresenter = new BillingDetailsPresenter(this);
             myBillDetailsLabel.Text = GetLabelByLanguage("billDetails");
-            accountBillThisMonthLabel.Text = GetLabelByLanguage("billThisMonth");
             accountMinChargeLabel.Text = GetLabelByLanguage("minimumChargeDescription");
             btnViewBill.Text = GetLabelCommonByLanguage("viewBill");
             btnPayBill.Text = GetLabelByLanguage("pay");
@@ -297,6 +297,10 @@ namespace myTNB_Android.Src.Billing.MVP
 
             accountName.Text = selectedAccountData.AccountNickName;
             accountAddress.Text = selectedAccountData.AddStreet;
+            var billThisMonthString = BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum) ? GetLabelByLanguage(LanguageConstants.BillDetails.BILL_THIS_MONTH_V2)
+                : GetLabelByLanguage(LanguageConstants.BillDetails.BILL_THIS_MONTH);
+            accountBillThisMonthLabel.Text = billThisMonthString;
+
             if (selectedAccountChargeModel != null && !isCheckPendingPaymentNeeded)
             {
                 topLayout.Visibility = ViewStates.Visible;
@@ -573,7 +577,9 @@ namespace myTNB_Android.Src.Billing.MVP
             }
             else
             {
-                accountChargeLabel.Text = GetLabelByLanguage("outstandingCharges");// "My outstanding charges";
+                var accountChargeString = BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum) ? GetLabelByLanguage(LanguageConstants.BillDetails.OUTSTANDING_CHARGES_V2)
+                    : GetLabelByLanguage(LanguageConstants.BillDetails.OUTSTANDING_CHARGES);
+                accountChargeLabel.Text = accountChargeString;// "My outstanding charges";
                 accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
 
@@ -640,13 +646,16 @@ namespace myTNB_Android.Src.Billing.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData(this);
+                var isBREligible = BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum);
+                SitecoreCmsEntity.SITE_CORE_ID siteCoreId = isBREligible ? SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIPV2 : SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP;
+
+                List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData(this, siteCoreId);
                 if (modelList != null && modelList.Count > 0)
                 {
-                    UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
+                    UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList, isBREligible);
                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
                         .SetAdapter(adapter)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                        .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.GOT_IT))
                         .SetCTAaction(() => { this.SetIsClicked(false); })
                         .Build()
                         .Show();
@@ -727,17 +736,20 @@ namespace myTNB_Android.Src.Billing.MVP
 
         public void ShowEPPDetailsTooltip()
         {
-            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData();
+            var isBREligible = BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum);
+            var resourceId = isBREligible ? Resource.Drawable.Banner_EPP_BR_Tooltip : Resource.Drawable.Banner_EPP_Tooltip;
+            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData(this, resourceId);
 
             if (modelList != null && modelList.Count > 0)
             {
                 if (!this.GetIsClicked())
                 {
+                    var index = modelList.Count > 1 && isBREligible ? 1 : 0;
                     this.SetIsClicked(true);
                     MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-                       .SetHeaderImageBitmap(modelList[0].ImageBitmap)
-                       .SetTitle(modelList[0].PopUpTitle)
-                       .SetMessage(modelList[0].PopUpBody)
+                       .SetHeaderImageBitmap(modelList[index].ImageBitmap)
+                       .SetTitle(modelList[index].PopUpTitle)
+                       .SetMessage(modelList[index].PopUpBody)
                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                        .SetCTAaction(() => { this.SetIsClicked(false); })
 

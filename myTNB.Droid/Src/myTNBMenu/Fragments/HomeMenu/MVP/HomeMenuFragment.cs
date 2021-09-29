@@ -227,9 +227,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.bottomContainer)]
         LinearLayout bottomContainer;
 
-        [BindView(Resource.Id.discoverMoreTitle)]
-        TextView discoverMoreTitle;
-
         [BindView(Resource.Id.txtTitleDiscoverMore)]
         TextView txtTitleDiscoverMore;
 
@@ -280,9 +277,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.img_discover_digital_bill)]
         ImageView img_discover_digital_bill;
 
-        [BindView(Resource.Id.discoverTitle)]
-        TextView discoverTitle;
+        [BindView(Resource.Id.discoverMoreSectionTitle)]
+        TextView discoverMoreSectionTitle;
 
+        [BindView(Resource.Id.discoverMoreNBRContainer)]
+        LinearLayout discoverMoreNBRContainer;
+
+        [BindView(Resource.Id.newBillRedesignBanner)]
+        ImageView newBillRedesignBanner;
 
         [BindView(Resource.Id.whatsNewUnreadImg)]
         ImageView whatsNewUnreadImg;
@@ -491,7 +493,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
-                IsAccountDBREligible = DBRUtility.Instance.IsAccountDBREligible; 
+                IsAccountDBREligible = DBRUtility.Instance.IsAccountDBREligible;
                 summaryNestScrollView.SmoothScrollingEnabled = true;
                 isSearchClose = true;
                 isFirstInitiate = true;
@@ -501,19 +503,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetDBRDiscoverView();
+                SetUpNBRView();
                 SetupNewFAQView();
 
                 ShowDiscoverMoreLayout();
 
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
-                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, discoverMoreTitle, btnRefresh, txtAdd
+                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
                     , myServiceLoadMoreLabel, txtNewLabel, txtDate, txtTitleDiscoverMore, btnMyServiceRefresh);
                 TextViewUtils.SetTextSize8(txtNewLabel);
                 TextViewUtils.SetTextSize10(txtDate);
                 TextViewUtils.SetTextSize12(addActionLabel, txtTitleDiscoverMore, searchActionLabel, rearrangeLabel
                     , loadMoreLabel, myServiceLoadMoreLabel, txtMyServiceRefreshMessage);
-                TextViewUtils.SetTextSize14(refreshMsg, discoverMoreTitle, txtAdd, newFAQTitle, accountHeaderTitle);
+                TextViewUtils.SetTextSize14(refreshMsg, txtAdd, newFAQTitle, accountHeaderTitle);
                 TextViewUtils.SetTextSize16(accountGreeting, accountGreetingName, btnMyServiceRefresh, btnRefresh);
                 SearchView searchView = new SearchView(this.Context);
                 LinearLayout linearLayout1 = (LinearLayout)searchView.GetChildAt(0);
@@ -528,7 +531,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 newFAQTitle.Text = GetLabelByLanguage("needHelp");
                 rearrangeLabel.Text = GetLabelByLanguage("rearrangeAccts");
                 loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
-                discoverMoreTitle.Text = GetLabelByLanguage("DiscoverMore");
                 txtTitleDiscoverMore.Text = GetLabelByLanguage("DiscoverMoreTitle");
                 myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
 
@@ -636,7 +638,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        [OnClick(Resource.Id.discoverView)]
+        [OnClick(Resource.Id.img_discover_digital_bill)]
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
             if (DBRUtility.Instance.IsAccountDBREligible)
@@ -959,19 +961,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private void SetupDiscoverView()
         {
             discoverView.Visibility = ViewStates.Visible;
-            discoverView.SetBackgroundResource(LanguageUtil.GetAppLanguage() == "MS"
+            img_discover_digital_bill.Visibility = ViewStates.Visible;
+            img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS"
                 ? Resource.Drawable.banner_home_voluntary_ms
                 : Resource.Drawable.banner_home_voluntary_en);
-
-            LinearLayout.LayoutParams layout = discoverView.LayoutParameters as LinearLayout.LayoutParams;
-            int imgWidth = GetDeviceHorizontalScaleInPixel(0.917f);
-            float heightRatio = 55f / 128f;
-            int imgHeight = (int)(imgWidth * (heightRatio));
-            if (layout != null)
-            {
-                layout.Width = imgWidth;
-                layout.Height = imgHeight;
-            }
         }
 
         public void SetMyServiceRecycleView()
@@ -1173,9 +1166,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     try
                     {
-                        discoverTitle.Visibility = ViewStates.Gone;
-                        discoverMoreTitle.Visibility = ViewStates.Gone;
                         discoverView.Visibility = ViewStates.Gone;
+                        img_discover_digital_bill.Visibility = ViewStates.Gone;
                     }
                     catch (System.Exception ex)
                     {
@@ -1213,8 +1205,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             SetupDiscoverView();
                             discovercontainer.Visibility = ViewStates.Visible;
                             discoverView.Visibility = ViewStates.Visible;
-                            discoverTitle.Visibility = ViewStates.Visible;
-                            discoverMoreTitle.Visibility = ViewStates.Gone;
+                            img_discover_digital_bill.Visibility = ViewStates.Visible;
+                            discoverMoreSectionTitle.Visibility = ViewStates.Visible;
                             UserEntity user = UserEntity.GetActive();
                             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
 
@@ -1231,7 +1223,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         else
                         {
                             discovercontainer.Visibility = ViewStates.Gone;
-                            discoverTitle.Visibility = ViewStates.Gone;
                         }
                     }
                     catch (System.Exception ex)
@@ -1473,17 +1464,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 searchText.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                 searchText.SetHintTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sixty_opacity_white)));
                 TextViewUtils.SetTextSize12(searchText);
-                if (TextViewUtils.IsLargeFonts)
-                {
-                    TextViewUtils.SetTextSize16(discoverTitle);
-                }
-                else
-                {
-                    TextViewUtils.SetTextSize14(discoverTitle);
-                }
-
-                TextViewUtils.SetMuseoSans500Typeface(searchText, discoverTitle);
-                discoverTitle.Text = Utility.GetLocalizedLabel("DashboardHome", "DiscoverMore");
+                TextViewUtils.SetTextSize14(discoverMoreSectionTitle);
+                TextViewUtils.SetMuseoSans500Typeface(searchText, discoverMoreSectionTitle);
+                discoverMoreSectionTitle.Text = Utility.GetLocalizedLabel("DashboardHome", "DiscoverMore");
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     searchText.SetPadding((int)DPUtils.ConvertDPToPx(34f), 0, 0, 0);
@@ -2276,7 +2259,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMaintenanceMsg);
                 }
                 discoverMoreContainer.Visibility = ViewStates.Gone;
-                discoverMoreTitle.Visibility = ViewStates.Gone;
             }
             else
             {
@@ -2294,7 +2276,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
                 string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
                 discoverMoreContainer.Visibility = ViewStates.Gone;
-                discoverMoreTitle.Visibility = ViewStates.Gone;
                 btnRefresh.Text = refreshBtnTxt;
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
@@ -3651,16 +3632,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
             {
                 discoverMoreContainer.Visibility = ViewStates.Visible;
-                if(discoverTitle.Visibility == ViewStates.Visible)
-                {
-                    discoverMoreTitle.Visibility = ViewStates.Gone;
-                }
-                else
-                {
-                    discoverMoreTitle.Visibility = ViewStates.Visible;
-                }
-                
-               
+                discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+
                 try
                 {
                     //DateTime publishDateTime = DateTime.ParseExact(whatsNewList[position].PublishDate, "yyyyMMddTHHmmss",
@@ -3700,7 +3673,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             else
             {
                 discoverMoreContainer.Visibility = ViewStates.Gone;
-                discoverMoreTitle.Visibility = ViewStates.Gone;
             }
         }
 
@@ -3729,6 +3701,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 ((DashboardHomeActivity)Activity).OnCheckWhatsNewTab();
             }
+        }
+
+        private void SetUpNBRView()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    if (BillRedesignUtility.Instance.ShouldShowHomeCard && BillRedesignUtility.Instance.IsAccountEligible)
+                    {
+                        discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+                        discoverMoreNBRContainer.Visibility = ViewStates.Visible;
+                        newBillRedesignBanner.Visibility = ViewStates.Visible;
+                        newBillRedesignBanner.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.Banner_Home_NBR_MS
+                            : Resource.Drawable.Banner_Home_NBR_EN);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.newBillRedesignBanner)]
+        void NewBillRedesignBannerOnClick(object sender, EventArgs eventArgs)
+        {
+            ((DashboardHomeActivity)Activity).NavigateToNBR();
         }
     }
 }
