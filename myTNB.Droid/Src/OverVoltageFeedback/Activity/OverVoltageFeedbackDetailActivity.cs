@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
@@ -134,7 +134,9 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 string domain = "https://mytnbwvovis.ap.ngrok.io/"; // WebView Live
                 //string domain = "http://192.168.1.157:3000/"; // WebView Local
 
-                domain += "claimPage/" + ClaimId + "?eid=" + usin.eid + "&lang=" + usin.lang + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
+
+                domain += "claimPage/" + ClaimId + "?eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.DynatraceSessionUUID;
+
                 String queryParams = null;
                                 
                 if (proccedToPaymentFlag)

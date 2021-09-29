@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,7 +74,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 }
                 //Dyanatrace
                 IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_SUBMIT_OVERVOLTAGE_CLAIM);  // DYNA
-                dynaTrace.ReportValue("session_id", LaunchViewActivity.UUID);
+                dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
                 dynaTrace.ReportValue("ca_number", accNo);
                 dynaTrace.LeaveAction();
 
@@ -158,7 +158,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
 
                 string url = domain;
 
-                url += "?CA=" + accNo + "&eid=" + usin.eid + "&lang=" + usin.lang + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
+                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.DynatraceSessionUUID;
 
                 if (TextViewUtils.IsLargeFonts)
                 {
