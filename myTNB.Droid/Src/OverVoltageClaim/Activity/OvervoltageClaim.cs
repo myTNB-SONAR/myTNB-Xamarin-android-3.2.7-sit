@@ -173,12 +173,14 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
         public void ShowProgressDialog()
         {
             try
@@ -190,6 +192,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         public void HideProgressDialog()
         {
             try
@@ -201,6 +204,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         internal async Task ResponseFromWebviewAsync(string message)
             {
             try
@@ -392,6 +396,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             this.webview = webview;
            
         }
+
         public override bool OnJsAlert(WebView view, string url, string message, JsResult result)
             {
             //return base.OnJsAlert(view, url, message, result);
@@ -401,6 +406,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             return true;
 
         }
+
         public override void OnProgressChanged(WebView view, int newProgress)
         {
             base.OnProgressChanged(view, newProgress);
@@ -410,17 +416,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 this.overVoltageClaim.HideProgressDialog();
                 overVoltageClaim.PassData();
             
-            }
-           
+            }           
         }
-
-
-    }
-
-    //public class DTOWebView
-    //{
-    //    public string currentScreen { get; set; }
-    //    public string nextScreen { get; set; }
-    //    public string serviceNumber { get; set; }
-    //}
+    }   
 }

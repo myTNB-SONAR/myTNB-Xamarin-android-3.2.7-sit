@@ -243,6 +243,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 this.resultCallbackvalue = null;
             }
         }
+
         protected override void OnResume()
         {
             base.OnResume();
@@ -308,6 +309,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     break;
             }
         }
+
         public void ShowProgressDialog()
         {
             try
@@ -499,11 +501,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 else if (data.currentScreen == "1" && data.nextScreen == "0")
                 {
                     txtstep1of2.Visibility = ViewStates.Gone;
-                }
-                //else if (data.currentScreen == "1" && data.nextScreen == "2")
-                //{
-                //    txtstep1of2.Visibility = ViewStates.Gone;
-                //}
+                }              
                 else if (data.currentScreen == "0" && data.nextScreen == "overvoltageclaim")
                 {
                     txtstep1of2.Visibility = ViewStates.Visible;
@@ -542,6 +540,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 Utility.LoggingNonFatalError(e);
             }            
         }
+
         public override void OnBackPressed()
         {
             try
@@ -644,6 +643,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 
             }
         }
+
         internal void PassData()
         {
             try
@@ -678,6 +678,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             this.webview = webview;
 
         }
+
         public override bool OnJsAlert(WebView view, string url, string message, JsResult result)
             {
             //return base.OnJsAlert(view, url, message, result);
@@ -687,6 +688,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             return true;
 
         }
+
         public override void OnProgressChanged(WebView view, int newProgress)
         {
             base.OnProgressChanged(view, newProgress);
@@ -720,6 +722,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 
             return true;
         }
+
         private void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             if (data != null)
@@ -742,20 +745,5 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 return;
             }
         }
-    }
-    //public class DTOWebView
-    //{
-    //    public string srNumber { get; set; }
-    //    public string appointmentDate { get; set; }
-    //    public string technicianName { get; set; }
-    //    public string incidentAddress { get; set; }
-    //    public string title { get; set; }
-    //    public string claimId { get; set; }
-    //    public string currentScreen { get; set; }
-    //    public string nextScreen { get; set; }
-    //    public string totalAmount { get; set; }
-    //    public string message { get; set; }
-    //    public string crStatus { get; set; }
-    //    public string crStatusCode { get; set; }
-    //}
+    }    
 }

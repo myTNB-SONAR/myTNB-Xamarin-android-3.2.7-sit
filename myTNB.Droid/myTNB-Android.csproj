@@ -116,9 +116,6 @@
     <Reference Include="Bolts.Tasks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Bolts.1.4.0.1\lib\MonoAndroid403\Bolts.Tasks.dll</HintPath>
     </Reference>
-    <Reference Include="Card.IO.Android, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.CardIO.Android.5.5.1\lib\MonoAndroid403\Card.IO.Android.dll</HintPath>
-    </Reference>
     <Reference Include="Cheeseknife, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MisterJimson.Cheeseknife.1.1.0\lib\MonoAndroid10\Cheeseknife.dll</HintPath>
     </Reference>
@@ -686,6 +683,9 @@
     </Reference>
     <Reference Include="Xamarin.Essentials">
       <HintPath>..\packages\Xamarin.Essentials.1.6.1\lib\monoandroid10.0\Xamarin.Essentials.dll</HintPath>
+    </Reference>
+    <Reference Include="Card.IO.Android, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.CardIO.Android.5.5.1\lib\MonoAndroid403\Card.IO.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -6330,8 +6330,8 @@
     <Compile Include="Src\MyTNBService\Response\TriggerOVISServicesResponseModel.cs" />
     <Compile Include="Src\MyTNBService\Response\GetOvervoltageClaimDetailModel.cs" />
     <Compile Include="Src\MyTNBService\Request\TriggerOVISServicesRequestModel.cs" />
-    <Compile Include="Src\OverVoltageFeedback\Model\DTOWebView.cs" />
     <Compile Include="Src\OverVoltageClaim\Model\DTOWebView.cs" />
+    <Compile Include="Src\OverVoltageFeedback\Model\DTOWebView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -6679,7 +6679,6 @@
     <Folder Include="Src\PaymentInfoSunmittedSuccess\Activity\" />
     <Folder Include="Src\FeedBackSubmittedSucess\Activity\" />
     <Folder Include="Src\PaymentInfoSunmittedSuccess\Activity\" />
-    <Folder Include="Src\OverVoltageFeedback\Model\" />
     <Folder Include="Src\OverVoltageClaim\Model\" />
   </ItemGroup>
   <ItemGroup>
