@@ -32,6 +32,7 @@ using BaseRequest = myTNB_Android.Src.MyTNBService.Request.BaseRequest;
 
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.OverVoltageFeedback.Model;
 
 namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 {
@@ -40,10 +41,8 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
           , WindowSoftInputMode = SoftInput.AdjustResize
           , Theme = "@style/Theme.Others")]
 
-    public class OverVoltageFeedbackDetailActivity : BaseToolbarAppCompatActivity, FeedbackDetailsContract.Others.IView
+    public class OverVoltageFeedbackDetailActivity : BaseToolbarAppCompatActivity
     {
-
-
         [BindView(Resource.Id.webView)]
         WebView webView;
 
@@ -85,43 +84,14 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             this.userActionsListener = userActionListener;
         }
 
-
         public override bool ShowCustomToolbarTitle()
         {
             return true;
-        }
-
-
-        public void ShowImages(List<AttachedImage> list)
-        {
-            try
-            {
-
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string feedbackType, string feedback)
-        {
-            try
-            {
-
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
+        }              
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            //myTNB.Mobile.BaseRequest data = new myTNB.Mobile.BaseRequest();
-            //var useremail =data.UserInfo;
-           
+            base.OnCreate(savedInstanceState);                      
             try
             {
                 Android.OS.Bundle extras = Intent.Extras;
@@ -132,7 +102,6 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     {
                         accNo = extras.GetString(Constants.ACCOUNT_NUMBER);
                     }
-
                 }
                 string selectedFeedback = UserSessions.GetSelectedFeedback(Android.Preferences.PreferenceManager.GetDefaultSharedPreferences(this));
                 submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
@@ -142,22 +111,14 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     SetToolBarTitle(Intent.GetStringExtra("TITLE"));
                     TempTitle = "Overvoltage Claim";
                 }
-                setAppointmentFlag = Convert.ToBoolean(Intent.GetStringExtra("setAppointmentFlag"));
-                //proccedToPaymentFlag = Convert.ToBoolean(Intent.GetStringExtra("proccedToPaymentFlag"));
-                //SetUI();
-
+                setAppointmentFlag = Convert.ToBoolean(Intent.GetStringExtra("setAppointmentFlag"));                
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-        //protected override void OnNewIntent(Intent intent)
-        //{
-        //    base.OnNewIntent(intent);
-        //    ClaimId = intent.GetStringExtra("ClaimId");
-        //}
+      
         private async void SetUI()
         {
             try
@@ -173,46 +134,35 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 string domain = "https://mytnbwvovis.ap.ngrok.io/"; // WebView Live
                 //string domain = "http://192.168.1.157:3000/"; // WebView Local
 
+<<<<<<< HEAD
                 domain += "claimPage/" + ClaimId + "?eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.DynatraceSessionUUID;
 
+=======
+                domain += "claimPage/" + ClaimId + "?eid=" + usin.eid + "&lang=" + usin.lang + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
+>>>>>>> origin/feature/android/ACME-II/OVIS-main
                 String queryParams = null;
-                
-                
+                                
                 if (proccedToPaymentFlag)
-                {
-                    //queryParams += queryParams == null ? "?" : "&";
-                    //queryParams += "paymentInfo=true";
+                {                   
                     queryParams = "&paymentInfo=true";
                     proccedToPaymentFlag = false;
                 }
                 else if (setAppointmentFlag)
-                {
-                    //queryParams += queryParams == null ? "?" : "&";
-                    //queryParams += "setAppointment=true";
+                {                   
                     queryParams = "&setAppointment=true";
                     setAppointmentFlag = false;
-                }
-                //else if (backFromAppointmentFlag)
-                //{
-                //    EndPoint = "";
-                //    SetToolBarTitle("Overvoltage Claim");
-
-                //}
+                }               
                 else
                 {
                     SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
                     TempTitle = "Overvoltage Claim";
                 }
-
                 if (TextViewUtils.IsLargeFonts)
-                {
-                    //queryParams += queryParams == null ? "?" : "&";
-                    //queryParams += "large";
+                {                    
                     queryParams = "&large";
                 }
 
-                string url = domain + queryParams;
-               // string url = domain + "claimPage/" + ClaimId + queryParams;
+                string url = domain + queryParams;            
 
                 #if DEBUG
                 //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
@@ -242,7 +192,6 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 //File upload
                 if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera) != (int)Permission.Granted)
                 {
-
                     if (ShouldShowRequestPermissionRationale(Manifest.Permission.Camera))
                     {
                         ShowRationale(Resource.String.runtime_permission_dialog_camera_title, Resource.String.runtime_permission_camera_rationale, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
@@ -252,8 +201,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                         RequestPermissions(new string[] { Manifest.Permission.Camera, Manifest.Permission.Flashlight }, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
                         //RequestPermissions(new string[] { Manifest.Permission.Camera }, 0);
                     }
-                    return;
-                    
+                    return;                    
                 }
 
                 if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted &&
@@ -269,16 +217,12 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                         //RequestPermissions(new string[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage }, 0);
                     }
                     return;
-                }
-                //if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
-                //{
-                //    RequestPermissions(new string[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage }, 0);
-                //}
+                }                
 
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Utility.LoggingNonFatalError(e);
             }
         }
         //File upload
@@ -304,6 +248,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 this.resultCallbackvalue = null;
             }
         }
+
         protected override void OnResume()
         {
             base.OnResume();
@@ -369,6 +314,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     break;
             }
         }
+
         public void ShowProgressDialog()
         {
             try
@@ -458,8 +404,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                         StartActivity(paymentInfoSubmitted);
                     }
                     else
-                    {
-                     
+                    {                     
                         if (TempTitle == "Reschedule Appointment")
                         {
                             isRescheduleappointment = true;
@@ -561,11 +506,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 else if (data.currentScreen == "1" && data.nextScreen == "0")
                 {
                     txtstep1of2.Visibility = ViewStates.Gone;
-                }
-                //else if (data.currentScreen == "1" && data.nextScreen == "2")
-                //{
-                //    txtstep1of2.Visibility = ViewStates.Gone;
-                //}
+                }              
                 else if (data.currentScreen == "0" && data.nextScreen == "overvoltageclaim")
                 {
                     txtstep1of2.Visibility = ViewStates.Visible;
@@ -599,19 +540,16 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     TempTitle = "Reschedule Appointment";
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
-            }
-            
-
-
+                Utility.LoggingNonFatalError(e);
+            }            
         }
+
         public override void OnBackPressed()
         {
             try
             {
-
                 if (TempTitle == "Set Appointment" || TempTitle == "Reschedule Appointment")
                 {
                     webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#OnBackAppointment').trigger('click'); },500); })();", null);
@@ -639,12 +577,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     base.OnBackPressed();
                 }
                 else if (data != null)
-                {
-                    //if (data.title == "Update Payment Details")
-                    //{
-                    //    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackUpdatePaymentStep').trigger('click'); },500); })();", null);
-                    //}
-
+                {                   
                     if (data.currentScreen == "0" && data.nextScreen == "1")
                     {
                         webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackPaymnet').trigger('click'); },500); })();", null);
@@ -704,9 +637,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                         //base.OnBackPressed();
 
                     }
-
                 }
-
                 else
                 {
                     base.OnBackPressed();
@@ -716,9 +647,8 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             {
 
             }
-
-
         }
+
         internal void PassData()
         {
             try
@@ -729,17 +659,14 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 var datajson = JsonConvert.SerializeObject(usin);
                 Console.WriteLine(datajson);
 
-                UserEntity user = UserEntity.GetActive();
-                //webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { getUserInfo('" + ac +"', '" + user.IdentificationNo + "', '" + user.UserID + "', '" + user.DisplayName + "','" + datajson + "') },100); })();", null);
+                UserEntity user = UserEntity.GetActive();                
                 webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { getUserInfo('" + ac + "', '" + user.IdentificationNo + "', '" + user.UserID + "', '" + user.DisplayName + "','" + usin.eid + "','" + usin.lang + "','" + usin.sec_auth_k1 + "','" + Utility.GetLocalizedLabel("SubmitEnquiry", "defaultErrorMessage") + "', '" + user.MobileNo + "') },100); })();", null);
-
-
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Utility.LoggingNonFatalError(e);
             }
-        }
+        }             
     }
 
     internal class WebViewClient : WebChromeClient
@@ -756,6 +683,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             this.webview = webview;
 
         }
+
         public override bool OnJsAlert(WebView view, string url, string message, JsResult result)
             {
             //return base.OnJsAlert(view, url, message, result);
@@ -765,6 +693,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             return true;
 
         }
+
         public override void OnProgressChanged(WebView view, int newProgress)
         {
             base.OnProgressChanged(view, newProgress);
@@ -798,6 +727,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 
             return true;
         }
+
         private void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             if (data != null)
@@ -809,7 +739,6 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                         //`enter code here`
                         return;
                     }
-
                     this.message.OnReceiveValue(WebChromeClient.FileChooserParams.ParseResult((int)resultCode, data));
                     this.message = null;
                 }
@@ -819,23 +748,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 this.message.OnReceiveValue(null);
                 this.message = null;
                 return;
-
             }
         }
-    }
-    public class DTOWebView
-    {
-        public string srNumber { get; set; }
-        public string appointmentDate { get; set; }
-        public string technicianName { get; set; }
-        public string incidentAddress { get; set; }
-        public string title { get; set; }
-        public string claimId { get; set; }
-        public string currentScreen { get; set; }
-        public string nextScreen { get; set; }
-        public string totalAmount { get; set; }
-        public string message { get; set; }
-        public string crStatus { get; set; }
-        public string crStatusCode { get; set; }
-    }
+    }    
 }
