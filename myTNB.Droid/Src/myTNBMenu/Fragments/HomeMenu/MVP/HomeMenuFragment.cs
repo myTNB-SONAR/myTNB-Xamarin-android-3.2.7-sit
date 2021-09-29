@@ -1379,7 +1379,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             //Dynatrace
 
             IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_SUBMIT_AND_TRACK_ENQUIRY);  // DYNA
-            dynaTrace.ReportValue("session_id", LaunchViewActivity.UUID);
+            dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
             dynaTrace.LeaveAction();
 
             ShowBackButton(true);

@@ -75,7 +75,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 }
                 //Dyanatrace
                 IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_SUBMIT_OVERVOLTAGE_CLAIM);  // DYNA
-                dynaTrace.ReportValue("session_id", LaunchViewActivity.UUID);
+                dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
                 dynaTrace.ReportValue("ca_number", accNo);
                 dynaTrace.LeaveAction();
 
@@ -156,6 +156,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
 
                 string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
+<<<<<<< HEAD
                 //string domain = "http://192.168.1.157:3000/"; // WebView Local
 
                 UrlUtility urlUtility = new UrlUtility();
@@ -177,6 +178,14 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 //string url = domain;                                                
                 //url += $"?CA={accNo}&eid={usin.eid}&appVersion={AppVersion}&os={OsVersion}&Manufacturer={Manufacturer}&model={DeviceModel}&session_id={LaunchViewActivity.UUID}&IDCN={user.UserID}&name={user.DisplayName}&lang={usin.lang}&sec_auth_k1={usin.sec_auth_k1}&mobileNo={user.MobileNo}";
                 //url = Uri.EscapeUriString(url);               
+=======
+                // string domain = "http://192.168.1.157:3000/"; // WebView Local
+
+                string url = domain;
+
+                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.DynatraceSessionUUID;
+
+>>>>>>> origin/feature/android/ACME-II/OVIS-main
                 if (TextViewUtils.IsLargeFonts)
                 {
                     url += "&large";

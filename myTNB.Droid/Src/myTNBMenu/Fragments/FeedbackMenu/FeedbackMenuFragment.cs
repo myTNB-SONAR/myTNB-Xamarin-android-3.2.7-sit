@@ -323,7 +323,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 try
                 {
                     IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_SUBMIT_NEW_ENQUIRY);  // DYNA
-                    dynaTrace.ReportValue("session_id", LaunchViewActivity.UUID);
+                    dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
                     dynaTrace.LeaveAction();
                 }
                 catch (System.Exception e)
@@ -389,7 +389,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 try
                 {
                     IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_VIEW_SUBMITTED_ENQUIRY);  // DYNA
-                    dynaTrace.ReportValue("session_id", LaunchViewActivity.UUID);
+                    dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
                     dynaTrace.LeaveAction();
                 }
                 catch (System.Exception e)

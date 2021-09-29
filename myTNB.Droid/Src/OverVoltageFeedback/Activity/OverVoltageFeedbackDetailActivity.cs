@@ -112,7 +112,19 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     SetToolBarTitle(Intent.GetStringExtra("TITLE"));
                     TempTitle = "Overvoltage Claim";
                 }
-                setAppointmentFlag = Convert.ToBoolean(Intent.GetStringExtra("setAppointmentFlag"));                
+                setAppointmentFlag = Convert.ToBoolean(Intent.GetStringExtra("setAppointmentFlag"));
+                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera) != (int)Permission.Granted)
+                {
+                    RequestPermissions(new string[] { Manifest.Permission.Camera, Manifest.Permission.Flashlight }, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
+                    return;
+                }
+
+                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted &&
+                    ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted)
+                {
+                    RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+                    return;
+                }
             }
             catch (Exception e)
             {
@@ -150,6 +162,17 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 urlUtility.AddQueryParams("sec_auth_k1", usin.sec_auth_k1);
                 urlUtility.AddQueryParams("mobileNo", user.MobileNo);
 
+<<<<<<< HEAD
+=======
+                string domain = "https://mytnbwvovis.ap.ngrok.io/"; // WebView Live
+                //string domain = "http://192.168.1.157:3000/"; // WebView Local
+
+
+                domain += "claimPage/" + ClaimId + "?eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.DynatraceSessionUUID;
+
+                String queryParams = null;
+                                
+>>>>>>> origin/feature/android/ACME-II/OVIS-main
                 if (proccedToPaymentFlag)
                 {                   
                     urlUtility.AddQueryParams("paymentInfo", "true");                   
@@ -197,37 +220,6 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
                 webView.LoadUrl(url);
                 await Task.Delay(0);
-                //HideProgressDialog();
-                //File upload
-                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera) != (int)Permission.Granted)
-                {
-                    if (ShouldShowRequestPermissionRationale(Manifest.Permission.Camera))
-                    {
-                        ShowRationale(Resource.String.runtime_permission_dialog_camera_title, Resource.String.runtime_permission_camera_rationale, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
-                    }
-                    else
-                    {
-                        RequestPermissions(new string[] { Manifest.Permission.Camera, Manifest.Permission.Flashlight }, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
-                        //RequestPermissions(new string[] { Manifest.Permission.Camera }, 0);
-                    }
-                    return;                    
-                }
-
-                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted &&
-                    ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted)
-                {
-                    if (ShouldShowRequestPermissionRationale(Manifest.Permission.WriteExternalStorage) || ShouldShowRequestPermissionRationale(Manifest.Permission.ReadExternalStorage))
-                    {
-                        ShowRationale(Resource.String.runtime_permission_dialog_storage_title, Resource.String.runtime_permission_storage_rationale, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-                    }
-                    else
-                    {
-                       RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-                        //RequestPermissions(new string[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage }, 0);
-                    }
-                    return;
-                }                
-
             }
             catch (Exception e)
             {
