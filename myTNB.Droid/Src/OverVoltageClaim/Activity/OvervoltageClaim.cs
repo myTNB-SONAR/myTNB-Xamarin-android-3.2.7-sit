@@ -155,8 +155,8 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 ShowProgressDialog();
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
 
-                //string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
-                string domain = "http://192.168.1.157:3000/"; // WebView Local
+                string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
+                //string domain = "http://192.168.1.157:3000/"; // WebView Local
 
                 UrlUtility urlUtility = new UrlUtility();
                 urlUtility.AddQueryParams("CA", accNo);
@@ -183,11 +183,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 }
 
                 webView.LoadUrl(url); 
-                await Task.Delay(0);               
-<<<<<<< HEAD
-                //HideProgressDialog();
-=======
->>>>>>> origin/feature/android/ACME-II/OVIS-main
+                await Task.Delay(0);             
             }
             catch (Exception e)
             {

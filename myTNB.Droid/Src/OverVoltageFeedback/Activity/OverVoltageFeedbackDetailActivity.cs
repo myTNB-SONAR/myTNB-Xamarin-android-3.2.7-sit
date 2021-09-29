@@ -32,11 +32,8 @@ using BaseRequest = myTNB_Android.Src.MyTNBService.Request.BaseRequest;
 
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
-<<<<<<< HEAD
 using myTNB_Android.Src.Helper;
-=======
 using myTNB_Android.Src.OverVoltageFeedback.Model;
->>>>>>> origin/feature/android/ACME-II/OVIS-main
 
 namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 {
@@ -134,11 +131,10 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 var Manufacturer = DeviceInfo.Manufacturer;
                 var data = new BaseRequest();
                 var usin = data.usrInf;
-<<<<<<< HEAD
                 UserEntity user = UserEntity.GetActive();
                 
-                //string domain = "https://mytnbwvovis.ap.ngrok.io/claimPage"+ClaimId; //WebView Live
-                string domain = "http://192.168.1.157:3000/claimPage/"+ClaimId; // WebView Local
+                string domain = "https://mytnbwvovis.ap.ngrok.io/claimPage"+ClaimId; //WebView Live
+                //string domain = "http://192.168.1.157:3000/claimPage/"+ClaimId; // WebView Local
 
                 UrlUtility urlUtility = new UrlUtility();
                 urlUtility.AddQueryParams("eid", usin.eid);
@@ -154,43 +150,14 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 urlUtility.AddQueryParams("sec_auth_k1", usin.sec_auth_k1);
                 urlUtility.AddQueryParams("mobileNo", user.MobileNo);
 
-               
-               // domain += $"claimPage/{ClaimId}?eid={usin.eid}&lang={usin.lang}&appVersion={AppVersion}&os={OsVersion}&Manufacturer={Manufacturer}&model={DeviceModel}&session_id={LaunchViewActivity.UUID}&IDCN={user.IdentificationNo}&userID={user.UserID}&name={user.DisplayName}&sec_auth_k1={usin.sec_auth_k1}&mobileNo={user.MobileNo}";                
-                //domain = Uri.EscapeUriString(domain);               
-                //String queryParams = null;
-                
-                
                 if (proccedToPaymentFlag)
-                {
-                    //queryParams += queryParams == null ? "?" : "&";
-                    //queryParams += "paymentInfo=true";
-                    urlUtility.AddQueryParams("paymentInfo", "true");
-                    //queryParams = "&paymentInfo=true";
+                {                   
+                    urlUtility.AddQueryParams("paymentInfo", "true");                   
                     proccedToPaymentFlag = false;
                 }
                 else if (setAppointmentFlag)
-                {
-                    //queryParams += queryParams == null ? "?" : "&";
-                    //queryParams += "setAppointment=true";
-                    urlUtility.AddQueryParams("setAppointment", "true");
-                    //queryParams = "&setAppointment=true";
-=======
-
-                string domain = "https://mytnbwvovis.ap.ngrok.io/"; // WebView Live
-                //string domain = "http://192.168.1.157:3000/"; // WebView Local
-
-                domain += "claimPage/" + ClaimId + "?eid=" + usin.eid + "&lang=" + usin.lang + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.UUID;
-                String queryParams = null;
-                                
-                if (proccedToPaymentFlag)
-                {                   
-                    queryParams = "&paymentInfo=true";
-                    proccedToPaymentFlag = false;
-                }
-                else if (setAppointmentFlag)
-                {                   
-                    queryParams = "&setAppointment=true";
->>>>>>> origin/feature/android/ACME-II/OVIS-main
+                {                    
+                    urlUtility.AddQueryParams("setAppointment", "true");                   
                     setAppointmentFlag = false;
                 }               
                 else
@@ -198,26 +165,13 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
                     TempTitle = "Overvoltage Claim";
                 }
-<<<<<<< HEAD
                 string url = urlUtility.EncodeURL(domain);
 
                 if (TextViewUtils.IsLargeFonts)
                 {
-                    //queryParams += queryParams == null ? "?" : "&";
-                    //queryParams += "large";
                     url += "&large";
                 }
 
-                //string url = domain + queryParams;
-               // string url = domain + "claimPage/" + ClaimId + queryParams;
-=======
-                if (TextViewUtils.IsLargeFonts)
-                {                    
-                    queryParams = "&large";
-                }
-
-                string url = domain + queryParams;            
->>>>>>> origin/feature/android/ACME-II/OVIS-main
 
                 #if DEBUG
                 //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
@@ -703,29 +657,6 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 
             }
         }
-<<<<<<< HEAD
-       
-=======
-
-        internal void PassData()
-        {
-            try
-            {
-                var data = new MyTNBService.Request.BaseRequest();
-                var usin = data.usrInf;
-                var ac = string.IsNullOrEmpty(accNo) ? " " : accNo.Trim();
-                var datajson = JsonConvert.SerializeObject(usin);
-                Console.WriteLine(datajson);
-
-                UserEntity user = UserEntity.GetActive();                
-                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { getUserInfo('" + ac + "', '" + user.IdentificationNo + "', '" + user.UserID + "', '" + user.DisplayName + "','" + usin.eid + "','" + usin.lang + "','" + usin.sec_auth_k1 + "','" + Utility.GetLocalizedLabel("SubmitEnquiry", "defaultErrorMessage") + "', '" + user.MobileNo + "') },100); })();", null);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }             
->>>>>>> origin/feature/android/ACME-II/OVIS-main
     }
 
     internal class WebViewClient : WebChromeClient

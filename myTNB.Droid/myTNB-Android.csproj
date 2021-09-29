@@ -6330,12 +6330,9 @@
     <Compile Include="Src\MyTNBService\Response\TriggerOVISServicesResponseModel.cs" />
     <Compile Include="Src\MyTNBService\Response\GetOvervoltageClaimDetailModel.cs" />
     <Compile Include="Src\MyTNBService\Request\TriggerOVISServicesRequestModel.cs" />
-<<<<<<< HEAD
     <Compile Include="Src\Helper\UrlUtility.cs" />
-=======
     <Compile Include="Src\OverVoltageClaim\Model\DTOWebView.cs" />
     <Compile Include="Src\OverVoltageFeedback\Model\DTOWebView.cs" />
->>>>>>> origin/feature/android/ACME-II/OVIS-main
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -6683,11 +6680,8 @@
     <Folder Include="Src\PaymentInfoSunmittedSuccess\Activity\" />
     <Folder Include="Src\FeedBackSubmittedSucess\Activity\" />
     <Folder Include="Src\PaymentInfoSunmittedSuccess\Activity\" />
-<<<<<<< HEAD
     <Folder Include="Src\Helper\" />
-=======
     <Folder Include="Src\OverVoltageClaim\Model\" />
->>>>>>> origin/feature/android/ACME-II/OVIS-main
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
