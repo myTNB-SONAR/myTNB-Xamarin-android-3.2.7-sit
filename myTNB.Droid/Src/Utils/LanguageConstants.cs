@@ -2,6 +2,7 @@
 {
     public class LanguageConstants
     {
+        internal static readonly string DASHBOARD_HOME = "DashboardHome";
         internal static readonly string BILLS = "Bills";
         internal static readonly string COMMON = "Common";
         internal static readonly string ERROR = "Error";
@@ -17,6 +18,14 @@
         {
             internal static readonly string RWDS_UNAVAILABLE_TITLE = "rewardsUnavailableTitle";
             internal static readonly string RWDS_UNAVAILABLE_MSG = "rewardsUnavailableMsg";
+        }
+
+        internal struct DashboardHome
+        {
+            internal static readonly string DBR_REMINDER_POPUP_TITLE = "dbrReminderPopupTitle";
+            internal static readonly string DBR_REMINDER_POPUP_MESSAGE = "dbrReminderPopupMessage";
+            internal static readonly string DBR_REMINDER_POPUP_START_NOW = "dbrReminderPopupStartNow";
+            internal static readonly string GOT_IT = "gotIt";
         }
 
         internal struct Bills
