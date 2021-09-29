@@ -322,40 +322,40 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     var usin = data.usrInf;
                     AccNoDesc = "";
                     //verifyCADetailsExt Endpoint
-                    CancellationTokenSourceWrapper.EnquiryTimeout = true;
-                    TriggerOVISServicesResponse = await ServiceApiImpl.Instance.TriggerOVISServices(new TriggerOVISServicesRequestModel(usin.sspuid, "POST", "/claim/verifyCADetailsExt", listData));//verifyCADetailsExt
-                    CancellationTokenSourceWrapper.EnquiryTimeout = false;
+                    CancellationTokenSourceWrapper.isOvervoltageClaimPilotNonPilotTimeout = true;
+                    TriggerOVISServicesResponse = await ServiceApiImpl.Instance.TriggerOVISServices(new TriggerOVISServicesRequestModel(usin.sspuid, "POST", "/claim/verifyCADetailsExt", listData));//verifyCADetailsExt //verifyCADetailsUnderMaintenanceExt
+                    CancellationTokenSourceWrapper.isOvervoltageClaimPilotNonPilotTimeout = false;
                     if (TriggerOVISServicesResponse != null)
                     {
                         if (TriggerOVISServicesResponse.d != null)
                         {
                             IsPilot = TriggerOVISServicesResponse.d.OvervoltageClaimEnabled;
                             OvisUnderMaintenance = TriggerOVISServicesResponse.d.IsOvisUnderMaintenance;
-
-                            if (OvisUnderMaintenance)
+                            
+                            if (IsPilot)
                             {
-                                overvoltageclaimConstraint.Visibility = ViewStates.Visible;
-                                txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
-                                txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
-                                updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
-                                updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                                overvoltageclaimConstraint.Clickable = true;
-                                accountLayout4.Visibility = ViewStates.Visible;
-
-                                var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageMaintenanceLabel");
-                                InfoLabel.Text = infoValue;
-                            }
-                            else
-                            {
-                                //Non Pilot
-                                if (!TriggerOVISServicesResponse.d.OvervoltageClaimEnabled)
+                                //InLocal Storage store true.
+                                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                                ISharedPreferencesEditor editor = prefs.Edit();
+                                editor.PutBoolean("StoreUnderMaintanance", true);
+                                editor.Apply();
+                                if (OvisUnderMaintenance)
                                 {
-                                    overvoltageClaimVisible = false;
+                                    // Ovis UnderMaintenance flow
+                                    overvoltageclaimConstraint.Visibility = ViewStates.Visible;
+                                    txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
+                                    txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
+                                    updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
+                                    updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
+                                    overvoltageclaimConstraint.Clickable = true;
+                                    accountLayout4.Visibility = ViewStates.Visible;
+
+                                    var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageMaintenanceLabel");
+                                    InfoLabel.Text = infoValue;
                                 }
-
-                                //Pilot
-                                else if (TriggerOVISServicesResponse.d.OvervoltageClaimEnabled)
+                                else
                                 {
+                                    // Pilot Flow
                                     overvoltageClaimVisible = true;
                                     IsWhiteListedArea = true;
                                     overvoltageclaimConstraint.Visibility = ViewStates.Visible;
@@ -412,26 +412,33 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                                             InfoLabel.Text = infoValue;
                                         }
                                     }
-
                                 }
-
                             }
-
+                            else
+                            {
+                                // Non Pilot flow
+                                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                                ISharedPreferencesEditor editor = prefs.Edit();
+                                editor.PutBoolean("StoreUnderMaintanance", false);
+                                editor.Apply();
+                                overvoltageClaimVisible = false;
+                            }
                         }
                         else
                         {
                             if (TriggerOVISServicesResponse.d == null)
                             {
-                                IsServerDown = true;
-                                overvoltageclaimConstraint.Visibility = ViewStates.Visible;
-                                txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
-                                txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
-                                updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
-                                updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                                overvoltageclaimConstraint.Clickable = true;
-                                accountLayout4.Visibility = ViewStates.Visible;
-                                var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailable");
-                                InfoLabel.Text = infoValue;
+                                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                                bool mBool = prefs.GetBoolean("StoreUnderMaintanance", false);
+                                if (mBool)
+                                {
+                                    //server down
+                                    ServerDown();
+                                }
+                                else
+                                {
+                                    overvoltageClaimVisible = false;
+                                }
                                 HideProgressDialog();
                             }
                             else
@@ -450,19 +457,34 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             }
             catch (Exception ex)
             {
-                IsServerDown = true;
-                overvoltageclaimConstraint.Visibility = ViewStates.Visible;
-                txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
-                txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
-                updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
-                updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                overvoltageclaimConstraint.Clickable = true;
-                accountLayout4.Visibility = ViewStates.Visible;
-                var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailable");
-                InfoLabel.Text = infoValue;
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                bool mBool = prefs.GetBoolean("StoreUnderMaintanance", false);
+                if (mBool)
+                {
+                    //server down
+                    ServerDown();
+                }
+                else
+                {
+                    overvoltageClaimVisible = false;
+                }
                 HideProgressDialog();
 
             }
+        }
+
+        public void ServerDown()
+        {
+            IsServerDown = true;
+            overvoltageclaimConstraint.Visibility = ViewStates.Visible;
+            txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
+            txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
+            updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
+            updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
+            overvoltageclaimConstraint.Clickable = true;
+            accountLayout4.Visibility = ViewStates.Visible;
+            var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailable");
+            InfoLabel.Text = infoValue;
         }
 
         private void TxtAccountNo_FocusChange(object sender, View.FocusChangeEventArgs e)
@@ -613,16 +635,17 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                
                 if (IsServerDown)
                 {
-                    IsServerDown = true;
-                    overvoltageclaimConstraint.Visibility = ViewStates.Visible;
-                    txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
-                    txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
-                    updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
-                    updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                    overvoltageclaimConstraint.Clickable = true;
-                    accountLayout4.Visibility = ViewStates.Visible;
-                    var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailable");
-                    InfoLabel.Text = infoValue;
+                    ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                    bool mBool = prefs.GetBoolean("StoreUnderMaintanance", false);
+                    if (mBool)
+                    {
+                        //server down
+                        ServerDown();
+                    }
+                    else
+                    {
+                        overvoltageClaimVisible = false;
+                    }
                 }
                 else
                 {
