@@ -17,6 +17,7 @@ using DynatraceAndroid;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Helper;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.OverVoltageClaim.Model;
 using myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity;
@@ -130,6 +131,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 var Manufacturer = DeviceInfo.Manufacturer;
                 var data = new BaseRequest();
                 var usin = data.usrInf;
+                UserEntity user = UserEntity.GetActive();               
 #if DEBUG
                 //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
 #endif
@@ -154,19 +156,31 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
 
                 string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
-                // string domain = "http://192.168.1.157:3000/"; // WebView Local
+                //string domain = "http://192.168.1.157:3000/"; // WebView Local
 
-                string url = domain;
+                UrlUtility urlUtility = new UrlUtility();
+                urlUtility.AddQueryParams("CA", accNo);
+                urlUtility.AddQueryParams("eid", usin.eid);
+                urlUtility.AddQueryParams("appVersion", AppVersion);
+                urlUtility.AddQueryParams("os", OsVersion);
+                urlUtility.AddQueryParams("Manufacturer", Manufacturer);
+                urlUtility.AddQueryParams("model", DeviceModel);
+                urlUtility.AddQueryParams("session_id", LaunchViewActivity.DynatraceSessionUUID);
+                urlUtility.AddQueryParams("lang", usin.lang);
+                urlUtility.AddQueryParams("IDCN", user.IdentificationNo);
+                urlUtility.AddQueryParams("userID", user.UserID);
+                urlUtility.AddQueryParams("name", user.DisplayName);
+                urlUtility.AddQueryParams("sec_auth_k1", usin.sec_auth_k1);
+                urlUtility.AddQueryParams("mobileNo", user.MobileNo);
 
-                url += "?CA=" + accNo + "&eid=" + usin.eid + "&appVersion=" + AppVersion + "&os=" + OsVersion + "&Manufacturer=" + Manufacturer + "&model=" + DeviceModel + "&session_id=" + LaunchViewActivity.DynatraceSessionUUID;
-
+                string url = urlUtility.EncodeURL(domain);
                 if (TextViewUtils.IsLargeFonts)
                 {
                     url += "&large";
                 }
 
                 webView.LoadUrl(url); 
-                await Task.Delay(0);               
+                await Task.Delay(0);             
             }
             catch (Exception e)
             {
@@ -361,27 +375,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             }
         }
 
-        internal void PassData()
-        {
-            try
-            {
-                var data = new BaseRequest();
-                var usin = data.usrInf;
-                var ac = accNo.Trim();
-                var datajson = JsonConvert.SerializeObject(usin);
-                Console.WriteLine(datajson);
-                
-                UserEntity user = UserEntity.GetActive();
-                //webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { getUserInfo('" + ac +"', '" + user.IdentificationNo + "', '" + user.UserID + "', '" + user.DisplayName + "','" + datajson + "') },100); })();", null);
-                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { getUserInfo('" + ac + "', '" + user.IdentificationNo + "', '" + user.UserID + "', '" + user.DisplayName + "','" + usin.eid + "','" + usin.lang + "','" + usin.sec_auth_k1 + "','" + Utility.GetLocalizedLabel("SubmitEnquiry", "defaultErrorMessage") + "', '" + user.MobileNo + "') },100); })();", null);
-
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
+       
     }
 
     internal class WebViewClient :  WebChromeClient
@@ -413,8 +407,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
 
             if (newProgress == 100)
             {
-                this.overVoltageClaim.HideProgressDialog();
-                overVoltageClaim.PassData();
+                this.overVoltageClaim.HideProgressDialog();               
             
             }           
         }
