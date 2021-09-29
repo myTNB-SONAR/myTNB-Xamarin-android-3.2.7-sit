@@ -22,6 +22,7 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Feedback_Login_BillRelated.Activity;
 using myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP;
+using myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SiteCore;
@@ -441,7 +442,19 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             //generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
             //StartActivityForResult(generalEnquiry, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
         }
+        public void ShowAboutBillEnquiry()
+        {
 
+            Intent generalEnquiry = new Intent(this, typeof(FeedbackAboutBillEnquiryStepOneActivity));
+            generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
+            StartActivity(generalEnquiry);
+
+
+            //Intent generalEnquiry = new Intent(this, typeof(FeedbackGeneralEnquiryStepOneActivity));
+            //generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
+            //StartActivityForResult(generalEnquiry, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
+        }
+        
         public void ShowSelectAccount()
         {
             Intent supplyAccount = new Intent(this, typeof(FeedbackSelectAccountActivity));
@@ -514,7 +527,39 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     if (isAllowedToPass)
                     {
                         this.SetIsClicked(true);
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false,false);
+                    }
+                    else
+                    {
+                        this.SetIsClicked(false);
+                    }
+                }
+            }
+        }
+        [OnClick(Resource.Id.aboutBillEnquiryConstraint)]
+        void OnAboutBillEnquiryConstraint(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+
+
+                this.SetIsClicked(true);
+
+
+                if (DownTimeEntity.IsBCRMDown())
+                {
+                    OnBCRMDownTimeErrorMessage();
+                    this.SetIsClicked(false);
+                }
+                else
+                {
+                    string accno = txtAccountNo.Text.ToString().Trim();
+                    bool isAllowedToPass = this.userActionsListener.CheckRequiredFields(accno);
+
+                    if (isAllowedToPass)
+                    {
+                        this.SetIsClicked(true);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false,true);
                     }
                     else
                     {
@@ -544,7 +589,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     if (isAllowed)
                     {
                         this.SetIsClicked(true);
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), true);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), true,false);
                     }
                     else
                     {
