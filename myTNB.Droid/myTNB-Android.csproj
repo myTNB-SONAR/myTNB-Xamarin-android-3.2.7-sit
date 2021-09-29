@@ -42,13 +42,8 @@
     </AndroidSupportedAbis>
     <MandroidI18n />
     <LangVersion>8.0</LangVersion>
-    <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
-    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
-    <BundleAssemblies>false</BundleAssemblies>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
-    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
     <DebugSymbols>true</DebugSymbols>
     <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
@@ -79,10 +74,6 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <MandroidI18n>West</MandroidI18n>
     <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
-    <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
-    <BundleAssemblies>false</BundleAssemblies>
-    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
     <AndroidUseAapt2>true</AndroidUseAapt2>
   </PropertyGroup>
@@ -7577,6 +7568,38 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\icons_display_bill_related.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\icons_display_bill_related.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\icons_display_bill_related.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\icons_display_bill_related.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icons_display_bill_related.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedbackAboutBillEnquiryStepOneActivityView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\Activity\FeedbackAboutBillEnquiryStepOneActivity.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\Adapter\FeedbackAboutBillEnquiryStepOneImageRecyclerAdapter.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\MVP\FeedbackAboutBillEnquiryStepOneContract.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\MVP\FeedbackAboutBillEnquiryStepOnePresenter.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepTwo\Activity\FeedbackGeneralEnquiryStepTwoActivity.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepTwo\Model\FeedbackUpdateDetailsModel.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepTwo\MVP\FeedbackGeneralEnquiryStepTwoContract.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepTwo\MVP\FeedbackGeneralEnquiryStepTwoPresenter.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\Banner_New_Bill_1.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -8102,6 +8125,8 @@
     <Folder Include="Src\Bills\NewBillRedesign\Model\" />
     <Folder Include="Src\Bills\NewBillRedesign\Fragment\" />
     <Folder Include="Src\Utils\Deeplink\" />
+    <Folder Include="Src\FeedbackAboutBillEnquiryStepOne\" />
+    <Folder Include="Src\FeedbackAboutBillEnquiryStepTwo\" />
     <Folder Include="Src\Utils\LinkRedirection\" />
   </ItemGroup>
   <ItemGroup>
