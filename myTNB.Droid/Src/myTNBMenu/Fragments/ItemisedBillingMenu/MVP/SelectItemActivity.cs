@@ -26,6 +26,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         [BindView(Resource.Id.item_liste_view)]
         ListView listItemView;
 
+        [BindView(Resource.Id.itemListTitle)]
+        readonly TextView itemListTitle;
+
         SelectItemAdapter selectItemAdapter;
         List<Item> itemList;
         private string PAGE_ID = "";
@@ -43,6 +46,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         {
             base.OnCreate(savedInstanceState);
             SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+
+            TextViewUtils.SetMuseoSans500Typeface(itemListTitle);
+            TextViewUtils.SetTextSize16(itemListTitle);
+
+            itemListTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.BILL_FILTER, LanguageConstants.BillFilter.FILTER_DESC);
+
             Bundle extras = Intent.Extras;
 
             itemList = new List<Item>();
@@ -58,7 +67,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 }
             }
 
-            SetToolBarTitle(Utility.GetLocalizedLabel("BillFilter", "selectFilter"));
+            SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.BILL_FILTER, LanguageConstants.BillFilter.FILTER_TITLE));
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
         }
