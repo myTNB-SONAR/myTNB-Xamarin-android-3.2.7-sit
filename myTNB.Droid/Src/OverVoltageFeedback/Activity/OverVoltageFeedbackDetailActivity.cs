@@ -113,19 +113,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                     SetToolBarTitle(Intent.GetStringExtra("TITLE"));
                     TempTitle = "Overvoltage Claim";
                 }
-                setAppointmentFlag = Convert.ToBoolean(Intent.GetStringExtra("setAppointmentFlag"));
-                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera) != (int)Permission.Granted)
-                {
-                    RequestPermissions(new string[] { Manifest.Permission.Camera, Manifest.Permission.Flashlight }, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
-                    return;
-                }
-
-                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted &&
-                    ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted)
-                {
-                    RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-                    return;
-                }
+                setAppointmentFlag = Convert.ToBoolean(Intent.GetStringExtra("setAppointmentFlag"));              
             }
             catch (Exception e)
             {
