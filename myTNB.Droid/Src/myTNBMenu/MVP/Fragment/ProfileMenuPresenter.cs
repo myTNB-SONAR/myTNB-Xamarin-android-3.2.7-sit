@@ -12,9 +12,9 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using myTNB;
-using myTNB.Mobile;
 using myTNB_Android.Src.AppLaunch.Models;
 using Android.Content;
+using myTNB.Mobile;
 using myTNB_Android.Src.DeviceCache;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment

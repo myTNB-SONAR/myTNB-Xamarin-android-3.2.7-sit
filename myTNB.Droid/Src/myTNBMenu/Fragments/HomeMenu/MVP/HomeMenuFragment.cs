@@ -107,7 +107,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         //[BindView(Resource.Id.shimmerDiscoverMoreImageLayout)]
         //ShimmerFrameLayout shimmerDiscoverMoreImageLayout;
-
         //[BindView(Resource.Id.shimmerDiscoverMoreTxtLayout)]
         //ShimmerFrameLayout shimmerDiscoverMoreTxtLayout;
 
@@ -456,11 +455,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.SetIsClicked(false);
                     Bundle extras = data.Extras;
-
                     if (extras.ContainsKey("EBList"))
                     {
                         if (UserSessions.GetEnergyBudgetList().Count == 1)
                         {
+                            MyTNBAccountManagement.GetInstance().OnHoldWhatNew(true);
                             this.SetIsClicked(false);
                             List<SMRAccount> smaccEB = new List<SMRAccount>();
                             smaccEB = UserSessions.GetEnergyBudgetList();
@@ -474,7 +473,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                     else
                     {
-                       
                         MyTNBAccountManagement.GetInstance().OnHoldWhatNew(true);
                         /*MyTNBAccountManagement.GetInstance().SetMaybeLater(true);
                         ShowDiscoverMoreLayout();
@@ -484,9 +482,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private void SetNotificationIndicator()
+        public void SetNotificationIndicator()
         {
-            OnSetNotificationNewLabel(UserNotificationEntity.HasNotifications(), UserNotificationEntity.Count());
+            try
+            {
+                OnSetNotificationNewLabel(UserNotificationEntity.HasNotifications(), UserNotificationEntity.Count());
+                //this.presenter.UserNotificationsCount();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
@@ -505,8 +511,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 SetDBRDiscoverView();
                 SetupNewFAQView();
-
-                
 
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, discoverMoreTitle, btnRefresh, txtAdd
@@ -629,7 +633,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
                 ShowDiscoverMoreLayout();
-                
             }
             catch (System.Exception e)
             {
@@ -1103,7 +1106,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         //    {
         //        Utility.LoggingNonFatalError(ex);
         //    }
-
         //}
 
         private void SetupNewFAQShimmerEffect()
@@ -1142,7 +1144,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void SetDBRDiscoverView()
         {
             SetDiscoverResult(IsAccountDBREligible);
-            this.presenter.GetSavedNewFAQTimeStamp();
+            //this.presenter.GetSavedNewFAQTimeStamp();
         }
 
         public void HideNewFAQ()
@@ -1616,7 +1618,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         this.presenter.GetUserNotifications();
                     }
-
                     UpdateGreetingsHeader(this.presenter.GetGreeting());
                 }
 
@@ -1952,9 +1953,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         }
 
         public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
-        {
+        {           
             accountsAdapter.SetAccountCards(accountList);
-            accountsRecyclerView.SetAdapter(accountsAdapter);
+            accountsRecyclerView.SetAdapter(accountsAdapter);          
         }
 
         public void SetAccountListCardsFromLocal(List<SummaryDashBoardDetails> accountList)
@@ -2434,7 +2435,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 UserSessions.SetSMRAccountList(currentSmrAccountList);
                 UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
-                UserSessions.EnergyBudget(allSMRBlillingAccounts);                  //energy budget
+                UserSessions.EnergyBudget(allSMRBlillingAccounts);                 
 
                 accountListRefreshContainer.Visibility = ViewStates.Gone;
                 accountListViewContainer.Visibility = ViewStates.Visible;
@@ -2442,9 +2443,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
                 }
-
                 searchEditText.SetQuery("", false);
                 OnLoadAccount();
+
+                FilterCOMCLandNEM();
 
                 SetBottomLayoutBackground(false);
                 this.presenter.InitiateService();
@@ -2526,12 +2528,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SetBottmLayoutParams(21f);
                 }
 
-                List<SMRAccount> allSMRBlillingAccounts = new List<SMRAccount>();       //energy budget
+                List<SMRAccount> allSMRBlillingAccounts = new List<SMRAccount>();                   //energy budget
                 allSMRBlillingAccounts.AddRange(SMeterAccountList);
 
                 UserSessions.SetSMRAccountList(currentSmrAccountList);
                 UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
-                UserSessions.EnergyBudget(allSMRBlillingAccounts);                  //energy budget
+                UserSessions.EnergyBudget(allSMRBlillingAccounts);                                        //energy budget
 
                 accountListRefreshContainer.Visibility = ViewStates.Gone;
                 accountListViewContainer.Visibility = ViewStates.Visible;
@@ -2539,6 +2541,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
                 }
+
+                FilterCOMCLandNEM();
 
                 if (HomeMenuUtils.GetIsQuery())
                 {
@@ -2576,6 +2580,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.presenter.RestoreCurrentAccountState();
                 }
+
                 this.presenter.ReadNewFAQFromCache();
             }
         }
@@ -2645,8 +2650,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
             List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
             List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+            List<CustomerBillingAccount> smartmeterAccounts = CustomerBillingAccount.SMeterBudgetAccountList();        //smart meter ca
             List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
             List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
+            List<SMRAccount> SMeterAccountList = new List<SMRAccount>();
             if (eligibleSMRBillingAccounts.Count > 0)
             {
                 foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
@@ -2670,6 +2677,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     smrAccount.accountAddress = billingAccount.AccountStAddress;
                     smrAccount.accountSelected = false;
                     currentSmrAccountList.Add(smrAccount);
+                }
+            }
+
+            if (smartmeterAccounts.Count > 0)
+            {
+                foreach (CustomerBillingAccount billingAccount in smartmeterAccounts)
+                {
+                    SMRAccount smrAccount = new SMRAccount();
+                    smrAccount.accountNumber = billingAccount.AccNum;
+                    smrAccount.accountName = billingAccount.AccDesc;
+                    smrAccount.accountAddress = billingAccount.AccountStAddress;
+                    smrAccount.accountSelected = false;
+                    smrAccount.BudgetAmount = billingAccount.BudgetAmount;
+                    SMeterAccountList.Add(smrAccount);
                 }
             }
 
@@ -2700,9 +2721,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 accountCard.Visibility = ViewStates.Visible;
                 SetBottmLayoutParams(21f);
             }
+            List<SMRAccount> allSMRBlillingAccounts = new List<SMRAccount>();       //energy budget
+            allSMRBlillingAccounts.AddRange(SMeterAccountList);
 
             UserSessions.SetSMRAccountList(currentSmrAccountList);
             UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
+            UserSessions.EnergyBudget(allSMRBlillingAccounts);                  //energy budget
 
             accountListRefreshContainer.Visibility = ViewStates.Gone;
             accountListViewContainer.Visibility = ViewStates.Visible;
@@ -2710,6 +2734,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
             }
+
+            FilterCOMCLandNEM();
 
             searchEditText.SetQuery("", false);
 
@@ -3342,7 +3368,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private void OnSetNotificationNewLabel(bool flag, int count)
+        public void OnSetNotificationNewLabel(bool flag, int count)
         {
             try
             {
@@ -3677,7 +3703,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void ShowDiscoverMoreLayout()
         {
-            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() 
+                && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
             {
                 discoverMoreContainer.Visibility = ViewStates.Visible;
                 if(discoverTitle.Visibility == ViewStates.Visible)
@@ -3689,25 +3716,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     discoverMoreTitle.Visibility = ViewStates.Visible;
                 }
                 
-               
                 try
                 {
-                    //DateTime publishDateTime = DateTime.ParseExact(whatsNewList[position].PublishDate, "yyyyMMddTHHmmss",
                     DateTime publishDateTime = DateTime.UtcNow;
-                    //CultureInfo.InvariantCulture, DateTimeStyles.None);
-
-                    /*if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-                    {
-                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
-                        txtDate.Text = publishDateTime.ToString("dd MMM yyyy", currCult);
-                        isDateAvailable = true;
-                    }
-                    else
-                    {
-                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                        txtDate.Text = publishDateTime.ToString("dd MMM yyyy", currCult);
-                        isDateAvailable = true;
-                    }*/
                     txtDate.Text = GetLabelByLanguage("DiscoverMoreDate");
 
                     if (UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
@@ -3747,16 +3758,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        public bool CheckWhatNewPopupAlready()
-        {
-            return ((DashboardHomeActivity)Activity).CheckWhatNewPopupCount();
-        }
 
         public void WhatNewCheckAgain()
         {
-            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && MyTNBAccountManagement.GetInstance().IsOnHoldWhatNew())
+            try
             {
-                ((DashboardHomeActivity)Activity).OnCheckWhatsNewTab();
+                if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && MyTNBAccountManagement.GetInstance().IsOnHoldWhatNew())
+                {
+                    ((DashboardHomeActivity)Activity).OnCheckWhatsNewTab();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void FilterCOMCLandNEM()
+        {
+            try
+            {
+                ((DashboardHomeActivity)Activity).FilterComAndNEM();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
     }

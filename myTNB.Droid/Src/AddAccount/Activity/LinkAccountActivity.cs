@@ -1097,6 +1097,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     {
                         if (newAccount.accountNumber.Equals(item.accountNumber))
                         {
+                            newAccount.accountTypeId = item.accountTypeId == null ? "0" : item.accountTypeId;
                             newAccount.accountAddress = item.accountStAddress;
                             newAccount.houseNo = item.houseNo;
                             newAccount.unitNo = item.unitNo;
@@ -1111,7 +1112,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             newAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
                             newAccount.isOwned = item.isOwned;
                             newAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
-                            newAccount.BudgetAmount = item.smartMeterCode == null ? "0" : item.BudgetAmount;
+                            newAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                             finalAccountList.Add(newAccount);
 
                             //UserSessions.SaveAddress(mSharedPref, false);
@@ -1126,13 +1127,14 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     {
                         if (extraAccount.accountNumber.Equals(item.accountNumber))
                         {
+                            extraAccount.accountTypeId = item.accountTypeId == null ? "1" : item.accountTypeId;
                             extraAccount.accountAddress = item.accountStAddress;
                             extraAccount.ownerName = item.accountOwnerName;
                             extraAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
                             extraAccount.isOwned = item.isOwned;
                             extraAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             extraAccount.accountTypeId = item.accountTypeId == null ? string.Empty : item.accountTypeId;
-                            extraAccount.BudgetAmount = item.smartMeterCode == null ? "0" : item.BudgetAmount;
+                            extraAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                             finalAccountList.Add(extraAccount);
                         }
                     }

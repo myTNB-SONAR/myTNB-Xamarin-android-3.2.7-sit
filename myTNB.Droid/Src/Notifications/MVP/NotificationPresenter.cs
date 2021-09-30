@@ -547,6 +547,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                 }
                                             }
                                         }
+                                   
                                     }
                                     else
                                     {
@@ -554,6 +555,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                     }
                                 }
                             }
+                            
                         }
 
                     }

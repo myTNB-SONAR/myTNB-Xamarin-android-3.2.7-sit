@@ -446,7 +446,7 @@
   },
   "Usage": {
     "title": "Usage",
-    "accountsMissing": "Why are some of my accounts not here?",
+    "accountsMissing": "Mengapa akaun saya tiada di sini?",
     "gotIt": "Ok!",
     "disconnectionMsg": "<strong>Apakah maksudnya?</strong><br><br>Bekalan elektrik anda telah dipotong. Pemotongan ini mungkin disebabkan oleh permintaan pemilik premis, atau tunggakan bayaran bil.<br><br>Sekiranya anda telah memohon untuk sambungan semula, atau telah membuat bayaran, bekalan anda akan disambung dalam masa terdekat.",
     "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
@@ -485,12 +485,12 @@
     "accountTypeDialogMessage": "Anda boleh log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> myTNB menggunakan maklumat log masuk yang sama dan nikmati akses penuh untuk akaun tersebut.",
     //EnergyBudget
     "myMonthlyBudget": "Energy Budget saya adalah",
-    "whyIsAmountDiff": "Mengapakah jumlah penggunaan saya lain daripada jumlah bil saya?",
+    "whyIsAmountDiff": "Adakah ini akan menjadi jumlah bil saya?",
     "whyIsAmountDiffBody": "Jumlah penggunaan terkini anda adalah jumlah tenaga yang anda telah guna setakat ini. Oleh kerana jumlah ini belum dibilkan mengikuti kitaran pembilan anda, ia belum tertakluk kepada cukai, diskaun atau caj tambahan dari kami.",
     "editEnergyButton": "Tetapkan Energy Budget anda",
     "setEnergyButton": "Tetapkan Sekarang",
     "saveEnergyButton": "Simpan Energy Budget baharu",
-    "toastSaveBudgetuccessfull": "Anda telah berjaya menetapkan Energy Budget anda!",
+    "toastSaveBudgetuccessfull": "Anda telah menetapkan had Energy Budget bulanan anda!",
     "myUsageSoFar": "Penggunaan saya setakat ini",
     "disconnectedEnergyBudget": "Nampaknya Energy Budget anda terputus sambungan. Refresh untuk sambung semula!",
     "refreshNowEnergyBudgetButton": "'Refresh' Sekarang",
@@ -500,7 +500,11 @@
     "tutorialUsageTitle": "Lihat butiran akaun anda di sini.",
     "tutorialUsageDesc": "Lihat butiran akaun anda dengan mudah dan urus pengguna lain yang mempunyai akses pada akaun anda di sini.",
     "tutorialUsageDescNonOwner": "Lihat butiran akaun anda dengan mudah di sini.",
-    "skip": "Tekan untuk melangkau."
+    "skip": "Tekan untuk melangkau.",
+    "feedback1Title": "Tahniah! Bagaimanakah pengalaman penetapan Energy Budget anda?",
+    "feedbackDontAskAgain": "Tidak Berminat",
+    "feedbackSuccessTitle": "Terima kasih atas maklumbalas anda",
+    "feedbackSuccessButton": "OK"
   },
   "Bills": {
     "title": "Bil",
@@ -652,7 +656,14 @@
     "viewBudget": "Paparkan Budget",
     "viewTips": "Rujuk Tips",
     "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks",
-    "EnergyBudgetTitle": "Energy Budget"
+    "EnergyBudgetTitle": "Energy Budget",
+    "energyBudgetSavingTips":"Tips cekap tenaga",
+    "feedback2Title":"Adakah anda rasa Energy Budget ini berguna pada anda?",
+    "likeButtonDetails":"Ya",
+    "dislikeButton":"Tidak",
+    "dontAskAgain":"Tidak Berminat",
+    "feedback2SuccessTitle":"Terima kasih atas maklumbalas anda",
+    "feedback2SuccessButton":"OK"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -2765,6 +2776,24 @@
     "userExistedDetails": "Pengguna ini sudah mempunyai akses untuk akaun ini. Cuba alamat e-mel yang lain."
   },
   
+  "EnregyBudgetListing": {
+    "title": "Pilih Akaun Meter Pintar",
+    "tootltipTitle": "Kenapa sesetengah akaun saya yang tidak tersenarai?",
+    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
+    "headerTitle":"Mari mulakan dengan memilih akaun Smart Meter anda"
+  },
+
+  "EnergyBudgetPopup": {
+    "title": "Tahniah! Rasai pengalaman baru dalam mengawal penggunaan elektrik bersama Energy Budget!",
+    "threeEasyStep": "Penjimatan wang melalui 3 cara mudah:",
+    "firstStep": "TETAPKAN tahap penggunaan bulanan meter pintar terpilih anda",
+    "secondStep": "PANTAU penggunaan harian dengan mudah",
+    "thirdStep": "BERJIMAT apabila anda menghampiri penggunaan yang anda tetapkan",
+    "txtLetgetstarted": "Mula Sekarang",
+    "txtViewmybudget": "Lihat Budget Saya",
+    "txtMaybelater": "Kemudian"
+  },
+
   "ManageDigitalBillLanding": {
     "title": "Urus Cara Penerimaan Bil",
     "dbrViewBillDelivery": "Cara Penerimaan Bil",
@@ -2809,21 +2838,6 @@
     "nevermind": "Tidak Mengapa",
     "confirm": "Sahkan"
   },
-  "EnregyBudgetListing": {
-    "title": "Pilih Akaun Meter Pintar",
-    "tootltipTitle": "Mengapakah sesetengah akaun saya tidak disenaraikan?",
-    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Apabila meter anda telah ditukarkan ke meter pintar, akaun tersebut akan ditambah secara automatik ke dalam senarai ini."
-  },
-  "EnergyBudgetPopup": {
-    "title": "Kawal penggunaan elektrik anda dengan mudah Bersama Energy Budget!",
-    "threeEasyStep": "Penjimatan wang melalui 3 cara mudah:",
-    "firstStep": "TETAPKAN tahap penggunaan bulanan anda",
-    "secondStep": "PANTAU penggunaan harian dengan mudah",
-    "thirdStep": "BERJIMAT apabila anda menghampiri penggunaan yang anda tetapkan",
-    "txtLetgetstarted": "Mari Kita Mulakan",
-    "txtViewmybudget": "Lihat Budget Saya",
-    "txtMaybelater": "Kemudian"
-  },
   "ServiceConfiguration": {
     "Eligibility": {
       "enabled": true,
@@ -2837,5 +2851,26 @@
     "BillRendering": {
       "enabled": true
     }
+  },
+
+  "FeedBackEB": {
+    "title": "Maklum balas tetapan Energy Budget",
+    "improveTitle": "Apa yang telah berlaku? ",
+    "titleSelectApplies": "Sila pilih apa yang berkenaan",
+    "tellusMore": "Berikan butiran penuh (Jika ada)",
+    "hinttellusMore": "baki aksara",
+    "btnNoThank": "Tidak",
+    "btnShare": "Kongsikan"
+  },
+
+  "FeedBackEBNotification": {
+    "title": "Maklum balas Energy Budget",
+    "thumbUpYes": "Ya",
+    "thumbDownNo": "Tidak",
+    "btnNoThank": "Tidak",
+    "btnShare": "Kongsikan",
+    "titleSelectApplies": "Sila pilih apa yang berkenaan",
+    "tellusMore": "Berikan butiran penuh (Jika ada)",
+    "hinttellusMore": "baki aksara"
   }
 }

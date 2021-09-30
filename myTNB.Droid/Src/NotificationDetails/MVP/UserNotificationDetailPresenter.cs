@@ -13,6 +13,7 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.EnergyBudgetRating.Request;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -41,6 +42,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         AccountData mSelectedAccountData;
         private ISharedPreferences mSharedPref;
         bool isTaggedSMR = true;
+        bool isSixHaveQuestion = false;
+        bool isSevenHaveQuestion = false;
         private Android.App.Activity mActivity;
 
         public UserNotificationDetailPresenter(UserNotificationDetailContract.IView view, ISharedPreferences mSharedPref)
@@ -299,7 +302,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
                                 delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
-
+                            
                             secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewTips"),
                             delegate () { ViewTips(); });
                             ctaList.Add(secondaryCTA);
@@ -832,6 +835,124 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        //checking count feedback EnergyBudget
+        public async void OnCheckFeedbackCount()
+        {
+            try
+            {
+                int[] myIntArray = {6,7};
+                var questionRespone = await ServiceApiImpl.Instance.ShowEnergyBudgetRatingPage(new GetFeedbackTwoQuestionRequest(myIntArray));
+
+                if (questionRespone.IsSuccessResponse())
+                {
+                    if (questionRespone.Response.ShowWLTYPage)
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsFromClickAdapter(6);
+                        GetRateUsQuestionsNo();
+                    }
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        //checking count feedback EnergyBudget
+        public async void OnCheckUserLeaveOut()
+        {
+            try
+            {
+                string questionCategoryID = "6";
+                var questionRespone = await ServiceApiImpl.Instance.ExperienceRatingUserLeaveOut(new GetRateUsQuestionRequest(questionCategoryID));
+
+                if (!questionRespone.IsSuccessResponse())
+                {
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        //feedback EnergyBudget API QuestionCategoryIdNo
+        public async void GetRateUsQuestionsNo()
+        {
+            try
+            {            
+                string questionCategoryID = "6";
+                var questionRespone = await ServiceApiImpl.Instance.GetRateUsQuestions(new GetRateUsQuestionRequest(questionCategoryID));
+                if (!questionRespone.IsSuccessResponse())
+                {
+                    isSixHaveQuestion = false;
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+                else
+                {
+                    isSixHaveQuestion = true;
+                    this.mView.GetFeedbackTwoQuestionsNo(questionRespone);
+                    GetRateUsQuestionsYes();
+
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
+            }
+        }
+
+        //feedback EnergyBudget API QuestionCategoryIdYes
+        public async void GetRateUsQuestionsYes()
+        {
+            try
+            {
+                string questionCategoryID = "7";
+                var questionRespone = await ServiceApiImpl.Instance.GetRateUsQuestions(new GetRateUsQuestionRequest(questionCategoryID));
+                if (!questionRespone.IsSuccessResponse())
+                {
+                    isSevenHaveQuestion = false;
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+                else
+                {
+                    isSevenHaveQuestion = true;
+                    this.mView.GetFeedbackTwoQuestionsYes(questionRespone);
+                    if (isSixHaveQuestion && isSevenHaveQuestion)
+                    {
+                        this.mView.ShowFeedBackSetupPageRating();
+                    }
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
             }
         }
     }

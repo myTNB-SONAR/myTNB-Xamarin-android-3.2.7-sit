@@ -14,16 +14,20 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
     {
         private static readonly Lazy<ServiceApiImpl>
             lazy = new Lazy<ServiceApiImpl>(() => new ServiceApiImpl());
-        private IServiceV6 api;
-        HttpClient httpClient;
+        private IServiceV6 api, apiAws;
+        HttpClient httpClient, httpClientAws;
 
         private ServiceApiImpl()
         {
 #if DEBUG || DEVELOP || SIT
             httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             api = RestService.For<IServiceV6>(httpClient);
+
+            httpClientAws = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT_AWS) };
+            apiAws = RestService.For<IServiceV6>(httpClientAws);
 #else
             api = RestService.For<IServiceV6>(Constants.SERVER_URL.END_POINT);
+            apiAws = RestService.For<IServiceV6>(Constants.SERVER_URL.END_POINT_AWS);
 #endif
         }
 
@@ -78,6 +82,29 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<CustomerAccountListResponse> GetCustomerAccountList([Body] Request.BaseRequest request, CancellationToken token)
         {
             return api.GetCustomerAccountList<CustomerAccountListResponse>(request, token);
+        }
+
+        /// <summary>
+        /// Call GetAccounts with default timeout.
+        /// </summary>
+        /// <param name = "request" ></ param >
+        /// < returns ></ returns >
+        public Task<CustomerAccountListResponseAppLaunch> GetCustomerAccountListAppLaunch([Body] Request.BaseRequest request)
+        {
+
+            Console.WriteLine("APIWAS call :" + apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponseAppLaunch>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
+            return apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponseAppLaunch>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetAccounts with timeout set.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public Task<CustomerAccountListResponse> GetCustomerAccountListAppLaunch([Body] Request.BaseRequest request, CancellationToken token)
+        {
+            return apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponse>(request, token);
         }
 
         /// <summary>
@@ -543,6 +570,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call SubmitRateUs with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SubmitRateUsResponse> SubmitRateUsV2([Body] Request.BaseRequest request)
+        {
+            return api.SubmitRateUsV2<SubmitRateUsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
         /// Call UpdateLinkedAccountNickName with default timeout.
         /// </summary>
         /// <param name="request"></param>
@@ -560,6 +597,26 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<GetRateUsQuestionResponse> GetRateUsQuestions([Body] Request.BaseRequest request)
         {
             return api.GetRateUsQuestions<GetRateUsQuestionResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call ShowEnergyBudgetRatingPage with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<GetRateUsQuestionResponse> ShowEnergyBudgetRatingPage([Body] Request.BaseRequest request)
+        {
+            return api.ShowEnergyBudgetRatingPage<GetRateUsQuestionResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call ShowEnergyBudgetRatingPage with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<GetRateUsQuestionResponse> ExperienceRatingUserLeaveOut([Body] Request.BaseRequest request)
+        {
+            return api.ExperienceRatingUserLeaveOut<GetRateUsQuestionResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>

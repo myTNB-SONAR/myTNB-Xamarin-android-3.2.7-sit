@@ -76,8 +76,6 @@ namespace myTNB_Android.Src.Firebase.Services
 
         private void SendNotification(string title, string message)
         {
-            // Intent intent = new Intent(this, typeof(NotificationActivity));
-            // intent.PutExtra(Utils.Constants.HAS_NOTIFICATION, true);
             if (UserSessions.Notification != null)
             {
                 Intent intent = new Intent(this, typeof(UserNotificationDetailActivity));

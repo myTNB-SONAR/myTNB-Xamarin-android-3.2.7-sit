@@ -30,6 +30,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using Android.Text;
 using Android.OS;
 using System.Globalization;
+using Java.Util;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -311,7 +312,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             this.mView.IsLoadMoreButtonVisible(false, false);
                         }
-                        this.mView.ShowDiscoverMoreLayout();
+                        //this.mView.ShowDiscoverMoreLayout();
                         OnCleanUpNotifications(summaryDetails);
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "8400")
@@ -647,7 +648,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
-                this.mView.ShowDiscoverMoreLayout();
+                //this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -811,7 +812,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.mView.IsLoadMoreButtonVisible(false, false);
                     }
                 }
-                this.mView.ShowDiscoverMoreLayout();
+                //this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -957,7 +958,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
-                this.mView.ShowDiscoverMoreLayout();
+                //this.mView.ShowDiscoverMoreLayout();
             }
             else
             {
@@ -1280,7 +1281,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
-                this.mView.ShowDiscoverMoreLayout();
+                //this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -1805,19 +1806,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 //this.mView.StopShimmerDiscoverMore();
             }
 
-            //testing adding icon
-            /*var testicon = new MyService()
-            {
-                ServiceCategoryId = "1007",
-                serviceCategoryName = "My Energy Budget",
-                serviceCategoryIcon = "test",
-                serviceCategoryIconUrl = "test",
-                serviceCategoryDesc = "test",
-            };*/
-            //filterList.Add(testicon);
             if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
             {
-                filterList.Insert(2, energyBudget);
+                if (!MyTNBAccountManagement.GetInstance().COMCLandNEM())
+                { 
+                    filterList.Insert(2, energyBudget);
+                }
             }
 
             MyServiceEntity.InsertOrReplace(energyBudget);
@@ -1861,12 +1855,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         ServiceCategoryId = cachedDBList[i].ServiceCategoryId,
                         serviceCategoryName = cachedDBList[i].serviceCategoryName
                     });
-                }
+                }                              
             }
 
             if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
             {
-                cachedList.Insert(2, energyBudget);
+                if (!MyTNBAccountManagement.GetInstance().COMCLandNEM())
+                {
+                    cachedList.Insert(2, energyBudget);
+                }
             }
 
             currentMyServiceList = cachedList;
@@ -2526,6 +2523,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }, new CancellationTokenSource().Token);
         }
 
+        /*public void UserNotificationsCount()
+        {
+            try
+            {
+                _ = Task.Run(() =>
+                 {
+                     bool hasNoti = false;
+                     int noticount = UserNotificationEntity.Count();
+                     if (noticount > 0)
+                     {
+                         hasNoti = true;
+                     }
+                     this.mView.OnSetNotificationNewLabel(hasNoti, noticount);
+                 });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }*/
 
         private async Task InvokeGetUserNotifications()
         {
@@ -2632,11 +2649,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             bool EBUser = false;
 
-            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify()
+                && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
             {
                 EBUser = true;
                 UserSessions.DoHomeTutorialShown(this.mPref);
-
                 if (isAllDone())
                 {
                     HomeMenuUtils.SetIsLoadedHomeMenu(true);
@@ -2648,7 +2665,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 isHomeMenuTutorialShown = true;
                 HomeMenuUtils.SetIsLoadedHomeMenu(true);
 
-                if (!UserSessions.HasHomeTutorialShown(this.mPref))
+                if(!UserSessions.HasHomeTutorialShown(this.mPref))
                 {
                     if (HomeMenuUtils.GetIsRestartHomeMenu())
                     {
@@ -2671,7 +2688,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }
         }
-
+       
         public List<NewAppModel> OnGeneraNewAppTutorialList()
         {
             List<NewAppModel> newList = new List<NewAppModel>();

@@ -47,24 +47,40 @@ namespace myTNB.Mobile
         private const string Passphrase_DEV = "PW-myTNB-DEV";
         private const string Passphrase_PROD = "PW-myTNB-PROD";
 
+        //AWS GetAccount
+        public static string AWSApiDomainSIT = "https://core.stg-mytnb.com/api"; 
+        public static string AWSApiDomainDEV = "https://mytnb-core-staging-362772745.ap-southeast-1.elb.amazonaws.com/api";
+        public static string AWSApiDomainPROD = "https://core.prod-mytnb.com/api";  
+ 
+
 #if DEBUG
         public static string ApiDomain = DEV3;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
+        public static string AWSApiDomain = AWSApiDomainSIT;
+
+        //public static string ApiDomain = PROD;
+        //public const string ApiKeyId = ApiKeyIdPROD;
+        //public const string SitecoreURL = SitecorePROD;
+        //internal const string SaltKey = SaltKeyPROD;
+        //internal const string PassPhrase = PassphrasePROD;
 #elif MASTER || SIT
         public static string ApiDomain = DEV3;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
+        public static string AWSApiDomain = AWSApiDomainSIT;
 #else
         public static string ApiDomain = PROD;
         public const string ApiKeyId = ApiKeyIdPROD;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_PROD;
         internal const string PassPhrase = Passphrase_PROD;
+        public static string AWSApiDomain = AWSApiDomainPROD;
+
 #endif
 
         //Service Name
@@ -95,7 +111,7 @@ namespace myTNB.Mobile
         internal const string Constants_Currency = "RM";
 
         //API Key
-#if RELEASE
+#if RELEASE 
         internal const string APIKey = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJDaGFubmVsIjoibXlUTkJfQVBJX01vYmlsZSIsIkNoYW5uZWxLZXkiOiIwRTBDRDFFOS04MDZDLTREMkEtQUM0NC1BQ0FGRjZCNDdCMDgiLCJuYmYiOjE2MTIzNTI0MjIsImV4cCI6MTYxMjM1NjAyMiwiaWF0IjoxNjEyMzUyNDIyLCJpc3MiOiJteVROQiBBUEkiLCJhdWQiOiJteVROQiBBUEkgQXVkaWVuY2UifQ.eWIvm3kznjBFt84Q79wlylYUTCnCt4L1sjTCI2QjbJMaS_EfSQ96F1ilbYamSmMLYdcNCFz2NCyfWLZJ4ThJyg";
 #else
         internal const string APIKey = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJDaGFubmVsIjoibXlUTkJfQVBJX01vYmlsZSIsIkNoYW5uZWxLZXkiOiJGNUFEQjU0QzM1MkM0NzYwQjUzMkNEOUU1ODdBRTRGNiIsIm5iZiI6MTU5OTE5OTc0OSwiZXhwIjoxNTk5MjAzMzQ5LCJpYXQiOjE1OTkxOTk3NDksImlzcyI6Im15VE5CIEFQSSIsImF1ZCI6Im15VE5CIEFQSSBBdWRpZW5jZSJ9.Sy_xahwMgt2izUgztYq_BQeGECGsahP9oSNHeB1kwB0Ij8Grpg3kQZPCa_b_bbiyngzpjKy38_DFU12wToQAiA";
