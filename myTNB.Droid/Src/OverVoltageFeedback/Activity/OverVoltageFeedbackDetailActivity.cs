@@ -92,7 +92,8 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);                      
+            base.OnCreate(savedInstanceState);
+            isCapture = false;
             try
             {
                 Android.OS.Bundle extras = Intent.Extras;
@@ -272,6 +273,11 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 if (!isCapture)
                 {
                     SetUI();
+                }
+                else if (data.title == "Update Payment Details" || TempTitle == "Update Payment Details")
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "updatePaymentDetailsTitle"));
+                    TempTitle = "Update Payment Details";
                 }
                 else
                 {
