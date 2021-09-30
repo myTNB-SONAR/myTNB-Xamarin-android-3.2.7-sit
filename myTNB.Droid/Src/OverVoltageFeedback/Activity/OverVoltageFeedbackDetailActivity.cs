@@ -146,7 +146,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 var usin = data.usrInf;
                 UserEntity user = UserEntity.GetActive();
                 
-                string domain = "https://mytnbwvovis.ap.ngrok.io/claimPage"+ClaimId; //WebView Live
+                string domain = "https://mytnbwvovis.ap.ngrok.io/claimPage/"+ClaimId; //WebView Live
                 //string domain = "http://192.168.1.157:3000/claimPage/"+ClaimId; // WebView Local
 
                 UrlUtility urlUtility = new UrlUtility();
