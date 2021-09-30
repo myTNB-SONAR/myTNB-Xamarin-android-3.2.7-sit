@@ -8,6 +8,7 @@
         internal static readonly string ERROR = "Error";
         internal static readonly string NBR_COMMS = "NewBillDesignComms";
         internal static readonly string BILL_DETAILS = "BillDetails";
+        internal static readonly string BILL_FILTER = "BillFilter";
 
         internal struct Common
         {
@@ -40,6 +41,13 @@
             internal static readonly string OUTSTANDING_CHARGES_V2 = "outstandingChargesV2";
             internal static readonly string BILL_THIS_MONTH = "billThisMonth";
             internal static readonly string BILL_THIS_MONTH_V2 = "billThisMonthV2";
+
+        }
+
+        internal struct BillFilter
+        {
+            internal static readonly string FILTER_TITLE = "selectViewTitle";
+            internal static readonly string FILTER_DESC = "descriptionRedesign";
         }
 
         internal struct NBRComms

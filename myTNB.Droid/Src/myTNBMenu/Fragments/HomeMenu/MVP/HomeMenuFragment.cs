@@ -705,7 +705,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                        ? billRenderingResponse?.StatusDetail?.PrimaryCTATitle
                        : Utility.GetLocalizedLabel("Common", "ok");
 
-                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                         .SetTitle(title ?? string.Empty)
                         .SetMessage(message ?? string.Empty)
                         .SetCTALabel(cta ?? string.Empty)
@@ -1718,7 +1718,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             }
                             else
                             {
-                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                                      .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
                                      .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
                                      .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)

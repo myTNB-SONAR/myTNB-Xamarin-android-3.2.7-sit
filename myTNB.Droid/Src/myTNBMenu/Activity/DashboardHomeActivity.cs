@@ -361,7 +361,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
             else
             {
-                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                      .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
                      .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
                      .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
@@ -1752,7 +1752,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             bool isExpired = wtManager.CheckIsExpired(rewardID);
                             if (!isExpired)
                             {
-                                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                                     .SetTitle(Utility.GetLocalizedLabel("Error", "usedRewardTitle"))
                                     .SetMessage(Utility.GetLocalizedLabel("Error", "usedRewardMsg"))
                                     .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
@@ -1765,7 +1765,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             }
                             else
                             {
-                                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                                     .SetTitle(Utility.GetLocalizedLabel("Common", "rewardNotAvailableTitle"))
                                     .SetMessage(Utility.GetLocalizedLabel("Common", "rewardNotAvailableDesc"))
                                     .SetCTALabel(Utility.GetLocalizedLabel("Common", "showMoreRewards"))
@@ -1841,7 +1841,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         else
                         {
                             IsRootTutorialShown = true;
-                            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                             .SetTitle(Utility.GetLocalizedLabel("Error", "whatsNewExpiredTitle"))
                             .SetMessage(Utility.GetLocalizedLabel("Error", "whatsNewExpiredMsg"))
                             .SetCTALabel(Utility.GetLocalizedLabel("Error", "whatsNewExpiredBtnText"))
@@ -2204,7 +2204,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             try
             {
                 IsRootTutorialShown = true;
-                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                     .SetTitle(Utility.GetLocalizedLabel("Error", "rewardsUnavailableTitle"))
                     .SetMessage(Utility.GetLocalizedLabel("Error", "rewardsUnavailableMsg"))
                     .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
@@ -2230,7 +2230,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             try
             {
                 IsRootTutorialShown = true;
-                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                     .SetTitle(Utility.GetLocalizedLabel("Error", "whatsNewUnavailableTitle"))
                     .SetMessage(Utility.GetLocalizedLabel("Error", "whatsNewUnavailableMsg"))
                     .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
