@@ -1,55 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
     android:orientation="vertical">
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-    <ScrollView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:background="@null"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:elevation="0dp">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+    </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:overScrollMode="never"
-        android:background="@color/white"
-        android:layout_marginTop="?attr/actionBarSize">
-        <LinearLayout
-            android:id="@+id/rootView"
+        android:background="@color/background_pale_grey"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txttitleEBList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textSize="14dp"
+            android:textColor="@color/new_grey"
+            android:text="Why are some of my accounts not listed?"/>
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/lightGrey">
-            <ListView
-                android:id="@+id/listView"
-                android:background="@color/white"
-                android:scrollbars="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:background="@color/white">
             <LinearLayout
-				android:id="@+id/infoLabelContainerAccNotListed"
-				android:visibility="visible"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:paddingLeft="4dp"
-				android:layout_margin="16dp"           
-				android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
-				android:gravity="center|left"
-				android:orientation="horizontal">
-				<TextView
-					android:id="@+id/infoLabelAccNotListed"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textSize="11dp"
-					android:textColor="#1c79ca"
-					android:drawablePadding="8dp"
-                    android:singleLine="true"
-                    android:ellipsize="middle"
-					android:text="Why are some of my accounts not listed?"
-					android:drawableLeft="@drawable/smr_why_accounts_info"/>
-			</LinearLayout>
+                android:id="@+id/rootView"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/lightGrey">
+                <ListView
+                    android:id="@+id/listView"
+                    android:background="@color/white"
+                    android:scrollbars="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:id="@+id/infoLabelContainerAccNotListed"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
+                    android:gravity="center|left"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/infoLabelAccNotListed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="11dp"
+                        android:textColor="#1c79ca"
+                        android:drawablePadding="8dp"
+                        android:singleLine="true"
+                        android:ellipsize="middle"
+                        android:text="Why are some of my accounts not listed?"
+                        android:drawableLeft="@drawable/smr_why_accounts_info"/>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
         </LinearLayout>
-    </ScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

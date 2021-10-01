@@ -9,6 +9,8 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using DynatraceAndroid;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.EBPopupScreen.MVP;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
@@ -53,6 +55,8 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
 
         private bool gotEB = false;
 
+        IDTXAction dynaTrace;
+
         internal static readonly int SELECT_SM_POPUP_REQUEST_CODE = 8810;
 
         internal static readonly int SELECT_SM_POPUP_DISCOVERMORE_REQUEST_CODE = 8811;
@@ -93,9 +97,9 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
                 string combineAgainSavings = string.Join(" ", OneWordSavings);
                 txtSavingbudget.TextFormatted = GetFormattedText(combineAgainSavings);
 
-                if (UserSessions.GetEnergyBudgetList().Count > 0)
+                List<SMRAccount> list = UserSessions.GetEnergyBudgetList();
+                if (list.Count > 0)
                 {
-                    List<SMRAccount> list = UserSessions.GetEnergyBudgetList();
                     foreach (SMRAccount smrAccount in list)
                     {
                         if (smrAccount.BudgetAmount != null)
@@ -149,10 +153,8 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
             {
                 CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_initiate_Later);
                 FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_initiate_Later);
-                Intent result = new Intent();
-                result.PutExtra("MaybeLater", "MaybeLater");
-                SetResult(Result.Ok, result);
-                Finish();
+                MyTNBAccountManagement.GetInstance().OnHoldWhatNew(true);
+                base.OnBackPressed();
             }
             catch (Exception ex)
             {
@@ -180,7 +182,8 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Energy budget Pop up");
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_initiate_Duration);
+                dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_initiate_Duration);
             }
             catch (Exception e)
             {
@@ -191,14 +194,19 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
         protected override void OnPause()
         {
             base.OnPause();
+            try
+            {
+                dynaTrace.LeaveAction();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void OnBackPressed()
         {
             base.OnBackPressed();
-            Intent result = new Intent();
-            SetResult(Result.Ok, result);
-            Finish();
         }
 
         public override void OnTrimMemory(TrimMemory level)

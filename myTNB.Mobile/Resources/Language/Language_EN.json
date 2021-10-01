@@ -454,16 +454,20 @@
     //EnergyBudget
     "myMonthlyBudget": "My monthly budget is",
     "whyIsAmountDiff": "Will this be my final bill amount?",
-    "whyIsAmountDiffBody": "Its simple! The amount displayed is your usage which is the energy used so far. Your final bill will include tax, discounts or additional charges.",
+    "whyIsAmountDiffBody": "It’s simple! The amount displayed is your usage which is the amount of energy used so far. Your final bill will include tax, discounts or additional charges.",
     "editEnergyButton": "Edit Budget",
     "setEnergyButton": "Set Now",
     "saveEnergyButton": "Save New Budget",
-    "toastSaveBudgetuccessfull": "You've successfully saved your monthly budget!",
+    "toastSaveBudgetuccessfull": "You've successfully save your monthly budget!",
     "myUsageSoFar": "My usage so far",
     "disconnectedEnergyBudget": "Uh-oh, looks like your Energy Budget have been unplugged. Refresh to stay plugged in!",
     "refreshNowEnergyBudgetButton": "Refresh Now",
     "youHaveNotSetBudget": "You have not set up your Energy Budget",
-    "youHaveNotSetBudgetSubtitle": "Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!"
+    "youHaveNotSetBudgetSubtitle": "Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!",
+    "feedback1Title":"Congratulations! How was your Energy Budget set up?",
+    "feedbackDontAskAgain":"Don't Ask Again",
+    "feedbackSuccessTitle":"Thank you for your feedback!",
+    "feedbackSuccessButton":"Okay"
   },
   "Bills": {
     "title": "Bills",
@@ -623,7 +627,14 @@
     "viewBudget": "View Budget",
     "viewTips": "View Tips",
     "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks",
-    "EnergyBudgetTitle": "Energy Budget"
+    "EnergyBudgetTitle": "Energy Budget",
+    "energyBudgetSavingTips":"Energy Saving Tips",
+    "feedback2Title":"Did you find Energy Budget useful?",
+    "likeButtonDetails":"Yes, Absolutely",
+    "dislikeButton":"Not really",
+    "dontAskAgain":"Don't Ask Again",
+    "feedback2SuccessTitle":"Thank you for your feedback!",
+    "feedback2SuccessButton":"Okay"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -2473,6 +2484,25 @@
       }
     ]
   },
+
+  "EnregyBudgetListing": {
+    "title": "Select Smart Meter Account",
+    "tootltipTitle": "Why are some of my accounts not listed?",
+    "tooltipBody": "As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. This feature however is available only for residential type smart meter account until further enhancement.",
+    "headerTitle":"Let's get started by selecting your Smart Meter account"
+  },
+
+  "EnergyBudgetPopup": {
+    "title": "Congratulations! You are selected to experience our new Energy Budget feature!",
+    "threeEasyStep": "Saving money in 3 easy steps:",
+    "firstStep": "SET a budget for your existing Smart Meter accounts",
+    "secondStep": "MONITOR your energy usage right at your fingertips",
+    "thirdStep": "SAVINGS starts with you getting notified when reaching your set budget",
+    "txtLetgetstarted": "Get Started!",
+    "txtViewmybudget": "View Budget",
+    "txtMaybelater": "Maybe Later"
+  },
+
   "ManageDigitalBillLanding": {
     "title": "Manage Bill Delivery",
     "dbrViewBillDelivery": "View Bill Delivery",
@@ -2518,21 +2548,6 @@
     "confirmPopupMessage": "You are about to close this page and end your session.",
     "nevermind": "Nevermind",
     "confirm": "Confirm"
-  },
-  "EnregyBudgetListing": {
-    "title": "Select Smart Meter Account",
-    "tootltipTitle": "Why are some of my accounts not listed?",
-    "tooltipBody": "As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. Once your normal meter has been converted into Smart Meter, it will be automatically added into the list."
-  },
-  "EnergyBudgetPopup": {
-    "title": "Take control of your energy usage with the new Energy Budget feature!",
-    "threeEasyStep": "Saving money in 3 easy steps:",
-    "firstStep": "SET a budget for your monthly energy usage",
-    "secondStep": "MONITOR your energy usage right at your fingertips",
-    "thirdStep": "SAVINGS starts with you getting notified when reaching your set budget",
-    "txtLetgetstarted": "Let's Get Started",
-    "txtViewmybudget": "View My Budget",
-    "txtMaybelater": "Maybe Later"
   },
   "ServiceConfiguration": {
     "Eligibility": {
@@ -2624,5 +2639,24 @@
         "IsFooter": true
       }
     ]
+  },
+  "FeedBackEB": {
+    "title": "Energy Budget Set-Up Feedback",
+    "improveTitle": "What can be improved?",
+    "titleSelectApplies": "Select all that applies",
+    "tellusMore": "Tell us more (Optional)",
+    "hinttellusMore": "characters left",
+    "btnNoThank": "No Thanks",
+    "btnShare": "Share"
+  },
+  "FeedBackEBNotification": {
+    "title": "Energy Budget Feedback",
+    "thumbUpYes": "Yes, absolutely",
+    "thumbDownNo": "Not really",
+    "btnNoThank": "No Thanks",
+    "btnShare": "Share",
+    "titleSelectApplies": "Select all that applies",
+    "tellusMore": "Tell us more (Optional)",
+    "hinttellusMore": "characters left"
   }
 }

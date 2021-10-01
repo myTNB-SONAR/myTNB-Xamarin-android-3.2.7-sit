@@ -881,6 +881,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     if (amountEnergybudget > 0)
                     {
                         this.mView.ShowEnergyBudgetSuccess();
+                        if (saveEnergyBudgetResponse.Response.ShowWLTYPage)
+                        {
+                            GetRateUsQuestions();
+                        }
                     }
                     else if (amountEnergybudget == 0)
                     {
@@ -1409,6 +1413,49 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             catch (ApiException apiException)
             {
                 Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
+            }
+        }
+
+        //checking feedback count energy budget
+        public async void OnCheckUserLeaveOut()
+        {
+            try
+            {
+                string questionCategoryID = "5";
+                var questionRespone = await ServiceApiImpl.Instance.ExperienceRatingUserLeaveOut(new GetRateUsQuestionRequest(questionCategoryID));
+
+                if (!questionRespone.IsSuccessResponse())
+                {
+                    this.mView.ShowErrorMessageResponse(questionRespone.Response.DisplayMessage);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public async void GetRateUsQuestions()
+        {
+            try
+            {
+                string questionCategoryID = "5";
+                var questionRespone = await ServiceApiImpl.Instance.GetRateUsQuestions(new GetRateUsQuestionRequest(questionCategoryID));
+
+                if (!questionRespone.IsSuccessResponse())
+                {
+                   this.mView.ShowErrorMessageResponse(questionRespone.Response.DisplayMessage);
+                }
+                else
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsFromClickAdapter(6);
+                    this.mView.GetFeedbackTwoQuestions(questionRespone);
+                    this.mView.ShowFeedBackPageRating();
+                }
             }
             catch (Exception unknownException)
             {

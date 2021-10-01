@@ -43,20 +43,27 @@ namespace myTNB_Android.Src.EnergyBudget.MVP
 
         }
 
-        public void Start()
+        public void ResfreshPageList(List<SMRAccount> list)
         {
             try
             {
-                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-                List<SMRAccount> list = UserSessions.GetEnergyBudgetList();
-                if (list == null)
-                {
-                    list = UserSessions.GetEnergyBudgetList();
-                }
                 if (list != null)
                 {
                     this.mView.ShowAccountList(list);
                 }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void Start()
+        {
+            try
+            {
+                //ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                //this.mView.GetAccountList();
             }
             catch (Exception e)
             {

@@ -136,5 +136,7 @@
     <color name="shadowOrange">#33ff9e43</color>
 
     <color name="shadowRed">#33E54B20</color>
+
+    <color name="darkerwhite">#F5F6F7</color>
   
 </resources>

@@ -46,6 +46,7 @@ using myTNB.Mobile.AWS.Models;
 using Firebase.Iid;
 using myTNB_Android.Src.NotificationDetails.Activity;
 using myTNB_Android.Src.Utils.Deeplink;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -298,6 +299,15 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     StartActivity(WalkthroughIntent);
                 }
             }
+        }
+
+        public void ShowExceptionDashboard()
+        {
+            MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(DashboardIntent);
+            
         }
 
         public async void ShowApplicationStatusDetails()
@@ -622,11 +632,11 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 StartActivity(notificationIntent);
             }
         }
-
+        
         public void ShowNotificationDetails()
-        {
+        { 
             var usrsession = UserSessions.Notification;
-            mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);
+            mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);            
         }
 
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details)
@@ -657,7 +667,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
+       
         public void ShowNotificationCount(int count)
         {
             try
@@ -1311,4 +1321,5 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             this.SetIsClicked(false);
         }
     }
+
 }
