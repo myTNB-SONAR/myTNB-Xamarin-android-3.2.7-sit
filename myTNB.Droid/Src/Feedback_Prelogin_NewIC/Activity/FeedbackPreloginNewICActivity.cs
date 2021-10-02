@@ -75,6 +75,12 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         [BindView(Resource.Id.txtGeneralEnquiry_subContent)]
         TextView txtGeneralEnquiry_subContent;
 
+        [BindView(Resource.Id.txtAboutBillEnquiry)]
+        TextView txtAboutBillEnquiry;
+
+        [BindView(Resource.Id.txtAboutBillEnquiry_subContent)]
+        TextView txtAboutBillEnquiry_subContent;
+
         [BindView(Resource.Id.txtUpdatePersonal)]
         TextView txtUpdatePersonal;
 
@@ -444,15 +450,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         }
         public void ShowAboutBillEnquiry()
         {
-
             Intent generalEnquiry = new Intent(this, typeof(FeedbackAboutBillEnquiryStepOneActivity));
             generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
             StartActivity(generalEnquiry);
-
-
-            //Intent generalEnquiry = new Intent(this, typeof(FeedbackGeneralEnquiryStepOneActivity));
-            //generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
-            //StartActivityForResult(generalEnquiry, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
         }
         
         public void ShowSelectAccount()

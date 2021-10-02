@@ -73,7 +73,7 @@
 						android:layout_marginRight="16dp"
 						android:layout_marginBottom="8dp"
 						android:layout_weight="1"
-						android:text="I want to enquire about:"
+						android:text="@string/GeneralEnquiry1of2_iwanttoenquire"
 						android:textAllCaps="false"
 						android:textColor="@color/powerBlue"
 						android:textSize="16dp" />
@@ -84,7 +84,29 @@
 						android:layout_height="wrap_content"
 						android:background="@color/white"
 						android:orientation="vertical">
-
+						<com.google.android.material.textfield.TextInputLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+							android:id="@+id/txtInputLayoutCategory"
+							app:errorEnabled="true"
+								android:layout_marginLeft="16dp"
+							android:layout_marginTop="16dp"
+							android:layout_marginRight="16dp">
+							<EditText
+								android:hint=""
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:drawableRight="@drawable/ic_action_dropdown1"
+								android:id="@+id/txtCategory"
+								android:textSize="16dp"
+								android:maxLines="1"
+								android:singleLine="true"
+								android:paddingTop="5dp"
+								android:drawablePadding="6dp"
+								android:focusable="false"
+								android:inputType="textNoSuggestions|text"/>
+					</com.google.android.material.textfield.TextInputLayout>
 						<com.google.android.material.textfield.TextInputLayout
 							android:id="@+id/txtInputLayoutAboutBillEnquiry1"
 							android:layout_width="match_parent"
@@ -140,7 +162,7 @@
 						android:layout_marginBottom="8dp"
 						android:layout_marginTop="8dp"
 						android:layout_weight="1"
-						android:text="@string/AboutBillEnquiry1of2_uploadSupporting"
+						android:text="@string/GeneralEnquiry1of2_uploadSupporting"
 						android:textAllCaps="false"
 						android:textColor="@color/powerBlue"
 						android:textSize="16dp" />
@@ -181,7 +203,7 @@
 							android:layout_marginBottom="16dp"
 							android:layout_weight="1"
 							android:background="@color/white"
-							android:text="@string/AboutBillEnquiry1of2_uploadSupporting_img_sub"
+							android:text="@string/GeneralEnquiry1of2_uploadSupporting_img_sub"
 							android:textSize="9dp" />
 					</LinearLayout>
 

@@ -18,7 +18,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.MVP
         public interface IView : IBaseView<IUserActionsListener>
         {
 
-
+            void ShowSelectCategory();
             void ShowAboutBillEnquiry();
 
             void ClearErrors();
@@ -66,7 +66,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.MVP
         {
 
 
-
+            void OnSelectCategory();
             void OnAboutBillEnquiry();
 
             void CheckRequiredFields(string feedback);

@@ -27,8 +27,19 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.MVP
         {
             this.mView.ShowAboutBillEnquiry();
         }
+        public void OnSelectCategory()
+        {
+            try
+            {
+                    this.mView.ShowSelectCategory();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 
-
+        }
+        
         public void Start()
         {
             try

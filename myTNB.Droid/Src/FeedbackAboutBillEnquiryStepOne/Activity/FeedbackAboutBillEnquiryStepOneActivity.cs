@@ -28,6 +28,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Android.Support.Design.Widget;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Feedback_Login_BillRelated.Activity;
+using myTNB_Android.Src.Common;
+using System.Collections.Generic;
+using myTNB;
 
 namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
 {
@@ -60,8 +65,14 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
         [BindView(Resource.Id.txtInputLayoutAboutBillEnquiry1)]
         Google.Android.Material.TextField.TextInputLayout txtInputLayoutAboutBillEnquiry1;
 
+        [BindView(Resource.Id.txtInputLayoutCategory)]
+        Google.Android.Material.TextField.TextInputLayout txtInputLayoutCategory;
+
         [BindView(Resource.Id.txtMaxCharacters)]
         TextView txtMaxCharacters;
+
+        [BindView(Resource.Id.txtCategory)]
+        EditText txtCategory;
 
         [BindView(Resource.Id.IwantToEnquire)]
         TextView IwantToEnquire;
@@ -84,8 +95,9 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
         [BindView(Resource.Id.TextView_CharLeft)]
         TextView TextView_CharLeft;
 
+        AccountData selectedAccount;
 
-
+        private List<Item> CategoryItemList;
 
         private AlertDialog _ChooseDialog;
 
@@ -96,6 +108,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
 
         private string accNo = null;
 
+        private string slectedKey = string.Empty;
 
         protected override void OnCreate(Android.OS.Bundle savedInstanceState)
         {
@@ -118,7 +131,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
 
 
                 // Intent intent = Intent;
-                SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "AboutBillEnquiryTitle"));
+                SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "aboutMyBillTitle"));
                 this.mPresenter = new FeedbackAboutBillEnquiryStepOnePresenter(this);
 
                 adapter = new FeedbackAboutBillEnquiryStepOneImageRecyclerAdapter(true);
@@ -136,11 +149,12 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
 
                 //injecting data       
                 txtInputLayoutAboutBillEnquiry1.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "messageHint");
+                txtInputLayoutCategory.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "selectEnquiryType");
                 txtInputLayoutAboutBillEnquiry1.SetHintTextAppearance(TextViewUtils.IsLargeFonts
                     ? Resource.Style.TextInputLayout_TextAppearance_Large
                     : Resource.Style.TextInputLayout_TextAppearance_Small);
                 txtAboutBillEnquiry1.Text = "";
-
+                txtCategory.SetOnTouchListener(this);
 
 
                 //add listener 
@@ -150,8 +164,8 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
                 DisableSubmitButton();
 
                 // set font
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAboutBillEnquiry1);
-                TextViewUtils.SetMuseoSans300Typeface(txtRelatedScreenshotTitle, txtMaxImageContent, TextView_CharLeft);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAboutBillEnquiry1, txtInputLayoutCategory);
+                TextViewUtils.SetMuseoSans300Typeface(txtRelatedScreenshotTitle, txtMaxImageContent, TextView_CharLeft,txtCategory);
                 TextViewUtils.SetMuseoSans500Typeface(txtstep1of2, IwantToEnquire, uploadSupportingDoc, btnNext);
 
                 //set translation 
@@ -166,10 +180,19 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
                 TextViewUtils.SetTextSize10(TextView_CharLeft);
                 TextViewUtils.SetTextSize12(txtstep1of2);
                 TextViewUtils.SetTextSize14(txtRelatedScreenshotTitle);
-                TextViewUtils.SetTextSize16(IwantToEnquire, txtAboutBillEnquiry1, uploadSupportingDoc, btnNext);
+                TextViewUtils.SetTextSize16(IwantToEnquire, txtAboutBillEnquiry1, uploadSupportingDoc, btnNext, txtCategory);
 
                 //set feedback setting
                 TextView_CharLeft.Text = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), Constants.FEEDBACK_CHAR_LIMIT);
+                Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("SubmitEnquiry");
+                List<SelectorModel>  _mappingList = new List<SelectorModel>();
+                if (selectors != null && selectors.ContainsKey("enquiryType"))
+                {
+                    _mappingList = selectors["enquiryType"];
+                }
+                txtCategory.Text = _mappingList.Count>0 ? _mappingList[0].Description : string.Empty;
+                slectedKey = _mappingList.Count>0 ? _mappingList[0].Key : string.Empty;
+
             }
             catch (System.Exception e)
             {
@@ -244,7 +267,13 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
                 Utility.LoggingNonFatalError(ex);
             }
         }
-
+        public void ShowSelectCategory()
+        {
+            Intent selectCategory = new Intent(this, typeof(FeedbackSelectCategoryActivity));
+            
+            selectCategory.PutExtra("SELECT_CATEGORY_REQUEST",slectedKey);
+            StartActivityForResult(selectCategory, Constants.SELECT_CATEGORY_REQUEST_CODE);
+        }
         private void Adapter_AddClickEvent(object sender, int e)
         {
             try
@@ -556,13 +585,14 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
             feedbackAboutBillEnquiry.PutExtra("FEEDBACK", txtAboutBillEnquiry1.Text.Trim());
             feedbackAboutBillEnquiry.PutExtra("IMAGE", JsonConvert.SerializeObject(adapter?.GetAllImages()));
             feedbackAboutBillEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, accNo);
+            feedbackAboutBillEnquiry.PutExtra(Constants.ABOUTBILL_CATEGORY, txtCategory.Text);
             feedbackAboutBillEnquiry.PutExtra(Constants.PAGE_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "AboutBillEnquiryTitle"));
             feedbackAboutBillEnquiry.PutExtra(Constants.PAGE_STEP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle2of2"));
             StartActivity(feedbackAboutBillEnquiry);
             //StartActivityForResult(feedbackAboutBillEnquiry, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
 
         }
-
+        
         [OnClick(Resource.Id.btnNext)]
         void OnNextButton(object sender, EventArgs eventArgs)
         {
@@ -579,6 +609,29 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
             base.OnActivityResult(requestCode, resultCode, data);
 
             this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
+
+            
+            if (requestCode == Constants.SELECT_CATEGORY_REQUEST_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    Android.OS.Bundle extras = data.Extras;
+
+                    this.CategoryItemList = JsonConvert.DeserializeObject<List<Item>>(extras.GetString("SELECT_CATEGORY_REQUEST"));
+                    //selectedCustomerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+
+                    //injecting string into the accno
+                    foreach(Item item in CategoryItemList)
+                    {
+                        if(item.selected)
+                        {
+                            txtCategory.Text = item.title;  
+                        }
+                    }
+                   
+                }
+            }
+            
 
         }
 
@@ -710,6 +763,23 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
                         case MotionEventActions.Up:
                             v.Parent.RequestDisallowInterceptTouchEvent(false);
                             break;
+                    }
+                }
+                if (eTxtView.Id == Resource.Id.txtCategory)
+                {
+                    //to ensure only works if user is login
+                    if (e.Action == MotionEventActions.Up)
+                    {
+                        if (e.RawX >= (txtCategory.Right - txtCategory.GetCompoundDrawables()[DRAWABLE_RIGHT].Bounds.Width()))
+                        {
+                            //this function listen to click on the dropdown drawable right
+                            //check if from prelogin of after login disable if user from prelogin
+
+                            this.userActionsListener.OnSelectCategory();
+
+
+                            return true;
+                        }
                     }
                 }
 

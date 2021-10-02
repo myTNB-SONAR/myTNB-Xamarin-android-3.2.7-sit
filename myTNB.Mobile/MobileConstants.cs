@@ -52,7 +52,7 @@ namespace myTNB.Mobile
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
 #elif MASTER || SIT
-        public static string ApiDomain = SIT;
+        public static string ApiDomain = DEV1;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;

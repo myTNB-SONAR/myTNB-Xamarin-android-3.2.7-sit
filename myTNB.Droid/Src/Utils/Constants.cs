@@ -73,6 +73,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string PAGE_TITLE = ".pageTitle";
         internal static readonly string PAGE_STEP_TITLE = ".pageStepTitle";
         internal static readonly string ACCOUNT_NUMBER = ".accountNumber";
+        internal static readonly string ABOUTBILL_CATEGORY = ".category";
         internal static readonly string REQ_EMAIL = ".requesterEmail";
         internal static readonly string REQ_IC = ".requesterIC";
 
@@ -124,8 +125,11 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int RUNTIME_PERMISSION_LOCATION_REQUEST_CODE = 0x08;
         internal static readonly int RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE = 0x10;
         internal static readonly int RUNTIME_PERMISSION_CALENDAR_REQUEST_CODE = 0x11;
+        internal static readonly int SELECT_CATEGORY_REQUEST_CODE = 0x13;
 
         internal static readonly int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+        
+        
 
         internal struct SERVER_URL
         {
