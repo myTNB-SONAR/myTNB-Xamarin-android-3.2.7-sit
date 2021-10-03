@@ -82,9 +82,9 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
 
             if (extras != null)
             {
-                if (extras.ContainsKey("SELECT_CATEGORY_REQUEST"))
+                if (extras.ContainsKey("SELECT_ENQUIRY_REQUEST"))
                 {
-                    CategoryKey = extras.GetString("SELECT_CATEGORY_REQUEST");
+                    CategoryKey = extras.GetString("SELECT_ENQUIRY_REQUEST");
                 }
             }
 
@@ -128,7 +128,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
             CategoryKey = selectedItem.type;
             SetSelectedCategory(selectedItem.type);
             Intent finishIntent = new Intent();
-            finishIntent.PutExtra("SELECT_CATEGORY_REQUEST", JsonConvert.SerializeObject(CategoryItemList));
+            finishIntent.PutExtra("SELECT_ENQUIRY_REQUEST", JsonConvert.SerializeObject(CategoryItemList));
             SetResult(Result.Ok, finishIntent);
             Finish();
         }

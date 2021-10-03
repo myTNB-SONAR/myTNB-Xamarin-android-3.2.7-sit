@@ -118,9 +118,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 //2 set font type , 300 normal 500 button
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo);
                 TextViewUtils.SetMuseoSans300Typeface(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, txtAccountNo);
-                TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal);
-                TextViewUtils.SetTextSize12(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, infoLabeltxtWhereIsMyAcc);
-                TextViewUtils.SetTextSize14(txtGeneralEnquiry, txtUpdatePersonal);
+                TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal, txtAboutBillEnquiry);
+                TextViewUtils.SetTextSize12(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, infoLabeltxtWhereIsMyAcc, txtGeneralEnquiry_subContent);
+                TextViewUtils.SetTextSize14(txtGeneralEnquiry, txtUpdatePersonal, txtAboutBillEnquiry);
                 TextViewUtils.SetTextSize16(txtAccountNo, howCanWeHelpYou);
 
                 //set translation of string 
@@ -129,6 +129,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");
                 howCanWeHelpYou.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "infoHowcan");
                 txtGeneralEnquiry.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle");
+                txtAboutBillEnquiry.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "aboutMyBillTitle");
+                txtAboutBillEnquiry_subContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "aboutMyBillDescription");
                 txtGeneralEnquiry_subContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryDescription");
                 txtUpdatePersonal.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
                 txtUpdatePersonalContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "personalDetailsDescription");

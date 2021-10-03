@@ -104,11 +104,11 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
         LinearLayoutManager layoutManager;
         FeedbackAboutBillEnquiryStepOneImageRecyclerAdapter adapter;
 
-
+        public string EnquiryId = string.Empty;
+        public string EnquiryName = string.Empty;
+        
 
         private string accNo = null;
-
-        private string slectedKey = string.Empty;
 
         protected override void OnCreate(Android.OS.Bundle savedInstanceState)
         {
@@ -191,7 +191,8 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
                     _mappingList = selectors["enquiryType"];
                 }
                 txtCategory.Text = _mappingList.Count>0 ? _mappingList[0].Description : string.Empty;
-                slectedKey = _mappingList.Count>0 ? _mappingList[0].Key : string.Empty;
+                EnquiryId = _mappingList.Count>0 ? _mappingList[0].Key : string.Empty;
+                EnquiryName = _mappingList[0].Description;
 
             }
             catch (System.Exception e)
@@ -270,9 +271,8 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
         public void ShowSelectCategory()
         {
             Intent selectCategory = new Intent(this, typeof(FeedbackSelectCategoryActivity));
-            
-            selectCategory.PutExtra("SELECT_CATEGORY_REQUEST",slectedKey);
-            StartActivityForResult(selectCategory, Constants.SELECT_CATEGORY_REQUEST_CODE);
+            selectCategory.PutExtra("SELECT_ENQUIRY_REQUEST", EnquiryId);
+            StartActivityForResult(selectCategory, Constants.SELECT_ENQUIRY_REQUEST_CODE);
         }
         private void Adapter_AddClickEvent(object sender, int e)
         {
@@ -585,8 +585,9 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
             feedbackAboutBillEnquiry.PutExtra("FEEDBACK", txtAboutBillEnquiry1.Text.Trim());
             feedbackAboutBillEnquiry.PutExtra("IMAGE", JsonConvert.SerializeObject(adapter?.GetAllImages()));
             feedbackAboutBillEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, accNo);
-            feedbackAboutBillEnquiry.PutExtra(Constants.ABOUTBILL_CATEGORY, txtCategory.Text);
-            feedbackAboutBillEnquiry.PutExtra(Constants.PAGE_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "AboutBillEnquiryTitle"));
+            feedbackAboutBillEnquiry.PutExtra(Constants.ENQUIRYID, EnquiryId);
+            feedbackAboutBillEnquiry.PutExtra(Constants.ENQUIRYNAME, EnquiryName);
+            feedbackAboutBillEnquiry.PutExtra(Constants.PAGE_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "aboutMyBillTitle"));
             feedbackAboutBillEnquiry.PutExtra(Constants.PAGE_STEP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle2of2"));
             StartActivity(feedbackAboutBillEnquiry);
             //StartActivityForResult(feedbackAboutBillEnquiry, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
@@ -611,13 +612,13 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
             this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
 
             
-            if (requestCode == Constants.SELECT_CATEGORY_REQUEST_CODE)
+            if (requestCode == Constants.SELECT_ENQUIRY_REQUEST_CODE)
             {
                 if (resultCode == Result.Ok)
                 {
                     Android.OS.Bundle extras = data.Extras;
 
-                    this.CategoryItemList = JsonConvert.DeserializeObject<List<Item>>(extras.GetString("SELECT_CATEGORY_REQUEST"));
+                    this.CategoryItemList = JsonConvert.DeserializeObject<List<Item>>(extras.GetString("SELECT_ENQUIRY_REQUEST"));
                     //selectedCustomerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
 
                     //injecting string into the accno
@@ -625,7 +626,9 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
                     {
                         if(item.selected)
                         {
-                            txtCategory.Text = item.title;  
+                            txtCategory.Text = item.title;
+                            EnquiryName = item.title;
+                            EnquiryId = item.type;
                         }
                     }
                    

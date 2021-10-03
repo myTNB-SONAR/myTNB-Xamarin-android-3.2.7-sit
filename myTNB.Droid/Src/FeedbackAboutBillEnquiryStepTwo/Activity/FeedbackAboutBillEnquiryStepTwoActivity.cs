@@ -110,7 +110,8 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
         private string feedback = null;
 
         private string acc = null;
-        private string selectedCategory = null;
+        private string EnquiryId = string.Empty;
+        private string EnquiryName = string.Empty;
 
         const string PAGE_ID = "Register";
 
@@ -172,9 +173,10 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
                     {
                         acc = extras.GetString(Constants.ACCOUNT_NUMBER);
                     }
-                    if (extras.ContainsKey(Constants.ABOUTBILL_CATEGORY))
+                    if (extras.ContainsKey(Constants.ENQUIRYNAME) && extras.ContainsKey(Constants.ENQUIRYID))
                     {
-                        selectedCategory = extras.GetString(Constants.ABOUTBILL_CATEGORY);
+                        EnquiryId = extras.GetString(Constants.ENQUIRYID);
+                        EnquiryName = extras.GetString(Constants.ENQUIRYNAME);
                     }
                     
                     ///update personal info
@@ -720,7 +722,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
 
 
         [OnClick(Resource.Id.btnSubmit)]
-        void OnSubmit(object sender, EventArgs eventArgs)
+        void OnSubmitEnquiry(object sender, EventArgs eventArgs)
         {
             try
             {
@@ -776,7 +778,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
 
                     string txtPhoneNumber = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
 
-                    this.userActionsListener.OnSubmit(acc, selectedCategory, feedback, txtName.Text.ToString().Trim(), txtPhoneNumber.ToString().Trim(), txtEmail.Text.Trim(), attachedImages, updateFeedbackList, isOwner, ownerRelationshipID, ownerRelationship);
+                    this.userActionsListener.OnSubmitEnquiryWithType(acc, feedback, txtName.Text.ToString().Trim(), txtPhoneNumber.ToString().Trim(), txtEmail.Text.Trim(), attachedImages, updateFeedbackList, isOwner, ownerRelationshipID, ownerRelationship, EnquiryId, EnquiryName);
 
 
 

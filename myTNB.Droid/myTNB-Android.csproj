@@ -7819,6 +7819,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\MyTNBService\Request\SubmitEnquiryTypeRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

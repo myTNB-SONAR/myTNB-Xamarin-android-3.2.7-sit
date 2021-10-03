@@ -62,9 +62,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
             void NavigateToTermsAndConditions();
 
             void CheckRequiredFields(string fullname, bool mobile_no, string email, bool tnc, bool isNeedTNC);
-
-            void OnSubmit(string acc,string selectedCategory, string feedback, string fullname, string mobile_no, string email, List<AttachedImage> attachedImages , List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsModelList,  bool isowner, int ownerRelationship, string relationshipDescription);
-
+            void OnSubmitEnquiryWithType(string acc, string feedback, string fullname, string mobile_no, string email, List<AttachedImage> attachedImages, List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsModelList, bool isowner, int ownerRelationship, string relationshipDescription,string EnquiryId,string EnquiryName);
         }
     }
 }
