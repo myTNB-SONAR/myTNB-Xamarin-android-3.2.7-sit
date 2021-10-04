@@ -204,9 +204,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 }
                 else if (item.FeedbackCategoryId.Equals("11"))
                 {
-                    //  vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.update_personal_details));
                     vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle");
-                    //  vh.txtFeedbackTitle.SetPadding(0, 24, 7, 0);
                 }
             }
             catch (Exception e)

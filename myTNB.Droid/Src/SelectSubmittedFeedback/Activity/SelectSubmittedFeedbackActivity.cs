@@ -102,7 +102,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
                     this.SetIsClicked(true);
                     SubmittedFeedback feedback = adapter.GetItemObject(e.Position);
                     srNumber = feedback.FeedbackId;
-                    //AccountNumber = feedback.
                     //dynatrace 
                     IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_VIEW_OVERVOLTAGE_CLAIM_FROM_LIST);  // DYNA
                     dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);

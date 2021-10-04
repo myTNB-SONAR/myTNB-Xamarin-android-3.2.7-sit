@@ -16,7 +16,6 @@ namespace myTNB_Android.Src.Utils
         public static CancellationToken GetToken()
         {
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            //cancellationTokenSource.CancelAfter(Constants.SERVICE_TIMEOUT_DEFAULT);
             cancellationTokenSource.CancelAfter(isOvervoltageClaimPilotNonPilotTimeout ? 25000 : Constants.SERVICE_TIMEOUT_DEFAULT);
             return cancellationTokenSource.Token;
         }
