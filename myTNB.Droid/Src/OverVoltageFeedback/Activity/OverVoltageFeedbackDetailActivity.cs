@@ -134,7 +134,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 var usin = data.usrInf;
                 UserEntity user = UserEntity.GetActive();
                 
-                string domain = "https://mytnbwvovis.ap.ngrok.io/claimPage/"+ClaimId; //WebView Live
+                string domain = "http://mytnbwvovis.ap.ngrok.io/claimPage/"+ClaimId; //WebView Live
                 //string domain = "http://192.168.1.157:3000/claimPage/"+ClaimId; // WebView Local
 
                 UrlUtility urlUtility = new UrlUtility();
@@ -552,8 +552,9 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 }
                 else if (TempTitle == "Overvoltage Claim")
                 {
-                   //base.OnBackPressed();
-                   webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#getCurrentStatusForMobileApp').trigger('click'); },500); })();", null);
+                    //base.OnBackPressed();
+                    OverVoltageClaimSuccessPageActivity.FormOverVoltageFeedbackDetailActivity = true;
+                    webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#getCurrentStatusForMobileApp').trigger('click'); },500); })();", null);
                    
                 }
                 else if (data == null)
