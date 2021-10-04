@@ -14,7 +14,6 @@ using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.FeedbackDetails.Activity;
-using myTNB_Android.Src.OverVoltageFeedback;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.SelectSubmittedFeedback.Adapter;
 using myTNB_Android.Src.SelectSubmittedFeedback.MVP;

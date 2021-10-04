@@ -59,6 +59,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         [BindView(Resource.Id.rootView)]
         RelativeLayout rootView;
         public static bool FcmPushNotificationFlagFromBackground;
+
         public static readonly string TAG = typeof(LaunchViewActivity).Name;
         private AppLaunchPresenter mPresenter;
         private AppLaunchContract.IUserActionsListener userActionsListener;
@@ -169,7 +170,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
-        }        
+        }
 
         public bool IsActive()
         {

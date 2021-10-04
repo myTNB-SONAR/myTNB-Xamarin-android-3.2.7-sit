@@ -41,7 +41,6 @@ namespace myTNB_Android.Src.Login.Activity
         public static string urlSchemaData = "";
         public static string urlSchemaPath = "";
 
-
         private AlertDialog mProgressDialog;
 
         [BindView(Resource.Id.txtInputLayoutEmail)]
@@ -108,7 +107,6 @@ namespace myTNB_Android.Src.Login.Activity
                     })
                     .SetCancelable(false)
                     .Create();
-
 
                 Bundle extras = Intent?.Extras;
                 if (extras != null && extras.ContainsKey("urlSchemaData"))

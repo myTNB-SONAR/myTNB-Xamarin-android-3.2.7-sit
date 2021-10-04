@@ -973,9 +973,9 @@
     "title": "Pilih Negara/Wilayah"
   },
   "SubmitEnquiry": {
-    "exGratiaAgreementTitle": "Persetujuan Ex-gratia", //
-    "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.", //
     "enquireTitle": "Hantar & Semak Pertanyaan",
+    "exGratiaAgreementTitle": "Persetujuan Ex-gratia",
+    "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.",
     "submitEnquiryTitle": "Hantar Pertanyaan Baru",
     "submitEnquiryDescription": "Kongsikan bagaimana kami boleh membantu anda",
     "viewSubmittedEnquiry": "Semak Pertanyaan yang Dihantar",

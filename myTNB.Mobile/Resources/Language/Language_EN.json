@@ -973,10 +973,9 @@
     "title": "Select Country/Region"
   },
   "SubmitEnquiry": {
-    //"enquireTitle": "Enquiry",
+    "enquireTitle": "Submit & Track Enquiry",
     "exGratiaAgreementTitle": "Ex-gratia Agreement",
     "defaultErrorMessage": "Sorry, this is not working right now. Please try again later.",
-    "enquireTitle": "Submit & Track Enquiry",
     "submitEnquiryTitle": "Submit New Enquiry",
     "submitEnquiryDescription": "Let us know your thoughts and concerns.",
     "viewSubmittedEnquiry": "View Submitted Enquiry",
@@ -1147,7 +1146,6 @@
     "tNC": "Terms and Conditions",
     "rescheduleAppointment": "Reschedule Appointment",
     "appointmentUpdate": "Your appointment date has been updated."
-
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
