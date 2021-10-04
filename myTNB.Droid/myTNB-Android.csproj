@@ -7784,6 +7784,14 @@
     </AndroidResource>
     <Compile Include="Src\Utils\LinkRedirection\LinkRedirection.cs" />
     <Compile Include="Src\Utils\LinkRedirection\LinkRedirectionUtils.cs" />
+    <AndroidResource Include="Resources\layout\MyTNBDialogWithImageAndButton.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\blue_button_solid_background.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -11,13 +11,25 @@
     <LinearLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/background_pale_grey">
+        <TextView
+			android:text="View your bills, payment receipts or both. "
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="@color/water_blue"
+            android:paddingTop="16dp"
+			android:paddingLeft="16dp"
+            android:paddingBottom="16dp"
+			android:paddingRight="16dp"
+            android:lineSpacingExtra="3dp"
+			android:id="@+id/itemListTitle" />
         <ListView
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/item_liste_view"
-            android:background="@color/white" />
+            android:background="@color/background_pale_grey" />
     </LinearLayout>
 </LinearLayout>
