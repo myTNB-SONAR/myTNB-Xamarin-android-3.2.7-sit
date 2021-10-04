@@ -102,7 +102,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             base.OnCreate(savedInstanceState);
 
             try
-            { 
+            {
+
+
                 Android.OS.Bundle extras = Intent.Extras;
 
                 if (extras != null)
