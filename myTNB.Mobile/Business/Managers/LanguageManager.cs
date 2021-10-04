@@ -272,7 +272,8 @@ namespace myTNB
         {
             ForceHideDBRBanner,
             IsAboutMyBillEnquiryEnabled,
-            IsUpdatePersonalDetailsEnquiryEnabled
+            IsUpdatePersonalDetailsEnquiryEnabled,
+            IsGSLRebateEnabled
         }
 
         public Dictionary<string, List<T>> GetSelectorsByPage<T>(string pageName) where T : new()
