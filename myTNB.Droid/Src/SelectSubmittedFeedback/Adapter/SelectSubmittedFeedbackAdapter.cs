@@ -91,7 +91,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                     vh.completeIndicator.Visibility = ViewStates.Gone;
                 }
 
-                //statusCode color
+                //statusCode color 
                 vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.black)));
                 if (item.StatusCode.Equals("CL01") )
                 {
@@ -237,9 +237,8 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
             {
                 TextViewUtils.SetMuseoSans500Typeface(txtFeedbackTitle , txtSRstatus, txtFeedbackDate);
                 TextViewUtils.SetMuseoSans300Typeface(txtSRNumber );
-                txtFeedbackTitle.TextSize = TextViewUtils.GetFontSize(12f);
+                txtFeedbackTitle.TextSize = TextViewUtils.GetFontSize(14f);
                 //txtFeedbackContent.TextSize = TextViewUtils.GetFontSize(9f);
-                txtSRstatus.TextSize = TextViewUtils.GetFontSize(10f);
                 txtFeedbackDate.TextSize = TextViewUtils.GetFontSize(11f);
             }
         }
