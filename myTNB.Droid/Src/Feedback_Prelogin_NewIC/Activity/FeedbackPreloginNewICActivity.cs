@@ -48,6 +48,7 @@ using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using Org.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -333,100 +334,110 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     {
                         if (TriggerOVISServicesResponse.d != null)
                         {
-                            IsPilot = TriggerOVISServicesResponse.d.OvervoltageClaimEnabled;
-                            OvisUnderMaintenance = TriggerOVISServicesResponse.d.IsOvisUnderMaintenance;
-                            
-                            if (IsPilot)
+                            var jsondata = JsonConvert.SerializeObject(TriggerOVISServicesResponse.d);
+                            JSONObject containerObject = new JSONObject(jsondata);
+                            if (containerObject.Has("IsOvisUnderMaintenance"))
                             {
-                                //InLocal Storage store true.
-                                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-                                ISharedPreferencesEditor editor = prefs.Edit();
-                                editor.PutBoolean("StoreUnderMaintanance", true);
-                                editor.Apply();
-                                if (OvisUnderMaintenance)
-                                {
-                                    // Ovis UnderMaintenance flow
-                                    overvoltageclaimConstraint.Visibility = ViewStates.Visible;
-                                    txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
-                                    txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
-                                    updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
-                                    updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                                    overvoltageclaimConstraint.Clickable = true;
-                                    accountLayout4.Visibility = ViewStates.Visible;
+                                IsPilot = TriggerOVISServicesResponse.d.OvervoltageClaimEnabled;
+                                OvisUnderMaintenance = TriggerOVISServicesResponse.d.IsOvisUnderMaintenance;
 
-                                    var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageMaintenanceLabel");
-                                    InfoLabel.Text = infoValue;
+                                if (IsPilot)
+                                {
+                                    //InLocal Storage store true.
+                                    ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                                    ISharedPreferencesEditor editor = prefs.Edit();
+                                    editor.PutBoolean("StoreUnderMaintanance", true);
+                                    editor.Apply();
+                                    if (OvisUnderMaintenance)
+                                    {
+                                        // Ovis UnderMaintenance flow
+                                        overvoltageclaimConstraint.Visibility = ViewStates.Visible;
+                                        txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
+                                        txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
+                                        updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
+                                        updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
+                                        overvoltageclaimConstraint.Clickable = true;
+                                        accountLayout4.Visibility = ViewStates.Visible;
+
+                                        var infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageMaintenanceLabel");
+                                        InfoLabel.Text = infoValue;
+                                    }
+                                    else
+                                    {
+                                        // Pilot Flow
+                                        overvoltageClaimVisible = true;
+                                        IsWhiteListedArea = true;
+                                        overvoltageclaimConstraint.Visibility = ViewStates.Visible;
+                                        //accountLayout4.Visibility = ViewStates.Visible;
+                                        overvoltageclaimConstraint.Clickable = true;
+                                        if (!string.IsNullOrEmpty(txtAccountNo.Text))
+                                        {
+                                            string isValid = null;
+                                            if (TriggerOVISServicesResponse.d.OvervoltageClaimSupported.ContainsKey(txtAccountNo.Text))
+                                            {
+                                                for (int i = 0; i < TriggerOVISServicesResponse.d.OvervoltageClaimSupported.Count(); i++)
+                                                {
+                                                    if (TriggerOVISServicesResponse.d.OvervoltageClaimSupported.ElementAt(i).Key == txtAccountNo.Text)
+                                                    {
+                                                        isValid = TriggerOVISServicesResponse.d.OvervoltageClaimSupported.ElementAt(i).Value;
+                                                        //return;
+                                                    }
+                                                }
+                                            }
+                                            if (isValid == "true")
+                                            {
+                                                IsWhiteListedArea = true;
+                                                updatePersoanlInfoIcon1.SetBackgroundResource(Resource.Drawable.overvoltageclaimicon);
+                                                updatePersoanlInfoIcon2.Visibility = ViewStates.Invisible;
+                                                updatePersoanlInfoIcon1.Visibility = ViewStates.Visible;
+                                                txtOverVoltageClaim.SetTextColor(Color.ParseColor("#1c79ca"));
+                                                txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#49494a"));
+                                                accountLayout4.Visibility = ViewStates.Invisible;
+                                            }
+                                            else if (isValid == "false" || isValid == "INVALID")
+                                            {
+                                                IsWhiteListedArea = false;
+                                                txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
+                                                txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
+                                                updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
+                                                updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
+                                                overvoltageclaimConstraint.Clickable = true;
+                                                accountLayout4.Visibility = ViewStates.Visible;
+                                                int index = accountList.FindIndex(s => s.AccNum.Equals(txtAccountNo.Text));
+                                                if (index != -1)
+                                                {
+                                                    AccNoDesc = "";
+                                                    AccNoDesc = accountList[index].AccDesc;
+                                                }
+                                                string infoValue;
+                                                if (string.IsNullOrEmpty(AccNoDesc))
+                                                {
+                                                    infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + txtAccountNo.Text;
+                                                }
+                                                else
+                                                {
+                                                    infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + "\"" + AccNoDesc + " - " + txtAccountNo.Text + "\"";
+                                                }
+                                                InfoLabel.Text = infoValue;
+                                            }
+                                        }
+                                    }
                                 }
                                 else
                                 {
-                                    // Pilot Flow
-                                    overvoltageClaimVisible = true;
-                                    IsWhiteListedArea = true;
-                                    overvoltageclaimConstraint.Visibility = ViewStates.Visible;
-                                    //accountLayout4.Visibility = ViewStates.Visible;
-                                    overvoltageclaimConstraint.Clickable = true;
-                                    if (!string.IsNullOrEmpty(txtAccountNo.Text))
-                                    {
-                                        string isValid = null;
-                                        if (TriggerOVISServicesResponse.d.OvervoltageClaimSupported.ContainsKey(txtAccountNo.Text))
-                                        {
-                                            for (int i = 0; i < TriggerOVISServicesResponse.d.OvervoltageClaimSupported.Count(); i++)
-                                            {
-                                                if (TriggerOVISServicesResponse.d.OvervoltageClaimSupported.ElementAt(i).Key == txtAccountNo.Text)
-                                                {
-                                                    isValid = TriggerOVISServicesResponse.d.OvervoltageClaimSupported.ElementAt(i).Value;
-                                                    //return;
-                                                }
-                                            }
-                                        }
-                                        if (isValid == "true")
-                                        {
-                                            IsWhiteListedArea = true;
-                                            updatePersoanlInfoIcon1.SetBackgroundResource(Resource.Drawable.overvoltageclaimicon);
-                                            updatePersoanlInfoIcon2.Visibility = ViewStates.Invisible;
-                                            updatePersoanlInfoIcon1.Visibility = ViewStates.Visible;
-                                            txtOverVoltageClaim.SetTextColor(Color.ParseColor("#1c79ca"));
-                                            txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#49494a"));
-                                            accountLayout4.Visibility = ViewStates.Invisible;
-                                        }
-                                        else if (isValid == "false" || isValid == "INVALID")
-                                        {
-                                            IsWhiteListedArea = false;
-                                            txtOverVoltageClaim.SetTextColor(Color.ParseColor("#C8C8C8"));
-                                            txtOverVoltageClaimContent.SetTextColor(Color.ParseColor("#C8C8C8"));
-                                            updatePersoanlInfoIcon2.Visibility = ViewStates.Visible;
-                                            updatePersoanlInfoIcon1.Visibility = ViewStates.Invisible;
-                                            overvoltageclaimConstraint.Clickable = true;
-                                            accountLayout4.Visibility = ViewStates.Visible;
-                                            int index = accountList.FindIndex(s => s.AccNum.Equals(txtAccountNo.Text));
-                                            if (index != -1)
-                                            {
-                                                AccNoDesc = "";
-                                                AccNoDesc = accountList[index].AccDesc;
-                                            }
-                                            string infoValue;
-                                            if (string.IsNullOrEmpty(AccNoDesc))
-                                            {
-                                                infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + txtAccountNo.Text;
-                                            }
-                                            else
-                                            {
-                                                infoValue = Utility.GetLocalizedLabel("SubmitEnquiry", "currentlyNotEnabledForMelakaTitle") + "\"" + AccNoDesc + " - " + txtAccountNo.Text + "\"";
-                                            }
-                                            InfoLabel.Text = infoValue;
-                                        }
-                                    }
+                                    // Non Pilot flow
+                                    ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                                    ISharedPreferencesEditor editor = prefs.Edit();
+                                    editor.PutBoolean("StoreUnderMaintanance", false);
+                                    editor.Apply();
+                                    overvoltageClaimVisible = false;
                                 }
                             }
                             else
                             {
-                                // Non Pilot flow
-                                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-                                ISharedPreferencesEditor editor = prefs.Edit();
-                                editor.PutBoolean("StoreUnderMaintanance", false);
-                                editor.Apply();
-                                overvoltageClaimVisible = false;
+                                ServerDown();
                             }
+                           
                         }
                         else
                         {

@@ -54,7 +54,7 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
         public bool AgreeFlag = false;
         public bool DisAgreeFlag = false;
         public static bool comeFromsubmitClaimPage = false;
-
+        public static bool FormOverVoltageFeedbackDetailActivity = false;
         public override int ResourceId()
         {
             return Resource.Layout.OverVoltageClaimSuccessPage;
@@ -187,7 +187,14 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
                 intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(intent);
             }
-            
+            else
+            {
+                //Back to home
+                Intent intent = new Intent(this, typeof(DashboardHomeActivity));
+                intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(intent);
+            }
+
         }
 
         [OnClick(Resource.Id.btnViewSubmitted)]
@@ -202,7 +209,7 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
                 OverVoltageFeedbackDetailActivity.proccedToPaymentFlag=true;
                 base.OnBackPressed();
             }           
-            else if(comeFromsubmitClaimPage)
+            else if(comeFromsubmitClaimPage || FormOverVoltageFeedbackDetailActivity)
             {
                 GetClaimID();             
             }
@@ -226,6 +233,7 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
                     othersIntent.PutExtra("ClaimId", ClaimId);
                     StartActivity(othersIntent);
                     comeFromsubmitClaimPage = false;
+                    FormOverVoltageFeedbackDetailActivity = false;
                 }                
             }
             catch (Exception e)
