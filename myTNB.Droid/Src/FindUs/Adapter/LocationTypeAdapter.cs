@@ -69,8 +69,7 @@ namespace myTNB_Android.Src.FindUs.Adapter
             public LocationTypeViewHolder(View itemView) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtLocationType);
-                txtLocationType.TextSize = TextViewUtils.GetFontSize(16f);
-
+                TextViewUtils.SetTextSize16(txtLocationType);
             }
         }
     }

@@ -131,11 +131,9 @@ namespace myTNB_Android.Src.Notifications.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationName, selectAllNotificationLabel, btnNewRefresh);
                 TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage, txtNotificationsContent);
-                txtNotificationName.TextSize = TextViewUtils.GetFontSize(12f);
-                selectAllNotificationLabel.TextSize = TextViewUtils.GetFontSize(14f);
-                txtNewRefreshMessage.TextSize = TextViewUtils.GetFontSize(16f);
-                txtNotificationsContent.TextSize = TextViewUtils.GetFontSize(16f);
-                btnNewRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize12(txtNotificationName);
+                TextViewUtils.SetTextSize14(selectAllNotificationLabel);
+                TextViewUtils.SetTextSize16(txtNewRefreshMessage, txtNotificationsContent, btnNewRefresh);
 
                 selectAllNotificationLabel.Text = GetLabelCommonByLanguage("selectAll");
                 txtNotificationsContent.Text = GetLabelByLanguage("noNotification");

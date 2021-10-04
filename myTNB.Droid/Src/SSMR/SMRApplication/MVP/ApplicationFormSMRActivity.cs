@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         TextInputLayout textInputEmail;
 
         [BindView(Resource.Id.textInputMobile)]
-        TextInputLayout textInputMobile; 
+        TextInputLayout textInputMobile;
 
         [BindView(Resource.Id.txtEditingNote)]
         TextView txtEditingNote;
@@ -56,7 +56,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         [BindView(Resource.Id.txtAccountType)]
         TextView txtAccountType;
-        
+
 
         [BindView(Resource.Id.btnSubmitRegistration)]
         Button btnSubmitRegistration;
@@ -95,11 +95,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             base.OnCreate(savedInstanceState);
             mPresenter = new ApplicationFormSMRPresenter(this);
 
-            TextViewUtils.SetMuseoSans300Typeface(selectAccountContainer,applySMRAddress,txtTermsAndCondition,txtEmail,txtMobileNumber,txtEditingNote);
+            TextViewUtils.SetMuseoSans300Typeface(selectAccountContainer, applySMRAddress, txtTermsAndCondition, txtEmail, txtMobileNumber, txtEditingNote);
             TextViewUtils.SetMuseoSans500Typeface(applySMRForLabel, applySMRContactLabel);
-
-           
-            btnSubmitRegistration.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize16(btnSubmitRegistration);
 
             txtEmail.TextChanged += TextChange;
             txtMobileNumber.TextChanged += TextChange;
@@ -139,14 +137,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                     }
                 }
             };
-
-            applySMRForLabel.TextSize = TextViewUtils.GetFontSize(16);
-            txtAccountType.TextSize = TextViewUtils.GetFontSize(12);
-            selectAccountContainer.TextSize = TextViewUtils.GetFontSize(16);
-            applySMRAddress.TextSize = TextViewUtils.GetFontSize(14);
-            applySMRContactLabel.TextSize = TextViewUtils.GetFontSize(16);
-            txtEditingNote.TextSize = TextViewUtils.GetFontSize(12);
-            txtTermsAndCondition.TextSize = TextViewUtils.GetFontSize(12);
+            TextViewUtils.SetTextSize12(txtAccountType, txtEditingNote, txtTermsAndCondition);
+            TextViewUtils.SetTextSize14(applySMRAddress);
+            TextViewUtils.SetTextSize16(applySMRForLabel, selectAccountContainer, applySMRContactLabel);
         }
 
         public void GetCARegisteredContactInfo()
@@ -273,7 +266,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 });
 
                 ShowProgressDialog();
-                mPresenter.SubmitSMRRegistration(sMRAccount,txtMobileNumber.Text,txtEmail.Text,"");
+                mPresenter.SubmitSMRRegistration(sMRAccount, txtMobileNumber.Text, txtEmail.Text, "");
             }
         }
 
@@ -405,4 +398,3 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         }
     }
 }
- 

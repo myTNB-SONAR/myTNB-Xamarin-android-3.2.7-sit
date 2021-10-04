@@ -25,6 +25,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowAccountDetails(string accountNumber);
             void SetMyServiceRecycleView();
             void SetNewFAQRecycleView();
+            //void StopShimmerDiscoverMore();
             void SetMyServiceResult(List<MyService> list);
             void SetNewFAQResult(List<NewFAQ> list);
             string GetDeviceId();
@@ -100,7 +101,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowFAQFromHide();
 
             bool GetHomeTutorialCallState();
-
+            
+            void EBPopupActivity();
+            
+            void ShowDiscoverMoreLayout();
         }
 
         public interface IHomeMenuPresenter

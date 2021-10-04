@@ -35,8 +35,8 @@ namespace myTNB
         {
             List<StatusDetail> serviceStatusList = null;
             List<Dictionary<string, List<StatusDetail>>> servicesList
-                = LanguageManager.Instance.GetValues<List<Dictionary<string, List<StatusDetail>>>>(Constants.LanguageFile_ServiceDetails
-                    , Constants.LanguageFile_Services);
+                = LanguageManager.Instance.GetValues<List<Dictionary<string, List<StatusDetail>>>>(MobileConstants.LanguageFile_ServiceDetails
+                    , MobileConstants.LanguageFile_Services);
             if (servicesList != null && servicesList.Count > 0)
             {
                 Dictionary<string, List<StatusDetail>> serviceDictionary = servicesList.Find((x) =>

@@ -44,7 +44,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         private Fragment mFragment;
         private ISharedPreferences mPref;
         private bool IndicationShowTop = false;
-       
+
 
         public NewAppTutorialDialogFragment(Android.App.Activity ctx, Fragment fragment, ISharedPreferences pref, List<NewAppModel> list, bool mIndicationShowTop = false)
         {
@@ -56,8 +56,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
             this.mFragment = fragment;
             this.mPref = pref;
             this.IndicationShowTop = mIndicationShowTop;
-           
-        } 
+
+        }
 
         public override void OnStart()
         {
@@ -69,7 +69,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 Dialog.Window.SetDimAmount(0.0f);
                 Dialog.SetCancelable(false);
                 Dialog.SetCanceledOnTouchOutside(false);
-               
+
                 Dialog.Window.SetLayout(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
 
             }
@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View rootView = inflater.Inflate(Resource.Layout.NewAppTutorialLayout, container, false);
-            
+
             try
             {
                 pager = rootView.FindViewById<ViewPager>(Resource.Id.viewPager);
@@ -88,9 +88,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 swipeTopDoubleTapLayout = rootView.FindViewById<LinearLayout>(Resource.Id.swipeTopDoubleTapLayout);
                 txtDoubleTapDismiss = rootView.FindViewById<TextView>(Resource.Id.txtDoubleTapDismiss);
                 txtTopDoubleTapDismiss = rootView.FindViewById<TextView>(Resource.Id.txtTopDoubleTapDismiss);
-
-                txtDoubleTapDismiss.TextSize = TextViewUtils.GetFontSize(12f);
-                txtTopDoubleTapDismiss.TextSize = TextViewUtils.GetFontSize(12f);
+                TextViewUtils.SetTextSize12(txtDoubleTapDismiss, txtTopDoubleTapDismiss);
 
                 if (NewAppTutorialList.Count > 1)
                 {
@@ -280,6 +278,17 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                         indicatorTopContainer.Visibility = ViewStates.Visible;
                         indicator.Visibility = ViewStates.Gone;
+
+                        if (IndicationShowTop)
+                        {
+                            swipeTopDoubleTapLayout.Visibility = ViewStates.Visible;
+                            swipeDoubleTapLayout.Visibility = ViewStates.Gone;
+                        }
+                        else
+                        {
+                            swipeTopDoubleTapLayout.Visibility = ViewStates.Gone;
+                            swipeDoubleTapLayout.Visibility = ViewStates.Visible;
+                        }
                     }
 
                     if (this.mFragment != null && this.mFragment is ItemisedBillingMenuFragment)
@@ -352,7 +361,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             //RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MatchParent, RelativeLayout.LayoutParams.WrapContent);
                             //parameters.AddRule(LayoutRules.AlignParentTop);
                             //swipeDoubleTapLayout.LayoutParameters = parameters;
-                            
+
 
                             swipeTopDoubleTapLayout.Visibility = ViewStates.Visible;
                             swipeDoubleTapLayout.Visibility = ViewStates.Gone;
@@ -374,6 +383,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             if (i == 0)
                             {
                                 image.SetImageResource(Resource.Drawable.white_circle_active);
+                                txtDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
+                                txtTopDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
                             }
                             else
                             {
@@ -404,7 +415,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                     if (NewAppTutorialList.Count > 1)
                     {
-                        pager.PageSelected += (object sender, ViewPager.PageSelectedEventArgs e) => 
+                        pager.PageSelected += (object sender, ViewPager.PageSelectedEventArgs e) =>
                         {
                             for (int i = 0; i < NewAppTutorialList.Count; i++)
                             {
@@ -713,6 +724,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                 {
                                                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                                                 }
+                                                txtDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
+                                                txtTopDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
                                             }
                                             else
                                             {

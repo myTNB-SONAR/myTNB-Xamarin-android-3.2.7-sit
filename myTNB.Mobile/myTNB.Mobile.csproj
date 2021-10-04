@@ -2,18 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Master;SIT;Release;Debug</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
-    <IntermediateOutputPath>obj\Release\netstandard2.0</IntermediateOutputPath>
+    <IntermediateOutputPath>obj\Release\netstandard2.0\netstandard2.0</IntermediateOutputPath>
     <Optimize>true</Optimize>
+    <OutputPath>bin\SIT\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
     <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\SIT\</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,11 +27,11 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>True</DebugSymbols>
-    <DebugType>PdbOnly</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType></DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;RELEASE</DefineConstants>
+    <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
@@ -39,20 +41,22 @@
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\SIT\netstandard2.0</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="API\Managers\FeatureInfo\" />
+    <Folder Include="API\Models\Feature Info\" />
     <Folder Include="Business\Managers\" />
     <Folder Include="Resources\" />
     <Folder Include="Resources\TnC\" />
     <Folder Include="Resources\FAQ\" />
     <Folder Include="Resources\Language\" />
     <Folder Include="Resources\Country\" />
-    <Folder Include="API\" />
-    <Folder Include="API\Managers\" />
-    <Folder Include="API\Models\" />
     <Folder Include="API\Base\" />
     <Folder Include="API\Models\Application Status\" />
     <Folder Include="API\Services\" />
@@ -99,6 +103,21 @@
     <Folder Include="API\Display Model\Scheduler\" />
     <Folder Include="API\Managers\Scheduler\Utilities\" />
     <Folder Include="API\Models\Application Status\Post Sync SR Application\" />
+    <Folder Include="AWS\" />
+    <Folder Include="AWS\Managers\" />
+    <Folder Include="AWS\Models\" />
+    <Folder Include="AWS\Models\Access Token\" />
+    <Folder Include="AWS\Models\SSO\" />
+    <Folder Include="AWS\Services\" />
+    <Folder Include="AWS\Managers\Access Token\" />
+    <Folder Include="AWS\Managers\SSO\" />
+    <Folder Include="AWS\Services\Access Token\" />
+    <Folder Include="AWS\Models\DBR\" />
+    <Folder Include="AWS\Models\DBR\Get Bill Rendering\" />
+    <Folder Include="AWS\Models\DBR\Get Eligibility\" />
+    <Folder Include="AWS\Managers\DBR\" />
+    <Folder Include="AWS\Services\DBR\" />
+    <Folder Include="AWS\Managers\Eligibility\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />

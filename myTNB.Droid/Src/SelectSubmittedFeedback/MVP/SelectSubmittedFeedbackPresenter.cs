@@ -140,9 +140,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
 
         public async void OnStartShowLoading(string deviceId)
         {
-            //if (mView.IsActive()) {
-            this.mView.ShowProgressDialog();
-          //  }
 
             try
             {

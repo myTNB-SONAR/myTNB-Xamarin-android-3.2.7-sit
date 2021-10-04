@@ -457,7 +457,89 @@
                                     style="@style/Theme.RefreshButton" />
                             </LinearLayout>
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    </androidx.cardview.widget.CardView>               
+                    <!--Discover Mode-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginBottom="13dp"
+                        android:visibility="gone"
+                        android:id="@+id/discoverMoreContainer">
+                        <TextView
+                            android:id="@+id/discoverMoreTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="14dp"
+                            android:text="Discover More"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginBottom="4dp"
+                            android:textColor="@color/powerBlue"
+                            android:layout_gravity="left"/>
+                        <LinearLayout 
+                              android:orientation="vertical"
+                              android:layout_width="match_parent"
+                              android:layout_height="139dp"  
+                              android:layout_marginLeft="13dp"
+                              android:layout_marginRight="13dp"
+                              android:background="@drawable/rounded_edge_top"
+                              android:id="@+id/NewDiscoverMoreShimmerImgLayout">
+                                <ImageView
+                                android:layout_marginTop="12dp"
+                                android:id="@+id/NewDiscoverMoreShimmerImg"
+                                android:layout_height="match_parent"
+                                android:layout_width="match_parent"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/bg_discover_more"/>
+                        </LinearLayout>
+                        <RelativeLayout 
+                          android:orientation="vertical"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginLeft="13dp"
+                          android:layout_marginRight="13dp"
+                          android:background="@drawable/rounded_edge_bot" 
+                          android:padding="16dp"
+                          android:bottomLeftRadius="6dp"
+                          android:bottomRightRadius="6dp"
+                          android:id="@+id/newDiscoverMoreShimmerTxtLayout">
+                            <TextView
+                                android:id="@+id/txtTitleDiscoverMore"
+                                android:layout_toLeftOf="@+id/txtDate"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/powerBlue"
+                                android:text="TNB Energy Night Run"
+                                android:layout_alignParentLeft="true"
+                                android:textSize="12dp"
+                                android:layout_centerVertical="true"
+                                android:ellipsize="marquee"
+                                android:singleLine="true"
+                                android:lineSpacingExtra="2dp"/>
+                            <TextView
+                                android:id="@+id/txtDate"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/tunaGrey"
+                                android:text="13 Sep 2019"
+                                android:textSize="10dp"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentRight="true"
+                                android:singleLine="true"
+                                android:lineSpacingExtra="2dp"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginRight="22dp"/>
+                            <ImageView
+                                android:id="@+id/whatsNewUnreadImg"
+                                android:layout_height="16dp"
+                                android:layout_width="16dp"
+                                android:scaleType="fitXY"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_notifications_unread" />
+                        </RelativeLayout>
+                    </LinearLayout>
                     <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

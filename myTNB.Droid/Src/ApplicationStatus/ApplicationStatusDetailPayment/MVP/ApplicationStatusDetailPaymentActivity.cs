@@ -112,7 +112,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+            SetTheme(TextViewUtils.IsLargeFonts
+                ? Resource.Style.Theme_DashboardLarge
+                : Resource.Style.Theme_Dashboard);
             SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "title"));
             btnPayBill.Text = Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "payNow");
             TextViewUtils.SetMuseoSans300Typeface(accountPayAmountValue, refreshBillingDetailMessage);
@@ -129,13 +131,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
             PopulateCharges();
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-
-            btnPayBill.TextSize = TextViewUtils.GetFontSize(16f);
-            accountPayAmountLabel.TextSize = TextViewUtils.GetFontSize(14f);
-            accountPayAmountCurrency.TextSize = TextViewUtils.GetFontSize(12f);
-            accountPayAmountValue.TextSize = TextViewUtils.GetFontSize(24f);
-            refreshBillingDetailMessage.TextSize = TextViewUtils.GetFontSize(12f);
-            btnBillingDetailefresh.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize12(accountPayAmountCurrency, refreshBillingDetailMessage);
+            TextViewUtils.SetTextSize14(accountPayAmountLabel);
+            TextViewUtils.SetTextSize16(btnPayBill, btnBillingDetailefresh);
+            TextViewUtils.SetTextSize24(accountPayAmountValue);
 
             if (!applicationDetailDisplay.IsPaymentEnabled)
             {

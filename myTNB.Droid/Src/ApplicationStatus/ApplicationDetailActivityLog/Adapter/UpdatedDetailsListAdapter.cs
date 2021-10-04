@@ -10,13 +10,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
 {
     public class UpdatedDetailsListAdapter : RecyclerView.Adapter
     {
-       
+
         List<string> services = new List<string>();
 
         public override int ItemCount => services.Count;
         public UpdatedDetailsListAdapter(List<string> data)
         {
-            
+
             this.services.AddRange(data);
         }
 
@@ -25,8 +25,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
             ServiceListViewHolder h = holder as ServiceListViewHolder;
             TextViewUtils.SetMuseoSans300Typeface(h.ServiceLabel, h.ServiceBullet);
             h.ServiceLabel.Text = services[position];
-            h.ServiceLabel.TextSize = TextViewUtils.GetFontSize(16);
-            h.ServiceBullet.TextSize = TextViewUtils.GetFontSize(16);
+            TextViewUtils.SetTextSize16(h.ServiceLabel, h.ServiceBullet);
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

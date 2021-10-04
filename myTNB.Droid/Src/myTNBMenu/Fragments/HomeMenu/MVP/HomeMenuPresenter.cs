@@ -30,6 +30,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using Android.Text;
 using Android.OS;
 using System.Globalization;
+using Java.Util;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -192,7 +193,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         isSummaryDone = true;
                         OnCheckToCallHomeMenuTutorial();
-
+                        this.mView.ShowDiscoverMoreLayout();
                         OnCleanUpNotifications(summaryDetails);
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "8400")
@@ -293,8 +294,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             /*****/
                         }
                         MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
-                        this.mView.UpdateAccountListCards(updateDashboardInfoList);
-
+                        if (true)
+                        {
+                            this.mView.UpdateAccountListCards(updateDashboardInfoList);
+                        }
                         if (billingAccoutCount > 3)
                         {
                             if (billingAccoutCount == updateDashboardInfoList.Count())
@@ -310,7 +313,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             this.mView.IsLoadMoreButtonVisible(false, false);
                         }
-
+                        this.mView.ShowDiscoverMoreLayout();
                         OnCleanUpNotifications(summaryDetails);
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "8400")
@@ -646,6 +649,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
+                this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -661,6 +665,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             HomeMenuUtils.SetQueryWord(string.Empty);
             trackCurrentLoadMoreCount = 0;
             HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
+
             LoadAccounts();
         }
 
@@ -808,6 +813,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.mView.IsLoadMoreButtonVisible(false, false);
                     }
                 }
+                this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -953,6 +959,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
+                this.mView.ShowDiscoverMoreLayout();
             }
             else
             {
@@ -1275,6 +1282,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
+                this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -1440,6 +1448,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             queryTokenSource = new CancellationTokenSource();
             isMyServiceExpanded = false;
             HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
+
             this.mView.SetMyServiceRecycleView();
             this.mView.SetNewFAQRecycleView();
         }
@@ -1767,6 +1776,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             List<MyService> fetchList = new List<MyService>();
             List<MyService> filterList = new List<MyService>();
+            var energyBudget = new MyService();
             for (int i = 0; i < currentMyServiceList.Count; i++)
             {
                 if (currentMyServiceList[i].ServiceCategoryId == "1001")
@@ -1777,12 +1787,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         MyServiceEntity.InsertOrReplace(currentMyServiceList[i]);
                     }
                 }
+                else if (currentMyServiceList[i].ServiceCategoryId == "1007")
+                {
+                    energyBudget = new MyService()
+                    {
+                        ServiceCategoryId = currentMyServiceList[i].ServiceCategoryId,
+                        serviceCategoryName = currentMyServiceList[i].serviceCategoryName,
+                        serviceCategoryIcon = currentMyServiceList[i].serviceCategoryIcon,
+                        serviceCategoryIconUrl = currentMyServiceList[i].serviceCategoryIconUrl,
+                        serviceCategoryDesc = currentMyServiceList[i].serviceCategoryDesc,
+                    };
+                }
                 else
                 {
                     filterList.Add(currentMyServiceList[i]);
                     MyServiceEntity.InsertOrReplace(currentMyServiceList[i]);
                 }
+
+                //this.mView.StopShimmerDiscoverMore();
             }
+
+            //testing adding icon
+            /*var testicon = new MyService()
+            {
+                ServiceCategoryId = "1007",
+                serviceCategoryName = "My Energy Budget",
+                serviceCategoryIcon = "test",
+                serviceCategoryIconUrl = "test",
+                serviceCategoryDesc = "test",
+            };*/
+            //filterList.Add(testicon);
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            {
+                filterList.Insert(2, energyBudget);
+            }
+
+            MyServiceEntity.InsertOrReplace(energyBudget);
+
             currentMyServiceList = filterList;
             fetchList = currentMyServiceList;
 
@@ -1802,16 +1843,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void RestoreCurrentMyServiceState()
         {
             List<MyServiceEntity> cachedDBList = new List<MyServiceEntity>();
-
+            var energyBudget = new MyService();
             List<MyService> cachedList = new List<MyService>();
             cachedDBList = MyServiceEntity.GetAll();
             for (int i = 0; i < cachedDBList.Count; i++)
             {
-                cachedList.Add(new MyService()
+                if (cachedDBList[i].ServiceCategoryId.Contains("1007"))
                 {
-                    ServiceCategoryId = cachedDBList[i].ServiceCategoryId,
-                    serviceCategoryName = cachedDBList[i].serviceCategoryName
-                });
+                    energyBudget = new MyService()
+                    {
+                        ServiceCategoryId = cachedDBList[i].ServiceCategoryId,
+                        serviceCategoryName = cachedDBList[i].serviceCategoryName
+                    };
+                }
+                else
+                {
+                    cachedList.Add(new MyService()
+                    {
+                        ServiceCategoryId = cachedDBList[i].ServiceCategoryId,
+                        serviceCategoryName = cachedDBList[i].serviceCategoryName
+                    });
+                }                              
+            }
+
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            {
+                cachedList.Insert(2, energyBudget);
             }
 
             currentMyServiceList = cachedList;
@@ -2481,7 +2538,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
 
                 List<Notifications.Models.UserNotificationData> ToBeDeleteList = new List<Notifications.Models.UserNotificationData>();
-                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new MyTNBService.Request.BaseRequest());
+                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new MyTNBService.Request.BaseRequest());
                 if (response.IsSuccessResponse())
                 {
                     if (response.GetData() != null && response.GetData().UserNotificationList != null)
@@ -2575,12 +2632,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void OnCheckToCallHomeMenuTutorial()
         {
-            if (isAllDone() && !isHomeMenuTutorialShown && !this.mView.OnGetIsRootTooltipShown())
+            bool EBUser = false;
+
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            {
+                EBUser = true;
+                UserSessions.DoHomeTutorialShown(this.mPref);
+            }
+
+            if (isAllDone() && !isHomeMenuTutorialShown && !this.mView.OnGetIsRootTooltipShown() && !EBUser)
             {
                 isHomeMenuTutorialShown = true;
                 HomeMenuUtils.SetIsLoadedHomeMenu(true);
 
-                if (!UserSessions.HasHomeTutorialShown(this.mPref))
+                if(!UserSessions.HasHomeTutorialShown(this.mPref))
                 {
                     if (HomeMenuUtils.GetIsRestartHomeMenu())
                     {
@@ -2603,7 +2668,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }
         }
-
+       
         public List<NewAppModel> OnGeneraNewAppTutorialList()
         {
             List<NewAppModel> newList = new List<NewAppModel>();
@@ -2676,37 +2741,87 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             if (isNeedHelpHide)
             {
-                newList.Add(new NewAppModel()
+                //Energy budget
+                if (UserSessions.GetEnergyBudgetList().Count > 0)
                 {
-                    ContentShowPosition = ContentType.TopLeft,
-                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
-                    ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
-                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                    NeedHelpHide = isNeedHelpHide,
-                    IsButtonShow = false
-                });
+                    newList.Add(new NewAppModel()
+                    {
+                        ContentShowPosition = ContentType.TopLeft,
+                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
+                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
+                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                        NeedHelpHide = isNeedHelpHide,
+                        IsButtonShow = false
+                    });
+
+
+                    //Overlay EnergyBudget removed
+
+                }
+                else
+                {
+                    newList.Add(new NewAppModel()
+                    {
+                        ContentShowPosition = ContentType.TopLeft,
+                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
+                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
+                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                        NeedHelpHide = isNeedHelpHide,
+                        IsButtonShow = false
+                    });
+                }
             }
             else
             {
-                newList.Add(new NewAppModel()
-                {
-                    ContentShowPosition = ContentType.TopLeft,
-                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
-                    ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
-                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                    NeedHelpHide = isNeedHelpHide,
-                    IsButtonShow = false
-                });
+                    //Energy budget
+                if (UserSessions.GetEnergyBudgetList().Count > 0)
+                    {
 
-                newList.Add(new NewAppModel()
-                {
-                    ContentShowPosition = ContentType.TopLeft,
-                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpTitle"),//"Need help?",
-                    ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpDesc"),//"We’ve highlighted some of the<br/>most commonly asked questions<br/>for you to browse through.",
-                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                    NeedHelpHide = isNeedHelpHide,
-                    IsButtonShow = false
-                });
+                        newList.Add(new NewAppModel()
+                        {
+                            ContentShowPosition = ContentType.TopLeft,
+                            ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
+                            ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
+                            ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                            NeedHelpHide = isNeedHelpHide,
+                            IsButtonShow = false
+                        });
+
+
+                    //Overlay EnergyBudget removed
+
+                    newList.Add(new NewAppModel()
+                        {
+                            ContentShowPosition = ContentType.TopLeft,
+                            ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpTitle"),//"Need help?",
+                            ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpDesc"),//"We’ve highlighted some of the<br/>most commonly asked questions<br/>for you to browse through.",
+                            ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                            NeedHelpHide = isNeedHelpHide,
+                            IsButtonShow = false
+                        });
+                    }
+                    else
+                    {
+                        newList.Add(new NewAppModel()
+                    {
+                        ContentShowPosition = ContentType.TopLeft,
+                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
+                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
+                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                        NeedHelpHide = isNeedHelpHide,
+                        IsButtonShow = false
+                    });
+
+                    newList.Add(new NewAppModel()
+                    {
+                        ContentShowPosition = ContentType.TopLeft,
+                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpTitle"),//"Need help?",
+                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpDesc"),//"We’ve highlighted some of the<br/>most commonly asked questions<br/>for you to browse through.",
+                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                        NeedHelpHide = isNeedHelpHide,
+                        IsButtonShow = false
+                    });
+                }
             }
 
             return newList;

@@ -199,7 +199,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
             appointmentLabel2 = FindViewById<TextView>(Resource.Id.appointmentLabel2);
             appointmentLabel2.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "timeSectionTitle");
-            appointmentLabel2.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize16(appointmentLabel2);
             appointmentLabel2.Visibility = ViewStates.Gone;
 
             TextViewUtils.SetMuseoSans500Typeface(appointmentLabel2);
@@ -342,7 +342,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     selectedDayButton = days[i];
                 }
 
-                days[i].TextSize = TextViewUtils.GetFontSize(14f);
+                TextViewUtils.SetTextSize14(days[i]);
                 TextViewUtils.SetMuseoSans500Typeface(days[i]);
                 ++dayNumber;
             }

@@ -67,7 +67,7 @@
 						android:text="@string/GeneralEnquiry1of2_uploadSupporting"
 						android:textAllCaps="false"
 						android:textColor="@color/powerBlue"
-						android:textSize="16sp" />
+						android:textSize="16dp" />
 					<LinearLayout
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
 							android:text="UI - Copy of owner's identification (IC / Passport)"
 							android:textAllCaps="false"
 							android:textColor="@color/tunaGrey"
-							android:textSize="14sp" />
+							android:textSize="14dp" />
 						<androidx.recyclerview.widget.RecyclerView
 							android:id="@+id/recyclerView_ownerIC"
 							android:layout_width="match_parent"
@@ -116,7 +116,7 @@
 							android:text="UI - Copy of your Identification (IC / Passport)"
 							android:textAllCaps="false"
 							android:textColor="@color/tunaGrey"
-							android:textSize="14sp" />
+							android:textSize="14dp" />
 						<androidx.recyclerview.widget.RecyclerView
 							android:id="@+id/recyclerView_your_ic"
 							android:layout_width="match_parent"
@@ -176,7 +176,7 @@
 							android:text="UI - Proof of Consent"
 							android:textAllCaps="false"
 							android:textColor="@color/tunaGrey"
-							android:textSize="14sp" />
+							android:textSize="14dp" />
 						<androidx.recyclerview.widget.RecyclerView
 							android:id="@+id/recyclerView2"
 							android:layout_width="match_parent"
@@ -236,7 +236,7 @@
 							android:text="UI - Permises proof"
 							android:textAllCaps="false"
 							android:textColor="@color/tunaGrey"
-							android:textSize="14sp" />
+							android:textSize="14dp" />
 						<androidx.recyclerview.widget.RecyclerView
 							android:id="@+id/recyclerView3"
 							android:layout_width="match_parent"

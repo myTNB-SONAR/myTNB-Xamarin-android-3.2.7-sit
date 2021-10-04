@@ -79,7 +79,7 @@ namespace myTNB_Android.Src.Common.Adapter
             convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectCountryISDCodeItemLayout, parent, false);
             CountryISDCodeViewHolder viewHolder = new CountryISDCodeViewHolder(convertView);
             Country itemCountry = GetItemObject(position);
-            int imageFlag = CountryUtil.Instance.GetFlagImageResource(context,itemCountry.code);
+            int imageFlag = CountryUtil.Instance.GetFlagImageResource(context, itemCountry.code);
             viewHolder.flagImage.SetImageResource(imageFlag);
             viewHolder.countryISDCode.Text = itemCountry.isd;
             viewHolder.countryCountryName.Text = itemCountry.name;
@@ -113,8 +113,7 @@ namespace myTNB_Android.Src.Common.Adapter
             public CountryISDCodeViewHolder(View itemView) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(countryISDCode, countryCountryName);
-                countryISDCode.TextSize = TextViewUtils.GetFontSize(16f);
-                countryCountryName.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize16(countryISDCode, countryCountryName);
             }
         }
     }

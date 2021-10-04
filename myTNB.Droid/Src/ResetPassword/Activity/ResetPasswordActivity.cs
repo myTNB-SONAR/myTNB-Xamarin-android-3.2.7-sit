@@ -3,8 +3,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-
-
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -76,22 +74,19 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             // Create your application here
             try
             {
-
-
                 this.DisableSubmitButton();
 
                 mPresenter = new ResetPasswordPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
 
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit, txtResetPasswordTitle);
-
                 TextViewUtils.SetMuseoSans300Typeface(txtTitleInfo, txtNewPassword, txtConfirmNewPassword);
-
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword, txtInputLayoutConfirmNewPassword);
+                TextViewUtils.SetTextSize14(txtTitleInfo);
+                TextViewUtils.SetTextSize16(txtResetPasswordTitle, btnSubmit);
 
-                txtResetPasswordTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                btnSubmit.TextSize = TextViewUtils.GetFontSize(16f);
-                txtTitleInfo.TextSize = TextViewUtils.GetFontSize(14f);
-                txtInputLayoutNewPassword.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                txtInputLayoutNewPassword.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                    : Resource.Style.TextInputLayoutBottomErrorHint);
                 txtResetPasswordTitle.Text = GetLabelByLanguage("subTitle");
                 txtTitleInfo.Text = GetLabelByLanguage("details");
                 txtInputLayoutNewPassword.Hint = GetLabelByLanguage("newPassword");
@@ -194,7 +189,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
                     this.EnableSubmitButton();
                 }
-               
+
             }
 
 
@@ -207,12 +202,14 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             {
                 txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
             }
-            txtInputLayoutConfirmNewPassword.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutConfirmNewPassword.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                : Resource.Style.TextInputLayoutBottomErrorHint);
             //this.clearErrorIfTyped_forConfirmPass(true);
         }
 
         private void TxtNewPassword_TextChanged(object sender, TextChangedEventArgs e)
-        {   
+        {
             //always clear error if typed
             txtInputLayoutNewPassword.Error = null;
 
@@ -222,12 +219,13 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
             else
             {
-                if (!string.IsNullOrEmpty(txtNewPassword.Text) && !string.IsNullOrEmpty(txtConfirmNewPassword.Text)) {
+                if (!string.IsNullOrEmpty(txtNewPassword.Text) && !string.IsNullOrEmpty(txtConfirmNewPassword.Text))
+                {
 
                     this.EnableSubmitButton();
                 }
 
-                
+
             }
 
             if (!string.IsNullOrEmpty(txtNewPassword.Text))
@@ -240,7 +238,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = false;
             }
 
-           // this.clearErrorIfTyped_forConfirmPass(false);
+            // this.clearErrorIfTyped_forConfirmPass(false);
 
         }
 

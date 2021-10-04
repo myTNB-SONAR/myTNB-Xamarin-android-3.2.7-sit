@@ -99,7 +99,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
             /// Add multiple accounts to customers APi : AddMultipleSupplyAccountsToUserReg
             /// </summary>
             /// <param name="exception"></param>
-            void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, List<Models.AddAccount> accounts);
+            void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, List<Models.AddAccountV2> accounts);
 
             void InsertingInSummarydashBoard(List<CustomerBillingAccount> customerBillingAccounts);
 

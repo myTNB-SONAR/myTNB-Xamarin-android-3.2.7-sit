@@ -80,9 +80,7 @@ namespace myTNB_Android.Src.LogoutRate.Activity
 
                 //TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
                 TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, btnSubmit);
-
-                btnSubmit.TextSize = TextViewUtils.GetFontSize(16f);
-                txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize16(btnSubmit, txtTitleInfo);
                 // Create your application here
 
                 mPresenter = new LogoutRatePresenter(this);
@@ -221,10 +219,10 @@ namespace myTNB_Android.Src.LogoutRate.Activity
                              // EMPTY WILL CLOSE SNACKBAR
                          }
                         );
-                        View v = errorSnackbar.View;
-                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                        tv.SetMaxLines(5);
-                        errorSnackbar.Show();
+            View v = errorSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            errorSnackbar.Show();
         }
 
         public override bool TelephonyPermissionRequired()

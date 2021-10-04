@@ -32,7 +32,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
     public enum METER_READING_TYPE
     {
-        KWH,KVARH,KW
+        KWH, KVARH, KW
     }
 
     [Activity(Label = "@string/meter_reading_title", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.SubmitMeterReadingInput")]
@@ -48,12 +48,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private string PAGE_ID = "SSMRSubmitMeterReading";
 
         [BindView(Resource.Id.meterReadingTitle)]
-		TextView meterReadingTitle;
+        TextView meterReadingTitle;
 
-		[BindView(Resource.Id.meterReadingNote)]
-		TextView meterReadingNote;
+        [BindView(Resource.Id.meterReadingNote)]
+        TextView meterReadingNote;
 
-		[BindView(Resource.Id.btnSubmitReading)]
+        [BindView(Resource.Id.btnSubmitReading)]
         Button btnSubmitReading;
 
         [BindView(Resource.Id.btnTakeUploadPicture)]
@@ -113,7 +113,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private List<SSMRMeterReadingModel> singlePhaseList;
         private List<SSMRMeterReadingModel> threePhaseList;
 
-        List <SMRMROValidateRegisterDetails> SMRValidateRegisterDetailList;
+        List<SMRMROValidateRegisterDetails> SMRValidateRegisterDetailList;
         AccountData selectedAccount;
         SMRActivityInfoResponse ssmrActivityInfoResponse;
         List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsResponse;
@@ -167,21 +167,18 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private void InitializePage()
         {
-			meterReadingNote.TextFormatted = GetFormattedText(GetLabelByLanguage("note"));
+            meterReadingNote.TextFormatted = GetFormattedText(GetLabelByLanguage("note"));
 
-			TextViewUtils.SetMuseoSans300Typeface(meterReadingTitle,meterReadingNote, prevReading1, prevReading2, prevReading3, prevReading4, prevReading5,
+            TextViewUtils.SetMuseoSans300Typeface(meterReadingTitle, meterReadingNote, prevReading1, prevReading2, prevReading3, prevReading4, prevReading5,
                 prevReading6, prevReading7, prevReading8);
             TextViewUtils.SetMuseoSans500Typeface(meterReadingError, btnTakeUploadPictureText, btnSubmitReading);
 
             EnableSubmitButton(false);
             TextViewUtils.SetMuseoSans500Typeface(btnTakeUploadPictureText, btnSubmitReading);
-
-            btnSubmitReading.TextSize = TextViewUtils.GetFontSize(16f);
-            meterReadingTitle.TextSize = TextViewUtils.GetFontSize(14f);
-            btnTakeUploadPictureText.TextSize = TextViewUtils.GetFontSize(16f);
-            meterReadingManualTitle.TextSize = TextViewUtils.GetFontSize(14f);
-            meterReadingError.TextSize = TextViewUtils.GetFontSize(10f);
-            meterReadingNote.TextSize = TextViewUtils.GetFontSize(12f);
+            TextViewUtils.SetTextSize10(meterReadingError);
+            TextViewUtils.SetTextSize12(meterReadingNote);
+            TextViewUtils.SetTextSize14(meterReadingTitle, meterReadingManualTitle);
+            TextViewUtils.SetTextSize16(btnSubmitReading, btnTakeUploadPictureText);
 
             btnSubmitReading.Text = GetLabelByLanguage("submitReading");
             btnTakeUploadPictureText.Text = GetLabelByLanguage("takeOrUploadPhoto");
@@ -393,7 +390,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     txtPreviousMeterReading.Text = GetLabelByLanguage("previousMeterReading");
                     meterTypeView.Text = meterReadingModel.meterReadingUnitDisplay;
                     meterReadingInputLayoutList.Add(meterReadingInputLayout);
-                    PopulatePreviousMeterReadingValues(linearLayoutContainer,meterReadingModel);
+                    PopulatePreviousMeterReadingValues(linearLayoutContainer, meterReadingModel);
                 }
                 else if (meterReadingModel.meterReadingUnit.ToUpper() == Constants.SMR_METER_UNIT_KW)
                 {
@@ -555,7 +552,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     linearLayoutContainer.Visibility = ViewStates.Visible;
                     meterType = (TextView)linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type);
                     meterType.Text = sMRMROValidateRegisterDetails.ReadingUnitDisplayTitle;
-					PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
+                    PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
                     break;
                 case METER_READING_TYPE.KVARH:
                     linearLayoutContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
@@ -568,7 +565,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     linearLayoutContainer.Visibility = ViewStates.Visible;
                     meterType = (TextView)linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type);
                     meterType.Text = sMRMROValidateRegisterDetails.ReadingUnitDisplayTitle;
-					PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
+                    PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
                     break;
                 default:
                     linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
@@ -581,7 +578,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     linearLayoutContainer.Visibility = ViewStates.Visible;
                     meterType = (TextView)linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type);
                     meterType.Text = sMRMROValidateRegisterDetails.ReadingUnitDisplayTitle;
-					PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
+                    PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
                     break;
             }
         }
@@ -604,8 +601,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             foreach (GetMeterReadingOCRResponseDetails ocrResponse in ocrMeterReadingList)
             {
-                int foundIndex = meterReadingModelList.FindIndex(meterReadingModel => {
-                    return meterReadingModel.meterReadingUnit.ToUpper() == ocrResponse.OCRUnit.ToUpper();});
+                int foundIndex = meterReadingModelList.FindIndex(meterReadingModel =>
+                {
+                    return meterReadingModel.meterReadingUnit.ToUpper() == ocrResponse.OCRUnit.ToUpper();
+                });
                 if (foundIndex != -1)
                 {
                     LinearLayout linearLayoutContainer;
@@ -639,7 +638,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             var currentFocus = this.CurrentFocus;
             if (currentFocus != null)
             {
-              inputManager.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
+                inputManager.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
             }
             UpdateCurrentReadingValuesColor(meterCardContainer, (ocrResponse.IsSuccess.ToLower() == "true"));
             OnUpdateSubmitMeterButton();
@@ -861,12 +860,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             HideProgressDialog();
             if (validationDataList.Count > 0)
             {
-                foreach(MeterValidationData validationData in validationDataList)
+                foreach (MeterValidationData validationData in validationDataList)
                 {
                     LinearLayout linearLayoutContainer;
                     TextView inlineValidationMessage;
 
-                    int existingMeterIndex = meterReadingModelList.FindIndex(model => {
+                    int existingMeterIndex = meterReadingModelList.FindIndex(model =>
+                    {
                         return model.meterReadingUnit.ToUpper() == validationData.meterReadingUnit.ToUpper();
                     });
 
@@ -1117,7 +1117,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             string text = GetLabelByLanguage("manualInputTitle");
             Java.Lang.ICharSequence textConverted = new Java.Lang.String(text);
 
-            StaticLayout staticLayout = new StaticLayout(textConverted, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int) DPUtils.ConvertDPToPx(32f), Layout.Alignment.AlignNormal, 3f, 0f, true);
+            StaticLayout staticLayout = new StaticLayout(textConverted, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f), Layout.Alignment.AlignNormal, 3f, 0f, true);
 
             i = staticLayout.LineCount;
 

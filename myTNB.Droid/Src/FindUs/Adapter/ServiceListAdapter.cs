@@ -1,5 +1,4 @@
-﻿
-using Android.Views;
+﻿using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.Base.Activity;
@@ -25,7 +24,7 @@ namespace myTNB_Android.Src.FindUs.Adapter
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             ServiceListViewHolder h = holder as ServiceListViewHolder;
-            TextViewUtils.SetMuseoSans300Typeface(h.ServiceLabel,h.ServiceBullet);
+            TextViewUtils.SetMuseoSans300Typeface(h.ServiceLabel, h.ServiceBullet);
             h.ServiceLabel.Text = services[position];
         }
 
@@ -39,15 +38,13 @@ namespace myTNB_Android.Src.FindUs.Adapter
         public class ServiceListViewHolder : RecyclerView.ViewHolder
         {
             public TextView ServiceLabel { get; private set; }
-			public TextView ServiceBullet { get; private set; }
+            public TextView ServiceBullet { get; private set; }
 
-			public ServiceListViewHolder(View itemView) : base(itemView)
+            public ServiceListViewHolder(View itemView) : base(itemView)
             {
                 ServiceLabel = itemView.FindViewById<TextView>(Resource.Id.text_service);
                 ServiceBullet = itemView.FindViewById<TextView>(Resource.Id.text_bullet);
-                ServiceBullet.TextSize = TextViewUtils.GetFontSize(16f);
-                ServiceLabel.TextSize = TextViewUtils.GetFontSize(16f);
-
+                TextViewUtils.SetTextSize16(ServiceBullet, ServiceLabel);
             }
 
         }

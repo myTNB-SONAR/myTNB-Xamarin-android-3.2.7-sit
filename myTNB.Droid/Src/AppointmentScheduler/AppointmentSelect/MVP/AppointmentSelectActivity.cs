@@ -105,7 +105,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             timeSlotNote = FindViewById<TextView>(Resource.Id.timeSlotNote);
             btnSubmitAppointment = (Button)FindViewById<Button>(Resource.Id.btnSubmitAppointment);
             rootview = FindViewById<RelativeLayout>(Resource.Id.rootView);
-            currentMonth.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize16(currentMonth);
             scrollcontainer = FindViewById<NestedScrollView>(Resource.Id.schedulerNestedScrollView);
             appointmentLabel = FindViewById<TextView>(Resource.Id.appointmentLabel);
             btnSubmitAppointment.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "confirm");
@@ -390,13 +390,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
         private void SetFonts()
         {
-            timeSlotNote.TextSize = TextViewUtils.GetFontSize(12f);
-            timeSlotError.TextSize = TextViewUtils.GetFontSize(12f);
-            btnSubmitAppointment.TextSize = TextViewUtils.GetFontSize(16f);
-            currentMonth.TextSize = TextViewUtils.GetFontSize(16f);
-            appointmentLabel.TextSize = TextViewUtils.GetFontSize(16f);
             TextViewUtils.SetMuseoSans500Typeface(btnSubmitAppointment, currentMonth, appointmentLabel, timeSlotError);
             TextViewUtils.SetMuseoSans300Typeface(timeSlotNote);
+            TextViewUtils.SetTextSize12(timeSlotNote, timeSlotError);
+            TextViewUtils.SetTextSize16(btnSubmitAppointment, currentMonth, appointmentLabel);
         }
     }
 }

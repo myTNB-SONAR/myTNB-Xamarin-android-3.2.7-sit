@@ -23,6 +23,8 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SummaryDashBoard;
@@ -120,20 +122,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 		public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
 		{
-			try
-			{
-				if (requestCode == Constants.SELECT_ACCOUNT_REQUEST_CODE)
-				{
-					if (resultCode == Result.Ok)
-					{
-						Bundle extras = data.Extras;
+            try
+            {
+                if (requestCode == Constants.SELECT_ACCOUNT_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        Bundle extras = data.Extras;
 
                         CustomerBillingAccount selectedAccount = JsonConvert.DeserializeObject<CustomerBillingAccount>(extras.GetString(Constants.SELECTED_ACCOUNT));
 
-						if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
-						{
+                        if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
+                        {
                             if (selectedAccount != null && selectedAccount.SmartMeterCode != null && selectedAccount.SmartMeterCode.Equals("0"))
-							{
+                            {
                                 if (!string.IsNullOrEmpty(selectedAccount.AccNum) && !UsageHistoryEntity.IsSMDataUpdated(selectedAccount.AccNum))
                                 {
                                     UsageHistoryEntity storedEntity = new UsageHistoryEntity();
@@ -172,8 +174,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     LoadUsageHistory(selectedAccount);
                                 }
                             }
-							else
-							{
+                            else
+                            {
                                 if (!SMUsageHistoryEntity.IsSMDataUpdated(selectedAccount.AccNum))
                                 {
                                     //Get stored data
@@ -209,6 +211,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                         {
                                             smUsageHistoryResponse = storedSMData;
                                         }
+
+                                        if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                                        {
+                                            smUsageHistoryResponse = null;
+                                        }
+
                                         LoadSMUsageHistory(selectedAccount);
                                     }
                                     else
@@ -224,8 +232,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                 }
                             }
                         }
-						else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
-						{
+                        else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
+                        {
                             this.mView.SetAccountName(selectedAccount.AccDesc);
                             AccountData accountData = new AccountData();
                             CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccNum);
@@ -237,13 +245,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
                             this.mView.ShowBillMenu(accountData);
                         }
-					}
-				}
-			}
-			catch (System.Exception e)
-			{
-				Utility.LoggingNonFatalError(e);
-			}
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 		}
 
 		public void OnMenuSelect(int resourceId)
@@ -757,6 +765,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                         smUsageHistoryResponse = storedSMData;
                                     }
 
+                                    if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                                    {
+                                        smUsageHistoryResponse = null;
+                                    }
+
                                     LoadSMUsageHistory(selected);
                                 }
                                 else
@@ -1118,8 +1131,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     }
                     else
                     {
-                        mWhatsNewEntity.RemoveItemByCategoryId(mCategoryList[i].ID);
-                        mWhatsNewCategoryEntity.RemoveItem(mCategoryList[i].ID);
+                        //mWhatsNewEntity.RemoveItemByCategoryId(mCategoryList[i].ID);
+                        //mWhatsNewCategoryEntity.RemoveItem(mCategoryList[i].ID);
                     }
                 }
             }
@@ -1652,6 +1665,54 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             }
             wtManager.UpdateReadItem(itemID, flag, formattedDate);
+        }
+
+        public void DisableWalkthrough()
+        {
+            UserSessions.DoHomeTutorialShown(this.mSharedPref);
+        }
+
+        public void GetNotificationTypesList()
+        {
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    _ = InvokeGetNotificationTypes();
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private async Task InvokeGetNotificationTypes()
+        {
+            var appNotificationTypesResponse = await ServiceApiImpl.Instance.AppNotificationTypes(new MyTNBService.Request.BaseRequest());
+
+            if (appNotificationTypesResponse != null
+                && appNotificationTypesResponse.Response != null
+                && appNotificationTypesResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+            {
+                foreach (AppNotificationTypesResponse.ResponseData notificationTypes in appNotificationTypesResponse.GetData())
+                {
+                    NotificationTypes type = new NotificationTypes()
+                    {
+                        Id = notificationTypes.Id,
+                        Title = notificationTypes.Title,
+                        Code = notificationTypes.Code,
+                        PreferenceMode = notificationTypes.PreferenceMode,
+                        Type = notificationTypes.Type,
+                        CreatedDate = notificationTypes.CreatedDate,
+                        MasterId = notificationTypes.MasterId,
+                        IsOpted = notificationTypes.IsOpted == "true" ? true : false,
+                        ShowInPreference = notificationTypes.ShowInPreference == "true" ? true : false,
+                        ShowInFilterList = notificationTypes.ShowInFilterList == "true" ? true : false
+                    };
+                    NotificationTypesEntity.InsertOrReplace(type);
+                }
+            }
         }
 
     }

@@ -48,8 +48,7 @@ namespace myTNB_Android.Src.FindUs.Adapter
             {
                 Title = itemView.FindViewById<TextView>(Resource.Id.text_title);
                 Description = itemView.FindViewById<TextView>(Resource.Id.text_description);
-                Title.TextSize = TextViewUtils.GetFontSize(16f);
-                Description.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize16(Title, Description);
             }
 
         }

@@ -48,7 +48,7 @@ namespace myTNB.Mobile
         {
             try
             {
-                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(MobileConstants.ApiDomain);
                 try
                 {
                     SearchApplicationTypeResponse response = isLoggedIn
@@ -61,13 +61,13 @@ namespace myTNB.Mobile
                             , AppInfoManager.Instance.Language.ToString());
                     if (response != null && response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = MobileConstants.Service_SearchApplicationType.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
                         if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                         {
-                            response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(response.StatusDetail.Code);
+                            response.StatusDetail = MobileConstants.Service_SearchApplicationType.GetStatusDetails(response.StatusDetail.Code);
                         }
                         else
                         {
@@ -75,7 +75,7 @@ namespace myTNB.Mobile
                             {
                                 StatusDetail = new StatusDetail()
                             };
-                            response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(Constants.DEFAULT);
+                            response.StatusDetail = MobileConstants.Service_SearchApplicationType.GetStatusDetails(MobileConstants.DEFAULT);
                         }
                     }
                     response.SearchApplicationTypeParser(roleID);
@@ -104,7 +104,7 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            res.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(Constants.DEFAULT);
+            res.StatusDetail = MobileConstants.Service_SearchApplicationType.GetStatusDetails(MobileConstants.DEFAULT);
             return res;
         }
         #endregion
@@ -130,7 +130,7 @@ namespace myTNB.Mobile
             ApplicationDetailDisplay displaymodel = new ApplicationDetailDisplay();
             try
             {
-                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(MobileConstants.ApiDomain);
                 try
                 {
                     HttpResponseMessage rawResponse = isLoggedIn
@@ -155,18 +155,18 @@ namespace myTNB.Mobile
                     {
                         displaymodel.Content = null;
                         displaymodel.StatusDetail = new StatusDetail();
-                        displaymodel.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(Constants.EMPTY);
+                        displaymodel.StatusDetail = MobileConstants.Service_GetApplicationStatus.GetStatusDetails(MobileConstants.EMPTY);
                         return displaymodel;
                     }
 
                     GetApplicationStatusResponse response = JsonConvert.DeserializeObject<GetApplicationStatusResponse>(responseString);
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        if (response.Content == null && response.StatusDetail.Code == Constants.SUCCESS_CODE)
+                        if (response.Content == null && response.StatusDetail.Code == MobileConstants.SUCCESS_CODE)
                         {
-                            response.StatusDetail.Code = Constants.EMPTY;
+                            response.StatusDetail.Code = MobileConstants.EMPTY;
                         }
-                        response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = MobileConstants.Service_GetApplicationStatus.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
@@ -174,7 +174,7 @@ namespace myTNB.Mobile
                         {
                             StatusDetail = new StatusDetail()
                         };
-                        response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(Constants.DEFAULT);
+                        response.StatusDetail = MobileConstants.Service_GetApplicationStatus.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                     displaymodel = response.Parse(applicationType
                                , applicationTypeTitle
@@ -205,7 +205,7 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            displaymodel.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(Constants.DEFAULT);
+            displaymodel.StatusDetail = MobileConstants.Service_GetApplicationStatus.GetStatusDetails(MobileConstants.DEFAULT);
             return displaymodel;
         }
         #endregion
@@ -234,7 +234,7 @@ namespace myTNB.Mobile
         {
             try
             {
-                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(MobileConstants.ApiDomain);
                 try
                 {
                     PostSaveApplication request = new PostSaveApplication
@@ -260,7 +260,7 @@ namespace myTNB.Mobile
                     PostSaveApplicationResponse response = await rawResponse.ParseAsync<PostSaveApplicationResponse>();
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        response.StatusDetail = Constants.Service_SaveApplication.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = MobileConstants.Service_SaveApplication.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
@@ -268,7 +268,7 @@ namespace myTNB.Mobile
                         {
                             StatusDetail = new StatusDetail()
                         };
-                        response.StatusDetail = Constants.Service_SaveApplication.GetStatusDetails(Constants.DEFAULT);
+                        response.StatusDetail = MobileConstants.Service_SaveApplication.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                     return response;
                 }
@@ -295,7 +295,7 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            res.StatusDetail = Constants.Service_SaveApplication.GetStatusDetails(Constants.DEFAULT);
+            res.StatusDetail = MobileConstants.Service_SaveApplication.GetStatusDetails(MobileConstants.DEFAULT);
             return res;
         }
         #endregion
@@ -321,7 +321,7 @@ namespace myTNB.Mobile
             try
             {
                 applicationType = applicationType.IsValid() && applicationType == "ALL" ? string.Empty : applicationType;
-                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(MobileConstants.ApiDomain);
                 try
                 {
                     HttpResponseMessage rawResponse = await service.GetAllApplications(page
@@ -348,7 +348,7 @@ namespace myTNB.Mobile
                         response = new GetAllApplicationsResponse
                         {
                             Content = null,
-                            StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(isFilter ? "Constants. EMPTYFilter" : Constants.EMPTY)
+                            StatusDetail = MobileConstants.Service_GetAllApplications.GetStatusDetails(isFilter ? "Constants. EMPTYFilter" : MobileConstants.EMPTY)
                         };
                         return response;
                     }
@@ -358,13 +358,13 @@ namespace myTNB.Mobile
                     {
                         //Mark: Check for 0 Applications
                         if (response.Content != null && response.Content.Applications != null
-                            && response.Content.Applications.Count == 0 && response.StatusDetail.Code == Constants.SUCCESS_CODE)
+                            && response.Content.Applications.Count == 0 && response.StatusDetail.Code == MobileConstants.SUCCESS_CODE)
                         {
-                            response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(isFilter ? Constants.EMPTY_FILTER : Constants.EMPTY);
+                            response.StatusDetail = MobileConstants.Service_GetAllApplications.GetStatusDetails(isFilter ? MobileConstants.EMPTY_FILTER : MobileConstants.EMPTY);
                         }
                         else
                         {
-                            response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(response.StatusDetail.Code);
+                            response.StatusDetail = MobileConstants.Service_GetAllApplications.GetStatusDetails(response.StatusDetail.Code);
                         }
                     }
                     else
@@ -373,7 +373,7 @@ namespace myTNB.Mobile
                         {
                             StatusDetail = new StatusDetail()
                         };
-                        response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(Constants.DEFAULT);
+                        response.StatusDetail = MobileConstants.Service_GetAllApplications.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                     if (response.StatusDetail.IsSuccess)
                     {
@@ -412,7 +412,7 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(Constants.DEFAULT);
+            response.StatusDetail = MobileConstants.Service_GetAllApplications.GetStatusDetails(MobileConstants.DEFAULT);
             return response;
         }
 
@@ -463,7 +463,7 @@ namespace myTNB.Mobile
             ApplicationDetailDisplay displaymodel = new ApplicationDetailDisplay();
             try
             {
-                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(MobileConstants.ApiDomain);
                 try
                 {
                     HttpResponseMessage rawResponse = await service.GetApplicationDetail(applicationType
@@ -481,18 +481,18 @@ namespace myTNB.Mobile
                     {
                         displaymodel.Content = null;
                         displaymodel.StatusDetail = new StatusDetail();
-                        displaymodel.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(Constants.EMPTY);
+                        displaymodel.StatusDetail = MobileConstants.Service_GetApplicationDetail.GetStatusDetails(MobileConstants.EMPTY);
                         return displaymodel;
                     }
 
                     GetApplicationDetailsResponse response = JsonConvert.DeserializeObject<GetApplicationDetailsResponse>(responseString);
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        if (response.Content == null && response.StatusDetail.Code == Constants.SUCCESS_CODE)
+                        if (response.Content == null && response.StatusDetail.Code == MobileConstants.SUCCESS_CODE)
                         {
-                            response.StatusDetail.Code = Constants.EMPTY;
+                            response.StatusDetail.Code = MobileConstants.EMPTY;
                         }
-                        response.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = MobileConstants.Service_GetApplicationDetail.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
@@ -500,7 +500,7 @@ namespace myTNB.Mobile
                         {
                             StatusDetail = new StatusDetail()
                         };
-                        response.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(Constants.DEFAULT);
+                        response.StatusDetail = MobileConstants.Service_GetApplicationDetail.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                     displaymodel = response.Parse(applicationType
                         , applicationID
@@ -565,7 +565,7 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            displaymodel.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(Constants.DEFAULT);
+            displaymodel.StatusDetail = MobileConstants.Service_GetApplicationDetail.GetStatusDetails(MobileConstants.DEFAULT);
             return displaymodel;
         }
         #endregion
@@ -584,7 +584,7 @@ namespace myTNB.Mobile
         {
             try
             {
-                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(MobileConstants.ApiDomain);
                 try
                 {
                     PostRemoveApplicationRequest request = new PostRemoveApplicationRequest
@@ -601,7 +601,7 @@ namespace myTNB.Mobile
                     PostRemoveApplicationResponse response = await rawResponse.ParseAsync<PostRemoveApplicationResponse>();
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        response.StatusDetail = Constants.Service_RemoveApplication.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = MobileConstants.Service_RemoveApplication.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
@@ -609,7 +609,7 @@ namespace myTNB.Mobile
                         {
                             StatusDetail = new StatusDetail()
                         };
-                        response.StatusDetail = Constants.Service_RemoveApplication.GetStatusDetails(Constants.DEFAULT);
+                        response.StatusDetail = MobileConstants.Service_RemoveApplication.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                     return response;
                 }
@@ -636,7 +636,7 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            res.StatusDetail = Constants.Service_RemoveApplication.GetStatusDetails(Constants.DEFAULT);
+            res.StatusDetail = MobileConstants.Service_RemoveApplication.GetStatusDetails(MobileConstants.DEFAULT);
             return res;
         }
         #endregion
@@ -652,7 +652,7 @@ namespace myTNB.Mobile
             GetApplicationsByCAResponse response;
             try
             {
-                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(MobileConstants.ApiDomain);
                 try
                 {
                     HttpResponseMessage rawResponse = await service.GetApplicationsByCA(accountNumber
@@ -669,7 +669,7 @@ namespace myTNB.Mobile
                         response = new GetApplicationsByCAResponse
                         {
                             Content = null,
-                            StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(Constants.EMPTY)
+                            StatusDetail = MobileConstants.Service_SearchApplicationByCA.GetStatusDetails(MobileConstants.EMPTY)
                         };
                         return response;
                     }
@@ -678,13 +678,13 @@ namespace myTNB.Mobile
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         //Mark: Check for 0 Applications
-                        if (response.Content != null && response.Content.Count == 0 && response.StatusDetail.Code == Constants.SUCCESS_CODE)
+                        if (response.Content != null && response.Content.Count == 0 && response.StatusDetail.Code == MobileConstants.SUCCESS_CODE)
                         {
-                            response.StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(Constants.EMPTY);
+                            response.StatusDetail = MobileConstants.Service_SearchApplicationByCA.GetStatusDetails(MobileConstants.EMPTY);
                         }
                         else
                         {
-                            response.StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(response.StatusDetail.Code);
+                            response.StatusDetail = MobileConstants.Service_SearchApplicationByCA.GetStatusDetails(response.StatusDetail.Code);
                         }
                     }
                     else
@@ -693,7 +693,7 @@ namespace myTNB.Mobile
                         {
                             StatusDetail = new StatusDetail()
                         };
-                        response.StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(Constants.DEFAULT);
+                        response.StatusDetail = MobileConstants.Service_SearchApplicationByCA.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                     return response;
                 }
@@ -720,7 +720,7 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            response.StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(Constants.DEFAULT);
+            response.StatusDetail = MobileConstants.Service_SearchApplicationByCA.GetStatusDetails(MobileConstants.DEFAULT);
             return response;
         }
         #endregion
@@ -730,7 +730,7 @@ namespace myTNB.Mobile
         {
             try
             {
-                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(MobileConstants.ApiDomain);
                 try
                 {
                     HttpResponseMessage rawResponse = await service.SyncSRApplication(AppInfoManager.Instance.GetUserInfo()
@@ -739,7 +739,7 @@ namespace myTNB.Mobile
                     PostSyncSRApplicationResponse response = await rawResponse.ParseAsync<PostSyncSRApplicationResponse>();
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        response.StatusDetail = Constants.Service_SyncSRApplication.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = MobileConstants.Service_SyncSRApplication.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
@@ -747,7 +747,7 @@ namespace myTNB.Mobile
                         {
                             StatusDetail = new StatusDetail()
                         };
-                        response.StatusDetail = Constants.Service_SyncSRApplication.GetStatusDetails(Constants.DEFAULT);
+                        response.StatusDetail = MobileConstants.Service_SyncSRApplication.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                     return response;
                 }
@@ -774,7 +774,7 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            res.StatusDetail = Constants.Service_SyncSRApplication.GetStatusDetails(Constants.DEFAULT);
+            res.StatusDetail = MobileConstants.Service_SyncSRApplication.GetStatusDetails(MobileConstants.DEFAULT);
             return res;
         }
         #endregion

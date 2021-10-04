@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
             int id = Resource.Layout.SelectSMRAccountItemLayout;
             var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
             SelectSMRAccountViewHolder selectSMRAccountViewHolder = new SelectSMRAccountViewHolder(itemView);
-            itemView.SetOnClickListener(new OnAccountSelectListener(mView,selectSMRAccountViewHolder));
+            itemView.SetOnClickListener(new OnAccountSelectListener(mView, selectSMRAccountViewHolder));
             return selectSMRAccountViewHolder;
         }
 
@@ -47,7 +47,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
                 accountName = itemView.FindViewById(Resource.Id.account_name_value) as TextView;
                 accountSelected = itemView.FindViewById(Resource.Id.select_smr_account) as CheckBox;
                 TextViewUtils.SetMuseoSans300Typeface(accountName);
-                accountName.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize16(accountName);
             }
         }
 

@@ -18,6 +18,7 @@ namespace myTNB_Android.Src.Utils
 
         private static ISharedPreferences mPreferences;
         internal static ApplicationStatusNotificationModel ApplicationStatusNotification { private set; get; }
+        internal static NotificationModel Notification { private set; get; }
 
         public static void SetCurrentImageCount(ISharedPreferences prefs, int count)
         {
@@ -76,7 +77,7 @@ namespace myTNB_Android.Src.Utils
         {
             return prefs.GetString("notificationType", null);
         }
-
+        
         internal static void SetApplicationStatusNotification(string saveID
             , string applciationID
             , string applicationType
@@ -95,6 +96,32 @@ namespace myTNB_Android.Src.Utils
             else
             {
                 ApplicationStatusNotification = null;
+            }
+        }
+
+        public static void ClearNotification()
+        {
+            Notification = null;
+        }
+
+        internal static void SetNotification(
+              string type
+            , string requestTransID
+            , string eventID)
+        {
+            if (!string.IsNullOrEmpty(type) && (!string.IsNullOrEmpty(requestTransID) || !string.IsNullOrEmpty(eventID)))
+            {
+                Notification = new NotificationModel
+                {
+                    Type = type,
+                    RequestTransId = requestTransID,
+                    EventId = eventID
+                   
+                };
+            }
+            else
+            {
+                Notification = null;
             }
         }
 
@@ -221,6 +248,18 @@ namespace myTNB_Android.Src.Utils
             editor.PutBoolean("hasApplicationStatusShown", true);
             editor.Apply();
         }
+
+        public static bool HasSmartMeterShown(ISharedPreferences prefs)             //energy budget
+        {
+            return prefs.GetBoolean("hasSmartMeterShown", false);
+        }
+        public static void DoSmartMeterShown(ISharedPreferences prefs)              //energy budget
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSmartMeterShown", true);
+            editor.Apply();
+        }
+
         public static bool HasApplicationDetailShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasApplicationDetailShown", false);
@@ -494,6 +533,18 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static void SavePopUpCountEB(ISharedPreferences prefs, string count)    //count EB popup
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("popupEB", count);
+            editor.Apply();
+        }
+
+        public static string GetSavePopUpCountEB(ISharedPreferences preferences)    //count EB popup
+        {
+            return preferences.GetString("popupEB", "");
+        }
+
         public static int GetPrevAppVersionCode(ISharedPreferences preferences)
         {
             return preferences.GetInt("PREV_APP_VERSION_CODE", 0);
@@ -552,6 +603,31 @@ namespace myTNB_Android.Src.Utils
             return selectAccountList;
         }
 
+        public static void EnergyBudget(List<SMRAccount> sMRAccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+            editor.PutString("SMR_ACCOUNT_LIST_ENERGY_BUDGET", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<SMRAccount> GetEnergyBudgetList()
+        {
+            string accountList = mPreferences.GetString("SMR_ACCOUNT_LIST_ENERGY_BUDGET", null);
+            List<SMRAccount> selectAccountList = new List<SMRAccount>();
+            if (accountList != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<SMRAccount>>(accountList);
+            }
+            return selectAccountList;
+        }
+
+        public static void DeleteEnergyBudgetList(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.Remove("SMR_ACCOUNT_LIST_ENERGY_BUDGET").Apply();
+        }
+    
         public static void SetSMREligibilityAccountList(List<SMRAccount> sMRAccounts)
         {
             ISharedPreferencesEditor editor = mPreferences.Edit();
@@ -676,6 +752,15 @@ namespace myTNB_Android.Src.Utils
         {
             ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
             return sharedPreferences.GetBoolean(Constants.SHARED_PREF_SAVED_LANG_PREF_RESULT_KEY, false);
+        }
+
+        internal static void RemoveEligibleData(ISharedPreferences mSharedPref)
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.PutString(MobileConstants.SharePreferenceKey.GetEligibilityData, string.Empty);
+            editor.PutString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, string.Empty);
+            editor.PutString(MobileConstants.SharePreferenceKey.AccessToken, string.Empty);
+            editor.Apply();
         }
     }
 }

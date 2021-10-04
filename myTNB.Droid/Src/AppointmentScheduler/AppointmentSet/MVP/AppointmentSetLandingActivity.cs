@@ -299,19 +299,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
 
         private void SetFonts()
         {
-            txtMessageInfo.TextSize = TextViewUtils.GetFontSize(12);
-            txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16);
-            servicerequestLabel.TextSize = TextViewUtils.GetFontSize(10);
-            servicerequest.TextSize = TextViewUtils.GetFontSize(14);
-            appointmentLabel.TextSize = TextViewUtils.GetFontSize(10);
-            appointmentTimeLabel.TextSize = TextViewUtils.GetFontSize(10);
-            appointmentValue.TextSize = TextViewUtils.GetFontSize(14);
-            appointmentTimeValue.TextSize = TextViewUtils.GetFontSize(14);
-            premiseLabel.TextSize = TextViewUtils.GetFontSize(10);
-            premiseaddresstext.TextSize = TextViewUtils.GetFontSize(14);
-            btnTrackApplication.TextSize = TextViewUtils.GetFontSize(16);
-            btnAddtoCalendar.TextSize = TextViewUtils.GetFontSize(16);
-
+            TextViewUtils.SetTextSize10(servicerequestLabel, appointmentLabel, appointmentTimeLabel, premiseLabel);
+            TextViewUtils.SetTextSize12(txtMessageInfo);
+            TextViewUtils.SetTextSize14(servicerequest, appointmentValue, appointmentTimeValue, premiseaddresstext);
+            TextViewUtils.SetTextSize16(txtTitleInfo, btnTrackApplication, btnAddtoCalendar);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfo, txtTitleInfo, servicerequestLabel
                 , servicerequest, appointmentLabel, appointmentTimeLabel, appointmentValue
                 , appointmentTimeValue, premiseLabel, premiseaddresstext);

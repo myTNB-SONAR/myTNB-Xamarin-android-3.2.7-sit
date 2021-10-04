@@ -99,10 +99,9 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 btnSave.Text = GetLabelCommonByLanguage("next");
                 lblInfoLabel.Text = GetLabelByLanguage("infoTitle");
                 lblVerifyMobileNo.Text = GetLabelByLanguage("details");
-
-                lblInfoLabel.TextSize = TextViewUtils.GetFontSize(12f);
-                lblVerifyMobileNo.TextSize = TextViewUtils.GetFontSize(14f);
-                btnSave.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize12(lblInfoLabel);
+                TextViewUtils.SetTextSize14(lblVerifyMobileNo);
+                TextViewUtils.SetTextSize16(btnSave);
 
                 progress = new MaterialDialog.Builder(this)
                     .Title(GetString(Resource.String.update_mobile_progress_title))

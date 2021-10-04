@@ -49,8 +49,8 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile;
-using Android.Util;
 using myTNB_Android.Src.myTNBMenu.Async;
+using myTNB.Mobile.AWS.Models;
 using Android.Content.Res;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
 
@@ -60,7 +60,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
               , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.DashboardHome"
-        , WindowSoftInputMode = SoftInput.AdjustNothing)]
+        , WindowSoftInputMode = SoftInput.AdjustPan)]
     public class DashboardHomeActivity : BaseToolbarAppCompatActivity, DashboardHomeContract.IView, ISummaryFragmentToDashBoardActivtyListener
     {
         internal readonly string TAG = typeof(DashboardHomeActivity).Name;
@@ -161,12 +161,29 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             currentFragment = fragment;
         }
+        public int BottomNavigationViewHeight()
+        {
+            try
+            {
+                return bottomNavigationView.Height;
+
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return 0;
+        }
 
         private void SetBottomNavigationLabels()
         {
             try
             {
-                RelativeSizeSpan relativeSizeSpan = TextViewUtils.IsLargeFonts ? new RelativeSizeSpan(1.5f) : new RelativeSizeSpan(1f);
+                RelativeSizeSpan relativeSizeSpan = TextViewUtils.IsLargeFonts
+                    ? new RelativeSizeSpan(1.5f)
+                    : new RelativeSizeSpan(1f);
 
                 IMenu bottomMenu = bottomNavigationView.Menu;
                 IMenuItem item;
@@ -223,7 +240,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardHomeLarge : Resource.Style.Theme_DashboardHome);
+            SetTheme(TextViewUtils.IsLargeFonts
+                ? Resource.Style.Theme_DashboardHomeLarge
+                : Resource.Style.Theme_DashboardHome);
             dashboardHomeActivity = this;
             base.SetToolBarTitle(GetString(Resource.String.dashboard_activity_title));
             mPresenter = new DashboardHomePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
@@ -237,9 +256,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     bottomNavigationView.Menu.RemoveItem(Resource.Id.menu_reward);
                 }
             }
-
+            CheckStatusEligibleEB();
             IsRootTutorialShown = false;
-
             SetBottomNavigationLabels();
             bottomNavigationView.SetShiftMode(false, false);
             bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
@@ -304,16 +322,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 StartActivity(LaunchViewIntent);
                 Utility.LoggingNonFatalError(e);
             }
-            txtAccountName.TextSize = TextViewUtils.GetFontSize(18);
+            TextViewUtils.SetTextSize18(txtAccountName);
 
             if (ApplicationStatusSearchDetailCache.Instance.ShouldSave)
             {
-                /*Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
-                applicationStatusDetailIntent.PutExtra("applicationStatusResponse"
-                    , JsonConvert.SerializeObject(ApplicationStatusSearchDetailCache.Instance.GetData()));
-                applicationStatusDetailIntent.PutExtra("IsSaveFlow", true);
-                StartActivity(applicationStatusDetailIntent);*/
-
                 RouteToApplicationLanding();
             }
 
@@ -324,6 +336,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("[DEBUG] Sync SR Error: " + e.Message);
+            }
+
+            try
+            {
+                this.mPresenter.GetNotificationTypesList();
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] GetNotificationTypesList Error: " + e.Message);
             }
         }
 
@@ -1110,7 +1131,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                             txtNewLabel.Text = count.ToString();
-                            txtNewLabel.TextSize = TextViewUtils.GetFontSize(8);
+                            TextViewUtils.SetTextSize8(txtNewLabel);
                             txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));
                             newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                             if (count > 0 && count <= 9)
@@ -1204,7 +1225,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
-                        txtNewLabel.TextSize = TextViewUtils.GetFontSize(8f);
+                        TextViewUtils.SetTextSize8(txtNewLabel);
                         txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                         TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                         if (!flag)
@@ -1283,7 +1304,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
-                        txtNewLabel.TextSize = TextViewUtils.GetFontSize(8);
+                        TextViewUtils.SetTextSize8(txtNewLabel);
                         txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                         TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                         if (!flag)
@@ -1353,7 +1374,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                             txtNewLabel.Text = count.ToString();
-                            txtNewLabel.TextSize = TextViewUtils.GetFontSize(8);
+                            TextViewUtils.SetTextSize8(txtNewLabel);
                             txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));
                             newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                             if (count > 0 && count <= 9)
@@ -1431,6 +1452,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             SupportFragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, currentFragment)
                            .CommitAllowingStateLoss();
+
+            if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
+            {
+                isWhatNewDialogOnHold = true;
+            }
 
             if (isWhatNewDialogOnHold)
             {
@@ -1848,6 +1874,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             try
                             {
                                 HideProgressDialog();
+                                MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
+                                this.mPresenter.CheckWhatsNewCache();
                                 if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("whatsnew"))
                                 {
                                     urlSchemaCalled = false;
@@ -1881,6 +1909,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         {
                             try
                             {
+                                MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
                                 this.mPresenter.CheckWhatsNewCache();
                             }
                             catch (Exception e)
@@ -2093,11 +2122,23 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                     bool flag = fragment.GetHomeTutorialCallState();
 
+                    if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag() || MyTNBAccountManagement.GetInstance().IsOnHoldWhatNew())
+                    {
+                        MyTNBAccountManagement.GetInstance().OnHoldWhatNew(false);
+                        MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
+                        flag = true;
+                    }
+                    else if (SetEligibleEBUser())
+                    {
+                        flag = false;
+                    }                    
+
                     if (flag)
                     {
                         this.mPresenter.SetIsWhatsNewDialogShowNeed(false);
                         WhatsNewEntity wtManager = new WhatsNewEntity();
-                        List<WhatsNewEntity> items = wtManager.GetActivePopupItems();
+                        List<WhatsNewEntity> items = wtManager.GetActivePopupItems(
+                            );
                         if (items != null && items.Count > 0)
                         {
                             List<WhatsNewEntity> MaintenancePopupItems = items.FindAll(x => x.Donot_Show_In_WhatsNew);
@@ -2334,6 +2375,20 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             OnShowBCRMPopup(bcrmEntity);
                         }
                     }
+                    else if(SetEligibleEBUser())
+                    {
+                        isWhatNewDialogOnHold = true;
+
+                        if (MyTNBAccountManagement.GetInstance().IsFromLoginPage())
+                        {
+                            Handler h = new Handler();
+                            Action myAction = () =>
+                            {
+                                OnCheckEnergyBudgetUser();
+                            };
+                            h.PostDelayed(myAction, 5);
+                        }
+                    }
                     else
                     {
                         isWhatNewDialogOnHold = true;
@@ -2343,13 +2398,25 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     OnShowBCRMPopup(bcrmEntity);
                 }
+                else if (SetEligibleEBUser())
+                {
+                    if (MyTNBAccountManagement.GetInstance().IsFromLoginPage())
+                    {
+                        Handler h = new Handler();
+                        Action myAction = () =>
+                        {
+                            OnCheckEnergyBudgetUser();
+                        };
+                        h.PostDelayed(myAction, 5);
+                    }                    
+                }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-
+            
         private string GetCurrentDate()
         {
             DateTime currentDate = DateTime.Now;
@@ -2590,6 +2657,74 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void SetAlreadyStarted(bool flag)
         {
             alreadyStarted = flag;
+        }
+
+        public bool SetEligibleEBUser()
+        {
+            return UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
+        }
+
+        public bool SetEligibleEBUserExtra()
+        {
+            return !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
+        }
+
+        public bool CheckWhatNewPopupCount()
+        {
+            return this.mPresenter.GetIsWhatsNewDialogShowNeed();
+        }
+
+        public void CheckStatusEligibleEB()
+        {            
+            if (MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
+            {
+                EBModel isEbfeature = new EBModel();
+                isEbfeature = EligibilitySessionCache.Instance.GetFeatureContent<EBModel>(EligibilitySessionCache.Features.EB);
+                if (isEbfeature != null)
+                {
+                    if (isEbfeature.ContractAccounts != null)
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsEBUser(true);
+                    }
+                    else
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsEBUser(false);
+                    }
+                }
+                else
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsEBUser(false);
+                }
+            }
+        }
+
+        public void OnCheckEnergyBudgetUser()
+        {
+            if (SetEligibleEBUserExtra())
+            {
+
+                if (UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals(string.Empty))
+                {
+                    UserSessions.SavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this), "1");
+                }
+                else if (UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("1"))
+                {
+                    UserSessions.SavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this), "2");
+                }
+
+                try
+                {
+                    MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
+                    isWhatNewDialogOnHold = false;
+                    mPresenter.DisableWalkthrough();
+                    HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
+                    fragment.EBPopupActivity();
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
         }
     }
 }

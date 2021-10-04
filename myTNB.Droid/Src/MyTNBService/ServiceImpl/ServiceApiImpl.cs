@@ -443,6 +443,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call SaveEnergyBudget with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SaveEnergyBudgetResponse> SaveEnergyBudget([Body] Request.BaseRequest request)
+        {
+            return api.SaveEnergyBudget<SaveEnergyBudgetResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
         /// Call GetLocations with default timeout.
         /// </summary>
         /// <param name="request"></param>
@@ -483,6 +493,17 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.GetUserNotifications<UserNotificationResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
+        /// cep new //yana
+        /// <summary>
+        /// Call GetUserNotifications with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserNotificationResponse> GetUserNotificationsV2([Body] Request.BaseRequest request)
+        {
+            return api.GetUserNotificationsV2<UserNotificationResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
         /// <summary>
         /// Call GetNotificationDetails with default timeout
         /// </summary>
@@ -491,6 +512,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<UserNotificationDetailsResponse> GetNotificationDetails([Body] Request.BaseRequest request)
         {
             return api.GetNotificationDetails<UserNotificationDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetNotificationDetails with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserNotificationDetailsResponse> GetNotificationDetailsByRequestId([Body] Request.BaseRequest request)
+        {
+            return api.GetNotificationDetailsByRequestId<UserNotificationDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken()); //yana
         }
 
         /// <summary>

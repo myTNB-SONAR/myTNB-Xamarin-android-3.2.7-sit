@@ -122,11 +122,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFullName, txtInputLayoutEmail, txtInputLayoutMobileNo, txtInputLayoutFeedbackType, txtInputLayoutFeedback);
                 TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtFullName, txtEmail, txtMobileNo, txtFeedbackType, txtFeedback, txtRelatedScreenshotTitle, txtMaxCharacters);
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
-
-                txtMaxCharacters.TextSize = TextViewUtils.GetFontSize(9f);
-                txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(9f);
-                txtMaxImageContent.TextSize = TextViewUtils.GetFontSize(9f);
-              
+                TextViewUtils.SetTextSize9(txtMaxCharacters, txtRelatedScreenshotTitle, txtMaxImageContent);
 
                 adapter = new FeedbackPreLoginOthersImageRecyclerAdapter(true);
                 adapter.Insert(new Base.Models.AttachedImage()
@@ -139,21 +135,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
                 adapter.AddClickEvent += Adapter_AddClickEvent;
                 adapter.RemoveClickEvent += Adapter_RemoveClickEvent;
-
-
-
-                //txtMobileNo.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
-                //{
-                //    if (e.HasFocus)
-                //    {
-                //        if (string.IsNullOrEmpty(txtMobileNo.Text))
-                //        {
-                //            txtMobileNo.Append("+60");
-                //        }
-                //    }
-                //};
-
-
 
                 txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, txtInputLayoutFullName));
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
@@ -595,7 +576,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
         public void ClearErrors()
         {
-            txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+            txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                : Resource.Style.TextInputLayoutFeedbackCount);
             txtInputLayoutFullName.Error = null;
             txtInputLayoutMobileNo.Error = null;
             txtInputLayoutEmail.Error = null;

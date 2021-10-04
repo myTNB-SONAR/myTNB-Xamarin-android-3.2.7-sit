@@ -12,6 +12,6 @@ namespace myTNB.Mobile.Sitecore
         [Post("/{urlPrefix}/sitecore/api/ssc/auth/login")]
         Task<HttpResponseMessage> OnLogin([Body] LoginRequest request
             , CancellationToken cancelToken
-            , string urlPrefix = Constants.SitecoreURL);
+            , string urlPrefix = MobileConstants.SitecoreURL);
     }
 }

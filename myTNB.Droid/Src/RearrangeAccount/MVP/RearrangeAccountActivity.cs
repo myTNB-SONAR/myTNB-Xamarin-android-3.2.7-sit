@@ -44,7 +44,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             try
             {
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
-                btnSubmit.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize16(btnSubmit);
                 btnSubmit.Text = GetLabelByLanguage("btnTitle");
 
                 listView = FindViewById<RearrangeAccountListView>(Resource.Id.list_view);
@@ -160,9 +160,9 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                             mRearrangeSnackbar = Snackbar.Make(rootView,
                                 GetLabelByLanguage("rearrangeToastFailMsg"),
                                 Snackbar.LengthLong);
-                                View v = mRearrangeSnackbar.View;
-                                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                                tv.SetMaxLines(5);
+                            View v = mRearrangeSnackbar.View;
+                            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                            tv.SetMaxLines(5);
                             mRearrangeSnackbar.Show();
                             this.SetIsClicked(false);
                             HideProgressDialog();
@@ -216,7 +216,8 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
                         .SetTitle(GetLabelByLanguage("rearrangeTitle"))
                         .SetMessage(GetLabelByLanguage("rearrangeMsg"))
                         .SetCTALabel(GetLabelCommonByLanguage("no"))
-                        .SetCTAaction(() => {
+                        .SetCTAaction(() =>
+                        {
                             SetResult(Result.Canceled);
                             this.Finish();
                         })

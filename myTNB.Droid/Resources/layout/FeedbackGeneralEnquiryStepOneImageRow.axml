@@ -1,40 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-     android:background="@drawable/solid_border_background_submit_enquiry"
-    android:layout_marginBottom="8dp"
-    android:layout_height="48dp">
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:background="@drawable/solid_border_background_submit_enquiry"
+	android:layout_marginBottom="8dp"
+	android:layout_height="48dp">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center|left"
-        android:layout_margin="8dp"
-        app:srcCompat="@drawable/camera" />
+	<ImageView
+		android:id="@+id/imageView"
+		android:layout_width="32dp"
+		android:layout_height="32dp"
+		android:layout_gravity="center|left"
+		android:layout_margin="8dp"
+		app:srcCompat="@drawable/camera" />
 
-    <TextView
-        android:id="@+id/filename"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginLeft="56dp"
-        android:layout_marginRight="40dp"
-        android:layout_gravity="center|left"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:paddingTop="4dp"
-        android:maxEms="20"
-        android:maxLines="1"
-        android:text="test.jpg"
-        android:textColor="@color/powerBlue"
-        android:textSize="12sp" />
-    <ImageView
-        android:id="@+id/btnClose"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginRight="8dp"
-        android:layout_gravity="center|right"
-        android:src="@drawable/ic_close"
-        android:tint="@color/closeButtonColor" />
+	<TextView
+		android:id="@+id/filename"
+		android:layout_width="wrap_content"
+		android:layout_height="36dp"
+		android:layout_marginLeft="56dp"
+		android:layout_marginRight="40dp"
+		android:layout_gravity="center|left"
+		android:ellipsize="end"
+		android:gravity="center"
+		android:paddingTop="4dp"
+		android:maxEms="20"
+		android:maxLines="1"
+		android:text="test.jpg"
+		android:textColor="@color/powerBlue"
+		android:textSize="12dp" />
+	<ImageView
+		android:id="@+id/btnClose"
+		android:layout_width="24dp"
+		android:layout_height="24dp"
+		android:layout_marginRight="8dp"
+		android:layout_gravity="center|right"
+		android:src="@drawable/ic_close"
+		android:tint="@color/closeButtonColor" />
 </FrameLayout>

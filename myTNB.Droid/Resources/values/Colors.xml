@@ -129,4 +129,12 @@
 
     <color name="lightOrange">#ff9e43</color>
 
+    <color name="lightRed">#E54B20</color>
+
+    <color name="shadowGreen">#3320BD4C</color>
+
+    <color name="shadowOrange">#33ff9e43</color>
+
+    <color name="shadowRed">#33E54B20</color>
+  
 </resources>

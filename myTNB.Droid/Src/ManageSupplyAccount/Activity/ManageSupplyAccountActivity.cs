@@ -4,7 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -48,7 +47,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [BindView(Resource.Id.btnRemoveAccount)]
         Button btnRemoveAccount;
 
-
         AccountData accountData;
         int position;
 
@@ -90,12 +88,12 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName);
+                txtInputLayoutNickName.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
                 TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
-
-                txtAccountNumber.TextSize = TextViewUtils.GetFontSize(14f);
-                txtAccountAddress.TextSize = TextViewUtils.GetFontSize(14f);
-                btnTextUpdateNickName.TextSize = TextViewUtils.GetFontSize(14f);
-                btnRemoveAccount.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize14(txtAccountNumber, txtAccountAddress, btnTextUpdateNickName);
+                TextViewUtils.SetTextSize16(btnRemoveAccount, txtNickName);
                 txtAccountNumber.Text = accountData.AccountNum;
                 txtAccountAddress.Text = accountData.AddStreet;
 
@@ -126,42 +124,26 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 this.userActionsListener.OnUpdateNickname();
             }
         }
-        AlertDialog removeDialog;
+        
         [OnClick(Resource.Id.btnRemoveAccount)]
         void OnClickRemoveAccount(object sender, EventArgs eventArgs)
         {
             try
             {
-                if (removeDialog != null && removeDialog.IsShowing)
-                {
-                    removeDialog.Dismiss();
-                }
-
-                removeDialog = new AlertDialog.Builder(this)
-
+                MyTNBAppToolTipBuilder removeAccountPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                     .SetTitle(GetLabelByLanguage("popupremoveAccountTitle"))
-                    .SetMessage(GetFormattedText(string.Format(GetLabelByLanguage("popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum)))
-                    .SetNegativeButton(GetLabelCommonByLanguage("cancel"),
-                    delegate
-                    {
-                        removeDialog.Dismiss();
-                    })
-                    .SetPositiveButton(GetLabelCommonByLanguage("ok"),
-                    delegate
-                    {
-                        this.userActionsListener.OnRemoveAccount(accountData);
-                    })
-                    .Show()
-                    ;
+                    .SetMessage(string.Format(GetLabelByLanguage("popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum))
+                    .SetCTALabel(GetLabelCommonByLanguage("cancel"))
+                    .SetSecondaryCTALabel(GetLabelCommonByLanguage("ok"))
+                    .SetSecondaryCTAaction(() => this.userActionsListener.OnRemoveAccount(accountData))
+                    .Build();
+                removeAccountPopup.Show();
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
-            //int titleId = Resources.GetIdentifier("alertTitle", "id", "android");
-            //TextView txtTitle = removeDialog.FindViewById<TextView>(titleId);
-            //txtTitle.SetTextSize(ComplexUnitType.Sp ,17);
-
         }
 
         public bool IsActive()
@@ -236,13 +218,13 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 .SetAction(GetLabelCommonByLanguage("close"),
                  (view) =>
                  {
-                 // EMPTY WILL CLOSE SNACKBAR
-               }
+                     // EMPTY WILL CLOSE SNACKBAR
+                 }
                );
-            View v = updateSnackbar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-            updateSnackbar.Show();
+                View v = updateSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                updateSnackbar.Show();
                 SetResult(Result.Ok);
             }
             catch (Exception e)

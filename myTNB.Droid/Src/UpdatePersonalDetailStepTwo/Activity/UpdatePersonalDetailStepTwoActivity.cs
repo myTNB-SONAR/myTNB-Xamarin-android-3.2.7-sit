@@ -222,22 +222,11 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 TextViewUtils.SetMuseoSans300Typeface(TextViewtitle_ownerIC, TextViewtitle_yourIC, txtRelatedScreenshotTitle2, txtRelatedScreenshotTitle3);
                 TextViewUtils.SetMuseoSans300Typeface(txtstep1of2, TextView_proofOfConsent_image3, TextView_yourIC_image, TextView_ownerIC, TextView_proofOfConsent_image);
                 TextViewUtils.SetMuseoSans500Typeface(uploadSupportingDoc, TextView_exampleofIC, TextView_proofOfConsent, TextView_agreement);
-
-
-                txtstep1of2.TextSize = TextViewUtils.GetFontSize(12f);
-                uploadSupportingDoc.TextSize = TextViewUtils.GetFontSize(16f);
-                TextViewtitle_ownerIC.TextSize = TextViewUtils.GetFontSize(14f);
-                TextView_ownerIC.TextSize = TextViewUtils.GetFontSize(9f);
-                TextViewtitle_yourIC.TextSize = TextViewUtils.GetFontSize(14f);
-                TextView_yourIC_image.TextSize = TextViewUtils.GetFontSize(9f);
-                TextView_exampleofIC.TextSize = TextViewUtils.GetFontSize(12f);
-                txtRelatedScreenshotTitle2.TextSize = TextViewUtils.GetFontSize(14f);
-                TextView_proofOfConsent_image.TextSize = TextViewUtils.GetFontSize(9f);
-                TextView_proofOfConsent.TextSize = TextViewUtils.GetFontSize(12f);
-                txtRelatedScreenshotTitle3.TextSize = TextViewUtils.GetFontSize(14f);
-                TextView_proofOfConsent_image3.TextSize = TextViewUtils.GetFontSize(9f);
-                TextView_agreement.TextSize = TextViewUtils.GetFontSize(12f);
-                btnNext.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize9(TextView_ownerIC, TextView_yourIC_image, TextView_proofOfConsent_image
+                    , txtRelatedScreenshotTitle3, TextView_proofOfConsent_image3);
+                TextViewUtils.SetTextSize12(txtstep1of2, TextView_exampleofIC, TextView_proofOfConsent, TextView_agreement);
+                TextViewUtils.SetTextSize14(TextViewtitle_ownerIC, TextViewtitle_yourIC, txtRelatedScreenshotTitle2);
+                TextViewUtils.SetTextSize16(uploadSupportingDoc, btnNext);
 
                 //owner adapter
 
@@ -1336,6 +1325,20 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
             mErrorMessageSnackBar.Show();
             this.SetIsClicked(false);
+        }
+
+
+        public string getFilename(Android.Net.Uri uri)
+        {
+            try
+            {
+                string filename = FileUtils.getFilenameUsingContentResolver(this, uri);
+                return filename;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
 

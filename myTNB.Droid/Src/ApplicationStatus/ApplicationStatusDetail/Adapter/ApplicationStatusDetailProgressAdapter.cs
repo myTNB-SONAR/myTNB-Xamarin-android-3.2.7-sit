@@ -62,7 +62,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
             public ImageView ImgApplicationStatusOrange { get; private set; }
             public ImageView ImgApplicationStatusGray { get; private set; }
             public ImageView ImgApplicationStatusnLightGray { get; private set; }
-            
+
             public View ApplicationStatusLine { get; private set; }
             public View ApplicationStatusLineInactive { get; private set; }
             public View applicationStatusLine { get; private set; }
@@ -86,7 +86,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
                 ApplicationStatusLine = itemView.FindViewById<View>(Resource.Id.applicationStatusLine);
                 ApplicationStatusLineInactive = itemView.FindViewById<View>(Resource.Id.applicationStatusLineInactive);
                 TxtApplicationStatusDetailWord = itemView.FindViewById<TextView>(Resource.Id.txtApplicationStatusDetailWord);
-                
+
                 TxtApplicationStatusDetailCTA = itemView.FindViewById<TextView>(Resource.Id.txtApplicationStatusDetailCTA);
                 //TxtApplicationStatusDetailCTA.Clickable = true;
                 //TxtApplicationStatusDetailCTA.Click += (sender, e) => listener(base.LayoutPosition);
@@ -107,8 +107,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
                     TextViewUtils.SetMuseoSans300Typeface(TxtApplicationStatusDetailWord, TxtApplicationStatusDetailCTA);
 
                     TxtApplicationStatusDetailWord.Text = item.StatusDescription;
-                    TxtApplicationStatusDetailWord.TextSize = TextViewUtils.GetFontSize(14);
-                 if (string.IsNullOrEmpty(item.CompletedDateDisplay) || string.IsNullOrWhiteSpace(item.CompletedDateDisplay))
+                    TextViewUtils.SetTextSize14(TxtApplicationStatusDetailWord);
+                    if (string.IsNullOrEmpty(item.CompletedDateDisplay) || string.IsNullOrWhiteSpace(item.CompletedDateDisplay))
                     {
                         TxtApplicationStatusDetailCTA.Visibility = ViewStates.Gone;
                     }
@@ -122,7 +122,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
                     TxtApplicationStatusDetailWord.Text = item.StatusDescription;
                     TextViewUtils.SetMuseoSans300Typeface(TxtApplicationStatusDetailWord);
 
-                    if(item.TrackerItemState == State.Active)
+                    if (item.TrackerItemState == State.Active)
                     {
                         if (IsPayment && mProgressList.Count != position + 1)
                         {

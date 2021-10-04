@@ -99,10 +99,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
                     ViewGroup.LayoutParams currentCard = vh.faqCardView.LayoutParameters;
 
-                    int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
+                    float h1 = TextViewUtils.IsLargeFonts ? 65f : 0f;
+                    int cardWidth = (int)(((this.mActivity.Resources.DisplayMetrics.WidthPixels / 3.05) + DPUtils.ConvertDPToPx(h1)) - DPUtils.ConvertDPToPx(16f));
 
                     float heightRatio = 56f / 92f;
-                    int cardHeight = (int)(cardWidth * (heightRatio));
+                    int cardHeight = (int)((int)(((this.mActivity.Resources.DisplayMetrics.WidthPixels / 3.05)) - DPUtils.ConvertDPToPx(16f)) * (heightRatio));
 
                     currentCard.Height = cardHeight;
                     currentCard.Width = cardWidth;
@@ -169,9 +170,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 backgroundImg = itemView.FindViewById<LinearLayout>(Resource.Id.rootView);
                 faqTitle = itemView.FindViewById<TextView>(Resource.Id.faq_title);
                 faqCardView = itemView.FindViewById<CardView>(Resource.Id.card_view_click);
-
-                faqTitle.TextSize = TextViewUtils.GetFontSize(TextViewUtils.IsLargeFonts ? 10 : 12);
-
+                if (TextViewUtils.IsLargeFonts)
+                {
+                    TextViewUtils.SetTextSize10(faqTitle);
+                }
+                else
+                {
+                    TextViewUtils.SetTextSize12(faqTitle);
+                }
                 faqCardView.Click += (s, e) => listener((this), base.LayoutPosition);
             }
         }

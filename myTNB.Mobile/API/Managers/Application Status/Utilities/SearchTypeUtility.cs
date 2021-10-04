@@ -24,8 +24,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
                     List<SearchApplicationTypeModel> content = response.Content.FindAll(x => x.UserRole.Contains(roleID));
 
                     List<KeyValueModel> excludedList = LanguageManager.Instance
-                        .GetValues<List<KeyValueModel>>(Constants.LanguageFile_Mapping
-                        , Constants.LanguageFile_ExcludedApplicationTypes);
+                        .GetValues<List<KeyValueModel>>(MobileConstants.LanguageFile_Mapping
+                        , MobileConstants.LanguageFile_ExcludedApplicationTypes);
                     if (excludedList != null && excludedList.Count > 0)
                     {
                         List<string> excludedKeys = excludedList.Select(x => x.key).ToList();

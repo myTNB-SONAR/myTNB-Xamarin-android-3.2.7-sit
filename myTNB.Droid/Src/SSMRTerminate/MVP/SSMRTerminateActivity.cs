@@ -26,6 +26,7 @@ using Android.Text.Style;
 using Google.Android.Material.TextField;
 using AndroidX.Core.Content;
 using myTNB_Android.Src.FAQ.Activity;
+using myTNB_Android.Src.SMRnewTncView.Activity;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
@@ -76,6 +77,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         [BindView(Resource.Id.txtTermsConditionsFAQ)]
         TextView txtTermsConditionsFAQ;
 
+        [BindView(Resource.Id.txtTermsConditionsNew)]
+        TextView txtTermsConditionsNew;
+
         [BindView(Resource.Id.txtEmail)]
         EditText txtEmail;
 
@@ -109,8 +113,16 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         [BindView(Resource.Id.reasonDetailContainer)]
         LinearLayout reasonDetailContainer;
 
+        [BindView(Resource.Id.checkBoxfroRegisterlayout)]
+        LinearLayout checkBoxfroRegisterlayout;
+
         [BindView(Resource.Id.ssmrApplicationScrollview)]
         ScrollView ssmrApplicationScrollview;
+
+        [BindView(Resource.Id.checkboxCondition)]
+        CheckBox txtboxcondition;
+
+        private bool checkedCondition = false;
 
         public override int ResourceId()
         {
@@ -152,7 +164,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                for(int i = 0; i < terminationList.Count; i++)
+                for (int i = 0; i < terminationList.Count; i++)
                 {
                     if (terminationList[i].IsSelected)
                     {
@@ -188,27 +200,21 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutReason, txtInputLayoutEmail, txtInputLayoutMobileNo, txtInputLayoutTxtReason);
             TextViewUtils.SetMuseoSans500Typeface(btnDisconnectionSubmit, disconnectionTtile, disconnectionAccountTtile, contactDetailTtile, terminationReasonTitle);
-            TextViewUtils.SetMuseoSans300Typeface(disconnectionAccountAddress, contactDetailConsent, txtTermsConditions , txtTermsConditionsFAQ, txtEmail, txtMobileNo, txtSelectReason, txtReason);
+            TextViewUtils.SetMuseoSans300Typeface(disconnectionAccountAddress, contactDetailConsent, txtTermsConditions, txtTermsConditionsNew, txtTermsConditionsFAQ, txtEmail, txtMobileNo, txtSelectReason, txtReason);
+            TextViewUtils.SetTextSize12(txtTermsConditionsFAQ, txtTermsConditions, txtTermsConditionsNew, contactDetailConsent);
+            TextViewUtils.SetTextSize14(disconnectionAccountTtile, disconnectionAccountAddress);
+            TextViewUtils.SetTextSize16(disconnectionTtile, contactDetailTtile, terminationReasonTitle
+                , btnDisconnectionSubmit, txtSelectReason, txtReason);
 
-            disconnectionTtile.TextSize = TextViewUtils.GetFontSize(16f);
-            disconnectionAccountTtile.TextSize = TextViewUtils.GetFontSize(14f);
-            disconnectionAccountAddress.TextSize = TextViewUtils.GetFontSize(14f);
-            contactDetailTtile.TextSize = TextViewUtils.GetFontSize(16f);
-            contactDetailConsent.TextSize = TextViewUtils.GetFontSize(12f);
-            terminationReasonTitle.TextSize = TextViewUtils.GetFontSize(16f);
-            txtTermsConditions.TextSize = TextViewUtils.GetFontSize(12f);
-            btnDisconnectionSubmit.TextSize = TextViewUtils.GetFontSize(16f);
-            txtSelectReason.TextSize = TextViewUtils.GetFontSize(16f);
-            txtReason.TextSize = TextViewUtils.GetFontSize(16f);
-            txtTermsConditionsFAQ.TextSize = TextViewUtils.GetFontSize(12f);
             contactDetailTtile.Text = GetLabelByLanguage("contactDetails");
             txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("emailAddress");
             txtInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNumber");
             contactDetailConsent.Text = GetLabelByLanguage("editContactInfo");
             terminationReasonTitle.Text = GetLabelByLanguage("terminateTitle");
-            txtInputLayoutReason.Hint = GetLabelByLanguage("selectReason").ToUpper();
+            txtInputLayoutReason.Hint = GetLabelByLanguage("selectReason");
             btnDisconnectionSubmit.Text = GetLabelCommonByLanguage("submit");
             txtInputLayoutTxtReason.Hint = GetLabelByLanguage("stateReason");
+
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
@@ -236,6 +242,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             txtMobileNo.TextChanged += TextChange;
             txtEmail.TextChanged += TextChange;
             txtReason.TextChanged += Reason_TextChange;
+
+            txtboxcondition.CheckedChange += CheckedChange;
+            txtboxcondition.Checked = false;
 
             txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
@@ -283,8 +292,19 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
 
             }
+
+            if (SMR_ACTION == Constants.SMR_ENABLE_FLAG)
+            {
+                DisableSubmitButton();
+            }
+            else
+            {
+                EnableSubmitButton();
+            }
             ShowUIDetails();
-            ssmrApplicationScrollview.Post(()=> {
+
+            ssmrApplicationScrollview.Post(() =>
+            {
                 ssmrApplicationScrollview.FullScroll(FocusSearchDirection.Down);
             });
         }
@@ -298,25 +318,25 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 reasonDetailContainer.Visibility = ViewStates.Gone;
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
-                    txtTermsConditionsFAQ.Visibility = ViewStates.Visible;
-                    txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeTNC"), FromHtmlOptions.ModeLegacy);
-                    txtTermsConditionsFAQ.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeFAQ"), FromHtmlOptions.ModeLegacy);
-                    StripUnderlinesFromLinks(txtTermsConditions);
-                    StripUnderlinesFromLinks(txtTermsConditionsFAQ);
+                    txtTermsConditions.Visibility = ViewStates.Gone;
+                    txtTermsConditionsFAQ.Visibility = ViewStates.Gone;
+                  
+                    txtTermsConditionsNew.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncsmrNew"), FromHtmlOptions.ModeLegacy);
+                    StripUnderlinesFromLinks(txtTermsConditionsNew);
                 }
                 else
                 {
-                    txtTermsConditionsFAQ.Visibility = ViewStates.Visible;
-                    txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeTNC"));
-                    txtTermsConditionsFAQ.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeFAQ"));
+                    txtTermsConditions.Visibility = ViewStates.Gone;
+                    txtTermsConditionsFAQ.Visibility = ViewStates.Gone;
 
-                    StripUnderlinesFromLinks(txtTermsConditions);
-                    StripUnderlinesFromLinks(txtTermsConditionsFAQ);
+                    txtTermsConditionsNew.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncsmrNew"));
+                    StripUnderlinesFromLinks(txtTermsConditionsNew);
                 }
                 ShowContactDetails();
             }
             else
             {
+                checkBoxfroRegisterlayout.Visibility = ViewStates.Gone;
                 disconnectionTtile.Text = GetLabelByLanguage("terminateFor");
                 terminationReasonTitle.Visibility = ViewStates.Visible;
                 reasonDetailContainer.Visibility = ViewStates.Visible;
@@ -328,8 +348,6 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 {
                     txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncUnsubscribe"), FromHtmlOptions.ModeLegacy);
                     txtTermsConditionsFAQ.Visibility = ViewStates.Gone;
-
-
                 }
                 else
                 {
@@ -338,7 +356,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 }
 
                 StripUnderlinesFromLinks(txtTermsConditions);
-       
+
 
                 EnableSubmitButton();
             }
@@ -357,6 +375,57 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 spannable.SetSpan(newSpan, start, end, 0);
             }
             textView.TextFormatted = spannable;
+        }
+
+        [OnClick(Resource.Id.txtTermsConditionsNew)]
+        void OnTermsConditionsView(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.mPresenter.NavigateToTermsAndConditionsView();
+            }
+        }
+
+        private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            if (!txtboxcondition.Checked)
+            {
+                checkedCondition = true;
+                txtTermsConditionsNew.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("SSMRApplication", "tncsmrNew"));
+                StripUnderlinesFromLinks(txtTermsConditionsNew);
+                DisableSubmitButton();
+            }
+            else
+            {
+                checkedCondition = false;
+                txtTermsConditionsNew.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("SSMRApplication", "tncsmrNew"));
+                StripUnderlinesFromLinks(txtTermsConditionsNew);
+                if (contactDetails != null && contactDetails.isAllowEdit)
+                {
+                    CheckingCheckBoxAllow();
+                }
+                else
+                {
+                    EnableSubmitButton();
+                }
+            }
+        }
+
+        public void CheckingCheckBoxAllow()
+        {
+            try
+            {
+                string mobile_no = txtMobileNo.Text.ToString().Trim();
+                string email = txtEmail.Text.ToString().Trim();
+                newEmail = email;
+                newPhoneNumber = mobile_no;
+                this.mPresenter.CheckRequiredFieldsForApply(mobile_no, email, txtboxcondition.Checked);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private void ShowContactDetails()
@@ -378,7 +447,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 contactDetailTtile.Visibility = ViewStates.Gone;
                 contactDetailContainer.Visibility = ViewStates.Gone;
 
-                EnableSubmitButton();
+                //EnableSubmitButton();
             }
         }
 
@@ -407,7 +476,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 string email = txtEmail.Text.ToString().Trim();
                 newEmail = email;
                 newPhoneNumber = mobile_no;
-                this.mPresenter.CheckRequiredFieldsForApply(mobile_no, email);
+                this.mPresenter.CheckRequiredFieldsForApply(mobile_no, email, txtboxcondition.Checked);
 
                 if (checkForEditingInfo)
                 {
@@ -611,7 +680,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             string output = mobileNumber;
             if (mobileNumber != "" && mobileNumber.Contains("+60"))
             {
-                output = mobileNumber.Replace("+60","0");
+                output = mobileNumber.Replace("+60", "0");
             }
             return output;
         }
@@ -619,6 +688,10 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         public void ShowTermsAndConditions()
         {
             StartActivity(typeof(TermsAndConditionActivity));
+        }
+        public void ShowTermsAndConditionsView()
+        {
+            StartActivity(typeof(SMRnewTncViewActivity));
         }
 
         public void OnRequestSuccessful(SMRregistrationSubmitResponse response)

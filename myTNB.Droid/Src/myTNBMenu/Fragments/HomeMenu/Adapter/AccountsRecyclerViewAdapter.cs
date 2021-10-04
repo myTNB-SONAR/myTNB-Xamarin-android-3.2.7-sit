@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android.Content;
 using Android.Graphics;
 
 
@@ -28,6 +29,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         int MAX_ACCOUNT_PER_CARD = 5;
         Filter accountsFilter;
         static HomeMenuFragment viewListener;
+        private ISharedPreferences mSharedPref;
 
         List<AccountCardModel> accountModelList = new List<AccountCardModel>();
         public List<AccountCardModel> accountCardModelList = new List<AccountCardModel>();
@@ -203,7 +205,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 LinearLayout.LayoutParams.WrapContent);
             if (accountCardModelList != null && accountCardModelList.Count == 1)
             {
-                layoutParams.TopMargin = (int) DPUtils.ConvertDPToPx(8f);
+                layoutParams.TopMargin = (int)DPUtils.ConvertDPToPx(8f);
             }
             viewHolder.linearLayout.LayoutParameters = layoutParams;
 
@@ -223,11 +225,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             TextViewUtils.SetMuseoSans500Typeface(accountNameShimmer, billDueAmountShimmer);
             TextViewUtils.SetMuseoSans300Typeface(accountNumberShimmer, billDueNoteShimmer);
-
-            accountNameShimmer.TextSize = TextViewUtils.GetFontSize(12f);
-            accountNumberShimmer.TextSize = TextViewUtils.GetFontSize(12f);
-            billDueAmountShimmer.TextSize = TextViewUtils.GetFontSize(12f);
-            billDueNoteShimmer.TextSize = TextViewUtils.GetFontSize(12f);
+            TextViewUtils.SetTextSize12(accountNameShimmer, accountNumberShimmer, billDueAmountShimmer, billDueNoteShimmer);
 
             ShimmerLoadingLayout.GetInstance().AddViewWithShimmer(parentGroup.Context, viewHolder.linearLayout, CreateAccountCard(cardModel),
                 shimmerLayoutContainer,
@@ -266,11 +264,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             TextView accountNumber = card.FindViewById(Resource.Id.accountNumber) as TextView;
             TextView billDueAmount = card.FindViewById(Resource.Id.billDueAmount) as TextView;
             TextView billDueNote = card.FindViewById(Resource.Id.billDueDate) as TextView;
-
-            accountName.TextSize = TextViewUtils.GetFontSize(12f);
-            accountNumber.TextSize = TextViewUtils.GetFontSize(12f);
-            billDueAmount.TextSize = TextViewUtils.GetFontSize(12f);
-            billDueNote.TextSize = TextViewUtils.GetFontSize(12f);
+            TextViewUtils.SetTextSize12(accountName, accountNumber, billDueAmount, billDueNote);
 
             accountName.Id = cardModel.Id + 1;
             accountNumber.Id = cardModel.Id + 2;
@@ -332,6 +326,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             if (cardModel.AccountType == 2)
             {
                 accountTypeIcon.Visibility = ViewStates.Visible;
+                accountTypeIcon.SetImageResource(Resource.Drawable.re_meter_dashboard);
+            }
+            else if (cardModel.SmartMeterCode.Equals(3) && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            {
+                accountTypeIcon.Visibility = ViewStates.Visible;
+                accountTypeIcon.SetImageResource(Resource.Drawable.smart_meter_icon);
             }
             else
             {

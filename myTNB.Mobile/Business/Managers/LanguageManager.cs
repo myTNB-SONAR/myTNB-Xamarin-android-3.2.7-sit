@@ -224,5 +224,27 @@ namespace myTNB
             }
             return valuesDictionary;
         }
+
+        public JToken GetServiceConfig(string pageName, string service)
+        {
+            try
+            {
+                JObject jsonObj = JObject.Parse(JSONLang);
+                if (jsonObj != null
+                    && jsonObj[pageName] is JToken pageJToken
+                    && pageJToken != null
+                    && pageJToken[service] is JToken serviceToken
+                    && serviceToken != null)
+                {
+                    return serviceToken;
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] GetParsedJson Error: ", e.Message);
+                return null;
+            }
+        }
     }
 }

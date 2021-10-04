@@ -5,6 +5,7 @@ using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
@@ -65,7 +66,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            mPresenter = new ProfileMenuPresenter(this);
+            mPresenter = new ProfileMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -140,7 +141,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 TextViewUtils.SetMuseoSans500Typeface(btnLogout);
                 TextViewUtils.SetMuseoSans300Typeface(appVersion);
-                appVersion.TextSize = TextViewUtils.GetFontSize(9f);
+                TextViewUtils.SetTextSize9(appVersion);
                 appVersion.Text = Utility.GetAppVersionName(context);
                 btnLogout.Text = GetLabelByLanguage("logout");
                 PopulateActiveAccountDetails();

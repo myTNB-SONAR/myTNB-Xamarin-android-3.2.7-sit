@@ -76,7 +76,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
                 //listView.EmptyView = layoutEmptyFeedback;
 
                 TextViewUtils.SetMuseoSans300Typeface(txtEmptyFeedback);
-                txtEmptyFeedback.TextSize = TextViewUtils.GetFontSize(12f);
+                TextViewUtils.SetTextSize12(txtEmptyFeedback);
                 txtEmptyFeedback.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryEmpty");
 
                 mPresenter = new SelectSubmittedFeedbackPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
@@ -188,7 +188,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         {
             try
             {
-                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);      
             }
             catch (Exception e)
             {
@@ -224,6 +224,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             {
 
                 mCancelledExceptionSnackBar.Dismiss();
+                this.OnBackPressed();
             }
             );
             View v = mCancelledExceptionSnackBar.View;
@@ -245,6 +246,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
                 mApiExcecptionSnackBar.Dismiss();
+                this.OnBackPressed();
             }
             );
             View v = mApiExcecptionSnackBar.View;
@@ -278,6 +280,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
         public void ShowStartLoading()
         {
+            ShowProgressDialog();
             this.userActionsListener.OnStartShowLoading(this.DeviceId());
         }
 

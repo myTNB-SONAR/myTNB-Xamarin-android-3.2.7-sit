@@ -764,7 +764,6 @@
 												android:textSize="13dp"
 												android:lineSpacingExtra="2dp"
 												android:maxLines="1"
-												
 												android:ellipsize="end"/>
 											<RelativeLayout
 												android:layout_width="wrap_content"
@@ -956,6 +955,68 @@
 							</androidx.cardview.widget.CardView>
 						</LinearLayout>
 						<LinearLayout
+							android:id="@+id/energyBudgetMDMSDownContainer"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:orientation="vertical"
+							android:layout_marginLeft="11dp"
+							android:layout_marginRight="11dp"
+							android:layout_marginBottom="8dp"
+							android:visibility="gone">
+							<androidx.cardview.widget.CardView
+								android:orientation="vertical"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								segmentedgroup:cardCornerRadius="4dp"
+								segmentedgroup:cardBackgroundColor="@color/white"
+								segmentedgroup:cardUseCompatPadding="true"
+								segmentedgroup:cardElevation="4dp"
+								android:id="@+id/energyBudget_MDMSDown_status_card">
+								<LinearLayout
+									android:id="@+id/layout_EB_MDMSDown_image"
+									android:orientation="vertical"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:gravity="center"
+									android:visibility="visible">
+									<LinearLayout
+										android:orientation="vertical"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content">
+										<ImageView
+											android:layout_width="wrap_content"
+											android:layout_height="wrap_content"
+											android:layout_marginTop="18dp"
+											android:src="@drawable/icons_display_refresh_grey"
+											android:id="@+id/EB_MDMSDown_image"
+											android:layout_gravity="center"/>
+										<TextView
+											android:id="@+id/refresh_content_EB_MDMSDown"
+											android:gravity="center"
+											android:layout_width="match_parent"
+											android:layout_height="wrap_content"
+											android:layout_marginTop="20dp"
+											android:layout_marginLeft="32dp"
+											android:layout_marginRight="32dp"
+											android:lineSpacingExtra="3dp"
+											android:textSize="14dp"
+											android:textColor="@color/charcoalGrey"
+											android:layout_gravity="center"/>
+										<Button
+											android:layout_width="match_parent"
+											android:layout_height="wrap_content"
+											android:layout_marginTop="18dp"
+											android:layout_marginLeft="16dp"
+											android:layout_marginRight="16dp"
+											android:layout_marginBottom="18dp"
+											android:layout_weight="1"
+											android:id="@+id/btnRefresh_EB_MDMS"
+											style="@style/Theme.ViewBill" />
+									</LinearLayout>
+								</LinearLayout>
+							</androidx.cardview.widget.CardView>
+						</LinearLayout>
+						<LinearLayout
 							android:id="@+id/smStatisticContainer"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
@@ -972,12 +1033,108 @@
 								segmentedgroup:cardBackgroundColor="@color/white"
 								segmentedgroup:cardUseCompatPadding="true"
 								segmentedgroup:cardElevation="4dp"
-								android:id="@+id/sm_statistic_status_card">
-								<LinearLayout
-									android:id="@+id/sm_statistic_status"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:orientation="vertical">
+								android:id="@+id/sm_statistic_status_card">				
+									<LinearLayout
+										android:id="@+id/sm_statistic_status"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content"
+										android:orientation="vertical">
+									<LinearLayout
+										android:id="@+id/energyBudget_sm_account_status"
+										android:visibility="gone"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content"
+										android:orientation="vertical">
+										<RelativeLayout
+											android:id="@+id/energyBudget_sm_account_message"
+											android:layout_width="match_parent"
+											android:layout_height="wrap_content"
+											android:layout_marginTop="16dp"
+											android:layout_marginLeft="16dp"
+											android:layout_marginRight="16dp">
+											<ImageView
+												android:id="@+id/energyBudget_img"
+												android:layout_width="38dp"
+												android:layout_height="38dp"
+												android:paddingLeft="1dp"
+												android:paddingRight="3dp"
+												android:paddingTop="5dp"
+												android:layout_marginRight="5dp"
+												android:src="@drawable/ic_menu_feedback_budget"
+												android:layout_alignParentTop="true"
+												android:scaleType="fitStart"
+												android:visibility="visible" />
+											<TextView
+												android:layout_toRightOf="@+id/energyBudget_img"
+												android:layout_toLeftOf="@+id/layEnergyBudgetRMtxt"
+												android:id="@+id/energyBudgetAccountStatusText"
+												android:gravity="left|center"
+												android:layout_width="wrap_content"
+												android:paddingTop="3dp"
+												android:layout_height="35dp"
+												android:text="My bill amount so far"
+												android:textColor="@color/blue"
+												android:textSize="12dp"
+												android:maxLines="1"
+												android:ellipsize="middle"/>
+											<LinearLayout
+												android:layout_alignParentRight="true"
+												android:id="@+id/layEnergyBudgetRMtxt"
+												android:layout_width="wrap_content"
+												android:layout_height="match_parent"
+												android:gravity="right|center"
+												android:layout_marginLeft="10dp"
+												android:orientation="horizontal">
+												<TextView
+													android:id="@+id/energyBudgetRMtxt"
+													android:layout_width="wrap_content"
+													android:layout_height="match_parent"
+													android:gravity="right|center"
+													android:text="RM"
+													android:textColor="@color/charcoalGrey"
+													android:textSize="11dp"/>
+												<EditText
+													android:id="@+id/energyBudgetRMinput"
+													android:windowSoftInputMode="adjustResize"
+													android:fitsSystemWindows="true"
+													android:layout_width="wrap_content"
+													android:layout_height="match_parent"
+													android:textColor="@color/charcoalGrey"
+													android:text="-  -"
+													android:inputType="number"
+													android:visibility="visible"
+													android:gravity="center_horizontal"
+													android:clickable="false"
+													android:textSize="15dp"/>
+											</LinearLayout>
+											<TextView
+												android:layout_below="@+id/energyBudgetAccountStatusText"
+												android:id="@+id/energyBudgetbodytxt"
+												android:layout_alignParentRight="true"
+												android:layout_width="wrap_content"
+												android:layout_height="wrap_content"
+												android:layout_marginLeft="41dp"
+												android:layout_marginBottom="6dp"
+												android:gravity="left|center"
+												android:text="Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!"
+												android:textColor="@color/charcoalGrey"
+												android:lineSpacingExtra="8dp"
+												android:textSize="10dp"/>
+										</RelativeLayout>
+										<Button
+											android:id="@+id/btnSetNewBudget"
+											style="@style/Theme.PayButton"
+											android:layout_width="match_parent"
+											android:layout_height="wrap_content"
+											android:layout_marginTop="8dp"
+											android:layout_marginLeft="16dp"
+											android:layout_marginRight="16dp"
+											android:layout_marginBottom="16dp"
+											android:layout_weight="1"
+											android:text="Set New Budget"
+											android:visibility="gone"
+											android:textAllCaps="false" />
+									</LinearLayout>
 									<LinearLayout
 										android:id="@+id/sm_statistic_bill"
 										android:layout_width="match_parent"
@@ -1083,8 +1240,6 @@
 												android:text="My bill amount so far"
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
-												android:maxLines="1"
-												android:maxWidth="150dp"
 												android:ellipsize="end" />
 											<TextView
 												android:id="@+id/smStatisticBill"
@@ -1148,10 +1303,62 @@
 												android:layout_marginTop="2dp"
 												android:textColor="@color/new_grey"
 												android:text="for - "
-												android:maxLines="1"
-												android:maxWidth="150dp"
 												android:ellipsize="end"/>
-										</RelativeLayout>
+										</RelativeLayout>										
+									</LinearLayout>
+									<LinearLayout
+										android:id="@+id/OuterlayoutHorizontolBar"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content"
+										android:layout_marginLeft="16dp"
+										android:layout_marginRight="16dp"
+										android:layout_marginBottom="6dp"
+										android:layout_marginTop="8dp"
+										android:visibility="gone"
+										android:background="@drawable/outline_linear_layout_graphbar_green"
+										android:gravity="left|center"
+										android:orientation="horizontal">
+										<LinearLayout
+												android:id="@+id/InnerlayoutHorizontolBar"
+												android:paddingRight="4dp"
+                                                android:layout_width="wrap_content"
+												android:gravity="right|center"
+                                                android:layout_height="wrap_content"
+												android:background="@drawable/graph_green_background"
+												android:orientation="horizontal">
+												<TextView
+													android:id="@+id/percentagetxt"
+													android:layout_width="wrap_content"
+													android:layout_height="wrap_content"
+													android:textSize="13dp"
+													android:textColor="@color/white"
+													android:text="60%"
+													android:paddingTop="2dp" 
+													android:paddingBottom="2dp"
+													android:paddingLeft="2dp"
+													android:drawablePadding="2dp"
+													android:gravity="right|center"
+													android:singleLine="true"
+													android:drawableRight="@drawable/graph_oval"/>
+										</LinearLayout>
+									</LinearLayout>
+									<LinearLayout
+											android:id="@+id/LayoutbtnEditBudget"
+											android:layout_width="match_parent"
+											android:layout_height="wrap_content"
+											android:visibility="gone"
+											android:layout_marginBottom="10dp"
+											android:layout_marginTop="10dp"
+											android:orientation="horizontal">
+											<Button
+												android:id="@+id/btnEditBudget"
+												style="@style/Theme.ViewBill"
+												android:layout_width="match_parent"
+												android:layout_height="wrap_content"
+												android:layout_marginLeft="16dp"
+												android:layout_marginRight="16dp"
+												android:text="Edit Budget"
+												android:textAllCaps="false" />
 									</LinearLayout>
 									<View
 										android:id="@+id/smStatisticDivider"
@@ -1271,7 +1478,7 @@
 												android:textSize="13dp"
 												android:maxLines="1"
 												android:maxWidth="150dp"
-												android:ellipsize="end" />
+												android:ellipsize="middle" />
 											<TextView
 												android:id="@+id/smStatisticPredict"
 												android:layout_width="wrap_content"
@@ -1306,8 +1513,6 @@
 												android:layout_marginTop="2dp"
 												android:textColor="@color/new_grey"
 												android:text="for - "
-												android:maxLines="1"
-												android:maxWidth="150dp"
 												android:ellipsize="end"/>
 										</RelativeLayout>
 									</LinearLayout>
@@ -1416,7 +1621,7 @@
 												android:layout_alignParentTop="true"
 												android:text="My current usage trend is"
 												android:textColor="@color/charcoalGrey"
-												android:textSize="13dp" />
+												android:textSize="13dp"/>
 											<TextView
 												android:id="@+id/smStatisticTrend"
 												android:layout_width="wrap_content"
@@ -1486,11 +1691,29 @@
 											android:layout_height="wrap_content"
 											android:textColor="@color/powerBlue"
 											android:textSize="13dp"
+											android:singleLine="true"
+											android:ellipsize="middle"
 											android:layout_gravity="right|center_vertical"
 											android:text="What are these?"/>
 									</LinearLayout>
 								</LinearLayout>
 							</androidx.cardview.widget.CardView>
+							<LinearLayout
+								android:id="@+id/layoutunderCardview"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:visibility="gone"
+								android:layout_marginBottom="10dp"
+								android:orientation="horizontal">
+								<Button
+									style="@style/Theme.ViewBill"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:layout_marginLeft="16dp"
+									android:layout_marginRight="16dp"
+									android:text="Edit Budget"
+									android:textAllCaps="false" />
+							</LinearLayout>
 						</LinearLayout>
 						<LinearLayout
 							android:id="@+id/energyTipsShimmerView"
@@ -1637,7 +1860,6 @@
 						android:layout_height="wrap_content"
 						android:layout_alignParentStart="true"
 						android:layout_alignParentTop="true"
-						
 						android:layout_gravity="center"
 						android:text="@string/dashboard_need_pay"
 						android:textColor="@color/charcoalGrey"
@@ -1706,7 +1928,6 @@
 					android:text="0.00"
 					android:textColor="@color/tunaGrey"
 					android:textSize="25dp"
-					
 					android:ellipsize="end"
 					android:singleLine="false"
 					android:maxLines="1" />
