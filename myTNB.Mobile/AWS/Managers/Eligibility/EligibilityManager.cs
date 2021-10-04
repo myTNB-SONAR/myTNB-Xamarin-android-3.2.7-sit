@@ -52,6 +52,7 @@ namespace myTNB.Mobile
                    , NetworkService.GetCancellationToken()
                    , accessToken
                    , AppInfoManager.Instance.ViewInfo);
+
                 //Mark: Check for 404 First
                 if ((int)rawResponse.StatusCode != 200)
                 {

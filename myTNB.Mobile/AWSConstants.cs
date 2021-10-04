@@ -79,7 +79,7 @@
         internal const string Environment = Environment_PROD;
         internal const string XAPIKey = XAPIKey_PROD;
         public const string SaltKey = SaltKey_PROD;
-        public const string PassPhrase = PassphrasePROD;
+        public const string PassPhrase = Passphrase_PROD;
 #endif
 
         //Headers
