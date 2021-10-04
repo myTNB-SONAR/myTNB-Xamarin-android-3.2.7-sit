@@ -236,16 +236,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
         //syahmi add
         public void ShowSubmitNewEnquiry()
-        {   //TODO change intent location
-            //try
-            //{
-            //    IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_SUBMIT_NEW_ENQUIRY);  // DYNA
-            //    dynaTrace.LeaveAction();
-            //}
-            //catch (System.Exception e)
-            //{
-            //    Utility.LoggingNonFatalError(e);
-            //}
+        {   //TODO change intent location 
             var billingPaymentFeedback = new Intent(this.Activity, typeof(FeedbackPreloginNewICActivity));
             billingPaymentFeedback.PutExtra("TITLE", feedbackBillRelatedTitle);
             StartActivity(billingPaymentFeedback);
@@ -272,15 +263,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
         public void ShowSubmittedFeedback()
         {
-            //try
-            //{
-            //    IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_VIEW_SUBMITTED_ENQUIRY);  // DYNA
-            //    dynaTrace.LeaveAction();
-            //}
-            //catch (System.Exception e)
-            //{
-            //    Utility.LoggingNonFatalError(e);
-            //}
             var submittedFeedback = new Intent(this.Activity, typeof(SelectSubmittedFeedbackActivity));
             submittedFeedback.PutExtra("TITLE", submittedFeedbackTitle);
             StartActivity(submittedFeedback);
@@ -317,7 +299,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         [OnClick(Resource.Id.submitNewEnquiryConstraint)]
         void OnNewIc(object sender, EventArgs eventArgs)
         {
-            
             if (!this.GetIsClicked())
             {
                 try
@@ -330,6 +311,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 {
                     Utility.LoggingNonFatalError(e);
                 }
+
                 this.SetIsClicked(true);
                 if (DownTimeEntity.IsBCRMDown())
                 {
@@ -382,10 +364,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         [OnClick(Resource.Id.submittedFeedbackConstraint)]
         void OnSubmittedFeedback(object sender, EventArgs eventArgs)
         {
-           
             if (!this.GetIsClicked())
             {
-
                 try
                 {
                     IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_VIEW_SUBMITTED_ENQUIRY);  // DYNA
@@ -396,8 +376,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 {
                     Utility.LoggingNonFatalError(e);
                 }
-
-
                 this.SetIsClicked(true);
                 this.userActionsListener.OnSubmittedFeedback();
             }
