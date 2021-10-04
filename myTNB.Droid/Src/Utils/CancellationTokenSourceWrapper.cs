@@ -9,6 +9,7 @@ namespace myTNB_Android.Src.Utils
         {
         }
         public static bool isOvervoltageClaimPilotNonPilotTimeout;
+
         /// <summary>
         /// Gets the CancellationToken with default timeout
         /// </summary>
