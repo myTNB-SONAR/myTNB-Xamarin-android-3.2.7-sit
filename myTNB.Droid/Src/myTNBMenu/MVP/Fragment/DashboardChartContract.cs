@@ -165,6 +165,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void ShowErrorMessageResponse(string displayMessage);
             
             void UpdateEnergyBudgetLocal(string v, string accnum);
+
+            void GetFeedbackTwoQuestions(GetRateUsQuestionResponse questionRespone);
+            
+            void ShowFeedBackPageRating();
         }
 
         public interface IUserActionsListener : IBasePresenter

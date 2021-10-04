@@ -80,7 +80,7 @@ namespace myTNB_Android.Src.Utils
         {
             return prefs.GetString("notificationType", null);
         }
-
+        
         internal static void SetApplicationStatusNotification(string saveID
             , string applciationID
             , string applicationType
@@ -119,7 +119,6 @@ namespace myTNB_Android.Src.Utils
                     Type = type,
                     RequestTransId = requestTransID,
                     EventId = eventID
-
                 };
             }
             else
@@ -679,13 +678,7 @@ namespace myTNB_Android.Src.Utils
             }
             return selectAccountList;
         }
-
-        public static void DeleteEnergyBudgetList(ISharedPreferences prefs)
-        {
-            ISharedPreferencesEditor editor = prefs.Edit();
-            editor.Remove("SMR_ACCOUNT_LIST_ENERGY_BUDGET").Apply();
-        }
-
+        
         public static void SetSMREligibilityAccountList(List<SMRAccount> sMRAccounts)
         {
             ISharedPreferencesEditor editor = mPreferences.Edit();

@@ -19,6 +19,7 @@ using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
+using DynatraceAndroid;
 using Facebook.Shimmer;
 using Google.Android.Material.BottomSheet;
 using Google.Android.Material.Snackbar;
@@ -38,6 +39,8 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.EnergyBudgetRating.Activity;
+using myTNB_Android.Src.EnergyBudgetRating.Fargment;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -52,6 +55,7 @@ using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
@@ -688,6 +692,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private bool mIsPendingPayment = false;
 
         private bool isEBUser = false;
+
+        IDTXAction dynaTrace;
+
+        private List<RateUsQuestion> activeQuestionList = new List<RateUsQuestion>();
 
         private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
         private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0", new DecimalFormatSymbols(Java.Util.Locale.Us));
@@ -6901,6 +6909,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            try
+            {
+                if (MyTNBAccountManagement.GetInstance().IsFinishFeedback())
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsFinishFeedback(false);
+                    ShowThankYouFeedbackTooltips();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                if (isEBUser)
+                {
+                    dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_view_budget_duration);
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, Constants.EB_view_budget_duration);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowBackButton(bool flag)
@@ -9400,13 +9434,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
 
                     StopSMStatisticShimmer();
+                    string acctypeID;
+                    if (selectedCusBillAcc.AccountTypeId == null )
+                    {
+                        acctypeID = "0";
+                    }
+                    else
+                    {
+                        acctypeID = selectedCusBillAcc.AccountTypeId;
+                    }
 
-                    if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                    if (MyTNBAccountManagement.GetInstance().IsEBUserVerify() && acctypeID.Equals("1"))
                     {
 
                         if (ChartDataType == ChartDataType.RM)
                         {
-                            smStatisticTooltip.Visibility = ViewStates.Visible;
+                            smStatisticTooltip.Visibility = ViewStates.Visible; 
                             smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
                             smStatisticBill.Visibility = ViewStates.Visible;
                             smStatisticBillCurrency.Visibility = ViewStates.Visible;
@@ -9868,6 +9911,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (isSMR)
                 {
                     NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                }
+
+                if (isEBUser)
+                {
+                    dynaTrace.LeaveAction();
                 }
             }
             catch (System.Exception e)
@@ -11113,5 +11161,71 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             textView.SetMaxLines(4);
             errorMessageSnackbar.Show();
         }
+
+        public void GetFeedbackTwoQuestions(GetRateUsQuestionResponse response)
+        {
+            try
+            {
+                if (response != null)
+                {
+                    if (response.GetData().Count > 0)
+                    {
+                        foreach (RateUsQuestion que in response.GetData())
+                        {
+                            if (que.IsActive)
+                            {
+                                activeQuestionList.Add(que);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowFeedBackPageRating()
+        {
+            try
+            {
+                SetupFeedBackFragment.Create(this.Activity, SetupFeedBackFragment.ToolTipType.FEEDBACK_WITH_IMAGES_STAR_RATING_BUTTON)
+                    .SetCTALabel(Utility.GetLocalizedLabel("Usage", "feedbackDontAskAgain"))
+                    .SetTitle(Utility.GetLocalizedLabel("Usage", "feedback1Title"))
+                    .SetCTAaction(() =>
+                    {
+                        mPresenter.OnCheckUserLeaveOut();
+                    })
+                    .SetSecondaryCTAaction(() =>
+                    {
+                        int startSelect = MyTNBAccountManagement.GetInstance().IsFromClickAdapter();
+                        Intent intent = new Intent(Activity, typeof(EnergyBudgetRatingActivity));
+                        intent.PutExtra("feedbackTwo", startSelect);
+                        intent.PutExtra("RateUsQuestion", JsonConvert.SerializeObject(activeQuestionList));
+                        StartActivity(intent);
+                    })
+                    .Build().Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ShowThankYouFeedbackTooltips()
+        {
+            try
+            {
+                SetupFeedBackFragment.Create(this.Activity, SetupFeedBackFragment.ToolTipType.IMAGE_HEADER)
+                    .SetCTALabel(Utility.GetLocalizedLabel("Usage", "feedbackSuccessButton"))
+                    .SetTitle(Utility.GetLocalizedLabel("Usage", "feedbackSuccessTitle"))
+                    .Build().Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }   
     }
 }
