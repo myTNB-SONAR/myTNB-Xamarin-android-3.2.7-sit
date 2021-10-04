@@ -1,36 +1,39 @@
 {
   "project_info": {
-    "project_number": "282146697638",
-    "project_id": "mytnb-xamarin",
-    "storage_bucket": "mytnb-xamarin.appspot.com"
+    "project_number": "50632998415",
+    "firebase_url": "https://mytnb-project-development.firebaseio.com",
+    "project_id": "mytnb-project-development",
+    "storage_bucket": "mytnb-project-development.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:282146697638:android:25f26edff6db0ec9c81f67",
+        "mobilesdk_app_id": "1:50632998415:android:4f17ac8eff301f0e",
         "android_client_info": {
-          "package_name": "com.seamlessx.tnb.mytnbovis"
+          "package_name": "com.mytnb.mytnb"
         }
       },
       "oauth_client": [
         {
-          "client_id": "282146697638-5m2ptoq1h7pgcahr5ec3ar4ajtn8igsu.apps.googleusercontent.com",
+          "client_id": "50632998415-g04ne2dqirrk61akkqau6l2t2j01de4e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAIdYuXSP_bD2rebc5bxxwH_RGKDqDVwQU"
+          "current_key": "AIzaSyBD7yMX36alxQX8NtDvUxToxKStCuuMomU"
         }
       ],
       "services": {
+        "analytics_service": {
+          "status": 2
+        },
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "282146697638-5m2ptoq1h7pgcahr5ec3ar4ajtn8igsu.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
         }
       }
     }

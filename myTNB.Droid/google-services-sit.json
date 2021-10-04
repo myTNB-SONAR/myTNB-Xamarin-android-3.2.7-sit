@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "282146697638",
-    "project_id": "mytnb-xamarin",
-    "storage_bucket": "mytnb-xamarin.appspot.com"
+    "project_number": "8169936982",
+    "firebase_url": "https://mytnb-sit.firebaseio.com",
+    "project_id": "mytnb-sit",
+    "storage_bucket": "mytnb-sit.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:282146697638:android:25f26edff6db0ec9c81f67",
+        "mobilesdk_app_id": "1:8169936982:android:4f17ac8eff301f0e",
         "android_client_info": {
-          "package_name": "com.seamlessx.tnb.mytnbovis"
+          "package_name": "com.mytnb.mytnb"
         }
       },
       "oauth_client": [
         {
-          "client_id": "282146697638-5m2ptoq1h7pgcahr5ec3ar4ajtn8igsu.apps.googleusercontent.com",
+          "client_id": "8169936982-s2jn72k2oija6ub86ob47q3761ouqkcf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAIdYuXSP_bD2rebc5bxxwH_RGKDqDVwQU"
+          "current_key": "AIzaSyDtUckMwBbUxUgRLcE07PciCI0xUi8F3_8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "282146697638-5m2ptoq1h7pgcahr5ec3ar4ajtn8igsu.apps.googleusercontent.com",
+              "client_id": "8169936982-s2jn72k2oija6ub86ob47q3761ouqkcf.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
