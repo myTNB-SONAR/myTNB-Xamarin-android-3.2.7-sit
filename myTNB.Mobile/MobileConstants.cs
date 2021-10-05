@@ -28,6 +28,7 @@ namespace myTNB.Mobile
 
         private const string DEV1 = "http://10.215.128.191:88";
         private const string DEV2 = "http://10.215.128.191:89";
+        //private const string SIT = "http://10.215.128.191:88";
         private const string SIT = "https://mobiletestingws.tnb.com.my";
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
@@ -52,7 +53,7 @@ namespace myTNB.Mobile
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
 #elif MASTER || SIT
-        public static string ApiDomain = DEV1;
+        public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;
