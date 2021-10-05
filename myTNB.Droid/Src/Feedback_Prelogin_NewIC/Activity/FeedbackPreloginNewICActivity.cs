@@ -52,6 +52,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         [BindView(Resource.Id.updatePersonalInfoConstraint)]
         ConstraintLayout updatePersonalInfoConstraint;
 
+        [BindView(Resource.Id.gslRebateConstraint)]
+        ConstraintLayout gslRebateConstraint;
+
         [BindView(Resource.Id.txtAccountNo)]
         EditText txtAccountNo;
 
@@ -80,6 +83,12 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         [BindView(Resource.Id.txtUpdatePersonalContent)]
         TextView txtUpdatePersonalContent;
 
+        [BindView(Resource.Id.txtGSLRebateTitle)]
+        TextView txtGSLRebateTitle;
+
+        [BindView(Resource.Id.txtGSLRebateSubTitle)]
+        TextView txtGSLRebateSubTitle;
+
         [BindView(Resource.Id.scanNewEnquiry)]
         ImageButton scanNewEnquiry;
 
@@ -96,6 +105,15 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         private bool isClicked = false;
         private ISharedPreferences mSharedPref;
 
+
+        public enum EnquiryTypeEnum
+        {
+            General,
+            UpdatePersonalDetails,
+            GSLRebate,
+            None
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -110,10 +128,10 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle"));
                 //2 set font type , 300 normal 500 button
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo);
-                TextViewUtils.SetMuseoSans300Typeface(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, txtAccountNo);
-                TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal);
+                TextViewUtils.SetMuseoSans300Typeface(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, txtAccountNo, txtGSLRebateSubTitle);
+                TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal, txtGSLRebateTitle);
                 TextViewUtils.SetTextSize12(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, infoLabeltxtWhereIsMyAcc);
-                TextViewUtils.SetTextSize14(txtGeneralEnquiry, txtUpdatePersonal);
+                TextViewUtils.SetTextSize14(txtGeneralEnquiry, txtUpdatePersonal, txtGSLRebateTitle);
                 TextViewUtils.SetTextSize16(txtAccountNo, howCanWeHelpYou);
 
                 //set translation of string 
@@ -125,6 +143,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 txtGeneralEnquiry_subContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryDescription");
                 txtUpdatePersonal.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
                 txtUpdatePersonalContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "personalDetailsDescription");
+                txtGSLRebateTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_TITLE);
+                txtGSLRebateSubTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_DESC);
 
 
                 if (!UserEntity.IsCurrentlyActive())
@@ -514,7 +534,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     if (isAllowedToPass)
                     {
                         this.SetIsClicked(true);
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), EnquiryTypeEnum.General);
                     }
                     else
                     {
@@ -544,13 +564,42 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     if (isAllowed)
                     {
                         this.SetIsClicked(true);
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), true);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), EnquiryTypeEnum.UpdatePersonalDetails);
                     }
                     else
                     {
                         this.SetIsClicked(false);
                     }
 
+                }
+            }
+        }
+
+        [OnClick(Resource.Id.gslRebateConstraint)]
+        void GSLRebateConstraintOnClick(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                if (DownTimeEntity.IsBCRMDown())
+                {
+                    OnBCRMDownTimeErrorMessage();
+                    this.SetIsClicked(false);
+                }
+                else
+                {
+                    string accno = txtAccountNo.Text.ToString().Trim();
+                    bool isAllowed = this.userActionsListener.CheckRequiredFields(accno);
+
+                    if (isAllowed)
+                    {
+                        this.SetIsClicked(true);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), EnquiryTypeEnum.GSLRebate);
+                    }
+                    else
+                    {
+                        this.SetIsClicked(false);
+                    }
                 }
             }
         }
@@ -597,6 +646,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             updatePersoanlInfo.PutExtra(Constants.PAGE_STEP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of3"));
 
             StartActivity(updatePersoanlInfo);
+        }
+
+        public void ShowGSLRebate()
+        {
+
         }
 
         [OnClick(Resource.Id.infoLabelWhereIsMyAcc)]

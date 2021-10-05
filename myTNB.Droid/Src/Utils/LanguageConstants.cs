@@ -9,6 +9,7 @@
         internal static readonly string NBR_COMMS = "NewBillDesignComms";
         internal static readonly string BILL_DETAILS = "BillDetails";
         internal static readonly string BILL_FILTER = "BillFilter";
+        internal static readonly string SUBMIT_ENQUIRY = "SubmitEnquiry";
 
         internal struct Common
         {
@@ -54,6 +55,12 @@
         {
             internal static readonly string NBR_TITLE = "title";
             internal static readonly string NBR_BTN_TITLE = "viewYourBills";
+        }
+
+        internal struct SubmitEnquiry
+        {
+            internal static readonly string GSL_TITLE = "gslTitle";
+            internal static readonly string GSL_DESC = "gslDescription";
         }
     }
 }

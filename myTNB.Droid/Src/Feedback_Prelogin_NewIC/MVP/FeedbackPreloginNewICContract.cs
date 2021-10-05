@@ -9,6 +9,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using Org.BouncyCastle.Asn1.BC;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity.FeedbackPreloginNewICActivity;
 
 namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 {
@@ -38,13 +39,15 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 
             void ShowProgressDialog();
 
-             void HideProgressDialog();
+            void HideProgressDialog();
 
             void makeSetClick(bool setclick);
 
             void onScan();
 
             void ShowSelectAccount();
+
+            void ShowGSLRebate();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -55,15 +58,13 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 
             bool CheckRequiredFields(string accno);
 
-           void onUpdatePersonalDetail();
+            void onUpdatePersonalDetail();
 
-           void onShowWhereIsMyAcc();
+            void onShowWhereIsMyAcc();
 
-            void ValidateAccountAsync(string contractAccounts, bool isUpdateUserInfo);
+            void ValidateAccountAsync(string contractAccount, EnquiryTypeEnum type);
 
             void showScan();
-
-
         }
     }
 }
