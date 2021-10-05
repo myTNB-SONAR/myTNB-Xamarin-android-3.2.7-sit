@@ -3,6 +3,9 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -38,7 +41,7 @@ namespace myTNB_Android.Src.Maintenance.MVP
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             var masterDataApi = RestService.For<GetMasterDataApi>(httpClient);
 #else
-                var masterDataApi = RestService.For<GetMasterDataApi>(Constants.SERVER_URL.END_POINT);
+            var masterDataApi = RestService.For<GetMasterDataApi>(Constants.SERVER_URL.END_POINT);
 #endif
             try
             {
@@ -62,7 +65,7 @@ namespace myTNB_Android.Src.Maintenance.MVP
                     currentUsrInf.sspuid = UserEntity.GetActive().UserID;
                 }
 
-                MasterDataRequest.DeviceInterface currentDeviceInf = new MasterDataRequest.DeviceInterface()
+                /*MasterDataRequest.DeviceInterface currentDeviceInf = new MasterDataRequest.DeviceInterface()
                 {
                     DeviceId = this.mView.GetDeviceId(),
                     AppVersion = DeviceIdUtils.GetAppVersionName(),
@@ -71,33 +74,45 @@ namespace myTNB_Android.Src.Maintenance.MVP
                     DeviceDesc = Constants.DEFAULT_LANG,
                     VersionCode = ""
 
+                };*/
+
+                DeviceInfoRequest currentDeviceInf = new DeviceInfoRequest()
+                {
+                    DeviceId = this.mView.GetDeviceId(),
+                    AppVersion = DeviceIdUtils.GetAppVersionName(),
+                    OsType = Constants.DEVICE_PLATFORM,
+                    OsVersion = DeviceIdUtils.GetAndroidVersion(),
+                    DeviceDesc = Constants.DEFAULT_LANG,
+                    VersionCode = ""
+
                 };
 
-                var masterDataResponse = await masterDataApi.GetAppLaunchMasterData(new MasterDataRequest()
+                AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequestAWS(currentDeviceInf));
+                /*var masterDataResponse = await masterDataApi.GetAppLaunchMasterData(new MasterDataRequest()
                 {
                     deviceInf = currentDeviceInf,
                     usrInf = currentUsrInf
-                }, cts.Token);
+                }, cts.Token);*/
 
                 if (masterDataResponse != null && masterDataResponse.Data != null)
                 {
-                    if (masterDataResponse.Data.ErrorCode == "7200")
+                    if (masterDataResponse.ErrorCode == "7200")
                     {
                         this.mView.ShowLaunchViewActivity();
                     }
-                    else if (masterDataResponse.Data.ErrorCode == "7000")
+                    else if (masterDataResponse.ErrorCode == "7000")
                     {
                         string title = "";
                         string message = "";
 
-                        if (!string.IsNullOrEmpty(masterDataResponse.Data.DisplayTitle))
+                        if (!string.IsNullOrEmpty(masterDataResponse.DisplayTitle))
                         {
-                            title = masterDataResponse.Data.DisplayTitle;
+                            title = masterDataResponse.DisplayTitle;
                         }
 
-                        if (!string.IsNullOrEmpty(masterDataResponse.Data.DisplayMessage))
+                        if (!string.IsNullOrEmpty(masterDataResponse.DisplayMessage))
                         {
-                            message = masterDataResponse.Data.DisplayMessage;
+                            message = masterDataResponse.DisplayMessage;
                         }
 
                         this.mView.OnUpdateMaintenanceWord(title, message);
