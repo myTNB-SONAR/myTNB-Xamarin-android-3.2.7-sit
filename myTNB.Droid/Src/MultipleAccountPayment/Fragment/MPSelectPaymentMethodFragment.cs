@@ -599,7 +599,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     string custPhone = string.IsNullOrEmpty(UserEntity.GetActive().MobileNo)
                         ? string.Empty
                         : UserEntity.GetActive().MobileNo ?? string.Empty;
-                    string platform = "1"; // 1 Android
+                    string platform = Constants.DEVICE_PLATFORM; // 1 Android
                     string paymentMode = selectedPaymentMethod;
                     /* Get user registered cards */
                     string registeredCardId = selectedCard == null ? string.Empty : selectedCard.Id;
