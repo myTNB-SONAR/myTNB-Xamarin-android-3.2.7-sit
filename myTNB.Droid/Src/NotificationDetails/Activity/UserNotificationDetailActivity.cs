@@ -9,12 +9,15 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using DynatraceAndroid;
 using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.EnergyBudgetRating.Activity;
+using myTNB_Android.Src.EnergyBudgetRating.Fargment;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -23,6 +26,7 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.NotificationDetails.MVP;
 using myTNB_Android.Src.Notifications.Models;
+using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
@@ -58,6 +62,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         UserNotificationDetailPresenter mPresenter;
         AlertDialog removeDialog;
         public bool pushFromDashboard = false;
+        IDTXAction dynaTrace;
+        private List<RateUsQuestion> activeQuestionListNo = new List<RateUsQuestion>();
+        private List<RateUsQuestion> activeQuestionListYes = new List<RateUsQuestion>();
 
         public override int ResourceId()
         {
@@ -396,6 +403,17 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             CustomerBillingAccount.RemoveSelected();
             CustomerBillingAccount.SetSelected(mSelectedAccountData.AccountNum);
 
+            if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80)
+            {
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_budget_reaching);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_budget_reaching);
+            }
+            else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+            {
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_budget_reached);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_budget_reached);
+            }
+
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.PutExtra("FROM_NOTIFICATION", true);
             MyTNBAccountManagement.GetInstance().SetIsAccessUsageFromNotification(true);
@@ -406,9 +424,20 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_tips);
             FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_tips);
+            if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80)
+            {
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_tips_reaching);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_tips_reaching);
+            }
+            else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+            {
+                CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_view_tips_reached);
+                FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_tips_reached);
+            }
+            MyTNBAccountManagement.GetInstance().SetIsFromViewTips(true);
             Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
             webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("PushNotificationDetails", "viewTipsURL"));
-            webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("PushNotificationList", "title"));
+            webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("PushNotificationDetails", "energyBudgetSavingTips"));
             this.StartActivity(webIntent);
         }
 
@@ -509,5 +538,171 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 StartActivity(DashboardIntent);
             }
         }
+        
+        protected override void OnPause()
+        {
+            base.OnPause();
+            try
+            {
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || 
+                    notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+                {
+                    dynaTrace.LeaveAction();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80)
+                {
+                    dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_view_notification_duration_reaching);
+                    FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_notification_duration_reaching);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+                {
+                    dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_view_notification_duration_reached);
+                    FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_notification_duration_reached);
+                }
+                //dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_view_notification_duration);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                if (MyTNBAccountManagement.GetInstance().IsFromViewTipsPage() && notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80)
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsFromViewTips(false);
+                    mPresenter.OnCheckFeedbackCount();
+                }
+                else
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsFromViewTips(false);
+                }    
+
+                if (MyTNBAccountManagement.GetInstance().IsFinishFeedback())
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsFinishFeedback(false);
+                    ShowThankYouFeedbackTooltips();
+                }
+            }
+            catch (Exception e)
+            {
+                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void GetFeedbackTwoQuestionsNo(GetRateUsQuestionResponse response)
+        {
+            try
+            {
+                if (response != null)
+                {
+                    activeQuestionListNo.Clear();
+                    if (response.GetData().Count > 0)
+                    {
+                        foreach (RateUsQuestion que in response.GetData())
+                        {
+                            if (que.IsActive)
+                            {
+                                activeQuestionListNo.Add(que);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void GetFeedbackTwoQuestionsYes(GetRateUsQuestionResponse response)
+        {
+            try
+            {
+                if (response != null)
+                {
+                    activeQuestionListYes.Clear();
+                    if (response.GetData().Count > 0)
+                    {
+                        foreach (RateUsQuestion que in response.GetData())
+                        {
+                            if (que.IsActive)
+                            {
+                                activeQuestionListYes.Add(que);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowFeedBackSetupPageRating()
+        {
+            try
+            {
+                SetupFeedBackFragment.Create(this, SetupFeedBackFragment.ToolTipType.NORMAL_WITH_THREE_BUTTON)
+                    .SetCTALabel(Utility.GetLocalizedLabel("PushNotificationDetails", "dontAskAgain"))
+                    .SetTitleOtherOne(Utility.GetLocalizedLabel("PushNotificationDetails", "likeButtonDetails"))
+                    .SetTitleOtherTwo(Utility.GetLocalizedLabel("PushNotificationDetails", "dislikeButton"))
+                    .SetTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "feedback2Title"))
+                    .SetCTAaction(() =>
+                    {
+                        mPresenter.OnCheckUserLeaveOut();
+                    })
+                    .SetYesBtnCTAaction(() =>
+                    {
+                        Intent intent = new Intent(this, typeof(EnergyBudgetRatingActivity));
+                        intent.PutExtra("feedbackOne", "Yes");
+                        intent.PutExtra("RateUsQuestionNo", JsonConvert.SerializeObject(activeQuestionListNo));
+                        intent.PutExtra("RateUsQuestionYes", JsonConvert.SerializeObject(activeQuestionListYes));
+                        StartActivity(intent);
+                    })
+                    .SetNoBtnCTAaction(() =>
+                    {
+                        Intent intent = new Intent(this, typeof(EnergyBudgetRatingActivity));
+                        intent.PutExtra("feedbackOne", "No");
+                        intent.PutExtra("RateUsQuestionNo", JsonConvert.SerializeObject(activeQuestionListNo));
+                        intent.PutExtra("RateUsQuestionYes", JsonConvert.SerializeObject(activeQuestionListYes));
+                        StartActivity(intent);
+                    })
+                    .Build().Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowThankYouFeedbackTooltips()
+        {
+            try
+            {
+                SetupFeedBackFragment.Create(this, SetupFeedBackFragment.ToolTipType.IMAGE_HEADER)
+                    .SetCTALabel(Utility.GetLocalizedLabel("PushNotificationDetails", "feedback2SuccessButton"))
+                    .SetTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "feedback2SuccessTitle"))
+                    .Build().Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
     }
 }

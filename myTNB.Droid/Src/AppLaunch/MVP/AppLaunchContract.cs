@@ -40,6 +40,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void ShowDashboard();
 
             /// <summary>
+            /// Navigates/Show the Dashboard for aws exception
+            /// </summary>
+            void ShowExceptionDashboard();
+
+            /// <summary>
             /// Redirects to Application Status Details
             /// </summary>
             void ShowApplicationStatusDetails();

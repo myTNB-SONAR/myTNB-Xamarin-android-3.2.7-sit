@@ -40,6 +40,9 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
         [BindView(Resource.Id.infoLabelAccNotListed)]
         TextView infoLabelAccNotListed;
 
+        [BindView(Resource.Id.txttitleEBList)]
+        TextView txttitleEBList;
+
         EnergyBudgetContract.IUserActionsListener userActionsListener;
         EnergyBudgetPresenter mPresenter;
 
@@ -47,7 +50,7 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
 
         SmartMeterListAdapter adapter;
 
-        List<SMRAccount> listSmartMeter;
+        List<SMRAccount> listSmartMeter = new List<SMRAccount>();
 
         SMRAccount accountData;
 
@@ -81,14 +84,16 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
                 SetToolBarTitle(Utility.GetLocalizedLabel("EnregyBudgetListing", "title"));
-                infoLabelAccNotListed.Text = Utility.GetLocalizedLabel("EnregyBudgetListing", "tootltipTitle");
 
                 TextViewUtils.SetMuseoSans500Typeface(infoLabelAccNotListed);
+                TextViewUtils.SetMuseoSans300Typeface(txttitleEBList);
+                TextViewUtils.SetTextSize14(txttitleEBList);
                 TextViewUtils.SetTextSize13(infoLabelAccNotListed);
-                //infoLabelAccNotListed.TextSize = TextViewUtils.GetFontSize(13f);
 
-                listSmartMeter = UserSessions.GetEnergyBudgetList();
+                txttitleEBList.Text = Utility.GetLocalizedLabel("EnregyBudgetListing", "headerTitle");
+                infoLabelAccNotListed.Text = Utility.GetLocalizedLabel("EnregyBudgetListing", "tootltipTitle");
 
+                GetAccountList();
                 mPresenter = new EnergyBudgetPresenter(this);
                 this.userActionsListener.Start();
             }
@@ -114,11 +119,36 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
                     SMeterAccountList.Add(item);
                 }
 
-                UserSessions.DeleteEnergyBudgetList(mSharedPref);
-                UserSessions.EnergyBudget(SMeterAccountList);
                 adapter.Clear();
-                this.userActionsListener.Start();
+                mPresenter.ResfreshPageList(SMeterAccountList);
                 selectedsmaccount();
+            }
+        }
+
+        public void GetAccountList()
+        {
+            try
+            {
+                List<SMRAccount> smartmeterAccounts = UserSessions.GetEnergyBudgetList();
+                List<SMRAccount> SMeterAccountList = new List<SMRAccount>();
+                if (smartmeterAccounts.Count > 0)
+                {
+                    foreach (SMRAccount billingAccount in smartmeterAccounts)
+                    {
+                        SMRAccount smrAccount = new SMRAccount();
+                        smrAccount.accountNumber = billingAccount.accountNumber;
+                        smrAccount.accountName = billingAccount.accountName;
+                        smrAccount.accountAddress = billingAccount.accountAddress;
+                        smrAccount.accountSelected = false;
+                        smrAccount.BudgetAmount = billingAccount.BudgetAmount;
+                        listSmartMeter.Add(smrAccount);
+                    }
+                }
+                ShowAccountList(listSmartMeter);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 

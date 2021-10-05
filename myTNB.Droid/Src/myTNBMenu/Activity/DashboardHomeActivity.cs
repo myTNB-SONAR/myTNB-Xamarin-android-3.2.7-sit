@@ -322,16 +322,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 System.Diagnostics.Debug.WriteLine("[DEBUG] Sync SR Error: " + e.Message);
             }
-
-            try
-            {
-                this.mPresenter.GetNotificationTypesList();
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("[DEBUG] GetNotificationTypesList Error: " + e.Message);
-            }
-
         }
 
 
@@ -1215,9 +1205,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 OnCheckWhatsNewTab();
             }
         }
-
-
-
+      
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);
@@ -1628,7 +1616,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             {
                                 HideProgressDialog();
                                 MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
-                                this.mPresenter.CheckWhatsNewCache();
+                                //this.mPresenter.CheckWhatsNewCache();
                                 if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.WhatsNew)
                                 {
                                     DeeplinkUtil.Instance.ClearDeeplinkData();
@@ -1870,6 +1858,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     if (flag)
                     {
+                        MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
                         this.mPresenter.SetIsWhatsNewDialogShowNeed(false);
                         WhatsNewEntity wtManager = new WhatsNewEntity();
                         List<WhatsNewEntity> items = wtManager.GetActivePopupItems(
@@ -2144,6 +2133,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         };
                         h.PostDelayed(myAction, 5);
                     }
+                    MyTNBAccountManagement.GetInstance().OnHoldWhatNew(false);
                 }
             }
             catch (Exception e)
@@ -2151,7 +2141,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
+            
         private string GetCurrentDate()
         {
             DateTime currentDate = DateTime.Now;
@@ -2394,11 +2384,34 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             alreadyStarted = flag;
         }
 
+        public bool FilterComAndNEM()
+        {
+            try 
+            {
+                bool flag = false;
+                int totalSMCAEB = UserSessions.GetEnergyBudgetList().Count;
+                int totalSMCA = CustomerBillingAccount.SMeterBudgetAccountListALL().Count;
+                int diffSMCA = totalSMCA - totalSMCAEB;
+                if (diffSMCA > 0 && totalSMCAEB == 0)
+                {
+                    flag = true;
+                }
+                MyTNBAccountManagement.GetInstance().SetIsCOMCLandNEM(flag);
+                return flag;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                return false;
+            }
+        }
+
         public bool SetEligibleEBUser()
         {
             return UserSessions.GetEnergyBudgetList().Count > 0
                 && MyTNBAccountManagement.GetInstance().IsEBUserVerify()
-                && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
+                && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2")
+                && !MyTNBAccountManagement.GetInstance().COMCLandNEM();
         }
 
         public bool SetEligibleEBUserExtra()
@@ -2453,8 +2466,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
                     isWhatNewDialogOnHold = false;
                     mPresenter.DisableWalkthrough();
-                    HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
-                    fragment.EBPopupActivity();
+                    if (currentFragment.GetType() == typeof(HomeMenuFragment))
+                    {
+                        HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
+                        fragment.EBPopupActivity();
+                    }
                 }
                 catch (System.Exception e)
                 {

@@ -52,6 +52,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void RenderUI();
             
             void ReturnToDashboard();
+            
+            void ShowFeedBackSetupPageRating();
+            
+            void GetFeedbackTwoQuestionsNo(GetRateUsQuestionResponse questionRespone);
+            
+            void GetFeedbackTwoQuestionsYes(GetRateUsQuestionResponse questionRespone);
         }
     }
 }
