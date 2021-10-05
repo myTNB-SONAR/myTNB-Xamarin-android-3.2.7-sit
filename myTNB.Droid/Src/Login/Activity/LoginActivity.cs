@@ -11,6 +11,7 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB.Mobile.SessionCache;
+using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ForgetPassword.Activity;
 using myTNB_Android.Src.Login.MVP;
@@ -37,6 +38,9 @@ namespace myTNB_Android.Src.Login.Activity
         public readonly static string TAG = typeof(LoginActivity).Name;
         private LoginPresenter mPresenter;
         private LoginContract.IUserActionsListener userActionsListener;
+
+        public static string urlSchemaData = "";
+        public static string urlSchemaPath = "";
 
         private AlertDialog mProgressDialog;
 
@@ -104,6 +108,16 @@ namespace myTNB_Android.Src.Login.Activity
                     })
                     .SetCancelable(false)
                     .Create();
+
+                Bundle extras = Intent?.Extras;
+                if (extras != null && extras.ContainsKey("urlSchemaData"))
+                {
+                    urlSchemaData = extras.GetString("urlSchemaData");
+                    if (extras != null && extras.ContainsKey("urlSchemaPath"))
+                    {
+                        urlSchemaPath = extras.GetString("urlSchemaPath");
+                    }
+                }
 
                 TextViewUtils.SetMuseoSans300Typeface(chkRemeberMe, txtEmail, txtPassword, txtNoAccount);
                 TextViewUtils.SetMuseoSans500Typeface(txtRegisterAccount, txtAccountLogin, txtForgotPassword);
@@ -397,11 +411,25 @@ namespace myTNB_Android.Src.Login.Activity
 
         public void ShowDashboard()
         {
+            //Guid
+            Guid myuuid = Guid.NewGuid();
+            LaunchViewActivity.DynatraceSessionUUID = myuuid.ToString();
+
             // TODO : START ACTIVITY DASHBOARD
             HomeMenuFragment.IsFromLogin = true;
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            if (!string.IsNullOrEmpty(urlSchemaData))
+            {
+                DashboardIntent.PutExtra("urlSchemaData", urlSchemaData);
+                if (!string.IsNullOrEmpty(urlSchemaPath))
+                {
+                    DashboardIntent.PutExtra("urlSchemaPath", urlSchemaPath);
+                }
+            }
             StartActivity(DashboardIntent);
+            urlSchemaPath = "";
+            urlSchemaData = "";
         }
 
         public void ShowForgetPassword()

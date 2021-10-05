@@ -200,6 +200,26 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call SubmittedFeedbackClaimIdDetail with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<GetOvervoltageClaimDetailModel> OvervoltageClaimDetail([Body] Request.BaseRequest request)
+        {
+            return api.OvervoltageClaimDetail<GetOvervoltageClaimDetailModel>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// CA number Verify.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<TriggerOVISServicesResponseModel> TriggerOVISServices([Body] Request.BaseRequest request)
+        {
+            return api.TriggerOVISServices<TriggerOVISServicesResponseModel>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
         /// Call GetLocationsByKeyword with default timeout.
         /// </summary>
         /// <param name="request"></param>

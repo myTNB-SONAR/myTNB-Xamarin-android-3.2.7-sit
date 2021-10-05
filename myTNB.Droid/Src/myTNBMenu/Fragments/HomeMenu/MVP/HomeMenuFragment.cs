@@ -57,6 +57,7 @@ using myTNB_Android.Src.SessionCache;
 using myTNB_Android.Src.EBPopupScreen.Activity;
 using AndroidX.CardView.Widget;
 using System.Globalization;
+using DynatraceAndroid;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1846,6 +1847,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void ShowFeedbackMenu()
         {
+            //Dynatrace
+
+            IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_SUBMIT_AND_TRACK_ENQUIRY);  // DYNA
+            dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
+            dynaTrace.LeaveAction();
+
             ShowBackButton(true);
             FeedbackMenuFragment fragment = new FeedbackMenuFragment();
 

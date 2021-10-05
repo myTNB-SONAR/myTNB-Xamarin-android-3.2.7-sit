@@ -11,6 +11,7 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.NotificationDetails.Activity;
 using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
@@ -56,7 +57,7 @@ namespace myTNB_Android.Src.Firebase.Services
             }
 
             UserSessions.SetNotification(remoteData["Type"], remoteData["EventId"], remoteData["RequestTransId"]);
-            SendNotification(title, message);
+            SendNotification(title, message, remoteData);
             if (remoteData.ContainsKey("Badge") && int.TryParse(remoteData["Badge"], out int count))
             {
                 if (count <= 0)
@@ -74,8 +75,34 @@ namespace myTNB_Android.Src.Firebase.Services
         //{
         //}
 
-        private void SendNotification(string title, string message)
+        private void SendNotification(string title, string message, IDictionary<string, string> remoteData)
         {
+            if (remoteData.ContainsKey("claimId"))
+            {
+                Intent intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));               
+                //intent.AddFlags(ActivityFlags.ClearTop);                
+                intent.AddFlags(ActivityFlags.ClearTop);
+                intent.PutExtra("ClaimId",remoteData["claimId"]);
+                PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
+
+                Android.Net.Uri defaultSoundUri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                        .SetSmallIcon(Resource.Drawable.ic_launcher)
+                        .SetLargeIcon(BitmapFactory.DecodeResource(this.Resources,
+                                Resource.Drawable.ic_launcher))
+                        .SetContentTitle(title)
+                        .SetContentText(message)
+                        .SetAutoCancel(true)
+                        .SetSound(defaultSoundUri)
+                        .SetContentIntent(pendingIntent);
+
+                NotificationManager notificationManager =
+                        (NotificationManager)GetSystemService(Context.NotificationService);
+
+                notificationManager.Notify(0, notificationBuilder.Build());
+            }
+            else
+            {
             if (UserSessions.Notification != null)
             {
                 Intent intent = new Intent(this, typeof(UserNotificationDetailActivity));
@@ -114,7 +141,8 @@ namespace myTNB_Android.Src.Firebase.Services
                         (NotificationManager)GetSystemService(Context.NotificationService);
 
                 notificationManager.Notify(0, notificationBuilder.Build());
-            }           
+            }
+            }
         }
     }
 }

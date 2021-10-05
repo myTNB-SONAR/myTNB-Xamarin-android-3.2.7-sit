@@ -92,6 +92,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 }
 
                 //statusCode color 
+                vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.black)));
                 if (item.StatusCode.Equals("CL01"))
                 {
                     vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
@@ -112,6 +113,74 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 {
 
                 }
+                //new added
+                else if (item.StatusCode.Equals("CL07"))
+                {
+                    //Submitted & Awaiting Verification
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
+                }
+                else if (item.StatusCode.Equals("CL08"))
+                {
+                    //Claim Verified & Appointment Required
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.lightOrange)));
+                }
+                else if (item.StatusCode.Equals("CL09"))
+                {
+                    //Appointment Made & Awaiting Inspection
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
+                }
+                else if (item.StatusCode.Equals("CL10"))
+                {
+                    //Inspection Done & Awaiting Eligibility Decision
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
+                }
+                else if (item.StatusCode.Equals("CL11"))
+                {
+                    ///Eligible for Claim & Claim Response Required
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.lightOrange)));
+                }
+                else if (item.StatusCode.Equals("CL12"))
+                {
+                    //Negotiation Requested & Awaiting Negotiation  
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
+                }
+                else if (item.StatusCode.Equals("CL13"))
+                {
+                    //Negotiation Done & Claim Response Required
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.lightOrange)));
+                }
+                else if (item.StatusCode.Equals("CL14"))
+                {
+                    //Accepted Claim Offer & Payment Information Required
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.lightOrange)));
+                }
+                else if (item.StatusCode.Equals("CL15"))
+                {
+                    //Payment Information Submitted & Starting Payment Process
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
+                }
+                else if (item.StatusCode.Equals("CL16"))
+                {
+                    //Payment Processed & Completed
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.freshGreen)));
+                }
+                else if (item.StatusCode.Equals("CL17"))
+                {
+                    //Ineligible for Claim
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
+                }
+                else if (item.StatusCode.Equals("CL18"))
+                {
+                    //Cancelled
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
+                }
+                else if (item.StatusCode.Equals("CL19"))
+                {
+                    //Ineligible for Claim & Claim Response Required (Ex-gratia)
+                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.lightOrange)));
+                }
+
+
 
                 if (item.FeedbackCategoryId.Equals("1"))
                 {
@@ -132,6 +201,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                     //  vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.update_personal_details));
                     vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
                     //  vh.txtFeedbackTitle.SetPadding(0, 24, 7, 0);
+                }
+                else if (item.FeedbackCategoryId.Equals("11"))
+                {
+                    vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle");
                 }
             }
             catch (Exception e)

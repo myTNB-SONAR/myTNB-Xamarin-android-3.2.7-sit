@@ -49,25 +49,39 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
 
                 if (detailsResponse.IsSuccessResponse())
                 {
-                    if (submittedFeedback.FeedbackCategoryId.Equals("1"))
+                    if (submittedFeedback.FeedbackCategoryId.Equals("11"))
                     {
-                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
-                        this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback);
-                    }
-                    else if (submittedFeedback.FeedbackCategoryId.Equals("2"))
-                    {
-                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
-                        this.mView.ShowFeedbackDetailsFaultyLamps(detailsResponse.GetData());
-                    }
-                    else if (submittedFeedback.FeedbackCategoryId.Equals("4"))
-                    {
-                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
-                        this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback);
+                        var claimDetailResponce = await ServiceApiImpl.Instance.OvervoltageClaimDetail(new SubmittedFeedbeckClaimIdDetailRequestModel(submittedFeedback.FeedbackId));
+
+                        if (claimDetailResponce.d.data != null)
+                        {
+                            var ClaimId = claimDetailResponce.d.data.ClaimId;
+                            UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
+                            this.mView.ShowFeedbackDetailsOverVoltage(detailsResponse.GetData(), submittedFeedback, ClaimId);
+                        }
                     }
                     else
                     {
-                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
-                        this.mView.ShowFeedbackDetailsOthers(detailsResponse.GetData());
+                        if (submittedFeedback.FeedbackCategoryId.Equals("1"))
+                        {
+                            UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
+                            this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback);
+                        }
+                        else if (submittedFeedback.FeedbackCategoryId.Equals("2"))
+                        {
+                            UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
+                            this.mView.ShowFeedbackDetailsFaultyLamps(detailsResponse.GetData());
+                        }
+                        else if (submittedFeedback.FeedbackCategoryId.Equals("4"))
+                        {
+                            UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
+                            this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback);
+                        }
+                        else
+                        {
+                            UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
+                            this.mView.ShowFeedbackDetailsOthers(detailsResponse.GetData());
+                        }
                     }
                 }
                 else

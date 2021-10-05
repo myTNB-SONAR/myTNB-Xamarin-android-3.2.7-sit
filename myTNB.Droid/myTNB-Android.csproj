@@ -751,6 +751,9 @@
     <Reference Include="Xamarin.AndroidX.ViewPager2">
       <HintPath>..\packages\Xamarin.AndroidX.ViewPager2.1.0.0.9\lib\monoandroid90\Xamarin.AndroidX.ViewPager2.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Essentials">
+      <HintPath>..\packages\Xamarin.Essentials.1.6.1\lib\monoandroid10.0\Xamarin.Essentials.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -6808,11 +6811,89 @@
     <Compile Include="Src\myTNBMenu\Async\EligibilityAPI.cs" />
     <Compile Include="Src\Device Cache\AccessTokenCache.cs" />
     <Compile Include="Src\MyTNBService\Response\CustomerAccountListResponseAppLaunch.cs" />
+    <AndroidResource Include="Resources\layout\OvervoltageClaim.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\OverVoltageClaim\Activity\OvervoltageClaim.cs" />
+    <AndroidResource Include="Resources\layout\OverVoltageClaimSuccessPage.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\OverVoltageClaimSuccessPage\Activity\OverVoltageClaimSuccessPageActivity.cs" />
+    <AndroidResource Include="Resources\layout\AppointmentsetLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\OverVoltageFeedbackDetail.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\MyTNBService\Request\SubmittedFeedbeckClaimIdDetailRequestModel.cs" />
+    <Compile Include="Src\AppointmentDetailSet\Activity\AppointmentSetActivity.cs" />
+    <Compile Include="Src\OverVoltageFeedback\Activity\OverVoltageFeedbackDetailActivity.cs" />
+    <AndroidResource Include="Resources\layout\FeedBackSubmittedSuccessView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PaymentInfoSunmittedSuccessView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\FeedBackSubmittedSucess\Activity\FeedBackSubmittedSuccessActivity.cs" />
+    <Compile Include="Src\PaymentInfoSunmittedSuccess\Activity\PaymentInfoSunmittedSuccessActivity.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\overvoltageclaimicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\overvoltageclaimicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\overvoltageclaimicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\overvoltageclaimicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\overvoltageclaimicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\overvoltageclaimicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\overvoltagedisableicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\overvoltagedisableicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\overvoltagedisableicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\overvoltagedisableicon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\MyTNBService\Response\TriggerOVISServicesResponseModel.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetOvervoltageClaimDetailModel.cs" />
+    <Compile Include="Src\MyTNBService\Request\TriggerOVISServicesRequestModel.cs" />
+    <Compile Include="Src\Helper\UrlUtility.cs" />
+    <Compile Include="Src\OverVoltageClaim\Model\DTOWebView.cs" />
+    <Compile Include="Src\OverVoltageFeedback\Model\DTOWebView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <AndroidAsset Include="Assets\fonts\MuseoSans_300.otf" />
     <AndroidAsset Include="Assets\fonts\MuseoSans_500.otf" />
+    <AndroidAsset Include="Assets\Dynatrace.properties" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -7964,6 +8045,22 @@
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\" />
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\" />
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\" />
+    <Folder Include="Src\OverVoltageClaim\" />
+    <Folder Include="Src\OverVoltageClaim\Activity\" />
+    <Folder Include="Src\OverVoltageClaimSuccessPage\" />
+    <Folder Include="Src\OverVoltageClaimSuccessPage\Activity\" />
+    <Folder Include="Src\OverVoltageFeedback\" />
+    <Folder Include="Src\AppointmentDetailSet\" />
+    <Folder Include="Src\AppointmentDetailSet\Activity\" />
+    <Folder Include="Src\OverVoltageFeedback\Activity\" />
+    <Folder Include="Src\FeedBackSubmittedSucess\" />
+    <Folder Include="Src\FeedBackSubmittedSucess\Activity\" />
+    <Folder Include="Src\PaymentInfoSunmittedSuccess\" />
+    <Folder Include="Src\PaymentInfoSunmittedSuccess\Activity\" />
+    <Folder Include="Src\FeedBackSubmittedSucess\Activity\" />
+    <Folder Include="Src\PaymentInfoSunmittedSuccess\Activity\" />
+    <Folder Include="Src\Helper\" />
+    <Folder Include="Src\OverVoltageClaim\Model\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

@@ -51,6 +51,8 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB.Mobile.AWS.Models;
+using Android.Content.Res;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -846,6 +848,22 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                 errorPopup.Show();
                             }
                             HideProgressDialog();
+                        }
+                        else if (!string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("enquiryDetails"))
+                        {
+                            UserEntity user = UserEntity.GetActive();
+                            if (user.UserID==EnquiryDetailsDeeplinkCache.Instance.UserID)
+                            {
+                                //Overvoltage detail page
+                                Intent viewReceipt = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+                                viewReceipt.PutExtra("ClaimId", EnquiryDetailsDeeplinkCache.Instance.ClaimID);
+                                StartActivity(viewReceipt);
+                            }
+                            else
+                            {
+
+                            }
+                           
                         }
                     }
                 }
