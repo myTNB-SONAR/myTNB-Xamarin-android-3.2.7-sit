@@ -2161,11 +2161,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private void OnShowBCRMPopup(DownTimeEntity bcrmEntity)
         {
-            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                     .SetHeaderImage(Resource.Drawable.maintenance_bcrm)
                     .SetTitle(bcrmEntity.DowntimeTextMessage)
                     .SetMessage(bcrmEntity.DowntimeMessage)
-                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
                     .Build()
                     .Show();
             MyTNBAccountManagement.GetInstance().SetIsMaintenanceDialogShown(true);

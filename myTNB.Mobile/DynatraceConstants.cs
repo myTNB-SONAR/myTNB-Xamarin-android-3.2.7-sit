@@ -55,6 +55,7 @@
                     public const string Start_Paperless_Success = "App_Visit_StartPaperlessSuccess";
                     public const string Back_To_Paper = "App_Visit_OptBackPaperBill";
                     public const string Back_To_Paper_Success = "App_Visit_OptBackPaperSuccess";
+                    public const string Start_Paperless_Share_Feedback = "App_Visit_DBRRating";
                 }
             }
 
@@ -108,7 +109,26 @@
                     public const string Back_To_Paper_Close = "App_Action_OptBackPaperClose_Confirm";
                     public const string Start_Paperless_Confirm = "App_Action_StartPaperless_Confirm";
                     public const string Back_To_Paper_Confirm = "App_Action_OptBackPaper_Confirm";
+                    public const string Start_Paperless_Share_Feedback = "App_Action_StartPaperlessSuccess_ShareFeedback";
+                    public const string Submit_Rating = "App_Action_DBRRating_Submit";
+                    public const string Submit_Rating_Close = "App_Action_DBRRatingClose_Confirm";
                 }
+            }
+        }
+
+        public struct BR
+        {
+            public struct Screens
+            {
+                public struct Bill
+                {
+                    public const string View_Bill = "App_Visit_ViewBill";
+                }
+            }
+
+            public struct CTAs
+            {
+
             }
         }
     }

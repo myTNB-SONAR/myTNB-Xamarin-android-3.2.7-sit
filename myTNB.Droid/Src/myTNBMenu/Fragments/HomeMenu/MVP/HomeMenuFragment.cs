@@ -1245,18 +1245,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                     .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
-                    .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupTitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupMessage"))
-                    .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "gotIt"))
-                    .SetCTAaction(() =>
+                    .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_TITLE))
+                    .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_MESSAGE))
+                    .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_START_NOW))
+                    .SetCTAaction(() => ShowManageBill())
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.GOT_IT))
+                    .SetSecondaryCTAaction(() =>
                     {
                         this.SetIsClicked(false);
                         DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
                     })
-                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupStartNow"))
-                    .SetSecondaryCTAaction(() => ShowManageBill())
                     .Build();
                 marketingTooltip.Show();
             }

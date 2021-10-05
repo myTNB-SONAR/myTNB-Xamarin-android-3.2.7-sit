@@ -21,6 +21,7 @@ namespace myTNB_Android.Src.Utils
             IMAGE_HEADER_TWO_BUTTON,
             NORMAL,
             NORMAL_STRETCHABLE,
+            MYTNB_DIALOG_IMAGE_BUTTON
         }
 
         private ToolTipType toolTipType;
@@ -78,6 +79,10 @@ namespace myTNB_Android.Src.Utils
             else if (mToolTipType == ToolTipType.NORMAL_STRETCHABLE)
             {
                 layoutResource = Resource.Layout.WhatIsThisDialogView;
+            }
+            else if (mToolTipType == ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+            {
+                layoutResource = Resource.Layout.MyTNBDialogWithImageAndButton;
             }
             tooltipBuilder.dialog = new MaterialDialog.Builder(context)
                 .CustomView(layoutResource, false)
@@ -398,7 +403,7 @@ namespace myTNB_Android.Src.Utils
 
                     tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
                     tooltipImageHeader.LayoutParameters.Height = currentImgHeight;
-                     tooltipImageHeader.RequestLayout();
+                    tooltipImageHeader.RequestLayout();
                 }
                 else
                 {
@@ -506,6 +511,79 @@ namespace myTNB_Android.Src.Utils
 
                 tooltipCTA.Text = this.ctaLabel;
 
+            }
+            else if (this.toolTipType == ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+            {
+                ImageView tooltipImageHeader = this.dialog.FindViewById<ImageView>(Resource.Id.dialogHeaderImg);
+                TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.dialogTitle);
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.dialogMessage);
+                TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.dialogPrimaryBtn);
+                TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.dialogSecondaryBtn);
+
+                TextViewUtils.SetTextSize14(tooltipMessage);
+                TextViewUtils.SetTextSize16(tooltipTitle, tooltipPrimaryCTA);
+                TextViewUtils.SetTextSize12(tooltipSecondaryCTA);
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
+                tooltipTitle.Gravity = this.mGravityFlag;
+                tooltipMessage.Gravity = this.mGravityFlag;
+
+                if (this.imageResourceBitmap != null)
+                {
+                    tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
+                }
+                else if (this.imageResource > 0)
+                {
+                    tooltipImageHeader.SetImageResource(this.imageResource);
+                }
+                else
+                {
+                    tooltipImageHeader.Visibility = ViewStates.Gone;
+                }
+
+                tooltipPrimaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    this.ctaAction?.Invoke();
+                };
+
+                tooltipSecondaryCTA.Visibility = this.secondaryCTALabel.IsValid() ? ViewStates.Visible : ViewStates.Gone;
+
+                if (this.secondaryCTALabel.IsValid())
+                {
+                    tooltipSecondaryCTA.Click += delegate
+                    {
+                        this.dialog.Dismiss();
+                        if (secondaryCTAAction != null)
+                        {
+                            this.secondaryCTAAction();
+                        }
+                    };
+                }
+                else
+                {
+                    LinearLayout.LayoutParams primaryButtonParams = tooltipPrimaryCTA.LayoutParameters as LinearLayout.LayoutParams;
+                    primaryButtonParams.BottomMargin = (int)DPUtils.ConvertDPToPx(24f);
+                }
+
+                tooltipTitle.Text = this.title;
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                }
+                tooltipMessage = LinkRedirectionUtils
+                    .Create(this.mContext, string.Empty)
+                    .SetTextView(tooltipMessage)
+                    .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
+                    .Build()
+                    .GetProcessedTextView();
+
+                tooltipPrimaryCTA.Text = this.ctaLabel;
+                tooltipSecondaryCTA.Text = this.secondaryCTALabel;
             }
             return this;
         }

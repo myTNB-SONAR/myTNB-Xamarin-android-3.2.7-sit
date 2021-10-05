@@ -417,7 +417,7 @@
   },
   "Usage": {
     "title": "Usage",
-    "accountsMissing": "Why are some of my accounts not here?",
+    "accountsMissing": "Mengapa akaun saya tiada di sini?",
     "gotIt": "Ok!",
     "disconnectionMsg": "<strong>Apakah maksudnya?</strong><br><br>Bekalan elektrik anda telah dipotong. Pemotongan ini mungkin disebabkan oleh permintaan pemilik premis, atau tunggakan bayaran bil.<br><br>Sekiranya anda telah memohon untuk sambungan semula, atau telah membuat bayaran, bekalan anda akan disambung dalam masa terdekat.",
     "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
@@ -453,17 +453,21 @@
     "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     //EnergyBudget
     "myMonthlyBudget": "Energy Budget saya adalah",
-    "whyIsAmountDiff": "Mengapakah jumlah penggunaan saya lain daripada jumlah bil saya?",
+    "whyIsAmountDiff": "Adakah ini akan menjadi jumlah bil saya?",
     "whyIsAmountDiffBody": "Jumlah penggunaan terkini anda adalah jumlah tenaga yang anda telah guna setakat ini. Oleh kerana jumlah ini belum dibilkan mengikuti kitaran pembilan anda, ia belum tertakluk kepada cukai, diskaun atau caj tambahan dari kami.",
     "editEnergyButton": "Tetapkan Energy Budget anda",
     "setEnergyButton": "Tetapkan Sekarang",
     "saveEnergyButton": "Simpan Energy Budget baharu",
-    "toastSaveBudgetuccessfull": "Anda telah berjaya menetapkan Energy Budget anda!",
+    "toastSaveBudgetuccessfull": "Anda telah menetapkan had Energy Budget bulanan anda!",
     "myUsageSoFar": "Penggunaan saya setakat ini",
     "disconnectedEnergyBudget": "Nampaknya Energy Budget anda terputus sambungan. Refresh untuk sambung semula!",
     "refreshNowEnergyBudgetButton": "'Refresh' Sekarang",
     "youHaveNotSetBudget": "Anda belum menetapkan Energy Budget anda",
-    "youHaveNotSetBudgetSubtitle": "Tetapkan Energy Budget anda, pantau penggunaan anda dan terima pemberitahuan apabila berdekatan dengan Energy Budget anda!"
+    "youHaveNotSetBudgetSubtitle": "Tetapkan Energy Budget anda, pantau penggunaan anda dan terima pemberitahuan apabila berdekatan dengan Energy Budget anda!",
+    "feedback1Title": "Tahniah! Bagaimanakah pengalaman penetapan Energy Budget anda?",
+    "feedbackDontAskAgain": "Tidak Berminat",
+    "feedbackSuccessTitle": "Terima kasih atas maklumbalas anda",
+    "feedbackSuccessButton": "OK"
   },
   "Bills": {
     "title": "Bil",
@@ -498,8 +502,8 @@
     "emptyHistoryRE": "Sejarah transaksi anda kosong pada masa ini. Setelah ada, makluman dan sejarah pembayaran anda akan dipaparkan di sini.",
     "emptyPaymentHistoryRE": "Kami belum lagi buat bayaran. Setelah dibuat, sejarah pembayaran anda akan dipaparkan di sini.",
     "emptyBillHistoryRE": "Anda belum lagi ada makluman. Setelah ada, sejarah makluman anda akan dipaparkan di sini.",
-    "accountStatementTenantTitle": "MS_Your account is ineligible to view the account statement.",
-    "accountStatementTenantMessage": "MS_It looks like your account is a tenant account. You have to be the electricity account owner in order to view the account statement.<br><br>If you would like to view the account statement, you may contact your account owner."
+    "accountStatementTenantTitle": "Akaun anda tidak layak untuk melihat penyata akaun.",
+    "accountStatementTenantMessage": "Nampaknya akaun anda adalah akaun penyewa. Anda harus menjadi pemilik akaun elektrik untuk melihat penyata akaun.<br><br>Sekiranya anda ingin melihat penyata akaun, anda boleh menghubungi pemilik akaun anda."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
@@ -623,7 +627,14 @@
     "viewBudget": "Paparkan Budget",
     "viewTips": "Rujuk Tips",
     "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks",
-    "EnergyBudgetTitle": "Energy Budget"
+    "EnergyBudgetTitle": "Energy Budget",
+    "energyBudgetSavingTips": "Tips cekap tenaga",
+    "feedback2Title": "Adakah anda rasa Energy Budget ini berguna pada anda?",
+    "likeButtonDetails": "Ya",
+    "dislikeButton": "Tidak",
+    "dontAskAgain": "Tidak Berminat",
+    "feedback2SuccessTitle": "Terima kasih atas maklumbalas anda",
+    "feedback2SuccessButton": "OK"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -2460,6 +2471,22 @@
       }
     ]
   },
+  "EnregyBudgetListing": {
+    "title": "Pilih Akaun Meter Pintar",
+    "tootltipTitle": "Kenapa sesetengah akaun saya yang tidak tersenarai?",
+    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
+    "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"
+  },
+  "EnergyBudgetPopup": {
+    "title": "Tahniah! Rasai pengalaman baru dalam mengawal penggunaan elektrik bersama Energy Budget!",
+    "threeEasyStep": "Penjimatan wang melalui 3 cara mudah:",
+    "firstStep": "TETAPKAN tahap penggunaan bulanan meter pintar terpilih anda",
+    "secondStep": "PANTAU penggunaan harian dengan mudah",
+    "thirdStep": "BERJIMAT apabila anda menghampiri penggunaan yang anda tetapkan",
+    "txtLetgetstarted": "Mula Sekarang",
+    "txtViewmybudget": "Lihat Budget Saya",
+    "txtMaybelater": "Kemudian"
+  },
   "ManageDigitalBillLanding": {
     "title": "Urus Cara Penerimaan Bil",
     "dbrViewBillDelivery": "Cara Penerimaan Bil",
@@ -2506,21 +2533,6 @@
     "nevermind": "Tidak Mengapa",
     "confirm": "Sahkan"
   },
-  "EnregyBudgetListing": {
-    "title": "Pilih Akaun Meter Pintar",
-    "tootltipTitle": "Mengapakah sesetengah akaun saya tidak disenaraikan?",
-    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Apabila meter anda telah ditukarkan ke meter pintar, akaun tersebut akan ditambah secara automatik ke dalam senarai ini."
-  },
-  "EnergyBudgetPopup": {
-    "title": "Kawal penggunaan elektrik anda dengan mudah Bersama Energy Budget!",
-    "threeEasyStep": "Penjimatan wang melalui 3 cara mudah:",
-    "firstStep": "TETAPKAN tahap penggunaan bulanan anda",
-    "secondStep": "PANTAU penggunaan harian dengan mudah",
-    "thirdStep": "BERJIMAT apabila anda menghampiri penggunaan yang anda tetapkan",
-    "txtLetgetstarted": "Mari Kita Mulakan",
-    "txtViewmybudget": "Lihat Budget Saya",
-    "txtMaybelater": "Kemudian"
-  },
   "ServiceConfiguration": {
     "Eligibility": {
       "enabled": true,
@@ -2562,7 +2574,9 @@
         "Image2": "New-Bill-Design-Header-2",
         "IsZoomable": false,
         "IsHeader": true,
-        "IsFooter": false
+        "IsFooter": false,
+        "ShouldTrack": false,
+        "DynatraceTag": ""
       },
       {
         "Title": "Ringkasan bil akaun anda",
@@ -2571,7 +2585,9 @@
         "Image2": "",
         "IsZoomable": false,
         "IsHeader": false,
-        "IsFooter": false
+        "IsFooter": false,
+        "ShouldTrack": false,
+        "DynatraceTag": ""
       },
       {
         "Title": "Sejarah penggunaan tenaga",
@@ -2580,7 +2596,9 @@
         "Image2": "",
         "IsZoomable": false,
         "IsHeader": false,
-        "IsFooter": false
+        "IsFooter": false,
+        "ShouldTrack": false,
+        "DynatraceTag": ""
       },
       {
         "Title": "Penyata penuh akaun anda",
@@ -2589,7 +2607,9 @@
         "Image2": "",
         "IsZoomable": false,
         "IsHeader": false,
-        "IsFooter": false
+        "IsFooter": false,
+        "ShouldTrack": false,
+        "DynatraceTag": ""
       },
       {
         "Title": "Penggunaan elektrik dan tarif anda",
@@ -2598,7 +2618,9 @@
         "Image2": "",
         "IsZoomable": false,
         "IsHeader": false,
-        "IsFooter": false
+        "IsFooter": false,
+        "ShouldTrack": true,
+        "DynatraceTag": "App_Action_NewBillDesign_TariffHere"
       },
       {
         "Title": "",
@@ -2607,8 +2629,29 @@
         "Image2": "",
         "IsZoomable": false,
         "IsHeader": false,
-        "IsFooter": true
+        "IsFooter": true,
+        "ShouldTrack": true,
+        "DynatraceTag": "App_Action_NewBillDesign_NewBillHere"
       }
     ]
+  },
+  "FeedBackEB": {
+    "title": "Maklum balas tetapan Energy Budget",
+    "improveTitle": "Apa yang telah berlaku? ",
+    "titleSelectApplies": "Sila pilih apa yang berkenaan",
+    "tellusMore": "Berikan butiran penuh (Jika ada)",
+    "hinttellusMore": "baki aksara",
+    "btnNoThank": "Tidak",
+    "btnShare": "Kongsikan"
+  },
+  "FeedBackEBNotification": {
+    "title": "Maklum balas Energy Budget",
+    "thumbUpYes": "Ya",
+    "thumbDownNo": "Tidak",
+    "btnNoThank": "Tidak",
+    "btnShare": "Kongsikan",
+    "titleSelectApplies": "Sila pilih apa yang berkenaan",
+    "tellusMore": "Berikan butiran penuh (Jika ada)",
+    "hinttellusMore": "baki aksara"
   }
 }
