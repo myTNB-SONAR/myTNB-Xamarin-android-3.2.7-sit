@@ -157,7 +157,7 @@
 						android:layout_marginTop="16dp" />
 					<TextView
 						android:id="@+id/txtGeneralEnquiry_subContent"
-						android:layout_width="0dp"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="0dp"
 						android:layout_marginLeft="16dp"
@@ -217,7 +217,7 @@
 						android:layout_marginTop="16dp" />
 					<TextView
 						android:id="@+id/txtUpdatePersonalContent"
-						android:layout_width="0dp"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="0dp"
 						android:layout_marginLeft="16dp"
@@ -296,7 +296,7 @@
 						/>
 					<TextView
 						android:id="@+id/txtOverVoltageClaimContent"
-						android:layout_width="0dp"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="0dp"
 						android:layout_marginLeft="16dp"
