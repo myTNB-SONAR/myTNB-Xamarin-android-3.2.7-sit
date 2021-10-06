@@ -110,8 +110,8 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
                 {
                     SerialNumber = Intent.GetStringExtra("SerialNumber");
                     txtFeedbackIdContent.Text = SerialNumber;
-                    txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitICFeedback_OverVoltageClainSuccessPageThankyouRequest");
-                    txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent");
+                    txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourRequest");
+                    txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourRequestDescription");
                     txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
                     buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
                     btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");                  

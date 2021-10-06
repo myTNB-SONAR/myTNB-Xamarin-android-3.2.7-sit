@@ -1102,10 +1102,10 @@
     "documentPdf": "Dokumen",
 
     //Overvoltage Claim Translation Start
-    "leaveDialouge": "Tinggalkan halaman ini?",
-    "leaveDialougeMessage": "Anda akan hilang semua maklumat yang anda isi. Sila tekan 'Ya' untuk teruskan, atau 'Batal' untuk kekal di halaman ini.",
-    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequest": "Terima kasih atas permohonan anda!",
-    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent": "Kami akan kembali kepada anda sebentar nanti. Buat sementara waktu, info terkini boleh didapati dengan memeriksa status permohonan anda",
+    "leaveThisPage": "Tinggalkan halaman ini?",
+    "leaveThisPageDescription": "Anda akan hilang semua maklumat yang anda isi. Sila tekan 'Ya' untuk teruskan, atau 'Batal' untuk kekal di halaman ini.",
+    "thankYouForYourRequest": "Terima kasih atas permohonan anda!",
+    "thankYouForYourRequestDescription": "Kami akan kembali kepada anda sebentar nanti. Buat sementara waktu, info terkini boleh didapati dengan memeriksa status permohonan anda",
     "thankYouForYourEnquiry": "Permohonan anda telah dibatalkan.", //
     "thankYouForYourEnquiryDescription": "Permohonan anda untuk tuntutan voltan berlebihan telah dibatalkan.", //
     "thankYouForYourAppointment": "Janji temu anda telah dibatalkan.", //
@@ -1146,8 +1146,8 @@
     "overVoltageClaimtemproryUnavailable": "Servis Tuntutan Voltan Berlebihan tidak tersedia untuk sementara waktu",
     "overVoltageClaimtemproryUnavailableTitle": "Servis tidak tersedia untuk sementara waktu",
     "overVoltageClaimtemproryUnavailableDescription": "Kami sedang memulihkan servis Tuntutan Voltan Berlebihan secepat yang mungkin. Sila cuba sebentar lagi.",
-    "tNC": "Terma dan Syarat",
-    "rescheduleAppointment": "Jadualkan Semula Janji Temu"
+    "termsAndConditionTitle": "Terma dan Syarat",
+    "rescheduleAppointmentTitle": "Jadualkan Semula Janji Temu"
     //Overvoltage Claim Translation End
 
   },
