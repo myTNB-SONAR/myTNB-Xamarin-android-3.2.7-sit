@@ -29,6 +29,7 @@ using myTNB_Android.Src.SessionCache;
 using Android.Graphics;
 using static myTNB.Mobile.MobileEnums;
 using myTNB_Android.Src.DigitalBillRendering.ManageBillDelivery.Activity.MVP;
+using myTNB_Android.Src.myTNBMenu.Activity;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -240,7 +241,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             };
             vPager.AddOnPageChangeListener(this);
             viewPagerLayout.AddView(vPager, 0);
-            ManageBillDeliveryAdapter = new ManageBillDeliveryAdapter(SupportFragmentManager);
+            ManageBillDeliveryAdapter = new ManageBillDeliveryAdapter(SupportFragmentManager, this);
             ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
             vPager.Adapter = ManageBillDeliveryAdapter;
         }
@@ -893,6 +894,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
+            base.OnActivityResult(requestCode, resultCode, data);
             if (requestCode == DBR_SELECT_ACCOUNT_ACTIVITY_CODE)
             {
                 if (resultCode == Result.Ok)
@@ -928,7 +930,13 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     TenantDeliveringAddress.Text = selectedEligibleAccount.accountAddress;
                 }
             }
-            base.OnActivityResult(requestCode, resultCode, data);
+            else if (requestCode == Constants.NEW_BILL_REDESIGN_REQUEST_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    ShowBillsMenu();
+                }
+            }
         }
 
         public void SetAccountName(CustomerBillingAccount selectedAccount)
@@ -1130,6 +1138,33 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             }
 
             return i;
+        }
+
+        private void ShowBillsMenu()
+        {
+            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+            if (accountList.Count > 0)
+            {
+                CustomerBillingAccount selected = accountList[0];
+                CustomerBillingAccount.RemoveSelected();
+                CustomerBillingAccount.SetSelected(selected.AccNum);
+
+                AccountData accountData = new AccountData();
+                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);
+                accountData.AccountNickName = selected.AccDesc;
+                accountData.AccountName = selected.OwnerName;
+                accountData.AddStreet = selected.AccountStAddress;
+                accountData.IsOwner = customerBillingAccount.isOwned;
+                accountData.AccountNum = selected.AccNum;
+                accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+
+                Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                DashboardIntent.PutExtra("FROM_MANAGE_BILL_DELIVERY", true);
+                DashboardIntent.PutExtra("MENU", "BillMenu");
+                DashboardIntent.PutExtra("DATA", JsonConvert.SerializeObject(accountData));
+                DashboardIntent.AddFlags(ActivityFlags.ClearTop);
+                StartActivity(DashboardIntent);
+            }
         }
     }
 }
