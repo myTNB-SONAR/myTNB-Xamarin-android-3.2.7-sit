@@ -430,7 +430,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 else
                 {
-                  
                     this.Finish();
                 }
             }
@@ -788,7 +787,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             }
                         }
                         else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("applicationDetails"))
-                        {                          
+                        {
                             ShowProgressDialog();
                             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
                             if (searchApplicationTypeResponse == null)

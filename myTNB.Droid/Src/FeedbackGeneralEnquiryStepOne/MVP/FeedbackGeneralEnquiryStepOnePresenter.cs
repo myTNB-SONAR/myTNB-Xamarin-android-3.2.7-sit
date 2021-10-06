@@ -23,7 +23,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
             this.mView.SetPresenter(this);
         }
 
-        public  void OnGeneralEnquiry()
+       public  void OnGeneralEnquiry()
         {
             this.mView.ShowGeneralEnquiry();
         }

@@ -25,9 +25,9 @@
         internal const string ApiUrlPath = "v6/mytnbappws.asmx";
 
         private const string DEV1 = "http://10.215.128.191:88";
-        private const string DEV2 = "https://mytnbwsovis.ap.ngrok.io";//"http://10.215.128.191:89";
+        private const string DEV2 = "https://mytnbwsovis.ap.ngrok.io";
         private const string SIT = "https://mytnbwsovis.ap.ngrok.io";
-        private const string PROD = "https://mytnbwsovis.ap.ngrok.io"; //"https://mytnbapp.tnb.com.my";
+        private const string PROD = "https://mytnbwsovis.ap.ngrok.io";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
         //Mark: http://tnbcsdevapp.tnb.my/
         private const string SitecoreDEV = "http://10.215.70.246/";

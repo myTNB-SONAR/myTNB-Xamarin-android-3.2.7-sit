@@ -16,7 +16,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
     {
 
         public interface IView : IBaseView<IUserActionsListener>
-        {  
+        {
+
             void ShowGeneralEnquiry();
 
             void ShowInvalidAccountNumberError();
@@ -48,7 +49,6 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 
         public interface IUserActionsListener : IBasePresenter
         {
-             
             void OnGeneralEnquiry();
 
             void OnSelectAccount();

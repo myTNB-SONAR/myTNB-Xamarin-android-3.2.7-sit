@@ -14,7 +14,6 @@ using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.FeedbackDetails.Activity;
-using myTNB_Android.Src.OverVoltageFeedback;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.SelectSubmittedFeedback.Adapter;
 using myTNB_Android.Src.SelectSubmittedFeedback.MVP;
@@ -53,7 +52,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         MaterialDialog progressDialog;
         public static string status, crStatusCode;
         public static string srNumber;
-        public static string AccountNumber;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -103,7 +101,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
                     this.SetIsClicked(true);
                     SubmittedFeedback feedback = adapter.GetItemObject(e.Position);
                     srNumber = feedback.FeedbackId;
-                    //AccountNumber = feedback.
                     //dynatrace 
                     IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_VIEW_OVERVOLTAGE_CLAIM_FROM_LIST);  // DYNA
                     dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);

@@ -973,8 +973,6 @@
     "title": "Pilih Negara/Wilayah"
   },
   "SubmitEnquiry": {
-    "exGratiaAgreementTitle": "Persetujuan Ex-gratia", //
-    "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.", //
     "enquireTitle": "Hantar & Semak Pertanyaan",
     "submitEnquiryTitle": "Hantar Pertanyaan Baru",
     "submitEnquiryDescription": "Kongsikan bagaimana kami boleh membantu anda",
@@ -1106,6 +1104,8 @@
     "viewYes": "Ya",
     "viewNo": "Tidak",
     "documentPdf": "Dokumen",
+
+    //Overvoltage Claim Translation Start
     "thankYouForYourEnquiry": "Permohonan anda telah dibatalkan.", //
     "thankYouForYourEnquiryDescription": "Permohonan anda untuk tuntutan voltan berlebihan telah dibatalkan.", //
     "thankYouForYourAppointment": "Janji temu anda telah dibatalkan.", //
@@ -1145,7 +1145,11 @@
     "overVoltageClaimtemproryUnavailableDescription": "Kami sedang memulihkan servis Tuntutan Voltan Berlebihan secepat yang mungkin. Sila cuba sebentar lagi.",
     "tNC": "Terma dan Syarat",
     "rescheduleAppointment": "Jadualkan Semula Janji Temu",
-    "appointmentUpdate": "Tarikh janji temu anda telah dikemaskini."
+    "appointmentUpdate": "Tarikh janji temu anda telah dikemaskini.",
+    "exGratiaAgreementTitle": "Persetujuan Ex-gratia",
+    "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi."
+    //Overvoltage Claim Translation End
+
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",

@@ -973,9 +973,6 @@
     "title": "Select Country/Region"
   },
   "SubmitEnquiry": {
-    //"enquireTitle": "Enquiry",
-    "exGratiaAgreementTitle": "Ex-gratia Agreement",
-    "defaultErrorMessage": "Sorry, this is not working right now. Please try again later.",
     "enquireTitle": "Submit & Track Enquiry",
     "submitEnquiryTitle": "Submit New Enquiry",
     "submitEnquiryDescription": "Let us know your thoughts and concerns.",
@@ -1103,6 +1100,8 @@
     "viewYes": "Yes",
     "viewNo": "No",
     "documentPdf": "Document",
+
+    //Overvoltage Claim Translation Start
     "leaveDialouge": "Leave this page?",
     "leaveDialougeMessage": "You will lose all changes made since your last save. Press Yes to continue, or Cancel to stay on the current page.",
     "submitICFeedback_OverVoltageClainSuccessPageThankyouRequest": "Thank you for your request!",
@@ -1146,7 +1145,10 @@
     "overVoltageClaimtemproryUnavailableDescription": "We're working to restore Overvoltage Claim service as quickly as possible. Please check back soon.",
     "tNC": "Terms and Conditions",
     "rescheduleAppointment": "Reschedule Appointment",
-    "appointmentUpdate": "Your appointment date has been updated."
+    "appointmentUpdate": "Your appointment date has been updated.",
+    "exGratiaAgreementTitle": "Ex-gratia Agreement",
+    "defaultErrorMessage": "Sorry, this is not working right now. Please try again later."
+    //Overvoltage Claim Translation End
 
   },
   "Tutorial": {
