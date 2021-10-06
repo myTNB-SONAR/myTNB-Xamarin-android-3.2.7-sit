@@ -52,7 +52,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     if (submittedFeedback.FeedbackCategoryId.Equals("1"))
                     {
                         UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
-                        this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback);
+                        this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback,false);
                     }
                     else if (submittedFeedback.FeedbackCategoryId.Equals("2"))
                     {
@@ -62,9 +62,14 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     else if (submittedFeedback.FeedbackCategoryId.Equals("4"))
                     {
                         UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
-                        this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback);
+                        this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback,false);
                     }
-                    else
+                    else if (submittedFeedback.FeedbackCategoryId.Equals("5"))
+                    {
+                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
+                        this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback,true);
+                    }
+                    else 
                     {
                         UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
                         this.mView.ShowFeedbackDetailsOthers(detailsResponse.GetData());

@@ -13,7 +13,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetAppLaunchMasterData<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetAccountsV2")]
+        [Post("/v6/mytnbappws.asmx/GetAccounts")]
         Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
@@ -51,6 +51,10 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/SubmitFeedbackWithContactDetails")]
         Task<T> SubmitEnquiry<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SubmitEnquiry")]
+        Task<T> SubmitEnquiryWithType<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetSubmittedFeedbackList")]
