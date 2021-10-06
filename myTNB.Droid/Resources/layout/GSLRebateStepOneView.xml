@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/rootView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true"
+	android:orientation="vertical">
+	<LinearLayout
+		android:id="@+id/mainView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:isScrollContainer="false"
+		android:orientation="vertical">
+		<include
+			android:id="@+id/toolbar"
+			layout="@layout/toolbar" />
+		<TextView
+			android:id="@+id/pageStep"
+			android:layout_width="wrap_content"
+			android:layout_height="36dp"
+			android:layout_marginLeft="20dp"
+			android:layout_marginRight="20dp"
+			android:ellipsize="end"
+			android:gravity="top|center"
+			android:paddingTop="4dp"
+			android:maxEms="20"
+			android:maxLines="1"
+			android:text="Step 1 of 2"
+			android:textColor="@color/white"
+			android:textSize="12dp" />
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_weight="1"
+			android:overScrollMode="never"
+			android:scrollbars="none"
+			android:fillViewport="true"
+			android:id="@+id/gslStepOneScrollView"
+			android:layout_height="wrap_content"
+			android:background="@color/background_pale_grey">
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/gslStepOneScrollViewContainer">
+				<TextView
+					android:id="@+id/txtRebateTypeTitle"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="16dp"
+					android:layout_marginTop="12dp"
+					android:layout_marginRight="16dp"
+					android:text="What type of rebate are you claiming?"
+					android:textAllCaps="false"
+					android:textColor="@color/powerBlue"
+					android:textSize="16dp" />
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="@color/white"
+					android:layout_marginTop="12dp"
+					android:id="@+id/gslTypeOfRebateContainer">
+					<TextView
+						android:id="@+id/txtAccountType"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="16dp"
+						android:layout_marginTop="16dp"
+						android:layout_marginRight="19dp"
+						android:text="TYPE OF REBATE"
+						android:textAllCaps="true"
+						android:textColor="@color/tunaGrey"
+						android:textSize="9dp" />
+					<TextView
+						android:id="@+id/selectorGSLTypeOfRebate"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center|left"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:drawableRight="@drawable/ic_action_dropdown1"
+						android:drawableBottom="@drawable/blue_out_line"
+						android:drawablePadding="4dp"
+						android:paddingRight="6dp"
+						android:paddingBottom="1dp"
+						android:text="GSL 1: Frequency of Interruption"
+						android:textColor="@color/tunaGrey"
+						android:textSize="16dp" />
+				</LinearLayout>
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="18dp"
+					android:id="@+id/gslTenantInfoContainer">
+					<TextView
+						android:id="@+id/txtTenantInfoTitle"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:text="Your Tenant Information"
+						android:textAllCaps="false"
+						android:textColor="@color/powerBlue"
+						android:textSize="16dp" />
+					<com.google.android.material.textfield.TextInputLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="16dp"
+						app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+						android:id="@+id/txtInputLayoutServiceRequestNum"
+						app:errorEnabled="true"
+						android:layout_marginRight="17dp">
+						<EditText
+							android:hint=""
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:drawableLeft="@drawable/ic_field_account_no"
+							android:id="@+id/txtServiceRequestNum"
+							android:textSize="16dp"
+							android:maxLines="1"
+							android:singleLine="true"
+							android:paddingTop="5dp"
+							android:drawablePadding="6dp"
+							android:inputType="number"
+							android:longClickable="false"/>
+					</com.google.android.material.textfield.TextInputLayout>
+				</LinearLayout>
+			</LinearLayout>
+		</ScrollView>
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="16dp"
+			android:paddingLeft="16dp"
+			android:paddingBottom="16dp"
+			android:paddingRight="16dp"
+			android:gravity="center|bottom"
+			android:background="@color/white"
+			android:id="@+id/linearLayout1">
+			<Button
+				android:id="@+id/gslStepOnebtnNext"
+				android:text="Next"
+				android:layout_width="match_parent"
+				android:layout_height="48dp"
+				style="@style/DarkButton"
+				android:textAllCaps="false" />
+		</LinearLayout>
+	</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -17,9 +17,11 @@ using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
+using myTNB;
 using myTNB_Android.Src.Barcode.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Enquiry.GSL.Activity;
 using myTNB_Android.Src.Feedback_Login_BillRelated.Activity;
 using myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity;
@@ -32,6 +34,7 @@ using System;
 using System.IO;
 using System.Runtime;
 using System.Threading.Tasks;
+using static myTNB.LanguageManager;
 
 namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 {
@@ -146,6 +149,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 txtGSLRebateTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_TITLE);
                 txtGSLRebateSubTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_DESC);
 
+                gslRebateConstraint.Visibility = LanguageManager.Instance.GetConfigToggleValue(TogglePropertyEnum.IsGSLRebateEnabled) ? ViewStates.Visible : ViewStates.Gone;
 
                 if (!UserEntity.IsCurrentlyActive())
                 {
@@ -650,7 +654,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
         public void ShowGSLRebate()
         {
-
+            var gslRebateActivity = new Intent(this, typeof(GSLRebateStepOneActivity));
+            StartActivity(gslRebateActivity);
         }
 
         [OnClick(Resource.Id.infoLabelWhereIsMyAcc)]

@@ -58,9 +58,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
         {
             if (LanguageManager.Instance.GetConfigToggleValue(TogglePropertyEnum.IsGSLRebateEnabled))
             {
-
+                this.mView.ShowGSLRebate();
             }
-            this.mView.ShowGSLRebate();
         }
 
         public void Start()

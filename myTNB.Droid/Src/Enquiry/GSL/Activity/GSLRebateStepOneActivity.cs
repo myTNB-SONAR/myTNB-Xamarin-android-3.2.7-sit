@@ -17,7 +17,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
 
         public override int ResourceId()
         {
-            return Resource.Layout.UpdatePersonalDetailStepOneView;
+            return Resource.Layout.GSLRebateStepOneView;
         }
 
         public override Boolean ShowCustomToolbarTitle()
