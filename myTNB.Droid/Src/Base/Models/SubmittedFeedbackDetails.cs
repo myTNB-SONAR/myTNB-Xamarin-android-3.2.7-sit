@@ -67,7 +67,9 @@ namespace myTNB_Android.Src.Base.Models
         [JsonProperty("RelationshipWithCADesc")]
         public string RelationshipWithCADesc { get; set; }
 
- 
+        [JsonProperty("EnquiryName")]
+        public string EnquiryName { get; set; }
+
         [JsonProperty("FeedbackUpdateDetails")]
         public List<FeedbackUpdate> FeedbackUpdateDetails { get; set; }
 

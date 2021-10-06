@@ -19,6 +19,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
         {
 
             void ShowGeneralEnquiry();
+            void ShowAboutBillEnquiry();
 
             void ShowInvalidAccountNumberError();
 
@@ -59,7 +60,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 
            void onShowWhereIsMyAcc();
 
-            void ValidateAccountAsync(string contractAccounts, bool isUpdateUserInfo);
+            void ValidateAccountAsync(string contractAccounts, bool isUpdateUserInfo, bool isAboutBill);
 
             void showScan();
 

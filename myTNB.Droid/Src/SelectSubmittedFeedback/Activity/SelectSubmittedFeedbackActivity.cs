@@ -262,10 +262,14 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             }
         }
 
-        public void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedbackDetail, SubmittedFeedback submittedFeedback)
+        public void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedbackDetail, SubmittedFeedback submittedFeedback, bool isAboutMyBill)
         {
             var billIntent = new Intent(this, typeof(FeedbackDetailsBillRelatedActivity));
             billIntent.PutExtra("TITLE", !string.IsNullOrEmpty(submittedFeedback.FeedbackNameInListView) ? submittedFeedback.FeedbackNameInListView : submittedFeedback.FeedbackCategoryName);
+            if (isAboutMyBill)
+            {
+                billIntent.PutExtra("ABOUTMYBILL", "true");
+            }
             StartActivity(billIntent);
         }
 

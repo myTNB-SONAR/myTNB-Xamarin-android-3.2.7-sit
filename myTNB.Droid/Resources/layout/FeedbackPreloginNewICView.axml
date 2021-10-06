@@ -109,6 +109,65 @@
 					android:layout_marginBottom="8dp"
 					android:textSize="16dp"
 					android:textColor="@color/powerBlue"/>
+				
+				<androidx.constraintlayout.widget.ConstraintLayout
+					android:id="@+id/aboutBillEnquiryConstraint"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="@color/white"
+					android:orientation="vertical"
+					android:paddingBottom="16dp"
+					tools:layout_editor_absoluteX="0dp"
+					tools:layout_editor_absoluteY="47dp">
+					<ImageView
+						android:id="@+id/AboutBillEnquiryIcon"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="16dp"
+						android:layout_marginStart="16dp"
+						android:layout_marginTop="17dp"
+						android:src="@drawable/icons_display_bill_related"
+						app:layout_constraintLeft_toLeftOf="parent"
+						app:layout_constraintTop_toTopOf="parent"
+						app:srcCompat="@drawable/icons_display_bill_related" />
+					<TextView
+						android:id="@+id/txtAboutBillEnquiry"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:text="About My Bill"
+						android:textColor="@color/powerBlue"
+						android:textSize="14dp"
+						app:layout_constraintLeft_toRightOf="@+id/AboutBillEnquiryIcon"
+						android:layout_marginStart="16dp"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintRight_toRightOf="parent"
+						android:layout_marginTop="16dp" />
+					<TextView
+						android:id="@+id/txtAboutBillEnquiry_subContent"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="0dp"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:layout_marginStart="16dp"
+						android:layout_marginTop="0dp"
+						android:text="I want to enquire about my bill and payment."
+						android:textColor="@color/tunaGrey"
+						android:textSize="12dp"
+						app:layout_constraintRight_toRightOf="parent"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintLeft_toRightOf="@+id/AboutBillEnquiryIcon"
+						app:layout_constraintTop_toBottomOf="@+id/txtAboutBillEnquiry"
+						app:layout_constraintHorizontal_bias="0"
+						app:layout_constraintVertical_bias="0.218"/>
+				</androidx.constraintlayout.widget.ConstraintLayout>
+				<View
+					android:id="@+id/spaceAboutBillRelated"
+					android:layout_width="match_parent"
+					android:layout_height="6dp"
+					android:background="@color/lightGrey" />
 				<androidx.constraintlayout.widget.ConstraintLayout
 					android:id="@+id/generalEnquiryConstraint"
 					android:layout_width="match_parent"

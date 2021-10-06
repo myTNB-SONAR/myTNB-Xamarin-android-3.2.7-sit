@@ -20,16 +20,17 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using Java.Text;
 using Android.Gms.Common.Apis;
 using Newtonsoft.Json;
-using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Model;
+using myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Model;
 using Castle.Core.Internal;
+using static myTNB_Android.Src.MyTNBService.Request.SubmitEnquiryTypeRequest;
 
-namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
+namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
 {
-    public class FeedbackGeneralEnquiryStepTwoPresenter : FeedbackGeneralEnquiryStepTwoContract.IUserActionsListener
+    public class FeedbackAboutBillEnquiryStepTwoPresenter : FeedbackAboutBillEnquiryStepTwoContract.IUserActionsListener
     {
 
-        FeedbackGeneralEnquiryStepTwoContract.IView mView;
-        public FeedbackGeneralEnquiryStepTwoPresenter(FeedbackGeneralEnquiryStepTwoContract.IView mView)
+        FeedbackAboutBillEnquiryStepTwoContract.IView mView;
+        public FeedbackAboutBillEnquiryStepTwoPresenter(FeedbackAboutBillEnquiryStepTwoContract.IView mView)
         {
 
             this.mView = mView;
@@ -129,7 +130,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
         }
 
 
-        public async void OnSubmit(string acc, string feedback, string fullname, string mobile_no,string email, List<AttachedImage> attachedImages , List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsModelList , bool isowner, int ownerRelationship , string relationshipDescription)
+        public async void OnSubmitEnquiryWithType(string acc, string feedback, string fullname, string mobile_no,string email, List<AttachedImage> attachedImages , List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsModelList , bool isowner, int ownerRelationship , string relationshipDescription, string EnquiryId, string EnquiryName)
         {
             
 
@@ -168,21 +169,15 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                     ctr++;
                 } ;
 
-                int category=1;
-
-                if (feedback.IsNullOrEmpty())
-                {
-                    //if empty it is update personal detail which will inject 4
-                    category = 4;
-                }
+                int category=5;
 
                 string devicePhoneNumber = userEntity != null ? userEntity.MobileNo : mobile_no;  //set device phone number
 
+                email = userEntity != null ? userEntity.Email : email;
+               
 
-                SubmitEnquiryRequest submitEnquiryRequest  = new SubmitEnquiryRequest(category.ToString(), "", acc, fullname, devicePhoneNumber, feedback, "", "", "", mobile_no, fullname, email, isowner, ownerRelationship, relationshipDescription);
-
-                submitEnquiryRequest.email = userEntity != null ? userEntity.Email : email;  //set device email
-
+                List<FeedbackUpdateDetails> feedbackUpdateDetails = new List<FeedbackUpdateDetails>();
+                List<FeedbackImage> attachment = new List<FeedbackImage>();
                 foreach (AttachedImageRequest image in imageRequest)
                 {
                     string fileFormat;
@@ -194,8 +189,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                     {
                         fileFormat = "jpeg";
                     }
-                       
-                        submitEnquiryRequest.SetFeedbackImage(image.ImageHex, image.FileName, image.FileSize.ToString(), fileFormat);
+                    attachment.Add(new FeedbackImage(image.ImageHex, image.FileName, image.FileSize.ToString(), fileFormat));
 
                 }
 
@@ -203,13 +197,13 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                 {
                     foreach (FeedbackUpdateDetailsModel update in feedbackUpdateDetailsModelList)
                     {
-                        submitEnquiryRequest.SetFeedbackUpdateDetails(update.FeedbackUpdInfoType, update.FeedbackUpdInfoTypeDesc, update.FeedbackUpdInfoValue);
+                        feedbackUpdateDetails.Add(new FeedbackUpdateDetails(update.FeedbackUpdInfoType, update.FeedbackUpdInfoTypeDesc, update.FeedbackUpdInfoValue));
                     }
                 }
+                SubmitEnquiryTypeRequest submitEnquiryTypeRequest = new SubmitEnquiryTypeRequest(category.ToString(), "", acc, fullname, devicePhoneNumber, feedback, "", "", "", mobile_no, fullname, email, isowner, ownerRelationship, relationshipDescription, EnquiryId, EnquiryName, feedbackUpdateDetails, attachment);
+                var tempReq = JsonConvert.SerializeObject(submitEnquiryTypeRequest);
 
-                var tempReq = JsonConvert.SerializeObject(submitEnquiryRequest);
-
-                var preLoginFeedbackResponse = await ServiceApiImpl.Instance.SubmitEnquiry(submitEnquiryRequest);
+                var preLoginFeedbackResponse = await ServiceApiImpl.Instance.SubmitEnquiryWithType(submitEnquiryTypeRequest);
 
                 if (mView.IsActive())
                 {

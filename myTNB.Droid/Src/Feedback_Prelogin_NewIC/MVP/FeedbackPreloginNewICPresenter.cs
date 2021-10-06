@@ -45,7 +45,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
         {
             this.mView.ShowGeneralEnquiry();
         }
-
+        public void OnAboutBillEnquiry()
+        {
+            this.mView.ShowAboutBillEnquiry();
+        }
+        
        public void onUpdatePersonalDetail()
         {
             this.mView.showUpdatePersonalDetail();
@@ -131,7 +135,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
             }
         }
 
-        public async void ValidateAccountAsync(string contractAccounts , bool isUpdateUserInfo)
+        public async void ValidateAccountAsync(string contractAccounts , bool isUpdateUserInfo, bool isAboutBill)
         {
            
 
@@ -163,11 +167,15 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                     {
                         onUpdatePersonalDetail();
                     }
+                    else if (isAboutBill)
+                    {
+                        OnAboutBillEnquiry();
+                    }
                     else
                     {
                         OnGeneralEnquiry();
                     }
-
+                    
 
                    
                 }

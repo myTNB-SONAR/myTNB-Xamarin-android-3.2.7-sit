@@ -22,6 +22,7 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Feedback_Login_BillRelated.Activity;
 using myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP;
+using myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SiteCore;
@@ -74,6 +75,12 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         [BindView(Resource.Id.txtGeneralEnquiry_subContent)]
         TextView txtGeneralEnquiry_subContent;
 
+        [BindView(Resource.Id.txtAboutBillEnquiry)]
+        TextView txtAboutBillEnquiry;
+
+        [BindView(Resource.Id.txtAboutBillEnquiry_subContent)]
+        TextView txtAboutBillEnquiry_subContent;
+
         [BindView(Resource.Id.txtUpdatePersonal)]
         TextView txtUpdatePersonal;
 
@@ -111,9 +118,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 //2 set font type , 300 normal 500 button
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo);
                 TextViewUtils.SetMuseoSans300Typeface(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, txtAccountNo);
-                TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal);
-                TextViewUtils.SetTextSize12(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, infoLabeltxtWhereIsMyAcc);
-                TextViewUtils.SetTextSize14(txtGeneralEnquiry, txtUpdatePersonal);
+                TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal, txtAboutBillEnquiry);
+                TextViewUtils.SetTextSize12(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, infoLabeltxtWhereIsMyAcc, txtAboutBillEnquiry_subContent);
+                TextViewUtils.SetTextSize14(txtGeneralEnquiry, txtUpdatePersonal, txtAboutBillEnquiry);
                 TextViewUtils.SetTextSize16(txtAccountNo, howCanWeHelpYou);
 
                 //set translation of string 
@@ -122,6 +129,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");
                 howCanWeHelpYou.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "infoHowcan");
                 txtGeneralEnquiry.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle");
+                txtAboutBillEnquiry.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "aboutMyBillTitle");
+                txtAboutBillEnquiry_subContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "aboutMyBillDescription");
                 txtGeneralEnquiry_subContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryDescription");
                 txtUpdatePersonal.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
                 txtUpdatePersonalContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "personalDetailsDescription");
@@ -441,7 +450,13 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             //generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
             //StartActivityForResult(generalEnquiry, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
         }
-
+        public void ShowAboutBillEnquiry()
+        {
+            Intent generalEnquiry = new Intent(this, typeof(FeedbackAboutBillEnquiryStepOneActivity));
+            generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
+            StartActivity(generalEnquiry);
+        }
+        
         public void ShowSelectAccount()
         {
             Intent supplyAccount = new Intent(this, typeof(FeedbackSelectAccountActivity));
@@ -514,7 +529,39 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     if (isAllowedToPass)
                     {
                         this.SetIsClicked(true);
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false,false);
+                    }
+                    else
+                    {
+                        this.SetIsClicked(false);
+                    }
+                }
+            }
+        }
+        [OnClick(Resource.Id.aboutBillEnquiryConstraint)]
+        void OnAboutBillEnquiryConstraint(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+
+
+                this.SetIsClicked(true);
+
+
+                if (DownTimeEntity.IsBCRMDown())
+                {
+                    OnBCRMDownTimeErrorMessage();
+                    this.SetIsClicked(false);
+                }
+                else
+                {
+                    string accno = txtAccountNo.Text.ToString().Trim();
+                    bool isAllowedToPass = this.userActionsListener.CheckRequiredFields(accno);
+
+                    if (isAllowedToPass)
+                    {
+                        this.SetIsClicked(true);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false,true);
                     }
                     else
                     {
@@ -544,7 +591,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     if (isAllowed)
                     {
                         this.SetIsClicked(true);
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), true);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), true,false);
                     }
                     else
                     {

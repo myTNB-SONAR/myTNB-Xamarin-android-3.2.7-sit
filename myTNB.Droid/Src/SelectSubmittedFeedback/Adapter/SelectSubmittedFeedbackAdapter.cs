@@ -133,6 +133,12 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                     vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
                     //  vh.txtFeedbackTitle.SetPadding(0, 24, 7, 0);
                 }
+                else if (item.FeedbackCategoryId.Equals("5"))
+                {
+                    //  vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.update_personal_details));
+                    vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "aboutMyBillTitle");
+                    //  vh.txtFeedbackTitle.SetPadding(0, 24, 7, 0);
+                }
             }
             catch (Exception e)
             {
