@@ -7,6 +7,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -47,14 +48,25 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription1"),
                 Image = "manage_bill_delivery_0"
             });
-
-            ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
+            if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
+               && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
             {
-                Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle2"),
-                Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription2"),
-                Image = "manage_bill_delivery_1"
-            });
-
+                ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
+                {
+                    Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle2V2"),
+                    Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription2V2"),
+                    Image = "dbr_paper_e_bill.png"
+                });
+            }
+            else
+            {
+                ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
+                {
+                    Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle2"),
+                    Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription2"),
+                    Image = "manage_bill_delivery_1"
+                });
+            }
             ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
             {
                 Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle3"),

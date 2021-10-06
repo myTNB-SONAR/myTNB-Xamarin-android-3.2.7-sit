@@ -63,6 +63,12 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
         [BindView(Resource.Id.txtFeedback)]
         EditText txtFeedback;
 
+        [BindView(Resource.Id.txtEnquiryType)]
+        EditText txtEnquiryType;
+
+        [BindView(Resource.Id.txtInputLayoutEnquiryType)]
+        TextInputLayout txtInputLayoutEnquiryType;
+
         [BindView(Resource.Id.txtRelatedScreenshotTitle)]
         TextView txtRelatedScreenshotTitle;
 
@@ -185,7 +191,8 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         SubmittedFeedbackDetails submittedFeedback;
 
-
+        string isAboutMyBill = "false";
+        string acountMyBillToolBarText = string.Empty;
         FeedbackDetailsBillRelatedPresenter mPresenter;
         FeedbackDetailsContract.BillRelated.IUserActionsListener userActionsListener;
 
@@ -241,7 +248,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         }
 
-        public void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string accountNoName, string feedback, List<FeedbackUpdate> feedbackUpdateList, string name, string email, string mobile, int? relationShip, string relationshipDesc, bool? isOwner)
+        public void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string accountNoName, string feedback, List<FeedbackUpdate> feedbackUpdateList, string name, string email, string mobile, int? relationShip, string relationshipDesc, bool? isOwner, string EnquiryName)
         {
             try
             {
@@ -321,6 +328,10 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                     txtEnquiryDetails.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "reqUpdate");   // translate
                     SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle"));
                     EditTextIsOwner.Text = isOwner == true ? Utility.GetLocalizedLabel("SubmitEnquiry", "viewYes") : Utility.GetLocalizedLabel("SubmitEnquiry", "viewNo");
+                }
+                else if(isAboutMyBill == "true")
+                {
+                    SetToolBarTitle(acountMyBillToolBarText);
                 }
                 else
                 {
@@ -461,7 +472,16 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                     txtFeedback.Text = feedback;
                 }
+                if (isAboutMyBill != "true")
+                {
+                    txtInputLayoutEnquiryType.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    txtInputLayoutEnquiryType.Visibility = ViewStates.Visible;
 
+                    txtEnquiryType.Text = EnquiryName;
+                }
 
                 txtforMyhouse.Text = accountNoName;
             }
@@ -480,8 +500,13 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 if (Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
                 {
                     SetToolBarTitle(Intent.GetStringExtra("TITLE"));
+                    acountMyBillToolBarText = Intent.GetStringExtra("TITLE");
                 }
-
+                if (Intent.HasExtra("ABOUTMYBILL") && !string.IsNullOrEmpty(Intent.GetStringExtra("ABOUTMYBILL")))
+                {
+                    isAboutMyBill = Intent.GetStringExtra("ABOUTMYBILL");
+                }
+                
 
 
                 if (Intent.HasExtra("NEWSCREEN") && !string.IsNullOrEmpty(Intent.GetStringExtra("NEWSCREEN")))
@@ -512,13 +537,13 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
                 submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
 
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, txtInputLayoutFeedback
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, txtInputLayoutFeedback,txtInputLayoutEnquiryType
                     , txtInputLayoutFeedbackId, txtInputLayoutDateTime, txtInputLayoutStatus);
                 TextViewUtils.SetMuseoSans300Typeface(TextInputLayoutname, TextInputLayoutMobileNumber
                     , TextInputLayoutEmailAddress, TextInputLayoutServiceRequestNumber, TextInputLayoutIsOwner);
                 TextViewUtils.SetMuseoSans300Typeface(EditTextName, EditTextEmailAddress, EditTextMobileNumber, EditTextIsOwner);
                 TextViewUtils.SetMuseoSans300Typeface(txtFeedbackId, txtFeedbackDateTime
-                    , txtAccountNo, txtFeedback, txtRelatedScreenshotTitle, txtforMyhouse);
+                    , txtAccountNo, txtFeedback, txtEnquiryType, txtRelatedScreenshotTitle, txtforMyhouse);
                 TextViewUtils.SetMuseoSans500Typeface(txtStatus, txtFeedback_status_new, txtEnquiryDetails, TextView_contactDetails);
                 TextViewUtils.SetMuseoSans300Typeface(EditTextServiceRequestNumber, EditTextRElationOwner
                     , EditTextNewIC, EditTextNewAccName, EditTextNewMobileNumber, EditTextNewEmailAddress, EditTextNewMailingAddress, EditTextNewPremiseAddress);
@@ -528,7 +553,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                     , TextInputLayoutNewMailingAddress, TextInputLayoutNewPremiseAddress);
 
                 TextViewUtils.SetTextSize9(txtRelatedScreenshotTitle);
-                TextViewUtils.SetTextSize14(txtforMyhouse, txtEnquiryDetails, txtFeedback);
+                TextViewUtils.SetTextSize14(txtforMyhouse, txtEnquiryDetails, txtFeedback,txtEnquiryType);
                 TextViewUtils.SetTextSize16(txtStatus, txtFeedback_status_new, TextView_contactDetails
                     , EditTextServiceRequestNumber, EditTextEmailAddress, EditTextMobileNumber, EditTextName);
 
@@ -572,6 +597,9 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                     ? Resource.Style.TextInputLayout_TextAppearance_Large
                     : Resource.Style.TextInputLayout_TextAppearance_Small);
                 txtInputLayoutFeedback.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
+                txtInputLayoutEnquiryType.SetHintTextAppearance(TextViewUtils.IsLargeFonts
                     ? Resource.Style.TextInputLayout_TextAppearance_Large
                     : Resource.Style.TextInputLayout_TextAppearance_Small);
                 TextInputLayoutname.SetHintTextAppearance(TextViewUtils.IsLargeFonts
@@ -622,6 +650,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 txtInputLayoutDateTime.Hint = feedbackDateTimeTitle;
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common", "accountNo");
                 txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "messageHint");
+                txtInputLayoutEnquiryType.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "iNeedHelpWith");
                 txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "supportingDocTitle");
 
 

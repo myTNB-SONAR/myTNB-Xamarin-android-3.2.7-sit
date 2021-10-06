@@ -20,6 +20,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
         {
 
             void ShowGeneralEnquiry();
+            void ShowAboutBillEnquiry();
 
             void ShowInvalidAccountNumberError();
 
