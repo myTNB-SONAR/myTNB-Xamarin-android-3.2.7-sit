@@ -987,10 +987,6 @@
     "personalDetailsDescription": "Saya ingin mengemaskini maklumat peribadi.",
     "overVoltageClaimTitle": "Tuntutan Voltan Berlebihan",
     "overVoltageClaimDescription": "Saya ingin membuat tuntutan untuk kerosakan harta benda yang disebabkan oleh lonjakan elektrik",
-    "leaveDialouge": "Tinggalkan halaman ini?",
-    "leaveDialougeMessage": "Anda akan hilang semua maklumat yang anda isi. Sila tekan 'Ya' untuk teruskan, atau 'Batal' untuk kekal di halaman ini.",
-    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequest": "Terima kasih atas permohonan anda!",
-    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent": "Kami akan kembali kepada anda sebentar nanti. Buat sementara waktu, info terkini boleh didapati dengan memeriksa status permohonan anda",
     "stepTitle1of2": "Langkah 1 dari 2",
     "enquiryAboutTitle": "Saya ingin bertanya mengenai:",
     "messageHint": "Mesej Anda",
@@ -1106,6 +1102,10 @@
     "documentPdf": "Dokumen",
 
     //Overvoltage Claim Translation Start
+    "leaveDialouge": "Tinggalkan halaman ini?",
+    "leaveDialougeMessage": "Anda akan hilang semua maklumat yang anda isi. Sila tekan 'Ya' untuk teruskan, atau 'Batal' untuk kekal di halaman ini.",
+    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequest": "Terima kasih atas permohonan anda!",
+    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent": "Kami akan kembali kepada anda sebentar nanti. Buat sementara waktu, info terkini boleh didapati dengan memeriksa status permohonan anda",
     "thankYouForYourEnquiry": "Permohonan anda telah dibatalkan.", //
     "thankYouForYourEnquiryDescription": "Permohonan anda untuk tuntutan voltan berlebihan telah dibatalkan.", //
     "thankYouForYourAppointment": "Janji temu anda telah dibatalkan.", //
