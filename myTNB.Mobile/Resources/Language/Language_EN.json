@@ -1181,7 +1181,7 @@
     "gslTitle": "Guaranteed Service Level (GSL) Rebate",
     "gslDescription": "I want to claim for GSL Rebate",
     "gslHeaderTitle": "GSL Rebate",
-    "pageTitle": "Step {0} of {1}",
+    "stepTitle": "Step {0} of {1}",
     "rebateClaimTitle": "What type of rebate are you claiming?",
     "rebateTypeTitle": "Type of Rebate",
     "tenantInfoTitle": "Your Tenant Information",
@@ -2570,7 +2570,8 @@
     "confirmPopupTitle": "Leave this page?",
     "confirmPopupMessage": "You are about to close this page and end your session.",
     "nevermind": "Nevermind",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "shareFeedbackTitle": "Share Feedback"
   },
   "ServiceConfiguration": {
     "Eligibility": {

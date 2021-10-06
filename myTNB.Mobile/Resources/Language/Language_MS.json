@@ -2531,7 +2531,8 @@
     "confirmPopupTitle": "Tutup halaman ini?",
     "confirmPopupMessage": "Anda akan menutup halaman ini dan menamatkan sesi anda.",
     "nevermind": "Tidak Mengapa",
-    "confirm": "Sahkan"
+    "confirm": "Sahkan",
+    "shareFeedbackTitle": "Nilaikan Perkhidmatan"
   },
   "ServiceConfiguration": {
     "Eligibility": {
