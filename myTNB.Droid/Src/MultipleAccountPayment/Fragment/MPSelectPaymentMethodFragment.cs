@@ -585,25 +585,25 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             {
                 if (IsValidPayableAmount())
                 {
-                    //CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                    //string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
-                    string custName = selectedPaymentItemList.Count > 1
-                        ? UserEntity.GetActive().DisplayName ?? string.Empty
-                        : selectedPaymentItemList[0].AccountOwnerName ?? string.Empty;
-                    //string accNum = selectedAccount.AccountNum;
-                    //double payableAmt = double.Parse(txtTotalAmount.Text, currCult);
-                    //string payAm = txtTotalAmount.Text;
-                    //string custEmail = UserEntity.GetActive().Email;
+                    string custName = string.Empty;
+                    if (IsApplicationPayment)
+                    {
+                        custName = UserEntity.GetActive().DisplayName ?? string.Empty;
+                    }
+                    else if (selectedPaymentItemList != null && selectedPaymentItemList.Count > 0)
+                    {
+                        custName = selectedPaymentItemList.Count > 1 ? UserEntity.GetActive().DisplayName ?? string.Empty
+                            : selectedPaymentItemList[0].AccountOwnerName ?? string.Empty;
+                    }
+
                     string custPhone = string.IsNullOrEmpty(UserEntity.GetActive().MobileNo)
                         ? string.Empty
                         : UserEntity.GetActive().MobileNo ?? string.Empty;
-                    //string sspUserID = UserEntity.GetActive().UserID;//"20225235-290c-484a-a633-607cb51b15e6";
-                    string platform = "1"; // 1 Android
+                    string platform = Constants.DEVICE_PLATFORM; // 1 Android
                     string paymentMode = selectedPaymentMethod;
                     /* Get user registered cards */
                     string registeredCardId = selectedCard == null ? string.Empty : selectedCard.Id;
                     DeletePaymentHistory();
-                    //this.userActionsListener.RequestPayment(apiKeyID, custName, custEmail, custPhone, sspUserID, platform, registeredCardId, paymentMode, total, selectedPaymentItems);
 
                     if (IsApplicationPayment)
                     {

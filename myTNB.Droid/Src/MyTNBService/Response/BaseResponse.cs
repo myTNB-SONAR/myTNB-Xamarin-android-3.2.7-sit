@@ -87,6 +87,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "RefreshBtnText")]
             public string RefreshBtnText { get; set; }
 
+            [JsonProperty(PropertyName = "ShowWLTYPage")]
+            public bool ShowWLTYPage { get; set; }
+
         }
     }
 }

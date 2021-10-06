@@ -357,7 +357,7 @@ namespace myTNB_Android.Src.Utils
                         }
                     }
                     //for:
-                    //inAppScreen
+                    //"inAppScreen="
                     else if (url.Contains(RedirectTypeList[11]))
                     {
                         var targetScreen = GetTargetInAppScreen(url);
