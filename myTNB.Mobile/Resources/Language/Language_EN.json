@@ -466,10 +466,10 @@
     "refreshNowEnergyBudgetButton": "Refresh Now",
     "youHaveNotSetBudget": "You have not set up your Energy Budget",
     "youHaveNotSetBudgetSubtitle": "Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!",
-    "feedback1Title":"Congratulations! How was your Energy Budget set up?",
-    "feedbackDontAskAgain":"Don't Ask Again",
-    "feedbackSuccessTitle":"Thank you for your feedback!",
-    "feedbackSuccessButton":"Okay"
+    "feedback1Title": "Congratulations! How was your Energy Budget set up?",
+    "feedbackDontAskAgain": "Don't Ask Again",
+    "feedbackSuccessTitle": "Thank you for your feedback!",
+    "feedbackSuccessButton": "Okay"
   },
   "Bills": {
     "title": "Bills",
@@ -619,13 +619,13 @@
     "viewTips": "View Tips",
     "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks",
     "EnergyBudgetTitle": "Energy Budget",
-    "energyBudgetSavingTips":"Energy Saving Tips",
-    "feedback2Title":"Did you find Energy Budget useful?",
-    "likeButtonDetails":"Yes, Absolutely",
-    "dislikeButton":"Not really",
-    "dontAskAgain":"Don't Ask Again",
-    "feedback2SuccessTitle":"Thank you for your feedback!",
-    "feedback2SuccessButton":"Okay"
+    "energyBudgetSavingTips": "Energy Saving Tips",
+    "feedback2Title": "Did you find Energy Budget useful?",
+    "likeButtonDetails": "Yes, Absolutely",
+    "dislikeButton": "Not really",
+    "dontAskAgain": "Don't Ask Again",
+    "feedback2SuccessTitle": "Thank you for your feedback!",
+    "feedback2SuccessButton": "Okay"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -2436,13 +2436,13 @@
     "title": "Select Smart Meter Account",
     "tootltipTitle": "Why are some of my accounts not listed?",
     "tooltipBody": "As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. This feature however is available only for residential type smart meter account until further enhancement.",
-    "headerTitle":"Let's get started by selecting your Smart Meter account"
+    "headerTitle": "Let's get started by selecting your Smart Meter account"
   },
 
   "EnergyBudgetPopup": {
-    "title": "Congratulations! You are selected to experience our new Energy Budget feature!",
+    "title": "Take control of your energy usage with the new Energy Budget feature!",
     "threeEasyStep": "Saving money in 3 easy steps:",
-    "firstStep": "SET a budget for your existing Smart Meter accounts",
+    "firstStep": "SET a budget for your monthly energy usage",
     "secondStep": "MONITOR your energy usage right at your fingertips",
     "thirdStep": "SAVINGS starts with you getting notified when reaching your set budget",
     "txtLetgetstarted": "Get Started!",

@@ -2395,6 +2395,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         smrAccount.accountAddress = billingAccount.AccountStAddress;
                         smrAccount.accountSelected = false;
                         smrAccount.BudgetAmount = billingAccount.BudgetAmount;
+                        smrAccount.InstallationType = billingAccount.InstallationType;
                         SMeterAccountList.Add(smrAccount);
                     }
                 }
@@ -2493,6 +2494,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         smrAccount.accountAddress = billingAccount.AccountStAddress;
                         smrAccount.accountSelected = false;
                         smrAccount.BudgetAmount = billingAccount.BudgetAmount;
+                        smrAccount.InstallationType = billingAccount.InstallationType;
                         SMeterAccountList.Add(smrAccount);
                     }
                 }
@@ -2687,6 +2689,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     smrAccount.accountAddress = billingAccount.AccountStAddress;
                     smrAccount.accountSelected = false;
                     smrAccount.BudgetAmount = billingAccount.BudgetAmount;
+                    smrAccount.InstallationType = billingAccount.InstallationType;
                     SMeterAccountList.Add(smrAccount);
                 }
             }
