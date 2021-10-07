@@ -48,12 +48,12 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
         {
             this.mView.ShowGeneralEnquiry();
         }
-        
+
         public void OnAboutBillEnquiry()
         {
             this.mView.ShowAboutBillEnquiry();
         }
-        
+
         public void onUpdatePersonalDetail()
         {
             this.mView.showUpdatePersonalDetail();
@@ -172,16 +172,15 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                             case EnquiryTypeEnum.UpdatePersonalDetails:
                                 onUpdatePersonalDetail();
                                 break;
+                            case EnquiryTypeEnum.AboutMyBill:
+                                OnAboutBillEnquiry();
+                                break;
                             case EnquiryTypeEnum.GSLRebate:
                                 OnGSLRebate();
                                 break;
                             default:
                                 break;
                         }
-                    }
-                    else if (isAboutBill)
-                    {
-                        OnAboutBillEnquiry();
                     }
                     else
                     {   // no data

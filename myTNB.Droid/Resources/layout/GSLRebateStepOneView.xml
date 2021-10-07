@@ -21,14 +21,13 @@
 			android:id="@+id/toolbar"
 			layout="@layout/toolbar" />
 		<TextView
-			android:id="@+id/pageStep"
+			android:id="@+id/gslStepOnePageTitle"
 			android:layout_width="wrap_content"
 			android:layout_height="36dp"
 			android:layout_marginLeft="20dp"
 			android:layout_marginRight="20dp"
 			android:ellipsize="end"
 			android:gravity="top|center"
-			android:paddingTop="4dp"
 			android:maxEms="20"
 			android:maxLines="1"
 			android:text="Step 1 of 2"
@@ -110,27 +109,75 @@
 						android:textColor="@color/powerBlue"
 						android:textSize="16dp" />
 					<com.google.android.material.textfield.TextInputLayout
+						android:id="@+id/txtGSLTenantFullNameLayout"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:layout_marginBottom="16dp"
-						app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-						android:id="@+id/txtInputLayoutServiceRequestNum"
+						android:layout_marginLeft="16dp"
+						android:layout_marginTop="12dp"
+						android:layout_marginRight="16dp"
+						app:counterEnabled="false"
+						app:counterMaxLength="250"
 						app:errorEnabled="true"
-						android:layout_marginRight="17dp">
+						app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+						app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+						android:background="@color/white">
 						<EditText
-							android:hint=""
+							android:id="@+id/txtGSLTenantFullName"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:drawableLeft="@drawable/ic_field_account_no"
-							android:id="@+id/txtServiceRequestNum"
-							android:textSize="16dp"
+							android:hint="FULL NAME"
+							android:importantForAutofill="noExcludeDescendants"
+							android:inputType="text|textMultiLine"
+							android:maxLength="250"
 							android:maxLines="1"
-							android:singleLine="true"
+							android:overScrollMode="always"
 							android:paddingTop="5dp"
-							android:drawablePadding="6dp"
-							android:inputType="number"
-							android:longClickable="false"/>
+							android:scrollbarStyle="insideInset"
+							android:scrollbars="vertical"
+							android:textSize="16dp" />
 					</com.google.android.material.textfield.TextInputLayout>
+					<com.google.android.material.textfield.TextInputLayout
+						android:id="@+id/txtGSLTenantEmailLayout"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						app:counterEnabled="false"
+						app:counterMaxLength="250"
+						app:errorEnabled="true"
+						app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+						app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+						android:background="@color/white">
+						<EditText
+							android:id="@+id/txtGSLTenantEmail"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:hint="EMAIL ADDRESS"
+							android:importantForAutofill="noExcludeDescendants"
+							android:inputType="text|textMultiLine"
+							android:maxLength="250"
+							android:maxLines="1"
+							android:overScrollMode="always"
+							android:paddingTop="5dp"
+							android:scrollbarStyle="insideInset"
+							android:scrollbars="vertical"
+							android:textSize="16dp" />
+					</com.google.android.material.textfield.TextInputLayout>
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:background="@color/white"
+						android:orientation="vertical"
+						android:padding="16dp"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp">
+						<LinearLayout
+							android:id="@+id/tenantGSLMobileNumberContainer"
+							android:layout_height="wrap_content"
+							android:layout_width="match_parent"
+							android:orientation="vertical"
+							android:layout_marginBottom="23dp"/>
+					</LinearLayout>
 				</LinearLayout>
 			</LinearLayout>
 		</ScrollView>

@@ -120,6 +120,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         {
             General,
             UpdatePersonalDetails,
+            AboutMyBill,
             GSLRebate,
             None
         }
@@ -480,7 +481,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
             StartActivity(generalEnquiry);
         }
-        
+
         public void ShowSelectAccount()
         {
             Intent supplyAccount = new Intent(this, typeof(FeedbackSelectAccountActivity));
@@ -586,7 +587,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     if (isAllowedToPass)
                     {
                         this.SetIsClicked(true);
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false,true);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), EnquiryTypeEnum.AboutMyBill);
                     }
                     else
                     {

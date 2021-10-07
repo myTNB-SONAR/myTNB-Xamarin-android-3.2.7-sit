@@ -6823,6 +6823,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepOneContract.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepOnePresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

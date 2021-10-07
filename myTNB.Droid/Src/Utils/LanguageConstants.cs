@@ -61,6 +61,8 @@
         {
             internal static readonly string GSL_TITLE = "gslTitle";
             internal static readonly string GSL_DESC = "gslDescription";
+            internal static readonly string GSL_HEADER_TITLE = "gslHeaderTitle";
+            internal static readonly string GSL_STEP_TITLE = "stepTitle";
         }
     }
 }
