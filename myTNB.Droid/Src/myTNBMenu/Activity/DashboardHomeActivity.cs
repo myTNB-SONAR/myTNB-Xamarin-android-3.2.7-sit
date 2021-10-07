@@ -266,7 +266,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             Bundle extras = Intent?.Extras;
 
-            if (extras != null && extras.ContainsKey("FROM_NOTIFICATION"))
+            if (extras != null && (extras.ContainsKey("FROM_NOTIFICATION") || extras.ContainsKey("FROM_MANAGE_BILL_DELIVERY")))
             {
                 if (extras.ContainsKey("MENU"))
                 {
@@ -1205,7 +1205,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 OnCheckWhatsNewTab();
             }
         }
-      
+
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);
@@ -2141,7 +2141,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-            
+
         private string GetCurrentDate()
         {
             DateTime currentDate = DateTime.Now;
@@ -2386,7 +2386,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public bool FilterComAndNEM()
         {
-            try 
+            try
             {
                 bool flag = false;
                 int totalSMCAEB = UserSessions.GetEnergyBudgetList().Count;

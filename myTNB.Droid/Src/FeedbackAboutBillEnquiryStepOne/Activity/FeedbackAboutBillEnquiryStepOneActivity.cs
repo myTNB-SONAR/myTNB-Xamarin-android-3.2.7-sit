@@ -614,7 +614,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
             
             if (requestCode == Constants.SELECT_ENQUIRY_REQUEST_CODE)
             {
-                if (resultCode == Result.Ok)
+                if (resultCode == Result.Ok && data != null && data.Extras != null)
                 {
                     Android.OS.Bundle extras = data.Extras;
 

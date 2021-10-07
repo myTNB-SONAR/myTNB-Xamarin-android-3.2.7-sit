@@ -970,6 +970,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
             //}
 
             var successIntent = new Intent(this, typeof(SubmitEnquirySuccessActivity));
+            successIntent.PutExtra("ABOUTMYBILL", "true");
             successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_DATE, date);
             successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_ID, feedbackId);
             StartActivity(successIntent);
