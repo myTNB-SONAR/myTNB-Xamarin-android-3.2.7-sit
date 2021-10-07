@@ -256,7 +256,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
         public void ClearList()
         {
-            if (adapter != null)
+            if (adapter != null)    
             {
                 adapter.Clear();
             }

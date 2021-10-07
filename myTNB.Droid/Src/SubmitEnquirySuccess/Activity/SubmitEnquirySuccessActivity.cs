@@ -59,6 +59,7 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
         [BindView(Resource.Id.btnViewSubmitted)]
         Button btnViewSubmitted;
 
+        string isAboutMyBill = "false";
         private SubmittedFeedback submittedFeedback;
         private List<SubmittedFeedback> submittedFeedbackList;
         private ISharedPreferences mSharedPref;
@@ -80,6 +81,7 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
                 {
                     //date = extras.GetString(Constants.RESPONSE_FEEDBACK_DATE);
                     feedbackId = extras.GetString(Constants.RESPONSE_FEEDBACK_ID);
+                    isAboutMyBill = Intent.GetStringExtra("ABOUTMYBILL");
                 }
 
                 TextViewUtils.SetMuseoSans300Typeface(txtContentInfo, txtFeedbackIdTitle, txtFeedbackIdContent);
@@ -163,6 +165,10 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
                 var successIntent = new Intent(this, typeof(FeedbackDetailsBillRelatedActivity));
                 successIntent.PutExtra("TITLE", submittedFeedbackDetails.FeedbackTypeName);
                 successIntent.PutExtra("NEWSCREEN", "true");
+                if (isAboutMyBill == "true")
+                {
+                    successIntent.PutExtra("ABOUTMYBILL", "true");
+                }
                 StartActivityForResult(successIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
             }
         }

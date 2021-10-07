@@ -173,7 +173,6 @@
     <None Remove="Resources\Country\CountryList.json" />
     <None Remove="Resources\Notification\NotificationInfo_10071.json" />
     <None Remove="Resources\Notification\NotificationInfo_10072.json" />
-    <None Remove="Test Data\Application Search\Search01.json" />
     <None Remove="AWS\Models\DBR\Get Multi Bill Rendering\" />
     <None Remove="AWS\Models\DBR\Post Installation Details\" />
     <None Remove="AWS\Models\DBR\Post Multi Installation Details\" />
@@ -186,6 +185,5 @@
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />
     <Compile Remove="Business\Managers\AccountUsageManager.cs" />
-    <Compile Remove="Test Data\Application Search\SearchTestManager.cs" />
   </ItemGroup>
 </Project>
