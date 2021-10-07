@@ -69,13 +69,22 @@ namespace myTNB_Android.Src.MyAccount.MVP
 
         public async void OnRemoveAccount(string AccountNum)
         {
+           
+            bool isTaggedSmartMeter = false;
+            for (int i = 0; i < UserSessions.GetEnergyBudgetList().Count; i++)
+            {
+                if (UserSessions.GetEnergyBudgetList()[i].accountNumber == AccountNum)
+                {
+                    isTaggedSmartMeter = true;
+                }
+            }
 
             UserEntity user = UserEntity.GetActive();
             try
             {
                 bool isHaveAccess = false;
                 bool isApplyBilling = false;
-                RemoveAccountRequestNew removeAccountRequest = new RemoveAccountRequestNew(AccountNum);
+                RemoveAccountRequest removeAccountRequest = new RemoveAccountRequest(AccountNum, isTaggedSmartMeter);
                 removeAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(removeAccountRequest);
 

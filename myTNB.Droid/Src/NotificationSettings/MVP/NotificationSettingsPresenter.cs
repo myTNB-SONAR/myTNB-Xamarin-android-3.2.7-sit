@@ -151,7 +151,8 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             }
             try
             {
-                var notificationTypesApi = await ServiceApiImpl.Instance.UserNotificationTypePreferences(new MyTNBService.Request.BaseRequest());
+                GetUserNotificationTypePreferencesRequest getUserNotificationTypePref = new GetUserNotificationTypePreferencesRequest();
+                var notificationTypesApi = await ServiceApiImpl.Instance.UserNotificationTypePreferences(getUserNotificationTypePref);
 
                 if (notificationTypesApi.IsSuccessResponse())
                 {

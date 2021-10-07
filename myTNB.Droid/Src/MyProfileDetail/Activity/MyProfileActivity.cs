@@ -35,7 +35,7 @@ using System.Linq;
 
 namespace myTNB_Android.Src.MyAccount.Activity
 {
-    [Activity(Label = "MyTNB Pofile"
+    [Activity(Label = "MyTNB Profile"
       //, NoHistory = false
       //, Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait

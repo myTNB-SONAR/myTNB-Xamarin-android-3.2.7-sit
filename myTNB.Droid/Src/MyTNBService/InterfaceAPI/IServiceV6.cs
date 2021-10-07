@@ -16,22 +16,17 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         //[Post("/v6/mytnbappws.asmx/GetAccounts_OT")]
         //Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
-        [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetAccountsV2")]
-        Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);    //lyana //merge DBR
-
-
-        [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetAccountsV3")]
-        Task<T> GetCustomerAccountListAppLunch<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);    //lyana //aws applaunch only
-        
         //[Headers("Content-Type:application/json; charset=utf-8")]
-        //[Post("/v6/mytnbappws.asmx/GetAccountsV2")]
-        //Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        //[Post("/v6/mytnbappws.asmx/GetAccountsV3")]
+        //Task<T> GetCustomerAccountListAppLunch<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);    //lyana //merge DBR
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetAccountsV4")]
+        Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //lyana //merge DBR
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v1/account/Getaccount")]
-        Task<T> GetCustomerAccountListAppLaunch<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        Task<T> GetCustomerAccountListAppLaunch<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);  //lyana //aws applaunch only
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/AddTNBAccountToUserReg")]
@@ -114,9 +109,13 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         //[Post("/v6/mytnbappws.asmx/AddAccounts_OT")]
         //Task<T> AddMultipleAccounts_OT<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);              //2enapps wan //api add account
 
+        //[Headers("Content-Type:application/json; charset=utf-8")]
+        //[Post("/v6/mytnbappws.asmx/AddAccountsV3")]
+        //Task<T> AddMultipleAccounts_OT<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);    //lyana //merge DBR
+
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/AddAccountsV3")]
-        Task<T> AddMultipleAccounts_OT<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);    //lyana //merge DBR
+        [Post("/v6/mytnbappws.asmx/AddAccountsV4")]
+        Task<T> AddMultipleAccounts_OT<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);    //lyana //merge DBR and CEP
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/ValidateManualAccountLinking_OT")]
@@ -142,8 +141,12 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         //[Post("/v6/mytnbappws.asmx/IsUserAuth_OT")]
         //Task<T> UserAuthenticateLoginNew<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //2enapps wan //api login baru
 
+        //[Headers("Content-Type:application/json; charset=utf-8")]
+        //[Post("/v6/mytnbappws.asmx/IsUserAuthV3")]
+        //Task<T> UserAuthenticateLoginNew<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);      //lyana //merge DBR
+
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/IsUserAuthV3")]
+        [Post("/v6/mytnbappws.asmx/IsUserAuthV4")]
         Task<T> UserAuthenticateLoginNew<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);      //lyana //merge DBR
 
         [Headers("Content-Type:application/json; charset=utf-8")]
@@ -178,8 +181,12 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         // [Post("/v6/mytnbappws.asmx/GetUserNotificationTypePreferencesV3")]
         // Task<T> UserNotificationTypePreferences<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
         
+        //[Headers("Content-Type:application/json; charset=utf-8")]
+        //[Post("/v6/mytnbappws.asmx/GetUserNotificationTypePreferencesV2")]
+        //Task<T> UserNotificationTypePreferences<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetUserNotificationTypePreferencesV2")]
+        [Post("/v6/mytnbappws.asmx/GetUserNotificationTypePreferencesV4")]
         Task<T> UserNotificationTypePreferences<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
@@ -284,9 +291,14 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         //[Post("/v6/mytnbappws.asmx/RemoveAccount_OT")]
         //Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);
 
+        //[Headers("Content-Type:application/json; charset=utf-8")]
+        //[Post("/v6/mytnbappws.asmx/RemoveAccountV3")]
+        //Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);       //lyana //merge DBR
+
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/RemoveAccountV3")]
+        [Post("/v6/mytnbappws.asmx/RemoveAccountV4")]
         Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);       //lyana //merge DBR
+
 
         //[Post("/v6/mytnbappws.asmx/RemoveAccount")]
         //Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);

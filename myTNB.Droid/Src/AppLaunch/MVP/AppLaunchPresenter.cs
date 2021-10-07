@@ -327,19 +327,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
                                             this.mView.ShowNotificationDetails();
                                         }
-                                        else if (hasNotification && isLoggedInEmail && UserSessions.Notification != null)
-                                        {
-                                            UserSessions.RemoveNotificationSession(mSharedPref);
-                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
-                                            MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
-                                            this.mView.ShowNotificationDetails();
-                                        }
                                         else if (hasNotification && (isODNType || isLoggedInEmail))
                                         {
-                                            UserSessions.RemoveNotificationSession(mSharedPref);
-                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Notification);
-                                            MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
-                                            this.mView.ShowNotification();
+                                            GetAccountNoti();
                                         }
                                         else
                                         {
@@ -450,6 +440,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     if (customerAccountListResponse.customerAccountData.Count > 0)
                     {
+                        CustomerBillingAccount.RemoveActive();
                         ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
 
                     }
@@ -553,6 +544,123 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
         }
 
+        public async void GetAccountNoti()
+        {
+            try
+            {
+                GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
+                baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
+                string dt = JsonConvert.SerializeObject(baseRequest);
+                CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
+                //CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
+                if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null)
+                {
+                    if (customerAccountListResponse.customerAccountData.Count > 0)
+                    {
+                        CustomerBillingAccount.RemoveActive();
+                        ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
+
+                    }
+                    else
+                    {
+                        AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+                    }
+
+                    List<NotificationTypesEntity> notificationTypes = NotificationTypesEntity.List();
+                    NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Utility.GetLocalizedCommonLabel("allNotifications"), true);
+                    foreach (NotificationTypesEntity notificationType in notificationTypes)
+                    {
+                        if (notificationType.ShowInFilterList)
+                        {
+                            NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
+                        }
+                    }
+                    UserNotificationEntity.RemoveAll();
+                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
+                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
+                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
+                    UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new myTNB_Android.Src.MyTNBService.Request.BaseRequest());
+                    if (response.IsSuccessResponse())
+                    {
+                        if (response.GetData() != null)
+                        {
+                            try
+                            {
+                                UserNotificationEntity.RemoveAll();
+                            }
+                            catch (System.Exception ne)
+                            {
+                                Utility.LoggingNonFatalError(ne);
+                            }
+
+                            foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                            {
+                                // tODO : SAVE ALL NOTIFICATIONs
+                                int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                            }
+
+                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
+                        }
+                        else
+                        {
+                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                        }
+                    }
+                    else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
+                    }
+                    else
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                    }
+
+                    //Console.WriteLine(string.Format("Rows updated {0}" , CustomerBillingAccount.List().Count));
+                    if (this.mView.IsActive())
+                    {
+                        this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                    }
+
+                    if (LanguageUtil.GetAppLanguage() == "MS")
+                    {
+                        AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
+                    }
+                    else
+                    {
+                        AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
+                    }
+
+                    UserSessions.RemoveNotificationSession(mSharedPref);
+                    this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Notification);
+                    MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
+                    this.mView.ShowNotification();
+                }
+                else
+                {
+                    UserSessions.RemoveNotificationSession(mSharedPref);
+                    this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Notification);
+                    MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
+                    this.mView.ShowNotification();
+                }
+
+            }
+            catch (ApiException apiException)
+            {
+                Utility.LoggingNonFatalError(apiException);
+                EvaluateServiceRetryNoti();
+            }
+            catch (JsonReaderException e)
+            {
+                Utility.LoggingNonFatalError(e);
+                EvaluateServiceRetryNoti();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                EvaluateServiceRetryNoti();
+            }
+        }
+
         public async void OnShowNotificationDetails(string NotificationTypeId, string BCRMNotificationTypeId, string NotificationRequestId)
         {
             try
@@ -641,8 +749,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
         }
 
-         /// <summary>
-        /// Evaluate failed AppLaunchMasterData service for retry.
+        /// <summary>
+        /// Evaluate failed GetAccountAWS service for retry.
         /// </summary>
         private void EvaluateServiceRetryAWS()
         {
@@ -667,6 +775,39 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             if (serviceCallCounter == 3)//If still failed after auto-retry, inform the user.
             {
                 this.mView.ShowExceptionDashboard();
+                serviceCallCounter = 0;
+            }
+        }
+
+        /// <summary>
+        /// Evaluate failed GetAccountNoti service for retry.
+        /// </summary>
+        private void EvaluateServiceRetryNoti()
+        {
+            serviceCallCounter++;
+            if (serviceCallCounter == 1)
+            {
+                DynatraceHelper.IdentifyUser();
+            }
+            Log.Debug(TAG, string.Format("AWSGetAccount Service failed in {0} seconds: Retry: {1} "
+                , appLaunchMasterDataTimeout
+                , serviceCallCounter));
+            if (serviceCallCounter == 1)//If first failed, do auto-retry.
+            {
+                appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT;
+                GetAccountNoti();
+            }
+            if (serviceCallCounter == 2)//If still failed, do auto-retry.
+            {
+                appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT;
+                GetAccountNoti();
+            }
+            if (serviceCallCounter == 3)//If still failed after auto-retry, inform the user.
+            {
+                UserSessions.RemoveNotificationSession(mSharedPref);
+                this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Notification);
+                MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
+                this.mView.ShowNotification();
                 serviceCallCounter = 0;
             }
         }

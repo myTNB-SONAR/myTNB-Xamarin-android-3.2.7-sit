@@ -104,7 +104,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             try
             {
 
-                RemoveAccountRequest removeAccountRequest = new RemoveAccountRequest(accountList, AccountNum);
+                RemoveAccountRequestNew removeAccountRequest = new RemoveAccountRequestNew(accountList, AccountNum);
                 removeAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(removeAccountRequest);
 
@@ -233,7 +233,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                RemoveAccountRequest removeUserAccountRequest = new RemoveAccountRequest(AccountList, AccountNum);
+                RemoveAccountRequestNew removeUserAccountRequest = new RemoveAccountRequestNew(AccountList, AccountNum);
                 removeUserAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(removeUserAccountRequest);
 

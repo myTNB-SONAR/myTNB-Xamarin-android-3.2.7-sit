@@ -36,7 +36,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -7128,6 +7128,7 @@
     <Compile Include="Src\myTNBMenu\Async\EligibilityAPI.cs" />
     <Compile Include="Src\Device Cache\AccessTokenCache.cs" />
     <Compile Include="Src\MyTNBService\Response\CustomerAccountListResponseAppLaunch.cs" />
+    <Compile Include="Src\MyTNBService\Request\GetUserNotificationTypePreferencesRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

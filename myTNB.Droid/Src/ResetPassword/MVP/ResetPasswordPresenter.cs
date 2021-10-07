@@ -117,7 +117,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                             // CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
                             bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
 
-                            GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
+                            GetCustomerAccountListRequest baseRequest = new GetCustomerAccountListRequest();
                             baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                             CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
                             if (customerAccountListResponse.IsSuccessResponse())

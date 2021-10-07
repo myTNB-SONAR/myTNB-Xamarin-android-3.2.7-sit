@@ -2677,9 +2677,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 {
                     if (position == 0)
                     {
-
-
-
                         int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopCtaHeight() + (int)DPUtils.ConvertDPToPx(45f);
 
                         int middleHeight = (int)DPUtils.ConvertDPToPx(180f);
@@ -2760,6 +2757,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             }
             else if (this.mContext is ManageSupplyAccountActivityEdit)
             {
+
                 int middleHeight = ((ManageSupplyAccountActivityEdit)this.mContext).GetLayoutManageBillHeight();
                 int topHeight = ((ManageSupplyAccountActivityEdit)this.mContext).GetAccountLayoutHeight() + ((ManageSupplyAccountActivityEdit)this.mContext).GetLayoutNickNameHeight() + (int)DPUtils.ConvertDPToPx(85f);
                 LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;

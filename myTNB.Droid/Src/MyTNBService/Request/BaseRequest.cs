@@ -42,10 +42,15 @@ namespace myTNB_Android.Src.MyTNBService.Request
             usrInf.IsWhiteList = whitelist;
         }
 
-        //public void SetSSPID(string sspID)
-        //{
-        //    usrInf.sspuid = sspID;
-        //}
+        public void SetSSPID(string sspID)
+        {
+            usrInf.sspuid = sspID;
+        }
+
+        public void SetSesParam1(string Name)
+        {
+            usrInf.ses_param1 = Name;
+        }
     }
 
     public class UserInfo

@@ -75,18 +75,18 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetFlagEmailVerify(bool FlagID)
         {
-            if (FlagID)
-            {
+            //if (FlagID)
+            //{
                 //infoVerifyIcon.Visibility = Android.Views.ViewStates.Visible;
                 itemVerifyLabel.Visibility = Android.Views.ViewStates.Gone;
                 itemActionContainer.Visibility = Android.Views.ViewStates.Gone;
                 itemValue.SetCompoundDrawablesWithIntrinsicBounds(0, 0, Resource.Drawable.icons_email_verified, 0);
-            }
-            else
-            {
-                itemAction.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.icons_verify_email, 0, 0, 0);
-                //infoVerifyIcon.Visibility = Android.Views.ViewStates.Gone;
-            }
+            //}
+            //else
+            //{
+            //    itemAction.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.icons_verify_email, 0, 0, 0);
+            //    //infoVerifyIcon.Visibility = Android.Views.ViewStates.Gone;
+            //}
         }
 
         public void SetValue(string value)

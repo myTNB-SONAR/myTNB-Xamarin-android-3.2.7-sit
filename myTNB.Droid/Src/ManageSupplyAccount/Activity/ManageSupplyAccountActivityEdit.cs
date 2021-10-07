@@ -769,8 +769,16 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
         public int GetAccountLayoutHeight()
         {
-            int height = accountLayout.Height;
-            return height;
+            if (accountData.IsOwner && accountData.AccountTypeId == "1")
+            {
+                int height = accountLayout.Height + (int)DPUtils.ConvertDPToPx(65f);
+                return height;
+            }
+            else
+            {
+                int height = accountLayout.Height;
+                return height;
+            }
         }
 
         public int GetLayoutNickNameHeight()

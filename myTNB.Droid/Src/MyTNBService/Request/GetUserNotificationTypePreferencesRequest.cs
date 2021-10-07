@@ -5,17 +5,14 @@ using static myTNB.Mobile.FeatureInfoClass;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class GetCustomerAccountListRequest : BaseRequest
+    public class GetUserNotificationTypePreferencesRequest : BaseRequest
     {
-        public string LastSyncDateTime;
-        public DeviceInfoRequest deviceInf;
         public List<FeatureInfo> featureInfo;
 
-        public GetCustomerAccountListRequest()
+        public GetUserNotificationTypePreferencesRequest()
         {
-            LastSyncDateTime = "2021-08-01 23:55:55";
-            deviceInf = new DeviceInfoRequest();
             this.featureInfo = FeatureInfoManager.Instance.GetFeatureInfo();
         }
     }
 }
+

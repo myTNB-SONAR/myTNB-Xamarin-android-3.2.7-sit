@@ -63,6 +63,7 @@
         public string postCode { get; set; }
 
         public string state { get; set; }
+
         public string BudgetAmount { get; set; }
     }
 }

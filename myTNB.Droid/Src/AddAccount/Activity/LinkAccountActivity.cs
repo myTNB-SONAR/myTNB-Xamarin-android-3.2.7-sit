@@ -625,7 +625,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     string email = UserEntity.GetActive().Email;
                     string name = UserEntity.GetActive().DisplayName;
                     List<Models.AddAccount> accounts = new List<Models.AddAccount>();
-                    //List<Models.AddAccountV2> accounts = new List<Models.AddAccountV2>();
                     foreach (NewAccount item in newList)
                     {
                         Models.AddAccount account = new Models.AddAccount();
@@ -636,6 +635,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         account.isOwned = item.isOwner;
                         account.accountTypeId = item.type;
                         account.accountCategoryId = item.accountCategoryId;
+                        account.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
+                        account.accountTypeId = item.accountTypeId == null ? "1" : item.accountTypeId;
                         accounts.Add(account);
                     }
                     foreach (NewAccount item in additionalList)
@@ -650,6 +651,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         account.accountCategoryId = item.accountCategoryId;
                         account.emailOwner = item.emailOwner;
                         account.mobileNoOwner = item.mobileNoOwner;
+                        account.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
+                        account.accountTypeId = item.accountTypeId == null ? "1" : item.accountTypeId;
                         accounts.Add(account);
                     }
                     //int i = 0;
@@ -1133,7 +1136,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
                             extraAccount.isOwned = item.isOwned;
                             extraAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
-                            extraAccount.accountTypeId = item.accountTypeId == null ? string.Empty : item.accountTypeId;
                             extraAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                             finalAccountList.Add(extraAccount);
                         }

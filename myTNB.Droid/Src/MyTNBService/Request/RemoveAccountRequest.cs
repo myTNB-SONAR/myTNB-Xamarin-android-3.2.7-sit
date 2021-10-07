@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using static myTNB.Mobile.FeatureInfoClass;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
     public class RemoveAccountRequest : BaseRequestV2
     {
-        public string AccountNo;
-        //public bool IsPreRegister;
+        public string accNum;
         public DeviceInfoRequest deviceInf;
-        public List<ManageAccess.Models.DeleteAccessAccount> removeAccounts;
+        public List<FeatureInfo> featureInfo;
+        public bool isTaggedSmartMeter;
 
-        public RemoveAccountRequest(List<ManageAccess.Models.DeleteAccessAccount> accountList, string accNum)
+        public RemoveAccountRequest(string accNum, bool tagSM)
         {
             deviceInf = new DeviceInfoRequest();
-            this.AccountNo = accNum;
-            //this.IsPreRegister = isPreRegister;
-            removeAccounts = accountList;
-
+            this.accNum = accNum;
+            featureInfo = new List<FeatureInfo>();
+            isTaggedSmartMeter = tagSM;
         }
-
     }
 }

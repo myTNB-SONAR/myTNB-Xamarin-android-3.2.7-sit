@@ -122,7 +122,7 @@ namespace myTNB_Android.Src.Login.MVP
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
                 userAuthRequest.SetUserName(usrNme);
                 string s = JsonConvert.SerializeObject(userAuthRequest);
-                var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthRequest);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthRequest);
 
                 if (!userResponse.IsSuccessResponse())
                 {
@@ -130,6 +130,8 @@ namespace myTNB_Android.Src.Login.MVP
                     {
                         this.mView.HideProgressDialog();
                         this.mView.ShowInvalidEmailPasswordError(userResponse.Response.DisplayMessage);
+
+                        UserSessions.SaveWhiteList(mSharedPref, false);
                     }
                 }
                 else
@@ -166,6 +168,11 @@ namespace myTNB_Android.Src.Login.MVP
                     {
                         UserSessions.SaveUserEmail(mSharedPref, "");
                     }
+
+                    ///<summary>
+                    ///THIS TO SAVE WHITELIST
+                    ///</summary>
+                    UserSessions.SaveWhiteList(mSharedPref, userResponse.GetData().IsWhiteList);
 
                     // TODO : REMOVE PASSWORD PERSISTANCE INSTEAD FOLLOW IOS WORKFLOW
                     // TODO : IF THERES AN EXISTING FORGET PASSWORD DO NOT SAVE USER
@@ -302,7 +309,7 @@ namespace myTNB_Android.Src.Login.MVP
                             AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
                             bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
 
-                            GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
+                            GetCustomerAccountListRequest baseRequest = new GetCustomerAccountListRequest();
                             baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                             CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
                             if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)

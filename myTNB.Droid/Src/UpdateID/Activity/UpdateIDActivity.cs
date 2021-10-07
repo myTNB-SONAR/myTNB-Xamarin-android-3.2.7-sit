@@ -40,7 +40,7 @@ using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.UpdateID.Activity
 {
-    [Activity(Label = "@string/registration_activity_title"
+    [Activity(Label = "Update Identification Number"
       , NoHistory = false
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
@@ -141,15 +141,6 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 btnRegister.Text = Utility.GetLocalizedLabel("UpdateID", "confrimButton");
                 LabelTitle.Text = Utility.GetLocalizedLabel("UpdateID", "updateIdLabelTitle");
                 LabelDetails.Text = Utility.GetLocalizedLabel("UpdateID", "updateIdLabelDetails");
-
-
-                //txtAccountType.Text = GetLabelCommonByLanguage("idtypeTitle");
-                //textInputLayoutICNo.Hint = GetLabelCommonByLanguage("idNumberhint");
-                //SetToolBarTitle(GetLabelByLanguage("title"));
-                //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-                //btnRegister.Text = GetLabelByLanguage("confrimButton");
-                //LabelTitle.Text = GetLabelByLanguage("updateIdLabelTitle");
-                //LabelDetails.Text = GetLabelByLanguage("updateIdLabelDetails");
 
                 txtICNumber.FocusChange += txtICNumber_FocusChange;
                 txtICNumber.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
