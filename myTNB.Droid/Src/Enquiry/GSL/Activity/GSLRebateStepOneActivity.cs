@@ -336,7 +336,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         public void OnSelectRebateType()
         {
             Intent newIntent = new Intent(this, typeof(SelectItemActivity));
-            newIntent.PutExtra("LIST_TITLE", "Type of Rebate");
+            newIntent.PutExtra("LIST_TITLE", Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_REBATE_TYPE_TITLE));
             newIntent.PutExtra("ITEM_LIST", JsonConvert.SerializeObject(this.userActionsListener.GetRebateTypeList()));
             StartActivityForResult(newIntent, EnquiryConstants.SELECT_REBATE_TYPE_REQ_CODE);
             this.SetIsClicked(false);

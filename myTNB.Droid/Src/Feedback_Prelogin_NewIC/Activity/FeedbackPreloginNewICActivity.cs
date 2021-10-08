@@ -139,9 +139,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle"));
                 //2 set font type , 300 normal 500 button
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo);
-                TextViewUtils.SetMuseoSans300Typeface(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, txtAccountNo, txtGSLRebateSubTitle);
+                TextViewUtils.SetMuseoSans300Typeface(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, txtAccountNo, txtGSLRebateSubTitle, txtAboutBillEnquiry_subContent);
                 TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal, txtAboutBillEnquiry, txtGSLRebateTitle);
-                TextViewUtils.SetTextSize12(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, infoLabeltxtWhereIsMyAcc, txtAboutBillEnquiry_subContent);
+                TextViewUtils.SetTextSize12(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, infoLabeltxtWhereIsMyAcc, txtAboutBillEnquiry_subContent, txtGSLRebateSubTitle);
                 TextViewUtils.SetTextSize14(txtGeneralEnquiry, txtUpdatePersonal, txtAboutBillEnquiry, txtGSLRebateTitle);
                 TextViewUtils.SetTextSize16(txtAccountNo, howCanWeHelpYou);
 
