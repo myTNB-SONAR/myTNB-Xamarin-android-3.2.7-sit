@@ -44,7 +44,6 @@
     <LangVersion>8.0</LangVersion>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
-    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     <DebugSymbols>true</DebugSymbols>
     <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
   </PropertyGroup>
@@ -74,7 +73,6 @@
     <MandroidI18n>West</MandroidI18n>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -6798,6 +6796,26 @@
     <Compile Include="Src\myTNBMenu\Async\EligibilityAPI.cs" />
     <Compile Include="Src\Device Cache\AccessTokenCache.cs" />
     <Compile Include="Src\MyTNBService\Response\CustomerAccountListResponseAppLaunch.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\img_register_acct_noV2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\img_register_acct_noV2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\img_register_acct_noV2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\img_register_acct_noV2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\img_register_acct_noV2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

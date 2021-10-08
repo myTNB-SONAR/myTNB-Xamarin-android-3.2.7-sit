@@ -11,6 +11,7 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
+using myTNB.Mobile;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.MVP;
@@ -187,7 +188,16 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 };
 
                 btnWhereIsMyAccountNo = rootView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
-                btnWhereIsMyAccountNo.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
+                if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
+                    && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
+                {
+                    btnWhereIsMyAccountNo.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitleV2");
+                }
+                else
+                {
+                    btnWhereIsMyAccountNo.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
+                }
+                   
                 TextViewUtils.SetMuseoSans500Typeface(btnWhereIsMyAccountNo);
                 TextViewUtils.SetTextSize12(btnWhereIsMyAccountNo);
 
@@ -205,14 +215,28 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     {
                         TextView titleText = view.FindViewById<TextView>(Resource.Id.textDialogTitle);
                         TextView infoText = view.FindViewById<TextView>(Resource.Id.textDialogInfo);
+                        ImageView img_register = view.FindViewById<ImageView>(Resource.Id.img_register);
+
                         if (titleText != null && infoText != null)
                         {
                             TextViewUtils.SetMuseoSans500Typeface(titleText);
                             TextViewUtils.SetMuseoSans300Typeface(infoText);
                             TextViewUtils.SetTextSize16(titleText, infoText);
 
-                            titleText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
-                            infoText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
+                            if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
+                                && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
+                            {
+                                titleText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitleV2");
+                                infoText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetailsV2");
+                                img_register.SetImageResource(Resource.Drawable.img_register_acct_noV2);
+                            }
+                            else
+                            {
+                                titleText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
+                                infoText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
+                                img_register.SetImageResource(Resource.Drawable.img_register_acct_no);
+                            }
+                            
                         }
                     }
                     dialogWhereMyAccountNo.Show();

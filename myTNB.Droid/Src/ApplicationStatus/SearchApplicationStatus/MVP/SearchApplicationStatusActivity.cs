@@ -389,13 +389,28 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0] : searchByModel;
                     if (searchType != null && searchType.Type == ApplicationStatusSearchType.CA)
                     {
-                        MyTNBAppToolTipBuilder whereAreTheseNumbers = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                            .SetHeaderImage(Resource.Drawable.img_register_acct_no)
-                            .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitleCA"))
-                            .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessageCA"))
-                            .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                            .Build();
-                        whereAreTheseNumbers.Show();
+                        if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
+                        && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
+                        {
+                            MyTNBAppToolTipBuilder whereAreTheseNumbers = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                           .SetHeaderImage(Resource.Drawable.img_register_acct_noV2)
+                           .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitleCAV2"))
+                           .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessageCAV2"))
+                           .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                           .Build();
+                            whereAreTheseNumbers.Show();
+                        }
+                        else
+                        {
+                            MyTNBAppToolTipBuilder whereAreTheseNumbers = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                           .SetHeaderImage(Resource.Drawable.img_register_acct_no)
+                           .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitleCA"))
+                           .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessageCA"))
+                           .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                           .Build();
+                            whereAreTheseNumbers.Show();
+                        }
+                           
                     }
                     else
                     {

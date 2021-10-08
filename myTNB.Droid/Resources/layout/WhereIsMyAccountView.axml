@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:scaleType="fitXY"
+        android:id="@+id/img_register"
         android:src="@drawable/img_register_acct_no" />
     <TextView
         android:text="@string/where_is_my_account_no"
