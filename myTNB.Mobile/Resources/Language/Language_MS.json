@@ -588,7 +588,7 @@
     "residential": "Kediaman",
     "commercial": "Komersil",
     "addAccountCTATitle": "Tambah Akaun",
-    "scanMessage": "Imbas barkod di atas bill untuk dapatkan maklumat akaun anda.",
+    "scanMessage": "Imbas kod bar pada bil anda untuk mendapatkan butiran akaun.",
     "invalidBarcode": "Bar kod tidak sah.",
     "addByIDMessage": "Akaun elektrik ini didaftarkan dengan Nombor KP/ROC/Pasport anda?",
     "addByRightsMessage": "Adakah anda berhak untuk melihat semua maklumat berkaitan dengan akaun elektrik ini?",
