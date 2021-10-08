@@ -64,7 +64,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         [BindView(Resource.Id.download_bill_icon)]
         ImageView download_bill_icon;
-        
+
 
         [BindView(Resource.Id.itemisedBillingInfoNote)]
         TextView itemisedBillingInfoNote;
@@ -174,7 +174,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         List<AccountBillPayFilter> billPayFilterList;
         internal bool _isOwner { get; set; }
         public bool _isBillStatement { get; set; }
-        
+
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
 
@@ -366,6 +366,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         filterDescription = "RE";
                     }
                     newIntent.PutExtra("FILTER_DESCRIPTION", filterDescription);
+                    newIntent.PutExtra("LIST_TITLE", Utility.GetLocalizedLabel(LanguageConstants.BILL_FILTER, LanguageConstants.BillFilter.FILTER_TITLE));
+                    newIntent.PutExtra("LIST_DESCRIPTION", Utility.GetLocalizedLabel(LanguageConstants.BILL_FILTER, LanguageConstants.BillFilter.FILTER_DESC));
                     newIntent.PutExtra("ITEM_LIST", JsonConvert.SerializeObject(itemFilterList));
                     StartActivityForResult(newIntent, 12345);
                 }
@@ -682,7 +684,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             return DBRUtility.Instance.IsCADBREligible(mSelectedAccountData.AccountNum);
         }
-       
+
 
         private void SetDynatraceScreenTags()
         {
@@ -768,7 +770,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         }
 
         public void UpdateBillingHistory(Item selectedFilter)
-        { 
+        {
             itemFilterList.ForEach(filterItem =>
             {
                 filterItem.selected = (filterItem.type == selectedFilter.type) ? true : false;
@@ -1008,8 +1010,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         }
         private void SetShowAccountStatementIcon()
         {
-            if(EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR,EligibilitySessionCache.FeatureProperty.Enabled)
-                && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR,EligibilitySessionCache.FeatureProperty.TargetGroup))
+            if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
+                && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
             {
                 _isBillStatement = BillRedesignUtility.Instance.IsCAEligible(mSelectedAccountData.AccountNum);
             }

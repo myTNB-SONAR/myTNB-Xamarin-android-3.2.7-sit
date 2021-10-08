@@ -14,6 +14,8 @@
         internal struct Common
         {
             internal static readonly string GOT_IT = "gotIt";
+            internal static readonly string NEXT = "next";
+            internal static readonly string MOBILE_NO = "mobileNo";
         }
 
         internal struct Error
@@ -63,6 +65,18 @@
             internal static readonly string GSL_DESC = "gslDescription";
             internal static readonly string GSL_HEADER_TITLE = "gslHeaderTitle";
             internal static readonly string GSL_STEP_TITLE = "stepTitle";
+            internal static readonly string GSL_CLAIM_TITLE = "rebateClaimTitle";
+            internal static readonly string GSL_REBATE_TYPE_TITLE = "rebateTypeTitle";
+            internal static readonly string GSL_TENANT_INFO_TITLE = "tenantInfoTitle";
+            internal static readonly string REBATE_TYPE = "rebateType";
+            internal static readonly string REBATE_TYPE_KEY = "key";
+            internal static readonly string REBATE_TYPE_DESC = "description";
+            internal static readonly string FULL_NAME_HINT = "nameHint";
+            internal static readonly string EMAIL_HINT = "emailHint";
+            internal static readonly string MOBILE_HINT = "mobileHint";
+            internal static readonly string EMAIL_ERROR = "emailReq";
+            internal static readonly string MOBILE_ERROR = "mobileReq";
+            internal static readonly string FULL_NAME_ERROR = "ownerReq";
         }
     }
 }

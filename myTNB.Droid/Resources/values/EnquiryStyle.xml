@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="Theme.Enquiry" parent="@style/App.ScreenTheme">
+		<item name="android:windowBackground">@drawable/HorizontalGradientBackground</item>
+		<item name="android:textColorPrimary">@color/tunaGrey</item>
+		<item name="android:textColorSecondary">@color/tunaGrey</item>
+		<item name="android:textColorHint">@color/silverChalice</item>
+		<item name="android:textSize">16dp</item>
+		<item name="android:alertDialogTheme">@style/DialogTheme</item>
+		<item name="colorAccent">@color/powerBlue</item>
+		<item name="colorControlNormal">@color/powerBlue</item>
+		<item name="colorControlActivated">@color/powerBlue</item>
+		<item name="colorControlNormal">@color/powerBlue</item>
+		<item name="colorError">@color/errorColor</item>
+		<item name="android:colorAccent">@color/tunaGrey</item>
+		<item name="android:colorControlNormal">@color/silverChalice</item>
+		<item name="android:colorControlHighlight">@color/powerBlue</item>
+		<item name="android:colorControlActivated">@color/powerBlue</item>
+		<item name="android:textColorHint">@color/silverChalice</item>
+	</style>
+</resources>

@@ -6825,6 +6825,12 @@
     </AndroidResource>
     <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepOneContract.cs" />
     <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepOnePresenter.cs" />
+    <Compile Include="Src\Enquiry\EnquiryConstants.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepOneModel.cs" />
+    <AndroidResource Include="Resources\values\EnquiryStyle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
