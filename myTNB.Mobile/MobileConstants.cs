@@ -49,8 +49,16 @@ namespace myTNB.Mobile
         //AWS GetAccount
         public static string AWSApiDomainSIT = "https://core.stg-mytnb.com/api"; 
         public static string AWSApiDomainDEV = "https://mytnb-core-staging-362772745.ap-southeast-1.elb.amazonaws.com/api";
-        public static string AWSApiDomainPROD = "https://core.prod-mytnb.com/api";  
- 
+        public static string AWSApiDomainPROD = "https://core.prod-mytnb.com/api";
+
+        //OVIS Webview
+        //public static string OvisWebviewBaseUrlDEV = "http://192.168.1.157:3000";
+        public static string OvisWebviewBaseUrlDEV = "http://mytnbwvovis.ap.ngrok.io";
+        //public static string OvisWebviewBaseUrlDEV = "https://dev-mytnbappwv.tnbovis.com";
+        public static string OvisWebviewBaseUrlQA = "http://mytnbwvovisstg.ap.ngrok.io";
+        //public static string OvisWebviewBaseUrlQA = "https://qa-mytnbappwv.tnbovis.com";
+        public static string OvisWebviewBaseUrlSTG = "https://stage-mytnbappwv.ovis.tnb.com.my";
+        public static string OvisWebviewBaseUrlPROD = "https://mytnbappwv.ovis.tnb.com.my";
 
 #if DEBUG
         public static string ApiDomain = SIT;
@@ -59,6 +67,7 @@ namespace myTNB.Mobile
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
         public static string AWSApiDomain = AWSApiDomainSIT;
+        public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlDEV;
 
         //public static string ApiDomain = PROD;
         //public const string ApiKeyId = ApiKeyIdPROD;
@@ -72,6 +81,7 @@ namespace myTNB.Mobile
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
         public static string AWSApiDomain = AWSApiDomainSIT;
+        public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlQA; //OvisWebviewBaseUrlSTG
 #else
         public static string ApiDomain = PROD;
         public const string ApiKeyId = ApiKeyIdPROD;
@@ -79,6 +89,7 @@ namespace myTNB.Mobile
         internal const string SaltKey = SaltKey_PROD;
         internal const string PassPhrase = Passphrase_PROD;
         public static string AWSApiDomain = AWSApiDomainPROD;
+        public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlPROD;
 
 #endif
 

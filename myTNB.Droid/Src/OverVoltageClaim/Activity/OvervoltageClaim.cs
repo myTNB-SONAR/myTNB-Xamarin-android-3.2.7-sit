@@ -14,6 +14,7 @@ using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
 using DynatraceAndroid;
+using myTNB.Mobile;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
@@ -129,7 +130,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 var OsVersion = "Android"+DeviceIdUtils.GetAndroidVersion();
                 var DeviceModel = DeviceInfo.Model;
                 var Manufacturer = DeviceInfo.Manufacturer;
-                var data = new BaseRequest();
+                var data = new MyTNBService.Request.BaseRequest();
                 var usin = data.usrInf;
                 UserEntity user = UserEntity.GetActive();               
 #if DEBUG
@@ -155,8 +156,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 ShowProgressDialog();
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
 
-                string domain = "http://mytnbwvovis.ap.ngrok.io/"; // WebView Live
-                //string domain = "http://192.168.1.157:3000/"; // WebView Local
+                string domain = MobileConstants.OvisWebviewBaseUrl + "/"; // WebView Live
 
                 UrlUtility urlUtility = new UrlUtility();
                 urlUtility.AddQueryParams("CA", accNo);
