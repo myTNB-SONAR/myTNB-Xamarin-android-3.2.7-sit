@@ -174,8 +174,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 //2 set font type , 300 normal 500 button
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo);
                 TextViewUtils.SetMuseoSans300Typeface(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, txtAccountNo, txtOverVoltageClaimContent);
-                TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal, txtOverVoltageClaim);
-                TextViewUtils.SetTextSize12(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, infoLabeltxtWhereIsMyAcc, txtOverVoltageClaimContent);
+                TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal, txtOverVoltageClaim, InfoLabel);
+                TextViewUtils.SetTextSize12(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, infoLabeltxtWhereIsMyAcc, txtOverVoltageClaimContent, InfoLabel);
                 TextViewUtils.SetTextSize14(txtGeneralEnquiry, txtUpdatePersonal, txtOverVoltageClaim);
                 TextViewUtils.SetTextSize16(txtAccountNo, howCanWeHelpYou);
                 
