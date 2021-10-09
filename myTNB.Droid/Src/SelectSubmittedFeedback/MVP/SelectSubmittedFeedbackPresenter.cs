@@ -53,12 +53,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     {
                         var claimDetailResponce = await ServiceApiImpl.Instance.OvervoltageClaimDetail(new SubmittedFeedbeckClaimIdDetailRequestModel(submittedFeedback.FeedbackId));
 
-                        if (claimDetailResponce.d.data != null)
-                        {
-                            var ClaimId = claimDetailResponce.d.data.ClaimId;
-                            UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
-                            this.mView.ShowFeedbackDetailsOverVoltage(detailsResponse.GetData(), submittedFeedback, ClaimId);
-                        }
+                        var ClaimId = claimDetailResponce.d.data != null ? claimDetailResponce.d.data.ClaimId : null;
+                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
+                        this.mView.ShowFeedbackDetailsOverVoltage(detailsResponse.GetData(), submittedFeedback, ClaimId);
                     }
                     else
                     {

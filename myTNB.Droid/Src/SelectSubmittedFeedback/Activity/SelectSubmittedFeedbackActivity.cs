@@ -50,6 +50,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         List<SubmittedFeedback> listData;
 
         MaterialDialog progressDialog;
+        MyTNBAppToolTipBuilder leaveDialog;
         public static string status, crStatusCode;
         public static string srNumber;
 
@@ -313,10 +314,23 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
         public void ShowFeedbackDetailsOverVoltage(SubmittedFeedbackDetails submittedFeedbackdetail, SubmittedFeedback submittedFeedback, string ClaimId)
         {
-            var othersIntent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
-            othersIntent.PutExtra("TITLE", !string.IsNullOrEmpty(submittedFeedback.FeedbackNameInListView) ? submittedFeedback.FeedbackNameInListView : submittedFeedback.FeedbackCategoryName);
-            othersIntent.PutExtra("ClaimId", ClaimId);
-            StartActivity(othersIntent);
+            if (ClaimId != null)
+            {
+                var othersIntent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+                othersIntent.PutExtra("TITLE", !string.IsNullOrEmpty(submittedFeedback.FeedbackNameInListView) ? submittedFeedback.FeedbackNameInListView : submittedFeedback.FeedbackCategoryName);
+                othersIntent.PutExtra("ClaimId", ClaimId);
+                StartActivity(othersIntent);
+            }
+            else
+            {
+                leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+                .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                .SetCTAaction(() => { this.SetIsClicked(false); })
+                .Build();
+                leaveDialog.Show();
+            }
         }
 
         private Snackbar bcrmExceptionSnackBar;
