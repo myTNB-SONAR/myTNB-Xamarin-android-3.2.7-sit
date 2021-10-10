@@ -1095,10 +1095,12 @@
     <Compile Include="Src\myTNBMenu\Requests\SMUsageHistoryRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationChannelRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationTypeRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\AppLaunchMasterDataRequestAWS.cs" />
     <Compile Include="Src\MyTNBService\Request\GetAccountsV2Request.cs" />
     <Compile Include="Src\MyTNBService\Request\SaveEnergyBudgetRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetSearchForAccountRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\SubmitEnquiryRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\AppLaunchMasterDataResponseAWS.cs" />
     <Compile Include="Src\MyTNBService\Response\GetSearchForAccountResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\SaveEnergyBudgetResponse.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetails.cs" />
@@ -7541,7 +7543,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-        <AndroidResource Include="Resources\layout\ManageBillDeliveryEmailGroupItemLayout.xml">
+    <AndroidResource Include="Resources\layout\ManageBillDeliveryEmailGroupItemLayout.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

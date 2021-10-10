@@ -54,6 +54,18 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call GetAppLaunchMasterDataAWS with timeout set.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public Task<AppLaunchMasterDataResponseAWS> GetAppLaunchMasterDataAWS([Body] Request.BaseRequest request)
+        {
+            Console.WriteLine("APIWAS call :" + apiAws.GetAppLaunchMasterDataAWS<AppLaunchMasterDataResponseAWS>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
+            return apiAws.GetAppLaunchMasterDataAWS<AppLaunchMasterDataResponseAWS>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
         /// Call GetAccounts with default timeout.
         /// </summary>
         /// <param name="request"></param>

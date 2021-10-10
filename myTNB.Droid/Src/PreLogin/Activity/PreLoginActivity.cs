@@ -204,9 +204,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 TextViewUtils.SetTextSize14(txtPromotion);
                 TextViewUtils.SetTextSize16(txtWelcome, btnRegister, btnLogin);
 
-                AppLaunchMasterDataResponse masterDataResponse = MyTNBAccountManagement.GetInstance().GetMasterDataResponse();
+                AppLaunchMasterDataResponseAWS masterDataResponse = MyTNBAccountManagement.GetInstance().GetMasterDataResponse();
                 if (masterDataResponse != null
-                    && masterDataResponse.GetData().ServicesPreLogin is List<MyService> services
+                    && masterDataResponse.Data.ServicesPreLogin is List<MyService> services
                     && services != null
                     && services.Count > 0)
                 {

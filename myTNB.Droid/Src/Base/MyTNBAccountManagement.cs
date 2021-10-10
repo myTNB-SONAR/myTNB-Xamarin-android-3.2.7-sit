@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.Base
         private bool IsNotificationMaintenance = false;
         private bool IsNotificationComplete = false;
         private static MasterDataResponse currentMasterDataRes = null;
-        private static AppLaunchMasterDataResponse appMasterDataResponse = null;
+        private static AppLaunchMasterDataResponseAWS appMasterDataResponse = null;
         private List<string> UpdatedAccountNumberList = new List<string>();
         private int appLaunchMasterDataTimeout;
         private bool IsUpdatedMobileNumber = false;
@@ -282,12 +282,12 @@ namespace myTNB_Android.Src.Base
             return currentMasterDataRes;
         }
 
-        public void SetMasterDataResponse(AppLaunchMasterDataResponse data)
+        public void SetMasterDataResponse(AppLaunchMasterDataResponseAWS data)
         {
             appMasterDataResponse = data;
         }
 
-        public AppLaunchMasterDataResponse GetMasterDataResponse()
+        public AppLaunchMasterDataResponseAWS GetMasterDataResponse()
         {
             return appMasterDataResponse;
         }
@@ -317,34 +317,34 @@ namespace myTNB_Android.Src.Base
 
         public bool IsEnergyTipsDisabled()
         {
-            return appMasterDataResponse.Response.IsEnergyTipsDisabled;
+            return appMasterDataResponse.IsEnergyTipsDisabled;
         }
 
         public bool IsSMRFeatureDisabled()
         {
-            return appMasterDataResponse.Response.IsSMRFeatureDisabled;
+            return appMasterDataResponse.IsSMRFeatureDisabled;
         }
 
         public bool IsOCRDown()
         {
-            return appMasterDataResponse.Response.IsOCRDown;
+            return appMasterDataResponse.IsOCRDown;
         }
 
         public bool IsRewardsDisabled()
         {
-            return appMasterDataResponse.Response.IsRewardsDisabled;
+            return appMasterDataResponse.IsRewardsDisabled;
         }
 
         public bool IsLargeFontDisabled()
         {
-            return appMasterDataResponse.Response.IsLargeFontDisabled;
+            return appMasterDataResponse.IsLargeFontDisabled;
         }
 
         public bool IsApplicationSyncAPIEnable
         {
             get
             {
-                return appMasterDataResponse.Response.IsApplicationSyncAPIEnable;
+                return appMasterDataResponse.IsApplicationSyncAPIEnable;
             }
         }
 
@@ -352,7 +352,7 @@ namespace myTNB_Android.Src.Base
         {
             get
             {
-                return appMasterDataResponse.Response.ApplicationSyncAPIInterval;
+                return appMasterDataResponse.ApplicationSyncAPIInterval;
             }
         }
 
@@ -360,7 +360,7 @@ namespace myTNB_Android.Src.Base
         {
             get
             {
-                return appMasterDataResponse.Response.IsAppointmentDisabled;
+                return appMasterDataResponse.IsAppointmentDisabled;
             }
         }
         public bool IsDigitalBillDisabled
@@ -448,23 +448,22 @@ namespace myTNB_Android.Src.Base
         {
             try
             {
-                Task<AppLaunchMasterDataResponse> appLaunchMasterDataTask = Task.Run(async () => await ServiceApiImpl.Instance.GetAppLaunchMasterData
-                    (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout)));
+                Task<AppLaunchMasterDataResponseAWS> appLaunchMasterDataTask = Task.Run(async () => await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest()));
                 //appLaunchMasterDataTask.Wait();
-                AppLaunchMasterDataResponse masterDataResponse = appLaunchMasterDataTask.Result;
-                if (masterDataResponse != null && masterDataResponse.Response != null && masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                AppLaunchMasterDataResponseAWS masterDataResponse = appLaunchMasterDataTask.Result;
+                if (masterDataResponse != null && masterDataResponse.ErrorCode != null && masterDataResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     SetMasterDataResponse(masterDataResponse);
 
-                    if (masterDataResponse.GetData().WebLinks != null)
+                    if (masterDataResponse.Data.WebLinks != null)
                     {
-                        foreach (Weblink web in masterDataResponse.GetData().WebLinks)
+                        foreach (Weblink web in masterDataResponse.Data.WebLinks)
                         {
                             int newRecord = WeblinkEntity.InsertOrReplace(web);
                         }
                     }
 
-                    foreach (NotificationTypes notificationType in GetMasterDataResponse().GetData().NotificationTypes)
+                    foreach (NotificationTypes notificationType in GetMasterDataResponse().Data.NotificationTypes)
                     {
                         int newRecord = NotificationTypesEntity.InsertOrReplace(notificationType);
                     }
@@ -479,16 +478,16 @@ namespace myTNB_Android.Src.Base
                     }
 
                     FeedbackCategoryEntity.RemoveActive();
-                    if (masterDataResponse.GetData().FeedbackCategorysV2 != null && masterDataResponse.GetData().FeedbackCategorysV2.Count > 0)
+                    if (masterDataResponse.Data.FeedbackCategorysV2 != null && masterDataResponse.Data.FeedbackCategorysV2.Count > 0)
                     {
-                        foreach (FeedbackCategory cat in masterDataResponse.GetData().FeedbackCategorysV2)
+                        foreach (FeedbackCategory cat in masterDataResponse.Data.FeedbackCategorysV2)
                         {
                             int newRecord = FeedbackCategoryEntity.InsertOrReplace(cat);
                         }
                     }
                     else
                     {
-                        foreach (FeedbackCategory cat in masterDataResponse.GetData().FeedbackCategorys)
+                        foreach (FeedbackCategory cat in masterDataResponse.Data.FeedbackCategorys)
                         {
                             int newRecord = FeedbackCategoryEntity.InsertOrReplace(cat);
                         }
@@ -496,7 +495,7 @@ namespace myTNB_Android.Src.Base
 
                     int ctr = 0;
                     FeedbackStateEntity.RemoveActive();
-                    foreach (FeedbackState state in masterDataResponse.GetData().States)
+                    foreach (FeedbackState state in masterDataResponse.Data.States)
                     {
                         bool isSelected = ctr == 0 ? true : false;
                         int newRecord = FeedbackStateEntity.InsertOrReplace(state, isSelected);
@@ -506,7 +505,7 @@ namespace myTNB_Android.Src.Base
 
                     FeedbackTypeEntity.RemoveActive();
                     ctr = 0;
-                    foreach (FeedbackType type in masterDataResponse.GetData().FeedbackTypes)
+                    foreach (FeedbackType type in masterDataResponse.Data.FeedbackTypes)
                     {
                         bool isSelected = ctr == 0 ? true : false;
                         int newRecord = FeedbackTypeEntity.InsertOrReplace(type, isSelected);
@@ -515,26 +514,26 @@ namespace myTNB_Android.Src.Base
                     }
 
                     LocationTypesEntity.InsertFristRecord();
-                    foreach (LocationType loc in masterDataResponse.GetData().LocationTypes)
+                    foreach (LocationType loc in masterDataResponse.Data.LocationTypes)
                     {
                         int newRecord = LocationTypesEntity.InsertOrReplace(loc);
                     }
 
                     DownTimeEntity.RemoveActive();
-                    foreach (DownTime cat in masterDataResponse.GetData().Downtimes)
+                    foreach (DownTime cat in masterDataResponse.Data.Downtimes)
                     {
                         int newRecord = DownTimeEntity.InsertOrReplace(cat);
                     }
 
                     IsAppMasterFailed = false;
                 }
-                else if (masterDataResponse != null && masterDataResponse.Response != null && masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_MAINTENANCE)
+                else if (masterDataResponse != null && masterDataResponse.ErrorCode != null && masterDataResponse.ErrorCode == Constants.SERVICE_CODE_MAINTENANCE)
                 {
-                    if (masterDataResponse.Response.DisplayMessage != null && masterDataResponse.Response.DisplayTitle != null)
+                    if (masterDataResponse.DisplayMessage != null && masterDataResponse.DisplayTitle != null)
                     {
                         IsAppMasterMaintenance = true;
-                        MaintenanceTitle = masterDataResponse.Response.DisplayTitle;
-                        MaintenanceContent = masterDataResponse.Response.DisplayMessage;
+                        MaintenanceTitle = masterDataResponse.DisplayTitle;
+                        MaintenanceContent = masterDataResponse.DisplayMessage;
                     }
                     else
                     {

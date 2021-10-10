@@ -86,7 +86,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private bool isAppLaunchLoadSuccessful = false;
         private bool isAppLaunchDone = false;
 
-        private AppLaunchMasterDataResponse cacheResponseData = null;
+        private AppLaunchMasterDataResponseAWS cacheResponseData = null;
 
         private string urlSchemaData = "";
         private string urlSchemaPath = "";
@@ -1044,7 +1044,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
-        public void ShowMaintenance(AppLaunchMasterDataResponse masterDataResponse)
+        public void ShowMaintenance(AppLaunchMasterDataResponseAWS masterDataResponse)
         {
             try
             {
@@ -1053,8 +1053,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     isAppLaunchDone = true;
                     Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
-                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Response.DisplayTitle);
-                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Response.DisplayMessage);
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.DisplayTitle);
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.DisplayMessage);
                     StartActivity(maintenanceScreen);
                 }
             }

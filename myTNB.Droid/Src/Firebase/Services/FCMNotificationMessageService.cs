@@ -56,7 +56,11 @@ namespace myTNB_Android.Src.Firebase.Services
                 message = remoteMessage.GetNotification().Body;
             }
 
-            UserSessions.SetNotification(remoteData["Type"], remoteData["EventId"], remoteData["RequestTransId"]);
+            if (remoteData.ContainsKey("Type") && remoteData.ContainsKey("EventId") && remoteData.ContainsKey("RequestTransId"))
+            {
+                UserSessions.SetNotification(remoteData["Type"], remoteData["EventId"], remoteData["RequestTransId"]);
+            }
+
             SendNotification(title, message, remoteData);
             if (remoteData.ContainsKey("Badge") && int.TryParse(remoteData["Badge"], out int count))
             {

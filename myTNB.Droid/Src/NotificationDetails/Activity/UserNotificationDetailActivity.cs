@@ -548,7 +548,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 else
                 {
                     MyTNBAccountManagement.GetInstance().SetIsFromViewTips(false);
-                }    
+                }
 
                 if (MyTNBAccountManagement.GetInstance().IsFinishFeedback())
                 {
