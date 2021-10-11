@@ -4,7 +4,7 @@ using static myTNB.Mobile.FeatureInfoClass;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class RemoveAccountRequest : BaseRequestV2
+    public class RemoveAccountRequest : BaseRequestV4
     {
         public string accNum;
         public DeviceInfoRequest deviceInf;

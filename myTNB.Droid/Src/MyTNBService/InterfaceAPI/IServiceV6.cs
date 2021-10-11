@@ -22,11 +22,11 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetAccountsV4")]
-        Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //lyana //merge DBR
+        Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token); //lyana //merge DBR
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v1/account/Getaccount")]
-        Task<T> GetCustomerAccountListAppLaunch<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);  //lyana //aws applaunch only
+        Task<T> GetCustomerAccountListAppLaunch<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);  //lyana //aws applaunch only
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/AddTNBAccountToUserReg")]
@@ -91,11 +91,11 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/AddUserAccess_OT")]
-        Task<T> AddUserAcess_OT<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);              //wan //api add user access
+        Task<T> AddUserAcess_OT<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);              //wan //api add user access
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/RemoveUserAccess_OT")]
-        Task<T> RemoveUserAcess_OT<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);              //wan //api delete user access
+        Task<T> RemoveUserAcess_OT<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);              //wan //api delete user access
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetAccountActivityLogList")]
@@ -103,7 +103,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdateAccountAccessRight")]
-        Task<T> UpdateAccountAccessRight<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);              //2enapps wan //api update account access right
+        Task<T> UpdateAccountAccessRight<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);              //2enapps wan //api update account access right
 
         //[Headers("Content-Type:application/json; charset=utf-8")]
         //[Post("/v6/mytnbappws.asmx/AddAccounts_OT")]
@@ -115,7 +115,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/AddAccountsV4")]
-        Task<T> AddMultipleAccounts_OT<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);    //lyana //merge DBR and CEP
+        Task<T> AddMultipleAccounts_OT<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);    //lyana //merge DBR and CEP
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/ValidateManualAccountLinking_OT")]
@@ -297,7 +297,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/RemoveAccountV4")]
-        Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);       //lyana //merge DBR
+        Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);       //lyana //merge DBR
 
 
         //[Post("/v6/mytnbappws.asmx/RemoveAccount")]

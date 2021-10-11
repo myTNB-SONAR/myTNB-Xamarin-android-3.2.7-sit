@@ -480,8 +480,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            if (DashboardHomeActivity.GO_TO_INNER_DASHBOARD)
-            {
+            //if (DashboardHomeActivity.GO_TO_INNER_DASHBOARD)
+            //{
                 CustomerBillingAccount selected = new CustomerBillingAccount();
                 selected = CustomerBillingAccount.GetSelected();
                 DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
@@ -512,7 +512,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     
                 };
                 h.PostDelayed(myAction, 50);
-            }
+            //}
             
             return base.OnCreateOptionsMenu(menu);
         }
@@ -597,6 +597,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();
+               
             }
         }
 

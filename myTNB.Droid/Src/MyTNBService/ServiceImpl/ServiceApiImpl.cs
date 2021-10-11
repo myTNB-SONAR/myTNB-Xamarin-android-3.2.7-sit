@@ -58,7 +58,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<CustomerAccountListResponse> GetCustomerAccountList([Body] Request.BaseRequest request)
+        public Task<CustomerAccountListResponse> GetCustomerAccountList([Body] Request.BaseRequestV4 request)
         {
             return api.GetCustomerAccountList<CustomerAccountListResponse>(request,CancellationTokenSourceWrapper.GetToken());
         }
@@ -69,7 +69,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <param name="request"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public Task<CustomerAccountListResponse> GetCustomerAccountList([Body] Request.BaseRequest request, CancellationToken token)
+        public Task<CustomerAccountListResponse> GetCustomerAccountList([Body] Request.BaseRequestV4 request, CancellationToken token)
         {
             return api.GetCustomerAccountList<CustomerAccountListResponse>(request, token);
         }
@@ -79,10 +79,10 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name = "request" ></ param >
         /// < returns ></ returns >
-        public Task<CustomerAccountListResponseAppLaunch> GetCustomerAccountListAppLaunch([Body] Request.BaseRequest request)
+        public Task<CustomerAccountListResponseAppLaunch> GetCustomerAccountListAppLaunch([Body] Request.BaseRequestV4 request)
         {
 
-            Console.WriteLine("APIWAS call :" + apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponseAppLaunch>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
+            //Console.WriteLine("APIWAS call :" + apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponseAppLaunch>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
             return apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponseAppLaunch>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
@@ -92,7 +92,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <param name="request"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public Task<CustomerAccountListResponse> GetCustomerAccountListAppLaunch([Body] Request.BaseRequest request, CancellationToken token)
+        public Task<CustomerAccountListResponse> GetCustomerAccountListAppLaunch([Body] Request.BaseRequestV4 request, CancellationToken token)
         {
             return apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponse>(request, token);
         }
@@ -245,7 +245,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<LogUserAccessResponse> AddUserAcess_OT([Body] Request.BaseRequestV2 request)
+        public Task<LogUserAccessResponse> AddUserAcess_OT([Body] Request.BaseRequestV4 request)
         {
             return api.AddUserAcess_OT<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api add user access
         }
@@ -255,7 +255,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<LogUserAccessResponse> RemoveUserAcess_OT([Body] Request.BaseRequestV2 request)
+        public Task<LogUserAccessResponse> RemoveUserAcess_OT([Body] Request.BaseRequestV4 request)
         {
             return api.RemoveUserAcess_OT<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api remove user access
         }
@@ -275,7 +275,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<ManageAccessAccountListNullResponse> UpdateAccountAccessRight([Body] Request.BaseRequestV2 request)
+        public Task<ManageAccessAccountListNullResponse> UpdateAccountAccessRight([Body] Request.BaseRequestV4 request)
         {
             return api.UpdateAccountAccessRight<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api add multiple account new
         }
@@ -285,7 +285,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<AddAccountsResponse> AddMultipleAccounts_OT([Body] Request.BaseRequestV2 request)
+        public Task<AddAccountsResponse> AddMultipleAccounts_OT([Body] Request.BaseRequestV4 request)
         {
             return api.AddMultipleAccounts_OT<AddAccountsResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api add multiple account new
         }
@@ -644,7 +644,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<RemoveAccountResponse> RemoveAccount([Body] Request.BaseRequestV2 request)
+        public Task<RemoveAccountResponse> RemoveAccount([Body] Request.BaseRequestV4 request)
         {
             return api.RemoveAccount<RemoveAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }

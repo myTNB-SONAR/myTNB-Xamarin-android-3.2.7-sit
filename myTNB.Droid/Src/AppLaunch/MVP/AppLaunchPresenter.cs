@@ -431,7 +431,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             try
             {
-                GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
+                GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                 baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                 string dt = JsonConvert.SerializeObject(baseRequest);
                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
@@ -548,7 +548,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             try
             {
-                GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
+                GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                 baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                 string dt = JsonConvert.SerializeObject(baseRequest);
                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);

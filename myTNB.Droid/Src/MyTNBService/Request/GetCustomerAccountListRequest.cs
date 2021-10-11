@@ -5,7 +5,7 @@ using static myTNB.Mobile.FeatureInfoClass;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class GetCustomerAccountListRequest : BaseRequest
+    public class GetCustomerAccountListRequest : BaseRequestV4
     {
         public string LastSyncDateTime;
         public DeviceInfoRequest deviceInf;

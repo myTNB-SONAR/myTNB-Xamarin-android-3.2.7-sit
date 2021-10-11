@@ -5,7 +5,7 @@ using static myTNB.Mobile.FeatureInfoClass;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class AddAccountsRequest : BaseRequestV2
+    public class AddAccountsRequest : BaseRequestV4
     {
         public bool isHaveAccess, isApplyBilling;
         public List<AddAccount.Models.AddAccount> billAccounts;

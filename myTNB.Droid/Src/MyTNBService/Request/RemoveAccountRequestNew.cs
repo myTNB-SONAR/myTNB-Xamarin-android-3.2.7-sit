@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class RemoveAccountRequestNew : BaseRequestV2
+    public class RemoveAccountRequestNew : BaseRequestV4
     {
         public string AccountNo;
         //public bool IsPreRegister;

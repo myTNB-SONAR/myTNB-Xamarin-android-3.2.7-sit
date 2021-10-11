@@ -42,6 +42,25 @@ namespace myTNB_Android.Src.MyTNBService.Request
             usrInf.IsWhiteList = whitelist;
         }
 
+        //public void SetSSPID(string sspID)
+        //{
+        //    usrInf.sspuid = sspID;
+        //}
+    }
+
+    public class BaseRequestV4
+    {
+        public UserInfoV4 usrInf;
+        public BaseRequestV4()
+        {
+            usrInf = new UserInfoV4();
+        }
+
+        public void SetIsWhiteList(bool whitelist)
+        {
+            usrInf.IsWhiteList = whitelist;
+        }
+
         public void SetSSPID(string sspID)
         {
             usrInf.sspuid = sspID;
@@ -80,6 +99,29 @@ namespace myTNB_Android.Src.MyTNBService.Request
         public bool IsWhiteList;
 
         public UserInfoV2()
+        {
+            eid = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().UserName : "";
+            sspuid = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().UserID : "";
+            did = UserSessions.GetDeviceId();
+            ft = FirebaseTokenEntity.HasLatest() && FirebaseTokenEntity.GetLatest() != null
+               ? FirebaseTokenEntity.GetLatest().FBToken ?? string.Empty //Todo: Shouldn't return empty
+               : string.Empty;
+            lang = LanguageUtil.GetAppLanguage().ToUpper();
+            sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID;
+            sec_auth_k2 = "";
+            ses_param1 = "";
+            ses_param2 = "";
+            IsWhiteList = false;
+        }
+
+    }
+
+    public class UserInfoV4
+    {
+        public string eid, sspuid, did, ft, lang, sec_auth_k1, sec_auth_k2, ses_param1, ses_param2;
+        public bool IsWhiteList;
+
+        public UserInfoV4()
         {
             eid = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().UserName : "";
             sspuid = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().UserID : "";

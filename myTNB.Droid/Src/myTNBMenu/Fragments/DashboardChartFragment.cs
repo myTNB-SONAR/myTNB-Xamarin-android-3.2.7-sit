@@ -704,6 +704,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         ScaleGestureDetector mScaleDetector;
 
+        IMenu menu;
+
         public override int ResourceId()
         {
             return Resource.Layout.DashboardNewChartView;
@@ -6931,8 +6933,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 ShowBackButton(true);
                 ((DashboardHomeActivity)this.Activity).HideAccountName();
                 ((DashboardHomeActivity)this.Activity).SetAccountToolbarTitle(selectedAccount.AccountNickName);
+                //((DashboardHomeActivity)this.Activity).OnCreateOptionsMenu(menu);
             }
-            catch (System.Exception e)
+            catch (System.Exception e) 
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -7038,6 +7041,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
 
         public void ShowBackButton(bool flag)
+        {
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.SetDisplayHomeAsUpEnabled(flag);
+            actionBar.SetDisplayShowHomeEnabled(flag);
+        }
+
+        public void ShowManageAccessButton(bool flag)
         {
             var act = this.Activity as AppCompatActivity;
 
