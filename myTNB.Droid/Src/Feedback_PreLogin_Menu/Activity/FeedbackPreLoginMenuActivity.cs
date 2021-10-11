@@ -384,9 +384,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                     {
                         billRelatedConstraint.Visibility = ViewStates.Visible;
                         spaceBillRelated.Visibility = ViewStates.Visible;
-                        feedbackBillRelatedTitle = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle"); //fc.Name;
-                        txtFeedbackBillingAndPayment.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle");//fc.Name;
-                        txtFeedbackBillingAndPaymentContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryDescription");//fc.Desc;
+                        feedbackBillRelatedTitle = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle"); //fc.Name;
+                        txtFeedbackBillingAndPayment.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle");//fc.Name;
+                        txtFeedbackBillingAndPaymentContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryDescription");//fc.Desc;
                     }
                     else if (fc.Id.Equals("2"))
                     {

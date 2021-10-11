@@ -152,7 +152,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
             // textFindUs = textFindUs.Replace(" ", "<br>");
             // textCallUs = textCallUs.Replace(" ", "<br>");
             textCheckStatus = textCheckStatus.Replace(" ", "<br>");
-            textSubmitFeedback = textSubmitFeedback.Replace(" ", "<br>");
+            //textSubmitFeedback = textSubmitFeedback.Replace(" ", "<br>");
 
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
