@@ -73,6 +73,7 @@
     <MandroidI18n>West</MandroidI18n>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
