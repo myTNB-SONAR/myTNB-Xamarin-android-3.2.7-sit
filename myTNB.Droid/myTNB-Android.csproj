@@ -6826,11 +6826,23 @@
     <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepOneContract.cs" />
     <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepOnePresenter.cs" />
     <Compile Include="Src\Enquiry\EnquiryConstants.cs" />
-    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepOneModel.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateModel.cs" />
     <AndroidResource Include="Resources\values\EnquiryStyle.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\Activity\GSLRebateStepTwoActivity.cs" />
+    <AndroidResource Include="Resources\layout\GSLRebateStepTwoView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\GSLRebateIncidentItemListView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\Fragment\GSLRebateIncidentItemListComponent.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepTwoContract.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepTwoPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -8387,6 +8399,7 @@
     <Folder Include="Src\Enquiry\GSL\" />
     <Folder Include="Src\Enquiry\GSL\Activity\" />
     <Folder Include="Src\Enquiry\GSL\MVP\" />
+    <Folder Include="Src\Enquiry\GSL\Fragment\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

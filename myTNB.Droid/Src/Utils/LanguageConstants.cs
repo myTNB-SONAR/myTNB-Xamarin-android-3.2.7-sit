@@ -77,6 +77,7 @@
             internal static readonly string EMAIL_ERROR = "emailReq";
             internal static readonly string MOBILE_ERROR = "mobileReq";
             internal static readonly string FULL_NAME_ERROR = "ownerReq";
+            internal static readonly string INCIDENT_DATE_HINT = "incidentDate";
         }
     }
 }

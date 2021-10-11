@@ -138,5 +138,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
             return fullNameValid && emailValid && mobileValid;
         }
+
+        public GSLRebateModel GetGSLRebateModel()
+        {
+            return rebateModel;
+        }
     }
 }

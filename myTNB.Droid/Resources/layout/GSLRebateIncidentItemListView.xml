@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/rootView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true"
+	android:orientation="vertical"
+	android:theme="@style/Theme.Enquiry">
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:paddingTop="16dp"
+		android:background="@color/background_pale_grey">
+		<TextView
+			android:id="@+id/gslIncidentItemTitle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="16dp"
+			android:layout_marginRight="16dp"
+			android:text="Incident Information"
+			android:textAllCaps="false"
+			android:textColor="@color/powerBlue"
+			android:textSize="16dp" />
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/white"
+			android:layout_marginTop="16dp"
+			android:id="@+id/gslIncidentContainer">
+			<TextView
+				android:id="@+id/incidentTitle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:layout_marginTop="16dp"
+				android:layout_marginRight="16dp"
+				android:text="Incident 1"
+				android:textAllCaps="false"
+				android:textColor="@color/tunaGrey"
+				android:textSize="14dp" />
+			<com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/incidentDateLayout"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:layout_marginTop="16dp"
+				android:layout_marginRight="16dp"
+				app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+				app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+				android:background="@color/white">
+				<EditText
+					android:id="@+id/txtIncidentDate"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:drawableLeft="@drawable/placeholder_name"
+					android:hint="DATE OF INCIDENT"
+					android:inputType="date"
+					android:paddingTop="5dp"
+					android:textSize="16dp" />
+			</com.google.android.material.textfield.TextInputLayout>
+			<com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/incidentTimeLayout"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:layout_marginTop="16dp"
+				android:layout_marginRight="16dp"
+				app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+				app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+				android:background="@color/white">
+				<EditText
+					android:id="@+id/txtIncidentTime"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:drawableLeft="@drawable/placeholder_name"
+					android:hint="TIME OF INCIDENT"
+					android:inputType="date"
+					android:paddingTop="5dp"
+					android:textSize="16dp" />
+			</com.google.android.material.textfield.TextInputLayout>
+			<com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/restorationDateLayout"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:layout_marginTop="16dp"
+				android:layout_marginRight="16dp"
+				app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+				app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+				android:background="@color/white">
+				<EditText
+					android:id="@+id/txtRestorationDate"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:drawableLeft="@drawable/placeholder_name"
+					android:hint="DATE OF RESTORATION"
+					android:inputType="date"
+					android:paddingTop="5dp"
+					android:textSize="16dp" />
+			</com.google.android.material.textfield.TextInputLayout>
+			<com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/restorationTimeLayout"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:layout_marginTop="16dp"
+				android:layout_marginBottom="16dp"
+				android:layout_marginRight="16dp"
+				app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+				app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+				android:background="@color/white">
+				<EditText
+					android:id="@+id/txtRestorationTime"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:drawableLeft="@drawable/placeholder_name"
+					android:hint="TIME OF RESTORATION"
+					android:inputType="date"
+					android:paddingTop="5dp"
+					android:textSize="16dp" />
+			</com.google.android.material.textfield.TextInputLayout>
+		</LinearLayout>
+	</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+

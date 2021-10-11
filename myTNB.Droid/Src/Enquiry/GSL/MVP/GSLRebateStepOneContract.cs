@@ -43,8 +43,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
             Item GetDefaultSelectedRebateType();
 
-            //void CheckRequiredFields(string fullName, string emailAddress, bool mobileNumberValid);
-
             void SetTenantFullName(string name);
 
             void SetTenantEmailAddress(string email);
@@ -52,6 +50,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             void SetTenantMobileNumber(string number);
 
             bool CheckRequiredFields();
+
+            GSLRebateModel GetGSLRebateModel();
         }
     }
 }

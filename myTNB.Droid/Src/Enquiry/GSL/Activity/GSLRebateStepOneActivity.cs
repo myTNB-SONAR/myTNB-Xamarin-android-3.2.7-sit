@@ -35,8 +35,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         [BindView(Resource.Id.txtRebateTypeTitle)]
         TextView txtRebateTypeTitle;
 
-        [BindView(Resource.Id.txtAccountType)]
-        TextView txtAccountType;
+        [BindView(Resource.Id.txtRebatetType)]
+        TextView txtRebatetType;
 
         [BindView(Resource.Id.selectorGSLTypeOfRebate)]
         TextView selectorGSLTypeOfRebate;
@@ -66,8 +66,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
 
         private GSLRebateStepOneContract.IUserActionsListener userActionsListener;
 
-        private bool isMobileNumberValidated = false;
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -87,12 +85,12 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             TextViewUtils.SetMuseoSans300Typeface(txtGSLTenantFullNameLayout, txtGSLTenantEmailLayout);
-            TextViewUtils.SetMuseoSans300Typeface(txtAccountType, selectorGSLTypeOfRebate);
+            TextViewUtils.SetMuseoSans300Typeface(txtRebatetType, selectorGSLTypeOfRebate);
             TextViewUtils.SetMuseoSans300Typeface(txtGSLTenantFullName, txtGSLTenantEmail);
 
             TextViewUtils.SetMuseoSans500Typeface(gslStepOnePageTitle, txtRebateTypeTitle, txtTenantInfoTitle, gslStepOnebtnNext);
 
-            TextViewUtils.SetTextSize10(txtAccountType);
+            TextViewUtils.SetTextSize10(txtRebatetType);
             TextViewUtils.SetTextSize12(gslStepOnePageTitle);
             TextViewUtils.SetTextSize16(txtRebateTypeTitle, txtGSLTenantFullName, txtGSLTenantEmail, selectorGSLTypeOfRebate, txtTenantInfoTitle, gslStepOnebtnNext);
 
@@ -126,7 +124,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             tenantGSLMobileNumberContainer.AddView(mobileNumberInputComponent);
 
             txtRebateTypeTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_CLAIM_TITLE);
-            txtAccountType.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_REBATE_TYPE_TITLE);
+            txtRebatetType.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_REBATE_TYPE_TITLE);
             txtTenantInfoTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_TENANT_INFO_TITLE);
 
             txtGSLTenantFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT);
@@ -357,7 +355,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
 
         private void OnShowGSLRebateStepTwoActivity()
         {
-            this.SetIsClicked(false);
+            this.SetIsClicked(true);
+            Intent payment_activity = new Intent(this, typeof(GSLRebateStepTwoActivity));
+            payment_activity.PutExtra(GSLRebateConstants.REBATE_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetGSLRebateModel()));
+            StartActivity(payment_activity);
         }
     }
 }
