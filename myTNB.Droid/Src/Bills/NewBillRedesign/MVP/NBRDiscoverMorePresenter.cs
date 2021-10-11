@@ -2,7 +2,6 @@
 using myTNB;
 using myTNB_Android.Src.Bills.NewBillRedesign.Model;
 using System.Collections.Generic;
-using Android.Util;
 using myTNB.Mobile;
 using System.Threading.Tasks;
 using myTNB_Android.Src.Utils;
@@ -108,7 +107,6 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.MVP
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("DEBUG Error*: ", e.Message);
                     PrepareDataFromLocal();
                     this.view?.RenderContent(DiscoverMoreModel ?? new NBRDiscoverMoreModel());
                 }
@@ -162,7 +160,7 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.MVP
             }
             catch (Exception e)
             {
-                Log.Debug("DEBUG Error**: ", e.Message);
+                Utility.LoggingNonFatalError(e);
             }
         }
 

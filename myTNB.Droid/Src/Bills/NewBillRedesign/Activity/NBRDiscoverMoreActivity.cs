@@ -10,7 +10,6 @@ using myTNB_Android.Src.Bills.NewBillRedesign.MVP;
 using myTNB_Android.Src.Bills.NewBillRedesign.Fragment;
 using myTNB_Android.Src.Bills.NewBillRedesign.Model;
 using Android.Graphics;
-using System.Net;
 using System;
 using System.Threading.Tasks;
 using System.Threading;
@@ -234,14 +233,16 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
             Bitmap rightImageBitmap = null;
             try
             {
+                float deviceWidth = this.Resources.DisplayMetrics.WidthPixels - DPUtils.ConvertDPToPx(36f);
+
                 await Task.Run(() =>
                 {
-                    leftImageBitmap = GetImageBitmapFromUrl(model.Banner1);
+                    leftImageBitmap = ImageUtils.GetImageBitmapFromUrl(model.Banner1);
                 }, cts.Token);
 
                 await Task.Run(() =>
                 {
-                    rightImageBitmap = GetImageBitmapFromUrl(model.Banner2);
+                    rightImageBitmap = ImageUtils.GetImageBitmapFromUrl(model.Banner2);
                 }, cts.Token);
 
                 headerBannerShimmerContainer.Visibility = ViewStates.Gone;
@@ -252,7 +253,7 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
 
                 if (leftImageBitmap != null)
                 {
-                    nbrDiscoverMoreBannerLeft.SetImageBitmap(leftImageBitmap);
+                    nbrDiscoverMoreBannerLeft.SetImageBitmap(Bitmap.CreateScaledBitmap(leftImageBitmap, (int)(deviceWidth / 2), (int)((deviceWidth / 2) * 1.4), false));
                 }
                 else
                 {
@@ -260,7 +261,7 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
                 }
                 if (rightImageBitmap != null)
                 {
-                    nbrDiscoverMoreBannerRight.SetImageBitmap(rightImageBitmap);
+                    nbrDiscoverMoreBannerRight.SetImageBitmap(Bitmap.CreateScaledBitmap(rightImageBitmap, (int)(deviceWidth / 2), (int)((deviceWidth / 2) * 1.4), false));
                 }
                 else
                 {
@@ -273,27 +274,6 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
                 nbrDiscoverMoreBannerRight.SetImageResource(Resource.Drawable.Banner_New_Bill_2);
                 Utility.LoggingNonFatalError(e);
             }
-        }
-
-        private Bitmap GetImageBitmapFromUrl(string url)
-        {
-            Bitmap image = null;
-            try
-            {
-                using (WebClient webClient = new WebClient())
-                {
-                    var imageBytes = webClient.DownloadData(url);
-                    if (imageBytes != null && imageBytes.Length > 0)
-                    {
-                        image = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-            return image;
         }
     }
 }

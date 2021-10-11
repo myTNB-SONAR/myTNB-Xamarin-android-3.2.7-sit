@@ -1206,7 +1206,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.IsAccountDBREligible = IsAccountDBREligible;
                         if (IsAccountDBREligible)
                         {
-
                             SetupDiscoverView();
                             discovercontainer.Visibility = ViewStates.Visible;
                             discoverView.Visibility = ViewStates.Visible;
@@ -1933,9 +1932,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         }
 
         public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
-        {           
+        {
             accountsAdapter.SetAccountCards(accountList);
-            accountsRecyclerView.SetAdapter(accountsAdapter);          
+            accountsRecyclerView.SetAdapter(accountsAdapter);
         }
 
         public void SetAccountListCardsFromLocal(List<SummaryDashBoardDetails> accountList)
@@ -2413,7 +2412,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 UserSessions.SetSMRAccountList(currentSmrAccountList);
                 UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
-                UserSessions.EnergyBudget(allSMRBlillingAccounts);                 
+                UserSessions.EnergyBudget(allSMRBlillingAccounts);
 
                 accountListRefreshContainer.Visibility = ViewStates.Gone;
                 accountListViewContainer.Visibility = ViewStates.Visible;
@@ -3677,7 +3676,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void ShowDiscoverMoreLayout()
         {
-            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() 
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify()
                 && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
             {
                 discoverMoreContainer.Visibility = ViewStates.Visible;
