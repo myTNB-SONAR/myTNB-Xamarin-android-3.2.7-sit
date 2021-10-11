@@ -211,7 +211,6 @@
 						style="@style/DarkButton"
 						android:textAllCaps="false" />
 				</LinearLayout>
-
 			</LinearLayout>
 		</ScrollView>
 	</LinearLayout>

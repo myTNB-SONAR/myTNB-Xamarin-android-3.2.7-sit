@@ -1206,7 +1206,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.IsAccountDBREligible = IsAccountDBREligible;
                         if (IsAccountDBREligible)
                         {
-
                             SetupDiscoverView();
                             discovercontainer.Visibility = ViewStates.Visible;
                             discoverView.Visibility = ViewStates.Visible;
