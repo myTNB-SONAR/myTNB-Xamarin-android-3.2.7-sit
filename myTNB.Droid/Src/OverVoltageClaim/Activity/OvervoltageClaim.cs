@@ -111,8 +111,8 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             else
             {
                leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-              .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "leaveDialouge"))
-              .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "leaveDialougeMessage"))
+              .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "leaveThisPage"))
+              .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "leaveThisPageDescription"))
               .SetCTALabel(Utility.GetLocalizedCommonLabel("cancel"))
               .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("yes"))
               .SetSecondaryCTAaction(() => { base.OnBackPressed(); })
@@ -302,7 +302,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                         IsTermAndConditions = true;
                         IsINZeroStepTab = true;
                         txtstep1of2.Visibility = ViewStates.Gone;
-                        SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "tNC"));
+                        SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "termsAndConditionTitle"));
                     }
                     catch (Exception ex)
                     {
@@ -359,7 +359,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 else if ((data.currentScreen == "TnbTerms" || data.currentScreen == "privacy") && data.nextScreen == "TermsAndConditions")
                 {
                     //goto terms and condition screen
-                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "tNC"));
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "termsAndConditionTitle"));
                     IsTermAndConditions = true;
                     IsInTermAndConsitionStepTab = false;
                 }

@@ -520,7 +520,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 }
                 else if (data.title == "reschedule-appointment")
                 {
-                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "rescheduleAppointment"));
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "rescheduleAppointmentTitle"));
                     TempTitle = "Reschedule Appointment";
                 }
             }

@@ -649,7 +649,7 @@
     "residential": "Kediaman",
     "commercial": "Komersil",
     "addAccountCTATitle": "Tambah Akaun",
-    "scanMessage": "Imbas barkod di atas bill untuk dapatkan maklumat akaun anda.",
+    "scanMessage": "Imbas kod bar pada bil anda untuk mendapatkan butiran akaun.",
     "invalidBarcode": "Bar kod tidak sah.",
     "addByIDMessage": "Akaun elektrik ini didaftarkan dengan Nombor KP/ROC/Pasport anda?",
     "addByRightsMessage": "Adakah anda berhak untuk melihat semua maklumat berkaitan dengan akaun elektrik ini?",
@@ -1049,11 +1049,7 @@
     "updatePersonalDetTitle": "Kemas kini Maklumat Peribadi",
     "personalDetailsDescription": "Saya ingin mengemaskini maklumat peribadi.",
     "overVoltageClaimTitle": "Tuntutan Voltan Berlebihan",
-    "overVoltageClaimDescription": "Saya ingin membuat tuntutan untuk kerosakan harta benda yang disebabkan oleh lonjakan elektrik",
-    "leaveDialouge": "Tinggalkan halaman ini?",
-    "leaveDialougeMessage": "Anda akan hilang semua maklumat yang anda isi. Sila tekan 'Ya' untuk teruskan, atau 'Batal' untuk kekal di halaman ini.",
-    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequest": "Terima kasih atas permohonan anda!",
-    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent": "Kami akan kembali kepada anda sebentar nanti. Buat sementara waktu, info terkini boleh didapati dengan memeriksa status permohonan anda",
+    "overVoltageClaimDescription": "Saya ingin membuat tuntutan untuk kerosakan harta benda yang disebabkan oleh lonjakan elektrik.",
     "stepTitle1of2": "Langkah 1 dari 2",
     "enquiryAboutTitle": "Saya ingin bertanya mengenai:",
     "messageHint": "Mesej Anda",
@@ -1138,7 +1134,7 @@
     "imageWhereAcc": "-/media/myTNBapp/SubmitEnquiry/newBillCopy2x.png",
     "imageCopyIC": "-/media/myTNBapp/SubmitEnquiry/imgIcCopy2x.png",
     "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x2.png",
-    "accNumberDetails": "Nombor akaun 12-digit anda boleh didapati di bahagian atas dan kiri bil bulanan anda.",
+    "accNumberDetails": "Nombor akaun 12 digit boleh didapati di sudut kiri atas bil kertas bulanan anda.",
     "updateNoOwnerTitle": "Maklumat mana yang ingin anda kemaskini?",
     "newAccNoOwnerName": "Nama baharu akaun",
     "newAccNoOwnerNameReq": "Nama akaun diperlukan",
@@ -1169,6 +1165,10 @@
     "documentPdf": "Dokumen",
 
     //Overvoltage Claim Translation Start
+    "leaveThisPage": "Tinggalkan halaman ini?",
+    "leaveThisPageDescription": "Anda akan hilang semua maklumat yang anda isi. Sila tekan 'Ya' untuk teruskan, atau 'Batal' untuk kekal di halaman ini.",
+    "thankYouForYourRequest": "Terima kasih atas permohonan anda!",
+    "thankYouForYourRequestDescription": "Kami akan kembali kepada anda sebentar nanti. Buat sementara waktu, info terkini boleh didapati dengan memeriksa status permohonan anda",
     "thankYouForYourEnquiry": "Permohonan anda telah dibatalkan.", //
     "thankYouForYourEnquiryDescription": "Permohonan anda untuk tuntutan voltan berlebihan telah dibatalkan.", //
     "thankYouForYourAppointment": "Janji temu anda telah dibatalkan.", //
@@ -1180,8 +1180,9 @@
     "proccedToPaymentInformation": "Terus ke Maklumat Pembayaran", //button name
     "setNewAppointment": "Jadualkan Janji Temu Baharu", //button name
     "appointmentSet": "Janji Temu Dijadualkan! ", //
+    "appointmentUpdate": "Tarikh janji temu anda telah dikemaskini.",
     "appointmentSetDescription": "Terima kasih! Janji temu anda telah disahkan dengan butiran di bawah.", //
-    "serviceReqNum": "NOMBOR PERMINTAAAN PERKHIDMATAN",
+    "serviceReqNum": "Nombor Permintaan Perkhidmatan",
     "dateTitle": "TARIKH JANJI TEMU", //
     "technicianName": "NAMA JURUTEKNIK", //
     "incidentAddress": "ALAMAT KEJADIAN", //
@@ -1196,21 +1197,20 @@
     "negotiationRequestTitle": "Permohonan Rundingan", //
     "compensationAgreementTitle": "Perjanjian Pampasan", //
     "updatePaymentDetailsTitle": "Kemas kini Butiran Pembayaran",
+    "exGratiaAgreementTitle": "Persetujuan Ex-gratia",
+    "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.",
     "overVoltageClaimIsCurrentlyNotEnabledForAccountTitle": "Tuntutan Voltan Berlebihan pada masa ini tidak diaktifkan untuk ", //
     "overVoltageClaimIsCurrentlyNotEnabledForAccountDescription": "Nombor akaun yang dipilih pada masa ini tidak diaktifkan untuk Tuntutan Voltan Berlebihan melalui myTNB. Sila hubungi TNB CareLine kami di talian 1300-88-5454 atau hantarkan e-mel kepada kami di tnbcareline@tnb.com.my atau kunjungi Kedai Tenaga.",
-    "Gotit": "Okay!", //,
     "currentlyNotEnabledForMelakaTitle": "Buat masa ini tidak diaktifkan untuk ",
+    "Gotit": "Okay!", //,
     "overVoltageMaintenanceLabel": "Servis Tuntutan Voltan Berlebihan sedang dalam penyelenggaraan.",
     "overVoltageMaintenanceTitle": "Kami akan kembali tidak lama lagi.",
     "overVoltageMaintenanceDescription": "Maaf, servis Tuntutan Voltan Berlebihan sedang dalam penyelenggaraan. Sila semak semula kemudian.",
     "overVoltageClaimtemproryUnavailable": "Servis Tuntutan Voltan Berlebihan tidak tersedia untuk sementara waktu",
     "overVoltageClaimtemproryUnavailableTitle": "Servis tidak tersedia untuk sementara waktu",
     "overVoltageClaimtemproryUnavailableDescription": "Kami sedang memulihkan servis Tuntutan Voltan Berlebihan secepat yang mungkin. Sila cuba sebentar lagi.",
-    "tNC": "Terma dan Syarat",
-    "rescheduleAppointment": "Jadualkan Semula Janji Temu",
-    "appointmentUpdate": "Tarikh janji temu anda telah dikemaskini.",
-    "exGratiaAgreementTitle": "Persetujuan Ex-gratia",
-    "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi."
+    "termsAndConditionTitle": "Terma dan Syarat",
+    "rescheduleAppointmentTitle": "Jadualkan Semula Janji Temu"
     //Overvoltage Claim Translation End
 
   },

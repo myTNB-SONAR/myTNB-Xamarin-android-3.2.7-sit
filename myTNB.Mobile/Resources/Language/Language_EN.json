@@ -742,7 +742,7 @@
     "findUs": "Find Us",
     "callUs": "Call Us",
     "feedback": "Submit Feedback",
-    "enquiry": "Submit Enquiry",
+    "enquiry": "Submit & Track Enquiry",
     "changeLanguage": "Tukar kepada Bahasa Malaysia",
     "applicationStatus": "Application Status"
   },
@@ -1063,7 +1063,7 @@
     "mobileHint": "Mobile Number",
     "thankYouTitle": "Thank you for your enquiry!",
     "thankYouDescription": "We’ll get back to you soon. In the meantime, stay updated by tracking your enquiry status.",
-    "serviceNoTitle": "SERVICE REQUEST NUMBER",
+    "serviceNoTitle": "Service Request Number",
     "backHomeButton": "Back to Home",
     "submittedEnquiryTitle": "Submitted Enquiry",
     "enquiryDetailsTitle": "Enquiry Details",
@@ -1165,10 +1165,10 @@
     "documentPdf": "Document",
 
     //Overvoltage Claim Translation Start
-    "leaveDialouge": "Leave this page?",
-    "leaveDialougeMessage": "You will lose all changes made since your last save. Press Yes to continue, or Cancel to stay on the current page.",
-    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequest": "Thank you for your request!",
-    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent": "We’ll get back to you soon. In the meantime, stay updated by tracking your submitted enquiry status.",
+    "leaveThisPage": "Leave this page?",
+    "leaveThisPageDescription": "You will lose all changes made since your last save. Press Yes to continue, or Cancel to stay on the current page.",
+    "thankYouForYourRequest": "Thank you for your request!",
+    "thankYouForYourRequestDescription": "We’ll get back to you soon. In the meantime, stay updated by tracking your submitted enquiry status.",
     "thankYouForYourEnquiry": "Your enquiry has been cancelled.",
     "thankYouForYourEnquiryDescription": "Your enquiry for overvoltage claim request has been successfully cancelled.",
     "thankYouForYourAppointment": "Your appointment has been cancelled.",
@@ -1177,11 +1177,12 @@
     "thankYouForYourAgreeDescription": "To proceed with payment, please submit the required payment information on the submitted enquiry page.",
     "thankYouForYourDisagree": "Your negotiation request has been submitted.",
     "thankYouForYourDisagreeDescription": "We'll get back to you soon. In the meantime, stay updated by tracking your submitted enquiry status.",
-    "proccedToPaymentInformation": "Proceed to Payment Infomation", //button name
+    "proccedToPaymentInformation": "Proceed to Payment Information", //button name
     "setNewAppointment": "Set New Appointment", //button name
     "appointmentSet": "Appointment Set!",
+    "appointmentUpdate": "Your appointment date has been updated.",
     "appointmentSetDescription": "Thank you! Your appointment is confirmed with the details below.",
-    "serviceReqNum": "SERVICE REQUEST NUMBER",
+    "serviceReqNum": "Service Request Number",
     "dateTitle": "APPOINTMENT DATE",
     "technicianName": "TECHNICIAN NAME",
     "incidentAddress": "INCIDENT ADDRESS",
@@ -1196,21 +1197,20 @@
     "negotiationRequestTitle": "Negotiation Request",
     "compensationAgreementTitle": "Compensation Agreement",
     "updatePaymentDetailsTitle": "Update Payment Details",
+    "exGratiaAgreementTitle": "Ex-gratia Agreement",
+    "defaultErrorMessage": "Sorry, this is not working right now. Please try again later.",
     "overVoltageClaimIsCurrentlyNotEnabledForAccountTitle": "Overvoltage Claim is currently not enabled for ",
     "overVoltageClaimIsCurrentlyNotEnabledForAccountDescription": "The selected account number is currently not enabled for Overvoltage Claim via myTNB. Please contact our TNB CareLine at 1300-88-5454 or email us at tnbcareline@tnb.com.my or visit Kedai Tenaga.",
-    "Gotit": "Got it!",
     "currentlyNotEnabledForMelakaTitle": "Currently not enabled for ",
+    "Gotit": "Got it!",
     "overVoltageMaintenanceLabel": "Overvoltage Claim service is currently under maintenance.",
     "overVoltageMaintenanceTitle": "We'll be back soon.",
     "overVoltageMaintenanceDescription": "Sorry, Overvoltage Claim service is currently under maintenance. Please check back later.",
     "overVoltageClaimtemproryUnavailable": "Overvoltage Claim service temporarily unavailable",
     "overVoltageClaimtemproryUnavailableTitle": "Service temporarily unavailable",
     "overVoltageClaimtemproryUnavailableDescription": "We're working to restore Overvoltage Claim service as quickly as possible. Please check back soon.",
-    "tNC": "Terms and Conditions",
-    "rescheduleAppointment": "Reschedule Appointment",
-    "appointmentUpdate": "Your appointment date has been updated.",
-    "exGratiaAgreementTitle": "Ex-gratia Agreement",
-    "defaultErrorMessage": "Sorry, this is not working right now. Please try again later."
+    "termsAndConditionTitle": "Terms and Conditions",
+    "rescheduleAppointmentTitle": "Reschedule Appointment"
     //Overvoltage Claim Translation End
 
   },
