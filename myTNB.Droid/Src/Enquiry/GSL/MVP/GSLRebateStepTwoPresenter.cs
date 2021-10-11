@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.Enquiry.GSL.MVP
 {
@@ -18,13 +19,17 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public void OnInitialize()
         {
             OnInit();
+            this.view?.UpdateButtonState(false);
             this.view?.SetUpViews();
         }
 
         private void OnInit()
         {
-            this.rebateModel = new GSLRebateModel();
-            this.rebateModel.IncidentList = new List<GSLRebateIncidentModel>();
+            this.rebateModel = new GSLRebateModel
+            {
+                IncidentList = new List<GSLRebateIncidentModel>()
+            };
+            this.rebateModel.IncidentList.Add(new GSLRebateIncidentModel());
         }
 
         public void Start() { }
@@ -34,25 +39,71 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             this.rebateModel = model;
         }
 
-        public void SetIncidentData(GSLIncidentDateTimePicker picker, DateTime dateTime)
+        public void SetIncidentData(GSLIncidentDateTimePicker picker, DateTime dateTime, int index)
         {
-            switch (picker)
+            if (this.rebateModel.IncidentList.Count > 0 && this.rebateModel.IncidentList.Count > index)
             {
-                case GSLIncidentDateTimePicker.INCIDENT_DATE:
-                    System.Console.WriteLine("INCIDENT_DATE** " + dateTime.ToShortDateString());
-                    break;
-                case GSLIncidentDateTimePicker.INCIDENT_TIME:
-                    System.Console.WriteLine("INCIDENT_TIME** " + dateTime.ToShortDateString());
-                    break;
-                case GSLIncidentDateTimePicker.RESTORATION_DATE:
-                    System.Console.WriteLine("RESTORATION_DATE** " + dateTime.ToShortDateString());
-                    break;
-                case GSLIncidentDateTimePicker.RESTORATION_TIME:
-                    System.Console.WriteLine("RESTORATION_TIME** " + dateTime.ToShortDateString());
-                    break;
-                default:
-                    break;
+                switch (picker)
+                {
+                    case GSLIncidentDateTimePicker.INCIDENT_DATE:
+                        this.rebateModel.IncidentList[index].IncidentDateTime = dateTime.ToString();
+                        break;
+                    case GSLIncidentDateTimePicker.INCIDENT_TIME:
+                        this.rebateModel.IncidentList[index].IncidentDateTime = dateTime.ToString();
+                        break;
+                    case GSLIncidentDateTimePicker.RESTORATION_DATE:
+                        this.rebateModel.IncidentList[index].RestorationDateTime = dateTime.ToString();
+                        break;
+                    case GSLIncidentDateTimePicker.RESTORATION_TIME:
+                        this.rebateModel.IncidentList[index].RestorationDateTime = dateTime.ToString();
+                        break;
+                    default:
+                        break;
+                }
             }
+            this.view?.UpdateButtonState(CheckDateTimeFields());
+        }
+
+        public void ResetIncidentData(GSLIncidentDateTimePicker picker, int index)
+        {
+            if (this.rebateModel.IncidentList.Count > 0 && this.rebateModel.IncidentList.Count > index)
+            {
+                switch (picker)
+                {
+                    case GSLIncidentDateTimePicker.INCIDENT_DATE:
+                        this.rebateModel.IncidentList[index].IncidentDateTime = string.Empty;
+                        break;
+                    case GSLIncidentDateTimePicker.INCIDENT_TIME:
+                        this.rebateModel.IncidentList[index].IncidentDateTime = string.Empty;
+                        break;
+                    case GSLIncidentDateTimePicker.RESTORATION_DATE:
+                        this.rebateModel.IncidentList[index].RestorationDateTime = string.Empty;
+                        break;
+                    case GSLIncidentDateTimePicker.RESTORATION_TIME:
+                        this.rebateModel.IncidentList[index].RestorationDateTime = string.Empty;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public bool CheckDateTimeFields()
+        {
+            try
+            {
+                return this.rebateModel.IncidentList[0].IncidentDateTime.IsValid() && this.rebateModel.IncidentList[0].RestorationDateTime.IsValid();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                return false;
+            }
+        }
+
+        public GSLRebateModel GetGSLRebateModel()
+        {
+            return rebateModel;
         }
     }
 }

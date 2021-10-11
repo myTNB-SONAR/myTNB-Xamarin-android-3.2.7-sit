@@ -60,7 +60,7 @@
 			android:background="@color/white"
 			android:id="@+id/buttonLayout">
 			<Button
-				android:id="@+id/gslStepOnebtnNext"
+				android:id="@+id/gslStepTwobtnNext"
 				android:text="Next"
 				android:layout_width="match_parent"
 				android:layout_height="48dp"

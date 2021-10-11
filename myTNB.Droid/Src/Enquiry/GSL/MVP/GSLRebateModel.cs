@@ -18,10 +18,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
     public class GSLRebateIncidentModel
     {
-        public string IncidentDate { get; set; }
-        public string IncidentTime { get; set; }
-        public string RestorationDate { get; set; }
-        public string RestorationTime { get; set; }
+        public string IncidentDateTime { get; set; }
+        public string RestorationDateTime { get; set; }
     }
 
     public enum GSLLayoutType

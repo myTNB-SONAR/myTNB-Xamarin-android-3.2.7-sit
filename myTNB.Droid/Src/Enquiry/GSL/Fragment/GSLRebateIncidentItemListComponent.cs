@@ -2,8 +2,10 @@
 using System.Globalization;
 using Android.App;
 using Android.Content;
+using Android.Graphics.Drawables;
 using Android.Util;
 using Android.Widget;
+using AndroidX.Core.Content;
 using Google.Android.Material.TextField;
 using Java.Util;
 using myTNB_Android.Src.Base.Activity;
@@ -23,10 +25,12 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
         private readonly BaseAppCompatActivity mActivity;
         private readonly Context mContext;
         private GSLIncidentDateTimePicker activePicker;
-        private Action<GSLIncidentDateTimePicker, DateTime> selectedDateTime;
+        private Action<GSLIncidentDateTimePicker, DateTime, int> selectedDateTimeAction;
+        private Action<GSLIncidentDateTimePicker, int> resetDateTimeAction;
 
         private DateTime incidentDate;
         private DateTime restorationDate;
+        private int itemIndex;
 
         public GSLRebateIncidentItemListComponent(Context context, BaseAppCompatActivity activity) : base(context)
         {
@@ -74,13 +78,29 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
             TextViewUtils.SetMuseoSans300Typeface(incidentTitle);
             TextViewUtils.SetTextSize12(incidentTitle);
 
+            TextViewUtils.SetMuseoSans300Typeface(incidentDateLayout, incidentTimeLayout, restorationDateLayout, restorationTimeLayout);
+            TextViewUtils.SetMuseoSans300Typeface(txtIncidentDate, txtIncidentTime, txtRestorationDate, txtRestorationTime);
+            TextViewUtils.SetTextSize16(txtIncidentDate, txtIncidentTime, txtRestorationDate, txtRestorationTime);
+
             incidentDateLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+            incidentTimeLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+            restorationDateLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+            restorationTimeLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+
             incidentDateLayout.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+            incidentTimeLayout.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+            restorationDateLayout.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+            restorationTimeLayout.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+
             incidentDateLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.INCIDENT_DATE_HINT);
+            incidentTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.INCIDENT_TIME_HINT);
+            restorationDateLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_DATE_HINT);
+            restorationTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_TIME_HINT);
 
             txtIncidentDate.Focusable = false;
             txtIncidentTime.Focusable = false;
             txtRestorationDate.Focusable = false;
+            txtRestorationTime.Focusable = false;
 
             txtIncidentDate.Click += delegate
             {
@@ -96,18 +116,48 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
             {
                 OnClickDateInput(GSLIncidentDateTimePicker.RESTORATION_DATE);
             };
+
+            txtRestorationTime.Click += delegate
+            {
+                OnClickTimeInput(GSLIncidentDateTimePicker.RESTORATION_TIME);
+            };
         }
 
         private void OnClickDateInput(GSLIncidentDateTimePicker picker)
         {
-            activePicker = picker;
-            ShowDatePicker();
+            if (picker == GSLIncidentDateTimePicker.RESTORATION_DATE)
+            {
+                if (txtIncidentDate.Text.IsValid() && txtIncidentTime.Text.IsValid())
+                {
+                    activePicker = picker;
+                    ShowDatePicker();
+                }
+            }
+            else
+            {
+                activePicker = picker;
+                ShowDatePicker();
+            }
         }
 
         private void OnClickTimeInput(GSLIncidentDateTimePicker picker)
         {
-            activePicker = picker;
-            ShowTimePicker();
+            if (picker == GSLIncidentDateTimePicker.INCIDENT_TIME)
+            {
+                if (txtIncidentDate.Text.IsValid())
+                {
+                    activePicker = picker;
+                    ShowTimePicker();
+                }
+            }
+            else if (picker == GSLIncidentDateTimePicker.RESTORATION_TIME)
+            {
+                if (txtRestorationDate.Text.IsValid())
+                {
+                    activePicker = picker;
+                    ShowTimePicker();
+                }
+            }
         }
 
         private void ShowDatePicker()
@@ -133,8 +183,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                 Calendar calendar = Calendar.GetInstance(Locale.Default);
                 int hour = calendar.Get(CalendarField.HourOfDay);
                 int minute = calendar.Get(CalendarField.Minute);
-                bool is24HourView = true;
-                TimePickerDialog timePickerDialog = new TimePickerDialog(this.mActivity, this, hour, minute, is24HourView);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(this.mActivity, this, hour, minute, true);
                 timePickerDialog.Show();
             }
             catch (Exception e)
@@ -143,55 +192,86 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
             }
         }
 
+        public void SetItemIndex(int index)
+        {
+            itemIndex = index;
+        }
+
         public void OnDateSet(DatePicker view, int year, int month, int dayOfMonth)
         {
-            DateTime selectedDate = new DateTime(year, month + 1, dayOfMonth);
-            CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
-            System.Console.WriteLine("OnDateSet");
-            switch (activePicker)
+            try
             {
-                case GSLIncidentDateTimePicker.INCIDENT_DATE:
-                    System.Console.WriteLine("INCIDENT_DATE");
-                    incidentDate = selectedDate;
-                    txtIncidentDate.Text = selectedDate.ToString(GSLRebateConstants.DATE_FORMAT, dateCultureInfo);
-                    System.Console.WriteLine("incidentDate*** " + incidentDate);
-                    break;
-                case GSLIncidentDateTimePicker.INCIDENT_TIME:
-
-                    break;
-                case GSLIncidentDateTimePicker.RESTORATION_DATE:
-                    restorationDate = selectedDate;
-                    txtRestorationDate.Text = selectedDate.ToString(GSLRebateConstants.DATE_FORMAT, dateCultureInfo);
-                    break;
-                case GSLIncidentDateTimePicker.RESTORATION_TIME:
-
-                    break;
-                default:
-                    break;
+                DateTime selectedDate = new DateTime(year, month + 1, dayOfMonth);
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
+                switch (activePicker)
+                {
+                    case GSLIncidentDateTimePicker.INCIDENT_DATE:
+                        incidentDate = selectedDate;
+                        txtIncidentDate.Text = incidentDate.ToString(GSLRebateConstants.DATE_FORMAT, dateCultureInfo);
+                        txtIncidentTime.Text = string.Empty;
+                        ResetRestorationDateTime();
+                        break;
+                    case GSLIncidentDateTimePicker.RESTORATION_DATE:
+                        restorationDate = selectedDate;
+                        txtRestorationDate.Text = restorationDate.ToString(GSLRebateConstants.DATE_FORMAT, dateCultureInfo);
+                        txtRestorationTime.Text = string.Empty;
+                        break;
+                    default:
+                        break;
+                }
+                selectedDateTimeAction?.Invoke(activePicker, selectedDate, itemIndex);
             }
-            selectedDateTime?.Invoke(activePicker, selectedDate);
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnTimeSet(TimePicker view, int hourOfDay, int minute)
         {
-            switch (activePicker)
+            try
             {
-                case GSLIncidentDateTimePicker.INCIDENT_TIME:
-                    TimeSpan selectedTime = new TimeSpan(hourOfDay, minute, 0);
-                    incidentDate = incidentDate.Add(selectedTime);
-                    System.Console.WriteLine("incidentDate******* " + incidentDate);
-                    break;
-                case GSLIncidentDateTimePicker.RESTORATION_TIME:
-
-                    break;
-                default:
-                    break;
+                TimeSpan selectedTime = new TimeSpan(hourOfDay, minute, 0);
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
+                switch (activePicker)
+                {
+                    case GSLIncidentDateTimePicker.INCIDENT_TIME:
+                        incidentDate = incidentDate.Date + selectedTime;
+                        txtIncidentTime.Text = incidentDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
+                        selectedDateTimeAction?.Invoke(activePicker, incidentDate, itemIndex);
+                        ResetRestorationDateTime();
+                        break;
+                    case GSLIncidentDateTimePicker.RESTORATION_TIME:
+                        restorationDate = restorationDate.Date + selectedTime;
+                        txtRestorationTime.Text = restorationDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
+                        selectedDateTimeAction?.Invoke(activePicker, restorationDate, itemIndex);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
-        public void SetSelectedDateTimeAction(Action<GSLIncidentDateTimePicker, DateTime> dateTime)
+        public void SetSelectedDateTimeAction(Action<GSLIncidentDateTimePicker, DateTime, int> action)
         {
-            selectedDateTime = dateTime;
+            selectedDateTimeAction = action;
+        }
+
+        public void SetResetDateTimeValueAction(Action<GSLIncidentDateTimePicker, int> action)
+        {
+            resetDateTimeAction = action;
+        }
+
+        private void ResetRestorationDateTime()
+        {
+            restorationDate = new DateTime();
+            txtRestorationDate.Text = string.Empty;
+            txtRestorationTime.Text = string.Empty;
+            resetDateTimeAction?.Invoke(GSLIncidentDateTimePicker.RESTORATION_DATE, itemIndex);
         }
     }
 }

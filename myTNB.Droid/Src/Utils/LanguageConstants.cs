@@ -78,6 +78,9 @@
             internal static readonly string MOBILE_ERROR = "mobileReq";
             internal static readonly string FULL_NAME_ERROR = "ownerReq";
             internal static readonly string INCIDENT_DATE_HINT = "incidentDate";
+            internal static readonly string INCIDENT_TIME_HINT = "incidentTime";
+            internal static readonly string RESTORATION_DATE_HINT = "restorationDate";
+            internal static readonly string RESTORATION_TIME_HINT = "restorationTime";
         }
     }
 }

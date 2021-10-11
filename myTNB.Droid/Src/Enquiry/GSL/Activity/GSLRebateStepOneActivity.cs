@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -81,8 +80,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                 : Resource.Style.Theme_Dashboard);
 
             SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_HEADER_TITLE));
-            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
-            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             TextViewUtils.SetMuseoSans300Typeface(txtGSLTenantFullNameLayout, txtGSLTenantEmailLayout);
             TextViewUtils.SetMuseoSans300Typeface(txtRebatetType, selectorGSLTypeOfRebate);
@@ -356,9 +353,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         private void OnShowGSLRebateStepTwoActivity()
         {
             this.SetIsClicked(true);
-            Intent payment_activity = new Intent(this, typeof(GSLRebateStepTwoActivity));
-            payment_activity.PutExtra(GSLRebateConstants.REBATE_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetGSLRebateModel()));
-            StartActivity(payment_activity);
+            Intent stepTwoActivity = new Intent(this, typeof(GSLRebateStepTwoActivity));
+            stepTwoActivity.PutExtra(GSLRebateConstants.REBATE_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetGSLRebateModel()));
+            StartActivity(stepTwoActivity);
         }
     }
 }

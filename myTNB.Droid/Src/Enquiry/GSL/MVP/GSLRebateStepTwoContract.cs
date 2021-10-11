@@ -13,7 +13,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             /// </summary>
             void SetUpViews();
 
-
+            void UpdateButtonState(bool isEnabled);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -25,7 +25,13 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
             void SetRebateModel(GSLRebateModel model);
 
-            void SetIncidentData(GSLIncidentDateTimePicker picker, DateTime dateTime);
+            void SetIncidentData(GSLIncidentDateTimePicker picker, DateTime dateTime, int index);
+
+            void ResetIncidentData(GSLIncidentDateTimePicker picker, int index);
+
+            bool CheckDateTimeFields();
+
+            GSLRebateModel GetGSLRebateModel();
         }
     }
 }

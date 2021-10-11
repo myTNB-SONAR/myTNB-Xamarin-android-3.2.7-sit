@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Enquiry.GSL.Fragment;
@@ -20,6 +21,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
     {
         [BindView(Resource.Id.incidentViewList)]
         readonly LinearLayout incidentViewList;
+
+        [BindView(Resource.Id.gslStepTwobtnNext)]
+        Button gslStepTwobtnNext;
 
         private GSLRebateStepTwoContract.IUserActionsListener userActionsListener;
 
@@ -74,19 +78,70 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
 
         public void SetUpViews()
         {
+            SetTheme(TextViewUtils.IsLargeFonts
+                ? Resource.Style.Theme_DashboardLarge
+                : Resource.Style.Theme_Dashboard);
+
+            SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_HEADER_TITLE));
+
+            TextViewUtils.SetMuseoSans500Typeface(gslStepTwobtnNext);
+            TextViewUtils.SetTextSize16(gslStepTwobtnNext);
+
+            gslStepTwobtnNext.Text = Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.NEXT);
+
             GenerateDefaultIncident();
         }
 
         private void GenerateDefaultIncident()
         {
             GSLRebateIncidentItemListComponent incidentComponent = new GSLRebateIncidentItemListComponent(this, this);
+            incidentComponent.SetItemIndex(0);
             incidentComponent.SetSelectedDateTimeAction(GetSelectedDate);
+            incidentComponent.SetResetDateTimeValueAction(ResetDateTimeValue);
             incidentViewList.AddView(incidentComponent);
         }
 
-        private void GetSelectedDate(GSLIncidentDateTimePicker picker, DateTime dateTime)
+        private void GetSelectedDate(GSLIncidentDateTimePicker picker, DateTime dateTime, int index)
         {
-            this.userActionsListener.SetIncidentData(picker, dateTime);
+            this.userActionsListener.SetIncidentData(picker, dateTime, index);
+        }
+
+        private void ResetDateTimeValue(GSLIncidentDateTimePicker picker, int index)
+        {
+            this.userActionsListener.ResetIncidentData(picker, index);
+        }
+
+        public void UpdateButtonState(bool isEnabled)
+        {
+            gslStepTwobtnNext.Enabled = isEnabled;
+            gslStepTwobtnNext.Background = ContextCompat.GetDrawable(this, isEnabled ? Resource.Drawable.green_button_background :
+                Resource.Drawable.silver_chalice_button_background);
+        }
+
+        [OnClick(Resource.Id.gslStepTwobtnNext)]
+        public void ButtonNextOnClick(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+
+                if (this.userActionsListener.CheckDateTimeFields())
+                {
+                    OnShowGSLRebateStepThreeActivity();
+                }
+                else
+                {
+                    this.SetIsClicked(false);
+                }
+            }
+        }
+
+        private void OnShowGSLRebateStepThreeActivity()
+        {
+            this.SetIsClicked(true);
+            //Intent stepThreectivity = new Intent(this, typeof(GSLRebateStepThreeActivity));
+            //stepThreectivity.PutExtra(GSLRebateConstants.REBATE_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetGSLRebateModel()));
+            //StartActivity(stepThreectivity);
         }
     }
 }
