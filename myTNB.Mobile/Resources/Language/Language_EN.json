@@ -1193,7 +1193,8 @@
     "restorationDate": "Date of Restoration",
     "restorationTime": "Time of Restoration",
     "uploadDocumentTitle": "Upload Required Document",
-    "tenancyAgreementTitle": "Tenancy Agreement"
+    "tenancyAgreementTitle": "Tenancy Agreement",
+    "tenancyAgreementAttachmentDescription": "Maximum document size is 2MB. (JPG, JPEG, PNG, DOC, DOCX, XLS, XLSX & PDF formats only)"
   },
   "SubmitEnquiry_selector": {
     "enquiryType": [
@@ -2694,5 +2695,42 @@
     "titleSelectApplies": "Select all that applies",
     "tellusMore": "Tell us more (Optional)",
     "hinttellusMore": "characters left"
+  },
+  "GSL": {
+    "title": "Guaranteed Service Level",
+    "primaryCTA": "Got It!",
+    "secondaryCTA": "Proceed"
+  },
+  "GSL_selector": {
+    "gslInfo": [
+      {
+        "title": "What is Guaranteed Service Level (GSL)?",
+        "description": "Guaranteed Service Level (GSL) is our TNB customers Charters where we aim to provide the experience to you. There are five (5) types of GSL services available:<br><br>Types of GSL:",
+        "expandCollapseList": [
+          {
+            "title": "Limited Interuptions",
+            "description": "We’ll make sure that interruptions to your electricity are minimised. We’ll cover interruptions that last more than 4 hours which are not caused by natural disasters or weather-related incidents."
+          },
+          {
+            "title": "Quick Restoration Time",
+            "description": "We promise to restore your electricity as soon as we can during unplanned disruptions."
+          }
+        ]
+      },
+      {
+        "title": "How Can I Apply for Guaranteed Service Level (GSL)?",
+        "description": "We will guide you thoroughly on how to apply GSL by following our simple steps. Before start, please ensure that you have prepare all document required for our reference as below:<br><br>Documents Required:<br>1. Identity Card / Passports<br>2. Copy of Tenancy Agreement ( For Non- Account Owner)",
+        "expandCollapseList": [
+          {
+            "title": "Step 1",
+            "description": "You are required to choose type of GSL services that would like to request and attach all required documents that you have prepared and upload in the designated field and proceed with submission."
+          },
+          {
+            "title": "Step 2",
+            "description": "Please choose the desired Customer Accounts (CA) from the drop down menu that you wish to proceed with and select General Enquiry menu"
+          }
+        ]
+      }
+    ]
   }
 }
