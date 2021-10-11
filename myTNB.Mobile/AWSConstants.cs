@@ -65,7 +65,7 @@
 #endif
         }
 
-#if DEBUGs
+#if DEBUG
         internal const string Environment = Environment_DEV;
         internal const string XAPIKey = XAPIKey_DEV;
         public const string SaltKey = SaltKey_DEV;

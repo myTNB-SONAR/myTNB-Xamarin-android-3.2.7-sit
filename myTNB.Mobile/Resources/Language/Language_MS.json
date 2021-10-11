@@ -1176,7 +1176,25 @@
     "aboutMyBillTitle": "Berkaitan Bil Saya",
     "aboutMyBillDescription": "Saya ingin bertanya mengenai bil dan pembayaran.",
     "selectEnquiryType": "Pilih Jenis Pertanyaan",
-    "iNeedHelpWith": "SAYA PERLU BANTUAN MENGENAI"
+    "iNeedHelpWith": "SAYA PERLU BANTUAN MENGENAI",
+    //GSL
+    "gslTitle": "MS_Guaranteed Service Level (GSL) Rebate",
+    "gslDescription": "MS_I want to claim for GSL Rebate",
+    "gslHeaderTitle": "MS_GSL Rebate",
+    "stepTitle": "MS_Step {0} of {1}",
+    "rebateClaimTitle": "MS_What type of rebate are you claiming?",
+    "rebateTypeTitle": "MS_Type of Rebate",
+    "tenantInfoTitle": "MS_Your Tenant Information",
+    "addIncidentCTA": "MS_Add New Incident",
+    "incidentInformationTitle": "MS_Incident Information",
+    "incidentTitle": "MS_Incident {0}",
+    "incidentDate": "MS_Date of Incident",
+    "incidentTime": "MS_Time of Incident",
+    "restorationDate": "MS_Date of Restoration",
+    "restorationTime": "MS_Time of Restoration",
+    "uploadDocumentTitle": "MS_Upload Required Document",
+    "tenancyAgreementTitle": "MS_Tenancy Agreement",
+    "tenancyAgreementAttachmentDescription": "MS_Maximum document size is 2MB. (JPG, JPEG, PNG, DOC, DOCX, XLS, XLSX & PDF formats only)"
   },
   "SubmitEnquiry_selector": {
     "enquiryType": [
@@ -1195,6 +1213,28 @@
       {
         "key": "04",
         "description": "Lain-lain"
+      }
+    ],
+    "rebateType": [
+      {
+        "key": "01",
+        "description": "MS_GSL 1: Frequency of interruption"
+      },
+      {
+        "key": "02",
+        "description": "MS_GSL 2: Frequency of interruption"
+      },
+      {
+        "key": "03",
+        "description": "MS_GSL 3: Frequency of interruption"
+      },
+      {
+        "key": "04",
+        "description": "MS_GSL 4: Frequency of interruption"
+      },
+      {
+        "key": "05",
+        "description": "MS_GSL 5: Frequency of interruption"
       }
     ]
   },
@@ -1962,14 +2002,14 @@
       }
     ]
   },
+  /*
 
 
 
+  Leave this space
 
 
-
-
-
+  */
   "SelectCreationDate": {
     "title": "Pilih Tarikh Permintaan",
     "apply": "Gunakan Pilihan",
@@ -2549,7 +2589,8 @@
       "enabled": true
     },
     "IsAboutMyBillEnquiryEnabled": true,
-    "IsUpdatePersonalDetailsEnquiryEnabled": true
+    "IsUpdatePersonalDetailsEnquiryEnabled": true,
+    "IsGSLRebateEnabled": true
   },
   "StatementPeriod": {
     "title": "Semak Penyata Akaun",
@@ -2654,5 +2695,43 @@
     "titleSelectApplies": "Sila pilih apa yang berkenaan",
     "tellusMore": "Berikan butiran penuh (Jika ada)",
     "hinttellusMore": "baki aksara"
+  },
+
+  "GSL": {
+    "title": "Guaranteed Service Level",
+    "primaryCTA": "Got It!",
+    "secondaryCTA": "Proceed"
+  },
+  "GSL_selector": {
+    "gslInfo": [
+      {
+        "title": "What is Guaranteed Service Level (GSL)?",
+        "description": "Guaranteed Service Level (GSL) is our TNB customers Charters where we aim to provide the experience to you. There are five (5) types of GSL services available:<br><br>Types of GSL:",
+        "expandCollapseList": [
+          {
+            "title": "Limited Interuptions",
+            "description": "We’ll make sure that interruptions to your electricity are minimised. We’ll cover interruptions that last more than 4 hours which are not caused by natural disasters or weather-related incidents."
+          },
+          {
+            "title": "Quick Restoration Time",
+            "description": "We promise to restore your electricity as soon as we can during unplanned disruptions."
+          }
+        ]
+      },
+      {
+        "title": "How Can I Apply for Guaranteed Service Level (GSL)?",
+        "description": "We will guide you thoroughly on how to apply GSL by following our simple steps. Before start, please ensure that you have prepare all document required for our reference as below:<br><br>Documents Required:<br>1. Identity Card / Passports<br>2. Copy of Tenancy Agreement ( For Non- Account Owner)",
+        "expandCollapseList": [
+          {
+            "title": "Step 1",
+            "description": "You are required to choose type of GSL services that would like to request and attach all required documents that you have prepared and upload in the designated field and proceed with submission."
+          },
+          {
+            "title": "Step 2",
+            "description": "Please choose the desired Customer Accounts (CA) from the drop down menu that you wish to proceed with and select General Enquiry menu"
+          }
+        ]
+      }
+    ]
   }
 }
