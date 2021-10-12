@@ -120,6 +120,7 @@ namespace myTNB.Mobile
         public struct PushNotificationTypes
         {
             public const string DBR_Owner = "DBROWNER";
+            public const string DBR_NonOwner = "DBRNONOWNER";
             public const string APPLICATIONSTATUS = "APPLICATIONSTATUS";
         }
 

@@ -8,7 +8,6 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
     <IntermediateOutputPath>obj\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</IntermediateOutputPath>
     <Optimize>true</Optimize>
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
@@ -41,21 +40,19 @@
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0</OutputPath>
-  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="API\Managers\FeatureInfo\" />
-    <Folder Include="API\Models\Feature Info\" />
     <Folder Include="Business\Managers\" />
     <Folder Include="Resources\" />
     <Folder Include="Resources\TnC\" />
     <Folder Include="Resources\FAQ\" />
     <Folder Include="Resources\Language\" />
     <Folder Include="Resources\Country\" />
+    <Folder Include="API\" />
+    <Folder Include="API\Managers\" />
+    <Folder Include="API\Models\" />
     <Folder Include="API\Base\" />
     <Folder Include="API\Models\Application Status\" />
     <Folder Include="API\Services\" />
