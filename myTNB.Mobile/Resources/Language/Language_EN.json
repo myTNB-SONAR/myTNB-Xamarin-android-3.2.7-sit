@@ -1178,13 +1178,13 @@
     "selectEnquiryType": "Select Enquiry Type",
     "iNeedHelpWith": "I NEED HELP WITH",
     //GSL
-    "gslTitle": "Guaranteed Service Level (GSL) Rebate",
+    "gslTitle": "Guaranteed Service Level (GSL)",
     "gslDescription": "I want to claim for GSL Rebate",
     "gslHeaderTitle": "GSL Rebate",
     "stepTitle": "Step {0} of {1}",
-    "rebateClaimTitle": "What type of rebate are you claiming?",
-    "rebateTypeTitle": "Type of Rebate",
-    "tenantInfoTitle": "Your Tenant Information",
+    "rebateClaimTitle": "What type of rebates are you claiming?",
+    "rebateTypeTitle": "Type of Rebates",
+    "tenantInfoTitle": "Your Tenancy Information",
     "addIncidentCTA": "Add New Incident",
     "incidentInformationTitle": "Incident Information",
     "incidentTitle": "Incident {0}",
@@ -1194,7 +1194,7 @@
     "restorationTime": "Time of Restoration",
     "uploadDocumentTitle": "Upload Required Document",
     "tenancyAgreementTitle": "Tenancy Agreement",
-    "tenancyAgreementAttachmentDescription": "Maximum document size is 2MB. (JPG, JPEG, PNG, DOC, DOCX, XLS, XLSX & PDF formats only)"
+    "tenancyAgreementAttachmentDescription": "Maximum document size is 2MB (PDF, JPG, JPEG, PNG, DOC, DOCX, XLS or XLSX formats only)"
   },
   "SubmitEnquiry_selector": {
     "enquiryType": [
@@ -1218,23 +1218,23 @@
     "rebateType": [
       {
         "key": "01",
-        "description": "GSL 1: Frequency of interruption"
+        "description": "GSL 1: Frequency of Interruptions"
       },
       {
         "key": "02",
-        "description": "GSL 2: Frequency of interruption"
+        "description": "GSL 2: Restoration Time"
       },
       {
         "key": "03",
-        "description": "GSL 3: Frequency of interruption"
+        "description": "GSL 3: Service Connection Installation"
       },
       {
         "key": "04",
-        "description": "GSL 4: Frequency of interruption"
+        "description": "GSL 4: Meter Installation"
       },
       {
         "key": "05",
-        "description": "GSL 5: Frequency of interruption"
+        "description": "GSL 5: Disconnection Procedures"
       }
     ]
   },
@@ -2697,37 +2697,65 @@
     "hinttellusMore": "characters left"
   },
   "GSL": {
-    "title": "Guaranteed Service Level",
-    "primaryCTA": "Got It!",
+    "title": "Guaranteed Service Level (GSL)",
+    "primaryCTA": "Back",
     "secondaryCTA": "Proceed"
   },
   "GSL_selector": {
     "gslInfo": [
       {
-        "title": "What is Guaranteed Service Level (GSL)?",
-        "description": "Guaranteed Service Level (GSL) is our TNB customers Charters where we aim to provide the experience to you. There are five (5) types of GSL services available:<br><br>Types of GSL:",
+        "title": "What is a Guaranteed Service Level (GSL)?",
+        "description": "The Guaranteed Service Level (GSL) is our promise to our customers to meet minimum standard requirements. We are here to make your life brighter by providing your electricity supply in a timely and efficient manner.<br><br>Types of GSL:",
         "expandCollapseList": [
           {
-            "title": "Limited Interuptions",
-            "description": "We’ll make sure that interruptions to your electricity are minimised. We’ll cover interruptions that last more than 4 hours which are not caused by natural disasters or weather-related incidents."
+            "title": "Frequency of Interruptions",
+            "description": "We’ll make sure that interruptions to your electricity is minimised."
           },
           {
-            "title": "Quick Restoration Time",
-            "description": "We promise to restore your electricity as soon as we can during unplanned disruptions."
+            "title": "Restoration Time",
+            "description": "We promise to restore your electricity as soon as we can for unplanned disruptions."
+          },
+          {
+            "title": "Service Connection Installation",
+            "description": "We’ll make sure that you receive your electricity connection as quickly and efficiently as we can."
+          },
+          {
+            "title": "Meter Installation",
+            "description": "After you’ve paid your deposit, we’ll make sure that your meter is installed."
+          },
+          {
+            "title": "Disconnection Procedures",
+            "description": "In the event of a disconnection, the execution will be carried out in accordance to the applicable legislation or disconnection procedures."
           }
         ]
       },
       {
-        "title": "How Can I Apply for Guaranteed Service Level (GSL)?",
-        "description": "We will guide you thoroughly on how to apply GSL by following our simple steps. Before start, please ensure that you have prepare all document required for our reference as below:<br><br>Documents Required:<br>1. Identity Card / Passports<br>2. Copy of Tenancy Agreement ( For Non- Account Owner)",
+        "title": "How can I claim for a Guaranteed Service Level (GSL) rebate?",
+        "description": "We will guide you thoroughly on how to claim GSL rebates by following our simple steps. Before you start, please ensure that you have prepared all documents required for our reference as below:<br><br>Documents Required:<br>1. Identity Card / Passport<br>2. Copy of Tenancy Agreement (For Non- Account Owner)",
         "expandCollapseList": [
           {
             "title": "Step 1",
-            "description": "You are required to choose type of GSL services that would like to request and attach all required documents that you have prepared and upload in the designated field and proceed with submission."
+            "description": "Choose an account from the drop-down list, then click on \"Guaranteed Service Level (GSL) Rebate\""
           },
           {
             "title": "Step 2",
-            "description": "Please choose the desired Customer Accounts (CA) from the drop down menu that you wish to proceed with and select General Enquiry menu"
+            "description": "Identify and select the type of rebate to claim. For tenants, fill in the contact details. Then click \"Proceed\""
+          },
+          {
+            "title": "Step 3",
+            "description": "Select the date and time of the incident, then click \"Next\". (You can add more incidents if needed.)"
+          },
+          {
+            "title": "Step 4",
+            "description": "Download & sign the GSL Application Form. Then, upload it together with your other supporting documents and click \"Next\"."
+          },
+          {
+            "title": "Step 5",
+            "description": "Review and confirm your contact details, then proceed to submit."
+          },
+          {
+            "title": "Step 6",
+            "description": "You may view the status of your claims on the \"View Submitted Enquiry\" page."
           }
         ]
       }

@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Gms.Common.Apis;
 using Android.Graphics;
 using Android.Media;
+using Android.Util;
 using AndroidX.Core.App;
 using Firebase.Messaging;
 using myTNB_Android.Src.Database.Model;
@@ -54,19 +55,25 @@ namespace myTNB_Android.Src.Firebase.Services
             {
                 message = remoteMessage.GetNotification().Body;
             }
-
-            UserSessions.SetNotification(remoteData["Type"], remoteData["EventId"], remoteData["RequestTransId"]);
-            SendNotification(title, message);
-            if (remoteData.ContainsKey("Badge") && int.TryParse(remoteData["Badge"], out int count))
+            try
             {
-                if (count <= 0)
+                UserSessions.SetNotification(remoteData["Type"], remoteData["EventId"], remoteData["RequestTransId"]);
+                SendNotification(title, message);
+                if (remoteData.ContainsKey("Badge") && int.TryParse(remoteData["Badge"], out int count))
                 {
-                    ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+                    if (count <= 0)
+                    {
+                        ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+                    }
+                    else
+                    {
+                        ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
+                    }
                 }
-                else
-                {
-                    ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
-                }
+            }
+            catch (Exception e)
+            {
+                Log.Debug("ERROR", e.Message);
             }
         }
 
@@ -114,7 +121,7 @@ namespace myTNB_Android.Src.Firebase.Services
                         (NotificationManager)GetSystemService(Context.NotificationService);
 
                 notificationManager.Notify(0, notificationBuilder.Build());
-            }           
+            }
         }
     }
 }

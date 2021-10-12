@@ -10,5 +10,7 @@
         public bool IsHeader { set; get; }
         public bool IsFooter { set; get; }
         public bool IsSitecore { set; get; }
+        public bool ShouldTrack { set; get; }
+        public string DynatraceTag { set; get; }
     }
 }
