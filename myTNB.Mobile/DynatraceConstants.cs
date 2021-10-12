@@ -128,7 +128,45 @@
 
             public struct CTAs
             {
+                public struct Home
+                {
+                    public const string Home_Banner = "App_Action_Home_BRBanner";
+                }
 
+                public struct BillRedesignComms
+                {
+                    public const string View_Bill = "App_Action_NewBill_ViewYourBills";
+                }
+
+                public struct Bill
+                {
+                    public const string View_Bill = "App_Action_ViewBill_Arrow";
+                    public const string View_Account_Statement = "App_Action_Bill_AccountStatementIcon";
+                }
+
+                public struct StatementPeriod
+                {
+                    public const string Past_3_Months = "App_Action_ViewAccountStatement_Past3Months";
+                    public const string Past_6_Months = "App_Action_ViewAccountStatement_Past6Months";
+                    public const string View_Account_Statement = "App_Action_AccountStatement_View AccountStatement";
+                }
+
+                public struct BillFilter
+                {
+                    public const string All = "App_Action_BRViewFilter_All";
+                    public const string Advice = "App_Action_BRViewFilter_Advice";
+                    public const string Bills = "App_Action_BRViewFilter_Bills";
+                    public const string Payments = "App_Action_BRViewFilter_Payments";
+                }
+
+                public struct Notifications
+                {
+                    public const string Update = "App_Action_InAppPreGTM_UpdateNow";
+                    public const string Discovery_Comms_Owner = "Push_Action_DiscoveryOwner_Banner";
+                    public const string Combined_Comms_Owner = "Push_Action_DiscoveryOwner_Banner";
+                    public const string Combined_Comms_Non_Owner = "Push_Action_CombinedDiscoveryNonOwner_Banner";
+                    public const string Combined_Comms_In_App_Non_Owner = "App_Action_InAppCombinedNonOwner_Here";
+                }
             }
         }
     }

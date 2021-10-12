@@ -655,7 +655,7 @@
     "whereIsMyAccountTitle": "Di mana nombor akaun saya?",
     "whereIsMyAccountDetails": "Nombor akaun 12 digit boleh didapati di bahagian atas sebelah kiri bil elektrik anda.",
     "whereIsMyAccountTitleV2": "Di mana nombor akaun saya?",
-    "whereIsMyAccountDetailsV2": "Nombor akaun 12 digit boleh didapati si sudut kanan bil kertas bulanan anda.",
+    "whereIsMyAccountDetailsV2": "Nombor akaun 12 digit boleh didapati di sudut kanan bil kertas bulanan anda.",
     "selectAccountType": "Pilih Jenis Akaun",
     "residential": "Kediaman",
     "commercial": "Komersil",
@@ -1144,7 +1144,7 @@
     "imageCopyIC": "-/media/myTNBapp/SubmitEnquiry/imgIcCopy2x.png",
     "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x2.png",
     "accNumberDetails": "Nombor akaun 12 digit boleh didapati di sudut kiri atas bil kertas bulanan anda.",
-    "accNumberDetailsV2": "Nombor akaun 12 digit boleh didapati si sudut kanan bil kertas bulanan anda.",
+    "accNumberDetailsV2": "Nombor akaun 12 digit boleh didapati di sudut kanan bil kertas bulanan anda.",
     "updateNoOwnerTitle": "Maklumat mana yang ingin anda kemaskini?",
     "newAccNoOwnerName": "Nama baharu akaun",
     "newAccNoOwnerNameReq": "Nama akaun diperlukan",
@@ -1176,7 +1176,25 @@
     "aboutMyBillTitle": "Berkaitan Bil Saya",
     "aboutMyBillDescription": "Saya ingin bertanya mengenai bil dan pembayaran.",
     "selectEnquiryType": "Pilih Jenis Pertanyaan",
-    "iNeedHelpWith": "SAYA PERLU BANTUAN MENGENAI"
+    "iNeedHelpWith": "SAYA PERLU BANTUAN MENGENAI",
+    //GSL
+    "gslTitle": "Jaminan Tahap Perkhidmatan (GSL)",
+    "gslDescription": "MS_I want to claim for GSL Rebate",
+    "gslHeaderTitle": "Rebat GSL",
+    "stepTitle": "Langkah {0} dari {1}",
+    "rebateClaimTitle": "Jenis rebat apa yang ingin anda tuntut?",
+    "rebateTypeTitle": "Jenis Rebat",
+    "tenantInfoTitle": "Maklumat Penyewaan Anda",
+    "addIncidentCTA": "MS_Add New Incident",
+    "incidentInformationTitle": "Maklumat Insiden",
+    "incidentTitle": "Insiden {0}",
+    "incidentDate": "Tarikh Insiden",
+    "incidentTime": "Masa Insiden",
+    "restorationDate": "Tarikh Pemulihan",
+    "restorationTime": "Masa Insiden",
+    "uploadDocumentTitle": "Muat Naik Dokumen Sokongan",
+    "tenancyAgreementTitle": "Perjanjian Penyewaan",
+    "tenancyAgreementAttachmentDescription": "Saiz maksimum dokumen adalah 2MB (format PDF, JPG, JPEG, PNG, DOC, DOCX, XLS & XLSX sahaja)"
   },
   "SubmitEnquiry_selector": {
     "enquiryType": [
@@ -1195,6 +1213,28 @@
       {
         "key": "04",
         "description": "Lain-lain"
+      }
+    ],
+    "rebateType": [
+      {
+        "key": "01",
+        "description": "GSL 1: Kekerapan Gangguan"
+      },
+      {
+        "key": "02",
+        "description": "GSL 2: Tempoh Pemulihan Bekalan"
+      },
+      {
+        "key": "03",
+        "description": "GSL 3: Perkhidmatan Sambungan Bekalan"
+      },
+      {
+        "key": "04",
+        "description": "GSL 4: Pemasangan Meter"
+      },
+      {
+        "key": "05",
+        "description": "GSl 5:  Prosedur Pemotongan Bekalan"
       }
     ]
   },
@@ -1253,7 +1293,7 @@
     "whereToGetThisNumberTitleCA": "Di manakah boleh saya perolehi nombor ini?",
     "whereToGetThisNumberMessageCA": "Nombor akaun elektrik anda juga tertera pada bahagian atas kiri bil kertas bulanan anda.",
     "whereToGetThisNumberTitleCAV2": "Di manakah boleh saya perolehi nombor ini?",
-    "whereToGetThisNumberMessageCAV2": "Nombor akaun 12 digit boleh didapati si sudut kanan bil kertas bulanan anda.",
+    "whereToGetThisNumberMessageCAV2": "Nombor akaun 12 digit boleh didapati di sudut kanan bil kertas bulanan anda.",
     "whereToGetThisNumberTitle": "Di manakah boleh saya perolehi nombor ini?",
     "whereToGetThisNumberMessage": "Anda boleh memperolehi <b>{0}</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’ dan juga boleh diperolehi dengan menghubungi TNB CareLine."
   },
@@ -1962,14 +2002,14 @@
       }
     ]
   },
+  /*
 
 
 
+  Leave this space
 
 
-
-
-
+  */
   "SelectCreationDate": {
     "title": "Pilih Tarikh Permintaan",
     "apply": "Gunakan Pilihan",
@@ -2549,7 +2589,8 @@
       "enabled": true
     },
     "IsAboutMyBillEnquiryEnabled": true,
-    "IsUpdatePersonalDetailsEnquiryEnabled": true
+    "IsUpdatePersonalDetailsEnquiryEnabled": true,
+    "IsGSLRebateEnabled": true
   },
   "StatementPeriod": {
     "title": "Semak Penyata Akaun",
@@ -2654,5 +2695,70 @@
     "titleSelectApplies": "Sila pilih apa yang berkenaan",
     "tellusMore": "Berikan butiran penuh (Jika ada)",
     "hinttellusMore": "baki aksara"
+  },
+  "GSL": {
+    "title": "Jaminan Tahap Perkhidmatan (GSL)",
+    "primaryCTA": "Kembali",
+    "secondaryCTA": "Teruskan"
+  },
+  "GSL_selector": {
+    "gslInfo": [
+      {
+        "title": "Apakah Jaminan Tahap Perkhidmatan (GSL)?",
+        "description": "Jaminan Tahap Perkhidmatan (GSL) adalah akujanji kepada para pelanggan kami untuk memenuhi standard perkhidmatan minima. Kami bersedia untuk menyinari kehidupan anda dengan memberikan bekalan elektrik yang cekap dan bertepatan.<br><br>Jenis-jenis GSL:",
+        "expandCollapseList": [
+          {
+            "title": "Kekerapan Gangguan",
+            "description": "Kami akan memastikan gangguan kepada bekalan elektrik anda adalah minima."
+          },
+          {
+            "title": "Tempoh Pemulihan Bekalan",
+            "description": "Kami akan memastikan bekalan elektrik anda dipulihkan secepat mungkin untuk gangguan yang tidak dirancang."
+          },
+          {
+            "title": "Pemasangan Penyambungan Bekalan",
+            "description": "Kami akan memastikan penyambungan bekalan elektrik anda dilakukan dengan pantas dan cekap."
+          },
+          {
+            "title": "Pemasangan Meter",
+            "description": "Kami akan memastikan meter anda dipasang setelah anda membuat bayaran deposit."
+          },
+          {
+            "title": "Prosedur Pemotongan Bekalan",
+            "description": "Untuk sebarang Pemotongan bekalan, prosesnya adalah mengikut prosedur atau undang-undang terpakai."
+          }
+        ]
+      },
+      {
+        "title": "Bagaimana cara untuk memohon rebat Jaminan Tahap Perkhidmatan (GSL)?",
+        "description": "Berikut adalah panduan mudah untuk memohon rebat GSL. Sebelum anda mulakan, pastikan anda telah menyediakan semua dokumen yang disenaraikan di bawah untuk rujukan kami:<br><br>Dokumen yang diperlukan:<br>1. Kad Pengenalan / Passport<br>2. Salinan Perjanjian Sewaan (Untuk Bukan Pemilik Akaun)",
+        "expandCollapseList": [
+          {
+            "title": "Langkah 1",
+            "description": "Pilih akaun dari senarai, kemudian klik pada \"Jaminan Tahap Perkhidmatan (GSL) Rebate\""
+          },
+          {
+            "title": "Langkah 2",
+            "description": "Kenal pasti dan pilih jenis rebat untuk dituntut. Bagi penyewa, lengkapkan maklumat untuk dihubungi. Kemudian, klik \"Teruskan\""
+          },
+          {
+            "title": "Langkah 3",
+            "description": "Pilih tarikh dan waktu insiden, klik \"Seterusnya\". (Jika perlu, anda boleh tambah insiden)"
+          },
+          {
+            "title": "Langkah 4",
+            "description": "Muat turun & tandatangani Borang Aplikasi GSL. Kemudian, muat naik bersama dengan dokumen sokongan anda dan klik \"Seterusnya\"."
+          },
+          {
+            "title": "Langkah 5",
+            "description": "Semak dan sahkan maklumat diri, seterusnya klik \"Hantar\"."
+          },
+          {
+            "title": "Langkah 6",
+            "description": "Semak status permohonan anda di \"Lihat Pertanyaan yang Dihantar\"."
+          }
+        ]
+      }
+    ]
   }
 }
