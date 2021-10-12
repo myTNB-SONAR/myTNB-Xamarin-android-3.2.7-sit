@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
@@ -10,6 +11,7 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Enquiry.GSL.Fragment;
 using myTNB_Android.Src.Enquiry.GSL.MVP;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.Enquiry.GSL.Activity
 {
@@ -19,6 +21,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
       , Theme = "@style/Theme.Enquiry")]
     public class GSLRebateStepTwoActivity : BaseToolbarAppCompatActivity, GSLRebateStepTwoContract.IView
     {
+        [BindView(Resource.Id.gslStepTwoPageTitle)]
+        TextView gslStepTwoPageTitle;
+
         [BindView(Resource.Id.incidentViewList)]
         readonly LinearLayout incidentViewList;
 
@@ -84,8 +89,12 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
 
             SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_HEADER_TITLE));
 
-            TextViewUtils.SetMuseoSans500Typeface(gslStepTwobtnNext);
+            TextViewUtils.SetMuseoSans500Typeface(gslStepTwoPageTitle, gslStepTwobtnNext);
+            TextViewUtils.SetTextSize12(gslStepTwoPageTitle);
             TextViewUtils.SetTextSize16(gslStepTwobtnNext);
+
+            var stepTitleString = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_STEP_TITLE), 2, 4);
+            gslStepTwoPageTitle.Text = stepTitleString;
 
             gslStepTwobtnNext.Text = Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.NEXT);
 
@@ -139,9 +148,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         private void OnShowGSLRebateStepThreeActivity()
         {
             this.SetIsClicked(true);
-            //Intent stepThreectivity = new Intent(this, typeof(GSLRebateStepThreeActivity));
-            //stepThreectivity.PutExtra(GSLRebateConstants.REBATE_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetGSLRebateModel()));
-            //StartActivity(stepThreectivity);
+            Intent stepThreectivity = new Intent(this, typeof(GSLRebateStepThreeActivity));
+            stepThreectivity.PutExtra(GSLRebateConstants.REBATE_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetGSLRebateModel()));
+            StartActivity(stepThreectivity);
         }
     }
 }

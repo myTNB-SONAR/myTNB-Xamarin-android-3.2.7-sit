@@ -10,12 +10,14 @@
         internal static readonly string BILL_DETAILS = "BillDetails";
         internal static readonly string BILL_FILTER = "BillFilter";
         internal static readonly string SUBMIT_ENQUIRY = "SubmitEnquiry";
+        internal static readonly string FEEDBACK_FORM = "FeedbackForm";
 
         internal struct Common
         {
             internal static readonly string GOT_IT = "gotIt";
             internal static readonly string NEXT = "next";
             internal static readonly string MOBILE_NO = "mobileNo";
+            internal static readonly string CANCEL = "cancel";
         }
 
         internal struct Error
@@ -81,6 +83,22 @@
             internal static readonly string INCIDENT_TIME_HINT = "incidentTime";
             internal static readonly string RESTORATION_DATE_HINT = "restorationDate";
             internal static readonly string RESTORATION_TIME_HINT = "restorationTime";
+            internal static readonly string GSL_INCIDENT_INFO_TITLE = "incidentInformationTitle";
+            internal static readonly string GSL_INCIDENT_ITEM_TITLE = "incidentTitle";
+            internal static readonly string GSL_UPLOAD_TITLE = "uploadDocumentTitle";
+            internal static readonly string GSL_UPLOAD_TA_TITLE = "tenancyAgreementTitle";
+            internal static readonly string GSL_UPLOAD_TA_DEC = "tenancyAgreementAttachmentDescription";
+            internal static readonly string UPLOAD_OWNER_IC = "ownerIcOwner";
+            internal static readonly string UPLOAD_ATTACH_DESC = "attachDescription";
+            internal static readonly string UPLOAD_IC_TOOLTIP = "icInfo";
+            internal static readonly string DOCUMENT_PDF = "documentPdf";
+        }
+
+        internal struct FeedbackForm
+        {
+            internal static readonly string TAKE_PHOTO = "takePhoto";
+            internal static readonly string CHOOSE_FROM_LIBRARY = "chooseFromLibrary";
+            internal static readonly string SELECT_OPTIONS = "selectOptions";
         }
     }
 }

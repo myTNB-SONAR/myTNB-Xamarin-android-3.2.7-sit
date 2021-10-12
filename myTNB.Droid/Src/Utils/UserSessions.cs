@@ -819,5 +819,17 @@ namespace myTNB_Android.Src.Utils
             editor.PutString(MobileConstants.SharePreferenceKey.AccessToken, string.Empty);
             editor.Apply();
         }
+
+        public static int GetUploadFileNameCounter(ISharedPreferences preferences)
+        {
+            return preferences.GetInt("UPLOAD_FILE_NAME_COUNTER", 0);
+        }
+
+        public static void SetUploadFileNameCounter(ISharedPreferences preferences, int counter)
+        {
+            ISharedPreferencesEditor editor = preferences.Edit();
+            editor.PutInt("UPLOAD_FILE_NAME_COUNTER", counter);
+            editor.Apply();
+        }
     }
 }

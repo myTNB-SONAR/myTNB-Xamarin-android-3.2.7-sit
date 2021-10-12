@@ -7,6 +7,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public string RebateType { get; set; }
         public GSLRebateTenantModel TenantInfo { get; set; }
         public List<GSLRebateIncidentModel> IncidentList { get; set; }
+        public GSLRebateDocumentModel Documents { get; set; }
     }
 
     public class GSLRebateTenantModel
@@ -20,6 +21,12 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
     {
         public string IncidentDateTime { get; set; }
         public string RestorationDateTime { get; set; }
+    }
+
+    public class GSLRebateDocumentModel
+    {
+        public string TenancyAgreement { get; set; }
+        public string OwnerIC { get; set; }
     }
 
     public enum GSLLayoutType
@@ -36,6 +43,13 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         INCIDENT_TIME,
         RESTORATION_DATE,
         RESTORATION_TIME,
+        NONE
+    }
+
+    public enum GSLDocumentType
+    {
+        TENANCY_AGREEMENT,
+        OWNER_IC,
         NONE
     }
 

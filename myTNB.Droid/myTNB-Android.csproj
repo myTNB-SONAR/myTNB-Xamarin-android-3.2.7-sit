@@ -6863,6 +6863,27 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\Activity\GSLRebateStepThreeActivity.cs" />
+    <AndroidResource Include="Resources\layout\GSLRebateStepThreeView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepThreeContract.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepThreePresenter.cs" />
+    <Compile Include="Src\Enquiry\Component\UploadDocumentItemListComponent.cs" />
+    <AndroidResource Include="Resources\layout\UploadDocumentItemListView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\Adapter\UploadDocumentItemAdapter.cs" />
+    <AndroidResource Include="Resources\layout\UploadDocumentItemAdapterImageView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\UploadDocumentItemAdapterEmptyView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -8420,6 +8441,8 @@
     <Folder Include="Src\Enquiry\GSL\Activity\" />
     <Folder Include="Src\Enquiry\GSL\MVP\" />
     <Folder Include="Src\Enquiry\GSL\Fragment\" />
+    <Folder Include="Src\Enquiry\Component\" />
+    <Folder Include="Src\Enquiry\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

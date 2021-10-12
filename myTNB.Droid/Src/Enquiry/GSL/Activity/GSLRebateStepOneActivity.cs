@@ -91,7 +91,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             TextViewUtils.SetTextSize12(gslStepOnePageTitle);
             TextViewUtils.SetTextSize16(txtRebateTypeTitle, txtGSLTenantFullName, txtGSLTenantEmail, selectorGSLTypeOfRebate, txtTenantInfoTitle, gslStepOnebtnNext);
 
-            var stepTitleString = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_STEP_TITLE), 1, 2);
+            var stepTitleString = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_STEP_TITLE), 1, 4);
             gslStepOnePageTitle.Text = stepTitleString;
 
             txtGSLTenantFullNameLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);

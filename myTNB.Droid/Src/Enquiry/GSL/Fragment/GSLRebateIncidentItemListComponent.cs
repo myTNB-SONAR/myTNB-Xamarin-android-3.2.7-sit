@@ -2,10 +2,8 @@
 using System.Globalization;
 using Android.App;
 using Android.Content;
-using Android.Graphics.Drawables;
 using Android.Util;
 using Android.Widget;
-using AndroidX.Core.Content;
 using Google.Android.Material.TextField;
 using Java.Util;
 using myTNB_Android.Src.Base.Activity;
@@ -96,6 +94,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
             incidentTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.INCIDENT_TIME_HINT);
             restorationDateLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_DATE_HINT);
             restorationTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_TIME_HINT);
+
+            gslIncidentItemTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_INCIDENT_INFO_TITLE);
+            incidentTitle.Text = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_INCIDENT_INFO_TITLE), this.itemIndex + 1);
 
             txtIncidentDate.Focusable = false;
             txtIncidentTime.Focusable = false;

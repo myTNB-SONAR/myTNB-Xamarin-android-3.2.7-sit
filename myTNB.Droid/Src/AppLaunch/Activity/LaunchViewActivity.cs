@@ -158,6 +158,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         }
                     }
                 }
+                UserSessions.SetUploadFileNameCounter(PreferenceManager.GetDefaultSharedPreferences(this), 1);
             }
             catch (Exception e)
             {
@@ -307,7 +308,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
-            
+
         }
 
         public async void ShowApplicationStatusDetails()
@@ -632,11 +633,11 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 StartActivity(notificationIntent);
             }
         }
-        
+
         public void ShowNotificationDetails()
-        { 
+        {
             var usrsession = UserSessions.Notification;
-            mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);            
+            mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);
         }
 
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details)
@@ -667,7 +668,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-       
+
         public void ShowNotificationCount(int count)
         {
             try
