@@ -8,6 +8,7 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using myTNB.Mobile;
+using myTNB_Android.Src.myTNBMenu.Models;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -15,6 +16,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
     {
         List<ManageBillDeliveryModel> ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
         ManageBillDeliveryContract.IView mView;
+
         //SMRregistrationApi api;
         public ManageBillDeliveryPresenter(ManageBillDeliveryContract.IView view)
         {
@@ -33,7 +35,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             }
         }
 
-        public List<ManageBillDeliveryModel> GenerateManageBillDeliveryList()
+        public List<ManageBillDeliveryModel> GenerateManageBillDeliveryList(AccountData selectedAccountData)
         {
             ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
             ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
@@ -48,8 +50,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription1"),
                 Image = "manage_bill_delivery_0"
             });
-            if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
-               && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
+
+            if (selectedAccountData != null && BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum))
             {
                 ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
                 {
@@ -67,6 +69,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     Image = "manage_bill_delivery_1"
                 });
             }
+
             ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
             {
                 Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle3"),

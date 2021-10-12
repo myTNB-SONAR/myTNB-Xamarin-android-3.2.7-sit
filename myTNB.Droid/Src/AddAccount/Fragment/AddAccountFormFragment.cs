@@ -188,16 +188,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 };
 
                 btnWhereIsMyAccountNo = rootView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
-                if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
-                    && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
-                {
-                    btnWhereIsMyAccountNo.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitleV2");
-                }
-                else
-                {
-                    btnWhereIsMyAccountNo.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
-                }
-                   
+                btnWhereIsMyAccountNo.Text = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitleV2") :
+                    Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
+
                 TextViewUtils.SetMuseoSans500Typeface(btnWhereIsMyAccountNo);
                 TextViewUtils.SetTextSize12(btnWhereIsMyAccountNo);
 
@@ -223,20 +216,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                             TextViewUtils.SetMuseoSans300Typeface(infoText);
                             TextViewUtils.SetTextSize16(titleText, infoText);
 
-                            if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
-                                && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
-                            {
-                                titleText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitleV2");
-                                infoText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetailsV2");
-                                img_register.SetImageResource(Resource.Drawable.img_register_acct_noV2);
-                            }
-                            else
-                            {
-                                titleText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
-                                infoText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
-                                img_register.SetImageResource(Resource.Drawable.img_register_acct_no);
-                            }
-                            
+                            titleText.Text = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitleV2") :
+                            Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
+
+                            infoText.Text = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetailsV2") :
+                            Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
+                            img_register.SetImageResource(BillRedesignUtility.Instance.IsAccountEligible ? Resource.Drawable.img_register_acct_noV2 : Resource.Drawable.img_register_acct_no);
                         }
                     }
                     dialogWhereMyAccountNo.Show();

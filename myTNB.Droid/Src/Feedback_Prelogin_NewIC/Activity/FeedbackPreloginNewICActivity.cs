@@ -457,7 +457,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
             StartActivity(generalEnquiry);
         }
-        
+
         public void ShowSelectAccount()
         {
             Intent supplyAccount = new Intent(this, typeof(FeedbackSelectAccountActivity));
@@ -530,7 +530,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     if (isAllowedToPass)
                     {
                         this.SetIsClicked(true);
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false,false);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false, false);
                     }
                     else
                     {
@@ -562,7 +562,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     if (isAllowedToPass)
                     {
                         this.SetIsClicked(true);
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false,true);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false, true);
                     }
                     else
                     {
@@ -592,7 +592,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     if (isAllowed)
                     {
                         this.SetIsClicked(true);
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), true,false);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), true, false);
                     }
                     else
                     {
@@ -659,30 +659,28 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             }
         }
 
-        public async void ShowWhereIsMyAcc()
+        public void ShowWhereIsMyAcc()
         {
-            string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
-
-            if (!base64Image.IsNullOrEmpty())
+            if (BillRedesignUtility.Instance.IsAccountEligible)
             {
-                var imageCache = Base64ToBitmap(base64Image);
-
-                if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
-              && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
-                {
-                    MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                    .SetHeaderImage(Resource.Drawable.img_register_acct_noV2)
                    .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo"))
                    .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberDetailsV2"))
                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                    .SetCTAaction(() => { this.SetIsClicked(false); })
                    .Build();
-                    whereisMyacc.Show();
-                }
-                else
+                whereisMyacc.Show();
+            }
+            else
+            {
+                string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
+                if (!base64Image.IsNullOrEmpty())
                 {
+                    var imageCache = Base64ToBitmap(base64Image);
+
                     MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                    .SetHeaderImageBitmap(imageCache)
+                   .SetHeaderImageBitmap(imageCache)
                    .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo"))
                    .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberDetails"))
                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
@@ -690,11 +688,10 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                    .Build();
                     whereisMyacc.Show();
                 }
-                   
-            }
-            else
-            {
-                this.SetIsClicked(false);
+                else
+                {
+                    this.SetIsClicked(false);
+                }
             }
         }
 
