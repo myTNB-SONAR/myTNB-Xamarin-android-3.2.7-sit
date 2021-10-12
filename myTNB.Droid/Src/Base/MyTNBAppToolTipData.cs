@@ -18,6 +18,7 @@ using Android.Util;
 using myTNB_Android.Src.Feedback_Prelogin_NewIC.Model;
 using myTNB_Android.Src.UpdatePersonalDetailStepOne.Model;
 using myTNB_Android.Src.UpdatePersonalDetailStepTwo.Model;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.Base
 {
@@ -226,17 +227,42 @@ namespace myTNB_Android.Src.Base
                 {
                     tooltipModel = new UnderstandTooltipModel();
                     tooltipModel.TooltipImage = null;
-                    tooltipModel.Title = baseActivity.GetLabelByLanguage("tooltiptitle1");
-                    List<string> itemList = baseActivity.GetLabelByLanguage("tooltipdesc1").Split('|').ToList();
-                    tooltipModel.ItemList = itemList;
-                    tooltipModelDataList.Add(tooltipModel);
+                    List<string> itemList = new List<string>();
+                    if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
+                            && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
+                    {
+                        tooltipModel.Title = baseActivity.GetLabelByLanguage("tooltiptitle1V2");
+                        itemList = baseActivity.GetLabelByLanguage("tooltipdesc1V2").Split('|').ToList();
+                        tooltipModel.ItemList = itemList;
+                        tooltipModelDataList.Add(tooltipModel);
+                    }
+                    else
+                    {
+                        tooltipModel.Title = baseActivity.GetLabelByLanguage("tooltiptitle1");
+                        itemList = baseActivity.GetLabelByLanguage("tooltipdesc1").Split('|').ToList();
+                        tooltipModel.ItemList = itemList;
+                        tooltipModelDataList.Add(tooltipModel);
+                    }
+                    
+                    
 
                     tooltipModel = new UnderstandTooltipModel();
                     tooltipModel.TooltipImage = null;
-                    tooltipModel.Title = baseActivity.GetLabelByLanguage("tooltiptitle2");
-                    itemList = baseActivity.GetLabelByLanguage("tooltipdesc2").Split('|').ToList();
-                    tooltipModel.ItemList = itemList;
-                    tooltipModelDataList.Add(tooltipModel);
+                    if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
+                        && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
+                    {
+                        tooltipModel.Title = baseActivity.GetLabelByLanguage("tooltiptitle2V2");
+                        itemList = baseActivity.GetLabelByLanguage("tooltipdesc2V2").Split('|').ToList();
+                        tooltipModel.ItemList = itemList;
+                        tooltipModelDataList.Add(tooltipModel);
+                    }
+                    else
+                    {
+                        tooltipModel.Title = baseActivity.GetLabelByLanguage("tooltiptitle2");
+                        itemList = baseActivity.GetLabelByLanguage("tooltipdesc2").Split('|').ToList();
+                        tooltipModel.ItemList = itemList;
+                        tooltipModelDataList.Add(tooltipModel);
+                    }
                 }
             }
             catch (Exception e)

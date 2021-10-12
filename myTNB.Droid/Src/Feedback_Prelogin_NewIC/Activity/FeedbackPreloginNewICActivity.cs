@@ -18,6 +18,7 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB;
+using myTNB.Mobile;
 using myTNB_Android.Src.Barcode.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
@@ -719,26 +720,39 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             }
         }
 
-        public async void ShowWhereIsMyAcc()
+        public void ShowWhereIsMyAcc()
         {
-            string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
-
-            if (!base64Image.IsNullOrEmpty())
+            if (BillRedesignUtility.Instance.IsAccountEligible)
             {
-                var imageCache = Base64ToBitmap(base64Image);
-
                 MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                 .SetHeaderImageBitmap(imageCache)
-                .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo"))
-                .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberDetails"))
-                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                .SetCTAaction(() => { this.SetIsClicked(false); })
-                .Build();
+                   .SetHeaderImage(Resource.Drawable.img_register_acct_noV2)
+                   .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo"))
+                   .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberDetailsV2"))
+                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                   .SetCTAaction(() => { this.SetIsClicked(false); })
+                   .Build();
                 whereisMyacc.Show();
             }
             else
             {
-                this.SetIsClicked(false);
+                string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
+                if (!base64Image.IsNullOrEmpty())
+                {
+                    var imageCache = Base64ToBitmap(base64Image);
+
+                    MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                   .SetHeaderImageBitmap(imageCache)
+                   .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo"))
+                   .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberDetails"))
+                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                   .SetCTAaction(() => { this.SetIsClicked(false); })
+                   .Build();
+                    whereisMyacc.Show();
+                }
+                else
+                {
+                    this.SetIsClicked(false);
+                }
             }
         }
 

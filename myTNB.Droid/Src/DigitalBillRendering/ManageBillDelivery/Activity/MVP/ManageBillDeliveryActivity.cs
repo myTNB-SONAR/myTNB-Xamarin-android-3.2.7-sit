@@ -150,9 +150,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             // Create your application here
             presenter = new ManageBillDeliveryPresenter(this);
 
-            AddViewPager();
-
-            UpdateAccountListIndicator();
             Bundle extras = Intent.Extras;
             digitalBillLabel.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "anotherDeliveryMethod");
             btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "startDigitalBillCTA");
@@ -161,9 +158,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "goPaperlessCTA");
             txtSelectedAccountTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "selectAccount");
             TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill, deliveringTitle, txtTitle);
-            TextViewUtils.SetMuseoSans300Typeface(deliveringAddress, TenantDeliveringAddress, txtMessage, txtSelectedAccountTitle);
+            TextViewUtils.SetMuseoSans300Typeface(deliveringAddress, TenantDeliveringAddress, txtMessage, txtSelectedAccountTitle, txt_ca_name);
             TextViewUtils.SetTextSize12(digitalBillLabel, txtSelectedAccountTitle);
-            TextViewUtils.SetTextSize16(btnStartDigitalBill, deliveringTitle, txtTitle);
+            TextViewUtils.SetTextSize16(btnStartDigitalBill, deliveringTitle, txtTitle, txt_ca_name);
             TextViewUtils.SetTextSize14(deliveringAddress, TenantDeliveringAddress, txtMessage);
 
             if (extras != null)
@@ -179,6 +176,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         txt_ca_name.Text = mSelectedAccountData.AccountNickName + " - " + mSelectedAccountData.AccountNum;
                         selectedAccountNumber = mSelectedAccountData.AccountNum;
                     }
+                    AddViewPager();
+                    UpdateAccountListIndicator();
                 }
                 if (extras.ContainsKey("isOwner"))
                 {
@@ -192,7 +191,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
                 {
                     currentAppNavigation = extras.GetString(Constants.APP_NAVIGATION_KEY);
-                    ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
+                    ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList(mSelectedAccountData));
                     vPager.Adapter = ManageBillDeliveryAdapter;
                     UpdateAccountListIndicator();
                 }
@@ -242,7 +241,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             vPager.AddOnPageChangeListener(this);
             viewPagerLayout.AddView(vPager, 0);
             ManageBillDeliveryAdapter = new ManageBillDeliveryAdapter(SupportFragmentManager, this);
-            ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
+            ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList(mSelectedAccountData));
             vPager.Adapter = ManageBillDeliveryAdapter;
         }
 

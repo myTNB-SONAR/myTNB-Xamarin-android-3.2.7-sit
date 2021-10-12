@@ -6843,6 +6843,26 @@
     <Compile Include="Src\Enquiry\GSL\Fragment\GSLRebateIncidentItemListComponent.cs" />
     <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepTwoContract.cs" />
     <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepTwoPresenter.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\img_register_acct_noV2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\img_register_acct_noV2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\img_register_acct_noV2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\img_register_acct_noV2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\img_register_acct_noV2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
