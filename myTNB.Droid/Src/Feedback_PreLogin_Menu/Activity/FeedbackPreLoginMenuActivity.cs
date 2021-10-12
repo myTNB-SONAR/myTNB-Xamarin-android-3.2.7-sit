@@ -129,7 +129,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                             txtFeedbackOthers);
 
                 TextViewUtils.SetTextSize12(txtFeedbackBillingAndPaymentContent
-                    ,  txtFeedbackFaultyStreetLampsContent, txtFeedbackOthersContent, txtSubmittedFeedbackContent);
+                    , txtFeedbackFaultyStreetLampsContent, txtFeedbackOthersContent, txtSubmittedFeedbackContent);
                 TextViewUtils.SetTextSize16(txtFeedbackBillingAndPayment, txtFeedbackFaultyStreetLamps
                     , txtFeedbackOthers, txtSubmittedFeedback);
 
@@ -157,7 +157,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             //billingPaymentFeedback.PutExtra("TITLE", feedbackNewIc);
 
             //StartActivityForResult(billingPaymentFeedback, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
-            StartActivity(billingPaymentFeedback); 
+            StartActivity(billingPaymentFeedback);
 
         }
 
@@ -384,9 +384,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                     {
                         billRelatedConstraint.Visibility = ViewStates.Visible;
                         spaceBillRelated.Visibility = ViewStates.Visible;
-                        feedbackBillRelatedTitle = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle"); //fc.Name;
-                        txtFeedbackBillingAndPayment.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle");//fc.Name;
-                        txtFeedbackBillingAndPaymentContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryDescription");//fc.Desc;
+                        feedbackBillRelatedTitle = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle"); //fc.Name;
+                        txtFeedbackBillingAndPayment.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle");//fc.Name;
+                        txtFeedbackBillingAndPaymentContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryDescription");//fc.Desc;
                     }
                     else if (fc.Id.Equals("2"))
                     {
