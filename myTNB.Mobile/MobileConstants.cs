@@ -53,10 +53,10 @@ namespace myTNB.Mobile
 
         //OVIS Webview
         //public static string OvisWebviewBaseUrlDEV = "http://192.168.1.157:3000";
-        public static string OvisWebviewBaseUrlDEV = "http://mytnbwvovis.ap.ngrok.io";
-        //public static string OvisWebviewBaseUrlDEV = "https://dev-mytnbappwv.tnbovis.com";
-        public static string OvisWebviewBaseUrlQA = "http://mytnbwvovisstg.ap.ngrok.io";
-        //public static string OvisWebviewBaseUrlQA = "https://qa-mytnbappwv.tnbovis.com";
+        //public static string OvisWebviewBaseUrlDEV = "http://mytnbwvovis.ap.ngrok.io";
+        public static string OvisWebviewBaseUrlDEV = "https://dev-mytnbappwv.tnbovis.com";
+        //public static string OvisWebviewBaseUrlSTG = "http://mytnbwvovisstg.ap.ngrok.io";
+        //public static string OvisWebviewBaseUrlSTG = "https://qa-mytnbappwv.tnbovis.com";
         public static string OvisWebviewBaseUrlSTG = "https://stage-mytnbappwv.ovis.tnb.com.my";
         public static string OvisWebviewBaseUrlPROD = "https://mytnbappwv.ovis.tnb.com.my";
 
@@ -81,7 +81,7 @@ namespace myTNB.Mobile
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
         public static string AWSApiDomain = AWSApiDomainSIT;
-        public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlQA; //OvisWebviewBaseUrlSTG
+        public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlSTG;
 #else
         public static string ApiDomain = PROD;
         public const string ApiKeyId = ApiKeyIdPROD;
