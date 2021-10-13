@@ -35,8 +35,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -54,7 +54,6 @@
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     <DebugSymbols>true</DebugSymbols>
-    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>
@@ -1169,7 +1168,6 @@
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationTypeRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\RemoveAccountRequestNew.cs" />
     <Compile Include="Src\MyTNBService\Request\ResendInviteUserAccessRequest.cs" />
-    <Compile Include="Src\MyTNBService\Request\GetAccountsV2Request.cs" />
     <Compile Include="Src\MyTNBService\Request\SaveEnergyBudgetRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetSearchForAccountRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetRegisteredUser.cs" />
@@ -7129,6 +7127,7 @@
     <Compile Include="Src\Device Cache\AccessTokenCache.cs" />
     <Compile Include="Src\MyTNBService\Response\CustomerAccountListResponseAppLaunch.cs" />
     <Compile Include="Src\MyTNBService\Request\GetUserNotificationTypePreferencesRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\GetAcccountsV4Request.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
