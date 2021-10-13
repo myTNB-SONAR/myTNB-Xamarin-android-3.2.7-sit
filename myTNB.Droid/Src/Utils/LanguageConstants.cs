@@ -92,6 +92,8 @@
             internal static readonly string UPLOAD_ATTACH_DESC = "attachDescription";
             internal static readonly string UPLOAD_IC_TOOLTIP = "icInfo";
             internal static readonly string DOCUMENT_PDF = "documentPdf";
+            internal static readonly string UPLOAD_IC_TOOLTIP_TITLE = "copyICTitle";
+            internal static readonly string UPLOAD_IC_TOOLTIP_MSG = "copyIcDet";
         }
 
         internal struct FeedbackForm

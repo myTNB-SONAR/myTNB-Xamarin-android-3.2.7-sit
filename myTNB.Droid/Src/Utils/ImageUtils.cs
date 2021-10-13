@@ -41,7 +41,7 @@ namespace myTNB_Android.Src.Utils
             {
                 using (var webClient = new WebClientWithTimeout())
                 {
-                   
+
                     var awaitImage = webClient.DownloadDataTaskAsync(new Uri(url));
                     var imageBytes = awaitImage.Result;
 
@@ -60,7 +60,7 @@ namespace myTNB_Android.Src.Utils
             return imageBitmap;
         }
 
-        
+
 
         public static string GetBase64FromBitmap(Bitmap bitmap, int imageQuality)
         {
@@ -74,6 +74,22 @@ namespace myTNB_Android.Src.Utils
                 base64String = Convert.ToBase64String(byteArray);
             }
             return base64String;
+        }
+
+        public static Bitmap Base64ToBitmap(string base64String)
+        {
+            Bitmap convertedBitmap;
+            try
+            {
+                byte[] imageAsBytes = Base64.Decode(base64String, Base64Flags.Default);
+                convertedBitmap = BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
+            }
+            catch (Exception e)
+            {
+                convertedBitmap = null;
+                Utility.LoggingNonFatalError(e);
+            }
+            return convertedBitmap;
         }
     }
 

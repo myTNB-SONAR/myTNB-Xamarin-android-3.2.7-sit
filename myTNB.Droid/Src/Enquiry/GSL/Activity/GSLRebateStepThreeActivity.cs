@@ -9,7 +9,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
-using CheeseBind;
+
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Enquiry.Component;
 using myTNB_Android.Src.Enquiry.GSL.MVP;
@@ -25,6 +25,11 @@ using System.Threading.Tasks;
 using myTNB_Android.Src.Enquiry.Adapter;
 using Android.Support.Design.Widget;
 using Newtonsoft.Json;
+using myTNB_Android.Src.Database.Model;
+using CheeseBind;
+using Android.Graphics;
+using Android.Util;
+using Castle.Core.Internal;
 
 namespace myTNB_Android.Src.Enquiry.GSL.Activity
 {
@@ -160,6 +165,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             ownerICItem.SetUploadDocumentHint(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.UPLOAD_ATTACH_DESC));
             ownerICItem.SetToolTipToVisible(true);
             ownerICItem.SetUploadDocumentToolTipLabel(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.UPLOAD_IC_TOOLTIP));
+            ownerICItem.SetToolTipAction(ShowOwnerICToolTip);
 
             layoutManagerOwnerIC = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             ownerICAdapter = new UploadDocumentItemAdapter(true);
@@ -530,6 +536,35 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        private void ShowOwnerICToolTip()
+        {
+            string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
+
+            if (!base64Image.IsNullOrEmpty())
+            {
+                var imageCache = ImageUtils.Base64ToBitmap(base64Image);
+                MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetHeaderImageBitmap(imageCache)
+                .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.UPLOAD_IC_TOOLTIP_TITLE))
+                .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.UPLOAD_IC_TOOLTIP_MSG))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
+                .SetCTAaction(() => { this.SetIsClicked(false); })
+                .Build();
+                infoLabelWhoIsRegistered.Show();
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetHeaderImage(Resource.Drawable.icSample)
+                .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.UPLOAD_IC_TOOLTIP_TITLE))
+                .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.UPLOAD_IC_TOOLTIP_MSG))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
+                .SetCTAaction(() => { this.SetIsClicked(false); })
+                .Build();
+                infoLabelWhoIsRegistered.Show();
             }
         }
 
