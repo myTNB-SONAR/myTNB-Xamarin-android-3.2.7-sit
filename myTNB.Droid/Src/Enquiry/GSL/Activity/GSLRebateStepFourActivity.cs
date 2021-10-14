@@ -11,6 +11,7 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Common.Activity;
 using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Enquiry.Common;
 using myTNB_Android.Src.Enquiry.Component;
 using myTNB_Android.Src.Enquiry.GSL.MVP;
@@ -125,8 +126,20 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             accountDetailsComponent = new EnquiryAccountDetailsComponent(this, this);
             accountDetailsComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
             accountDetailsComponent.SetCheckRequiredFieldsAction(CheckRequiredFields);
-
             gslStepFourContactDetailsView.AddView(accountDetailsComponent);
+
+            PopulateFieldsForLoggedInUser();
+        }
+
+        public void PopulateFieldsForLoggedInUser()
+        {
+            if (UserEntity.IsCurrentlyActive())
+            {
+                accountDetailsComponent.SetFullNameField(UserEntity.GetActive().DisplayName);
+                accountDetailsComponent.SetEmailAddressField(UserEntity.GetActive().Email);
+                accountDetailsComponent.SetMobileNumberField(UserEntity.GetActive().MobileNo);
+                accountDetailsComponent.ValidateAllFields();
+            }
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -155,7 +168,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
 
         private void CheckRequiredFields(bool fieldsAreValid)
         {
-            this.UpdateButtonState(fieldsAreValid);
+            this.UpdateButtonState(fieldsAreValid && this.presenter.GetTncAcceptedFlag());
         }
 
         private void UpdateTnCText(bool isChecked)
@@ -223,7 +236,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             var enquiryTnC = new Intent(this, typeof(EnquiryTnCActivity));
             enquiryTnC.PutExtra(Constants.REQ_EMAIL, this.presenter.GetAccountEmailAddress().Trim());
             enquiryTnC.PutExtra(Constants.SELECT_REGISTERED_OWNER, this.presenter.GetIsOwner().ToString());
-            enquiryTnC.PutExtra(Constants.ENTERED_NAME, this.presenter.GetAccountFullName().Trim());\
+            enquiryTnC.PutExtra(Constants.ENTERED_NAME, this.presenter.GetAccountFullName().Trim());
             StartActivity(enquiryTnC);
         }
 

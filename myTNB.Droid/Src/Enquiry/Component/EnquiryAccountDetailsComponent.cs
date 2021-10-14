@@ -97,6 +97,44 @@ namespace myTNB_Android.Src.Enquiry.Component
             enquiryAcctDetailsLMobileNumContainer.AddView(mobileNumberInputComponent);
         }
 
+        public void SetFullNameField(string value)
+        {
+            txtEnquiryAcctDetailsFullName.Text = value;
+        }
+
+        public void SetEmailAddressField(string value)
+        {
+            txtEnquiryAcctDetailsEmail.Text = value;
+        }
+
+        public void SetMobileNumberField(string value)
+        {
+            if (value.IsValid())
+            {
+                if (value.Contains("+"))
+                {
+                    var countryFromPhoneNumber = CountryUtil.Instance.GetCountryFromPhoneNumber(value);
+
+                    if (countryFromPhoneNumber.ToString().IsValid())
+                    {
+                        mobileNumberInputComponent.SetSelectedCountry(countryFromPhoneNumber);
+                        mobileNumberInputComponent.SetMobileNumber(int.Parse(value.Trim()[countryFromPhoneNumber.isd.Length..]));
+                    }
+                }
+                else
+                {
+                    if (value.Trim().Substring(0, 1) == "6")
+                    {
+                        mobileNumberInputComponent.SetMobileNumber(int.Parse(value.Trim().Substring(2)));
+                    }
+                    else
+                    {
+                        mobileNumberInputComponent.SetMobileNumber(int.Parse(value.Trim()));
+                    }
+                }
+            }
+        }
+
         private void OnTapCountryCode()
         {
             this.OnTapCountryCodeAction?.Invoke();
@@ -104,19 +142,19 @@ namespace myTNB_Android.Src.Enquiry.Component
 
         private void OnValidateMobileNumber(bool isValidated)
         {
-            this.ValidateFields(EnquiryAccountDetailType.MOBILE_NUMBER);
+            this.ValidateFieldWithType(EnquiryAccountDetailType.MOBILE_NUMBER);
         }
 
         [Preserve]
         private void FullNameTextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            this.ValidateFields(EnquiryAccountDetailType.FULL_NAME);
+            this.ValidateFieldWithType(EnquiryAccountDetailType.FULL_NAME);
         }
 
         [Preserve]
         private void EmailTextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            this.ValidateFields(EnquiryAccountDetailType.EMAIL_ADDRESS);
+            this.ValidateFieldWithType(EnquiryAccountDetailType.EMAIL_ADDRESS);
         }
 
         public void SetOnTapCountryCodeAction(Action action)
@@ -129,7 +167,7 @@ namespace myTNB_Android.Src.Enquiry.Component
             this.CheckRequiredFieldsAction = action;
         }
 
-        private void ValidateFields(EnquiryAccountDetailType type)
+        private void ValidateFieldWithType(EnquiryAccountDetailType type)
         {
             if (type == EnquiryAccountDetailType.FULL_NAME)
             {
@@ -195,6 +233,7 @@ namespace myTNB_Android.Src.Enquiry.Component
             {
                 mobileNumberInputComponent.ClearError();
             }
+            this.CheckRequiredFieldsAction?.Invoke(FieldsAreValid());
         }
 
         private void ShowEmptyError(EnquiryAccountDetailType type)
