@@ -55,13 +55,13 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:textColor="@color/powerBlue"
-					android:id="@+id/txtStepFourUploadTitle" />
+					android:id="@+id/txtStepFourYourContactTitle" />
 				<LinearLayout
 					android:orientation="vertical"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="12dp"
-					android:id="@+id/gslStepFourUploadView"/>
+					android:id="@+id/gslStepFourContactDetailsView"/>
 			</LinearLayout>
 		</ScrollView>
 		<LinearLayout
@@ -74,24 +74,37 @@
 			android:paddingRight="16dp"
 			android:gravity="center|bottom"
 			android:background="@color/white"
-			android:id="@+id/buttonLayout">
-			<CheckBox
-               android:id="@+id/gslStepFourChecBox"
-               android:layout_height="wrap_content"
-               android:layout_width="match_parent"
-               android:paddingLeft="8dp"
-               android:layout_marginTop="14dp"
-               android:checked="true"
-               android:text="I have read and agreed to the Terms and Conditions."
-               android:textColor="@color/charcoalGrey"
-               android:textSize="12dp"
-               android:button="@drawable/checkbox_selector" />
+			android:id="@+id/gslStepFourTnCBtnCLayout">
+			<LinearLayout
+                android:id="@+id/gslStepFourTnCLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+				android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
+				<CheckBox
+				   android:id="@+id/gslStepFourTnCCheckBox"
+				   android:layout_height="wrap_content"
+				   android:layout_width="wrap_content"
+				   android:checked="true"
+				   android:textColor="@color/charcoalGrey"
+				   android:textSize="12dp"
+				   android:button="@drawable/checkbox_selector" />
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:text="@string/registration_form_terms_conditions"
+					android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColorLink="@color/powerBlue"
+                    android:textSize="12dp"
+					android:textColor="@color/tunagrey"
+					android:id="@+id/txtGSLTnC" />
+			</LinearLayout>
 			<Button
 				android:id="@+id/gslStepFourbtnNext"
 				android:text="Next"
 				android:layout_width="match_parent"
 				android:layout_height="48dp"
-				android:layout_marginTop="14dp"
 				style="@style/DarkButton"
 				android:textAllCaps="false" />
 		</LinearLayout>

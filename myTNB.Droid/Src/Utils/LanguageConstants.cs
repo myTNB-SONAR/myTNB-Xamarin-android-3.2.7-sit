@@ -94,6 +94,16 @@
             internal static readonly string DOCUMENT_PDF = "documentPdf";
             internal static readonly string UPLOAD_IC_TOOLTIP_TITLE = "copyICTitle";
             internal static readonly string UPLOAD_IC_TOOLTIP_MSG = "copyIcDet";
+            internal static readonly string ENQUIRY_TNC = "enquiryTnc";
+            internal static readonly string ENQUIRY_TNC_READ = "enquiryTncRead";
+            internal static readonly string TNC = "tnc";
+            internal static readonly string PERSONAL_DISCLAIMER = "personalDisclamer";
+            internal static readonly string TERMS_OF_USE = "tnbTermUse";
+            internal static readonly string PRIVACY_POLICY_TITLE = "privacyPolicyTitle";
+            internal static readonly string TNC_AGREE_OWNER = "tncAgreeOwner";
+            internal static readonly string TNC_AGREE_NON_OWNER = "tncAgreeNonOwner";
+            internal static readonly string ANTI_SPAM_POLICY = "antiSpamPolicy";
+            internal static readonly string PRIVACY_POLICY = "privacyPolicy";
         }
 
         internal struct FeedbackForm

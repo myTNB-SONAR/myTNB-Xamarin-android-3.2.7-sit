@@ -53,7 +53,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
                     Country selectedCountry = JsonConvert.DeserializeObject<Country>(dataString);
                     this.view.SetSelectedCountry(selectedCountry);
                 }
-                if (requestCode == EnquiryConstants.SELECT_REBATE_TYPE_REQ_CODE)
+                else if (requestCode == EnquiryConstants.SELECT_REBATE_TYPE_REQ_CODE)
                 {
                     if (resultCode == Result.Ok)
                     {

@@ -7,4 +7,12 @@
 
         internal static readonly string UPLOAD_DOCUMENT_DATE_FORMAT = "yyyyMMdd";
     }
+
+    public enum EnquiryAccountDetailType
+    {
+        FULL_NAME,
+        EMAIL_ADDRESS,
+        MOBILE_NUMBER,
+        NONE
+    };
 }

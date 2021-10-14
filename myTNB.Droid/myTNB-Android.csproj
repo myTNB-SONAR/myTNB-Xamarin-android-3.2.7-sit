@@ -6891,6 +6891,16 @@
     </AndroidResource>
     <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepFourContract.cs" />
     <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepFourPresenter.cs" />
+    <Compile Include="Src\Enquiry\Component\EnquiryAccountDetailsComponent.cs" />
+    <AndroidResource Include="Resources\layout\EnquiryAccountDetailsComponentView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\Common\EnquiryTnCActivity.cs" />
+    <AndroidResource Include="Resources\layout\EnquiryTnCView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -8450,6 +8460,7 @@
     <Folder Include="Src\Enquiry\GSL\Fragment\" />
     <Folder Include="Src\Enquiry\Component\" />
     <Folder Include="Src\Enquiry\Adapter\" />
+    <Folder Include="Src\Enquiry\Common\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

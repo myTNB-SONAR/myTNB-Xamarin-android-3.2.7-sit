@@ -169,21 +169,21 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                 case GSLLayoutType.FULL_NAME:
                     if (!txtGSLTenantFullName.Text.IsValid())
                     {
-                        ShowEmptyError(GSLLayoutType.FULL_NAME);
+                        ShowEmptyError(type);
                     }
                     else
                     {
-                        ClearErrors(GSLLayoutType.FULL_NAME);
+                        ClearErrors(type);
                     }
                     break;
                 case GSLLayoutType.EMAIL_ADDRESS:
                     if (!txtGSLTenantEmail.Text.IsValid())
                     {
-                        ShowEmptyError(GSLLayoutType.EMAIL_ADDRESS);
+                        ShowEmptyError(type);
                     }
                     else
                     {
-                        ClearErrors(GSLLayoutType.EMAIL_ADDRESS);
+                        ClearErrors(type);
                     }
                     break;
                 default:

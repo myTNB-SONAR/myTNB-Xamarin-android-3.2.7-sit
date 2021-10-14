@@ -4,10 +4,12 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 {
     public class GSLRebateModel
     {
+        public bool IsOwner { get; set; }
         public string RebateType { get; set; }
         public GSLRebateTenantModel TenantInfo { get; set; }
         public List<GSLRebateIncidentModel> IncidentList { get; set; }
         public GSLRebateDocumentModel Documents { get; set; }
+        public GSLRebateAccountInfoModel AccountInfo { get; set; }
     }
 
     public class GSLRebateTenantModel
@@ -27,6 +29,13 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
     {
         public string TenancyAgreement { get; set; }
         public string OwnerIC { get; set; }
+    }
+
+    public class GSLRebateAccountInfoModel
+    {
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string MobileNumber { get; set; }
     }
 
     public enum GSLLayoutType

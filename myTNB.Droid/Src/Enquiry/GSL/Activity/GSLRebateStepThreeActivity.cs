@@ -27,8 +27,6 @@ using Android.Support.Design.Widget;
 using Newtonsoft.Json;
 using myTNB_Android.Src.Database.Model;
 using CheeseBind;
-using Android.Graphics;
-using Android.Util;
 using Castle.Core.Internal;
 
 namespace myTNB_Android.Src.Enquiry.GSL.Activity
