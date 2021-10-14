@@ -36,7 +36,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         Button addAccount;
 
         private Snackbar mSnackBar;
-        private MaterialDialog dialogWhereMyAccountNo;
 
         private AddAccountPresenter mPresenter;
         private AddAccountContract.IUserActionsListener userActionsListener;
@@ -196,35 +195,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 btnWhereIsMyAccountNo.Click += async delegate
                 {
-                    dialogWhereMyAccountNo = new MaterialDialog.Builder(Activity)
-                    .CustomView(Resource.Layout.WhereIsMyAccountView, false)
-                    .Cancelable(true)
-                    .PositiveText(Utility.GetLocalizedLabel("DashboardHome", "gotIt"))
-                    .PositiveColor(Resource.Color.blue)
-                    .Build();
-
-                    View view = dialogWhereMyAccountNo.View;
-                    if (view != null)
-                    {
-                        TextView titleText = view.FindViewById<TextView>(Resource.Id.textDialogTitle);
-                        TextView infoText = view.FindViewById<TextView>(Resource.Id.textDialogInfo);
-                        ImageView img_register = view.FindViewById<ImageView>(Resource.Id.img_register);
-
-                        if (titleText != null && infoText != null)
-                        {
-                            TextViewUtils.SetMuseoSans500Typeface(titleText);
-                            TextViewUtils.SetMuseoSans300Typeface(infoText);
-                            TextViewUtils.SetTextSize16(titleText, infoText);
-
-                            titleText.Text = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitleV2") :
-                            Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
-
-                            infoText.Text = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetailsV2") :
-                            Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
-                            img_register.SetImageResource(BillRedesignUtility.Instance.IsAccountEligible ? Resource.Drawable.img_register_acct_noV2 : Resource.Drawable.img_register_acct_no);
-                        }
-                    }
-                    dialogWhereMyAccountNo.Show();
+                    ShowWhereIsMyAccountNoTooltip();
                 };
 
                 AccountType Individual = new AccountType();
@@ -984,6 +955,22 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 }
             }
             return false;
+        }
+
+        private void ShowWhereIsMyAccountNoTooltip()
+        {
+            var title = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitleV2") :
+                            Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
+            var message = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetailsV2") :
+            Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
+
+            MyTNBAppToolTipBuilder whereIsMyAccountNo = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+               .SetHeaderImage(BillRedesignUtility.Instance.IsAccountEligible ? Resource.Drawable.img_register_acct_noV2 : Resource.Drawable.img_register_acct_no)
+               .SetTitle(title)
+               .SetMessage(message)
+               .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+               .Build();
+            whereIsMyAccountNo.Show();
         }
     }
 }
