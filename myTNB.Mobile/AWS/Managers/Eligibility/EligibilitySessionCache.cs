@@ -40,6 +40,9 @@ namespace myTNB.Mobile
 
         private GetEligibilityResponse Data { set; get; }
 
+        //This will hold Android's and iOS' CA List
+        internal List<string> CAList { set; get; }
+
         /// <summary>
         /// Sets the Session Data for eligibility
         /// </summary>
@@ -50,6 +53,11 @@ namespace myTNB.Mobile
             {
                 Data = response;
             }
+        }
+
+        public void SetCAList(List<string> caList)
+        {
+            this.CAList = caList;
         }
 
         /// <summary>
@@ -128,6 +136,7 @@ namespace myTNB.Mobile
         public void Clear()
         {
             Data = null;
+            CAList = null;
         }
     }
 }

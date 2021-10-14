@@ -97,6 +97,47 @@ namespace myTNB.Mobile
             }
         }
 
+        public bool IsAccountDBREligibleV2
+        {
+            get
+            {
+                if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.Enabled))
+                {
+                    if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup))
+                    {
+                        if (GetDBRCAs() is List<string> caList
+                            && caList != null
+                            && caList.Count > 0
+                            && EligibilitySessionCache.Instance.CAList != null
+                            && EligibilitySessionCache.Instance.CAList.Count > 0)
+                        {
+                            for (int i = 0; i < caList.Count; i++)
+                            {
+                                int index = EligibilitySessionCache.Instance.CAList.FindIndex(x => x == caList[i]);
+                                if (index > -1)
+                                {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         /// <summary>
         /// Determines if Home DBR Card should be Displayed
         /// </summary>
