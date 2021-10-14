@@ -1056,7 +1056,10 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 foreach (var dbrca in dBRCAs)
                 {
                     account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
-                    eligibleDBRAccountList.Add(account);
+                    if (account != null)
+                    {
+                        eligibleDBRAccountList.Add(account);
+                    }
                 }
 
                 DBRAccount dbrEligibleAccount;
