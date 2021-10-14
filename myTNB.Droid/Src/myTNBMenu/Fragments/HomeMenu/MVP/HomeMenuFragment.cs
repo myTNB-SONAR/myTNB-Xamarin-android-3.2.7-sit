@@ -672,6 +672,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else
                 {
                     CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                    if (dbrAccount == null)
+                    {
+                        HideProgressDialog();
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+                            .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
+                            .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                            .Build();
+                        errorPopup.Show();
+                        return;
+                    }
                     _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount.AccNum);
                     caNumber = dbrAccount.AccNum;
                 }
@@ -748,19 +759,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     foreach (var dbrca in dBRCAs)
                     {
                         account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
-                        break;
+                        if (account != null)
+                        {
+                            break;
+                        }
                     }
                 }
             }
-            /*else
-            {
-                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                     .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
-                                    .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
-                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
-                     .Build();
-                errorPopup.Show();
-            }*/
             return account;
         }
         public void SetRefreshLayoutParams()
