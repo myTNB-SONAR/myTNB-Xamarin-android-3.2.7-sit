@@ -6884,6 +6884,13 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\Activity\GSLRebateStepFourActivity.cs" />
+    <AndroidResource Include="Resources\layout\GSLRebateStepFourView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepFourContract.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepFourPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

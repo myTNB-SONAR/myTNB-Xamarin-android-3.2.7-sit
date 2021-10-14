@@ -617,9 +617,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         private void OnShowGSLRebateStepFourActivity()
         {
             this.SetIsClicked(true);
-            //Intent stepThreectivity = new Intent(this, typeof(GSLRebateStepFourActivity));
-            //stepThreectivity.PutExtra(GSLRebateConstants.REBATE_MODEL, JsonConvert.SerializeObject(this.presenter.GetGSLRebateModel()));
-            //StartActivity(stepThreectivity);
+            Intent stepFourActivity = new Intent(this, typeof(GSLRebateStepFourActivity));
+            stepFourActivity.PutExtra(GSLRebateConstants.REBATE_MODEL, JsonConvert.SerializeObject(this.presenter.GetGSLRebateModel()));
+            StartActivity(stepFourActivity);
         }
     }
 }
