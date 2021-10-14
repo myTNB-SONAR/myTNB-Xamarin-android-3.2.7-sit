@@ -21,13 +21,13 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:fillViewport="true"
-			android:overScrollMode="never"
-			android:layout_marginBottom="?actionBarSize">
+			android:overScrollMode="never">
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
-				android:layout_marginTop="16dp">
+				android:layout_marginTop="16dp"
+				android:paddingBottom="20dp">
 				<FrameLayout
 					android:id="@+id/accountLayout2"
 					android:layout_width="match_parent"
