@@ -6901,6 +6901,11 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\Activity\GSLRebateInfoActivity.cs" />
+    <AndroidResource Include="Resources\layout\GSLRebateInfoView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

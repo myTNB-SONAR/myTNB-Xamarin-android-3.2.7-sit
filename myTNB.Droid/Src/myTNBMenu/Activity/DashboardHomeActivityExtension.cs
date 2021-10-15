@@ -9,6 +9,7 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Bills.NewBillRedesign;
 using myTNB_Android.Src.BillStatement.MVP;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Enquiry.GSL.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
@@ -211,6 +212,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             Intent nbrDiscoverMoreIntent = new Intent(mainActivity, typeof(NBRDiscoverMoreActivity));
             mainActivity.StartActivityForResult(nbrDiscoverMoreIntent, Constants.NEW_BILL_REDESIGN_REQUEST_CODE);
+        }
+
+        internal static void ShowGSLInfoScreen(this DashboardHomeActivity mainActivity)
+        {
+            Intent gslInfoIntent = new Intent(mainActivity, typeof(GSLRebateInfoActivity));
+            mainActivity.StartActivity(gslInfoIntent);
         }
     }
 }

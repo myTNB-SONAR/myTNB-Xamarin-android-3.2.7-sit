@@ -2500,5 +2500,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             this.ShowNewBillRedesign();
         }
+
+        public void NavigateToGSL()
+        {
+            this.ShowGSLInfoScreen();
+        }
     }
 }

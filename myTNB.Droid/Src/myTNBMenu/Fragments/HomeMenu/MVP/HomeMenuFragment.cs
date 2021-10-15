@@ -55,8 +55,6 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.SessionCache;
 using myTNB_Android.Src.EBPopupScreen.Activity;
-using AndroidX.CardView.Widget;
-using System.Globalization;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -346,6 +344,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         NewFAQAdapter newFAQAdapter;
 
         const string PAGE_ID = "DashboardHome";
+
+        const string FAQ_TAGS_SEPARATOR = "|";
+        const string GSL_TAG = "GSL";
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -1810,9 +1811,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.SetIsClicked(true);
 
                         NewFAQ selectedNewFAQ = currentNewFAQList[position];
-                        Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-                        faqIntent.PutExtra(Constants.FAQ_ID_PARAM, selectedNewFAQ.TargetItem);
-                        Activity.StartActivity(faqIntent);
+
+                        if (FAQHasGSLTag(selectedNewFAQ.Tags))
+                        {
+                            ((DashboardHomeActivity)Activity).NavigateToGSL();
+                        }
+                        else
+                        {
+                            Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                            faqIntent.PutExtra(Constants.FAQ_ID_PARAM, selectedNewFAQ.TargetItem);
+                            Activity.StartActivity(faqIntent);
+                        }
 
                         try
                         {
@@ -1829,6 +1838,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private bool FAQHasGSLTag(string tags)
+        {
+            var hasGSLTag = false;
+            if (tags.IsValid())
+            {
+                var tagsList = tags.Split(FAQ_TAGS_SEPARATOR).ToList();
+                if (tagsList != null && tagsList.Count > 0)
+                {
+                    int findIndex = tagsList.FindIndex(tag => tag == GSL_TAG);
+                    hasGSLTag = findIndex > -1;
+                }
+            }
+            return hasGSLTag;
         }
 
         public void ShowFeedbackMenu()
