@@ -58,6 +58,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         [BindView(Resource.Id.tenantGSLMobileNumberContainer)]
         LinearLayout tenantGSLMobileNumberContainer;
 
+        [BindView(Resource.Id.gslTenantInfoContainer)]
+        LinearLayout gslTenantInfoContainer;
+
         [BindView(Resource.Id.gslStepOnebtnNext)]
         Button gslStepOnebtnNext;
 
@@ -84,6 +87,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                     if (extras.ContainsKey(Constants.IS_OWNER))
                     {
                         this.userActionsListener?.SetIsOwner(extras.GetBoolean(Constants.IS_OWNER));
+                        gslTenantInfoContainer.Visibility = this.userActionsListener.GetGSLRebateModel().IsOwner ? ViewStates.Gone : ViewStates.Visible;
                     }
                 }
             }

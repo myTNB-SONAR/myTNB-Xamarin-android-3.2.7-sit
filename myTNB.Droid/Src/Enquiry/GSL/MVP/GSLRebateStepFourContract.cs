@@ -1,7 +1,11 @@
-﻿using Android.App;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Android.App;
 using Android.Content;
 using Android.Runtime;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.Base.Request;
 using myTNB_Android.Src.Common.Model;
 
 namespace myTNB_Android.Src.Enquiry.GSL.MVP
@@ -18,6 +22,14 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             void UpdateButtonState(bool isEnabled);
 
             void SetSelectedCountry(Country country);
+
+            void ShowProgressDialog();
+
+            void HideProgressDialog();
+
+            Task<AttachedImageRequest> SaveImage(AttachedImage attachedImage);
+
+            List<AttachedImage> GetDeSerializeImage(string image);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -50,6 +62,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             string GetAccountEmailAddress();
 
             bool GetIsOwner();
+
+            Task OnSubmitActionAsync();
         }
     }
 }

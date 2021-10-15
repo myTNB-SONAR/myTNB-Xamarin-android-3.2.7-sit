@@ -63,7 +63,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
-                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    if (extras.ContainsKey(GSLRebateConstants.REBATE_MODEL))
                     {
                         var rebateModel = DeSerialze<GSLRebateModel>(extras.GetString(GSLRebateConstants.REBATE_MODEL));
                         this.userActionsListener.SetRebateModel(rebateModel);

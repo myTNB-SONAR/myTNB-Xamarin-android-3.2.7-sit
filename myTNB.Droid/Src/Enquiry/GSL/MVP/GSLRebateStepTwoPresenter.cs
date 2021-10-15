@@ -29,7 +29,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             {
                 IncidentList = new List<GSLRebateIncidentModel>()
             };
-            this.rebateModel.IncidentList.Add(new GSLRebateIncidentModel());
         }
 
         public void Start() { }
@@ -37,6 +36,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public void SetRebateModel(GSLRebateModel model)
         {
             this.rebateModel = model;
+            this.rebateModel.IncidentList = new List<GSLRebateIncidentModel>
+            {
+                new GSLRebateIncidentModel()
+            };
         }
 
         public void SetIncidentData(GSLIncidentDateTimePicker picker, DateTime dateTime, int index)

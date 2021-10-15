@@ -1,10 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.Request;
 using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using Java.Text;
+using System.Globalization;
 
 namespace myTNB_Android.Src.Enquiry.GSL.MVP
 {
@@ -32,10 +41,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         private void OnInit()
         {
             this.tncAccepted = false;
-            this.rebateModel = new GSLRebateModel
-            {
-                AccountInfo = new GSLRebateAccountInfoModel(),
-            };
+            this.rebateModel = new GSLRebateModel();
         }
 
         public void Start() { }
@@ -43,6 +49,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public void SetRebateModel(GSLRebateModel model)
         {
             this.rebateModel = model;
+            this.rebateModel.ContactInfo = new GSLRebateAccountInfoModel();
         }
 
         public GSLRebateModel GetGSLRebateModel()
@@ -52,26 +59,26 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
         public void SetAccountFullName(string name)
         {
-            this.rebateModel.AccountInfo.FullName = name;
+            this.rebateModel.ContactInfo.FullName = name;
         }
 
         public void SetAccountEmailAddress(string email)
         {
-            this.rebateModel.AccountInfo.Email = email;
+            this.rebateModel.ContactInfo.Email = email;
         }
 
         public void SetAccountMobileNumber(string number)
         {
-            this.rebateModel.AccountInfo.MobileNumber = number;
+            this.rebateModel.ContactInfo.MobileNumber = number;
         }
 
         public bool CheckModelIfValid()
         {
             return this.rebateModel != null &&
-                this.rebateModel.AccountInfo != null &&
-                this.rebateModel.AccountInfo.FullName.IsValid() &&
-                this.rebateModel.AccountInfo.Email.IsValid() &&
-                this.rebateModel.AccountInfo.MobileNumber.IsValid();
+                this.rebateModel.ContactInfo != null &&
+                this.rebateModel.ContactInfo.FullName.IsValid() &&
+                this.rebateModel.ContactInfo.Email.IsValid() &&
+                this.rebateModel.ContactInfo.MobileNumber.IsValid();
         }
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -103,17 +110,121 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
         public string GetAccountFullName()
         {
-            return this.rebateModel.AccountInfo.FullName;
+            return this.rebateModel.ContactInfo.FullName;
         }
 
         public string GetAccountEmailAddress()
         {
-            return this.rebateModel.AccountInfo.Email;
+            return this.rebateModel.ContactInfo.Email;
         }
 
         public bool GetIsOwner()
         {
             return this.rebateModel.IsOwner;
+        }
+
+
+        public async Task OnSubmitActionAsync()
+        {
+            try
+            {
+                if (this.rebateModel == null)
+                {
+                    return;
+                }
+
+                if (this.view.IsActive())
+                {
+                    this.view.ShowProgressDialog();
+                }
+
+                UserEntity userEntity = UserEntity.GetActive();
+                List<AttachedImageRequest> imageRequest = new List<AttachedImageRequest>();
+
+                if (this.rebateModel.Documents.OwnerIC.IsValid())
+                {
+                    List<AttachedImage> ownersICDocument = this.view.GetDeSerializeImage(this.rebateModel.Documents.OwnerIC);
+                    foreach (AttachedImage image in ownersICDocument)
+                    {
+                        var iCImage = await this.view.SaveImage(image);
+                        imageRequest.Add(iCImage);
+                    }
+                }
+
+                if (this.rebateModel.Documents.TenancyAgreement.IsValid())
+                {
+                    List<AttachedImage> tenancyDocument = this.view.GetDeSerializeImage(this.rebateModel.Documents.TenancyAgreement);
+                    foreach (AttachedImage image in tenancyDocument)
+                    {
+                        var tenancyImage = await this.view.SaveImage(image);
+                        imageRequest.Add(tenancyImage);
+                    }
+                }
+
+                SubmitGSLEnquiryRequest submitGSLEnquiryRequest = new SubmitGSLEnquiryRequest(this.rebateModel);
+                foreach (AttachedImageRequest image in imageRequest)
+                {
+                    string fileFormat = image.FileName.ToLower().Contains("pdf") ? "pdf" : "jpeg";
+                    submitGSLEnquiryRequest.feedback.SetEnquiryImage(image.ImageHex, image.FileName, image.FileSize.ToString(), fileFormat);
+                }
+
+                this.rebateModel.IncidentList.ForEach(incident =>
+                {
+                    DateTime incidentDateTimeParse = DateTime.ParseExact(incident.IncidentDateTime, "dd'/'MM'/'yyyy HH:mm:ss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                    DateTime restorationDateTimeParse = DateTime.ParseExact(incident.RestorationDateTime, "dd'/'MM'/'yyyy HH:mm:ss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage().ToUpper() == "MS" ? "ms-MY" : "en-US");
+                    var incidentDateString = incidentDateTimeParse.ToString("yyyy-MM-dd", currCult);
+
+                    var restorationDateString = restorationDateTimeParse.ToString("yyyy-MM-dd", currCult);
+
+                    var incidentTimeString = incidentDateTimeParse.ToString("HH:mm:ss", currCult);
+
+                    var restorationTimeString = restorationDateTimeParse.ToString("HH:mm:ss", currCult);
+
+                    submitGSLEnquiryRequest.feedback.SetIncidentInfos(incidentDateString, incidentTimeString, restorationDateString, restorationTimeString);
+                });
+
+                var gslSubmitEnquiryResponse = await ServiceApiImpl.Instance.SubmitEnquiryWithType(submitGSLEnquiryRequest);
+
+                if (gslSubmitEnquiryResponse.Response != null &&
+                    gslSubmitEnquiryResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                {
+                    //SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    //var newSubmittedFeedback = new SubmittedFeedback()
+                    //{
+                    //    FeedbackId = gslSubmitEnquiryResponse.GetData().ServiceReqNo,
+                    //    DateCreated = dateFormat.Format(Java.Lang.JavaSystem.CurrentTimeMillis()),
+                    //    FeedbackMessage = string.Empty,
+                    //    FeedbackCategoryId = "9"
+
+                    //};
+                    //SubmittedFeedbackEntity.InsertOrReplace(newSubmittedFeedback);
+                }
+                else
+                {
+
+                }
+
+                if (this.view.IsActive())
+                {
+                    this.view.HideProgressDialog();
+                }
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine("OnSubmitActionAsync() Exception");
+                if (this.view.IsActive())
+                {
+                    this.view.HideProgressDialog();
+                }
+                Utility.LoggingNonFatalError(e);
+            }
+
+
         }
     }
 }

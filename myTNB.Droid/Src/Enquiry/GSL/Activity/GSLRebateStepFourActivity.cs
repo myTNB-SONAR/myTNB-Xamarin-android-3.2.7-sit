@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -9,6 +14,8 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.Request;
 using myTNB_Android.Src.Common.Activity;
 using myTNB_Android.Src.Common.Model;
 using myTNB_Android.Src.Database.Model;
@@ -16,6 +23,7 @@ using myTNB_Android.Src.Enquiry.Common;
 using myTNB_Android.Src.Enquiry.Component;
 using myTNB_Android.Src.Enquiry.GSL.MVP;
 using myTNB_Android.Src.Utils;
+using FileUtils = myTNB_Android.Src.Utils.FileUtils;
 
 namespace myTNB_Android.Src.Enquiry.GSL.Activity
 {
@@ -83,7 +91,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
-                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    if (extras.ContainsKey(GSLRebateConstants.REBATE_MODEL))
                     {
                         var rebateModel = DeSerialze<GSLRebateModel>(extras.GetString(GSLRebateConstants.REBATE_MODEL));
                         this.presenter.SetRebateModel(rebateModel);
@@ -243,6 +251,114 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         private void OnSubmitGSLEnquiry()
         {
             this.SetIsClicked(true);
+            this.presenter.OnSubmitActionAsync();
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public Task<AttachedImageRequest> SaveImage(AttachedImage attachedImage)
+        {
+            return Task.Run<AttachedImageRequest>(() =>
+            {
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+
+                if (attachedImage.Name.ToLower().Contains("pdf"))
+                {
+                    try
+                    {
+                        byte[] pdfByteData = FileUtils.GetPDFByte(this, attachedImage.Path);
+
+                        int size = pdfByteData.Length;
+                        string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(pdfByteData), Encoding.UTF8);
+                        System.Console.WriteLine(string.Format("Hex string {0}", hexString));
+                        return new AttachedImageRequest()
+                        {
+                            ImageHex = hexString,
+                            FileSize = size,
+                            FileName = attachedImage.Name
+                        };
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+
+                        Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
+                        byte[] imageBytes = FileUtils.GetCompress(this, bitmap);
+
+                        int size = imageBytes.Length;
+                        string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(imageBytes), Encoding.UTF8);
+                        if (bitmap != null && !bitmap.IsRecycled)
+                        {
+                            bitmap.Recycle();
+                        }
+                        System.Console.WriteLine(string.Format("Hex string {0}", hexString));
+                        return new AttachedImageRequest()
+                        {
+                            ImageHex = hexString,
+                            FileSize = size,
+                            FileName = attachedImage.Name
+                        };
+                    }
+                }
+                else
+                {
+                    Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
+                    byte[] imageBytes = FileUtils.GetCompress(this, bitmap);
+
+                    int size = imageBytes.Length;
+                    string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(imageBytes), Encoding.UTF8);
+                    if (bitmap != null && !bitmap.IsRecycled)
+                    {
+                        bitmap.Recycle();
+                    }
+                    System.Console.WriteLine(string.Format("Hex string {0}", hexString));
+                    return new AttachedImageRequest()
+                    {
+                        ImageHex = hexString,
+                        FileSize = size,
+                        FileName = attachedImage.Name
+                    };
+                }
+            });
+        }
+
+        public List<AttachedImage> GetDeSerializeImage(string image)
+        {
+            try
+            {
+                if (image.IsValid())
+                {
+                    return DeSerialze<List<AttachedImage>>(image);
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                return null;
+            }
         }
     }
 }

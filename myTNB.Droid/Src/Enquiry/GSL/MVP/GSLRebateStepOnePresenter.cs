@@ -6,6 +6,7 @@ using Android.Runtime;
 using myTNB;
 using myTNB_Android.Src.Common;
 using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
@@ -27,9 +28,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public void OnInitialize()
         {
             OnInit();
+            SaveAccountInfo();
             GetRebateTypeFromSelector();
             this.view?.SetUpViews();
-            this.view?.UpdateButtonState(false);
+            this.view?.UpdateButtonState(this.rebateModel.IsOwner);
         }
 
         public void Start() { }
@@ -39,6 +41,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             rebateModel = new GSLRebateModel
             {
                 IsOwner = false,
+                FeedbackCategoryId = "9",
+                AccountInfo = new GSLRebateAccountInfoModel(),
                 TenantInfo = new GSLRebateTenantModel()
             };
             rebateTypeList = new List<Item>();
@@ -63,7 +67,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
                         {
                             return itemFilter.selected;
                         });
-                        this.rebateModel.RebateType = selectedRebateType.title;
+                        this.rebateModel.RebateTypeKey = selectedRebateType.key;
                         this.view.UpdateSelectedRebateType(selectedRebateType);
                     }
                 }
@@ -72,6 +76,13 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void SaveAccountInfo()
+        {
+            this.rebateModel.AccountInfo.FullName = UserEntity.GetActive().DisplayName;
+            this.rebateModel.AccountInfo.Email = UserEntity.GetActive().Email;
+            this.rebateModel.AccountInfo.MobileNumber = UserEntity.GetActive().MobileNo;
         }
 
         private void GetRebateTypeFromSelector()
@@ -86,12 +97,13 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
                     {
                         Item item = new Item
                         {
+                            key = filter.Key,
                             title = filter.Description
                         };
                         rebateTypeList.Add(item);
                     });
                     rebateTypeList[0].selected = true;
-                    this.rebateModel.RebateType = rebateTypeList[0].title;
+                    this.rebateModel.RebateTypeKey = rebateTypeList[0].key;
                 }
             }
         }
@@ -133,21 +145,29 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
         public bool CheckRequiredFields()
         {
-            var fullNameValid = rebateModel.TenantInfo.FullName.IsValid();
-            if (!fullNameValid)
+            bool fieldsAreValid;
+            if (this.rebateModel.IsOwner)
             {
-                this.view.ShowEmptyError(GSLLayoutType.FULL_NAME);
+                fieldsAreValid = true;
+            }
+            else
+            {
+                var fullNameValid = rebateModel.TenantInfo.FullName.IsValid();
+                if (!fullNameValid)
+                {
+                    this.view.ShowEmptyError(GSLLayoutType.FULL_NAME);
+                }
+
+                var emailValid = rebateModel.TenantInfo.Email.IsValid();
+                if (!emailValid)
+                {
+                    this.view.ShowEmptyError(GSLLayoutType.EMAIL_ADDRESS);
+                }
+
+                fieldsAreValid = rebateModel.TenantInfo.MobileNumber.IsValid() && !this.view.IsMobileNumEmpty();
             }
 
-            var emailValid = rebateModel.TenantInfo.Email.IsValid();
-            if (!emailValid)
-            {
-                this.view.ShowEmptyError(GSLLayoutType.EMAIL_ADDRESS);
-            }
-
-            var mobileValid = rebateModel.TenantInfo.MobileNumber.IsValid() && !this.view.IsMobileNumEmpty();
-
-            return fullNameValid && emailValid && mobileValid;
+            return fieldsAreValid;
         }
 
         public GSLRebateModel GetGSLRebateModel()

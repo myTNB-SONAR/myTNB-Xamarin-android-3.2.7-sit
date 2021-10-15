@@ -30,10 +30,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
         private void OnInit()
         {
-            this.rebateModel = new GSLRebateModel
-            {
-                Documents = new GSLRebateDocumentModel(),
-            };
+            this.rebateModel = new GSLRebateModel();
         }
 
         public void Start() { }
@@ -41,6 +38,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public void SetRebateModel(GSLRebateModel model)
         {
             this.rebateModel = model;
+            this.rebateModel.Documents = new GSLRebateDocumentModel();
         }
 
         public GSLRebateModel GetGSLRebateModel()
@@ -52,7 +50,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         {
             try
             {
-                return this.rebateModel.Documents.TenancyAgreement.IsValid() && this.rebateModel.Documents.OwnerIC.IsValid();
+                return this.rebateModel.Documents.OwnerIC.IsValid();
             }
             catch (Exception ex)
             {
