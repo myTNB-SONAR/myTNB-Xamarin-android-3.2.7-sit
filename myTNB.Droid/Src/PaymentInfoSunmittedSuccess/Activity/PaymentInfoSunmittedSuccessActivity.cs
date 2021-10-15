@@ -71,6 +71,15 @@ namespace myTNB_Android.Src.PaymentInfoSunmittedSuccess.Activity
             TotalAmt = Intent.GetStringExtra("TotalAmt");
             ClaimId = Intent.GetStringExtra("ClaimId");
 
+            TextViewUtils.SetMuseoSans300Typeface(txtContentInfo, txtFeedbackIdTitle, txtFeedbackIdContent, totalclaimamt);
+            TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, buttonBackToHome, btnViewSubmitted, txttotalclaimamt);
+            TextViewUtils.SetTextSize10(txtFeedbackIdTitle);
+            TextViewUtils.SetTextSize12(txtContentInfo);
+            TextViewUtils.SetTextSize14(txtFeedbackIdContent);
+            TextViewUtils.SetTextSize15(txttotalclaimamt);
+            TextViewUtils.SetTextSize16(txtTitleInfo, btnViewSubmitted, buttonBackToHome);
+            TextViewUtils.SetTextSize20(totalclaimamt);
+
             txtFeedbackIdContent.Text = Sernumbr;
             txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForProvidingYourDetails");
             txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForProvidingYourDetailsDescription");

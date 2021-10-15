@@ -90,6 +90,14 @@ namespace myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity
                 AgreeFlag = Convert.ToBoolean(Intent.GetStringExtra("AgreeFlag"));
                 DisAgreeFlag = Convert.ToBoolean(Intent.GetStringExtra("DisAgreeFlag"));
                 ClaimId = Intent.GetStringExtra("ClaimId");
+
+                TextViewUtils.SetMuseoSans300Typeface(txtContentInfo, txtFeedbackIdTitle, txtFeedbackIdContent);
+                TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, buttonBackToHome, btnViewSubmitted);
+                TextViewUtils.SetTextSize10(txtFeedbackIdTitle);
+                TextViewUtils.SetTextSize12(txtContentInfo);
+                TextViewUtils.SetTextSize14(txtFeedbackIdContent);
+                TextViewUtils.SetTextSize16(txtTitleInfo, btnViewSubmitted, buttonBackToHome);
+
                 if (AppointmentFlag == true)
                 {
                     SetDataForCancleAppointment();
