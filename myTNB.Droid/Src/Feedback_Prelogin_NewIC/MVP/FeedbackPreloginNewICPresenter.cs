@@ -59,11 +59,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
             this.mView.showUpdatePersonalDetail();
         }
 
-        private void OnGSLRebate()
+        private void OnGSLRebate(bool isOwner)
         {
             if (LanguageManager.Instance.GetConfigToggleValue(TogglePropertyEnum.IsGSLRebateEnabled))
             {
-                this.mView.ShowGSLRebate();
+                this.mView.ShowGSLRebate(isOwner);
             }
         }
 
@@ -176,7 +176,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                                 OnAboutBillEnquiry();
                                 break;
                             case EnquiryTypeEnum.GSLRebate:
-                                OnGSLRebate();
+                                var ic = data.IC.Trim();
+                                var icAcct = UserEntity.GetActive().IdentificationNo.Trim();
+                                OnGSLRebate(ic.Equals(icAcct));
                                 break;
                             default:
                                 break;

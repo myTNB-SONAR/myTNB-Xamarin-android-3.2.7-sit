@@ -69,8 +69,28 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            _ = new GSLRebateStepOnePresenter(this);
-            this.userActionsListener?.OnInitialize();
+            try
+            {
+                _ = new GSLRebateStepOnePresenter(this);
+                this.userActionsListener?.OnInitialize();
+
+                Bundle extras = Intent.Extras;
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.ACCOUNT_NUMBER))
+                    {
+                        this.userActionsListener?.SetAccountNumber(extras.GetString(Constants.ACCOUNT_NUMBER));
+                    }
+                    if (extras.ContainsKey(Constants.IS_OWNER))
+                    {
+                        this.userActionsListener?.SetIsOwner(extras.GetBoolean(Constants.IS_OWNER));
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void SetUpViews()

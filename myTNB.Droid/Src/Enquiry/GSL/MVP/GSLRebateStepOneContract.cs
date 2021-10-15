@@ -43,6 +43,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
             Item GetDefaultSelectedRebateType();
 
+            void SetIsOwner(bool isOwner);
+
+            void SetAccountNumber(string accountNum);
+
             void SetTenantFullName(string name);
 
             void SetTenantEmailAddress(string email);

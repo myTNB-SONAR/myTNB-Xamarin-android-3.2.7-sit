@@ -702,9 +702,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             StartActivity(updatePersoanlInfo);
         }
 
-        public void ShowGSLRebate()
+        public void ShowGSLRebate(bool isOwner)
         {
-            var gslRebateActivity = new Intent(this, typeof(GSLRebateStepOneActivity));
+            Intent gslRebateActivity = new Intent(this, typeof(GSLRebateStepOneActivity));
+            gslRebateActivity.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
+            gslRebateActivity.PutExtra(Constants.IS_OWNER, isOwner);
             StartActivity(gslRebateActivity);
         }
 

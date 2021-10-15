@@ -38,6 +38,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         {
             rebateModel = new GSLRebateModel
             {
+                IsOwner = false,
                 TenantInfo = new GSLRebateTenantModel()
             };
             rebateTypeList = new List<Item>();
@@ -103,6 +104,16 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public Item GetDefaultSelectedRebateType()
         {
             return rebateTypeList.Count > 0 ? rebateTypeList[0] : null;
+        }
+
+        public void SetIsOwner(bool isOwner)
+        {
+            this.rebateModel.IsOwner = isOwner;
+        }
+
+        public void SetAccountNumber(string accountNum)
+        {
+            this.rebateModel.AccountNum = accountNum;
         }
 
         public void SetTenantFullName(string name)

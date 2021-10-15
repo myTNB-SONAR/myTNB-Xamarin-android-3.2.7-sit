@@ -4,6 +4,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 {
     public class GSLRebateModel
     {
+        public string AccountNum { get; set; }
         public bool IsOwner { get; set; }
         public string RebateType { get; set; }
         public GSLRebateTenantModel TenantInfo { get; set; }

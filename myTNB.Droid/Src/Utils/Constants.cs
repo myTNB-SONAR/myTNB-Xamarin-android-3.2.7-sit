@@ -73,6 +73,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string PAGE_TITLE = ".pageTitle";
         internal static readonly string PAGE_STEP_TITLE = ".pageStepTitle";
         internal static readonly string ACCOUNT_NUMBER = ".accountNumber";
+        internal static readonly string IS_OWNER = ".isOwner";
         internal static readonly string ENQUIRYID = ".enquiryId";
         internal static readonly string ENQUIRYNAME = ".enquiryName";
         internal static readonly string REQ_EMAIL = ".requesterEmail";
@@ -129,8 +130,8 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int SELECT_ENQUIRY_REQUEST_CODE = 0x13;
 
         internal static readonly int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-        
-        
+
+
 
         internal struct SERVER_URL
         {
@@ -318,7 +319,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID = "53";
         public const string BCRM_NOTIFICATION_PAYMENT_FAILED_ID = "71";
         public const string BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID = "72";
-        
+
         //DBR
         public const string BCRM_NOTIFICATION_DBR_EMAIL = "21003";
         public const string BCRM_NOTIFICATION_DBR_EBILL = "21001";
