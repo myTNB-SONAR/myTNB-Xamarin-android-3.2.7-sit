@@ -1217,23 +1217,23 @@
     ],
     "rebateType": [
       {
-        "key": "01",
+        "key": "GSL1",
         "description": "GSL 1: Frequency of Interruptions"
       },
       {
-        "key": "02",
+        "key": "GSL2",
         "description": "GSL 2: Restoration Time"
       },
       {
-        "key": "03",
+        "key": "GSL3",
         "description": "GSL 3: Service Connection Installation"
       },
       {
-        "key": "04",
+        "key": "GSL4",
         "description": "GSL 4: Meter Installation"
       },
       {
-        "key": "05",
+        "key": "GSL5",
         "description": "GSL 5: Disconnection Procedures"
       }
     ]

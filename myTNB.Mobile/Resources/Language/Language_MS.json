@@ -1217,23 +1217,23 @@
     ],
     "rebateType": [
       {
-        "key": "01",
+        "key": "GSL1",
         "description": "GSL 1: Kekerapan Gangguan"
       },
       {
-        "key": "02",
+        "key": "GSL2",
         "description": "GSL 2: Tempoh Pemulihan Bekalan"
       },
       {
-        "key": "03",
+        "key": "GSL3",
         "description": "GSL 3: Perkhidmatan Sambungan Bekalan"
       },
       {
-        "key": "04",
+        "key": "GSL4",
         "description": "GSL 4: Pemasangan Meter"
       },
       {
-        "key": "05",
+        "key": "GSL5",
         "description": "GSl 5:  Prosedur Pemotongan Bekalan"
       }
     ]
