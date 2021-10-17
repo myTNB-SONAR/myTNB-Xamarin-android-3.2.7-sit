@@ -11,6 +11,7 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Enquiry.GSL.Activity;
 using myTNB_Android.Src.FeedbackDetails.Activity;
 using myTNB_Android.Src.SelectSubmittedFeedback.Adapter;
 using myTNB_Android.Src.SelectSubmittedFeedback.MVP;
@@ -53,7 +54,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             // Create your application here
             try
             {
-                if(Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
+                if (Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
                 {
                     SetToolBarTitle(Intent.GetStringExtra("TITLE"));
                 }
@@ -137,7 +138,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         }
 
         public void ShowList(List<SubmittedFeedback> list)
-        {    
+        {
             //adapter.AddAll(list);
             if (list != null && list.Count > 0)
             {
@@ -158,7 +159,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         {
             try
             {
-                LoadingOverlayUtils.OnRunLoadingAnimation(this);      
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -256,7 +257,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 
         public void ClearList()
         {
-            if (adapter != null)    
+            if (adapter != null)
             {
                 adapter.Clear();
             }
@@ -283,6 +284,12 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         {
             var othersIntent = new Intent(this, typeof(FeedbackDetailsOthersActivity));
             StartActivity(othersIntent);
+        }
+
+        public void ShowFeedbackDetailsGSL()
+        {
+            Intent gslDetailsIntent = new Intent(this, typeof(GSLRebateSubmittedDetailsActivity));
+            StartActivity(gslDetailsIntent);
         }
 
         private Snackbar bcrmExceptionSnackBar;

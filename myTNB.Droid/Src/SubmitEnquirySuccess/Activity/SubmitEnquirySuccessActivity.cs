@@ -13,6 +13,8 @@ using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Enquiry;
+using myTNB_Android.Src.Enquiry.GSL.Activity;
 using myTNB_Android.Src.FeedbackDetails.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.MyTNBService.Request;
@@ -34,6 +36,7 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
     {
         private string date;
         private string feedbackId;
+        private string feedbackCategoryId;
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -82,6 +85,7 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
                     //date = extras.GetString(Constants.RESPONSE_FEEDBACK_DATE);
                     feedbackId = extras.GetString(Constants.RESPONSE_FEEDBACK_ID);
                     isAboutMyBill = Intent.GetStringExtra("ABOUTMYBILL");
+                    feedbackCategoryId = Intent.GetStringExtra(EnquiryConstants.FEEDBACK_CATEGORY_ID);
                 }
 
                 TextViewUtils.SetMuseoSans300Typeface(txtContentInfo, txtFeedbackIdTitle, txtFeedbackIdContent);
@@ -162,14 +166,22 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
 
                 ShowProgressDialog();
                 SubmittedFeedbackDetails submittedFeedbackDetails = await FeedbackSaveSharedPreference(feedbackId);
-                var successIntent = new Intent(this, typeof(FeedbackDetailsBillRelatedActivity));
-                successIntent.PutExtra("TITLE", submittedFeedbackDetails.FeedbackTypeName);
-                successIntent.PutExtra("NEWSCREEN", "true");
-                if (isAboutMyBill == "true")
+                if (feedbackCategoryId.Equals(EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID))
                 {
-                    successIntent.PutExtra("ABOUTMYBILL", "true");
+                    Intent gslDetailsIntent = new Intent(this, typeof(GSLRebateSubmittedDetailsActivity));
+                    StartActivityForResult(gslDetailsIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
                 }
-                StartActivityForResult(successIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
+                else
+                {
+                    var successIntent = new Intent(this, typeof(FeedbackDetailsBillRelatedActivity));
+                    successIntent.PutExtra("TITLE", submittedFeedbackDetails.FeedbackTypeName);
+                    successIntent.PutExtra("NEWSCREEN", "true");
+                    if (isAboutMyBill == "true")
+                    {
+                        successIntent.PutExtra("ABOUTMYBILL", "true");
+                    }
+                    StartActivityForResult(successIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
+                }
             }
         }
 

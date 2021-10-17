@@ -96,7 +96,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
             restorationTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_TIME_HINT);
 
             gslIncidentItemTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_INCIDENT_INFO_TITLE);
-            incidentTitle.Text = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_INCIDENT_INFO_TITLE), this.itemIndex + 1);
+            incidentTitle.Text = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_INCIDENT_ITEM_TITLE), this.itemIndex + 1);
 
             txtIncidentDate.Focusable = false;
             txtIncidentTime.Focusable = false;

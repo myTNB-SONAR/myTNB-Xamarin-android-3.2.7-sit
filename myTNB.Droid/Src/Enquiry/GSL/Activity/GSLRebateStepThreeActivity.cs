@@ -63,8 +63,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         GSLDocumentType activeDocumentType;
 
         LinearLayoutManager layoutManagerTenancy, layoutManagerOwnerIC;
-        UploadDocumentItemAdapter tenancyAdapter;
-        UploadDocumentItemAdapter ownerICAdapter;
+        UploadDocumentItemAdapter tenancyAdapter, ownerICAdapter;
 
         protected override void OnStart()
         {

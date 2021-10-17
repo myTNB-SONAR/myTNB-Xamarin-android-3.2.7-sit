@@ -78,6 +78,12 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             /// </summary>
             /// <param name="exception">the returned exception</param>
             void ShowBCRMDownException(String msg);
+
+            /// <summary>
+            /// Show GSL feedback details
+            /// </summary>
+            /// <param name="submittedFeedback">SubmittedFeedbackDetails</param>
+            void ShowFeedbackDetailsGSL();
         }
 
         public interface IUserActionsListener : IBasePresenter

@@ -11,6 +11,7 @@
         internal static readonly string BILL_FILTER = "BillFilter";
         internal static readonly string SUBMIT_ENQUIRY = "SubmitEnquiry";
         internal static readonly string FEEDBACK_FORM = "FeedbackForm";
+        internal static readonly string APPLICATION_STATUS_DETAILS = "ApplicationStatusDetails";
 
         internal struct Common
         {
@@ -104,6 +105,10 @@
             internal static readonly string TNC_AGREE_NON_OWNER = "tncAgreeNonOwner";
             internal static readonly string ANTI_SPAM_POLICY = "antiSpamPolicy";
             internal static readonly string PRIVACY_POLICY = "privacyPolicy";
+            internal static readonly string SERVICE_NO_TITLE = "serviceNoTitle";
+            internal static readonly string CONTACT_DETAILS_TITLE = "contactDetailsTitle";
+            internal static readonly string SUPPORTING_DOCS_TITLE = "supportingDocTitle";
+            internal static readonly string FOR = "for";
         }
 
         internal struct FeedbackForm
@@ -111,6 +116,11 @@
             internal static readonly string TAKE_PHOTO = "takePhoto";
             internal static readonly string CHOOSE_FROM_LIBRARY = "chooseFromLibrary";
             internal static readonly string SELECT_OPTIONS = "selectOptions";
+        }
+
+        internal struct ApplicationStatusDetails
+        {
+            internal static readonly string STATUS_LABEL = "status";
         }
     }
 }

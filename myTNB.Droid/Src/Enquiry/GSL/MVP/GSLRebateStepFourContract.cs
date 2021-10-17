@@ -30,6 +30,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             Task<AttachedImageRequest> SaveImage(AttachedImage attachedImage);
 
             List<AttachedImage> GetDeSerializeImage(string image);
+
+            void OnSubmitError(string message = null);
+
+            void ShowSuccess(string date, string feedbackId, int imageCount);
         }
 
         public interface IUserActionsListener : IBasePresenter

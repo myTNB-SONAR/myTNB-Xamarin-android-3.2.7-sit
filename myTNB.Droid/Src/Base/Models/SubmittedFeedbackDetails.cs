@@ -29,10 +29,8 @@ namespace myTNB_Android.Src.Base.Models
         [JsonProperty("FeedbackTypeName")]
         public string FeedbackTypeName { get; set; }
 
-        
         [JsonProperty("IsOwner")]
         public bool? IsOwner { get; set; }
-
 
         [JsonProperty("FeedbackCategoryId")]
         public string FeedbackCategoryId { get; set; }
@@ -73,6 +71,21 @@ namespace myTNB_Android.Src.Base.Models
         [JsonProperty("FeedbackUpdateDetails")]
         public List<FeedbackUpdate> FeedbackUpdateDetails { get; set; }
 
+        [JsonProperty("IncidentInfos")]
+        public List<Incident> IncidentInfos { get; set; }
+
+        [JsonProperty("RebateId")]
+        public string RebateId { get; set; }
+
+        [JsonProperty("TenantFullName")]
+        public string TenantFullName { get; set; }
+
+        [JsonProperty("TenantEmail")]
+        public string TenantEmail { get; set; }
+
+        [JsonProperty("TenantMobileNumber")]
+        public string TenantMobileNumber { get; set; }
+
         public class ImageResponse
         {
             [JsonProperty("imageHex")]
@@ -98,6 +111,21 @@ namespace myTNB_Android.Src.Base.Models
 
             [JsonProperty("FeedbackUpdInfoValue")]
             public string FeedbackUpdInfoValue { get; set; }
+        }
+
+        public class Incident
+        {
+            [JsonProperty("IncidentDate")]
+            public string IncidentDate { get; set; }
+
+            [JsonProperty("IncidentStartTime")]
+            public string IncidentStartTime { get; set; }
+
+            [JsonProperty("RestoreDate")]
+            public string RestoreDate { get; set; }
+
+            [JsonProperty("RestoreTime")]
+            public string RestoreTime { get; set; }
         }
     }
 }

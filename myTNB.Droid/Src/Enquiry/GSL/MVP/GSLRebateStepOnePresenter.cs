@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             SaveAccountInfo();
             GetRebateTypeFromSelector();
             this.view?.SetUpViews();
-            this.view?.UpdateButtonState(this.rebateModel.IsOwner);
+            this.view?.UpdateButtonState(false);
         }
 
         public void Start() { }
@@ -121,11 +121,17 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public void SetIsOwner(bool isOwner)
         {
             this.rebateModel.IsOwner = isOwner;
+            this.view?.UpdateButtonState(isOwner);
         }
 
         public void SetAccountNumber(string accountNum)
         {
             this.rebateModel.AccountNum = accountNum;
+            CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(this.rebateModel.AccountNum);
+            if (account != null)
+            {
+                this.rebateModel.AccountInfo.Address = account.AccountStAddress;
+            }
         }
 
         public void SetTenantFullName(string name)

@@ -8,11 +8,14 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
@@ -22,6 +25,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Enquiry.Common;
 using myTNB_Android.Src.Enquiry.Component;
 using myTNB_Android.Src.Enquiry.GSL.MVP;
+using myTNB_Android.Src.SubmitEnquirySuccess.Activity;
 using myTNB_Android.Src.Utils;
 using FileUtils = myTNB_Android.Src.Utils.FileUtils;
 
@@ -33,6 +37,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
       , Theme = "@style/Theme.Enquiry")]
     public class GSLRebateStepFourActivity : BaseToolbarAppCompatActivity, GSLRebateStepFourContract.IView
     {
+        [BindView(Resource.Id.rootView)]
+        CoordinatorLayout rootView;
+
         [BindView(Resource.Id.gslStepFourPageTitle)]
         TextView gslStepFourPageTitle;
 
@@ -120,7 +127,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             var stepTitleString = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_STEP_TITLE), 4, 4);
             gslStepFourPageTitle.Text = stepTitleString;
 
-            txtStepFourYourContactTitle.Text = "Your contact details"; //Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_UPLOAD_TITLE);
+            txtStepFourYourContactTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.CONTACT_DETAILS_TITLE);
             gslStepFourbtnNext.Text = Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.NEXT);
 
             gslStepFourTnCCheckBox.Checked = false;
@@ -359,6 +366,42 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                 Utility.LoggingNonFatalError(e);
                 return null;
             }
+        }
+
+        public void OnSubmitError(string message = null)
+        {
+            if (this.mErrorMessageSnackBar != null && this.mErrorMessageSnackBar.IsShown)
+            {
+                this.mErrorMessageSnackBar.Dismiss();
+            }
+
+            if (string.IsNullOrEmpty(message))
+            {
+                message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
+            }
+
+            this.mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { this.mErrorMessageSnackBar.Dismiss(); }
+            );
+            View v = this.mErrorMessageSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+
+            this.mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
+        }
+
+        public void ShowSuccess(string date, string feedbackId, int imageCount)
+        {
+            ISharedPreferences sharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
+            int currentCount = UserSessions.GetCurrentImageCount(sharedPref);
+            UserSessions.SetCurrentImageCount(sharedPref, currentCount + imageCount);
+
+            var successIntent = new Intent(this, typeof(SubmitEnquirySuccessActivity));
+            successIntent.PutExtra(EnquiryConstants.FEEDBACK_CATEGORY_ID, EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID);
+            successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_DATE, date);
+            successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_ID, feedbackId);
+            StartActivity(successIntent);
         }
     }
 }

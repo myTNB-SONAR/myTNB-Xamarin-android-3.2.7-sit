@@ -4,6 +4,39 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 {
     public class GSLRebateModel
     {
+        public string ServiceReqNo { get; set; }
+        public string StatusCode { get; set; }
+        public EnquiryStatusCode EnquiryStatusCode
+        {
+            get
+            {
+                return StatusCode switch
+                {
+                    "CLO1" => EnquiryStatusCode.CL01,
+                    "CL02" => EnquiryStatusCode.CL02,
+                    "CL03" => EnquiryStatusCode.CL03,
+                    "CL04" => EnquiryStatusCode.CL04,
+                    "CLO6" => EnquiryStatusCode.CL06,
+                    _ => EnquiryStatusCode.NONE,
+                };
+            }
+        }
+        public int StatusColor
+        {
+            get
+            {
+                return EnquiryStatusCode switch
+                {
+                    EnquiryStatusCode.CL01 => Resource.Color.createdColorSubmit,
+                    EnquiryStatusCode.CL02 => Resource.Color.inProgressColor,
+                    EnquiryStatusCode.CL03 => Resource.Color.completedColor,
+                    EnquiryStatusCode.CL04 => Resource.Color.completedColor,
+                    EnquiryStatusCode.CL06 => Resource.Color.cancelledColor,
+                    _ => Resource.Color.createdColorSubmit,
+                };
+            }
+        }
+        public string StatusDesc { get; set; }
         public string FeedbackCategoryId { get; set; }
         public string AccountNum { get; set; }
         public bool IsOwner { get; set; }
@@ -39,6 +72,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public string FullName { get; set; }
         public string Email { get; set; }
         public string MobileNumber { get; set; }
+        public string Address { get; set; }
     }
 
     public enum GSLLayoutType
@@ -70,5 +104,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         internal static readonly string REBATE_MODEL = "RebateModel";
         internal static readonly string DATE_FORMAT = "dd MMM yyyy";
         internal static readonly string TIME_FORMAT = "h:mm tt";
+        internal static readonly string DATE_RESPONSE_PARSE_FORMAT = "yyyy-MM-dd";
+        internal static readonly string TIME_RESPONSE_PARSE_FORMAT = "HH:mm:ss";
+        internal static readonly string DATETIME_PARSE_FORMAT = "dd'/'MM'/'yyyy HH:mm:ss";
     }
 }

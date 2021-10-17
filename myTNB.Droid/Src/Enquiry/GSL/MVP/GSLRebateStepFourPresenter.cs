@@ -14,6 +14,7 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Java.Text;
 using System.Globalization;
+using Android.Gms.Common.Apis;
 
 namespace myTNB_Android.Src.Enquiry.GSL.MVP
 {
@@ -138,9 +139,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
                     this.view.ShowProgressDialog();
                 }
 
-                UserEntity userEntity = UserEntity.GetActive();
                 List<AttachedImageRequest> imageRequest = new List<AttachedImageRequest>();
-
                 if (this.rebateModel.Documents.OwnerIC.IsValid())
                 {
                     List<AttachedImage> ownersICDocument = this.view.GetDeSerializeImage(this.rebateModel.Documents.OwnerIC);
@@ -170,20 +169,20 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
                 this.rebateModel.IncidentList.ForEach(incident =>
                 {
-                    DateTime incidentDateTimeParse = DateTime.ParseExact(incident.IncidentDateTime, "dd'/'MM'/'yyyy HH:mm:ss",
+                    DateTime incidentDateTimeParse = DateTime.ParseExact(incident.IncidentDateTime, GSLRebateConstants.DATETIME_PARSE_FORMAT,
                                 CultureInfo.InvariantCulture, DateTimeStyles.None);
 
-                    DateTime restorationDateTimeParse = DateTime.ParseExact(incident.RestorationDateTime, "dd'/'MM'/'yyyy HH:mm:ss",
+                    DateTime restorationDateTimeParse = DateTime.ParseExact(incident.RestorationDateTime, GSLRebateConstants.DATETIME_PARSE_FORMAT,
                                 CultureInfo.InvariantCulture, DateTimeStyles.None);
 
-                    CultureInfo currCult = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage().ToUpper() == "MS" ? "ms-MY" : "en-US");
-                    var incidentDateString = incidentDateTimeParse.ToString("yyyy-MM-dd", currCult);
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
+                    var incidentDateString = incidentDateTimeParse.ToString(GSLRebateConstants.DATE_RESPONSE_PARSE_FORMAT, currCult);
 
-                    var restorationDateString = restorationDateTimeParse.ToString("yyyy-MM-dd", currCult);
+                    var restorationDateString = restorationDateTimeParse.ToString(GSLRebateConstants.DATE_RESPONSE_PARSE_FORMAT, currCult);
 
-                    var incidentTimeString = incidentDateTimeParse.ToString("HH:mm:ss", currCult);
+                    var incidentTimeString = incidentDateTimeParse.ToString(GSLRebateConstants.TIME_RESPONSE_PARSE_FORMAT, currCult);
 
-                    var restorationTimeString = restorationDateTimeParse.ToString("HH:mm:ss", currCult);
+                    var restorationTimeString = restorationDateTimeParse.ToString(GSLRebateConstants.TIME_RESPONSE_PARSE_FORMAT, currCult);
 
                     submitGSLEnquiryRequest.feedback.SetIncidentInfos(incidentDateString, incidentTimeString, restorationDateString, restorationTimeString);
                 });
@@ -193,38 +192,55 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
                 if (gslSubmitEnquiryResponse.Response != null &&
                     gslSubmitEnquiryResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
-                    //SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    //var newSubmittedFeedback = new SubmittedFeedback()
-                    //{
-                    //    FeedbackId = gslSubmitEnquiryResponse.GetData().ServiceReqNo,
-                    //    DateCreated = dateFormat.Format(Java.Lang.JavaSystem.CurrentTimeMillis()),
-                    //    FeedbackMessage = string.Empty,
-                    //    FeedbackCategoryId = "9"
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    var newSubmittedFeedback = new SubmittedFeedback()
+                    {
+                        FeedbackId = gslSubmitEnquiryResponse.GetData().ServiceReqNo,
+                        DateCreated = dateFormat.Format(Java.Lang.JavaSystem.CurrentTimeMillis()),
+                        FeedbackMessage = string.Empty,
+                        FeedbackCategoryId = "9"
 
-                    //};
-                    //SubmittedFeedbackEntity.InsertOrReplace(newSubmittedFeedback);
+                    };
+                    SubmittedFeedbackEntity.InsertOrReplace(newSubmittedFeedback);
+                    this.view.ShowSuccess(gslSubmitEnquiryResponse.GetData().DateCreated, gslSubmitEnquiryResponse.GetData().ServiceReqNo, imageRequest.Count);
                 }
                 else
                 {
-
+                    this.view.OnSubmitError(gslSubmitEnquiryResponse.Response.DisplayMessage);
                 }
 
                 if (this.view.IsActive())
                 {
                     this.view.HideProgressDialog();
                 }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (this.view.IsActive())
+                {
+                    this.view.HideProgressDialog();
+                }
+                this.view.OnSubmitError();
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (this.view.IsActive())
+                {
+                    this.view.HideProgressDialog();
+                }
+                this.view.OnSubmitError();
+                Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                System.Console.WriteLine("OnSubmitActionAsync() Exception");
                 if (this.view.IsActive())
                 {
                     this.view.HideProgressDialog();
                 }
+                this.view.OnSubmitError();
                 Utility.LoggingNonFatalError(e);
             }
-
-
         }
     }
 }

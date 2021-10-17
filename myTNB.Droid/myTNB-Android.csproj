@@ -6907,6 +6907,13 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\MyTNBService\Request\SubmitGSLEnquiryRequest.cs" />
+    <Compile Include="Src\Enquiry\GSL\Activity\GSLRebateSubmittedDetailsActivity.cs" />
+    <AndroidResource Include="Resources\layout\GSLRebateSubmittedDetailsView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLSubmittedDetails\GSLRebateSubmittedDetailsContract.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLSubmittedDetails\GSLRebateSubmittedDetailsPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -8467,6 +8474,7 @@
     <Folder Include="Src\Enquiry\Component\" />
     <Folder Include="Src\Enquiry\Adapter\" />
     <Folder Include="Src\Enquiry\Common\" />
+    <Folder Include="Src\Enquiry\GSL\MVP\GSLSubmittedDetails\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
