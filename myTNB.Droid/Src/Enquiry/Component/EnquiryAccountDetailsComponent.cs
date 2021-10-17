@@ -85,8 +85,8 @@ namespace myTNB_Android.Src.Enquiry.Component
             Drawable emailIcon = ContextCompat.GetDrawable(this.mActivity, Resource.Drawable.placeholder_email);
             txtEnquiryAcctDetailsEmail.SetCompoundDrawablesWithIntrinsicBounds(emailIcon, null, null, null);
 
-            txtEnquiryAcctDetailsFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT);
-            txtEnquiryAcctDetailsEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT);
+            txtEnquiryAcctDetailsFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT).ToUpper();
+            txtEnquiryAcctDetailsEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT).ToUpper();
 
             enquiryAcctDetailsLMobileNumContainer.RemoveAllViews();
             mobileNumberInputComponent = new MobileNumberInputComponent(this.mContext);
