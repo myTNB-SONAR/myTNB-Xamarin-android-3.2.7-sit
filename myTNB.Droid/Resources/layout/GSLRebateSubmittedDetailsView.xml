@@ -177,7 +177,8 @@
 								android:layout_height="wrap_content"
 								app:errorEnabled="false"
 								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-								android:layout_marginTop="16dp">
+								android:layout_marginTop="16dp"
+								android:layout_marginBottom="16dp">
 								<EditText
 									android:id="@+id/editTxtGSLDetailMobile"
 									android:layout_width="match_parent"
@@ -197,8 +198,7 @@
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
 								app:errorEnabled="false"
-								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-								android:layout_marginTop="16dp">
+								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 								<EditText
 									android:id="@+id/editTxtGSLDetailAddress"
 									android:layout_width="match_parent"
@@ -424,7 +424,6 @@
 								android:layout_height="match_parent"
 								android:orientation="vertical"
 								android:background="@color/white"
-								android:layout_marginTop="16dp"
 								android:id="@+id/gslAttachmentLinearLayout">
 								<TextView
 									android:id="@+id/txtRequiredDocumentsTitle"

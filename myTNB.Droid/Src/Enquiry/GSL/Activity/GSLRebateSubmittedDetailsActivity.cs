@@ -16,9 +16,9 @@ using Google.Android.Material.TextField;
 using myTNB;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Enquiry.Adapter;
 using myTNB_Android.Src.Enquiry.GSL.MVP;
 using myTNB_Android.Src.Enquiry.GSL.MVP.GSLSubmittedDetails;
+using myTNB_Android.Src.FeedbackDetails.Adapter;
 using myTNB_Android.Src.FeedbackFullScreenImage.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -154,7 +154,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         private GSLRebateSubmittedDetailsContract.IUserActionsListener presenter;
 
         LinearLayoutManager layoutManager;
-        UploadDocumentItemAdapter adapter;
+        FeedbackImageRecyclerAdapterNew adapter;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -287,7 +287,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
 
         private void SetAttachments()
         {
-            adapter = new UploadDocumentItemAdapter(true);
+            adapter = new FeedbackImageRecyclerAdapterNew(true);
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
 
             recyclerViewDocument.SetLayoutManager(layoutManager);
@@ -455,7 +455,14 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                     editTxtGSLDetailContactFullName.Text = model.ContactInfo.FullName;
                     editTxtGSLDetailEmail.Text = model.ContactInfo.Email;
                     editTxtGSLDetailMobile.Text = model.ContactInfo.MobileNumber;
-                    editTxtGSLDetailAddress.Text = model.ContactInfo.Address;
+                    if (model.ContactInfo.Address.IsValid())
+                    {
+                        editTxtGSLDetailAddress.Text = model.ContactInfo.Address;
+                    }
+                    else
+                    {
+                        txtGSLDetailAddressLayout.Visibility = ViewStates.Gone;
+                    }
                 }
                 else
                 {
