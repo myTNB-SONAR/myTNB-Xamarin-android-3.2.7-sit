@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.SitecoreCMS.Model
@@ -46,5 +45,11 @@ namespace myTNB_Android.Src.SitecoreCMS.Model
 
         [JsonProperty("ID")]
         public string ID { set; get; }
+
+        [JsonProperty("ShouldTrack")]
+        public bool ShouldTrack { set; get; }
+
+        [JsonProperty("DynatraceTag")]
+        public string DynatraceTag { set; get; }
     }
 }

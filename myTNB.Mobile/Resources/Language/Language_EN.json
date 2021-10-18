@@ -553,7 +553,7 @@
     "selectViewTitle": "Select View",
     "description": "View your invoiced bills, payment receipts or both.",
     "descriptionRE": "View your advices, payment receipts or both.",
-    "descriptionRedesign": "View your  bills, payment receipts or both.",
+    "descriptionRedesign": "View your bills, payment receipts or both.",
     "filterBy": "Filter By",
     "applyFilter": "Apply Filter",
     "selectFilter": "Select Filter"
@@ -1194,7 +1194,8 @@
     "restorationTime": "Time of Restoration",
     "uploadDocumentTitle": "Upload Required Document",
     "tenancyAgreementTitle": "Tenancy Agreement",
-    "tenancyAgreementAttachmentDescription": "Maximum document size is 2MB (PDF, JPG, JPEG, PNG, DOC, DOCX, XLS or XLSX formats only)"
+    "tenancyAgreementAttachmentDescription": "Maximum document size is 2MB (PDF, JPG, JPEG, PNG, DOC, DOCX, XLS or XLSX formats only)",
+    "status": "Status:"
   },
   "SubmitEnquiry_selector": {
     "enquiryType": [

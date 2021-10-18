@@ -65,7 +65,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [BindView(Resource.Id.download_bill_icon)]
         ImageView download_bill_icon;
 
-
         [BindView(Resource.Id.itemisedBillingInfoNote)]
         TextView itemisedBillingInfoNote;
 
@@ -401,9 +400,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             ShowSelectFilter();
         }
+
         [OnClick(Resource.Id.download_bill_icon)]
         void OnDownloadBillHistory(object sender, EventArgs eventArgs)
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Bill.View_Account_Statement);
             ShowDownloadBill();
         }
 
@@ -466,6 +467,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         {
                             return itemFilter.selected;
                         });
+
+                        if (_isBillStatement)
+                        {
+                            string dynatraceTag = string.Empty;
+                            if (selectedFilter.type.ToUpper() == "ALL")
+                            {
+                                dynatraceTag = DynatraceConstants.BR.CTAs.BillFilter.All;
+                            }
+                            else if (selectedFilter.type.ToUpper() == "BILL")
+                            {
+                                dynatraceTag = DynatraceConstants.BR.CTAs.BillFilter.Bills;
+                            }
+                            else if (selectedFilter.type.ToUpper() == "ADVICE")
+                            {
+                                dynatraceTag = DynatraceConstants.BR.CTAs.BillFilter.Advice;
+                            }
+                            else if (selectedFilter.type.ToUpper() == "PAYMENT")
+                            {
+                                dynatraceTag = DynatraceConstants.BR.CTAs.BillFilter.Payments;
+                            }
+                            DynatraceHelper.OnTrack(dynatraceTag);
+                        }
 
                         UpdateBillingHistory(selectedFilter);
                         itemisedBillingScrollView.ScrollTo(0, 0);
@@ -1211,6 +1234,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             Intent viewBill = new Intent(Activity, typeof(ViewBillActivity));
             viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
             viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
+            if (_isBillStatement)
+            {
+                DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Bill.View_Bill);
+                DynatraceHelper.OnTrack(DynatraceConstants.BR.Screens.Bill.View_Bill);
+            }
             StartActivity(viewBill);
         }
 

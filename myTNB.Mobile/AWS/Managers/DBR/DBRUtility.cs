@@ -113,7 +113,7 @@ namespace myTNB.Mobile
                         {
                             for (int i = 0; i < caList.Count; i++)
                             {
-                                int index = EligibilitySessionCache.Instance.CAList.FindIndex(x => x == caList[i]);
+                                int index = EligibilitySessionCache.Instance.CAList.FindIndex(x => x.CA == caList[i]);
                                 if (index > -1)
                                 {
                                     return true;

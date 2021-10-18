@@ -1,16 +1,11 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
@@ -109,7 +104,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             SetResult(Result.Ok, resultIntent);
             Finish();
         }
-
 
         public override void OnTrimMemory(TrimMemory level)
         {

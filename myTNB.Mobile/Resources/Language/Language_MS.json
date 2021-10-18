@@ -1179,7 +1179,7 @@
     "iNeedHelpWith": "SAYA PERLU BANTUAN MENGENAI",
     //GSL
     "gslTitle": "Jaminan Tahap Perkhidmatan (GSL)",
-    "gslDescription": "MS_I want to claim for GSL Rebate",
+    "gslDescription": "Saya ingin menebus rebat Jaminan Tahap Perkhidmatan (GSL)",
     "gslHeaderTitle": "Rebat GSL",
     "stepTitle": "Langkah {0} dari {1}",
     "rebateClaimTitle": "Jenis rebat apa yang ingin anda tuntut?",
@@ -1194,7 +1194,8 @@
     "restorationTime": "Masa Insiden",
     "uploadDocumentTitle": "Muat Naik Dokumen Sokongan",
     "tenancyAgreementTitle": "Perjanjian Penyewaan",
-    "tenancyAgreementAttachmentDescription": "Saiz maksimum dokumen adalah 2MB (format PDF, JPG, JPEG, PNG, DOC, DOCX, XLS & XLSX sahaja)"
+    "tenancyAgreementAttachmentDescription": "Saiz maksimum dokumen adalah 2MB (format PDF, JPG, JPEG, PNG, DOC, DOCX, XLS & XLSX sahaja)",
+    "status": "Status:"
   },
   "SubmitEnquiry_selector": {
     "enquiryType": [
