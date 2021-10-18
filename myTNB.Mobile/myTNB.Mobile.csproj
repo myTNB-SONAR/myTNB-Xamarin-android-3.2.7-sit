@@ -110,7 +110,6 @@
     <Folder Include="AWS\Services\Access Token\" />
     <Folder Include="AWS\Models\DBR\" />
     <Folder Include="AWS\Models\DBR\Get Bill Rendering\" />
-    <Folder Include="AWS\Models\DBR\Get Eligibility\" />
     <Folder Include="AWS\Managers\DBR\" />
     <Folder Include="AWS\Services\DBR\" />
     <Folder Include="AWS\Managers\Eligibility\" />
@@ -120,6 +119,8 @@
     <Folder Include="API\Managers\FeatureInfo\" />
     <Folder Include="API\Models\Feature Info\" />
     <Folder Include="AWS\Managers\Bill Redesign\" />
+    <Folder Include="AWS\Models\Eligibility\" />
+    <Folder Include="AWS\Models\Eligibility\Get Eligibility\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -177,6 +178,8 @@
     <None Remove="API\Managers\FeatureInfo\" />
     <None Remove="API\Models\Feature Info\" />
     <None Remove="AWS\Managers\Bill Redesign\" />
+    <None Remove="AWS\Models\Eligibility\" />
+    <None Remove="AWS\Models\Eligibility\Get Eligibility\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />

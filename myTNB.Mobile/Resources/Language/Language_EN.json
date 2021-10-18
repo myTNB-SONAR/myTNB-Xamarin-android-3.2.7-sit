@@ -1194,7 +1194,8 @@
     "restorationTime": "Time of Restoration",
     "uploadDocumentTitle": "Upload Required Document",
     "tenancyAgreementTitle": "Tenancy Agreement",
-    "tenancyAgreementAttachmentDescription": "Maximum document size is 2MB (PDF, JPG, JPEG, PNG, DOC, DOCX, XLS or XLSX formats only)"
+    "tenancyAgreementAttachmentDescription": "Maximum document size is 2MB (PDF, JPG, JPEG, PNG, DOC, DOCX, XLS or XLSX formats only)",
+    "status": "Status:"
   },
   "SubmitEnquiry_selector": {
     "enquiryType": [
