@@ -108,26 +108,17 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP.GSLSubmittedDetails
                     MobileNumber = gslRebateDetails.TenantMobileNumber
                 };
 
-                try
+                this.gslRebateModel.IncidentDisplayList = new List<GSLRebateIncidentDisplayModel>();
+                gslRebateDetails.IncidentInfos.ForEach(incident =>
                 {
-                    this.gslRebateModel.IncidentList = new List<GSLRebateIncidentModel>();
-                    gslRebateDetails.IncidentInfos.ForEach(incident =>
+                    this.gslRebateModel.IncidentDisplayList.Add(new GSLRebateIncidentDisplayModel
                     {
-                        this.gslRebateModel.IncidentDisplayList.Add(new GSLRebateIncidentDisplayModel
-                        {
-                            IncidentDate = incident.IncidentDate,
-                            IncidentTime = incident.IncidentStartTime,
-                            RestorationDate = incident.RestoreDate,
-                            RestorationTime = incident.RestoreTime
-                        });
+                        IncidentDate = incident.IncidentDate,
+                        IncidentTime = incident.IncidentStartTime,
+                        RestorationDate = incident.RestoreDate,
+                        RestorationTime = incident.RestoreTime
                     });
-                }
-                catch (Exception e)
-                {
-                    this.view.RenderUIFromModel(this.gslRebateModel);
-                    this.view.HideProgressDialog();
-                    Utility.LoggingNonFatalError(e);
-                }
+                });
 
                 this.view.RenderUIFromModel(this.gslRebateModel);
                 this.view.HideProgressDialog();

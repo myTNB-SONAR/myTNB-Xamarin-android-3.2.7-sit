@@ -167,7 +167,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
             {
                 Calendar calendar = Calendar.GetInstance(Locale.Default);
                 var dateTimeNow = DateTime.Now;
-                DatePickerDialog datePickerDialog = new DatePickerDialog(this.mActivity, this, dateTimeNow.Year, dateTimeNow.Month - 1, dateTimeNow.Day);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this.mActivity, AlertDialog.ThemeHoloLight, this, dateTimeNow.Year, dateTimeNow.Month - 1, dateTimeNow.Day);
                 datePickerDialog.DatePicker.MaxDate = calendar.TimeInMillis;
                 datePickerDialog.Show();
             }
@@ -184,7 +184,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                 Calendar calendar = Calendar.GetInstance(Locale.Default);
                 int hour = calendar.Get(CalendarField.HourOfDay);
                 int minute = calendar.Get(CalendarField.Minute);
-                TimePickerDialog timePickerDialog = new TimePickerDialog(this.mActivity, this, hour, minute, true);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(this.mActivity, AlertDialog.ThemeHoloLight, this, hour, minute, false);
+
                 timePickerDialog.Show();
             }
             catch (Exception e)
