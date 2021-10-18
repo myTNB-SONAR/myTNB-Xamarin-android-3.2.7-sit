@@ -121,6 +121,8 @@
                     public const string IsZoomable = "IsZoomable";
                     public const string IsHeader = "IsHeader";
                     public const string IsFooter = "IsFooter";
+                    public const string ShouldTrack = "ShouldTrack";
+                    public const string DynatraceTag = "DynatraceTag";
                 }
 
                 public struct ImageName

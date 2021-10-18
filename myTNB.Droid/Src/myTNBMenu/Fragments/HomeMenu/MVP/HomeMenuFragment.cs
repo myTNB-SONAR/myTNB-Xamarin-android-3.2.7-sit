@@ -3781,6 +3781,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [OnClick(Resource.Id.newBillRedesignBanner)]
         void NewBillRedesignBannerOnClick(object sender, EventArgs eventArgs)
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Home.Home_Banner);
             ((DashboardHomeActivity)Activity).NavigateToNBR();
         }
     }

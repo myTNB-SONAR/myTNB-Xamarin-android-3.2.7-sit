@@ -39,6 +39,7 @@ namespace myTNB_Android.Src.Utils
         private string mHeaderTitle;
         private Action mAction;
         private Screen TargetScreen = Screen.None;
+        private string dynatraceTag = string.Empty;
 
         /// <summary>
         /// WARNING: Please add new type at the bottom of the list and DO NOT rearrange existing items
@@ -92,8 +93,9 @@ namespace myTNB_Android.Src.Utils
             return this;
         }
 
-        public LinkRedirectionUtils Build()
+        public LinkRedirectionUtils Build(string dynatraceTag = "")
         {
+            this.dynatraceTag = dynatraceTag;
             if (!string.IsNullOrEmpty(this.mMessage))
             {
                 SpannableString s = new SpannableString(mTextView.TextFormatted);
@@ -136,10 +138,17 @@ namespace myTNB_Android.Src.Utils
             try
             {
                 if (this.mAction != null)
+                {
                     this.mAction();
+                }
 
                 if (!string.IsNullOrEmpty(url))
                 {
+                    if (!string.IsNullOrEmpty(this.dynatraceTag)
+                        && !string.IsNullOrWhiteSpace(this.dynatraceTag))
+                    {
+                        DynatraceHelper.OnTrack(this.dynatraceTag);
+                    }
                     //for:
                     //"inAppBrowser="
                     //"externalBrowser="

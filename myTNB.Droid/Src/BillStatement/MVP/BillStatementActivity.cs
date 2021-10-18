@@ -15,6 +15,7 @@ using AndroidX.Core.Content;
 using myTNB_Android.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
 using myTNB_Android.Src.ViewBill.Activity;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.BillStatement.MVP
 {
@@ -41,7 +42,6 @@ namespace myTNB_Android.Src.BillStatement.MVP
 
         bool isSixMonthSelected = false;
         bool isThreeMonthSelected = false;
-
 
         AccountData selectedAccount;
 
@@ -118,6 +118,7 @@ namespace myTNB_Android.Src.BillStatement.MVP
             {
                 try
                 {
+                    DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.StatementPeriod.View_Account_Statement);
                     this.SetIsClicked(true);
                     ShowBillStatementPDF();
                     FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Buttom Clicked");
@@ -141,6 +142,7 @@ namespace myTNB_Android.Src.BillStatement.MVP
             imgTheeMonthsAction.Visibility = ViewStates.Gone;
             isSixMonthSelected = true;
             isThreeMonthSelected = false;
+            DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.StatementPeriod.Past_6_Months);
             SetCTAEnable();
         }
         [OnClick(Resource.Id.threeMonthsContainer)]
@@ -150,12 +152,12 @@ namespace myTNB_Android.Src.BillStatement.MVP
             imgTheeMonthsAction.Visibility = ViewStates.Visible;
             isSixMonthSelected = false;
             isThreeMonthSelected = true;
+            DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.StatementPeriod.Past_3_Months);
             SetCTAEnable();
         }
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
 
             txtThreeMonths.Text = Utility.GetLocalizedLabel("StatementPeriod", "past3Months");
             txtPageTitleInfo.Text = Utility.GetLocalizedLabel("StatementPeriod", "iWantToViewTitle");
@@ -166,7 +168,6 @@ namespace myTNB_Android.Src.BillStatement.MVP
             TextViewUtils.SetTextSize16(txtPageTitleInfo, txtThreeMonths, txtSixMonth, btnSubmit);
 
             SetToolBarTitle("View Account Statement");
-
 
             Bundle extras = Intent.Extras;
 

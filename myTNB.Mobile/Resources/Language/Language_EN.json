@@ -553,7 +553,7 @@
     "selectViewTitle": "Select View",
     "description": "View your invoiced bills, payment receipts or both.",
     "descriptionRE": "View your advices, payment receipts or both.",
-    "descriptionRedesign": "View your  bills, payment receipts or both.",
+    "descriptionRedesign": "View your bills, payment receipts or both.",
     "filterBy": "Filter By",
     "applyFilter": "Apply Filter",
     "selectFilter": "Select Filter"
@@ -1194,7 +1194,8 @@
     "restorationTime": "Time of Restoration",
     "uploadDocumentTitle": "Upload Required Document",
     "tenancyAgreementTitle": "Tenancy Agreement",
-    "tenancyAgreementAttachmentDescription": "Maximum document size is 2MB (PDF, JPG, JPEG, PNG, DOC, DOCX, XLS or XLSX formats only)"
+    "tenancyAgreementAttachmentDescription": "Maximum document size is 2MB (PDF, JPG, JPEG, PNG, DOC, DOCX, XLS or XLSX formats only)",
+    "status": "Status:"
   },
   "SubmitEnquiry_selector": {
     "enquiryType": [
@@ -1217,23 +1218,23 @@
     ],
     "rebateType": [
       {
-        "key": "01",
+        "key": "GSL1",
         "description": "GSL 1: Frequency of Interruptions"
       },
       {
-        "key": "02",
+        "key": "GSL2",
         "description": "GSL 2: Restoration Time"
       },
       {
-        "key": "03",
+        "key": "GSL3",
         "description": "GSL 3: Service Connection Installation"
       },
       {
-        "key": "04",
+        "key": "GSL4",
         "description": "GSL 4: Meter Installation"
       },
       {
-        "key": "05",
+        "key": "GSL5",
         "description": "GSL 5: Disconnection Procedures"
       }
     ]

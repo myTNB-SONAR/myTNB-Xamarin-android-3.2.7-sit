@@ -207,4 +207,3 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.Fragment
         }
     }
 }
-

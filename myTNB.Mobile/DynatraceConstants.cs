@@ -162,7 +162,6 @@
                 public struct Notifications
                 {
                     public const string Update = "App_Action_InAppPreGTM_UpdateNow";
-                    public const string Discovery_Comms_Owner = "Push_Action_DiscoveryOwner_Banner";
                     public const string Combined_Comms_Owner = "Push_Action_DiscoveryOwner_Banner";
                     public const string Combined_Comms_Non_Owner = "Push_Action_CombinedDiscoveryNonOwner_Banner";
                     public const string Combined_Comms_In_App_Non_Owner = "App_Action_InAppCombinedNonOwner_Here";

@@ -129,8 +129,8 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int SELECT_ENQUIRY_REQUEST_CODE = 0x13;
 
         internal static readonly int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-        
-        
+
+
 
         internal struct SERVER_URL
         {
@@ -318,7 +318,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID = "53";
         public const string BCRM_NOTIFICATION_PAYMENT_FAILED_ID = "71";
         public const string BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID = "72";
-        
+
         //DBR
         public const string BCRM_NOTIFICATION_DBR_EMAIL = "21003";
         public const string BCRM_NOTIFICATION_DBR_EBILL = "21001";
@@ -332,6 +332,9 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_TC = "CEP TC";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_RC = "CEP RC";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_NEWS = "98";
+
+        //App Update
+        public const string BCRM_NOTIFICATION_APP_UPDATE = "20006";
 
         public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
 
