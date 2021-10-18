@@ -56,7 +56,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
 
         }
 
-        public void CheckRequiredFields(string fullname, bool mobile_no, string email, bool tnc ,bool isNeedTNC)
+        public void CheckRequiredFields(string fullname, bool mobile_no, string email, bool tnc, bool isNeedTNC)
         {
             bool enableButton = true;
 
@@ -77,50 +77,50 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
                 }
 
 
-                    if (!TextUtils.IsEmpty(email))
+                if (!TextUtils.IsEmpty(email))
+                {
+                    if (!Patterns.EmailAddress.Matcher(email).Matches())
                     {
-                        if (!Patterns.EmailAddress.Matcher(email).Matches())
-                        {
-                            this.mView.ShowInvalidEmailError();
-                            enableButton = false;
-                        }
-                        else
-                        {
-                            this.mView.ClearInvalidEmailError();
-                        }
-                    }
-
-                   
-                    if (isNeedTNC)
-                    {
-                        if (tnc == false)
-                        {
-                            enableButton = false;
-                        }
-                    }
-
-                    if (!mobile_no)
-                    {
+                        this.mView.ShowInvalidEmailError();
                         enableButton = false;
-                    }
-
-                    //disable if 3 item is not filled
-
-                   if (TextUtils.IsEmpty(fullname) || TextUtils.IsEmpty(email) || ! mobile_no)
-                    {
-                    enableButton = false;
-                    }
-
-
-                    //disable or enable button
-                    if (enableButton == false)
-                    {
-                        this.mView.DisableRegisterButton();
                     }
                     else
                     {
-                        this.mView.EnableRegisterButton();
+                        this.mView.ClearInvalidEmailError();
                     }
+                }
+
+
+                if (isNeedTNC)
+                {
+                    if (tnc == false)
+                    {
+                        enableButton = false;
+                    }
+                }
+
+                if (!mobile_no)
+                {
+                    enableButton = false;
+                }
+
+                //disable if 3 item is not filled
+
+                if (TextUtils.IsEmpty(fullname) || TextUtils.IsEmpty(email) || !mobile_no)
+                {
+                    enableButton = false;
+                }
+
+
+                //disable or enable button
+                if (enableButton == false)
+                {
+                    this.mView.DisableRegisterButton();
+                }
+                else
+                {
+                    this.mView.EnableRegisterButton();
+                }
 
             }
             catch (System.Exception e)
@@ -130,9 +130,9 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
         }
 
 
-        public async void OnSubmitEnquiryWithType(string acc, string feedback, string fullname, string mobile_no,string email, List<AttachedImage> attachedImages , List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsModelList , bool isowner, int ownerRelationship , string relationshipDescription, string EnquiryId, string EnquiryName)
+        public async void OnSubmitEnquiryWithType(string acc, string feedback, string fullname, string mobile_no, string email, List<AttachedImage> attachedImages, List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsModelList, bool isowner, int ownerRelationship, string relationshipDescription, string EnquiryId, string EnquiryName)
         {
-            
+
 
             //random checking
             if (!PhoneNumberUtils.IsGlobalPhoneNumber(mobile_no))
@@ -167,14 +167,14 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
                     var newImage = await this.mView.SaveImage(image);
                     imageRequest.Add(newImage);
                     ctr++;
-                } ;
+                };
 
-                int category=5;
+                int category = 8;
 
                 string devicePhoneNumber = userEntity != null ? userEntity.MobileNo : mobile_no;  //set device phone number
 
                 email = userEntity != null ? userEntity.Email : email;
-               
+
 
                 List<FeedbackUpdateDetails> feedbackUpdateDetails = new List<FeedbackUpdateDetails>();
                 List<FeedbackImage> attachment = new List<FeedbackImage>();
@@ -223,7 +223,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
                     };
 
                     SubmittedFeedbackEntity.InsertOrReplace(newSubmittedFeedback);
-                   // this.mView.ClearInputFields();
+                    // this.mView.ClearInputFields();
                     CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
                     //this.mView.ShowSelectedAccount(customerBillingAccount);
                     this.mView.ShowSuccess(preLoginFeedbackResponse.GetData().DateCreated, preLoginFeedbackResponse.GetData().ServiceReqNo, attachedImages.Count);

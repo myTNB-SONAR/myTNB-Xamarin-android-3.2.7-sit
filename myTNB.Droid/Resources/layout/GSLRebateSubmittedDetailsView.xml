@@ -106,119 +106,6 @@
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:orientation="vertical"
-					android:id="@+id/gslDetailContactLinearLayout">
-					<TextView
-						android:id="@+id/txtGSLDetailContactTitle"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:layout_marginLeft="16dp"
-						android:layout_marginTop="16dp"
-						android:layout_marginRight="16dp"
-						android:layout_weight="1"
-						android:text="Your Contact Details"
-						android:textAllCaps="false"
-						android:textColor="@color/powerBlue"
-						android:textSize="16dp" />
-					<LinearLayout
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"
-						android:orientation="vertical"
-						android:background="@color/white"
-						android:layout_marginTop="16dp">
-						<LinearLayout
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:layout_marginLeft="16dp"
-							android:layout_marginRight="16dp"
-							android:orientation="vertical">
-							<com.google.android.material.textfield.TextInputLayout
-								android:layout_marginTop="16dp"
-								android:id="@+id/txtGSLDetailContactFullNameLayout"
-								android:layout_width="match_parent"
-								android:layout_height="wrap_content"
-								app:errorEnabled="false"
-								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-								<EditText
-									android:id="@+id/editTxtGSLDetailContactFullName"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:background="@android:color/transparent"
-									android:drawablePadding="6dp"
-									android:enabled="false"
-									android:focusable="false"
-									android:importantForAutofill="noExcludeDescendants"
-									android:inputType="text"
-									android:maxLines="1"
-									android:paddingTop="5dp" />
-							</com.google.android.material.textfield.TextInputLayout>
-							<com.google.android.material.textfield.TextInputLayout
-								android:id="@+id/txtGSLDetailEmailLayout"
-								android:layout_width="match_parent"
-								android:layout_height="wrap_content"
-								app:errorEnabled="false"
-								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-								android:layout_marginTop="16dp">
-								<EditText
-									android:id="@+id/editTxtGSLDetailEmail"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:background="@android:color/transparent"
-									android:drawablePadding="6dp"
-									android:enabled="false"
-									android:focusable="false"
-									android:importantForAutofill="noExcludeDescendants"
-									android:inputType="textEmailAddress"
-									android:maxLines="1"
-									android:paddingTop="5dp" />
-							</com.google.android.material.textfield.TextInputLayout>
-							<com.google.android.material.textfield.TextInputLayout
-								android:id="@+id/txtGSLDetailMobileLayout"
-								android:layout_width="match_parent"
-								android:layout_height="wrap_content"
-								app:errorEnabled="false"
-								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-								android:layout_marginTop="16dp"
-								android:layout_marginBottom="16dp">
-								<EditText
-									android:id="@+id/editTxtGSLDetailMobile"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:background="@android:color/transparent"
-									android:drawablePadding="6dp"
-									android:enabled="false"
-									android:focusable="false"
-									android:importantForAutofill="noExcludeDescendants"
-									android:inputType="text"
-									android:maxLines="1"
-									android:paddingTop="5dp" />
-							</com.google.android.material.textfield.TextInputLayout>
-							<com.google.android.material.textfield.TextInputLayout
-								android:layout_marginBottom="16dp"
-								android:id="@+id/txtGSLDetailAddressLayout"
-								android:layout_width="match_parent"
-								android:layout_height="wrap_content"
-								app:errorEnabled="false"
-								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-								<EditText
-									android:id="@+id/editTxtGSLDetailAddress"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:background="@android:color/transparent"
-									android:drawablePadding="6dp"
-									android:enabled="false"
-									android:focusable="false"
-									android:importantForAutofill="noExcludeDescendants"
-									android:inputType="text|textMultiLine"
-									android:maxLines="10"
-									android:paddingTop="5dp" />
-							</com.google.android.material.textfield.TextInputLayout>
-						</LinearLayout>
-					</LinearLayout>
-				</LinearLayout>
-				<LinearLayout
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:orientation="vertical"
 					android:id="@+id/gslTenantInfoLinearLayout">
 					<TextView
 						android:id="@+id/txtGSLTenantInfoTitle"
@@ -336,8 +223,8 @@
 							android:layout_height="wrap_content"
 							android:layout_marginLeft="16dp"
 							android:layout_marginRight="16dp"
-							android:layout_marginBottom="16dp"
-							android:orientation="vertical">
+							android:orientation="vertical"
+							android:id="@+id/gslIcidentDatesContainer">
 							<com.google.android.material.textfield.TextInputLayout
 								android:layout_marginTop="16dp"
 								android:id="@+id/txtGSLIncidentDateLayout"
@@ -404,8 +291,7 @@
 								android:layout_height="wrap_content"
 								app:errorEnabled="false"
 								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-								android:layout_marginTop="16dp"
-								android:layout_marginBottom="16dp">
+								android:layout_marginTop="16dp">
 								<EditText
 									android:id="@+id/editTxtGSLRestorationTime"
 									android:layout_width="match_parent"
@@ -419,18 +305,27 @@
 									android:maxLines="1"
 									android:paddingTop="5dp" />
 							</com.google.android.material.textfield.TextInputLayout>
+						</LinearLayout>
+						<LinearLayout
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:orientation="vertical"
+							android:background="@color/white"
+							android:id="@+id/gslAttachmentLinearLayout">
 							<LinearLayout
 								android:layout_width="match_parent"
-								android:layout_height="match_parent"
-								android:orientation="vertical"
-								android:background="@color/white"
-								android:id="@+id/gslAttachmentLinearLayout">
+								android:layout_height="wrap_content"
+								android:layout_marginTop="16dp"
+								android:layout_marginLeft="16dp"
+								android:layout_marginBottom="12dp"
+								android:layout_marginRight="16dp"
+								android:orientation="vertical">
 								<TextView
 									android:id="@+id/txtRequiredDocumentsTitle"
 									android:layout_width="match_parent"
 									android:layout_height="wrap_content"
 									android:layout_weight="1"
-									android:text="REQUIRED DOCUMENTS"
+									android:text="SUPPORTING DOCUMENTS"
 									android:textAllCaps="true"
 									android:textColor="@color/silverChalice"
 									android:textSize="9dp" />
@@ -440,6 +335,120 @@
 									android:layout_height="match_parent"
 									android:layout_marginTop="8dp"/>
 							</LinearLayout>
+						</LinearLayout>
+					</LinearLayout>
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:orientation="vertical"
+					android:layout_marginBottom="16dp"
+					android:id="@+id/gslDetailContactLinearLayout">
+					<TextView
+						android:id="@+id/txtGSLDetailContactTitle"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="16dp"
+						android:layout_marginTop="16dp"
+						android:layout_marginRight="16dp"
+						android:layout_weight="1"
+						android:text="Your Contact Details"
+						android:textAllCaps="false"
+						android:textColor="@color/powerBlue"
+						android:textSize="16dp" />
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:orientation="vertical"
+						android:background="@color/white"
+						android:layout_marginTop="16dp">
+						<LinearLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginLeft="16dp"
+							android:layout_marginRight="16dp"
+							android:orientation="vertical">
+							<com.google.android.material.textfield.TextInputLayout
+								android:layout_marginTop="16dp"
+								android:id="@+id/txtGSLDetailContactFullNameLayout"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								app:errorEnabled="false"
+								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+								<EditText
+									android:id="@+id/editTxtGSLDetailContactFullName"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:background="@android:color/transparent"
+									android:drawablePadding="6dp"
+									android:enabled="false"
+									android:focusable="false"
+									android:importantForAutofill="noExcludeDescendants"
+									android:inputType="text"
+									android:maxLines="1"
+									android:paddingTop="5dp" />
+							</com.google.android.material.textfield.TextInputLayout>
+							<com.google.android.material.textfield.TextInputLayout
+								android:id="@+id/txtGSLDetailEmailLayout"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								app:errorEnabled="false"
+								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+								android:layout_marginTop="16dp">
+								<EditText
+									android:id="@+id/editTxtGSLDetailEmail"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:background="@android:color/transparent"
+									android:drawablePadding="6dp"
+									android:enabled="false"
+									android:focusable="false"
+									android:importantForAutofill="noExcludeDescendants"
+									android:inputType="textEmailAddress"
+									android:maxLines="1"
+									android:paddingTop="5dp" />
+							</com.google.android.material.textfield.TextInputLayout>
+							<com.google.android.material.textfield.TextInputLayout
+								android:id="@+id/txtGSLDetailMobileLayout"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								app:errorEnabled="false"
+								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+								android:layout_marginTop="16dp"
+								android:layout_marginBottom="16dp">
+								<EditText
+									android:id="@+id/editTxtGSLDetailMobile"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:background="@android:color/transparent"
+									android:drawablePadding="6dp"
+									android:enabled="false"
+									android:focusable="false"
+									android:importantForAutofill="noExcludeDescendants"
+									android:inputType="text"
+									android:maxLines="1"
+									android:paddingTop="5dp" />
+							</com.google.android.material.textfield.TextInputLayout>
+							<com.google.android.material.textfield.TextInputLayout
+								android:layout_marginBottom="16dp"
+								android:id="@+id/txtGSLDetailAddressLayout"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								app:errorEnabled="false"
+								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+								<EditText
+									android:id="@+id/editTxtGSLDetailAddress"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:background="@android:color/transparent"
+									android:drawablePadding="6dp"
+									android:enabled="false"
+									android:focusable="false"
+									android:importantForAutofill="noExcludeDescendants"
+									android:inputType="text|textMultiLine"
+									android:maxLines="10"
+									android:paddingTop="5dp" />
+							</com.google.android.material.textfield.TextInputLayout>
 						</LinearLayout>
 					</LinearLayout>
 				</LinearLayout>

@@ -25,6 +25,7 @@ namespace myTNB_Android.Src.CompoundView
         LinearLayout expandableBillDetailsLayout;
         LinearLayout expandableGSLLayout;
         TextView expandableGSLTitle;
+        View barLine;
 
         ExpandableTextViewType expandableType;
         BaseAppCompatActivity mActivity;
@@ -68,8 +69,11 @@ namespace myTNB_Android.Src.CompoundView
 
             myApplicationChargesLabel = FindViewById<TextView>(Resource.Id.myApplicationChargesLabel);
             myApplicationChargesValue = FindViewById<TextView>(Resource.Id.myApplicationChargesValue);
+
             expandableContainer = FindViewById<LinearLayout>(Resource.Id.expandedContent);
             expandedGSLContent = FindViewById<LinearLayout>(Resource.Id.expandedGSLContent);
+
+            barLine = FindViewById<View>(Resource.Id.barLine);
 
             myApplicationChargesLabel.SetCompoundDrawablesWithIntrinsicBounds(null, null, dropdown, null);
             myApplicationChargesLabel.CompoundDrawablePadding = (int)DPUtils.ConvertDPToPx(4f);
@@ -138,6 +142,7 @@ namespace myTNB_Android.Src.CompoundView
                         expandableGSLTitle.CompoundDrawablePadding = (int)DPUtils.ConvertDPToPx(4f);
 
                         expandedGSLContent.Visibility = isExpand ? ViewStates.Visible : ViewStates.Gone;
+                        barLine.Visibility = isExpand ? ViewStates.Gone : ViewStates.Visible;
                     }
                     break;
                 default:

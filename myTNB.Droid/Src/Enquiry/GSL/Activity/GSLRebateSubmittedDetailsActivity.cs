@@ -78,6 +78,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         TextInputLayout txtGSLTenantInfoMobileLayout;
 
 
+        [BindView(Resource.Id.gslIcidentDatesContainer)]
+        LinearLayout gslIcidentDatesContainer;
+
         [BindView(Resource.Id.txtGSLIncidentDateLayout)]
         TextInputLayout txtGSLIncidentDateLayout;
 
@@ -374,35 +377,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             }
         }
 
-        private void AttachmentOnTap(object sender, int e)
-        {
-            System.Console.WriteLine("AttachmentOnTap()");
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                AttachedImage selectedImage = adapter.GetItemObject(e);
-                if (selectedImage.Name.ToLower().Contains(".pdf"))
-                {
-                    try
-                    {
-                        System.Console.WriteLine("OpenPDF()");
-                        OpenPDF(selectedImage.Path);
-                    }
-                    catch (Exception g)
-                    {
-                        Utility.LoggingNonFatalError(g);
-                    }
-                }
-                else
-                {
-                    System.Console.WriteLine("OpenImage()");
-                    var fullImageIntent = new Intent(this, typeof(FeedbackDetailsFullScreenImageActivity));
-                    fullImageIntent.PutExtra(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE, JsonConvert.SerializeObject(selectedImage));
-                    StartActivity(fullImageIntent);
-                }
-            }
-        }
-
         private string GetRebateTypeFromSelectorWithKey(string key)
         {
             var selector = LanguageManager.Instance.GetSelectorsByPage<SelectorModel>(LanguageConstants.SUBMIT_ENQUIRY);
@@ -498,7 +472,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                 }
                 else
                 {
-                    gslIncidentInfoLinearLayout.Visibility = ViewStates.Gone;
+                    gslIcidentDatesContainer.Visibility = ViewStates.Gone;
                 }
             }
             catch (Exception e)

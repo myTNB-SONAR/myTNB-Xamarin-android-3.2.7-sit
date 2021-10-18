@@ -62,7 +62,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     {
                         this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback, false);
                     }
-                    else if (submittedFeedback.FeedbackCategoryId.Equals("5"))
+                    else if (submittedFeedback.FeedbackCategoryId.Equals("8"))
                     {
                         this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback, true);
                     }
