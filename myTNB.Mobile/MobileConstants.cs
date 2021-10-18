@@ -29,7 +29,8 @@ namespace myTNB.Mobile
         private const string DEV1 = "http://10.215.128.191:88";
         private const string DEV2 = "http://10.215.128.191:89";
         private const string DEV3 = "http://10.215.128.191:97";
-        private const string SIT = "https://mobiletestingws.tnb.com.my";
+        //private const string SIT = "https://mobiletestingws.tnb.com.my";
+        private const string SIT = "http://mytnbwsovisstg.ap.ngrok.io";
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
         //Mark: http://tnbcsdevapp.tnb.my/
@@ -56,8 +57,8 @@ namespace myTNB.Mobile
         //public static string OvisWebviewBaseUrlDEV = "http://mytnbwvovis.ap.ngrok.io";
         public static string OvisWebviewBaseUrlDEV = "http://dev-mytnbappwv.tnbovis.com";
         //public static string OvisWebviewBaseUrlSTG = "http://mytnbwvovisstg.ap.ngrok.io";
-        //public static string OvisWebviewBaseUrlSTG = "http://qa-mytnbappwv.tnbovis.com";
-        public static string OvisWebviewBaseUrlSTG = "https://stage-mytnbappwv.ovis.tnb.com.my";
+        public static string OvisWebviewBaseUrlSTG = "http://qa-mytnbappwv.tnbovis.com";
+        //public static string OvisWebviewBaseUrlSTG = "https://stage-mytnbappwv.ovis.tnb.com.my";
         public static string OvisWebviewBaseUrlPROD = "https://mytnbappwv.ovis.tnb.com.my";
 
 #if DEBUG
