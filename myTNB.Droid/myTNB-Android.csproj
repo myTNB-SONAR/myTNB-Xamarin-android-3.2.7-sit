@@ -6914,6 +6914,15 @@
     </AndroidResource>
     <Compile Include="Src\Enquiry\GSL\MVP\GSLSubmittedDetails\GSLRebateSubmittedDetailsContract.cs" />
     <Compile Include="Src\Enquiry\GSL\MVP\GSLSubmittedDetails\GSLRebateSubmittedDetailsPresenter.cs" />
+    <AndroidResource Include="Resources\layout\ExpandableContentView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\GSLInfoItemListView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\Fragment\GSLInfoItemListComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -30,6 +30,7 @@ using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Database.Model;
+using static myTNB_Android.Src.CompoundView.ExpandableTextViewComponent;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -550,6 +551,7 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 otherChargesExpandableView.Visibility = ViewStates.Visible;
                 accountMinChargeLabelContainer.Visibility = ViewStates.Visible;
+                otherChargesExpandableView.SetExpandableType(ExpandableTextViewType.APPLICATION_CHARGES);
                 otherChargesExpandableView.SetApplicationChargesLabel(GetLabelByLanguage("applicationCharges"));
                 otherChargesExpandableView.SetOtherCharges(selectedAccountChargeModel.MandatoryCharges.TotalAmount, selectedAccountChargeModel.MandatoryCharges.ChargeModelList);
                 otherChargesExpandableView.RequestLayout();

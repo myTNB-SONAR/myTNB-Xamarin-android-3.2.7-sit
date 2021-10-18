@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+    <TextView
+        android:id="@+id/txtExpandableContent"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Expandable Info Content"
+        android:textColor="#424141"
+        android:textSize="14dp"/>
+</LinearLayout>

@@ -75,6 +75,19 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public string Address { get; set; }
     }
 
+    public class GSLInfo
+    {
+        public string title { get; set; }
+        public string description { get; set; }
+        public List<GSLInfoContent> expandCollapseList { get; set; }
+    }
+
+    public class GSLInfoContent
+    {
+        public string title { get; set; }
+        public string description { get; set; }
+    }
+
     public enum GSLLayoutType
     {
         FULL_NAME,

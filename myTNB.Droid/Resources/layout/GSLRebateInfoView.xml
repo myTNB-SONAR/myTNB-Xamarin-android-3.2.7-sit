@@ -38,8 +38,7 @@
 					android:orientation="vertical"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_marginTop="12dp"
-					android:id="@+id/gslInfoUploadViewList"/>
+					android:id="@+id/gslInfoViewList"/>
 			</LinearLayout>
 		</ScrollView>
 		<LinearLayout
@@ -50,19 +49,16 @@
 			android:paddingLeft="16dp"
 			android:paddingBottom="16dp"
 			android:paddingRight="16dp"
-			android:gravity="center|bottom"
 			android:background="@color/white"
 			android:id="@+id/buttonLayout">
 			<Button
 				android:id="@+id/gslInfoBtnBack"
-				android:text="Back"
 				android:layout_height="48dp"
 				android:layout_weight=".5"
-				style="@style/DarkButton"
+				style="@style/LightButton"
 				android:textAllCaps="false" />
 			<Button
 				android:id="@+id/gslInfoBtnProceed"
-				android:text="Start Now"
 				android:layout_weight=".5"
 				android:layout_height="48dp"
 				style="@style/DarkButton"

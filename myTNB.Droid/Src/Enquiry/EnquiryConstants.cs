@@ -9,6 +9,8 @@
 
         internal static readonly string FEEDBACK_CATEGORY_ID = "FeedbackCategoryId";
         internal static readonly string GSL_FEEDBACK_CATEGORY_ID = "9";
+        internal static readonly string GSL_INFO_SELECTOR = "GSL";
+        internal static readonly string GSL_INFO = "gslInfo";
     }
 
     public enum EnquiryAccountDetailType

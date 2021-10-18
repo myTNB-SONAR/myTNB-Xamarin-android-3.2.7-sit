@@ -12,6 +12,7 @@
         internal static readonly string SUBMIT_ENQUIRY = "SubmitEnquiry";
         internal static readonly string FEEDBACK_FORM = "FeedbackForm";
         internal static readonly string APPLICATION_STATUS_DETAILS = "ApplicationStatusDetails";
+        internal static readonly string GSL = "GSL";
 
         internal struct Common
         {
@@ -121,6 +122,13 @@
         internal struct ApplicationStatusDetails
         {
             internal static readonly string STATUS_LABEL = "status";
+        }
+
+        internal struct Gsl
+        {
+            internal static readonly string TITLE = "title";
+            internal static readonly string BACK_BTN_TITLE = "primaryCTA";
+            internal static readonly string PROCEED_BTN_TITLE = "secondaryCTA";
         }
     }
 }

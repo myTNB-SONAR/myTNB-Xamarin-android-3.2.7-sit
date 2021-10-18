@@ -17,6 +17,7 @@ using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using static myTNB_Android.Src.CompoundView.ExpandableTextViewComponent;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
 {
@@ -211,6 +212,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
                     accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.lightOrange)));
                     bottomLayout.Visibility = Android.Views.ViewStates.Gone;
                 }
+                otherChargesExpandableView.SetExpandableType(ExpandableTextViewType.APPLICATION_STATUS);
                 otherChargesExpandableView.SetApplicationChargesLabel(GetLabelByLanguage("applicationCharges"));
                 otherChargesExpandableView.SetApplicationOtherCharges(
                     Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "oneTimeCharges")
