@@ -55,6 +55,11 @@ namespace myTNB_Android.Src.FeedBackSubmittedSucess.Activity
         }
         private void SetUI()
         {
+            TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
+            TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, buttonBackToHome, btnViewSubmitted);
+            TextViewUtils.SetTextSize12(txtContentInfo);
+            TextViewUtils.SetTextSize16(txtTitleInfo, btnViewSubmitted, buttonBackToHome);
+
             txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouForYourSubmission");
             txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "yourRatingWillHelpUsServeYouBetter");
             buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");

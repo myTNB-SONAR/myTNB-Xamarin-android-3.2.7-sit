@@ -84,9 +84,16 @@ namespace myTNB_Android.Src.AppointmentDetailSet.Activity
 
         private void SetUI()
         {
-                 
+
+            TextViewUtils.SetMuseoSans300Typeface(txtMessageInfo, servicerequestLabel, appointmentLabel, premiseLabel, addressLabel);
+            TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, buttonBackToHome, btnViewSubmitted);
+            TextViewUtils.SetTextSize10(servicerequestLabel, appointmentLabel, premiseLabel, addressLabel);
+            TextViewUtils.SetTextSize12(txtMessageInfo);
+            TextViewUtils.SetTextSize14(servicerequestLabel);
+            TextViewUtils.SetTextSize16(txtTitleInfo, btnViewSubmitted, buttonBackToHome);
+
             txtMessageInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "appointmentSetDescription");
-            servicerequestLabel.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceReqNum");
+            servicerequestLabel.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
             appointmentLabel.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "dateTitle");
             premiseLabel.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "technicianName");
             addressLabel.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "incidentAddress");

@@ -185,11 +185,13 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 urlUtility.AddQueryParams("sec_auth_k1", usin.sec_auth_k1);
                 urlUtility.AddQueryParams("mobileNo", user.MobileNo);
                 urlUtility.AddQueryParams("CANickName", CANickname);
-                string url = urlUtility.EncodeURL(domain);
+                
                 if (TextViewUtils.IsLargeFonts)
                 {
-                    url += "&large";
+                    urlUtility.AddQueryParams("large", "true");
                 }
+
+                string url = urlUtility.EncodeURL(domain);
 
                 webView.LoadUrl(url); 
                 await Task.Delay(0);             
