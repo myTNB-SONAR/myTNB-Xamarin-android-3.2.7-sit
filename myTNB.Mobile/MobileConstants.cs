@@ -54,9 +54,9 @@ namespace myTNB.Mobile
         //OVIS Webview
         //public static string OvisWebviewBaseUrlDEV = "http://192.168.1.157:3000";
         //public static string OvisWebviewBaseUrlDEV = "http://mytnbwvovis.ap.ngrok.io";
-        public static string OvisWebviewBaseUrlDEV = "https://dev-mytnbappwv.tnbovis.com";
+        public static string OvisWebviewBaseUrlDEV = "http://dev-mytnbappwv.tnbovis.com";
         //public static string OvisWebviewBaseUrlSTG = "http://mytnbwvovisstg.ap.ngrok.io";
-        //public static string OvisWebviewBaseUrlSTG = "https://qa-mytnbappwv.tnbovis.com";
+        //public static string OvisWebviewBaseUrlSTG = "http://qa-mytnbappwv.tnbovis.com";
         public static string OvisWebviewBaseUrlSTG = "https://stage-mytnbappwv.ovis.tnb.com.my";
         public static string OvisWebviewBaseUrlPROD = "https://mytnbappwv.ovis.tnb.com.my";
 
