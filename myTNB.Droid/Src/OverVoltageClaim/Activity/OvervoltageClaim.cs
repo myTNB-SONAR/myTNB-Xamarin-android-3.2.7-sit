@@ -48,7 +48,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
 
         MyTNBAppToolTipBuilder leaveDialog;
         private string accNo = null;
-
+        private string CANickname="";
         public override int ResourceId()
         {
             return Resource.Layout.OvervoltageClaim;
@@ -71,6 +71,18 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                     if (extras.ContainsKey(Constants.ACCOUNT_NUMBER))
                     {
                         accNo = extras.GetString(Constants.ACCOUNT_NUMBER);
+                        if (UserEntity.IsCurrentlyActive())
+                        {
+                            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accNo);
+                            if (customerBillingAccount != null)
+                            {
+                                CANickname = customerBillingAccount.AccDesc;
+                            }
+                        }
+                        else
+                        {
+                            //handle if acc from outside show only CA number 
+                        }
                     }
                
                 }
@@ -172,7 +184,8 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                 urlUtility.AddQueryParams("name", user.DisplayName);
                 urlUtility.AddQueryParams("sec_auth_k1", usin.sec_auth_k1);
                 urlUtility.AddQueryParams("mobileNo", user.MobileNo);
-
+                urlUtility.AddQueryParams("CANickName", CANickname);
+                
                 if (TextViewUtils.IsLargeFonts)
                 {
                     urlUtility.AddQueryParams("large", "true");
