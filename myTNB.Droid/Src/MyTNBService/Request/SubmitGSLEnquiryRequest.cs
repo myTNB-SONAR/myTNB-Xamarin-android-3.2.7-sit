@@ -59,9 +59,9 @@ namespace myTNB_Android.Src.MyTNBService.Request
                 this.AttachedFiles.Add(new EnquiryImage(fileHex, fileName, fileSize, fileType));
             }
 
-            public void SetIncidentInfos(string incidentDate, string incidentStartTime, string restoreDate, string restoreTime)
+            public void SetIncidentInfos(string incidentDateTime, string restoreDateTime)
             {
-                this.IncidentInfos.Add(new IncidentInfoDetails(incidentDate, incidentStartTime, restoreDate, restoreTime));
+                this.IncidentInfos.Add(new IncidentInfoDetails(incidentDateTime, restoreDateTime));
             }
         }
 
@@ -93,14 +93,12 @@ namespace myTNB_Android.Src.MyTNBService.Request
 
         public class IncidentInfoDetails
         {
-            public string IncidentDate, IncidentStartTime, RestoreDate, RestoreTime;
+            public string IncidentDateTime, RestoreDateTime;
 
-            public IncidentInfoDetails(string incidentDate, string incidentStartTime, string restoreDate, string restoreTime)
+            public IncidentInfoDetails(string incidentDateTime, string restoreDateTime)
             {
-                this.IncidentDate = incidentDate;
-                this.IncidentStartTime = incidentStartTime;
-                this.RestoreDate = restoreDate;
-                this.RestoreTime = restoreTime;
+                this.IncidentDateTime = incidentDateTime;
+                this.RestoreDateTime = restoreDateTime;
             }
         }
     }

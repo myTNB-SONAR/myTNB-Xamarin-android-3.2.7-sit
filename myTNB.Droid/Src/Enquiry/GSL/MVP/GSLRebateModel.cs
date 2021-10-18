@@ -43,6 +43,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public string RebateTypeKey { get; set; }
         public GSLRebateTenantModel TenantInfo { get; set; }
         public List<GSLRebateIncidentModel> IncidentList { get; set; }
+        public List<GSLRebateIncidentDisplayModel> IncidentDisplayList { get; set; }
         public GSLRebateDocumentModel Documents { get; set; }
         public GSLRebateAccountInfoModel AccountInfo { get; set; }
         public GSLRebateAccountInfoModel ContactInfo { get; set; }
@@ -59,6 +60,14 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
     {
         public string IncidentDateTime { get; set; }
         public string RestorationDateTime { get; set; }
+    }
+
+    public class GSLRebateIncidentDisplayModel
+    {
+        public string IncidentDate { get; set; }
+        public string RestorationDate { get; set; }
+        public string IncidentTime { get; set; }
+        public string RestorationTime { get; set; }
     }
 
     public class GSLRebateDocumentModel

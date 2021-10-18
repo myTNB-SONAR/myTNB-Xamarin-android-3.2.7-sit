@@ -169,22 +169,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
                 this.rebateModel.IncidentList.ForEach(incident =>
                 {
-                    DateTime incidentDateTimeParse = DateTime.ParseExact(incident.IncidentDateTime, GSLRebateConstants.DATETIME_PARSE_FORMAT,
-                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-
-                    DateTime restorationDateTimeParse = DateTime.ParseExact(incident.RestorationDateTime, GSLRebateConstants.DATETIME_PARSE_FORMAT,
-                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-
-                    CultureInfo currCult = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
-                    var incidentDateString = incidentDateTimeParse.ToString(GSLRebateConstants.DATE_RESPONSE_PARSE_FORMAT, currCult);
-
-                    var restorationDateString = restorationDateTimeParse.ToString(GSLRebateConstants.DATE_RESPONSE_PARSE_FORMAT, currCult);
-
-                    var incidentTimeString = incidentDateTimeParse.ToString(GSLRebateConstants.TIME_RESPONSE_PARSE_FORMAT, currCult);
-
-                    var restorationTimeString = restorationDateTimeParse.ToString(GSLRebateConstants.TIME_RESPONSE_PARSE_FORMAT, currCult);
-
-                    submitGSLEnquiryRequest.feedback.SetIncidentInfos(incidentDateString, incidentTimeString, restorationDateString, restorationTimeString);
+                    submitGSLEnquiryRequest.feedback.SetIncidentInfos(incident.IncidentDateTime, incident.RestorationDateTime);
                 });
 
                 var gslSubmitEnquiryResponse = await ServiceApiImpl.Instance.SubmitEnquiryWithType(submitGSLEnquiryRequest);
@@ -198,7 +183,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
                         FeedbackId = gslSubmitEnquiryResponse.GetData().ServiceReqNo,
                         DateCreated = dateFormat.Format(Java.Lang.JavaSystem.CurrentTimeMillis()),
                         FeedbackMessage = string.Empty,
-                        FeedbackCategoryId = "9"
+                        FeedbackCategoryId = EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID
 
                     };
                     SubmittedFeedbackEntity.InsertOrReplace(newSubmittedFeedback);

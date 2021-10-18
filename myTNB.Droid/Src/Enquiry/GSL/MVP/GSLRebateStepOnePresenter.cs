@@ -41,7 +41,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             rebateModel = new GSLRebateModel
             {
                 IsOwner = false,
-                FeedbackCategoryId = "9",
+                FeedbackCategoryId = EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID,
                 AccountInfo = new GSLRebateAccountInfoModel(),
                 TenantInfo = new GSLRebateTenantModel()
             };

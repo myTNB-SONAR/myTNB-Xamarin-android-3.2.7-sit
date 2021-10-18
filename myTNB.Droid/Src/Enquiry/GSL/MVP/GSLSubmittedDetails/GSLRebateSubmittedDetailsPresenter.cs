@@ -113,49 +113,12 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP.GSLSubmittedDetails
                     this.gslRebateModel.IncidentList = new List<GSLRebateIncidentModel>();
                     gslRebateDetails.IncidentInfos.ForEach(incident =>
                     {
-                        DateTime incidentDate = new DateTime();
-                        DateTime restorationDate = new DateTime();
-
-                        CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
-
-                        if (incident.IncidentDate.IsValid())
+                        this.gslRebateModel.IncidentDisplayList.Add(new GSLRebateIncidentDisplayModel
                         {
-                            string incidentDateStr = incident.IncidentDate;
-                            incidentDate = DateTime.ParseExact(incidentDateStr, GSLRebateConstants.DATE_RESPONSE_PARSE_FORMAT,
-                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-                        }
-
-                        if (incident.IncidentStartTime.IsValid())
-                        {
-                            string incidentStartTimeStr = incident.IncidentStartTime;
-                            DateTime timeParse = DateTime.ParseExact(incidentStartTimeStr, GSLRebateConstants.TIME_RESPONSE_PARSE_FORMAT,
-                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-
-                            TimeSpan incidentTime = new TimeSpan(timeParse.Hour, timeParse.Minute, 0);
-                            incidentDate = incidentDate.Date + incidentTime;
-                        }
-
-                        if (incident.RestoreDate.IsValid())
-                        {
-                            string restoreDateStr = incident.RestoreDate;
-                            restorationDate = DateTime.ParseExact(restoreDateStr, GSLRebateConstants.DATE_RESPONSE_PARSE_FORMAT,
-                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-                        }
-
-                        if (incident.RestoreTime.IsValid())
-                        {
-                            string restoreStartTimeStr = incident.RestoreTime;
-                            DateTime timeParse = DateTime.ParseExact(restoreStartTimeStr, GSLRebateConstants.TIME_RESPONSE_PARSE_FORMAT,
-                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-
-                            TimeSpan restoreTime = new TimeSpan(timeParse.Hour, timeParse.Minute, 0);
-                            restorationDate = restorationDate.Date + restoreTime;
-                        }
-
-                        this.gslRebateModel.IncidentList.Add(new GSLRebateIncidentModel
-                        {
-                            IncidentDateTime = incidentDate.ToString(),
-                            RestorationDateTime = restorationDate.ToString()
+                            IncidentDate = incident.IncidentDate,
+                            IncidentTime = incident.IncidentStartTime,
+                            RestorationDate = incident.RestoreDate,
+                            RestorationTime = incident.RestoreTime
                         });
                     });
                 }

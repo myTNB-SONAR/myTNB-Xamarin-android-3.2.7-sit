@@ -454,21 +454,15 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                     gslTenantInfoLinearLayout.Visibility = ViewStates.Gone;
                 }
 
-                if (model.IncidentList != null && model.IncidentList.Count > 0)
+                if (model.IncidentDisplayList != null && model.IncidentDisplayList.Count > 0)
                 {
-                    var incident = model.IncidentList[0];
-                    CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
+                    var incidentDisplay = model.IncidentDisplayList[0];
 
-                    var incidentDate = DateTime.ParseExact(incident.IncidentDateTime, GSLRebateConstants.DATETIME_PARSE_FORMAT,
-                            CultureInfo.InvariantCulture, DateTimeStyles.None);
-                    var restorationDate = DateTime.ParseExact(incident.RestorationDateTime, GSLRebateConstants.DATETIME_PARSE_FORMAT,
-                            CultureInfo.InvariantCulture, DateTimeStyles.None);
+                    editTxtGSLIncidentDate.Text = incidentDisplay.IncidentDate;
+                    editTxtGSLRestorationDate.Text = incidentDisplay.RestorationDate;
 
-                    editTxtGSLIncidentDate.Text = incidentDate.ToString(GSLRebateConstants.DATE_FORMAT, dateCultureInfo);
-                    editTxtGSLRestorationDate.Text = restorationDate.ToString(GSLRebateConstants.DATE_FORMAT, dateCultureInfo);
-
-                    editTxtGSLIncidentTime.Text = incidentDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
-                    editTxtGSLRestorationTime.Text = restorationDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
+                    editTxtGSLIncidentTime.Text = incidentDisplay.IncidentTime;
+                    editTxtGSLRestorationTime.Text = incidentDisplay.RestorationTime;
                 }
                 else
                 {
