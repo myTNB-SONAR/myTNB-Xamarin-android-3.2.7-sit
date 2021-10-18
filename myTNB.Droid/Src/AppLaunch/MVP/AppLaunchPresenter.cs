@@ -44,6 +44,7 @@ using myTNB_Android.Src.DeviceCache;
 using fbm = Firebase.Messaging;
 using Android.Gms.Extensions;
 using myTNB_Android.Src.Utils.Deeplink;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -163,8 +164,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
 
-                 AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
-                      (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));
+                AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
+                     (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));
                 if (masterDataResponse != null && masterDataResponse.Response != null)
                 {
                     if (masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
@@ -309,24 +310,24 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                                             this.mView.ShowApplicationStatusDetails();
                                             UserSessions.RemoveNotificationSession(mSharedPref);
-
                                         }
                                         else if (UserSessions.GetNotificationType(mSharedPref) != null
                                            && "DBROWNER".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper()))
                                         {
+                                            DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Notifications.Combined_Comms_Owner);
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                                             this.mView.OnShowManageBillDelivery();
                                             UserSessions.RemoveNotificationSession(mSharedPref);
                                         }
                                         else if (hasNotification && isLoggedInEmail && UserSessions.Notification != null)
                                         {
-                                            UserSessions.RemoveNotificationSession(mSharedPref);
-                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
-                                            MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
-                                            this.mView.ShowNotificationDetails();
-                                        }
-                                        else if (hasNotification && isLoggedInEmail && UserSessions.Notification != null)
-                                        {
+                                            string notificationType = UserSessions.GetNotificationType(mSharedPref) != null
+                                                ? UserSessions.GetNotificationType(mSharedPref).ToUpper()
+                                                : string.Empty;
+                                            if (notificationType == MobileConstants.PushNotificationTypes.DBR_NonOwner)
+                                            {
+                                                DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Notifications.Combined_Comms_Non_Owner);
+                                            }
                                             UserSessions.RemoveNotificationSession(mSharedPref);
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                                             MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
@@ -334,6 +335,13 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         }
                                         else if (hasNotification && (isODNType || isLoggedInEmail))
                                         {
+                                            string notificationType = UserSessions.GetNotificationType(mSharedPref) != null
+                                                ? UserSessions.GetNotificationType(mSharedPref).ToUpper()
+                                                : string.Empty;
+                                            if (notificationType == MobileConstants.PushNotificationTypes.DBR_NonOwner)
+                                            {
+                                                DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Notifications.Combined_Comms_Non_Owner);
+                                            }
                                             UserSessions.RemoveNotificationSession(mSharedPref);
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Notification);
                                             MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
@@ -643,7 +651,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
         }
 
-         /// <summary>
+        /// <summary>
         /// Evaluate failed AppLaunchMasterData service for retry.
         /// </summary>
         private void EvaluateServiceRetryAWS()

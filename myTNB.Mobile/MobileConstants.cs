@@ -52,7 +52,7 @@ namespace myTNB.Mobile
         public static string AWSApiDomainPROD = "https://core.prod-mytnb.com/api";
 
 #if DEBUG
-        public static string ApiDomain = SIT;
+        public static string ApiDomain = DEV1;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;

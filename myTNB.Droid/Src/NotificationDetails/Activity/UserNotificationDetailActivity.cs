@@ -205,8 +205,10 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     notificationMainLayout.SetBackgroundColor(Color.ParseColor("#ffffff"));
                 }
 
-                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100
-                        || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_TC || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_RC)
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80
+                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100
+                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_TC
+                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_RC)
                 {
                     SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "EnergyBudgetTitle"));
                 }
@@ -241,18 +243,27 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     ctaComponent.Visibility = ViewStates.Visible;
 
                     notificationDetailBannerImg.SetImageResource(detailModel.imageResourceBanner);
-
                     notificationDetailTitle.Text = detailModel.title;
-
                     notificationDetailMessage.TextFormatted = GetFormattedText(detailModel.message);
+
+                    string dynatraceTag = string.Empty;
+                    if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_APP_UPDATE)
+                    {
+                        dynatraceTag = myTNB.Mobile.DynatraceConstants.BR.CTAs.Notifications.Update;
+                    }
+                    else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_DBR_EBILL
+                       || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_DBR_EMAIL_REMOVED)
+                    {
+                        dynatraceTag = myTNB.Mobile.DynatraceConstants.BR.CTAs.Notifications.Combined_Comms_In_App_Non_Owner;
+                    }
 
                     if (detailModel.message != null)
                     {
                         notificationDetailMessage = LinkRedirectionUtils
-                            .Create(this, "")
+                            .Create(this, string.Empty)
                             .SetTextView(notificationDetailMessage)
                             .SetMessage(detailModel.message)
-                            .Build()
+                            .Build(dynatraceTag ?? string.Empty)
                             .GetProcessedTextView();
                     }
 
@@ -538,13 +549,13 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 StartActivity(DashboardIntent);
             }
         }
-        
+
         protected override void OnPause()
         {
             base.OnPause();
             try
             {
-                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || 
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 ||
                     notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
                 {
                     dynaTrace.LeaveAction();
@@ -588,7 +599,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 else
                 {
                     MyTNBAccountManagement.GetInstance().SetIsFromViewTips(false);
-                }    
+                }
 
                 if (MyTNBAccountManagement.GetInstance().IsFinishFeedback())
                 {
@@ -598,7 +609,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
             catch (Exception e)
             {
-                 Utility.LoggingNonFatalError(e);
+                Utility.LoggingNonFatalError(e);
             }
         }
 

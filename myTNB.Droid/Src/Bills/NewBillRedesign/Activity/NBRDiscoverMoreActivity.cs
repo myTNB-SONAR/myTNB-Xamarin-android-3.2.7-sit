@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Android.Content;
 using myTNB_Android.Src.Bills.NewBillRedesign.Activity;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.Bills.NewBillRedesign
 {
@@ -165,6 +166,7 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
         [OnClick(Resource.Id.btnGoToBills)]
         void GoToBillsOnClick(object sender, EventArgs eventArgs)
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.BillRedesignComms.View_Bill);
             SetResult(Result.Ok);
             Finish();
         }
@@ -191,7 +193,7 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
                             .Create(this, Utility.GetLocalizedLabel(LanguageConstants.NBR_COMMS, LanguageConstants.NBRComms.NBR_TITLE))
                             .SetTextView(nbrDiscoverMoreFooterMsg)
                             .SetMessage(model.FooterMessage)
-                            .Build()
+                            .Build(model.ShouldTrackFooter ? model.DynatraceTagFooter : string.Empty)
                             .GetProcessedTextView();
 
                     if (model.DiscoverMoreItemList != null && model.DiscoverMoreItemList.Count > 0)
@@ -210,7 +212,7 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
                                 .Create(this, Utility.GetLocalizedLabel(LanguageConstants.NBR_COMMS, LanguageConstants.NBRComms.NBR_TITLE))
                                 .SetTextView(itemListComponent.itemContentText)
                                 .SetMessage(discoverMoreItem.Content)
-                                .Build()
+                                .Build(discoverMoreItem.ShouldTrack ? discoverMoreItem.DynatraceTag : string.Empty)
                                 .GetProcessedTextView();
                             itemListComponent.SetBannerImage(discoverMoreItem.Banner);
 

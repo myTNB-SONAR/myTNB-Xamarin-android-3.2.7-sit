@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
 namespace myTNB_Android.Src.Bills.NewBillRedesign.Model
 {
     public class NBRDiscoverMoreModel
@@ -10,6 +10,10 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.Model
         public string Banner2 { get; set; }
         public bool IsZoomable { get; set; }
         public string FooterMessage { get; set; }
+        public bool ShouldTrackHeader { set; get; }
+        public string DynatraceTagHeader { set; get; }
+        public bool ShouldTrackFooter { set; get; }
+        public string DynatraceTagFooter { set; get; }
 
         public List<DiscoverMoreItem> DiscoverMoreItemList { get; set; }
         public class DiscoverMoreItem
@@ -17,6 +21,8 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.Model
             public string Title { get; set; }
             public string Banner { get; set; }
             public string Content { get; set; }
+            public bool ShouldTrack { set; get; }
+            public string DynatraceTag { set; get; }
         }
     }
 }

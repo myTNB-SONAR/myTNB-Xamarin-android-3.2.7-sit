@@ -35,6 +35,8 @@ namespace myTNB.Mobile.AWS.Models
         public bool Enabled { set; get; }
         [JsonProperty("targetGroup")]
         public bool TargetGroup { set; get; }
+        [JsonProperty("criteria")]
+        public EligibilityCriteriaModel Criteria { set; get; }
     }
 
     public class DBRModel
@@ -57,5 +59,15 @@ namespace myTNB.Mobile.AWS.Models
         public bool Acted { set; get; }
         [JsonProperty("modifiedDate")]
         public DateTime? ModifiedDate { set; get; }
+    }
+
+    public class EligibilityCriteriaModel
+    {
+        [JsonProperty("ownerType")]
+        public List<string> OwnerType { set; get; }
+        [JsonProperty("tariffType")]
+        public List<string> TariffType { set; get; }
+        [JsonProperty("caType")]
+        public List<string> CaType { set; get; }
     }
 }

@@ -93,7 +93,9 @@ namespace myTNB_Android.Src.SitecoreCMS.Service
                         IsHeader = item.GetCheckBoxValueFromField(Constants.Sitecore.Fields.NewBillDesignDiscoverMore.IsHeader),
                         IsFooter = item.GetCheckBoxValueFromField(Constants.Sitecore.Fields.NewBillDesignDiscoverMore.IsFooter),
                         IsZoomable = item.GetCheckBoxValueFromField(Constants.Sitecore.Fields.NewBillDesignDiscoverMore.IsZoomable),
-                        ID = item.Id
+                        ID = item.Id,
+                        ShouldTrack = item.GetCheckBoxValueFromField(Constants.Sitecore.Fields.NewBillDesignDiscoverMore.ShouldTrack),
+                        DynatraceTag = item.GetValueFromField(Constants.Sitecore.Fields.NewBillDesignDiscoverMore.DynatraceTag)
                     });
                 }
             }

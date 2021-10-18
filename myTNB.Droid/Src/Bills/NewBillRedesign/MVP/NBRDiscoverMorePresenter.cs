@@ -79,15 +79,19 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.MVP
                     List<NewBillDesignModelEntity> newBillDesignDataList = JsonConvert.DeserializeObject<List<NewBillDesignModelEntity>>(jsonData);
                     if (newBillDesignDataList.Count > 0)
                     {
-                        var headerModel = newBillDesignDataList.Find(model => { return model.IsHeader == true; });
+                        NewBillDesignModelEntity headerModel = newBillDesignDataList.Find(model => { return model.IsHeader == true; });
                         DiscoverMoreModel.Title = headerModel.Title;
                         DiscoverMoreModel.Description = headerModel.Description;
                         DiscoverMoreModel.Banner1 = headerModel.Image1;
                         DiscoverMoreModel.Banner2 = headerModel.Image2;
                         DiscoverMoreModel.IsZoomable = headerModel.IsZoomable;
+                        DiscoverMoreModel.ShouldTrackHeader = headerModel.ShouldTrack;
+                        DiscoverMoreModel.DynatraceTagHeader = headerModel.DynatraceTag;
 
                         var footerModel = newBillDesignDataList.Find(model => { return model.IsFooter == true; });
                         DiscoverMoreModel.FooterMessage = footerModel.Description;
+                        DiscoverMoreModel.ShouldTrackFooter = footerModel.ShouldTrack;
+                        DiscoverMoreModel.DynatraceTagFooter = footerModel.DynatraceTag;
 
                         List<NewBillDesignModelEntity> itemList = new List<NewBillDesignModelEntity>();
                         itemList.AddRange(newBillDesignDataList.FindAll(x => x.IsHeader == false && x.IsFooter == false));
@@ -98,7 +102,9 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.MVP
                             {
                                 Title = item.Title,
                                 Content = item.Description,
-                                Banner = item.Image1
+                                Banner = item.Image1,
+                                ShouldTrack = item.ShouldTrack,
+                                DynatraceTag = item.DynatraceTag
                             };
                             DiscoverMoreModel.DiscoverMoreItemList.Add(itemModel);
                         }
@@ -151,7 +157,9 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.MVP
                             {
                                 Title = item.Title,
                                 Content = item.Description,
-                                Banner = item.Image1
+                                Banner = item.Image1,
+                                ShouldTrack = item.ShouldTrack,
+                                DynatraceTag = item.DynatraceTag
                             };
                             DiscoverMoreModel.DiscoverMoreItemList.Add(itemModel);
                         }
