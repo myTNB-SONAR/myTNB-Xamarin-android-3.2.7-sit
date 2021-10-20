@@ -171,6 +171,16 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             return true;
         }
 
+        public override bool CameraPermissionRequired()
+        {
+            return true;
+        }
+
+        public override bool StoragePermissionRequired()
+        {
+            return true;
+        }
+
         public void SetPresenter(GSLRebateStepOneContract.IUserActionsListener userActionListener)
         {
             this.userActionsListener = userActionListener;
