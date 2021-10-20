@@ -1216,12 +1216,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             discoverView.Visibility = ViewStates.Visible;
                             img_discover_digital_bill.Visibility = ViewStates.Visible;
                             discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+
                             UserEntity user = UserEntity.GetActive();
                             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
+                            bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
 
-                            if (loginCount == 1 && DBRUtility.Instance.ShouldShowHomeDBRCard && GetHomeTutorialCallState())
+                            if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeDBRCard && GetHomeTutorialCallState())
                             {
                                 ShowMarketingTooltip();
+                                UserSessions.SaveDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity), true);
                             }
                         }
                         else

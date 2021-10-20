@@ -10,8 +10,6 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
-using System.Linq;
-using System.Net.Http;
 using System.Threading;
 
 namespace myTNB_Android.Src.ManageSupplyAccount.MVP
@@ -97,6 +95,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
 
                         CustomerBillingAccount.MakeFirstAsSelected();
                     }
+
+                    CustomerBillingAccount.SetCAListForEligibility();
+
                     SMUsageHistoryEntity.RemoveAccountData(accountData.AccountNum);
                     UsageHistoryEntity.RemoveAccountData(accountData.AccountNum);
                     BillHistoryEntity.RemoveAccountData(accountData.AccountNum);

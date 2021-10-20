@@ -254,25 +254,18 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         {
                                             CustomerBillingAccount.RemoveSelected();
                                             CustomerBillingAccount.MakeFirstAsSelected();
+                                            CustomerBillingAccount.SetCAListForEligibility();
                                         }
                                         BillHistoryEntity.RemoveAll();
                                         PaymentHistoryEntity.RemoveAll();
 
-                                        // Reset Login count for AppUpdate
+                                        // Reset Login count for AppUpdate to show DBR Popup for eligible CA
                                         try
                                         {
-                                            if (UserSessions.HasUpdateSkipped(this.mSharedPref))
+                                            if (!UserSessions.HasUpdateSkipped(this.mSharedPref))
                                             {
-                                                System.Console.WriteLine("HasUpdateSkipped");
-                                                UserLoginCountEntity.RemoveAll();
-                                            }
-
-                                            int loginCount = UserLoginCountEntity.GetLoginCount(UserEntity.GetActive().Email);
-                                            int recordId;
-                                            if (loginCount < 2)
-                                            {
-                                                System.Console.WriteLine("loginCount + 1 ", +loginCount + 1);
-                                                recordId = UserLoginCountEntity.UpdateLoginCountWithEmail(UserEntity.GetActive().Email, loginCount + 1);
+                                                UserSessions.SaveDBRPopUpFlag(this.mSharedPref, false);
+                                                _ = UserLoginCountEntity.UpdateLoginCountWithEmail(UserEntity.GetActive().Email, 1);
                                             }
                                         }
                                         catch (Exception e)

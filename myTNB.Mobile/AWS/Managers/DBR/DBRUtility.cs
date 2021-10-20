@@ -81,30 +81,6 @@ namespace myTNB.Mobile
                 {
                     if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup))
                     {
-                        return GetDBRCAs() is List<string> caList
-                            && caList != null
-                            && caList.Count > 0;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        public bool IsAccountDBREligibleV2
-        {
-            get
-            {
-                if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.Enabled))
-                {
-                    if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup))
-                    {
                         if (GetDBRCAs() is List<string> caList
                             && caList != null
                             && caList.Count > 0
