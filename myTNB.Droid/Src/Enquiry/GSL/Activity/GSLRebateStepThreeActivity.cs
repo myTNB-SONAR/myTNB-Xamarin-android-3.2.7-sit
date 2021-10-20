@@ -165,7 +165,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             tenancyAdapter.AddClickEvent += delegate { AdapterAddClickEvent(GSLDocumentType.TENANCY_AGREEMENT); };
             tenancyAdapter.RemoveClickEvent += AdapterRemoveClickEventForTenancy;
 
-            gslStepThreeUploadViewList.AddView(tenancyAgreementItem);
+            //hide Tenancy Agreement
+            //gslStepThreeUploadViewList.AddView(tenancyAgreementItem);
 
             ownerICItem = new UploadDocumentItemListComponent(this);
             ownerICItem.SetUploadDocumentLabel(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.UPLOAD_OWNER_IC));

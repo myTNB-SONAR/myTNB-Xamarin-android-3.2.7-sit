@@ -167,7 +167,18 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
             {
                 Calendar calendar = Calendar.GetInstance(Locale.Default);
                 var dateTimeNow = DateTime.Now;
+
                 DatePickerDialog datePickerDialog = new DatePickerDialog(this.mActivity, AlertDialog.ThemeHoloLight, this, dateTimeNow.Year, dateTimeNow.Month - 1, dateTimeNow.Day);
+
+                if (activePicker == GSLIncidentDateTimePicker.RESTORATION_DATE)
+                {
+                    Calendar minCalendar = Calendar.GetInstance(Locale.Default);
+                    minCalendar.Set(CalendarField.Year, incidentDate.Year);
+                    minCalendar.Set(CalendarField.Month, incidentDate.Month - 1);
+                    minCalendar.Set(CalendarField.DayOfMonth, incidentDate.Day);
+
+                    datePickerDialog.DatePicker.MinDate = minCalendar.TimeInMillis;
+                }
                 datePickerDialog.DatePicker.MaxDate = calendar.TimeInMillis;
                 datePickerDialog.Show();
             }
@@ -185,7 +196,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                 int hour = calendar.Get(CalendarField.HourOfDay);
                 int minute = calendar.Get(CalendarField.Minute);
                 TimePickerDialog timePickerDialog = new TimePickerDialog(this.mActivity, AlertDialog.ThemeHoloLight, this, hour, minute, false);
-
                 timePickerDialog.Show();
             }
             catch (Exception e)
@@ -244,6 +254,12 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                         ResetRestorationDateTime();
                         break;
                     case GSLIncidentDateTimePicker.RESTORATION_TIME:
+                        var minHour = incidentDate.Hour;
+                        var minMinute = incidentDate.Minute;
+                        if (hourOfDay < minHour || (hourOfDay == minHour && minute < minMinute))
+                        {
+                            selectedTime = new TimeSpan(minHour, minMinute, 0);
+                        }
                         restorationDate = restorationDate.Date + selectedTime;
                         txtRestorationTime.Text = restorationDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
                         selectedDateTimeAction?.Invoke(activePicker, restorationDate, itemIndex);
