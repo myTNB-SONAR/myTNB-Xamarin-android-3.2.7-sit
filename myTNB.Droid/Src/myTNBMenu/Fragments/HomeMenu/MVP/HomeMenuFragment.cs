@@ -63,7 +63,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         , ViewTreeObserver.IOnGlobalLayoutListener
         , View.IOnFocusChangeListener
     {
-        internal static bool IsFromLogin;
         GetBillRenderingResponse billRenderingResponse;
 
         [BindView(Resource.Id.newFAQShimmerView)]
@@ -1220,14 +1219,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             UserEntity user = UserEntity.GetActive();
                             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
 
-                            if (IsFromLogin && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeDBRCard && GetHomeTutorialCallState())
+                            if (loginCount == 1 && DBRUtility.Instance.ShouldShowHomeDBRCard && GetHomeTutorialCallState())
                             {
                                 ShowMarketingTooltip();
-                                IsFromLogin = false;
-                            }
-                            if (!GetHomeTutorialCallState())
-                            {
-                                IsFromLogin = true;
                             }
                         }
                         else
