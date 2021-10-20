@@ -1209,9 +1209,9 @@
     "overVoltageClaimtemproryUnavailableTitle": "Service temporarily unavailable",
     "overVoltageClaimtemproryUnavailableDescription": "We're working to restore Overvoltage Claim service as quickly as possible. Please check back soon.",
     "termsAndConditionTitle": "Terms and Conditions",
-    "rescheduleAppointmentTitle": "Reschedule Appointment"
+    "rescheduleAppointmentTitle": "Reschedule Appointment",
     //Overvoltage Claim Translation End
-
+    "selectCountryTitle": "Select Country/Region"
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",

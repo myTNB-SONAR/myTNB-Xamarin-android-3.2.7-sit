@@ -1209,9 +1209,9 @@
     "overVoltageClaimtemproryUnavailableTitle": "Servis tidak tersedia untuk sementara waktu",
     "overVoltageClaimtemproryUnavailableDescription": "Kami sedang memulihkan servis Tuntutan Voltan Berlebihan secepat yang mungkin. Sila cuba sebentar lagi.",
     "termsAndConditionTitle": "Terma dan Syarat",
-    "rescheduleAppointmentTitle": "Jadualkan Semula Janji Temu"
+    "rescheduleAppointmentTitle": "Jadualkan Semula Janji Temu",
     //Overvoltage Claim Translation End
-
+    "selectCountryTitle": "Pilih Negara/Wilayah"
   },
   "Tutorial": {
     "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",
