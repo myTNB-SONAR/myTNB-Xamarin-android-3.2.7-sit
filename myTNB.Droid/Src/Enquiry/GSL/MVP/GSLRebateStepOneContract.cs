@@ -28,6 +28,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             void UpdateButtonState(bool isEnabled);
 
             bool IsMobileNumEmpty();
+
+            void PrepopulateTenantFields();
         }
 
         public interface IUserActionsListener : IBasePresenter

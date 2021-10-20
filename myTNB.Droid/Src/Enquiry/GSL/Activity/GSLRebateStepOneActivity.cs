@@ -5,6 +5,8 @@ using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
+using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
@@ -15,6 +17,7 @@ using myTNB_Android.Src.Common;
 using myTNB_Android.Src.Common.Activity;
 using myTNB_Android.Src.Common.Model;
 using myTNB_Android.Src.CompoundView;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Enquiry.GSL.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.Utils;
@@ -191,6 +194,26 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             return this.Window.DecorView.RootView.IsShown;
         }
 
+        public void PrepopulateTenantFields()
+        {
+            if (UserEntity.IsCurrentlyActive())
+            {
+                string name = UserEntity.GetActive().DisplayName;
+                string email = UserEntity.GetActive().Email;
+                string mobile = UserEntity.GetActive().MobileNo;
+
+                this.userActionsListener.SetTenantFullName(name);
+                this.userActionsListener.SetTenantEmailAddress(email);
+                this.userActionsListener.SetTenantMobileNumber(mobile);
+
+                txtGSLTenantFullName.Text = name;
+                txtGSLTenantEmail.Text = email;
+                SetMobileNumberField(mobile);
+
+                CheckFieldsForButtonState();
+            }
+        }
+
         private void OnValidateMobileNumber(bool isValidated)
         {
             CheckFieldsForButtonState();
@@ -201,23 +224,39 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             switch (type)
             {
                 case GSLLayoutType.FULL_NAME:
-                    if (!txtGSLTenantFullName.Text.IsValid())
+                    string fullName = txtGSLTenantFullName.Text;
+                    if (fullName.Trim().IsValid())
                     {
-                        ShowEmptyError(type);
+                        if (!Utility.isAlphaNumeric(fullName.Trim()))
+                        {
+                            ShowInvalidErrror(GSLLayoutType.FULL_NAME);
+                        }
+                        else
+                        {
+                            ClearErrors(type);
+                        }
                     }
                     else
                     {
-                        ClearErrors(type);
+                        ShowEmptyError(type);
                     }
                     break;
                 case GSLLayoutType.EMAIL_ADDRESS:
-                    if (!txtGSLTenantEmail.Text.IsValid())
+                    string email = txtGSLTenantEmail.Text;
+                    if (email.Trim().IsValid())
                     {
-                        ShowEmptyError(type);
+                        if (!Patterns.EmailAddress.Matcher(email.Trim()).Matches())
+                        {
+                            ShowInvalidErrror(type);
+                        }
+                        else
+                        {
+                            ClearErrors(type);
+                        }
                     }
                     else
                     {
-                        ClearErrors(type);
+                        ShowEmptyError(type);
                     }
                     break;
                 default:
@@ -230,9 +269,49 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         {
             string fullName = txtGSLTenantFullName.Text;
             string email = txtGSLTenantEmail.Text;
-            var mobileNotEmpty = !mobileNumberInputComponent.IsTextClear();
+            bool fullNameIsValid;
+            bool emailIsValid;
+            bool mobileIsValid = !mobileNumberInputComponent.IsTextClear();
 
-            UpdateButtonState(fullName.IsValid() && email.IsValid() && mobileNotEmpty);
+            if (fullName.Trim().IsValid())
+            {
+                if (!Utility.isAlphaNumeric(fullName.Trim()))
+                {
+                    this.ShowInvalidErrror(GSLLayoutType.FULL_NAME);
+                    fullNameIsValid = false;
+                }
+                else
+                {
+                    this.ClearErrors(GSLLayoutType.FULL_NAME);
+                    fullNameIsValid = true; ;
+                }
+            }
+            else
+            {
+                this.ShowEmptyError(GSLLayoutType.FULL_NAME);
+                fullNameIsValid = false;
+            }
+
+            if (email.Trim().IsValid())
+            {
+                if (!Patterns.EmailAddress.Matcher(email.Trim()).Matches())
+                {
+                    this.ShowInvalidErrror(GSLLayoutType.EMAIL_ADDRESS);
+                    emailIsValid = false;
+                }
+                else
+                {
+                    this.ClearErrors(GSLLayoutType.EMAIL_ADDRESS);
+                    emailIsValid = true;
+                }
+            }
+            else
+            {
+                this.ShowEmptyError(GSLLayoutType.EMAIL_ADDRESS);
+                emailIsValid = false;
+            }
+
+            UpdateButtonState(fullNameIsValid && emailIsValid && mobileIsValid);
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -321,6 +400,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                         txtGSLTenantFullNameLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                         TextViewUtils.SetMuseoSans300Typeface(txtGSLTenantFullNameLayout.FindViewById<TextView>(Resource.Id.textinput_error));
                         txtGSLTenantFullNameLayout.Error = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_ERROR);
+                        var handleBounceError = txtGSLTenantFullNameLayout.FindViewById<TextView>(Resource.Id.textinput_error);
+                        handleBounceError.SetPadding(top: 4, left: 0, right: 0, bottom: 0);
+
                     }
                     break;
                 case GSLLayoutType.EMAIL_ADDRESS:
@@ -328,6 +410,35 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                         txtGSLTenantEmailLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                         TextViewUtils.SetMuseoSans300Typeface(txtGSLTenantEmailLayout.FindViewById<TextView>(Resource.Id.textinput_error));
                         txtGSLTenantEmailLayout.Error = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_ERROR);
+                        var handleBounceError = txtGSLTenantEmailLayout.FindViewById<TextView>(Resource.Id.textinput_error);
+                        handleBounceError.SetPadding(top: 4, left: 0, right: 0, bottom: 0);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void ShowInvalidErrror(GSLLayoutType layoutType)
+        {
+            switch (layoutType)
+            {
+                case GSLLayoutType.FULL_NAME:
+                    {
+                        txtGSLTenantFullNameLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                        TextViewUtils.SetMuseoSans300Typeface(txtGSLTenantFullNameLayout.FindViewById<TextView>(Resource.Id.textinput_error));
+                        txtGSLTenantFullNameLayout.Error = Utility.GetLocalizedErrorLabel(LanguageConstants.Error.INVALID_FULLNAME);
+                        var handleBounceError = txtGSLTenantFullNameLayout.FindViewById<TextView>(Resource.Id.textinput_error);
+                        handleBounceError.SetPadding(top: 4, left: 0, right: 0, bottom: 0);
+                    }
+                    break;
+                case GSLLayoutType.EMAIL_ADDRESS:
+                    {
+                        txtGSLTenantEmailLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                        TextViewUtils.SetMuseoSans300Typeface(txtGSLTenantEmailLayout.FindViewById<TextView>(Resource.Id.textinput_error));
+                        txtGSLTenantEmailLayout.Error = Utility.GetLocalizedErrorLabel(LanguageConstants.Error.INVALID_EMAIL);
+                        var handleBounceError = txtGSLTenantEmailLayout.FindViewById<TextView>(Resource.Id.textinput_error);
+                        handleBounceError.SetPadding(top: 4, left: 0, right: 0, bottom: 0);
                     }
                     break;
                 default:
@@ -360,6 +471,34 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
         public bool IsMobileNumEmpty()
         {
             return mobileNumberInputComponent.IsTextClear();
+        }
+
+        private void SetMobileNumberField(string value)
+        {
+            if (value.IsValid())
+            {
+                if (value.Contains("+"))
+                {
+                    var countryFromPhoneNumber = CountryUtil.Instance.GetCountryFromPhoneNumber(value);
+
+                    if (countryFromPhoneNumber.ToString().IsValid())
+                    {
+                        mobileNumberInputComponent.SetSelectedCountry(countryFromPhoneNumber);
+                        mobileNumberInputComponent.SetMobileNumber(int.Parse(value.Trim()[countryFromPhoneNumber.isd.Length..]));
+                    }
+                }
+                else
+                {
+                    if (value.Trim().Substring(0, 1) == "6")
+                    {
+                        mobileNumberInputComponent.SetMobileNumber(int.Parse(value.Trim().Substring(2)));
+                    }
+                    else
+                    {
+                        mobileNumberInputComponent.SetMobileNumber(int.Parse(value.Trim()));
+                    }
+                }
+            }
         }
 
         public void OnSelectRebateType()

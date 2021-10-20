@@ -121,7 +121,14 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public void SetIsOwner(bool isOwner)
         {
             this.rebateModel.IsOwner = isOwner;
-            this.view?.UpdateButtonState(isOwner);
+            if (!isOwner)
+            {
+                this.view?.PrepopulateTenantFields();
+            }
+            else
+            {
+                this.view?.UpdateButtonState(true);
+            }
         }
 
         public void SetAccountNumber(string accountNum)

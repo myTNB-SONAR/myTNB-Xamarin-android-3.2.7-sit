@@ -26,6 +26,8 @@
         {
             internal static readonly string RWDS_UNAVAILABLE_TITLE = "rewardsUnavailableTitle";
             internal static readonly string RWDS_UNAVAILABLE_MSG = "rewardsUnavailableMsg";
+            internal static readonly string INVALID_FULLNAME = "invalid_fullname";
+            internal static readonly string INVALID_EMAIL = "invalid_email";
         }
 
         internal struct DashboardHome
