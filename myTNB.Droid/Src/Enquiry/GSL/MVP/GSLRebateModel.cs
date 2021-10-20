@@ -41,6 +41,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public string AccountNum { get; set; }
         public bool IsOwner { get; set; }
         public string RebateTypeKey { get; set; }
+        public bool NeedsIncident { get; set; }
         public GSLRebateTenantModel TenantInfo { get; set; }
         public List<GSLRebateIncidentModel> IncidentList { get; set; }
         public List<GSLRebateIncidentDisplayModel> IncidentDisplayList { get; set; }

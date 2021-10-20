@@ -371,7 +371,14 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
 
                 if (this.userActionsListener.CheckRequiredFields())
                 {
-                    OnShowGSLRebateStepTwoActivity();
+                    if (this.userActionsListener.GetGSLRebateModel().NeedsIncident)
+                    {
+                        OnShowGSLRebateStepTwoActivity();
+                    }
+                    else
+                    {
+                        OnShowGSLRebateStepThreeActivity();
+                    }
                 }
                 else
                 {
@@ -387,6 +394,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                 if (item != null)
                 {
                     selectorGSLTypeOfRebate.Text = item.title ?? string.Empty;
+
+                    int stepTotalNo = item.needsIncident ? 4 : 3;
+                    var stepTitleString = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_STEP_TITLE), 1, stepTotalNo);
+                    gslStepOnePageTitle.Text = stepTitleString;
                 }
             });
         }
@@ -529,6 +540,14 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             Intent stepTwoActivity = new Intent(this, typeof(GSLRebateStepTwoActivity));
             stepTwoActivity.PutExtra(GSLRebateConstants.REBATE_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetGSLRebateModel()));
             StartActivity(stepTwoActivity);
+        }
+
+        private void OnShowGSLRebateStepThreeActivity()
+        {
+            this.SetIsClicked(true);
+            Intent stepThreectivity = new Intent(this, typeof(GSLRebateStepThreeActivity));
+            stepThreectivity.PutExtra(GSLRebateConstants.REBATE_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetGSLRebateModel()));
+            StartActivity(stepThreectivity);
         }
     }
 }

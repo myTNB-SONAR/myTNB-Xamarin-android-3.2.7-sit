@@ -167,10 +167,13 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
                     submitGSLEnquiryRequest.feedback.SetEnquiryImage(image.ImageHex, image.FileName, image.FileSize.ToString(), fileFormat);
                 }
 
-                this.rebateModel.IncidentList.ForEach(incident =>
+                if (this.rebateModel.IncidentList != null && this.rebateModel.IncidentList.Count > 0)
                 {
-                    submitGSLEnquiryRequest.feedback.SetIncidentInfos(incident.IncidentDateTime, incident.RestorationDateTime);
-                });
+                    this.rebateModel.IncidentList.ForEach(incident =>
+                    {
+                        submitGSLEnquiryRequest.feedback.SetIncidentInfos(incident.IncidentDateTime, incident.RestorationDateTime);
+                    });
+                }
 
                 var gslSubmitEnquiryResponse = await ServiceApiImpl.Instance.SubmitEnquiryWithType(submitGSLEnquiryRequest);
 

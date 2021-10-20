@@ -7,5 +7,6 @@ namespace myTNB_Android.Src.Common
         public string title { get; set; }
         public string type { get; set; }
         public bool selected { get; set; }
+        public bool needsIncident { get; set; }
     }
 }

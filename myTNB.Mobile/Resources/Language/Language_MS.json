@@ -502,8 +502,8 @@
     "emptyHistoryRE": "Sejarah transaksi anda kosong pada masa ini. Setelah ada, makluman dan sejarah pembayaran anda akan dipaparkan di sini.",
     "emptyPaymentHistoryRE": "Kami belum lagi buat bayaran. Setelah dibuat, sejarah pembayaran anda akan dipaparkan di sini.",
     "emptyBillHistoryRE": "Anda belum lagi ada makluman. Setelah ada, sejarah makluman anda akan dipaparkan di sini.",
-    "accountStatementTenantTitle": "Akaun anda tidak layak untuk melihat penyata akaun.",
-    "accountStatementTenantMessage": "Nampaknya akaun anda adalah akaun penyewa. Anda harus menjadi pemilik akaun elektrik untuk melihat penyata akaun.<br><br>Sekiranya anda ingin melihat penyata akaun, anda boleh menghubungi pemilik akaun anda."
+    "accountStatementTenantTitle": "Akaun anda tidak layak untuk menyemak penyata akaun.",
+    "accountStatementTenantMessage": "Akaun ini adalah akaun penyewa yang tidak membenarkan anda untuk menyemak bil terdahulu & transaksi yang lain di dalam penyata akaun. Hanya pemilik akaun TNB sahaja yang boleh menyemak maklumat ini.<br><br>Sekiranya anda ingin menyemak penyata akaun, sila hubungi pemilik premis anda."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
@@ -1219,23 +1219,28 @@
     "rebateType": [
       {
         "key": "GSL1",
-        "description": "GSL 1: Kekerapan Gangguan"
+        "description": "GSL 1: Kekerapan Gangguan",
+        "needsIncident": true
       },
       {
         "key": "GSL2",
-        "description": "GSL 2: Tempoh Pemulihan Bekalan"
+        "description": "GSL 2: Tempoh Pemulihan Bekalan",
+        "needsIncident": true
       },
       {
         "key": "GSL3",
-        "description": "GSL 3: Perkhidmatan Sambungan Bekalan"
+        "description": "GSL 3: Perkhidmatan Sambungan Bekalan",
+        "needsIncident": false
       },
       {
         "key": "GSL4",
-        "description": "GSL 4: Pemasangan Meter"
+        "description": "GSL 4: Pemasangan Meter",
+        "needsIncident": false
       },
       {
         "key": "GSL5",
-        "description": "GSl 5:  Prosedur Pemotongan Bekalan"
+        "description": "GSl 5:  Prosedur Pemotongan Bekalan",
+        "needsIncident": false
       }
     ]
   },

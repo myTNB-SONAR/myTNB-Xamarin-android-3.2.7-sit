@@ -503,7 +503,7 @@
     "emptyPaymentHistoryRE": "Looks like we have not made any payments yet. Once we have, the payment history will appear here.",
     "emptyBillHistoryRE": "Looks like you have no advices yet. Once you do, your advice history will appear here.",
     "accountStatementTenantTitle": "Your account is ineligible to view the account statement.",
-    "accountStatementTenantMessage": "It looks like your account is a tenant account. You have to be the electricity account owner in order to view the account statement.<br><br>If you would like to view the account statement, you may contact your account owner."
+    "accountStatementTenantMessage": "It looks like this is a tenant account, which does not grant access to view the bill history & other transactions in the account statement. Only TNB account owners have access to this information.<br><br>If you would like to view the account statement, please contact your landlord."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
@@ -1219,23 +1219,28 @@
     "rebateType": [
       {
         "key": "GSL1",
-        "description": "GSL 1: Frequency of Interruptions"
+        "description": "GSL 1: Frequency of Interruptions",
+        "needsIncident": true
       },
       {
         "key": "GSL2",
-        "description": "GSL 2: Restoration Time"
+        "description": "GSL 2: Restoration Time",
+        "needsIncident": true
       },
       {
         "key": "GSL3",
-        "description": "GSL 3: Service Connection Installation"
+        "description": "GSL 3: Service Connection Installation",
+        "needsIncident": false
       },
       {
         "key": "GSL4",
-        "description": "GSL 4: Meter Installation"
+        "description": "GSL 4: Meter Installation",
+        "needsIncident": false
       },
       {
         "key": "GSL5",
-        "description": "GSL 5: Disconnection Procedures"
+        "description": "GSL 5: Disconnection Procedures",
+        "needsIncident": false
       }
     ]
   },
