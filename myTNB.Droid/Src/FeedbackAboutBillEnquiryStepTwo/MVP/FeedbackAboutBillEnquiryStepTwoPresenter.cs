@@ -218,7 +218,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
                         FeedbackId = preLoginFeedbackResponse.GetData().ServiceReqNo,
                         DateCreated = dateFormat.Format(Java.Lang.JavaSystem.CurrentTimeMillis()),
                         FeedbackMessage = feedback,
-                        FeedbackCategoryId = "1"
+                        FeedbackCategoryId = "8"
 
                     };
 

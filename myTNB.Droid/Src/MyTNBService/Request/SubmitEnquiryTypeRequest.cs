@@ -6,11 +6,11 @@ namespace myTNB_Android.Src.MyTNBService.Request
 {
     public class SubmitEnquiryTypeRequest : BaseRequest
     {
-       
-     
-       
+
+
+
         public DeviceInfoRequest deviceInf;
-  
+
         public Feedback feedback;
 
         public SubmitEnquiryTypeRequest(string feedbackCategoryId, string feedbackTypeId, string accountNum, string name, string phoneNum, string feedbackMesage, string stateId, string location, string poleNum, string ContactMobileNo, string ContactName, string ContactEmailAddress, bool isOwner, int relationship, string relationshipDesc, string EnquiryId, string EnquiryName, List<FeedbackUpdateDetails> feedbackUpdateDetails, List<FeedbackImage> attachment)
@@ -19,14 +19,14 @@ namespace myTNB_Android.Src.MyTNBService.Request
             this.deviceInf = new DeviceInfoRequest();
         }
 
-       
+
         public class Feedback
         {
             public string feedbackCategoryId, feedbackTypeId, accountNum, name, phoneNum, feedbackMesage, stateId, location, poleNum, email, contactName, contactMobileNo, contactEmailAddress, relationshipDesc, EnquiryId, EnquiryName, deviceId, feedbackMessage, relationshipwithcadesc;
             public int relationshipwithca;
             public bool isOwner;
             public List<FeedbackUpdateDetails> feedbackUpdateDetails;
-            public List<FeedbackImage> attachment;
+            public List<FeedbackImage> AttachedFiles;
             public Feedback(string feedbackCategoryId, string feedbackTypeId, string accountNum, string name, string phoneNum, string feedbackMesage, string stateId, string location, string poleNum, string ContactMobileNo, string ContactName, string ContactEmailAddress, bool isOwner, int relationship, string relationshipDesc, string EnquiryId, string EnquiryName, List<FeedbackUpdateDetails> feedbackUpdateDetails, List<FeedbackImage> attachment)
             {
                 this.feedbackCategoryId = feedbackCategoryId;
@@ -41,14 +41,14 @@ namespace myTNB_Android.Src.MyTNBService.Request
                 this.poleNum = poleNum;
                 this.contactName = ContactName;
                 this.contactMobileNo = ContactMobileNo;
-                this.contactEmailAddress = contactEmailAddress;
+                this.contactEmailAddress = ContactEmailAddress;
                 this.isOwner = isOwner;
                 this.relationshipwithca = relationship;
                 this.relationshipwithcadesc = relationshipDesc;
                 this.EnquiryId = EnquiryId;
                 this.EnquiryName = EnquiryName;
                 this.feedbackUpdateDetails = feedbackUpdateDetails;
-                this.attachment = attachment;
+                this.AttachedFiles = attachment;
             }
             public void SetFeedbackUpdateDetails(int FeedbackUpdInfoType, string FeedbackUpdInfoTypeDesc, string FeedbackUpdInfoValue)
             {
@@ -57,12 +57,12 @@ namespace myTNB_Android.Src.MyTNBService.Request
 
             public void SetFeedbackImage(string fileHex, string fileName, string fileSize, string fileType)
             {
-                this.attachment.Add(new FeedbackImage(fileHex, fileName, fileSize, fileType));
+                this.AttachedFiles.Add(new FeedbackImage(fileHex, fileName, fileSize, fileType));
             }
         }
         public class FeedbackImage
         {
-            public string fileHex, fileName, fileSize , fileType;
+            public string fileHex, fileName, fileSize, fileType;
 
             public FeedbackImage(string fileHex, string fileName, string fileSize, string fileType)
             {

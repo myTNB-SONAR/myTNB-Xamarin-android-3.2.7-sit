@@ -166,7 +166,8 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
 
                 ShowProgressDialog();
                 SubmittedFeedbackDetails submittedFeedbackDetails = await FeedbackSaveSharedPreference(feedbackId);
-                if (feedbackCategoryId.Equals(EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID))
+
+                if (feedbackCategoryId != null && feedbackCategoryId.Equals(EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID))
                 {
                     Intent gslDetailsIntent = new Intent(this, typeof(GSLRebateSubmittedDetailsActivity));
                     StartActivityForResult(gslDetailsIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
@@ -174,10 +175,11 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
                 else
                 {
                     var successIntent = new Intent(this, typeof(FeedbackDetailsBillRelatedActivity));
-                    successIntent.PutExtra("TITLE", submittedFeedbackDetails.FeedbackTypeName);
+
                     successIntent.PutExtra("NEWSCREEN", "true");
                     if (isAboutMyBill == "true")
                     {
+                        successIntent.PutExtra("TITLE", Utility.GetLocalizedLabel("SubmitEnquiry", "aboutMyBillTitle"));
                         successIntent.PutExtra("ABOUTMYBILL", "true");
                     }
                     StartActivityForResult(successIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);

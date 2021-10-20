@@ -176,9 +176,16 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                                 OnAboutBillEnquiry();
                                 break;
                             case EnquiryTypeEnum.GSLRebate:
-                                var ic = data.IC.Trim();
-                                var icAcct = UserEntity.GetActive().IdentificationNo.Trim();
-                                OnGSLRebate(ic.Equals(icAcct));
+                                if (UserEntity.IsCurrentlyActive())
+                                {
+                                    var ic = data.IC.Trim();
+                                    var icAcct = UserEntity.GetActive().IdentificationNo.Trim();
+                                    OnGSLRebate(ic.Equals(icAcct));
+                                }
+                                else
+                                {
+                                    OnGSLRebate(false);
+                                }
                                 break;
                             default:
                                 break;
