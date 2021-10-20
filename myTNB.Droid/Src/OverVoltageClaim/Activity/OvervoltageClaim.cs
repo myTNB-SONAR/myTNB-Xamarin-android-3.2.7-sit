@@ -40,6 +40,7 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
         public bool IsINZeroStepTab = true;
         public bool IsTermAndConditions = false;
         public bool IsInTermAndConsitionStepTab = false;
+        public bool IsCountryDropDown = false;
         [BindView(Resource.Id.webView)]
         WebView webView;
 
@@ -119,6 +120,11 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
             else if (IsInTermAndConsitionStepTab)
             {
                 webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBackTnbTerms').trigger('click'); },500); })();", null);
+            }
+            else if (IsCountryDropDown)
+            {
+                webView.EvaluateJavascript("javascript:(function() { setTimeout(function() { $('#onBcakToClaim').trigger('click'); },500); })();", null);
+                IsCountryDropDown = false;
             }
             else
             {
@@ -246,6 +252,21 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                     txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
 
                 }
+                else if (data.currentScreen == "step1-screen" && data.nextScreen == "country-select")
+                {
+                    txtstep1of2.Visibility = ViewStates.Gone;
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "selectCountryTitle"));
+                    IsCountryDropDown = true;
+                    IsINZeroStepTab = true;
+                }
+                else if (data.currentScreen == "country-select" && data.nextScreen == "step1-screen")
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
+                    IsCountryDropDown = false;
+                    IsINZeroStepTab = false;
+                    txtstep1of2.Visibility = ViewStates.Visible;
+                }
+
                 else if (data.currentScreen == "step1-screen" && data.nextScreen == "step0-screen")
                 {
                     IsINZeroStepTab = true;
