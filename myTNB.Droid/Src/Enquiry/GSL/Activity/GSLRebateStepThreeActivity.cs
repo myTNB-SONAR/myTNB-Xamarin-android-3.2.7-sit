@@ -95,6 +95,12 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             return true;
         }
 
+        public override void Ready()
+        {
+            FileUtils.CreateDirectory(this, FileUtils.TEMP_IMAGE_FOLDER);
+            FileUtils.CreateDirectory(this, FileUtils.PDF_FOLDER);
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);

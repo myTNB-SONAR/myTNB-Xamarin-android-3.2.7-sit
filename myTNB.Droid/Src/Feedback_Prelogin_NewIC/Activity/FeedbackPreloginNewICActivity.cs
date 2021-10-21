@@ -58,7 +58,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         ConstraintLayout updatePersonalInfoConstraint;
 
         [BindView(Resource.Id.gslRebateConstraint)]
-        ConstraintLayout gslRebateConstraint;
+        LinearLayout gslRebateConstraint;
 
         [BindView(Resource.Id.txtAccountNo)]
         EditText txtAccountNo;

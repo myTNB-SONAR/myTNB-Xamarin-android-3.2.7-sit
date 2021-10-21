@@ -153,7 +153,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
             }
             else if (picker == GSLIncidentDateTimePicker.RESTORATION_TIME)
             {
-                if (txtRestorationDate.Text.IsValid())
+                if (txtIncidentDate.Text.IsValid() &&
+                    txtIncidentTime.Text.IsValid() &&
+                    txtRestorationDate.Text.IsValid())
                 {
                     activePicker = picker;
                     ShowTimePicker();
@@ -286,10 +288,24 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
 
         private void ResetRestorationDateTime()
         {
-            restorationDate = new DateTime();
-            txtRestorationDate.Text = string.Empty;
-            txtRestorationTime.Text = string.Empty;
-            resetDateTimeAction?.Invoke(GSLIncidentDateTimePicker.RESTORATION_DATE, itemIndex);
+            var dateTimeNow = DateTime.Now;
+            if (incidentDate.Year == dateTimeNow.Year
+                && incidentDate.Month == dateTimeNow.Month
+                && incidentDate.Day == dateTimeNow.Day)
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
+                restorationDate = incidentDate;
+                txtRestorationDate.Text = restorationDate.ToString(GSLRebateConstants.DATE_FORMAT, dateCultureInfo);
+                txtRestorationTime.Text = string.Empty;
+                selectedDateTimeAction?.Invoke(activePicker, restorationDate, itemIndex);
+            }
+            else
+            {
+                restorationDate = new DateTime();
+                txtRestorationDate.Text = string.Empty;
+                txtRestorationTime.Text = string.Empty;
+                resetDateTimeAction?.Invoke(GSLIncidentDateTimePicker.RESTORATION_DATE, itemIndex);
+            }
         }
     }
 }
