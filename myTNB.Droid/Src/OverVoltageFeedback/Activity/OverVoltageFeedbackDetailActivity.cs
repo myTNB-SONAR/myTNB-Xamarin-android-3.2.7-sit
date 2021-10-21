@@ -128,6 +128,8 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         {
             try
             {
+                TextViewUtils.SetMuseoSans300Typeface(txtstep1of2);
+                TextViewUtils.SetTextSize12(txtstep1of2);
                 //device info
                 var AppVersion = DeviceIdUtils.GetAppVersionName();
                 var OsVersion = "Android" + DeviceIdUtils.GetAndroidVersion();
