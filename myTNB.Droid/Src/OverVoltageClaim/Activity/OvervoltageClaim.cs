@@ -145,6 +145,8 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
         {
             try
             {
+                TextViewUtils.SetMuseoSans300Typeface(txtstep1of2);
+                TextViewUtils.SetTextSize12(txtstep1of2);
                 var AppVersion = DeviceIdUtils.GetAppVersionName();              
                 var OsVersion = "Android"+DeviceIdUtils.GetAndroidVersion();
                 var DeviceModel = DeviceInfo.Model;
