@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.Enquiry.GSL.MVP
@@ -46,22 +47,30 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         {
             if (this.rebateModel.IncidentList.Count > 0 && this.rebateModel.IncidentList.Count > index)
             {
-                switch (picker)
+                try
                 {
-                    case GSLIncidentDateTimePicker.INCIDENT_DATE:
-                        this.rebateModel.IncidentList[index].IncidentDateTime = dateTime.ToString();
-                        break;
-                    case GSLIncidentDateTimePicker.INCIDENT_TIME:
-                        this.rebateModel.IncidentList[index].IncidentDateTime = dateTime.ToString();
-                        break;
-                    case GSLIncidentDateTimePicker.RESTORATION_DATE:
-                        this.rebateModel.IncidentList[index].RestorationDateTime = dateTime.ToString();
-                        break;
-                    case GSLIncidentDateTimePicker.RESTORATION_TIME:
-                        this.rebateModel.IncidentList[index].RestorationDateTime = dateTime.ToString();
-                        break;
-                    default:
-                        break;
+                    CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
+                    switch (picker)
+                    {
+                        case GSLIncidentDateTimePicker.INCIDENT_DATE:
+                            this.rebateModel.IncidentList[index].IncidentDateTime = dateTime.ToString(GSLRebateConstants.DATETIME_PARSE_FORMAT, dateCultureInfo);
+                            break;
+                        case GSLIncidentDateTimePicker.INCIDENT_TIME:
+                            this.rebateModel.IncidentList[index].IncidentDateTime = dateTime.ToString(GSLRebateConstants.DATETIME_PARSE_FORMAT, dateCultureInfo);
+                            break;
+                        case GSLIncidentDateTimePicker.RESTORATION_DATE:
+                            this.rebateModel.IncidentList[index].RestorationDateTime = dateTime.ToString(GSLRebateConstants.DATETIME_PARSE_FORMAT, dateCultureInfo);
+                            break;
+                        case GSLIncidentDateTimePicker.RESTORATION_TIME:
+                            this.rebateModel.IncidentList[index].RestorationDateTime = dateTime.ToString(GSLRebateConstants.DATETIME_PARSE_FORMAT, dateCultureInfo);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
                 }
             }
             this.view?.UpdateButtonState(CheckDateTimeFields());

@@ -250,21 +250,57 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                 switch (activePicker)
                 {
                     case GSLIncidentDateTimePicker.INCIDENT_TIME:
-                        incidentDate = incidentDate.Date + selectedTime;
-                        txtIncidentTime.Text = incidentDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
-                        selectedDateTimeAction?.Invoke(activePicker, incidentDate, itemIndex);
-                        ResetRestorationDateTime();
+                        {
+                            var dateTimeNow = DateTime.Now;
+                            if (incidentDate.Year == dateTimeNow.Year
+                                && incidentDate.Month == dateTimeNow.Month
+                                && incidentDate.Day == dateTimeNow.Day)
+                            {
+                                TimeSpan maxTime = new TimeSpan(dateTimeNow.Hour, dateTimeNow.Minute, 0);
+                                int compare = selectedTime.CompareTo(maxTime);
+                                if (compare > 0)
+                                {
+                                    selectedTime = maxTime;
+                                }
+                            }
+                            incidentDate = incidentDate.Date + selectedTime;
+                            txtIncidentTime.Text = incidentDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
+                            selectedDateTimeAction?.Invoke(activePicker, incidentDate, itemIndex);
+                            ResetRestorationDateTime();
+                        }
                         break;
                     case GSLIncidentDateTimePicker.RESTORATION_TIME:
-                        var minHour = incidentDate.Hour;
-                        var minMinute = incidentDate.Minute;
-                        if (hourOfDay < minHour || (hourOfDay == minHour && minute < minMinute))
                         {
-                            selectedTime = new TimeSpan(minHour, minMinute, 0);
+                            var dateTimeNow = DateTime.Now;
+                            if (restorationDate.Year == dateTimeNow.Year
+                               && restorationDate.Month == dateTimeNow.Month
+                               && restorationDate.Day == dateTimeNow.Day)
+                            {
+                                TimeSpan minTime = new TimeSpan(incidentDate.Hour, incidentDate.Minute, 0);
+                                TimeSpan maxTime = new TimeSpan(dateTimeNow.Hour, dateTimeNow.Minute, 0);
+                                int compareMin = selectedTime.CompareTo(minTime);
+                                int compareMax = selectedTime.CompareTo(maxTime);
+                                if (compareMin < 0)
+                                {
+                                    selectedTime = minTime;
+                                }
+                                else if (compareMax > 0)
+                                {
+                                    selectedTime = maxTime;
+                                }
+                            }
+                            else
+                            {
+                                TimeSpan minTime = new TimeSpan(incidentDate.Hour, incidentDate.Minute, 0);
+                                if (hourOfDay < minTime.Hours || (hourOfDay == minTime.Hours && minute < incidentDate.Minute))
+                                {
+                                    selectedTime = minTime;
+                                }
+                            }
+                            restorationDate = restorationDate.Date + selectedTime;
+                            txtRestorationTime.Text = restorationDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
+                            selectedDateTimeAction?.Invoke(activePicker, restorationDate, itemIndex);
                         }
-                        restorationDate = restorationDate.Date + selectedTime;
-                        txtRestorationTime.Text = restorationDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
-                        selectedDateTimeAction?.Invoke(activePicker, restorationDate, itemIndex);
                         break;
                     default:
                         break;
