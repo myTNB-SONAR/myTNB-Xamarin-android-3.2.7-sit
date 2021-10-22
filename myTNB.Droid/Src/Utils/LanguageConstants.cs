@@ -50,7 +50,7 @@
             internal static readonly string OUTSTANDING_CHARGES_V2 = "outstandingChargesV2";
             internal static readonly string BILL_THIS_MONTH = "billThisMonth";
             internal static readonly string BILL_THIS_MONTH_V2 = "billThisMonthV2";
-
+            internal static readonly string ROUNDING_ADJUSTMENT = "roundingAdjustment";
         }
 
         internal struct BillFilter

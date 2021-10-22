@@ -34,6 +34,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "AmountDue")]
             public double AmountDue { get; set; }
 
+            [JsonProperty(PropertyName = "RoundingAmount")]
+            public double RoundingAmount { get; set; }
+
             [JsonProperty(PropertyName = "DueDate")]
             public string DueDate { get; set; }
 

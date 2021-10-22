@@ -73,6 +73,12 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.accountMinChargeLabel)]
         TextView accountMinChargeLabel;
 
+        [BindView(Resource.Id.roundingAdjustmentLabel)]
+        TextView roundingAdjustmentLabel;
+
+        [BindView(Resource.Id.roundingAdjustmentValue)]
+        TextView roundingAdjustmentValue;
+
         [BindView(Resource.Id.paperlessTitle)]
         TextView paperlessTitle;
 
@@ -81,6 +87,9 @@ namespace myTNB_Android.Src.Billing.MVP
 
         [BindView(Resource.Id.accountMinChargeLabelContainer)]
         LinearLayout accountMinChargeLabelContainer;
+
+        [BindView(Resource.Id.roundingAdjustmentLayout)]
+        LinearLayout roundingAdjustmentLayout;
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -206,7 +215,7 @@ namespace myTNB_Android.Src.Billing.MVP
             TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, refreshBillingDetailMessage, paperlessTitle);
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency,
-                accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
+                accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh, roundingAdjustmentLabel, roundingAdjustmentValue);
 
             if (TextViewUtils.IsLargeFonts)
             {
@@ -223,7 +232,7 @@ namespace myTNB_Android.Src.Billing.MVP
             TextViewUtils.SetTextSize11(infoLabelDetailEPP);
             TextViewUtils.SetTextSize12(accountAddress, refreshBillingDetailMessage, accountMinChargeLabel, paperlessTitle);
             TextViewUtils.SetTextSize14(accountPayAmountDate, accountName, accountChargeLabel, accountChargeValue
-                , accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel);
+                , accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, roundingAdjustmentLabel, roundingAdjustmentValue);
             TextViewUtils.SetTextSize16(myBillDetailsLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
 
             billingDetailsPresenter = new BillingDetailsPresenter(this);
@@ -634,6 +643,21 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountPayAmountLabel.Text = Utility.GetLocalizedCommonLabel("paymentPendingMsg");
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.lightOrange)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.lightOrange)));
+            }
+
+            if (BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum) && selectedAccountChargeModel.ShouldShowRoundingAdjustment)
+            {
+                roundingAdjustmentLayout.Visibility = ViewStates.Visible;
+                roundingAdjustmentLabel.Text = GetLabelByLanguage(LanguageConstants.BillDetails.ROUNDING_ADJUSTMENT);
+
+                if (selectedAccountChargeModel.RoundingAmount < 0f)
+                {
+                    roundingAdjustmentValue.Text = "- RM " + (Math.Abs(selectedAccountChargeModel.RoundingAmount) * -1).ToString("#,##0.00", currCult);
+                }
+                else
+                {
+                    roundingAdjustmentValue.Text = "RM " + (Math.Abs(selectedAccountChargeModel.RoundingAmount)).ToString("#,##0.00", currCult);
+                }
             }
         }
 
