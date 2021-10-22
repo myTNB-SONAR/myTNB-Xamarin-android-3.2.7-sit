@@ -31,24 +31,29 @@ namespace myTNB_Android.Src.MyTNBService.Parser
                     chargeModel.Amount = charge.Amount;
                     chargeModelList.Add(chargeModel);
                 });
-                MandatoryChargeModel mandatoryChargeModel = new MandatoryChargeModel();
-                mandatoryChargeModel.TotalAmount = mandatoryCharge.TotalAmount;
-                mandatoryChargeModel.ChargeModelList = chargeModelList;
+                MandatoryChargeModel mandatoryChargeModel = new MandatoryChargeModel
+                {
+                    TotalAmount = mandatoryCharge.TotalAmount,
+                    ChargeModelList = chargeModelList
+                };
 
-                AccountChargeModel accountChargeModel = new AccountChargeModel();
-                accountChargeModel.IsCleared = false;
-                accountChargeModel.IsNeedPay = false;
-                accountChargeModel.IsPaidExtra = false;
-                accountChargeModel.ContractAccount = accountCharge.ContractAccount;
-                accountChargeModel.CurrentCharges = accountCharge.CurrentCharges;
-                accountChargeModel.OutstandingCharges = accountCharge.OutstandingCharges;
-                accountChargeModel.AmountDue = accountCharge.AmountDue;
-                accountChargeModel.RoundingAmount = accountCharge.RoundingAmount;
-                accountChargeModel.DueDate = accountCharge.DueDate;
-                accountChargeModel.BillDate = accountCharge.BillDate;
-                accountChargeModel.IncrementREDueDateByDays = accountCharge.IncrementREDueDateByDays;
-                accountChargeModel.ShowEppToolTip = accountCharge.ShowEppToolTip;
-                accountChargeModel.MandatoryCharges = mandatoryChargeModel;
+                AccountChargeModel accountChargeModel = new AccountChargeModel
+                {
+                    IsCleared = false,
+                    IsNeedPay = false,
+                    IsPaidExtra = false,
+                    ContractAccount = accountCharge.ContractAccount,
+                    CurrentCharges = accountCharge.CurrentCharges,
+                    ActualCurrentCharges = accountCharge.ActualCurrentCharges,
+                    OutstandingCharges = accountCharge.OutstandingCharges,
+                    AmountDue = accountCharge.AmountDue,
+                    RoundingAmount = accountCharge.RoundingAmount,
+                    DueDate = accountCharge.DueDate,
+                    BillDate = accountCharge.BillDate,
+                    IncrementREDueDateByDays = accountCharge.IncrementREDueDateByDays,
+                    ShowEppToolTip = accountCharge.ShowEppToolTip,
+                    MandatoryCharges = mandatoryChargeModel
+                };
                 EvaluateAmountDue(accountChargeModel);
                 accountChargeModelList.Add(accountChargeModel);
             });

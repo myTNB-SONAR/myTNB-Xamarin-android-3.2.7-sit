@@ -594,15 +594,40 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
 
-            if (selectedAccountChargeModel.CurrentCharges < 0f)
+            if (BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum) && selectedAccountChargeModel.ShouldShowRoundingAdjustment)
             {
-                accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.CurrentCharges * -1).ToString("#,##0.00", currCult);
+                if (selectedAccountChargeModel.CurrentCharges < 0f)
+                {
+                    accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.ActualCurrentCharges * -1).ToString("#,##0.00", currCult);
+                }
+                else
+                {
+                    accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.ActualCurrentCharges.ToString("#,##0.00", currCult);  //ori code
+                }
+
+                roundingAdjustmentLayout.Visibility = ViewStates.Visible;
+                roundingAdjustmentLabel.Text = GetLabelByLanguage(LanguageConstants.BillDetails.ROUNDING_ADJUSTMENT);
+
+                if (selectedAccountChargeModel.RoundingAmount < 0f)
+                {
+                    roundingAdjustmentValue.Text = "- RM " + (selectedAccountChargeModel.RoundingAmount * -1).ToString("#,##0.00", currCult);
+                }
+                else
+                {
+                    roundingAdjustmentValue.Text = "RM " + selectedAccountChargeModel.RoundingAmount.ToString("#,##0.00", currCult);
+                }
             }
             else
             {
-                accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00", currCult);  //ori code
+                if (selectedAccountChargeModel.CurrentCharges < 0f)
+                {
+                    accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.CurrentCharges * -1).ToString("#,##0.00", currCult);
+                }
+                else
+                {
+                    accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00", currCult);  //ori code
+                }
             }
-
 
             accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("#,##0.00", currCult);
             if (selectedAccountChargeModel.IsNeedPay)
@@ -643,21 +668,6 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountPayAmountLabel.Text = Utility.GetLocalizedCommonLabel("paymentPendingMsg");
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.lightOrange)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.lightOrange)));
-            }
-
-            if (BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum) && selectedAccountChargeModel.ShouldShowRoundingAdjustment)
-            {
-                roundingAdjustmentLayout.Visibility = ViewStates.Visible;
-                roundingAdjustmentLabel.Text = GetLabelByLanguage(LanguageConstants.BillDetails.ROUNDING_ADJUSTMENT);
-
-                if (selectedAccountChargeModel.RoundingAmount < 0f)
-                {
-                    roundingAdjustmentValue.Text = "- RM " + (Math.Abs(selectedAccountChargeModel.RoundingAmount) * -1).ToString("#,##0.00", currCult);
-                }
-                else
-                {
-                    roundingAdjustmentValue.Text = "RM " + (Math.Abs(selectedAccountChargeModel.RoundingAmount)).ToString("#,##0.00", currCult);
-                }
             }
         }
 

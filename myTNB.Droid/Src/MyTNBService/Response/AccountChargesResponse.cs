@@ -28,14 +28,17 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "CurrentCharges")]
             public double CurrentCharges { get; set; }
 
+            [JsonProperty(PropertyName = "RoundingAmount")]
+            public double RoundingAmount { get; set; }
+
             [JsonProperty(PropertyName = "OutstandingCharges")]
             public double OutstandingCharges { get; set; }
 
             [JsonProperty(PropertyName = "AmountDue")]
             public double AmountDue { get; set; }
 
-            [JsonProperty(PropertyName = "RoundingAmount")]
-            public double RoundingAmount { get; set; }
+            [JsonProperty(PropertyName = "ActualCurrentCharges")]
+            public double ActualCurrentCharges { get; set; }
 
             [JsonProperty(PropertyName = "DueDate")]
             public string DueDate { get; set; }

@@ -13,6 +13,7 @@ namespace myTNB_Android.Src.MyTNBService.Model
     {
         public string ContractAccount { get; set; }
         public double CurrentCharges { get; set; }
+        public double ActualCurrentCharges { get; set; }
         public double OutstandingCharges { get; set; }
         public double AmountDue { get; set; }
         public double RoundingAmount { get; set; }
