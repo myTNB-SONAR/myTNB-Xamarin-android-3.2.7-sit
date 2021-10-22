@@ -7,7 +7,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:fitsSystemWindows="false"
-	android:theme="@style/Theme.FaultyStreetLamps"
+	android:theme="@style/Theme.Dashboard"
 	android:id="@+id/rootView">
 	<RelativeLayout
 		android:layout_width="match_parent"
@@ -22,17 +22,35 @@
 			android:orientation="vertical"
 			android:paddingLeft="16dp"
 			android:paddingRight="16dp"
-			android:paddingBottom="8dp"
+			android:paddingBottom="16dp"
 			android:layout_alignParentBottom="true"
-			android:background="@color/white"
-			android:paddingTop="8dp">
+			android:background="@color/white">
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@color/white"
+				android:id="@+id/acctStmntFooterContainer">
+				<TextView
+					android:id="@+id/txtAcctStmtFooterLabel"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="16dp"
+					android:layout_marginBottom="16dp"
+					android:text="This may take more than a few seconds but we will notify you and email you acopy if it takes longer than expected."
+					android:textAllCaps="false"
+					android:textColor="@color/tunaGrey"
+					android:textSize="15dp" />
+			</LinearLayout>
 			<Button
 				android:id="@+id/btnSubmit"
-				android:layout_height="wrap_content"
 				android:layout_width="match_parent"
-				android:text="View Account Statement"
+				android:text="Confirm"
 				android:textSize="16dp"
 				android:textAllCaps="false"
+				android:layout_height="48dp"
+				android:layout_marginTop="16dp"
+				android:layout_marginLeft="16dp"
 				style="@style/DarkButton1"/>
 		</LinearLayout>
 		<LinearLayout
@@ -55,6 +73,25 @@
 					android:layout_height="wrap_content"
 					android:orientation="vertical">
 					<LinearLayout
+						android:orientation="vertical"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:background="@color/white"
+						android:id="@+id/acctStmntHeaderContainer">
+						<TextView
+							android:id="@+id/txtAcctStmtHeaderLabel"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="16dp"
+							android:layout_marginLeft="16dp"
+							android:layout_marginBottom="16dp"
+							android:layout_marginRight="19dp"
+							android:text="Select your preferred statement period to request."
+							android:textAllCaps="false"
+							android:textColor="@color/tunaGrey"
+							android:textSize="15dp" />
+					</LinearLayout>
+					<LinearLayout
 						android:id="@+id/viewontainer"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -68,7 +105,7 @@
 							android:layout_marginLeft="16dp"
 							android:layout_marginTop="16dp"
 							android:gravity="left"
-							android:text="I want to view:"
+							android:text="I want to request for:"
 							android:textColor="@color/powerBlue"
 							android:textSize="16dp" />
 					</LinearLayout>
@@ -83,29 +120,29 @@
 						<RelativeLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content">
-						<TextView
-							android:id="@+id/txtThreeMonths"
-							android:layout_width="match_parent"
-							android:layout_height="24dp"
-							android:layout_marginLeft="16dp"
-							android:layout_marginRight="16dp"
-							android:text="Past 3 months"
-							android:textColor="#49494a"
-							android:textSize="16dp" />
-						<ImageView
-							android:id="@+id/imgTheeMonthsAction"
-							android:layout_width="22dp"
-							android:layout_height="wrap_content"
-							android:layout_marginRight="16dp"
-							android:visibility="gone"
-							android:src="@drawable/ic_action_tick"
-							android:layout_centerInParent="true"
-							android:layout_alignParentEnd="true" />
+							<TextView
+								android:id="@+id/txtThreeMonths"
+								android:layout_width="match_parent"
+								android:layout_height="24dp"
+								android:layout_marginLeft="16dp"
+								android:layout_marginRight="16dp"
+								android:text="Past 3 months"
+								android:textColor="#49494a"
+								android:textSize="16dp" />
+							<ImageView
+								android:id="@+id/imgTheeMonthsAction"
+								android:layout_width="22dp"
+								android:layout_height="wrap_content"
+								android:layout_marginRight="16dp"
+								android:visibility="gone"
+								android:src="@drawable/ic_action_tick"
+								android:layout_centerInParent="true"
+								android:layout_alignParentEnd="true" />
 						</RelativeLayout>
 					</LinearLayout>
-					<View 
+					<View
 						android:layout_width="fill_parent"
-						android:layout_height="1dp"       
+						android:layout_height="1dp"
 						android:background="#e4e4e4" />
 					<LinearLayout
 						android:id="@+id/sixMonthContainer"
@@ -118,33 +155,28 @@
 						<RelativeLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content">
-						<TextView
-							android:id="@+id/txtSixMonth"
-							android:layout_width="match_parent"
-							android:layout_height="24dp"
-							android:layout_marginLeft="16dp"
-							android:layout_marginRight="16dp"
-							android:text="Past 6 months"
-							android:textColor="#49494a"
-							android:textSize="16dp" />
-						<ImageView
-							android:id="@+id/imgSixMonthsAction"
-							android:layout_width="22dp"
-							android:layout_height="wrap_content"
-							android:layout_marginRight="16dp"
-							android:visibility="gone"
-							android:src="@drawable/ic_action_tick"
-							android:layout_centerInParent="true"
-							android:layout_alignParentEnd="true" />
+							<TextView
+								android:id="@+id/txtSixMonth"
+								android:layout_width="match_parent"
+								android:layout_height="24dp"
+								android:layout_marginLeft="16dp"
+								android:layout_marginRight="16dp"
+								android:text="Past 6 months"
+								android:textColor="#49494a"
+								android:textSize="16dp" />
+							<ImageView
+								android:id="@+id/imgSixMonthsAction"
+								android:layout_width="22dp"
+								android:layout_height="wrap_content"
+								android:layout_marginRight="16dp"
+								android:visibility="gone"
+								android:src="@drawable/ic_action_tick"
+								android:layout_centerInParent="true"
+								android:layout_alignParentEnd="true" />
 						</RelativeLayout>
 					</LinearLayout>
 				</LinearLayout>
 			</ScrollView>
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="16dp"
-				android:orientation="vertical"
-				android:background="@color/lightGrey"/>
 		</LinearLayout>
 	</RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

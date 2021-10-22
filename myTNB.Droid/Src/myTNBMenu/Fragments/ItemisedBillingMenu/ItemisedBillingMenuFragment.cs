@@ -35,7 +35,7 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Database.Model;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.SessionCache;
-using myTNB_Android.Src.BillStatement.MVP;
+using myTNB_Android.Src.Bills.AccountStatement.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
@@ -384,7 +384,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
-                    Intent newIntent = new Intent(this.Activity, typeof(BillStatementActivity));
+                    Intent newIntent = new Intent(this.Activity, typeof(AccountStatementSelectionActivity));
                     newIntent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
                     StartActivity(newIntent);
                 }

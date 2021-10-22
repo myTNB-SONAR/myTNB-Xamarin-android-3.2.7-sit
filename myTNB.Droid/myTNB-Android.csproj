@@ -6923,6 +6923,7 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Enquiry\GSL\Fragment\GSLInfoItemListComponent.cs" />
+    <Compile Include="Src\Bills\AccountStatement\Activity\AccountStatementActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7639,11 +7640,10 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\BillStatement.axml">
+    <AndroidResource Include="Resources\layout\AccountStatementSelectionView.axml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\BillStatement\MVP\BillStatementActivity.cs" />
     <Compile Include="Src\Device Cache\DeviceSizeCache.cs" />
     <Compile Include="Src\Bills\NewBillRedesign\Activity\NBRDiscoverMoreActivity.cs" />
     <Compile Include="Src\Bills\NewBillRedesign\MVP\NBRDiscoverMoreContract.cs" />
@@ -8484,6 +8484,8 @@
     <Folder Include="Src\Enquiry\Adapter\" />
     <Folder Include="Src\Enquiry\Common\" />
     <Folder Include="Src\Enquiry\GSL\MVP\GSLSubmittedDetails\" />
+    <Folder Include="Src\Bills\AccountStatement\" />
+    <Folder Include="Src\Bills\AccountStatement\Activity\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
