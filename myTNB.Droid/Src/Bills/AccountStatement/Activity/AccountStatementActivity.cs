@@ -16,7 +16,7 @@ using myTNB.Mobile;
 
 namespace myTNB_Android.Src.Bills.AccountStatement.Activity
 {
-    [Activity(Label = "Select Creation Date", Theme = "@style/Theme.Dashboard")]
+    [Activity(Theme = "@style/Theme.Dashboard")]
     public class AccountStatementSelectionActivity : BaseActivityCustom
     {
         [BindView(Resource.Id.imgSixMonthsAction)]
@@ -48,7 +48,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
 
         AccountData selectedAccount;
 
-        const string PAGE_ID = "ViewAccountStatement";
+        const string PAGE_ID = "StatementPeriod";
 
         public override int ResourceId()
         {
@@ -104,7 +104,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "View Account Statement");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Account Statement");
             }
             catch (Exception e)
             {
@@ -121,8 +121,8 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
                 {
                     DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.StatementPeriod.View_Account_Statement);
                     this.SetIsClicked(true);
-                    ShowBillStatementPDF();
-                    FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Buttom Clicked");
+                    OnShowAccountStatementLoading();
+                    FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Button Clicked");
                 }
                 catch (System.Exception ne)
                 {
@@ -169,9 +169,9 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
 
                 if (extras != null)
                 {
-                    if (extras.ContainsKey("SELECTED_ACCOUNT"))
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                     {
-                        selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString("SELECTED_ACCOUNT"));
+                        selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                     }
                 }
                 imgTheeMonthsAction.SetMaxHeight(txtThreeMonths.Height);
@@ -192,14 +192,14 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
             TextViewUtils.SetTextSize16(txtPageTitleInfo, txtThreeMonths, txtSixMonth, btnSubmit);
             TextViewUtils.SetTextSize14(txtAcctStmtHeaderLabel, txtAcctStmtFooterLabel);
 
-            SetToolBarTitle("View Account Statement");
+            SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.TITLE));
 
-            txtThreeMonths.Text = Utility.GetLocalizedLabel("StatementPeriod", "past3Months");
-            txtPageTitleInfo.Text = Utility.GetLocalizedLabel("StatementPeriod", "iWantToViewTitle");
-            txtSixMonth.Text = Utility.GetLocalizedLabel("StatementPeriod", "past6Months");
+            txtPageTitleInfo.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.REQUEST_TITLE);
+            txtThreeMonths.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.PAST_3_MONTHS);
+            txtSixMonth.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.PAST_6_MONTHS);
 
-            txtAcctStmtFooterLabel.Text = "This may take more than a few seconds but we will notify you and email you acopy if it takes longer than expected.";//stub
-            txtAcctStmtHeaderLabel.Text = "Select your preferred statement period to request.";
+            txtAcctStmtFooterLabel.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.DISCLAIMER);
+            txtAcctStmtHeaderLabel.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.STATEMENT_PERIOD_TITLE);
         }
 
         private void SetCTAEnable()
@@ -219,14 +219,22 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
             viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_STATEMENT_PDF_REQUEST_CODE);
             if (isSixMonthSelected)
             {
-                selectedMonths = "6";
+                selectedMonths = AccountStatementConstants.PAST_6_MONTHS;
             }
             if (isThreeMonthSelected)
             {
-                selectedMonths = "3";
+                selectedMonths = AccountStatementConstants.PAST_3_MONTHS;
             }
-            viewBill.PutExtra(Constants.SELECTED_BILL_STATEMENT, selectedMonths);
+            viewBill.PutExtra(AccountStatementConstants.SELECTED_MONTH_FOR_ACCOUNT_STATEMENT, selectedMonths);
             StartActivity(viewBill);
+        }
+
+        private void OnShowAccountStatementLoading()
+        {
+            this.SetIsClicked(true);
+            Intent acctStmntLoadingIntent = new Intent(this, typeof(AccountStatementLoadingActivity));
+            acctStmntLoadingIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            StartActivity(acctStmntLoadingIntent);
         }
     }
 }

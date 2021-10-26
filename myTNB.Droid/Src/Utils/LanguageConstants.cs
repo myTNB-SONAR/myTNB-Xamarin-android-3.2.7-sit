@@ -13,6 +13,7 @@
         internal static readonly string FEEDBACK_FORM = "FeedbackForm";
         internal static readonly string APPLICATION_STATUS_DETAILS = "ApplicationStatusDetails";
         internal static readonly string GSL = "GSL";
+        internal static readonly string STATEMENT_PERIOD = "StatementPeriod";
 
         internal struct Common
         {
@@ -131,6 +132,21 @@
             internal static readonly string TITLE = "title";
             internal static readonly string BACK_BTN_TITLE = "primaryCTA";
             internal static readonly string PROCEED_BTN_TITLE = "secondaryCTA";
+        }
+
+        internal struct StatementPeriod
+        {
+            internal static readonly string TITLE = "title";
+            internal static readonly string PROCESSING_TITLE = "processingRequestTitle";
+            internal static readonly string PROCESSING_MSG = "processingRequestMessage";
+            internal static readonly string TIMEOUT_TITLE = "timeoutTitle";
+            internal static readonly string TIMEOUT_MSG = "timeoutMessage";
+            internal static readonly string BACK_TO_BILLS = "backToBills";
+            internal static readonly string DISCLAIMER = "disclaimer";
+            internal static readonly string REQUEST_TITLE = "iWantToRequestForTitle";
+            internal static readonly string STATEMENT_PERIOD_TITLE = "preferredStatementPeriodTitle";
+            internal static readonly string PAST_3_MONTHS = "past3Months";
+            internal static readonly string PAST_6_MONTHS = "past6Months";
         }
     }
 }

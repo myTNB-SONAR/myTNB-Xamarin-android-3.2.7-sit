@@ -385,7 +385,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 {
                     this.SetIsClicked(true);
                     Intent newIntent = new Intent(this.Activity, typeof(AccountStatementSelectionActivity));
-                    newIntent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
+                    newIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
                     StartActivity(newIntent);
                 }
             }

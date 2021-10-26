@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/rootView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true"
+	android:orientation="vertical">
+	<LinearLayout
+		android:id="@+id/mainView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:isScrollContainer="false"
+		android:orientation="vertical">
+		<include
+			android:id="@+id/toolbar"
+			layout="@layout/toolbar" />
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_weight="1"
+			android:overScrollMode="never"
+			android:scrollbars="none"
+			android:fillViewport="true"
+			android:id="@+id/acctStmntLoadingScrollview"
+			android:layout_height="wrap_content"
+			android:background="@color/background_pale_grey">
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/acctStmntLoadingScrollviewContainer">
+				<FrameLayout
+					android:layout_height="320dp"
+					android:layout_width="match_parent"
+					android:layout_gravity="center">
+					<com.airbnb.lottie.LottieAnimationView
+						android:id="@+id/acctStmntLoadingView"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:layout_gravity="center"
+						app:lottie_fileName="account_statement_loading.json"
+						app:lottie_loop="true" />
+				</FrameLayout>
+				<TextView
+					android:text="PROCESSING_TITLE"
+					android:layout_marginTop="-30dp"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="@color/tunagrey"
+					android:gravity="center"
+					android:textSize="16dp"
+					android:id="@+id/txtAcctStmntLoadingTitle" />
+				<TextView
+					android:text="PROCESSING_MESSAGE"
+					android:layout_marginLeft="16dp"
+					android:layout_marginTop="16dp"
+					android:layout_marginRight="16dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="@color/tunagrey"
+					android:gravity="center"
+					android:textSize="14dp"
+					android:id="@+id/txtAcctStmntLoadingMsg" />
+			</LinearLayout>
+		</ScrollView>
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="16dp"
+			android:paddingLeft="16dp"
+			android:paddingBottom="16dp"
+			android:paddingRight="16dp"
+			android:gravity="center|bottom"
+			android:background="@color/white"
+			android:id="@+id/buttonLayout">
+			<Button
+				android:id="@+id/accountStatementButton"
+				android:text="Account Statement"
+				android:layout_width="match_parent"
+				android:layout_height="48dp"
+				style="@style/LightButton"
+				android:textAllCaps="false" />
+			<Button
+				android:id="@+id/timeOutButton"
+				android:text="Time Out"
+				android:layout_width="match_parent"
+				android:layout_height="48dp"
+				style="@style/DarkButton"
+				android:textAllCaps="false" />
+		</LinearLayout>
+	</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
