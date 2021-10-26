@@ -194,7 +194,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             AccountData accountData = AccountData.Copy(account, true);
             Intent newIntent = new Intent(mainActivity, typeof(AccountStatementSelectionActivity));
-            newIntent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(accountData));
+            newIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
             mainActivity.StartActivity(newIntent);
         }
 
