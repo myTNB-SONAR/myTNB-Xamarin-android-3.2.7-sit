@@ -6957,7 +6957,31 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Bills\AccountStatement\AccountStatementConstants.cs" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Notification_Acct_Stmnt.png">
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_Acct_Stmnt_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_Acct_Stmnt_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_Acct_Stmnt_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_Acct_Stmnt_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_Acct_Stmnt_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Notification_Acct_Stmnt.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Notification_Acct_Stmnt.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -6969,31 +6993,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\Icon_Notification_Acct_Stmnt.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\Icon_Notification_Acct_Stmnt.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_Acct_Stmnt_Notification_Detail.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_Acct_Stmnt_Notification_Detail.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\Banner_Acct_Stmnt_Notification_Detail.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\Banner_Acct_Stmnt_Notification_Detail.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\Banner_Acct_Stmnt_Notification_Detail.png">
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Notification_Acct_Stmnt.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
