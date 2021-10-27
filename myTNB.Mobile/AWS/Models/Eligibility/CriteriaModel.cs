@@ -1,6 +1,6 @@
 ﻿namespace myTNB.Mobile.AWS.Models
 {
-    public class CriteriaModel
+    public class CACriteriaModel
     {
         public string CA { set; get; } = string.Empty;
         public bool IsOwner { set; get; }
@@ -9,5 +9,6 @@
         public bool IsNormalMeter { set; get; }
         public bool IsRenewableEnergy { set; get; }
         public bool IsSMR { set; get; }
+        public string RateCategory { set; get; }
     }
 }

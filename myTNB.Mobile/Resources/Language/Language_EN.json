@@ -2499,6 +2499,27 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "AccountStatement": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "timeout",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "none",
+            "isTimeout": true
+          }
         ]
       }
     ]
@@ -2596,14 +2617,22 @@
     },
     "IsAboutMyBillEnquiryEnabled": true,
     "IsUpdatePersonalDetailsEnquiryEnabled": true,
-    "IsGSLRebateEnabled": true
+    "IsGSLRebateEnabled": true,
+    "AccountStatementTimeout": 5000
   },
   "StatementPeriod": {
-    "title": "View Account Statement",
-    "ctaTitle": "View Account Statement",
-    "iWantToViewTitle": "I want to view:",
+    "title": "Account Statement",
+    "confirm": "Confirm",
+    "preferredStatementPeriodTitle": "Select your preferred statement period to request.",
+    "iWantToRequestForTitle": "I want to request for:",
     "past3Months": "Past 3 months",
-    "past6Months": "Past 6 months"
+    "past6Months": "Past 6 months",
+    "disclaimer": "This may take more than a few seconds but we will notify you and email you a copy if it takes longer than expected.",
+    "processingRequestTitle": "We’re processing your request",
+    "processingRequestMessage": "Thank you for waiting, it may takes a few seconds to process your request.",
+    "timeoutTitle": "Sorry it took longer than expected!",
+    "timeoutMessage": "We will notify you when your account statement is ready to view here, and will email a copy to <b>{0}</b>.",
+    "backToBills": "Back to Bills"
   },
   "AccountStatement": {
     "past6MonthsTitle": "Past 6 Months Statement",
@@ -2737,7 +2766,7 @@
       },
       {
         "title": "How can I claim for a Guaranteed Service Level (GSL) rebate?",
-        "description": "We will guide you thoroughly on how to claim GSL rebates by following our simple steps. Before you start, please ensure that you have prepared all documents required for our reference as below:<br><br>Documents Required:<br>1. Identity Card / Passport<br>2. Copy of Tenancy Agreement (For Non- Account Owner)",
+        "description": "We will guide you thoroughly on how to claim GSL rebates by following our simple steps. Before you start, please ensure that you have prepared all documents required for our reference as below:<br><br>Documents Required:<br>1. Identity Card / Passport",
         "expandCollapseList": [
           {
             "title": "Step 1",

@@ -1319,11 +1319,11 @@ namespace myTNB_Android.Src.Database.Model
         public static void SetCAListForEligibility()
         {
             List<CustomerBillingAccount> allAccountList = List();
-            List<CriteriaModel> criteriaModelList = new List<CriteriaModel>();
+            List<CACriteriaModel> criteriaModelList = new List<CACriteriaModel>();
 
             allAccountList.ForEach(account =>
             {
-                CriteriaModel criteriaModel = new CriteriaModel();
+                CACriteriaModel criteriaModel = new CACriteriaModel();
                 criteriaModel.CA = account.AccNum;
                 criteriaModel.IsOwner = account.isOwned;
                 criteriaModel.IsSmartMeter = account.IsSmartMeter;

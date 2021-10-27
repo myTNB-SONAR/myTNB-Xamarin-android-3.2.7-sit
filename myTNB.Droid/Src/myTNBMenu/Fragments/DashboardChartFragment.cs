@@ -5237,7 +5237,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             try
             {
                 ShowProgressDialog();
-                bool isEligible = DBRUtility.Instance.IsAccountDBREligible;
+                bool isEligible = DBRUtility.Instance.IsAccountEligible;
                 if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                     , EligibilitySessionCache.FeatureProperty.TargetGroup))
                 {
@@ -5285,7 +5285,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
                             ? selectedAccount.IsOwner
-                            : DBRUtility.Instance.IsCADBREligible(dbrAccount.AccountNum);
+                            : DBRUtility.Instance.IsCAEligible(dbrAccount.AccountNum);
 
                         intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
                         intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
@@ -5312,7 +5312,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
             List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                         , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                ? DBRUtility.Instance.GetDBRCAs()
+                ? DBRUtility.Instance.GetCAList()
                 : AccountTypeCache.Instance.DBREligibleCAs;
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             CustomerBillingAccount account = new CustomerBillingAccount();

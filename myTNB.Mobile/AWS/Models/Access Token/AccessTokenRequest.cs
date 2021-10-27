@@ -4,7 +4,6 @@ namespace myTNB.Mobile.AWS.Models
 {
     public class AccessTokenRequest
     {
-        //public UserInfoModel UserInfo { set; get; }
         public string Channel { set; get; }
         public string UserId { set; get; }
     }

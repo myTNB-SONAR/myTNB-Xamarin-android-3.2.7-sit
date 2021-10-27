@@ -28,7 +28,7 @@ namespace myTNB.Mobile
         /// Returns the list of eligible CAs in the account
         /// </summary>
         /// <returns></returns>
-        public List<string> GetDBRCAs()
+        public List<string> GetCAList()
         {
             List<string> caList = new List<string>();
             try
@@ -53,7 +53,7 @@ namespace myTNB.Mobile
         /// </summary>
         /// <param name="ca"></param>
         /// <returns></returns>
-        public bool IsCADBREligible(string ca)
+        public bool IsCAEligible(string ca)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace myTNB.Mobile
             return false;
         }
 
-        public bool IsAccountDBREligible
+        public bool IsAccountEligible
         {
             get
             {
@@ -81,7 +81,7 @@ namespace myTNB.Mobile
                 {
                     if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup))
                     {
-                        if (GetDBRCAs() is List<string> caList
+                        if (GetCAList() is List<string> caList
                             && caList != null
                             && caList.Count > 0
                             && EligibilitySessionCache.Instance.CAList != null
@@ -117,7 +117,7 @@ namespace myTNB.Mobile
         /// <summary>
         /// Determines if Home DBR Card should be Displayed
         /// </summary>
-        public bool ShouldShowHomeDBRCard
+        public bool ShouldShowHomeCard
         {
             get
             {
@@ -132,7 +132,7 @@ namespace myTNB.Mobile
                     }
                     else
                     {
-                        return IsAccountDBREligible;
+                        return IsAccountEligible;
                     }
                 }
                 catch (Exception e)
@@ -148,7 +148,7 @@ namespace myTNB.Mobile
         /// </summary>
         /// <param name="caList">list of CA for payment</param>
         /// <returns></returns>
-        public bool ShouldShowDBRCard(List<string> caList = null)
+        public bool ShouldShowCard(List<string> caList = null)
         {
             if (LanguageManager.Instance.GetServiceConfig("ServiceConfiguration", "ForceHideDBRBanner") is JToken config
                 && config != null
@@ -157,7 +157,7 @@ namespace myTNB.Mobile
             {
                 return false;
             }
-            bool ismyTNBAccountEligible = IsAccountDBREligible;
+            bool ismyTNBAccountEligible = IsAccountEligible;
             if (EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.DBR) is DBRModel dbrList
                 && dbrList != null
                 && dbrList.ContractAccounts != null
@@ -192,9 +192,9 @@ namespace myTNB.Mobile
         /// </summary>
         /// <param name="ca">For single CA Use</param>
         /// <returns></returns>
-        public bool ShouldShowDBRCard(string ca)
+        public bool ShouldShowCard(string ca)
         {
-            return ShouldShowDBRCard(new List<string> { ca });
+            return ShouldShowCard(new List<string> { ca });
         }
 
         /// <summary>

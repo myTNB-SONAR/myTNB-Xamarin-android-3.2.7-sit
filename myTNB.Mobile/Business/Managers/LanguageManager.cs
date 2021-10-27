@@ -268,12 +268,34 @@ namespace myTNB
             return false;
         }
 
+        public int GetConfigTimeout(TogglePropertyEnum toggleProperty)
+        {
+            try
+            {
+                JObject jsonObj = JObject.Parse(JSONLang);
+                if (jsonObj != null
+                    && jsonObj["ServiceConfiguration"] is JToken pageJToken
+                    && pageJToken != null
+                    && pageJToken[toggleProperty.ToString()] is JToken serviceToken
+                    && serviceToken != null)
+                {
+                    return serviceToken.ToObject<int>();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] GetParsedJson Error: ", e.Message);
+            }
+            return 0;
+        }
+
         public enum TogglePropertyEnum
         {
             ForceHideDBRBanner,
             IsAboutMyBillEnquiryEnabled,
             IsUpdatePersonalDetailsEnquiryEnabled,
-            IsGSLRebateEnabled
+            IsGSLRebateEnabled,
+            AccountStatementTimeout
         }
 
         public Dictionary<string, List<T>> GetSelectorsByPage<T>(string pageName) where T : new()

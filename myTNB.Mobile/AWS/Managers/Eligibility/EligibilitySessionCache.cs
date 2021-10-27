@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.Extensions;
 
 namespace myTNB.Mobile
 {
@@ -41,7 +42,7 @@ namespace myTNB.Mobile
         private GetEligibilityResponse Data { set; get; }
 
         //This will hold Android's and iOS' CA List
-        internal List<CriteriaModel> CAList { set; get; }
+        internal List<CACriteriaModel> CAList { set; get; }
 
         /// <summary>
         /// Sets the Session Data for eligibility
@@ -55,7 +56,7 @@ namespace myTNB.Mobile
             }
         }
 
-        public void SetCAList(List<CriteriaModel> caList)
+        public void SetCAList(List<CACriteriaModel> caList)
         {
             this.CAList = caList;
         }
@@ -128,15 +129,142 @@ namespace myTNB.Mobile
             }
             catch (Exception e)
             {
-                Debug.WriteLine("[DEBUG][Encrypt]GetFeatureContent Exception: " + e.Message);
+                Debug.WriteLine("[DEBUG] GetFeatureContent Exception: " + e.Message);
             }
             return customClass;
+        }
+
+        public EligibilityCriteriaModel GetFeatureCriteria(Features feature)
+        {
+            EligibilityCriteriaModel criteria = null;
+            try
+            {
+                string featureString = feature.ToString();
+                if (Data != null
+                    && Data.StatusDetail != null
+                    && Data.StatusDetail.IsSuccess
+                    && Data.Content != null
+                    && Data.Content.EligibileFeatures is EligibileFeaturesModel eligibleFeatures
+                    && eligibleFeatures != null
+                    && eligibleFeatures.EligibleFeatureDetails is List<EligibileFeatureDetailsModel> eligibleFeaturesList
+                    && eligibleFeaturesList != null
+                    && eligibleFeaturesList.Count > 0
+                    && eligibleFeaturesList.FindIndex(x => x.Feature == featureString) is int index
+                    && index > -1)
+                {
+                    return eligibleFeaturesList[index].Criteria;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] GetFeatureCriteria Exception: " + e.Message);
+            }
+            return criteria;
         }
 
         public void Clear()
         {
             Data = null;
             CAList = null;
+        }
+
+        public bool IsEligibleByCriteria(Features feature
+            , string ca = "")
+        {
+            try
+            {
+                EligibilityCriteriaModel criteria = GetFeatureCriteria(feature);
+                if (criteria == null)
+                {
+                    return true;
+                }
+                if (ca.IsValid()
+                    && CAList != null
+                    && CAList.Count > 0
+                    && CAList.FindIndex(x => x.CA == ca) is int index)
+                {
+                    if (index > -1)
+                    {
+                        CACriteriaModel caObj = CAList[index];
+                        return IsCriteriaEligible(criteria, caObj);
+                    }
+                }
+                else if (CAList != null
+                    && CAList.Count > 0)
+                {
+                    for (int i = 0; i < CAList.Count; i++)
+                    {
+                        CACriteriaModel caObj = CAList[i];
+                        if (IsCriteriaEligible(criteria, caObj))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] IsCriteriaEligible Error: " + e.Message);
+            }
+            return false;
+        }
+
+        private bool IsCriteriaEligible(EligibilityCriteriaModel eligibilityCriteria
+            , CACriteriaModel caCriteria)
+        {
+            bool isOwnerTypeEligible = IsEligibleOwnerType(eligibilityCriteria, caCriteria);
+            bool isCATypeEligible = IsEligibleCAType(eligibilityCriteria, caCriteria);
+            bool isTarrifTypeEligible = IsEligibleTariffType(eligibilityCriteria, caCriteria);
+
+            return isOwnerTypeEligible
+                && isCATypeEligible
+                && isTarrifTypeEligible;
+        }
+
+        private bool IsEligibleOwnerType(EligibilityCriteriaModel eligibilityCriteria
+            , CACriteriaModel caCriteria)
+        {
+            if (eligibilityCriteria.OwnerType == null
+                || eligibilityCriteria.OwnerType.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return caCriteria.IsOwner == eligibilityCriteria.IsOwner
+                    || caCriteria.IsOwner == eligibilityCriteria.IsNonOwner;
+            }
+        }
+
+        private bool IsEligibleCAType(EligibilityCriteriaModel eligibilityCriteria
+            , CACriteriaModel caCriteria)
+        {
+            if (eligibilityCriteria.CaType == null
+                || eligibilityCriteria.CaType.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return caCriteria.IsSmartMeter == eligibilityCriteria.IsSmartMeterCA
+                    || caCriteria.IsNormalMeter == eligibilityCriteria.IsNormalCA
+                    || caCriteria.IsRenewableEnergy == eligibilityCriteria.IsRenewableEnergyCA
+                    || caCriteria.IsSMR == eligibilityCriteria.IsSelfMeterReadingCA;
+            }
+        }
+
+        private bool IsEligibleTariffType(EligibilityCriteriaModel eligibilityCriteria
+            , CACriteriaModel caCriteria)
+        {
+            if (eligibilityCriteria.TariffType == null
+                || eligibilityCriteria.TariffType.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return eligibilityCriteria.TariffType.Contains(caCriteria.RateCategory);
+            }
         }
     }
 }

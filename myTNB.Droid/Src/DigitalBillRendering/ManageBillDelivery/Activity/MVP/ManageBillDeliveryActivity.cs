@@ -906,7 +906,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         && _billRenderingResponse.StatusDetail.IsSuccess
                         && _billRenderingResponse.Content != null)
                     {
-                        _isOwner = DBRUtility.Instance.IsCADBREligible(selectedAccountNumber);
+                        _isOwner = DBRUtility.Instance.IsCAEligible(selectedAccountNumber);
                         _accountNumber = selectedAccountNumber;
                         SetToolBarTitle(GetLabelByLanguage(_isOwner ? "title" : "dbrViewBillDelivery"));
                         GetDeliveryDisplay(_billRenderingResponse);
@@ -1043,7 +1043,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                 , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                    ? DBRUtility.Instance.GetDBRCAs()
+                    ? DBRUtility.Instance.GetCAList()
                     : AccountTypeCache.Instance.DBREligibleCAs;
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             List<CustomerBillingAccount> eligibleDBRAccountList = new List<CustomerBillingAccount>();
