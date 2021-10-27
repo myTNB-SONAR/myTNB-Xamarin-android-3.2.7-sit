@@ -54,6 +54,13 @@ namespace myTNB
             get;
         } = string.Empty;
 
+        [JsonProperty("isTimeout")]
+        public bool IsTimeout
+        {
+            set;
+            get;
+        } = false;
+
         [JsonIgnore]
         public StatusDisplayType DisplayType
         {

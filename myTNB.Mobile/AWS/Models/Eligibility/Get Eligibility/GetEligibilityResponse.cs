@@ -69,5 +69,54 @@ namespace myTNB.Mobile.AWS.Models
         public List<string> TariffType { set; get; }
         [JsonProperty("caType")]
         public List<string> CaType { set; get; }
+
+        [JsonIgnore]
+        internal bool IsOwner
+        {
+            get
+            {
+                return OwnerType.Contains("Owner");
+            }
+        }
+        [JsonIgnore]
+        internal bool IsNonOwner
+        {
+            get
+            {
+                return OwnerType.Contains("NonOwner");
+            }
+        }
+        [JsonIgnore]
+        internal bool IsSmartMeterCA
+        {
+            get
+            {
+                return CaType.Contains("SmartMeter");
+            }
+        }
+        [JsonIgnore]
+        internal bool IsNormalCA
+        {
+            get
+            {
+                return CaType.Contains("Normal");
+            }
+        }
+        [JsonIgnore]
+        internal bool IsRenewableEnergyCA
+        {
+            get
+            {
+                return CaType.Contains("RenewableEnergy");
+            }
+        }
+        [JsonIgnore]
+        internal bool IsSelfMeterReadingCA
+        {
+            get
+            {
+                return CaType.Contains("SelfMeterReading");
+            }
+        }
     }
 }

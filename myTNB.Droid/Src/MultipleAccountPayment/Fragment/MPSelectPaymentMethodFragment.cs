@@ -187,12 +187,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         Activity.RunOnUiThread(async () =>
                         {
-                            if (DBRUtility.Instance.ShouldShowHomeDBRCard)
+                            if (DBRUtility.Instance.ShouldShowHomeCard)
                             {
                                 List<string> dbrCAForPaymentList = new List<string>();
                                 List<string> dbrCAList = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                                         , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                                    ? DBRUtility.Instance.GetDBRCAs()
+                                    ? DBRUtility.Instance.GetCAList()
                                     : AccountTypeCache.Instance.DBREligibleCAs;
                                 for (int i = 0; i < dbrCAList.Count; i++)
                                 {
