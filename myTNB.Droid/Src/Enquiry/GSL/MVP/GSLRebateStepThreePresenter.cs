@@ -25,7 +25,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         {
             OnInit();
             this.view?.UpdateButtonState(false);
-            this.view?.SetUpViews();
         }
 
         private void OnInit()
