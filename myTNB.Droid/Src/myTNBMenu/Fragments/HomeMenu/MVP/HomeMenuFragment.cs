@@ -501,7 +501,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
-                IsAccountDBREligible = DBRUtility.Instance.IsAccountDBREligible;
+                IsAccountDBREligible = DBRUtility.Instance.IsAccountEligible;
                 summaryNestScrollView.SmoothScrollingEnabled = true;
                 isSearchClose = true;
                 isFirstInitiate = true;
@@ -647,7 +647,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [OnClick(Resource.Id.img_discover_digital_bill)]
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
-            if (DBRUtility.Instance.IsAccountDBREligible)
+            if (DBRUtility.Instance.IsAccountEligible)
             {
                 DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Home_Banner);
                 GetBillRenderingAsync();
@@ -659,7 +659,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 ShowProgressDialog();
                 string caNumber = string.Empty;
-                if (DBRUtility.Instance.IsAccountDBREligible
+                if (DBRUtility.Instance.IsAccountEligible
                    && !EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                        , EligibilitySessionCache.FeatureProperty.TargetGroup))
                 {
@@ -683,7 +683,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         errorPopup.Show();
                         return;
                     }
-                    _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount.AccNum);
+                    _isOwner = DBRUtility.Instance.IsCAEligible(dbrAccount.AccNum);
                     caNumber = dbrAccount.AccNum;
                 }
 
@@ -743,7 +743,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
             List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                         , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                ? DBRUtility.Instance.GetDBRCAs()
+                ? DBRUtility.Instance.GetCAList()
                 : AccountTypeCache.Instance.DBREligibleCAs;
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             CustomerBillingAccount account = new CustomerBillingAccount();
@@ -1221,7 +1221,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
                             bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
 
-                            if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeDBRCard && GetHomeTutorialCallState())
+                            if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && GetHomeTutorialCallState())
                             {
                                 ShowMarketingTooltip();
                                 UserSessions.SaveDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity), true);

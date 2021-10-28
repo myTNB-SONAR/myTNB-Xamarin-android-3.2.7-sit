@@ -422,7 +422,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 SetDynatraceCTATags();
                 _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
                     ? selectedAccountData.IsOwner
-                    : DBRUtility.Instance.IsCADBREligible(selectedAccountData.AccountNum);
+                    : DBRUtility.Instance.IsCAEligible(selectedAccountData.AccountNum);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
                 intent.PutExtra("accountNumber", selectedAccountData.AccountNum);

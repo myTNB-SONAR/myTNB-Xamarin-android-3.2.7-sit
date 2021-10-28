@@ -2499,6 +2499,27 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "AccountStatement": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "timeout",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "none",
+            "isTimeout": true
+          }
         ]
       }
     ]
@@ -2596,7 +2617,8 @@
     },
     "IsAboutMyBillEnquiryEnabled": true,
     "IsUpdatePersonalDetailsEnquiryEnabled": true,
-    "IsGSLRebateEnabled": true
+    "IsGSLRebateEnabled": true,
+    "AccountStatementTimeout": 5000
   },
   "StatementPeriod": {
     "title": "Account Statement",
@@ -2609,7 +2631,7 @@
     "processingRequestTitle": "We’re processing your request",
     "processingRequestMessage": "Thank you for waiting, it may takes a few seconds to process your request.",
     "timeoutTitle": "Sorry it took longer than expected!",
-    "timeoutMessage": "We will notify you when your account statement is ready to view here, and will email a copy to {0}.",
+    "timeoutMessage": "We will notify you when your account statement is ready to view here, and will email a copy to <b>{0}</b>.",
     "backToBills": "Back to Bills"
   },
   "AccountStatement": {
@@ -2744,7 +2766,7 @@
       },
       {
         "title": "How can I claim for a Guaranteed Service Level (GSL) rebate?",
-        "description": "We will guide you thoroughly on how to claim GSL rebates by following our simple steps. Before you start, please ensure that you have prepared all documents required for our reference as below:<br><br>Documents Required:<br>1. Identity Card / Passport<br>2. Copy of Tenancy Agreement (For Non- Account Owner)",
+        "description": "We will guide you thoroughly on how to claim GSL rebates by following our simple steps. Before you start, please ensure that you have prepared all documents required for our reference as below:<br><br>Documents Required:<br>1. Identity Card / Passport",
         "expandCollapseList": [
           {
             "title": "Step 1",

@@ -594,7 +594,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     {
                         GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                         AccountData dbrAccount = selectedAccount;
-                        bool isEligible = DBRUtility.Instance.IsAccountDBREligible;
+                        bool isEligible = DBRUtility.Instance.IsAccountEligible;
                         if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                             , EligibilitySessionCache.FeatureProperty.TargetGroup))
                         {
@@ -632,7 +632,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                 , AccessTokenCache.Instance.GetAccessToken(this.Activity));
                             _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
                                 ? selectedAccount.IsOwner
-                                : DBRUtility.Instance.IsCADBREligible(dbrAccount.AccountNum);
+                                : DBRUtility.Instance.IsCAEligible(dbrAccount.AccountNum);
 
                             if (billRenderingResponse != null
                                 && billRenderingResponse.StatusDetail != null
@@ -705,7 +705,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         }
         public bool IsCADBREligible()
         {
-            return DBRUtility.Instance.IsCADBREligible(mSelectedAccountData.AccountNum);
+            return DBRUtility.Instance.IsCAEligible(mSelectedAccountData.AccountNum);
         }
 
 
