@@ -153,7 +153,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
             }
             else if (picker == GSLIncidentDateTimePicker.RESTORATION_TIME)
             {
-                if (txtRestorationDate.Text.IsValid())
+                if (txtIncidentDate.Text.IsValid() &&
+                    txtIncidentTime.Text.IsValid() &&
+                    txtRestorationDate.Text.IsValid())
                 {
                     activePicker = picker;
                     ShowTimePicker();
@@ -167,7 +169,18 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
             {
                 Calendar calendar = Calendar.GetInstance(Locale.Default);
                 var dateTimeNow = DateTime.Now;
+
                 DatePickerDialog datePickerDialog = new DatePickerDialog(this.mActivity, AlertDialog.ThemeHoloLight, this, dateTimeNow.Year, dateTimeNow.Month - 1, dateTimeNow.Day);
+
+                if (activePicker == GSLIncidentDateTimePicker.RESTORATION_DATE)
+                {
+                    Calendar minCalendar = Calendar.GetInstance(Locale.Default);
+                    minCalendar.Set(CalendarField.Year, incidentDate.Year);
+                    minCalendar.Set(CalendarField.Month, incidentDate.Month - 1);
+                    minCalendar.Set(CalendarField.DayOfMonth, incidentDate.Day);
+
+                    datePickerDialog.DatePicker.MinDate = minCalendar.TimeInMillis;
+                }
                 datePickerDialog.DatePicker.MaxDate = calendar.TimeInMillis;
                 datePickerDialog.Show();
             }
@@ -185,7 +198,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                 int hour = calendar.Get(CalendarField.HourOfDay);
                 int minute = calendar.Get(CalendarField.Minute);
                 TimePickerDialog timePickerDialog = new TimePickerDialog(this.mActivity, AlertDialog.ThemeHoloLight, this, hour, minute, false);
-
                 timePickerDialog.Show();
             }
             catch (Exception e)
@@ -238,15 +250,57 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                 switch (activePicker)
                 {
                     case GSLIncidentDateTimePicker.INCIDENT_TIME:
-                        incidentDate = incidentDate.Date + selectedTime;
-                        txtIncidentTime.Text = incidentDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
-                        selectedDateTimeAction?.Invoke(activePicker, incidentDate, itemIndex);
-                        ResetRestorationDateTime();
+                        {
+                            var dateTimeNow = DateTime.Now;
+                            if (incidentDate.Year == dateTimeNow.Year
+                                && incidentDate.Month == dateTimeNow.Month
+                                && incidentDate.Day == dateTimeNow.Day)
+                            {
+                                TimeSpan maxTime = new TimeSpan(dateTimeNow.Hour, dateTimeNow.Minute, 0);
+                                int compare = selectedTime.CompareTo(maxTime);
+                                if (compare > 0)
+                                {
+                                    selectedTime = maxTime;
+                                }
+                            }
+                            incidentDate = incidentDate.Date + selectedTime;
+                            txtIncidentTime.Text = incidentDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
+                            selectedDateTimeAction?.Invoke(activePicker, incidentDate, itemIndex);
+                            ResetRestorationDateTime();
+                        }
                         break;
                     case GSLIncidentDateTimePicker.RESTORATION_TIME:
-                        restorationDate = restorationDate.Date + selectedTime;
-                        txtRestorationTime.Text = restorationDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
-                        selectedDateTimeAction?.Invoke(activePicker, restorationDate, itemIndex);
+                        {
+                            var dateTimeNow = DateTime.Now;
+                            if (restorationDate.Year == dateTimeNow.Year
+                               && restorationDate.Month == dateTimeNow.Month
+                               && restorationDate.Day == dateTimeNow.Day)
+                            {
+                                TimeSpan minTime = new TimeSpan(incidentDate.Hour, incidentDate.Minute, 0);
+                                TimeSpan maxTime = new TimeSpan(dateTimeNow.Hour, dateTimeNow.Minute, 0);
+                                int compareMin = selectedTime.CompareTo(minTime);
+                                int compareMax = selectedTime.CompareTo(maxTime);
+                                if (compareMin < 0)
+                                {
+                                    selectedTime = minTime;
+                                }
+                                else if (compareMax > 0)
+                                {
+                                    selectedTime = maxTime;
+                                }
+                            }
+                            else
+                            {
+                                TimeSpan minTime = new TimeSpan(incidentDate.Hour, incidentDate.Minute, 0);
+                                if (hourOfDay < minTime.Hours || (hourOfDay == minTime.Hours && minute < incidentDate.Minute))
+                                {
+                                    selectedTime = minTime;
+                                }
+                            }
+                            restorationDate = restorationDate.Date + selectedTime;
+                            txtRestorationTime.Text = restorationDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
+                            selectedDateTimeAction?.Invoke(activePicker, restorationDate, itemIndex);
+                        }
                         break;
                     default:
                         break;
@@ -270,10 +324,24 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
 
         private void ResetRestorationDateTime()
         {
-            restorationDate = new DateTime();
-            txtRestorationDate.Text = string.Empty;
-            txtRestorationTime.Text = string.Empty;
-            resetDateTimeAction?.Invoke(GSLIncidentDateTimePicker.RESTORATION_DATE, itemIndex);
+            var dateTimeNow = DateTime.Now;
+            if (incidentDate.Year == dateTimeNow.Year
+                && incidentDate.Month == dateTimeNow.Month
+                && incidentDate.Day == dateTimeNow.Day)
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
+                restorationDate = incidentDate;
+                txtRestorationDate.Text = restorationDate.ToString(GSLRebateConstants.DATE_FORMAT, dateCultureInfo);
+                txtRestorationTime.Text = string.Empty;
+                selectedDateTimeAction?.Invoke(activePicker, restorationDate, itemIndex);
+            }
+            else
+            {
+                restorationDate = new DateTime();
+                txtRestorationDate.Text = string.Empty;
+                txtRestorationTime.Text = string.Empty;
+                resetDateTimeAction?.Invoke(GSLIncidentDateTimePicker.RESTORATION_DATE, itemIndex);
+            }
         }
     }
 }

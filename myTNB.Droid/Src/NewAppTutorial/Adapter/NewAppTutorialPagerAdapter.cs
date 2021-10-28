@@ -2563,7 +2563,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 innerTopLayout.RequestLayout();
 
             }
-            else if (DBRUtility.Instance.IsAccountDBREligible && this.mContext is ManageBillDeliveryActivity)
+            else if (DBRUtility.Instance.IsAccountEligible && this.mContext is ManageBillDeliveryActivity)
             {
                 int middleHeight = 0;
                 int topHeight = 0;

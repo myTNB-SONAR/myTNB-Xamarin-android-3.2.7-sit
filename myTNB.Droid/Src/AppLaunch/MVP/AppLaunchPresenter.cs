@@ -254,9 +254,24 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         {
                                             CustomerBillingAccount.RemoveSelected();
                                             CustomerBillingAccount.MakeFirstAsSelected();
+                                            CustomerBillingAccount.SetCAListForEligibility();
                                         }
                                         BillHistoryEntity.RemoveAll();
                                         PaymentHistoryEntity.RemoveAll();
+
+                                        // Reset Login count for AppUpdate to show DBR Popup for eligible CA
+                                        try
+                                        {
+                                            if (!UserSessions.HasUpdateSkipped(this.mSharedPref))
+                                            {
+                                                UserSessions.SaveDBRPopUpFlag(this.mSharedPref, false);
+                                                _ = UserLoginCountEntity.UpdateLoginCountWithEmail(UserEntity.GetActive().Email, 1);
+                                            }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
 
                                         if (!UserSessions.HasCleanUpdateReceiveCache(this.mSharedPref))
                                         {

@@ -15,6 +15,7 @@ namespace myTNB.Mobile
         //String Constants
         internal const string EMPTY = "empty";
         internal const string DEFAULT = "default";
+        internal const string TIMEOUT = "timeout";
         internal const string EMPTY_FILTER = "emptyFilter";
         internal const string SUCCESS_CODE = "7200";
 

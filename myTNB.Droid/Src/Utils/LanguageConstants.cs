@@ -26,6 +26,8 @@
         {
             internal static readonly string RWDS_UNAVAILABLE_TITLE = "rewardsUnavailableTitle";
             internal static readonly string RWDS_UNAVAILABLE_MSG = "rewardsUnavailableMsg";
+            internal static readonly string INVALID_FULLNAME = "invalid_fullname";
+            internal static readonly string INVALID_EMAIL = "invalid_email";
         }
 
         internal struct DashboardHome
@@ -48,7 +50,7 @@
             internal static readonly string OUTSTANDING_CHARGES_V2 = "outstandingChargesV2";
             internal static readonly string BILL_THIS_MONTH = "billThisMonth";
             internal static readonly string BILL_THIS_MONTH_V2 = "billThisMonthV2";
-
+            internal static readonly string ROUNDING_ADJUSTMENT = "roundingAdjustment";
         }
 
         internal struct BillFilter

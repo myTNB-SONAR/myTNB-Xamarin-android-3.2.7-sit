@@ -205,7 +205,7 @@ namespace myTNB_Android.Src.Database.Model
             var db = DBHelper.GetSQLiteConnection();
             var newRecord = new UserLoginCountEntity()
             {
-                
+
                 Email = user.Email,
                 LoginCount = userLoginCount,
                 DateCreated = user.DateCreated ?? "",
@@ -221,9 +221,24 @@ namespace myTNB_Android.Src.Database.Model
             return 0;
         }
 
+        public static int UpdateLoginCountWithEmail(string email, int userLoginCount)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                return db.Execute("UPDATE UserLoginCountEntity SET LoginCount = ? WHERE Email = ?", userLoginCount, email);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return 0;
+        }
+
         public static int GetLoginCount(string email)
         {
-            int count =0;
+            int count = 0;
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
@@ -231,7 +246,7 @@ namespace myTNB_Android.Src.Database.Model
 
                 count = userLoginCountEntity.Count > 0 ? userLoginCountEntity.Count : 0;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }

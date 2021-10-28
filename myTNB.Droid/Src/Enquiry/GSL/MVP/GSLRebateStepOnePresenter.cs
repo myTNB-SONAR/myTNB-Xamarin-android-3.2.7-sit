@@ -68,6 +68,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
                             return itemFilter.selected;
                         });
                         this.rebateModel.RebateTypeKey = selectedRebateType.key;
+                        this.rebateModel.NeedsIncident = selectedRebateType.needsIncident;
                         this.view.UpdateSelectedRebateType(selectedRebateType);
                     }
                 }
@@ -87,7 +88,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
         private void GetRebateTypeFromSelector()
         {
-            var selector = LanguageManager.Instance.GetSelectorsByPage<SelectorModel>(LanguageConstants.SUBMIT_ENQUIRY);
+            Dictionary<string, List<RebateTypeModel>> selector = LanguageManager.Instance.GetSelectorsByPage<RebateTypeModel>(LanguageConstants.SUBMIT_ENQUIRY);
             if (selector.ContainsKey(LanguageConstants.SubmitEnquiry.REBATE_TYPE))
             {
                 var itemList = selector[LanguageConstants.SubmitEnquiry.REBATE_TYPE];
@@ -98,12 +99,14 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
                         Item item = new Item
                         {
                             key = filter.Key,
-                            title = filter.Description
+                            title = filter.Description,
+                            needsIncident = filter.NeedsIncident
                         };
                         rebateTypeList.Add(item);
                     });
                     rebateTypeList[0].selected = true;
                     this.rebateModel.RebateTypeKey = rebateTypeList[0].key;
+                    this.rebateModel.NeedsIncident = rebateTypeList[0].needsIncident;
                 }
             }
         }
@@ -121,7 +124,14 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public void SetIsOwner(bool isOwner)
         {
             this.rebateModel.IsOwner = isOwner;
-            this.view?.UpdateButtonState(isOwner);
+            if (!isOwner)
+            {
+                this.view?.PrepopulateTenantFields();
+            }
+            else
+            {
+                this.view?.UpdateButtonState(true);
+            }
         }
 
         public void SetAccountNumber(string accountNum)

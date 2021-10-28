@@ -85,6 +85,22 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             return this.Window.DecorView.RootView.IsShown;
         }
 
+        public override bool CameraPermissionRequired()
+        {
+            return true;
+        }
+
+        public override bool StoragePermissionRequired()
+        {
+            return true;
+        }
+
+        public override void Ready()
+        {
+            FileUtils.CreateDirectory(this, FileUtils.TEMP_IMAGE_FOLDER);
+            FileUtils.CreateDirectory(this, FileUtils.PDF_FOLDER);
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -126,7 +142,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             TextViewUtils.SetTextSize12(gslStepThreePageTitle);
             TextViewUtils.SetTextSize16(gslStepThreebtnNext, txtStepThreeUploadTitle); ;
 
-            var stepTitleString = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_STEP_TITLE), 3, 4);
+            int stepNo = this.presenter.GetGSLRebateModel().NeedsIncident ? 3 : 2;
+            int stepTotalNo = this.presenter.GetGSLRebateModel().NeedsIncident ? 4 : 3;
+
+            var stepTitleString = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_STEP_TITLE), stepNo, stepTotalNo);
             gslStepThreePageTitle.Text = stepTitleString;
 
             txtStepThreeUploadTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_UPLOAD_TITLE);
@@ -155,7 +174,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             tenancyAdapter.AddClickEvent += delegate { AdapterAddClickEvent(GSLDocumentType.TENANCY_AGREEMENT); };
             tenancyAdapter.RemoveClickEvent += AdapterRemoveClickEventForTenancy;
 
-            gslStepThreeUploadViewList.AddView(tenancyAgreementItem);
+            //hide Tenancy Agreement
+            //gslStepThreeUploadViewList.AddView(tenancyAgreementItem);
 
             ownerICItem = new UploadDocumentItemListComponent(this);
             ownerICItem.SetUploadDocumentLabel(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.UPLOAD_OWNER_IC));

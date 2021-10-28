@@ -25,4 +25,14 @@ namespace myTNB
         [JsonProperty("Type")]
         public string Type { set; get; } = string.Empty;
     }
+
+    public class RebateTypeModel
+    {
+        [JsonProperty("key")]
+        public string Key { set; get; }
+        [JsonProperty("description")]
+        public string Description { set; get; }
+        [JsonProperty("needsIncident")]
+        public bool NeedsIncident { set; get; }
+    }
 }

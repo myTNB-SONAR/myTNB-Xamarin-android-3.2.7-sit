@@ -27,7 +27,7 @@ namespace myTNB.Mobile
         /// Gets all CAs eligible for Bill Redesign
         /// </summary>
         /// <returns></returns>
-        public List<string> GetCAs()
+        public List<string> GetCAList()
         {
             List<string> caList = new List<string>();
             try
@@ -47,21 +47,34 @@ namespace myTNB.Mobile
             return caList;
         }
 
-
-        /// <summary>
-        /// Checks if myTNB Account is Bill Redesign Eligible
-        /// </summary>
         public bool IsAccountEligible
         {
             get
             {
-                if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.BR, FeatureProperty.Enabled))
+                if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.Enabled))
                 {
-                    if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.BR, FeatureProperty.TargetGroup))
+                    if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup))
                     {
-                        return GetCAs() is List<string> caList
+                        if (GetCAList() is List<string> caList
                             && caList != null
-                            && caList.Count > 0;
+                            && caList.Count > 0
+                            && EligibilitySessionCache.Instance.CAList != null
+                            && EligibilitySessionCache.Instance.CAList.Count > 0)
+                        {
+                            for (int i = 0; i < caList.Count; i++)
+                            {
+                                int index = EligibilitySessionCache.Instance.CAList.FindIndex(x => x.CA == caList[i]);
+                                if (index > -1)
+                                {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                     else
                     {

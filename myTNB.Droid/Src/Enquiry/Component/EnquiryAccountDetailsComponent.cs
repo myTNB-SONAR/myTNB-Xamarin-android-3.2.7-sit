@@ -171,84 +171,143 @@ namespace myTNB_Android.Src.Enquiry.Component
         {
             if (type == EnquiryAccountDetailType.FULL_NAME)
             {
-                if (!txtEnquiryAcctDetailsFullName.Text.IsValid())
-                {
-                    ShowEmptyError(type);
-                }
-                else
-                {
-                    ClearErrors(type);
-                }
+                _ = ValidateFullNameField();
             }
             else if (type == EnquiryAccountDetailType.EMAIL_ADDRESS)
             {
-                if (!txtEnquiryAcctDetailsEmail.Text.IsValid())
-                {
-                    ShowEmptyError(type);
-                }
-                else
-                {
-                    ClearErrors(type);
-                }
+                _ = ValidateEmailField();
             }
             else if (type == EnquiryAccountDetailType.MOBILE_NUMBER)
             {
-                if (mobileNumberInputComponent.IsTextClear())
-                {
-                    mobileNumberInputComponent.RaiseError(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.MOBILE_ERROR));
-                }
-                else
-                {
-                    mobileNumberInputComponent.ClearError();
-                }
+                _ = ValidateMobileNumField();
             }
             this.CheckRequiredFieldsAction?.Invoke(FieldsAreValid());
         }
 
         public void ValidateAllFields()
         {
-            if (!txtEnquiryAcctDetailsFullName.Text.IsValid())
+            bool fullNameIsValid = ValidateFullNameField();
+
+            bool emailIsValid = ValidateEmailField();
+
+            bool mobileNumIsValid = ValidateMobileNumField();
+
+            this.CheckRequiredFieldsAction?.Invoke(fullNameIsValid && emailIsValid && mobileNumIsValid);
+        }
+
+        private bool ValidateFullNameField()
+        {
+            bool isValid;
+            string fullName = txtEnquiryAcctDetailsFullName.Text;
+            if (fullName.Trim().IsValid())
+            {
+                if (!Utility.isAlphaNumeric(fullName.Trim()))
+                {
+                    ShowInvalidErrror(EnquiryAccountDetailType.FULL_NAME);
+                    isValid = false;
+                }
+                else
+                {
+                    ClearErrors(EnquiryAccountDetailType.FULL_NAME);
+                    isValid = true;
+                }
+            }
+            else
             {
                 ShowEmptyError(EnquiryAccountDetailType.FULL_NAME);
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        private bool ValidateEmailField()
+        {
+            bool isValid;
+            string email = txtEnquiryAcctDetailsEmail.Text;
+            if (email.Trim().IsValid())
+            {
+                if (!Patterns.EmailAddress.Matcher(email.Trim()).Matches())
+                {
+                    ShowInvalidErrror(EnquiryAccountDetailType.EMAIL_ADDRESS);
+                    isValid = false;
+                }
+                else
+                {
+                    ClearErrors(EnquiryAccountDetailType.EMAIL_ADDRESS);
+                    isValid = true;
+                }
             }
             else
-            {
-                ClearErrors(EnquiryAccountDetailType.FULL_NAME);
-            }
-
-            if (!txtEnquiryAcctDetailsEmail.Text.IsValid())
             {
                 ShowEmptyError(EnquiryAccountDetailType.EMAIL_ADDRESS);
+                isValid = false;
             }
-            else
-            {
-                ClearErrors(EnquiryAccountDetailType.EMAIL_ADDRESS);
-            }
+            return isValid;
+        }
 
+        private bool ValidateMobileNumField()
+        {
+            bool isValid;
             if (mobileNumberInputComponent.IsTextClear())
             {
                 mobileNumberInputComponent.RaiseError(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.MOBILE_ERROR));
+                isValid = false;
             }
             else
             {
                 mobileNumberInputComponent.ClearError();
+                isValid = true;
             }
-            this.CheckRequiredFieldsAction?.Invoke(FieldsAreValid());
+            return isValid;
         }
 
         private void ShowEmptyError(EnquiryAccountDetailType type)
         {
-            if (type == EnquiryAccountDetailType.FULL_NAME)
+            switch (type)
             {
-                txtEnquiryAcctDetailsFullNameLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
-                TextViewUtils.SetMuseoSans300Typeface(txtEnquiryAcctDetailsFullNameLayout.FindViewById<TextView>(Resource.Id.textinput_error));
-                txtEnquiryAcctDetailsFullNameLayout.Error = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_ERROR);
+                case EnquiryAccountDetailType.FULL_NAME:
+                    {
+                        txtEnquiryAcctDetailsFullNameLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                        TextViewUtils.SetMuseoSans300Typeface(txtEnquiryAcctDetailsFullNameLayout.FindViewById<TextView>(Resource.Id.textinput_error));
+                        txtEnquiryAcctDetailsFullNameLayout.Error = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_ERROR);
+                    }
+                    break;
+                case EnquiryAccountDetailType.EMAIL_ADDRESS:
+                    {
+                        txtEnquiryAcctDetailsEmailLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                        TextViewUtils.SetMuseoSans300Typeface(txtEnquiryAcctDetailsEmailLayout.FindViewById<TextView>(Resource.Id.textinput_error));
+                        txtEnquiryAcctDetailsEmailLayout.Error = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_ERROR);
+                    }
+                    break;
+                default:
+                    break;
             }
-            else if (type == EnquiryAccountDetailType.EMAIL_ADDRESS)
+        }
+
+        private void ShowInvalidErrror(EnquiryAccountDetailType type)
+        {
+            switch (type)
             {
-                txtEnquiryAcctDetailsEmailLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
-                TextViewUtils.SetMuseoSans300Typeface(txtEnquiryAcctDetailsEmailLayout.FindViewById<TextView>(Resource.Id.textinput_error));
-                txtEnquiryAcctDetailsEmailLayout.Error = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_ERROR);
+                case EnquiryAccountDetailType.FULL_NAME:
+                    {
+                        txtEnquiryAcctDetailsFullNameLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                        TextViewUtils.SetMuseoSans300Typeface(txtEnquiryAcctDetailsFullNameLayout.FindViewById<TextView>(Resource.Id.textinput_error));
+                        txtEnquiryAcctDetailsFullNameLayout.Error = Utility.GetLocalizedErrorLabel(LanguageConstants.Error.INVALID_FULLNAME);
+                        var handleBounceError = txtEnquiryAcctDetailsFullNameLayout.FindViewById<TextView>(Resource.Id.textinput_error);
+                        handleBounceError.SetPadding(top: 4, left: 0, right: 0, bottom: 0);
+                    }
+                    break;
+                case EnquiryAccountDetailType.EMAIL_ADDRESS:
+                    {
+                        txtEnquiryAcctDetailsEmailLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                        TextViewUtils.SetMuseoSans300Typeface(txtEnquiryAcctDetailsEmailLayout.FindViewById<TextView>(Resource.Id.textinput_error));
+                        txtEnquiryAcctDetailsEmailLayout.Error = Utility.GetLocalizedErrorLabel(LanguageConstants.Error.INVALID_EMAIL);
+                        var handleBounceError = txtEnquiryAcctDetailsEmailLayout.FindViewById<TextView>(Resource.Id.textinput_error);
+                        handleBounceError.SetPadding(top: 4, left: 0, right: 0, bottom: 0);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -291,7 +350,11 @@ namespace myTNB_Android.Src.Enquiry.Component
 
         public bool FieldsAreValid()
         {
-            return txtEnquiryAcctDetailsFullName.Text.IsValid() && txtEnquiryAcctDetailsEmail.Text.IsValid() && !IsMobileNumEmpty();
+            bool fullNameIsValid = ValidateFullNameField();
+            bool emailIsValid = ValidateEmailField();
+            bool mobileNumIsValid = ValidateMobileNumField();
+
+            return fullNameIsValid && emailIsValid && mobileNumIsValid;
         }
     }
 }

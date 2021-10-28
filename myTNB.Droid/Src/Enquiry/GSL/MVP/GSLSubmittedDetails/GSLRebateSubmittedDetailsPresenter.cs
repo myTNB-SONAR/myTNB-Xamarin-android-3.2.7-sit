@@ -83,6 +83,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP.GSLSubmittedDetails
 
                 this.view.RenderAttachments(attachImageList);
 
+                this.gslRebateDetails.IsOwner = gslRebateDetails.IsOwner;
                 this.gslRebateModel.ServiceReqNo = gslRebateDetails.ServiceReqNo;
                 this.gslRebateDetails.StatusCode = gslRebateDetails.StatusCode;
                 this.gslRebateModel.StatusDesc = gslRebateDetails.StatusDesc;

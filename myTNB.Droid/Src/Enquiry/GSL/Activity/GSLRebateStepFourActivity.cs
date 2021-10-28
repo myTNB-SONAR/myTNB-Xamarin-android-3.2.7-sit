@@ -124,7 +124,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             TextViewUtils.SetTextSize12(gslStepFourPageTitle, txtGSLTnC);
             TextViewUtils.SetTextSize16(gslStepFourbtnNext, txtStepFourYourContactTitle); ;
 
-            var stepTitleString = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_STEP_TITLE), 4, 4);
+            int stepNo = this.presenter.GetGSLRebateModel().NeedsIncident ? 4 : 3;
+            int stepTotalNo = this.presenter.GetGSLRebateModel().NeedsIncident ? 4 : 3;
+
+            var stepTitleString = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_STEP_TITLE), stepNo, stepTotalNo);
             gslStepFourPageTitle.Text = stepTitleString;
 
             txtStepFourYourContactTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.CONTACT_DETAILS_TITLE);

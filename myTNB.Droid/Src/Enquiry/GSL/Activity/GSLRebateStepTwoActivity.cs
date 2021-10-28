@@ -52,6 +52,16 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             return this.Window.DecorView.RootView.IsShown;
         }
 
+        public override bool CameraPermissionRequired()
+        {
+            return true;
+        }
+
+        public override bool StoragePermissionRequired()
+        {
+            return true;
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);

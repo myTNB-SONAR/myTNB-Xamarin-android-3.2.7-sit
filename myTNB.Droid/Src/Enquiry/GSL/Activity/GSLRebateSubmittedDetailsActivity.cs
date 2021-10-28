@@ -443,7 +443,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                     gslDetailContactLinearLayout.Visibility = ViewStates.Gone;
                 }
 
-                if (model.TenantInfo != null)
+                if (!model.IsOwner && (model.TenantInfo != null &&
+                    model.TenantInfo.FullName.IsValid() &&
+                    model.TenantInfo.Email.IsValid() &&
+                    model.TenantInfo.MobileNumber.IsValid()))
                 {
                     editTxtGSLTenantInfoFullName.Text = model.TenantInfo.FullName;
                     editTxtGSLTenantInfoEmail.Text = model.TenantInfo.Email;

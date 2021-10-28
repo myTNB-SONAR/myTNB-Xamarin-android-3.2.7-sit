@@ -121,6 +121,9 @@
     <Folder Include="AWS\Managers\Bill Redesign\" />
     <Folder Include="AWS\Models\Eligibility\" />
     <Folder Include="AWS\Models\Eligibility\Get Eligibility\" />
+    <Folder Include="AWS\Managers\Account Statement\" />
+    <Folder Include="AWS\Models\Account Statement\" />
+    <Folder Include="AWS\Services\Account Statement\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -180,6 +183,9 @@
     <None Remove="AWS\Managers\Bill Redesign\" />
     <None Remove="AWS\Models\Eligibility\" />
     <None Remove="AWS\Models\Eligibility\Get Eligibility\" />
+    <None Remove="AWS\Managers\Account Statement\" />
+    <None Remove="AWS\Models\Account Statement\" />
+    <None Remove="AWS\Services\Account Statement\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />

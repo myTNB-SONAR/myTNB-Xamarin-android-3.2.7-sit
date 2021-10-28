@@ -355,7 +355,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public async void OnShowManageBillDelivery()
         {
-            bool isDBREnabled = DBRUtility.Instance.IsAccountDBREligible;
+            bool isDBREnabled = DBRUtility.Instance.IsAccountEligible;
             if (!isDBREnabled)
             {
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -370,7 +370,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     EligibilitySessionCache.Instance.SetData(data);
                     //Use data or any EligibilitySessionCache functionality
                 }
-                isDBREnabled = DBRUtility.Instance.IsAccountDBREligible;
+                isDBREnabled = DBRUtility.Instance.IsAccountEligible;
             }
             if (!isDBREnabled
                 || string.IsNullOrEmpty(UserSessions.DBROwnerNotificationAccountNumber)

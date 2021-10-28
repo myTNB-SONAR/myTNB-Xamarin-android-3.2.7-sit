@@ -73,6 +73,12 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.accountMinChargeLabel)]
         TextView accountMinChargeLabel;
 
+        [BindView(Resource.Id.roundingAdjustmentLabel)]
+        TextView roundingAdjustmentLabel;
+
+        [BindView(Resource.Id.roundingAdjustmentValue)]
+        TextView roundingAdjustmentValue;
+
         [BindView(Resource.Id.paperlessTitle)]
         TextView paperlessTitle;
 
@@ -81,6 +87,9 @@ namespace myTNB_Android.Src.Billing.MVP
 
         [BindView(Resource.Id.accountMinChargeLabelContainer)]
         LinearLayout accountMinChargeLabelContainer;
+
+        [BindView(Resource.Id.roundingAdjustmentLayout)]
+        LinearLayout roundingAdjustmentLayout;
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -206,7 +215,7 @@ namespace myTNB_Android.Src.Billing.MVP
             TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, refreshBillingDetailMessage, paperlessTitle);
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency,
-                accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
+                accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh, roundingAdjustmentLabel, roundingAdjustmentValue);
 
             if (TextViewUtils.IsLargeFonts)
             {
@@ -223,7 +232,7 @@ namespace myTNB_Android.Src.Billing.MVP
             TextViewUtils.SetTextSize11(infoLabelDetailEPP);
             TextViewUtils.SetTextSize12(accountAddress, refreshBillingDetailMessage, accountMinChargeLabel, paperlessTitle);
             TextViewUtils.SetTextSize14(accountPayAmountDate, accountName, accountChargeLabel, accountChargeValue
-                , accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel);
+                , accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, roundingAdjustmentLabel, roundingAdjustmentValue);
             TextViewUtils.SetTextSize16(myBillDetailsLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
 
             billingDetailsPresenter = new BillingDetailsPresenter(this);
@@ -413,7 +422,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 SetDynatraceCTATags();
                 _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
                     ? selectedAccountData.IsOwner
-                    : DBRUtility.Instance.IsCADBREligible(selectedAccountData.AccountNum);
+                    : DBRUtility.Instance.IsCAEligible(selectedAccountData.AccountNum);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
                 intent.PutExtra("accountNumber", selectedAccountData.AccountNum);
@@ -585,15 +594,40 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
 
-            if (selectedAccountChargeModel.CurrentCharges < 0f)
+            if (BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum) && selectedAccountChargeModel.ShouldShowRoundingAdjustment)
             {
-                accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.CurrentCharges * -1).ToString("#,##0.00", currCult);
+                if (selectedAccountChargeModel.CurrentCharges < 0f)
+                {
+                    accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.ActualCurrentCharges * -1).ToString("#,##0.00", currCult);
+                }
+                else
+                {
+                    accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.ActualCurrentCharges.ToString("#,##0.00", currCult);  //ori code
+                }
+
+                roundingAdjustmentLayout.Visibility = ViewStates.Visible;
+                roundingAdjustmentLabel.Text = GetLabelByLanguage(LanguageConstants.BillDetails.ROUNDING_ADJUSTMENT);
+
+                if (selectedAccountChargeModel.RoundingAmount < 0f)
+                {
+                    roundingAdjustmentValue.Text = "- RM " + (selectedAccountChargeModel.RoundingAmount * -1).ToString("#,##0.00", currCult);
+                }
+                else
+                {
+                    roundingAdjustmentValue.Text = "RM " + selectedAccountChargeModel.RoundingAmount.ToString("#,##0.00", currCult);
+                }
             }
             else
             {
-                accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00", currCult);  //ori code
+                if (selectedAccountChargeModel.CurrentCharges < 0f)
+                {
+                    accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.CurrentCharges * -1).ToString("#,##0.00", currCult);
+                }
+                else
+                {
+                    accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00", currCult);  //ori code
+                }
             }
-
 
             accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("#,##0.00", currCult);
             if (selectedAccountChargeModel.IsNeedPay)
