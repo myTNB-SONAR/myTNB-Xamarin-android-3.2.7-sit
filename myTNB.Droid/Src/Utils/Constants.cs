@@ -326,7 +326,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_NEWS = "98";
 
         //Bill Estimation
-        public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "07";
+        public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";
 
         public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
 
