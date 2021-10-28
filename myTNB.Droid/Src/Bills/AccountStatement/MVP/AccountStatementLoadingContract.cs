@@ -23,6 +23,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.MVP
             void SetSelectedAccount(AccountData accountData);
             AccountData GetSelectedAccount();
             void SetPreferredMonths(string value);
+            void RequestAccountStatement();
         }
     }
 }

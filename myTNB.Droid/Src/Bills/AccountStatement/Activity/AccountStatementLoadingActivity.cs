@@ -50,7 +50,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
             base.OnCreate(savedInstanceState);
             try
             {
-                _ = new AccountStatementLoadingPresenter(this);
+                _ = new AccountStatementLoadingPresenter(this, this);
                 this.presenter?.OnInitialize();
 
                 Bundle extras = Intent.Extras;
@@ -65,6 +65,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
                     {
                         this.presenter?.SetPreferredMonths(extras.GetString(AccountStatementConstants.SELECTED_MONTH_FOR_ACCOUNT_STATEMENT));
                     }
+                    this.presenter?.RequestAccountStatement();
                 }
             }
             catch (Exception e)
@@ -125,6 +126,11 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
         public bool IsActive()
         {
             return this.Window.DecorView.RootView.IsShown;
+        }
+
+        public override bool ShowBackArrowIndicator()
+        {
+            return false;
         }
 
         private void OnShowTimeOutScreen()

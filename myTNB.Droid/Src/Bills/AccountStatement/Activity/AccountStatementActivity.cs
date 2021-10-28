@@ -232,8 +232,18 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
         private void OnShowAccountStatementLoading()
         {
             this.SetIsClicked(true);
+            string selectedMonths = string.Empty;
             Intent acctStmntLoadingIntent = new Intent(this, typeof(AccountStatementLoadingActivity));
             acctStmntLoadingIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            if (isSixMonthSelected)
+            {
+                selectedMonths = AccountStatementConstants.PAST_6_MONTHS;
+            }
+            if (isThreeMonthSelected)
+            {
+                selectedMonths = AccountStatementConstants.PAST_3_MONTHS;
+            }
+            acctStmntLoadingIntent.PutExtra(AccountStatementConstants.SELECTED_MONTH_FOR_ACCOUNT_STATEMENT, selectedMonths);
             StartActivity(acctStmntLoadingIntent);
         }
     }
