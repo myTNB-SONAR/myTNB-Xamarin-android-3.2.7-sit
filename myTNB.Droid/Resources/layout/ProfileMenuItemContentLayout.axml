@@ -6,24 +6,25 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_alignParentLeft="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/itemTitle"
             android:text="Item Title"
-            android:gravity="center"
+            android:gravity="left"
             android:textSize="10dp"
             android:textColor="#a6a6a6"
-            android:layout_width="wrap_content" 
+            android:layout_width="match_parent" 
             android:layout_height="14dp"/>
         <TextView
             android:id="@+id/itemValue"
-            android:gravity="center"
+            android:gravity="left"
             android:text="Item Value"
             android:textSize="14dp"
             android:textColor="#49494a"
-            android:layout_width="wrap_content" 
-            android:layout_height="wrap_content"/>
+            android:layout_width="match_parent" 
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/itemActionContainer"
