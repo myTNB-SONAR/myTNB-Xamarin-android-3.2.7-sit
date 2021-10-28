@@ -30,9 +30,9 @@ namespace myTNB_Android.Src.MyTNBService.Request
                 this.feedbackCategoryId = gSLRebateModel.FeedbackCategoryId;
                 this.feedbackTypeId = string.Empty;
                 this.accountNum = gSLRebateModel.AccountNum;
-                this.name = gSLRebateModel.AccountInfo.FullName;
-                this.email = gSLRebateModel.AccountInfo.Email;
-                this.phoneNum = gSLRebateModel.AccountInfo.MobileNumber;
+                this.name = gSLRebateModel.ContactInfo.FullName;
+                this.email = gSLRebateModel.ContactInfo.Email;
+                this.phoneNum = gSLRebateModel.ContactInfo.MobileNumber;
                 this.feedbackMessage = string.Empty;
                 this.stateId = string.Empty;
                 this.location = string.Empty;
