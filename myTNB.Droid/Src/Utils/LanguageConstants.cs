@@ -110,6 +110,14 @@
             internal static readonly string CONTACT_DETAILS_TITLE = "contactDetailsTitle";
             internal static readonly string SUPPORTING_DOCS_TITLE = "supportingDocTitle";
             internal static readonly string FOR = "for";
+            internal static readonly string GSL_SUCCESS_TITLE = "thankYouGSLTitle";
+            internal static readonly string GSL_SUCCESS_DESC = "thankYouGSLDescription";
+            internal static readonly string SUCCESS_TITLE = "thankYouTitle";
+            internal static readonly string SUCCESS_DESC = "thankYouDescription";
+            internal static readonly string SUCCESS_SERVICE_NO_TITLE = "serviceNoTitle";
+            internal static readonly string SUCCESS_BACK_TO_HOME = "backHomeButton";
+            internal static readonly string SUCCESS_BACK_TO_LOGIN = "backLogin";
+            internal static readonly string SUCCESS_VIEW_SUBMITTED_ENQUIRY = "viewSubmittedEnquiry";
         }
 
         internal struct FeedbackForm
