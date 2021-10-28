@@ -42,7 +42,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             {
                 IsOwner = false,
                 FeedbackCategoryId = EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID,
-                AccountInfo = new GSLRebateAccountInfoModel(),
+                ContactInfo = new GSLRebateAccountInfoModel(),
                 TenantInfo = new GSLRebateTenantModel()
             };
             rebateTypeList = new List<Item>();
@@ -81,9 +81,12 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
 
         private void SaveAccountInfo()
         {
-            this.rebateModel.AccountInfo.FullName = UserEntity.GetActive().DisplayName;
-            this.rebateModel.AccountInfo.Email = UserEntity.GetActive().Email;
-            this.rebateModel.AccountInfo.MobileNumber = UserEntity.GetActive().MobileNo;
+            if (UserEntity.IsCurrentlyActive())
+            {
+                this.rebateModel.TenantInfo.FullName = UserEntity.GetActive().DisplayName;
+                this.rebateModel.TenantInfo.Email = UserEntity.GetActive().Email;
+                this.rebateModel.TenantInfo.MobileNumber = UserEntity.GetActive().MobileNo;
+            }
         }
 
         private void GetRebateTypeFromSelector()
@@ -140,7 +143,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(this.rebateModel.AccountNum);
             if (account != null)
             {
-                this.rebateModel.AccountInfo.Address = account.AccountStAddress;
+                this.rebateModel.ContactInfo.Address = account.AccountStAddress;
             }
         }
 

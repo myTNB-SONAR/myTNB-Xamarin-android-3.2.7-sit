@@ -252,9 +252,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                     case GSLIncidentDateTimePicker.INCIDENT_TIME:
                         {
                             var dateTimeNow = DateTime.Now;
-                            if (incidentDate.Year == dateTimeNow.Year
-                                && incidentDate.Month == dateTimeNow.Month
-                                && incidentDate.Day == dateTimeNow.Day)
+                            if (incidentDate.Date == dateTimeNow.Date)
                             {
                                 TimeSpan maxTime = new TimeSpan(dateTimeNow.Hour, dateTimeNow.Minute, 0);
                                 int compare = selectedTime.CompareTo(maxTime);
@@ -272,9 +270,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                     case GSLIncidentDateTimePicker.RESTORATION_TIME:
                         {
                             var dateTimeNow = DateTime.Now;
-                            if (restorationDate.Year == dateTimeNow.Year
-                               && restorationDate.Month == dateTimeNow.Month
-                               && restorationDate.Day == dateTimeNow.Day)
+                            if (restorationDate.Date == incidentDate.Date)
                             {
                                 TimeSpan minTime = new TimeSpan(incidentDate.Hour, incidentDate.Minute, 0);
                                 TimeSpan maxTime = new TimeSpan(dateTimeNow.Hour, dateTimeNow.Minute, 0);
@@ -289,12 +285,13 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                                     selectedTime = maxTime;
                                 }
                             }
-                            else
+                            else if (restorationDate.Date == dateTimeNow.Date)
                             {
-                                TimeSpan minTime = new TimeSpan(incidentDate.Hour, incidentDate.Minute, 0);
-                                if (hourOfDay < minTime.Hours || (hourOfDay == minTime.Hours && minute < incidentDate.Minute))
+                                TimeSpan maxTime = new TimeSpan(dateTimeNow.Hour, dateTimeNow.Minute, 0);
+                                int compareMax = selectedTime.CompareTo(maxTime);
+                                if (compareMax > 0)
                                 {
-                                    selectedTime = minTime;
+                                    selectedTime = maxTime;
                                 }
                             }
                             restorationDate = restorationDate.Date + selectedTime;

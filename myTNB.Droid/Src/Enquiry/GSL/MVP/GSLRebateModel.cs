@@ -46,7 +46,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public List<GSLRebateIncidentModel> IncidentList { get; set; }
         public List<GSLRebateIncidentDisplayModel> IncidentDisplayList { get; set; }
         public GSLRebateDocumentModel Documents { get; set; }
-        public GSLRebateAccountInfoModel AccountInfo { get; set; }
         public GSLRebateAccountInfoModel ContactInfo { get; set; }
     }
 

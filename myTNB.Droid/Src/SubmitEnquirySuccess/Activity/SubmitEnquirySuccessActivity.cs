@@ -23,7 +23,6 @@ using myTNB_Android.Src.PreLogin.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Runtime;
 using System.Threading.Tasks;
 
@@ -40,7 +39,6 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
-
 
         [BindView(Resource.Id.txtTitleInfo)]
         TextView txtTitleInfo;
@@ -63,8 +61,6 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
         Button btnViewSubmitted;
 
         string isAboutMyBill = "false";
-        private SubmittedFeedback submittedFeedback;
-        private List<SubmittedFeedback> submittedFeedbackList;
         private ISharedPreferences mSharedPref;
         public override int ResourceId()
         {
@@ -97,11 +93,8 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
 
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
-
                 txtFeedbackIdContent.Text = feedbackId;
                 SetStaticLabels();
-
-                string dateTime = "NA";
             }
             catch (Exception e)
             {
@@ -110,20 +103,25 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
         }
 
         private void SetStaticLabels()
-        {     //TRANSLATION 
-            txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouTitle");
-            txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouDescription");
-            txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
+        {
+            string successTitle = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, feedbackCategoryId.Equals(EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID) ?
+                LanguageConstants.SubmitEnquiry.GSL_SUCCESS_TITLE : LanguageConstants.SubmitEnquiry.SUCCESS_TITLE);
+            string successDesc = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, feedbackCategoryId.Equals(EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID) ?
+                LanguageConstants.SubmitEnquiry.GSL_SUCCESS_DESC : LanguageConstants.SubmitEnquiry.SUCCESS_DESC);
+
+            txtTitleInfo.Text = successTitle;
+            txtContentInfo.Text = successDesc;
+            txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.SUCCESS_SERVICE_NO_TITLE);
             if (UserEntity.IsCurrentlyActive())
             {
-                buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
+                buttonBackToHome.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.SUCCESS_BACK_TO_HOME);
             }
             else
             {
-                buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backLogin");
+                buttonBackToHome.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.SUCCESS_BACK_TO_LOGIN);
             }
 
-            btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
+            btnViewSubmitted.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.SUCCESS_VIEW_SUBMITTED_ENQUIRY);
         }
 
         protected override void OnResume()
@@ -187,18 +185,12 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
             }
         }
 
-
         public async Task<SubmittedFeedbackDetails> FeedbackSaveSharedPreference(string FeedbackId)
         {
             var detailsResponse = await ServiceApiImpl.Instance.SubmittedFeedbackWithContactDetails(new SubmittedFeedbackDetailsRequest(FeedbackId));
             UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
             return detailsResponse.GetData();
         }
-
-
-
-
-
 
         public void HideProgressDialog()
         {
@@ -256,14 +248,11 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
             this.SetIsClicked(false);
         }
 
-
-
         public override void OnBackPressed()
         {
 
 
         }
-
 
         public void ShowProgressDialog()
         {
@@ -296,17 +285,11 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
                 else
                 {
                     /// copy logout style
-
                     LaunchViewActivity.MAKE_INITIAL_CALL = true;
                     Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
                     PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                     StartActivity(PreLoginIntent);
-
-
                 }
-
-
-
             }
         }
     }
