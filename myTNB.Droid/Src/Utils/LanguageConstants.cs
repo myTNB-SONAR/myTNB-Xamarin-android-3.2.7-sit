@@ -120,6 +120,7 @@
             internal static readonly string SUCCESS_BACK_TO_HOME = "backHomeButton";
             internal static readonly string SUCCESS_BACK_TO_LOGIN = "backLogin";
             internal static readonly string SUCCESS_VIEW_SUBMITTED_ENQUIRY = "viewSubmittedEnquiry";
+            internal static readonly string PREMISES_ADDRESS = "premiseAddressTitle";
         }
 
         internal struct FeedbackForm

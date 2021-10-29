@@ -17,7 +17,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
                     "GS08" => EnquiryGSLStatusCode.GS08,//Closed***
                     "GL05" => EnquiryGSLStatusCode.GL05,//Closed***
                     "GS06" => EnquiryGSLStatusCode.GS06,//Accepted***
-                    "GL03" => EnquiryGSLStatusCode.GL03,//Accepted
+                    "GL03" => EnquiryGSLStatusCode.GL03,//Accepted***
                     "GS07" => EnquiryGSLStatusCode.GS07,//Rejected***
                     "GL04" => EnquiryGSLStatusCode.GL04,//Rejected***
                     "GS05" => EnquiryGSLStatusCode.GS05,//Rejected***
@@ -36,18 +36,18 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
                 return GSLStatusCode switch
                 {
                     EnquiryGSLStatusCode.GS01 => Resource.Color.createdColorSubmit,
+                    EnquiryGSLStatusCode.GS03 => Resource.Color.createdColorSubmit,
+                    EnquiryGSLStatusCode.GS04 => Resource.Color.createdColorSubmit,
+                    EnquiryGSLStatusCode.GS06 => Resource.Color.createdColorSubmit,
+                    EnquiryGSLStatusCode.GS08 => Resource.Color.createdColorSubmit,
                     EnquiryGSLStatusCode.GL01 => Resource.Color.createdColorSubmit,
+                    EnquiryGSLStatusCode.GL03 => Resource.Color.createdColorSubmit,
+                    EnquiryGSLStatusCode.GL05 => Resource.Color.createdColorSubmit,
                     EnquiryGSLStatusCode.GS02 => Resource.Color.inProgressColor,
                     EnquiryGSLStatusCode.GL02 => Resource.Color.inProgressColor,
-                    EnquiryGSLStatusCode.GS03 => Resource.Color.inProgressColor,
-                    EnquiryGSLStatusCode.GS06 => Resource.Color.inProgressColor,
-                    EnquiryGSLStatusCode.GL03 => Resource.Color.inProgressColor,
-                    EnquiryGSLStatusCode.GS04 => Resource.Color.completedColor,
-                    EnquiryGSLStatusCode.GS08 => Resource.Color.completedColor,
-                    EnquiryGSLStatusCode.GL05 => Resource.Color.completedColor,
+                    EnquiryGSLStatusCode.GS05 => Resource.Color.cancelledColor,
                     EnquiryGSLStatusCode.GS07 => Resource.Color.cancelledColor,
                     EnquiryGSLStatusCode.GL04 => Resource.Color.cancelledColor,
-                    EnquiryGSLStatusCode.GS05 => Resource.Color.cancelledColor,
                     _ => Resource.Color.createdColorSubmit,
                 };
             }

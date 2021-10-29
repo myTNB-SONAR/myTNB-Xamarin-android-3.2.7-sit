@@ -90,10 +90,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
             restorationDateLayout.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
             restorationTimeLayout.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
 
-            incidentDateLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.INCIDENT_DATE_HINT).ToUpper();
-            incidentTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.INCIDENT_TIME_HINT).ToUpper();
-            restorationDateLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_DATE_HINT).ToUpper();
-            restorationTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_TIME_HINT).ToUpper();
+            incidentDateLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.INCIDENT_DATE_HINT);
+            incidentTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.INCIDENT_TIME_HINT);
+            restorationDateLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_DATE_HINT);
+            restorationTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_TIME_HINT);
 
             gslIncidentItemTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_INCIDENT_INFO_TITLE);
             incidentTitle.Text = string.Format(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_INCIDENT_ITEM_TITLE), this.itemIndex + 1);
@@ -222,13 +222,17 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                     case GSLIncidentDateTimePicker.INCIDENT_DATE:
                         incidentDate = selectedDate;
                         txtIncidentDate.Text = incidentDate.ToString(GSLRebateConstants.DATE_FORMAT, dateCultureInfo);
+                        incidentDateLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.INCIDENT_DATE_HINT).ToUpper();
                         txtIncidentTime.Text = string.Empty;
+                        incidentTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.INCIDENT_TIME_HINT);
                         ResetRestorationDateTime();
                         break;
                     case GSLIncidentDateTimePicker.RESTORATION_DATE:
                         restorationDate = selectedDate;
                         txtRestorationDate.Text = restorationDate.ToString(GSLRebateConstants.DATE_FORMAT, dateCultureInfo);
+                        restorationDateLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_DATE_HINT).ToUpper();
                         txtRestorationTime.Text = string.Empty;
+                        restorationTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_TIME_HINT);
                         break;
                     default:
                         break;
@@ -263,6 +267,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                             }
                             incidentDate = incidentDate.Date + selectedTime;
                             txtIncidentTime.Text = incidentDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
+                            incidentTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.INCIDENT_TIME_HINT).ToUpper();
                             selectedDateTimeAction?.Invoke(activePicker, incidentDate, itemIndex);
                             ResetRestorationDateTime();
                         }
@@ -296,6 +301,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                             }
                             restorationDate = restorationDate.Date + selectedTime;
                             txtRestorationTime.Text = restorationDate.ToString(GSLRebateConstants.TIME_FORMAT, dateCultureInfo);
+                            restorationTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_TIME_HINT).ToUpper();
                             selectedDateTimeAction?.Invoke(activePicker, restorationDate, itemIndex);
                         }
                         break;
@@ -329,14 +335,18 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
                 restorationDate = incidentDate;
                 txtRestorationDate.Text = restorationDate.ToString(GSLRebateConstants.DATE_FORMAT, dateCultureInfo);
+                restorationDateLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_DATE_HINT).ToUpper();
                 txtRestorationTime.Text = string.Empty;
+                restorationTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_TIME_HINT);
                 selectedDateTimeAction?.Invoke(activePicker, restorationDate, itemIndex);
             }
             else
             {
                 restorationDate = new DateTime();
                 txtRestorationDate.Text = string.Empty;
+                restorationDateLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_DATE_HINT);
                 txtRestorationTime.Text = string.Empty;
+                restorationTimeLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.RESTORATION_TIME_HINT);
                 resetDateTimeAction?.Invoke(GSLIncidentDateTimePicker.RESTORATION_DATE, itemIndex);
             }
         }

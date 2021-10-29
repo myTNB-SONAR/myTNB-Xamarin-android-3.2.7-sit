@@ -272,7 +272,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                         {
                             ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                         });
-                        ownerICItem.SetHintToHidden(false);
                     }
                 }
                 this.presenter.SetOwnerIC(string.Empty);
@@ -305,7 +304,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                         {
                             ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                         });
-                        tenancyAgreementItem.SetHintToHidden(false);
                     }
                 }
                 this.presenter.SetTenancyDocument(string.Empty);
@@ -507,7 +505,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                         attachImage.IsLoading = false;
                         tenancyAdapter.Update(position, attachImage);
                     }
-                    tenancyAgreementItem.SetHintToHidden(true);
                 }
                 else if (activeDocumentType == GSLDocumentType.OWNER_IC)
                 {
@@ -518,7 +515,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                         attachImage.IsLoading = false;
                         ownerICAdapter.Update(position, attachImage);
                     }
-                    ownerICItem.SetHintToHidden(true);
                 }
             }
             catch (Exception ex)

@@ -104,6 +104,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                         this.presenter.SetRebateModel(rebateModel);
                     }
                 }
+                SetUpViews();
             }
             catch (Exception e)
             {
