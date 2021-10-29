@@ -278,7 +278,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             string email = txtGSLTenantEmail.Text;
             bool fullNameIsValid;
             bool emailIsValid;
-            bool mobileIsValid = !mobileNumberInputComponent.IsTextClear();
+            bool mobileIsValid = ValidateMobileNumField();
 
             if (fullName.Trim().IsValid())
             {
@@ -319,6 +319,22 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             }
 
             UpdateButtonState(fullNameIsValid && emailIsValid && mobileIsValid);
+        }
+
+        private bool ValidateMobileNumField()
+        {
+            bool isValid;
+            if (mobileNumberInputComponent.IsTextClear())
+            {
+                mobileNumberInputComponent.RaiseError(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.MOBILE_ERROR));
+                isValid = false;
+            }
+            else
+            {
+                mobileNumberInputComponent.ClearError();
+                isValid = true;
+            }
+            return isValid;
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
