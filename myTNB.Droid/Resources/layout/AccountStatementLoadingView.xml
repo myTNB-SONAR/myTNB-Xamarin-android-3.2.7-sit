@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/rootView"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -34,40 +35,73 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:id="@+id/acctStmntLoadingScrollviewContainer">
-				<FrameLayout
-					android:layout_height="320dp"
+				<LinearLayout
+					android:orientation="vertical"
 					android:layout_width="match_parent"
-					android:layout_gravity="center">
-					<com.airbnb.lottie.LottieAnimationView
-						android:id="@+id/acctStmntLoadingView"
+					android:layout_height="wrap_content"
+					android:id="@+id/acctStmntLoadingLayout">
+					<FrameLayout
+						android:layout_height="320dp"
 						android:layout_width="match_parent"
-						android:layout_height="match_parent"
-						android:layout_gravity="center"
-						app:lottie_fileName="account_statement_loading.json"
-						app:lottie_loop="true" />
-				</FrameLayout>
-				<TextView
-					android:text="PROCESSING_TITLE"
-					android:layout_marginTop="-30dp"
-					android:layout_marginLeft="16dp"
-					android:layout_marginRight="16dp"
+						android:layout_gravity="center">
+						<com.airbnb.lottie.LottieAnimationView
+							android:id="@+id/acctStmntLoadingView"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_gravity="center"
+							app:lottie_fileName="account_statement_loading.json"
+							app:lottie_loop="true" />
+					</FrameLayout>
+					<TextView
+						tools:text="We’re processing your request."
+						android:layout_marginTop="-30dp"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textColor="@color/tunagrey"
+						android:gravity="center"
+						android:textSize="16dp"
+						android:id="@+id/txtAcctStmntLoadingTitle" />
+					<TextView
+						tools:text="Thanks for waiting. It may take a few moments to process your request."
+						android:layout_marginLeft="16dp"
+						android:layout_marginTop="16dp"
+						android:layout_marginRight="16dp"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textColor="@color/tunagrey"
+						android:gravity="center"
+						android:textSize="14dp"
+						android:lineSpacingExtra="3dp"
+						android:id="@+id/txtAcctStmntLoadingMsg" />
+				</LinearLayout>
+				<LinearLayout
+					android:orientation="vertical"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:textColor="@color/tunagrey"
-					android:gravity="center"
-					android:textSize="16dp"
-					android:id="@+id/txtAcctStmntLoadingTitle" />
-				<TextView
-					android:text="PROCESSING_MESSAGE"
-					android:layout_marginLeft="16dp"
-					android:layout_marginTop="16dp"
-					android:layout_marginRight="16dp"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:textColor="@color/tunagrey"
-					android:gravity="center"
-					android:textSize="14dp"
-					android:id="@+id/txtAcctStmntLoadingMsg" />
+					android:visibility="gone"
+					android:id="@+id/acctStmntRefreshLayout">
+					<ImageView
+						android:id="@+id/acctStmntRefreshBanner"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:scaleType="fitXY"
+						android:adjustViewBounds="true"
+						android:src="@drawable/bg_application_status"/>
+					<TextView
+						tools:text="Uh oh, looks like this page is unplugged. Refresh to stay plugged in!"
+						android:layout_marginLeft="16dp"
+						android:layout_marginTop="24dp"
+						android:layout_marginRight="16dp"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textColor="@color/receipt_note_text"
+						android:gravity="center"
+						android:textSize="16dp"
+						android:lineSpacingExtra="3dp"
+						android:id="@+id/txtAcctStmntRefreshMsg" />
+				</LinearLayout>
 			</LinearLayout>
 		</ScrollView>
 		<LinearLayout
@@ -80,17 +114,11 @@
 			android:paddingRight="16dp"
 			android:gravity="center|bottom"
 			android:background="@color/white"
-			android:id="@+id/buttonLayout">
+			android:visibility="gone"
+			android:id="@+id/acctStmntRefreshButtonLayout">
 			<Button
-				android:id="@+id/accountStatementButton"
-				android:text="Account Statement"
-				android:layout_width="match_parent"
-				android:layout_height="48dp"
-				style="@style/LightButton"
-				android:textAllCaps="false" />
-			<Button
-				android:id="@+id/timeOutButton"
-				android:text="Time Out"
+				android:id="@+id/acctStmntBtnRefresh"
+				tools:text="Refresh"
 				android:layout_width="match_parent"
 				android:layout_height="48dp"
 				style="@style/DarkButton"

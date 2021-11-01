@@ -11,6 +11,10 @@ namespace myTNB_Android.Src.Bills.AccountStatement.MVP
             /// Setting Up Layout
             /// </summary>
             void SetUpViews();
+            void OnShowAccountStamentScreen(string pdfFilePath);
+            void OnShowTimeOutScreen(bool isEmpty);
+            void ShowRefreshView();
+            void ShowLoadingView();
         }
 
         public interface IUserActionsListener : IBasePresenter

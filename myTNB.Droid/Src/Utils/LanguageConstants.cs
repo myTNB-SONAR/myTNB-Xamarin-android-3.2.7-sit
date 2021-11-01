@@ -14,6 +14,7 @@
         internal static readonly string APPLICATION_STATUS_DETAILS = "ApplicationStatusDetails";
         internal static readonly string GSL = "GSL";
         internal static readonly string STATEMENT_PERIOD = "StatementPeriod";
+        internal static readonly string PUSH_NOTIF_DETAILS = "PushNotificationDetails";
 
         internal struct Common
         {
@@ -21,6 +22,8 @@
             internal static readonly string NEXT = "next";
             internal static readonly string MOBILE_NO = "mobileNo";
             internal static readonly string CANCEL = "cancel";
+            internal static readonly string REFRESH_MSG = "refreshDescription";
+            internal static readonly string REFRESH_NOW = "refreshNow";
         }
 
         internal struct Error
@@ -155,6 +158,11 @@
             internal static readonly string STATEMENT_PERIOD_TITLE = "preferredStatementPeriodTitle";
             internal static readonly string PAST_3_MONTHS = "past3Months";
             internal static readonly string PAST_6_MONTHS = "past6Months";
+        }
+
+        internal struct PushNotificationDetails
+        {
+            internal static readonly string VIEW_ACCT_STMNT = "viewAccountStatement";
         }
     }
 }

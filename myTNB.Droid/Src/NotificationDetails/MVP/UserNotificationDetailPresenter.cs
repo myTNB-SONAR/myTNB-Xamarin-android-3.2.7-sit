@@ -276,7 +276,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_ACCT_STATEMENT_READY:
                         {
                             imageResourceBanner = Resource.Drawable.Banner_Acct_Stmnt_Notification_Detail;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Account Statement",
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.VIEW_ACCT_STMNT),
                                 delegate () { ViewAccountStatement(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             ctaList.Add(primaryCTA);

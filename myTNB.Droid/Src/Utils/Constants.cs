@@ -90,6 +90,9 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string NO_SM_DATA_FOUND = ".noDataFound";
         internal static readonly string SELECTED_BILL_STATEMENT = ".selectedBillMonths";
 
+        internal static readonly string ACCT_STMNT_EMPTY = ".accountStatementEmpty";
+        internal static readonly string ACCT_STMNT_PDF_FILE_PATH = ".accountStatementFilePath";
+
         /// <summary>
         /// BARCODE REQUEST TYPE
         /// </summary>
@@ -97,6 +100,7 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly int SELECT_ACCOUNT_REQUEST_CODE = 0x02;
         internal static readonly int NEW_BILL_REDESIGN_REQUEST_CODE = 0x12;
+        internal static readonly int ACCTSTMNT_PDFVIEW_REQUEST_CODE = 0x14;
         internal static readonly int SELECT_FEEDBACK_STATE = 0x02;
         internal static readonly int SELECT_FEEDBACK_TYPE = 0x02;
 
@@ -335,7 +339,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_NEWS = "98";
 
         //Account Statement
-        public const string BCRM_NOTIFICATION_ACCT_STATEMENT_READY = "acctStmntReadyStub";
+        public const string BCRM_NOTIFICATION_ACCT_STATEMENT_READY = "20008";
 
         //App Update
         public const string BCRM_NOTIFICATION_APP_UPDATE = "20006";

@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using Android.Widget;
 using CheeseBind;
 using Com.Airbnb.Lottie;
@@ -11,37 +12,33 @@ using myTNB_Android.Src.Bills.AccountStatement.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using Android.Views;
 
 namespace myTNB_Android.Src.Bills.AccountStatement.Activity
 {
     [Activity(ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class AccountStatementLoadingActivity : BaseToolbarAppCompatActivity, AccountStatementLoadingContract.IView
     {
+        [BindView(Resource.Id.acctStmntLoadingLayout)]
+        readonly LinearLayout acctStmntLoadingLayout;
+
+        [BindView(Resource.Id.acctStmntRefreshLayout)]
+        readonly LinearLayout acctStmntRefreshLayout;
+
+        [BindView(Resource.Id.acctStmntRefreshButtonLayout)]
+        readonly LinearLayout acctStmntRefreshButtonLayout;
+
         [BindView(Resource.Id.txtAcctStmntLoadingTitle)]
         TextView txtAcctStmntLoadingTitle;
 
         [BindView(Resource.Id.txtAcctStmntLoadingMsg)]
         TextView txtAcctStmntLoadingMsg;
 
-        //stub
-        [BindView(Resource.Id.accountStatementButton)]
-        Button accountStatementButton;
+        [BindView(Resource.Id.txtAcctStmntRefreshMsg)]
+        TextView txtAcctStmntRefreshMsg;
 
-        [BindView(Resource.Id.timeOutButton)]
-        Button timeOutButton;
-
-        [OnClick(Resource.Id.accountStatementButton)]
-        public void AcctStmntsOnClick(object sender, EventArgs eventArgs)
-        {
-            OnShowAccountStamentScreen();
-        }
-
-        [OnClick(Resource.Id.timeOutButton)]
-        public void TimeOutOnClick(object sender, EventArgs eventArgs)
-        {
-            OnShowTimeOutScreen();
-        }
-        //stub
+        [BindView(Resource.Id.acctStmntBtnRefresh)]
+        Button acctStmntBtnRefresh;
 
         private AccountStatementLoadingContract.IUserActionsListener presenter;
 
@@ -50,11 +47,9 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
             base.OnCreate(savedInstanceState);
             try
             {
-                _ = new AccountStatementLoadingPresenter(this, this);
-                this.presenter?.OnInitialize();
+                _ = new AccountStatementLoadingPresenter(this, this, this);
 
                 Bundle extras = Intent.Extras;
-
                 if (extras != null)
                 {
                     if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
@@ -65,8 +60,9 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
                     {
                         this.presenter?.SetPreferredMonths(extras.GetString(AccountStatementConstants.SELECTED_MONTH_FOR_ACCOUNT_STATEMENT));
                     }
-                    this.presenter?.RequestAccountStatement();
                 }
+
+                this.presenter?.OnInitialize();
             }
             catch (Exception e)
             {
@@ -87,25 +83,49 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
 
             SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.TITLE));
 
-            LottieAnimationView loadingAnimation = FindViewById<LottieAnimationView>(Resource.Id.acctStmntLoadingView);
+            TextViewUtils.SetMuseoSans500Typeface(txtAcctStmntLoadingTitle, acctStmntBtnRefresh);
+            TextViewUtils.SetMuseoSans300Typeface(txtAcctStmntLoadingMsg, txtAcctStmntRefreshMsg);
+            TextViewUtils.SetTextSize16(txtAcctStmntLoadingTitle, txtAcctStmntRefreshMsg, acctStmntBtnRefresh);
+            TextViewUtils.SetTextSize14(txtAcctStmntLoadingMsg);
 
+            txtAcctStmntLoadingTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.PROCESSING_TITLE);
+            txtAcctStmntLoadingMsg.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.PROCESSING_MSG);
+            txtAcctStmntRefreshMsg.Text = Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.REFRESH_MSG);
+            acctStmntBtnRefresh.Text = Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.REFRESH_NOW);
+
+            RunOnUiThread(() =>
+            {
+                try
+                {
+                    LottieAnimationView loadingAnimation = FindViewById<LottieAnimationView>(Resource.Id.acctStmntLoadingView);
+                    loadingAnimation.Progress = 0f;
+                    loadingAnimation.PlayAnimation();
+                    this.presenter?.RequestAccountStatement();
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
             try
             {
-                loadingAnimation.Progress = 0f;
-                loadingAnimation.PlayAnimation();
+                if (requestCode == Constants.ACCTSTMNT_PDFVIEW_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Canceled)
+                    {
+                        Finish();
+                    }
+                }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-
-            TextViewUtils.SetMuseoSans500Typeface(txtAcctStmntLoadingTitle);
-            TextViewUtils.SetMuseoSans300Typeface(txtAcctStmntLoadingMsg);
-            TextViewUtils.SetTextSize16(txtAcctStmntLoadingTitle);
-            TextViewUtils.SetTextSize14(txtAcctStmntLoadingMsg);
-
-            txtAcctStmntLoadingTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.PROCESSING_TITLE);
-            txtAcctStmntLoadingMsg.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.PROCESSING_MSG);
         }
 
         protected override void OnStart()
@@ -133,16 +153,50 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
             return false;
         }
 
-        private void OnShowTimeOutScreen()
+        [OnClick(Resource.Id.acctStmntBtnRefresh)]
+        public void ButtonNextOnClick(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                ShowLoadingView();
+                this.presenter?.RequestAccountStatement();
+            }
+        }
+
+        public void ShowRefreshView()
+        {
+            RunOnUiThread(() =>
+            {
+                acctStmntLoadingLayout.Visibility = ViewStates.Gone;
+                acctStmntRefreshLayout.Visibility = ViewStates.Visible;
+                acctStmntRefreshButtonLayout.Visibility = ViewStates.Visible;
+            });
+        }
+
+        public void ShowLoadingView()
+        {
+            RunOnUiThread(() =>
+            {
+                acctStmntLoadingLayout.Visibility = ViewStates.Visible;
+                acctStmntRefreshLayout.Visibility = ViewStates.Gone;
+                acctStmntRefreshButtonLayout.Visibility = ViewStates.Gone;
+            });
+        }
+
+        public void OnShowTimeOutScreen(bool isEmpty)
         {
             Intent acctStmntTimeOutIntent = new Intent(this, typeof(AccountStatementTimeOutActivity));
+            acctStmntTimeOutIntent.PutExtra(Constants.ACCT_STMNT_EMPTY, isEmpty);
             acctStmntTimeOutIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(this.presenter?.GetSelectedAccount()));
             StartActivity(acctStmntTimeOutIntent);
         }
 
-        private void OnShowAccountStamentScreen()
+        public void OnShowAccountStamentScreen(string pdfFilePath)
         {
-
+            var pdfViewActivity = new Intent(this, typeof(AccountStatementPDFActivity));
+            pdfViewActivity.PutExtra(Constants.ACCT_STMNT_PDF_FILE_PATH, pdfFilePath);
+            StartActivityForResult(pdfViewActivity, Constants.ACCTSTMNT_PDFVIEW_REQUEST_CODE);
         }
     }
 }
