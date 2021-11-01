@@ -47,6 +47,11 @@ namespace myTNB_Android.Src.Utils
             return rg.IsMatch(strToCheck);
         }
 
+        public static bool IsNotNumeric(string strToCheck)
+        {
+            Regex rg = new Regex(@"^([^0-9]*)$");
+            return rg.IsMatch(strToCheck);
+        }
 
         public static bool IsValidMobileNumber(string mobileNumber)
         {
@@ -143,19 +148,19 @@ namespace myTNB_Android.Src.Utils
                 //Dictionary<string, List<SelectorModel>> monthSelectorList =
                 //if (monthSelectorList != null && monthSelectorList.Count > 0)
                 //{
-                    List<SelectorModel> list = FilterHelper.GetMonthList();
-                    if (list != null && list.Count > 0)
+                List<SelectorModel> list = FilterHelper.GetMonthList();
+                if (list != null && list.Count > 0)
+                {
+                    foreach (var item in list)
                     {
-                        foreach (var item in list)
+                        monthList.Add(new BaseKeyValueModel()
                         {
-                            monthList.Add(new BaseKeyValueModel()
-                            {
-                                Key = item.Key,
-                                Value = item.Value
-                            });
-                        }
+                            Key = item.Key,
+                            Value = item.Value
+                        });
                     }
-               // }
+                }
+                // }
             }
             catch (Exception e)
             {
@@ -344,7 +349,7 @@ namespace myTNB_Android.Src.Utils
         public static bool IsMDMSDownEnergyBudget()
         {
             bool isMDMSEnable = true;
-           
+
             DownTimeEntity smartmeterdailyEntity = DownTimeEntity.GetByCode(Constants.Smart_Meter_Daily_SYSTEM);
             DownTimeEntity smartmeter = DownTimeEntity.GetByCode(Constants.SMART_METER_SYSTEM);
 

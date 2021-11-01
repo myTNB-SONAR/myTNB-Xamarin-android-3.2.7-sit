@@ -39,6 +39,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             /// </summary>
             void OnInitialize();
 
+            void SaveAccountInfo();
+
             void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data);
 
             List<Item> GetRebateTypeList();

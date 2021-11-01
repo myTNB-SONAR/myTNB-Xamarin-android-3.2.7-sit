@@ -28,7 +28,6 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
         public void OnInitialize()
         {
             OnInit();
-            SaveAccountInfo();
             GetRebateTypeFromSelector();
             this.view?.SetUpViews();
             this.view?.UpdateButtonState(false);
@@ -79,9 +78,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             }
         }
 
-        private void SaveAccountInfo()
+        public void SaveAccountInfo()
         {
-            if (UserEntity.IsCurrentlyActive())
+            if (UserEntity.IsCurrentlyActive() && !this.rebateModel.IsOwner)
             {
                 this.rebateModel.TenantInfo.FullName = UserEntity.GetActive().DisplayName;
                 this.rebateModel.TenantInfo.Email = UserEntity.GetActive().Email;

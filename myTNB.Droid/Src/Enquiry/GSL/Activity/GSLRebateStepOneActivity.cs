@@ -91,6 +91,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                     if (extras.ContainsKey(Constants.IS_OWNER))
                     {
                         this.userActionsListener?.SetIsOwner(extras.GetBoolean(Constants.IS_OWNER));
+                        this.userActionsListener?.SaveAccountInfo();
                         gslTenantInfoContainer.Visibility = this.userActionsListener.GetGSLRebateModel().IsOwner ? ViewStates.Gone : ViewStates.Visible;
                     }
                 }
@@ -234,13 +235,13 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                     string fullName = txtGSLTenantFullName.Text;
                     if (fullName.Trim().IsValid())
                     {
-                        if (!Utility.isAlphaNumeric(fullName.Trim()))
+                        if (Utility.IsNotNumeric(fullName.Trim()))
                         {
-                            ShowInvalidErrror(GSLLayoutType.FULL_NAME);
+                            ClearErrors(type);
                         }
                         else
                         {
-                            ClearErrors(type);
+                            ShowInvalidErrror(GSLLayoutType.FULL_NAME);
                         }
                     }
                     else
@@ -282,15 +283,15 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
 
             if (fullName.Trim().IsValid())
             {
-                if (!Utility.isAlphaNumeric(fullName.Trim()))
+                if (Utility.IsNotNumeric(fullName.Trim()))
                 {
-                    this.ShowInvalidErrror(GSLLayoutType.FULL_NAME);
-                    fullNameIsValid = false;
+                    this.ClearErrors(GSLLayoutType.FULL_NAME);
+                    fullNameIsValid = true;
                 }
                 else
                 {
-                    this.ClearErrors(GSLLayoutType.FULL_NAME);
-                    fullNameIsValid = true; ;
+                    this.ShowInvalidErrror(GSLLayoutType.FULL_NAME);
+                    fullNameIsValid = false;
                 }
             }
             else
@@ -442,7 +443,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                SaveFields();
+                if (!this.userActionsListener.GetGSLRebateModel().IsOwner)
+                {
+                    SaveFields();
+                }
 
                 if (this.userActionsListener.CheckRequiredFields())
                 {
