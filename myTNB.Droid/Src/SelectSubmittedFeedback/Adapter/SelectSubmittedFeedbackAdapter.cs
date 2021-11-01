@@ -81,7 +81,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                     vh.completeIndicator.Visibility = ViewStates.Gone;
                 }
 
-                vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, item.StatusColor)));
+                int statusColor = item.FeedbackCategoryId.Equals("9") ? item.GSLStatusColor : item.StatusColor;
+
+                vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, statusColor)));
                 vh.txtFeedbackTitle.Text = item.FeedbackCategoryName;
             }
             catch (Exception e)

@@ -30,4 +30,22 @@
         CL06,
         NONE
     };
+
+    public enum EnquiryGSLStatusCode
+    {
+        GS01,
+        GS02,
+        GS03,
+        GS04,
+        GS05,
+        GS06,
+        GS07,
+        GS08,
+        GL01,
+        GL02,
+        GL03,
+        GL04,
+        GL05,
+        NONE
+    };
 }
