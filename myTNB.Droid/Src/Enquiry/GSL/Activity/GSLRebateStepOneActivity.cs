@@ -235,14 +235,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                     string fullName = txtGSLTenantFullName.Text;
                     if (fullName.Trim().IsValid())
                     {
-                        if (Utility.IsNotNumeric(fullName.Trim()))
-                        {
-                            ClearErrors(type);
-                        }
-                        else
-                        {
-                            ShowInvalidErrror(GSLLayoutType.FULL_NAME);
-                        }
+                        ClearErrors(type);
                     }
                     else
                     {
@@ -283,16 +276,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
 
             if (fullName.Trim().IsValid())
             {
-                if (Utility.IsNotNumeric(fullName.Trim()))
-                {
-                    this.ClearErrors(GSLLayoutType.FULL_NAME);
-                    fullNameIsValid = true;
-                }
-                else
-                {
-                    this.ShowInvalidErrror(GSLLayoutType.FULL_NAME);
-                    fullNameIsValid = false;
-                }
+                this.ClearErrors(GSLLayoutType.FULL_NAME);
+                fullNameIsValid = true;
             }
             else
             {
