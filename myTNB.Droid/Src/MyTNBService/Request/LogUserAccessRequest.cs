@@ -1,7 +1,7 @@
 ﻿using System;
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class LogUserAccessRequest : BaseRequest
+    public class LogUserAccessRequest : BaseRequestV4
     {
         public string accountNo;
         public DeviceInfoRequest deviceInf;

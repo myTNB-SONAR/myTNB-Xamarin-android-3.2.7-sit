@@ -139,8 +139,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     .Cancelable(false)
                     .Build();
 
+                
                 ManageSupplyItemComponent manageSupplyItem = GetManageSupply();
                 profileMenuItemsContent.AddView(manageSupplyItem);
+                
+                
 
 
                 //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
@@ -366,10 +369,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             ManageSupplyItemComponent manageItem = new ManageSupplyItemComponent(this);
 
             List<View> manageItems = new List<View>();
-
+            bool isWhiteList = UserSessions.GetWhiteList(PreferenceManager.GetDefaultSharedPreferences(this));
 
             //if (true)
-            if (accountData.IsOwner && accountData.AccountTypeId == "1")
+            if ((accountData.IsOwner || isWhiteList) && accountData.AccountTypeId == "1")
+            //if (accountData.IsOwner && accountData.AccountTypeId == "1")
             {
                 SupplyAccMenuItemSingleContentComponent manageUser = new SupplyAccMenuItemSingleContentComponent(this);
                 manageUser.SetTitle(Utility.GetLocalizedLabel("ManageAccount", "manageUserAccess"));

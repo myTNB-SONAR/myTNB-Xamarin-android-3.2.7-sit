@@ -11,6 +11,7 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB.Mobile.SessionCache;
+using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ForgetPassword.Activity;
 using myTNB_Android.Src.Login.MVP;
@@ -371,27 +372,39 @@ namespace myTNB_Android.Src.Login.Activity
             this.SetIsClicked(false);
         }
         private Snackbar mSnackBar;
-        public void ShowInvalidEmailPasswordError(string errorMessage)
+        //public void ShowInvalidEmailPasswordError(string errorMessage)
+        //{
+        //    ClearErrors();
+        //    // TODO : SHOW SNACKBAR ERROR MESSAGE
+        //    if (mSnackBar != null && mSnackBar.IsShown)
+        //    {
+        //        mSnackBar.Dismiss();
+        //        mSnackBar.Show();
+        //    }
+        //    else
+        //    {
+        //        mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
+        //        .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mSnackBar.Dismiss(); }
+        //        );
+        //        View v = mSnackBar.View;
+        //        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+        //        tv.SetMaxLines(5);
+        //        mSnackBar.Show();
+        //    }
+
+        //    this.SetIsClicked(false);
+
+        //}
+
+        public void ShowInvalidEmailPasswordError(string errorMessageTitle, string errorMessageDetails)
         {
             ClearErrors();
-            // TODO : SHOW SNACKBAR ERROR MESSAGE
-            if (mSnackBar != null && mSnackBar.IsShown)
-            {
-                mSnackBar.Dismiss();
-                mSnackBar.Show();
-            }
-            else
-            {
-                mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-                .SetAction(Utility.GetLocalizedCommonLabel("ok"), delegate { mSnackBar.Dismiss(); }
-                );
-                View v = mSnackBar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(5);
-                mSnackBar.Show();
-            }
-
+            // TODO : SHOW POP UP DIALOG ERROR MESSAGE
             this.SetIsClicked(false);
+            Utility.ShowInvalidEmailPasswordErrorDialog(errorMessageTitle, errorMessageDetails, this, () =>
+            {
+                ShowProgressDialog();
+            });
 
         }
 
@@ -404,6 +417,16 @@ namespace myTNB_Android.Src.Login.Activity
             DashboardIntent.PutExtra("FromDashBoard", true);
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
+        }
+
+        public void ShowAddAccount()
+        {
+            // TODO : START ACTIVITY ADD ACCOUNT
+            Intent LinkAccountIntent = new Intent(this, typeof(LinkAccountActivity));
+            LinkAccountIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            LinkAccountIntent.PutExtra("fromDashboard", true);
+            LinkAccountIntent.PutExtra("fromRegisterPage", true);
+            StartActivity(LinkAccountIntent);
         }
 
         public void ShowForgetPassword()
@@ -677,7 +700,93 @@ namespace myTNB_Android.Src.Login.Activity
             StartActivity(intent);
         }
 
+        public void ShowEmailVerifyDialog()
+        {
+            this.SetIsClicked(false);
+            Utility.ShowEmailVerificationLoginDialog(this, () =>
+            {
+                //ShowProgressDialog();
+                //ShowEmailUpdateSuccess();
+                string email = txtEmail.Text;
+                this.userActionsListener.ResendEmailVerify(Constants.APP_CONFIG.API_KEY_ID, email);
+            });
 
+        }
+
+        //public static void ShowEmailVerificationDialog(Android.App.Activity context, Action confirmAction, Action cancelAction = null)
+        //{
+        //    MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+        //                .SetTitle(Utility.GetLocalizedLabel("Tnb_Profile", "verifyEmailPopupTitle"))
+        //                .SetMessage(Utility.GetLocalizedLabel("Tnb_Profile", "verifyEmailPopupBody"))
+        //                .SetContentGravity(Android.Views.GravityFlags.Left)
+        //                .SetCTALabel(Utility.GetLocalizedLabel("Tnb_Profile", "gotIt"))
+        //                .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Tnb_Profile", "resend"))
+        //                .SetSecondaryCTAaction(() =>
+        //                {
+        //                    confirmAction();
+        //                })
+        //                .Build();
+        //    tooltipBuilder.SetCTAaction(() =>
+        //    {
+        //        if (cancelAction != null)
+        //        {
+        //            cancelAction();
+        //            tooltipBuilder.DismissDialog();
+        //        }
+        //        else
+        //        {
+        //            tooltipBuilder.DismissDialog();
+        //        }
+        //    }).Show();
+        //}
+
+        public void ShowEmailUpdateSuccess(string message, string email)
+        {
+            try
+            {
+                //string Email = "";
+                //UserEntity userEntity = UserEntity.GetActive();
+                //Email = userEntity.Email;
+                //string Email = txtEmail.Text;
+                Snackbar updateEmailBar = Snackbar.Make(rootView, string.Format(Utility.GetLocalizedLabel("Login", "toast_email_send"), email), Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = updateEmailBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                updateEmailBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowError(string errorMessage)
+        {
+            if (mSnackBar != null && mSnackBar.IsShown)
+            {
+                mSnackBar.Dismiss();
+                mSnackBar.Show();
+            }
+            else
+            {
+                mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
+                );
+                View v = mSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mSnackBar.Show();
+            }
+            this.SetIsClicked(false);
+        }
 
         public override void OnTrimMemory(TrimMemory level)
         {

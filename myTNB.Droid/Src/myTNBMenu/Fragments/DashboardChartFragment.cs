@@ -6933,7 +6933,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 ShowBackButton(true);
                 ((DashboardHomeActivity)this.Activity).HideAccountName();
                 ((DashboardHomeActivity)this.Activity).SetAccountToolbarTitle(selectedAccount.AccountNickName);
-                //((DashboardHomeActivity)this.Activity).OnCreateOptionsMenu(menu);
+                ((DashboardHomeActivity)this.Activity).OnCreateOptionsMenu(menu);
             }
             catch (System.Exception e) 
             {

@@ -872,7 +872,14 @@
     "registerAcctNow": "Register for an account now.",
     "login": "Log In",
     "emailRequired": "Please enter an email address.",
-    "passwordRequired": "Please enter a password."
+    "passwordRequired": "Please enter a password.",
+    //add by lop
+    "gotIt": "Got It",
+    "resend": "Resend Link",
+    "verifyEmailPopupTitle": "Pending Email Verification ",
+    "verifyEmailPopupBody": "Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
+    "toast_email_send": "An email verification link has been sent to {0}"
+    
   },
   "ForgotPassword": {
     "title": "Reset Password",
@@ -2127,7 +2134,8 @@
     "acccreated": "Account Created!",
     "emailverify": "Please verify your email",
     "emailVerifiedLinkSent": "We have sent a verification link to <strong>{0}</strong>. You may verify it by clicking the link in your email afterwards to unlock all the things that myTNB has to offer!",
-    "continue": "Continue"
+    "continue": "Continue",
+    "backLogin": "Back to Login"
   },
   "ApplicationStatusActivityLog": {
     "title": "Activity Log",

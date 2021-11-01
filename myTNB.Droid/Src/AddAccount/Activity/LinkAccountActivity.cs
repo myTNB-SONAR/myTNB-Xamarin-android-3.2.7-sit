@@ -308,6 +308,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 {
                     fromRegisterPage = Intent.Extras.GetBoolean("fromRegisterPage", false);
                 }
+               
 
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 

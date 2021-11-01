@@ -290,6 +290,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             private EditText eText;
             private TextView idText;
 
+
             public void AfterTextChanged(IEditable s)
             {
                 int len = eText.Text.Length;
@@ -306,6 +307,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                         eText.Text = first6digit + "-" + digit78 + "-" + lastdigit;
                         eText.SetSelection(eText.Text.Length);
                     }
+
                 }
                 else if (Idtype.Equals("Army / Police ID") || Idtype.Equals("Kad Pengenalan Tentera / Polis"))
                 {
@@ -319,6 +321,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
             public void BeforeTextChanged(Java.Lang.ICharSequence s, int start, int count, int after)
             {
+
                 int len = eText.Text.Length;
                 int totallength = eText.SelectionStart;
                 int totallenafter = len - totallength;

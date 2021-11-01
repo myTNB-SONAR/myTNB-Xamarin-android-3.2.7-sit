@@ -265,7 +265,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<LogUserAccessResponse> GetAccountActivityLogList([Body] Request.BaseRequest request)
+        public Task<LogUserAccessResponse> GetAccountActivityLogList([Body] Request.BaseRequestV4 request)
         {
             return api.GetAccountActivityLogList<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api log activity user access
         }

@@ -7,6 +7,7 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.Requests;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Net;
@@ -198,6 +199,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             {
                 SendRegistrationTokenSMSRequest sendRegistrationTokenSMSRequest = new SendRegistrationTokenSMSRequest(mobile_no);
                 sendRegistrationTokenSMSRequest.SetUserName(email);
+                string dt = JsonConvert.SerializeObject(sendRegistrationTokenSMSRequest);
                 var verificationResponse = await ServiceApiImpl.Instance.SendRegistrationTokenSMS(sendRegistrationTokenSMSRequest);
 
                 if (verificationResponse.IsSuccessResponse())

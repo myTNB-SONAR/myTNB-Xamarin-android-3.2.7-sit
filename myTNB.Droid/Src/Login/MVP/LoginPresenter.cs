@@ -77,6 +77,7 @@ namespace myTNB_Android.Src.Login.MVP
 
         public async void LoginAsync(string usrNme, string pwd, string deviceId, bool rememberMe)
         {
+
             if (TextUtils.IsEmpty(usrNme))
             {
                 this.mView.ShowEmptyEmailError();
@@ -97,6 +98,7 @@ namespace myTNB_Android.Src.Login.MVP
 
             this.mView.DisableLoginButton();
 
+
             if (mView.IsActive())
             {
                 this.mView.ShowProgressDialog();
@@ -105,6 +107,7 @@ namespace myTNB_Android.Src.Login.MVP
             Log.Debug(TAG, "Awaiting...");
             try
             {
+
                 string fcmToken = string.Empty;
 
                 if (FirebaseTokenEntity.HasLatest())
@@ -124,261 +127,193 @@ namespace myTNB_Android.Src.Login.MVP
                 string s = JsonConvert.SerializeObject(userAuthRequest);
                 var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthRequest);
 
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+
                 if (!userResponse.IsSuccessResponse())
                 {
                     if (this.mView.IsActive())
                     {
                         this.mView.HideProgressDialog();
-                        this.mView.ShowInvalidEmailPasswordError(userResponse.Response.DisplayMessage);
+                        this.mView.ShowInvalidEmailPasswordError(userResponse.Response.DisplayTitle, userResponse.Response.DisplayMessage);
 
                         UserSessions.SaveWhiteList(mSharedPref, false);
                     }
                 }
                 else
                 {
-                    try
+                    
+                    if (userResponse.Response.Data.IsActivated)
                     {
-                        WhatsNewParentEntity mWhatsNewParentEntity = new WhatsNewParentEntity();
-                        mWhatsNewParentEntity.DeleteTable();
-                        mWhatsNewParentEntity.CreateTable();
-                        WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
-                        mWhatsNewEntity.DeleteTable();
-                        mWhatsNewEntity.CreateTable();
-                        WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
-                        mWhatsNewCategoryEntity.DeleteTable();
-                        mWhatsNewCategoryEntity.CreateTable();
-                    }
-                    catch (Exception e)
-                    {
-                        Utility.LoggingNonFatalError(e);
-                    }
-
-                    ///<summary>
-                    ///THIS TO SAVE UPDATE THAT LOGOUT HAS BEEN DONE - WHILE UPGRADING VERSION 6 TO 7
-                    ///</summary>
-                    UserSessions.SaveLogoutFlag(mSharedPref, true);
-
-                    MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
-
-                    if (rememberMe)
-                    {
-                        UserSessions.SaveUserEmail(mSharedPref, usrNme);
-                    }
-                    else
-                    {
-                        UserSessions.SaveUserEmail(mSharedPref, "");
-                    }
-
-                    ///<summary>
-                    ///THIS TO SAVE WHITELIST
-                    ///</summary>
-                    UserSessions.SaveWhiteList(mSharedPref, userResponse.GetData().IsWhiteList);
-
-                    // TODO : REMOVE PASSWORD PERSISTANCE INSTEAD FOLLOW IOS WORKFLOW
-                    // TODO : IF THERES AN EXISTING FORGET PASSWORD DO NOT SAVE USER
-                    // TODO : SAVE USER ONLY WHEN FORGET PASSWORD IS SUCCESS
-                    if (UserSessions.HasResetFlag(mSharedPref))
-                    {
-                        if (this.mView.IsActive())
-                        {
-                            this.mView.HideProgressDialog();
-                            this.mView.ShowResetPassword(usrNme, pwd);
-                        }
-                    }
-                    else if (!userResponse.GetData().isPhoneVerified)
-                    {
-                        UserAuthenticationRequest loginRequest = new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
-                        {
-                            UserName = usrNme,
-                            Password = pwd,
-                            IpAddress = Constants.APP_CONFIG.API_KEY_ID,
-                            ClientType = DeviceIdUtils.GetAppVersionName(),
-                            ActiveUserName = userResponse.GetData().UserId,
-                            DevicePlatform = Constants.DEVICE_PLATFORM,
-                            DeviceVersion = DeviceIdUtils.GetAndroidVersion(),
-                            DeviceCordova = Constants.APP_CONFIG.API_KEY_ID,
-                            DeviceId = deviceId,
-                            FcmToken = fcmToken
-                        };
-
                         if (mView.IsActive())
                         {
-                            this.mView.HideProgressDialog();
-                        }
-                        this.mView.ShowUpdatePhoneNumber(loginRequest, userResponse.GetData().MobileNo);
-                    }
-                    else
-                    {
-                        UserEntity.RemoveActive();
-                        UserNotificationEntity.RemoveAll();
-                        CustomerBillingAccount.RemoveActive();
-                        SMUsageHistoryEntity.RemoveAll();
-                        UsageHistoryEntity.RemoveAll();
-                        BillHistoryEntity.RemoveAll();
-                        PaymentHistoryEntity.RemoveAll();
-                        REPaymentHistoryEntity.RemoveAll();
-                        AccountDataEntity.RemoveAll();
-                        SummaryDashBoardAccountEntity.RemoveAll();
-                        SelectBillsEntity.RemoveAll();
-                        MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                        HomeMenuUtils.ResetAll();
-                        UserSessions.RemoveSessionData();
-                        NewFAQParentEntity NewFAQParentManager = new NewFAQParentEntity();
-                        NewFAQParentManager.DeleteTable();
-                        NewFAQParentManager.CreateTable();
-                        SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
-                        SSMRMeterReadingScreensParentManager.DeleteTable();
-                        SSMRMeterReadingScreensParentManager.CreateTable();
-                        SSMRMeterReadingScreensOCROffParentEntity SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
-                        SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
-                        SSMRMeterReadingScreensOCROffParentManager.CreateTable();
-                        SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
-                        SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
-                        SSMRMeterReadingThreePhaseScreensParentManager.CreateTable();
-                        SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
-                        SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
-                        SSMRMeterReadingThreePhaseScreensOCROffParentManager.CreateTable();
-                        EnergySavingTipsParentEntity EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
-                        EnergySavingTipsParentManager.DeleteTable();
-                        EnergySavingTipsParentManager.CreateTable();
-
-                        try
-                        {
-                            SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP);
-                            SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP);
-                        }
-                        catch (Exception ex)
-                        {
-                            Utility.LoggingNonFatalError(ex);
+                            this.mView.ShowProgressDialog();
                         }
 
                         try
                         {
-                            RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
-                            mRewardParentEntity.DeleteTable();
-                            mRewardParentEntity.CreateTable();
-                            RewardsCategoryEntity mRewardCategoryEntity = new RewardsCategoryEntity();
-                            mRewardCategoryEntity.DeleteTable();
-                            mRewardCategoryEntity.CreateTable();
-                            RewardsEntity mRewardEntity = new RewardsEntity();
-                            mRewardEntity.DeleteTable();
-                            mRewardEntity.CreateTable();
-                        }
-                        catch (Exception ex)
-                        {
-                            Utility.LoggingNonFatalError(ex);
-                        }
-
-                        try
-                        {
-                            UserEntity.UpdatePhoneNumber(userResponse.GetData().MobileNo);
-                            UserSessions.SavePhoneVerified(mSharedPref, true);
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
-
-                        int Id = UserEntity.InsertOrReplace(userResponse.GetData());
-                        try
-                        {
-                            int loginCount = UserLoginCountEntity.GetLoginCount(userResponse.GetData().Email);
-                            int recordId;
-                            if (loginCount < 2)
-                            {
-                                recordId = UserLoginCountEntity.InsertOrReplace(userResponse.GetData(), loginCount + 1);
-                            }
+                            WhatsNewParentEntity mWhatsNewParentEntity = new WhatsNewParentEntity();
+                            mWhatsNewParentEntity.DeleteTable();
+                            mWhatsNewParentEntity.CreateTable();
+                            WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
+                            mWhatsNewEntity.DeleteTable();
+                            mWhatsNewEntity.CreateTable();
+                            WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
+                            mWhatsNewCategoryEntity.DeleteTable();
+                            mWhatsNewCategoryEntity.CreateTable();
                         }
                         catch (Exception e)
                         {
                             Utility.LoggingNonFatalError(e);
                         }
-                        if (Id > 0)
+
+                        ///<summary>
+                        ///THIS TO SAVE UPDATE THAT LOGOUT HAS BEEN DONE - WHILE UPGRADING VERSION 6 TO 7
+                        ///</summary>
+                        UserSessions.SaveLogoutFlag(mSharedPref, true);
+
+                        MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
+
+                        if (rememberMe)
                         {
-                            UserEntity.UpdateDeviceId(deviceId);
-                            await LanguageUtil.SaveUpdatedLanguagePreference();
+                            UserSessions.SaveUserEmail(mSharedPref, usrNme);
+                        }
+                        else
+                        {
+                            UserSessions.SaveUserEmail(mSharedPref, "");
+                        }
 
-                            AppInfoManager.Instance.SetUserInfo("16"
-                                , UserEntity.GetActive().UserID
-                                , UserEntity.GetActive().UserName
-                                , UserSessions.GetDeviceId()
-                                , DeviceIdUtils.GetAppVersionName()
-                                , myTNB.Mobile.MobileConstants.OSType.Android
-                                , TextViewUtils.FontInfo
-                                , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
-                            AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
-                            bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
+                        ///<summary>
+                        ///THIS TO SAVE WHITELIST
+                        ///</summary>
+                        UserSessions.SaveWhiteList(mSharedPref, userResponse.GetData().IsWhiteList);
 
-                            GetCustomerAccountListRequest baseRequest = new GetCustomerAccountListRequest();
-                            baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
-                            CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
-                            if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                        // TODO : REMOVE PASSWORD PERSISTANCE INSTEAD FOLLOW IOS WORKFLOW
+                        // TODO : IF THERES AN EXISTING FORGET PASSWORD DO NOT SAVE USER
+                        // TODO : SAVE USER ONLY WHEN FORGET PASSWORD IS SUCCESS
+                        if (UserSessions.HasResetFlag(mSharedPref))
+                        {
+                            if (this.mView.IsActive())
                             {
-                                if (customerAccountListResponse.GetData().Count > 0)
-                                {
-                                    ProcessCustomerAccount(customerAccountListResponse.GetData());
-                                }
-                                else
-                                {
-                                    AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
-                                }
+                                this.mView.HideProgressDialog();
+                                this.mView.ShowResetPassword(usrNme, pwd);
+                            }
+                        }
+                        else if (!userResponse.GetData().isPhoneVerified)
+                        {
+                            UserAuthenticationRequest loginRequest = new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
+                            {
+                                UserName = usrNme,
+                                Password = pwd,
+                                IpAddress = Constants.APP_CONFIG.API_KEY_ID,
+                                ClientType = DeviceIdUtils.GetAppVersionName(),
+                                ActiveUserName = userResponse.GetData().UserId,
+                                DevicePlatform = Constants.DEVICE_PLATFORM,
+                                DeviceVersion = DeviceIdUtils.GetAndroidVersion(),
+                                DeviceCordova = Constants.APP_CONFIG.API_KEY_ID,
+                                DeviceId = deviceId,
+                                FcmToken = fcmToken
+                            };
 
-                                List<NotificationTypesEntity> notificationTypes = NotificationTypesEntity.List();
-                                NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Utility.GetLocalizedCommonLabel("allNotifications"), true);
-                                foreach (NotificationTypesEntity notificationType in notificationTypes)
-                                {
-                                    if (notificationType.ShowInFilterList)
-                                    {
-                                        NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
-                                    }
-                                }
-                                UserNotificationEntity.RemoveAll();
-                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
-                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
-                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
-                                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new BaseRequest());
-                                if (response.IsSuccessResponse())
-                                {
-                                    if (response.GetData() != null)
-                                    {
-                                        try
-                                        {
-                                            UserNotificationEntity.RemoveAll();
-                                        }
-                                        catch (System.Exception ne)
-                                        {
-                                            Utility.LoggingNonFatalError(ne);
-                                        }
+                            if (mView.IsActive())
+                            {
+                                this.mView.HideProgressDialog();
+                            }
+                            this.mView.ShowUpdatePhoneNumber(loginRequest, userResponse.GetData().MobileNo);
+                        }
+                        else
+                        {
+                            UserEntity.RemoveActive();
+                            UserNotificationEntity.RemoveAll();
+                            CustomerBillingAccount.RemoveActive();
+                            SMUsageHistoryEntity.RemoveAll();
+                            UsageHistoryEntity.RemoveAll();
+                            BillHistoryEntity.RemoveAll();
+                            PaymentHistoryEntity.RemoveAll();
+                            REPaymentHistoryEntity.RemoveAll();
+                            AccountDataEntity.RemoveAll();
+                            SummaryDashBoardAccountEntity.RemoveAll();
+                            SelectBillsEntity.RemoveAll();
+                            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                            HomeMenuUtils.ResetAll();
+                            UserSessions.RemoveSessionData();
+                            NewFAQParentEntity NewFAQParentManager = new NewFAQParentEntity();
+                            NewFAQParentManager.DeleteTable();
+                            NewFAQParentManager.CreateTable();
+                            SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
+                            SSMRMeterReadingScreensParentManager.DeleteTable();
+                            SSMRMeterReadingScreensParentManager.CreateTable();
+                            SSMRMeterReadingScreensOCROffParentEntity SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
+                            SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
+                            SSMRMeterReadingScreensOCROffParentManager.CreateTable();
+                            SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                            SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
+                            SSMRMeterReadingThreePhaseScreensParentManager.CreateTable();
+                            SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
+                            SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
+                            SSMRMeterReadingThreePhaseScreensOCROffParentManager.CreateTable();
+                            EnergySavingTipsParentEntity EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
+                            EnergySavingTipsParentManager.DeleteTable();
+                            EnergySavingTipsParentManager.CreateTable();
 
-                                        foreach (UserNotification userNotification in response.GetData().UserNotificationList)
-                                        {
-                                            // tODO : SAVE ALL NOTIFICATIONs
-                                            int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-                                        }
+                            try
+                            {
+                                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP);
+                                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP);
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
 
-                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
-                                    }
-                                    else
-                                    {
-                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                                    }
-                                }
-                                else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
-                                {
-                                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
-                                }
-                                else
-                                {
-                                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                                }
+                            try
+                            {
+                                RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
+                                mRewardParentEntity.DeleteTable();
+                                mRewardParentEntity.CreateTable();
+                                RewardsCategoryEntity mRewardCategoryEntity = new RewardsCategoryEntity();
+                                mRewardCategoryEntity.DeleteTable();
+                                mRewardCategoryEntity.CreateTable();
+                                RewardsEntity mRewardEntity = new RewardsEntity();
+                                mRewardEntity.DeleteTable();
+                                mRewardEntity.CreateTable();
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
 
-                                //Console.WriteLine(string.Format("Rows updated {0}" , CustomerBillingAccount.List().Count));
-                                if (this.mView.IsActive())
-                                {
-                                    this.mView.ShowNotificationCount(UserNotificationEntity.Count());
-                                }
+                            try
+                            {
+                                UserEntity.UpdatePhoneNumber(userResponse.GetData().MobileNo);
+                                UserSessions.SavePhoneVerified(mSharedPref, true);
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
 
+                            int Id = UserEntity.InsertOrReplace(userResponse.GetData());
+                            try
+                            {
+                                int loginCount = UserLoginCountEntity.GetLoginCount(userResponse.GetData().Email);
+                                int recordId;
+                                if (loginCount < 2)
+                                {
+                                    recordId = UserLoginCountEntity.InsertOrReplace(userResponse.GetData(), loginCount + 1);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                            if (Id > 0)
+                            {
+                                UserEntity.UpdateDeviceId(deviceId);
                                 await LanguageUtil.SaveUpdatedLanguagePreference();
+
                                 AppInfoManager.Instance.SetUserInfo("16"
                                     , UserEntity.GetActive().UserID
                                     , UserEntity.GetActive().UserName
@@ -388,33 +323,199 @@ namespace myTNB_Android.Src.Login.MVP
                                     , TextViewUtils.FontInfo
                                     , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                 AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
+                                bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
 
-
-                                if (LanguageUtil.GetAppLanguage() == "MS")
+                                GetCustomerAccountListRequest baseRequest = new GetCustomerAccountListRequest();
+                                baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
+                                baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
+                                string ss = JsonConvert.SerializeObject(baseRequest);
+                                CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
+                                if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                                 {
-                                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
-                                }
-                                else
-                                {
-                                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
-                                }
+                                    if (customerAccountListResponse.GetData().Count > 0)
+                                    {
+                                        ProcessCustomerAccount(customerAccountListResponse.GetData());
 
-                                this.mView.ShowDashboard();
+                                        List<NotificationTypesEntity> notificationTypes = NotificationTypesEntity.List();
+                                        NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Utility.GetLocalizedCommonLabel("allNotifications"), true);
+                                        foreach (NotificationTypesEntity notificationType in notificationTypes)
+                                        {
+                                            if (notificationType.ShowInFilterList)
+                                            {
+                                                NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
+                                            }
+                                        }
+                                        UserNotificationEntity.RemoveAll();
+                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
+                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
+                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
+                                        UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new BaseRequest());
+                                        if (response.IsSuccessResponse())
+                                        {
+                                            if (response.GetData() != null)
+                                            {
+                                                try
+                                                {
+                                                    UserNotificationEntity.RemoveAll();
+                                                }
+                                                catch (System.Exception ne)
+                                                {
+                                                    Utility.LoggingNonFatalError(ne);
+                                                }
+
+                                                foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                                                {
+                                                    // tODO : SAVE ALL NOTIFICATIONs
+                                                    int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                                }
+
+                                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
+                                            }
+                                            else
+                                            {
+                                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                                            }
+                                        }
+                                        else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                                        {
+                                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
+                                        }
+                                        else
+                                        {
+                                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                                        }
+
+                                        //Console.WriteLine(string.Format("Rows updated {0}" , CustomerBillingAccount.List().Count));
+                                        if (this.mView.IsActive())
+                                        {
+                                            this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                                        }
+
+                                        await LanguageUtil.SaveUpdatedLanguagePreference();
+                                        AppInfoManager.Instance.SetUserInfo("16"
+                                            , UserEntity.GetActive().UserID
+                                            , UserEntity.GetActive().UserName
+                                            , UserSessions.GetDeviceId()
+                                            , DeviceIdUtils.GetAppVersionName()
+                                            , myTNB.Mobile.MobileConstants.OSType.Android
+                                            , TextViewUtils.FontInfo
+                                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+                                        AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
+
+
+                                        if (LanguageUtil.GetAppLanguage() == "MS")
+                                        {
+                                            AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
+                                        }
+                                        else
+                                        {
+                                            AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
+                                        }
+
+                                        this.mView.ShowDashboard();
+                                    }
+                                    else
+                                    {
+                                        AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+
+                                        List<NotificationTypesEntity> notificationTypes = NotificationTypesEntity.List();
+                                        NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Utility.GetLocalizedCommonLabel("allNotifications"), true);
+                                        foreach (NotificationTypesEntity notificationType in notificationTypes)
+                                        {
+                                            if (notificationType.ShowInFilterList)
+                                            {
+                                                NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
+                                            }
+                                        }
+                                        UserNotificationEntity.RemoveAll();
+                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
+                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
+                                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
+                                        UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new BaseRequest());
+                                        if (response.IsSuccessResponse())
+                                        {
+                                            if (response.GetData() != null)
+                                            {
+                                                try
+                                                {
+                                                    UserNotificationEntity.RemoveAll();
+                                                }
+                                                catch (System.Exception ne)
+                                                {
+                                                    Utility.LoggingNonFatalError(ne);
+                                                }
+
+                                                foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                                                {
+                                                    // tODO : SAVE ALL NOTIFICATIONs
+                                                    int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                                }
+
+                                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
+                                            }
+                                            else
+                                            {
+                                                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                                            }
+                                        }
+                                        else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                                        {
+                                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
+                                        }
+                                        else
+                                        {
+                                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                                        }
+
+                                        //Console.WriteLine(string.Format("Rows updated {0}" , CustomerBillingAccount.List().Count));
+                                        if (this.mView.IsActive())
+                                        {
+                                            this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                                        }
+
+                                        await LanguageUtil.SaveUpdatedLanguagePreference();
+                                        AppInfoManager.Instance.SetUserInfo("16"
+                                            , UserEntity.GetActive().UserID
+                                            , UserEntity.GetActive().UserName
+                                            , UserSessions.GetDeviceId()
+                                            , DeviceIdUtils.GetAppVersionName()
+                                            , myTNB.Mobile.MobileConstants.OSType.Android
+                                            , TextViewUtils.FontInfo
+                                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+                                        AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
+
+
+                                        if (LanguageUtil.GetAppLanguage() == "MS")
+                                        {
+                                            AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
+                                        }
+                                        else
+                                        {
+                                            AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
+                                        }
+
+                                        this.mView.ShowAddAccount();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (this.mView.IsActive())
+                                {
+                                    this.mView.HideProgressDialog();
+                                    this.mView.ShowRetryOptionsCancelledException(null);
+                                }
+                                ClearDataCache();
                             }
                         }
-                        else
+                        if (this.mView.IsActive())
                         {
-                            if (this.mView.IsActive())
-                            {
-                                this.mView.HideProgressDialog();
-                                this.mView.ShowRetryOptionsCancelledException(null);
-                            }
-                            ClearDataCache();
+                            this.mView.HideProgressDialog();
                         }
                     }
-                    if (this.mView.IsActive())
+                    else
                     {
-                        this.mView.HideProgressDialog();
+                        this.mView.ShowEmailVerifyDialog();
                     }
                 }
             }
@@ -648,6 +749,65 @@ namespace myTNB_Android.Src.Login.MVP
             }
             catch (Exception e)
             {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public async void ResendEmailVerify(string apiKeyId, string email)
+        {
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
+            }
+
+            try
+            {
+                var emailVerificationResponse = await ServiceApiImpl.Instance.SendEmailVerify(new SendEmailVerificationRequest(email));
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+
+                if (emailVerificationResponse.IsSuccessResponse())
+                {
+                    string message = emailVerificationResponse.Response.Message;
+                    this.mView.ShowEmailUpdateSuccess(message, email);
+                }
+                else
+                {
+                    string errorMessage = emailVerificationResponse.Response.Message;
+                    this.mView.ShowError(errorMessage);
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                // CANCLLED
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                // API EXCEPTION
+                this.mView.ShowRetryOptionsApiException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                // UNKNOWN EXCEPTION
+                this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
         }

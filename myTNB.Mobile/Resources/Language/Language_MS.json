@@ -869,7 +869,13 @@
     "registerAcctNow": "Daftar akaun anda sekarang.",
     "login": "Log Masuk",
     "emailRequired": "Sila masukkan alamat email.",
-    "passwordRequired": "Sila masukkan kata laluan."
+    "passwordRequired": "Sila masukkan kata laluan.",
+    //add by lop
+    "gotIt": "Ok",
+    "resend": "Hantar semula",
+    "verifyEmailPopupTitle": "Pengesahan E-mel Belum Selesai",
+    "verifyEmailPopupBody": "Sila sahkan alamat e-mel anda dengan pautan yang telah kami kirimkan. Anda juga boleh meminta kiriman semula jika anda tidak menerima pautan tersebut.",
+    "toast_email_send": "Pengesahan e-mel telah dihantar ke {0}"
   },
   "ForgotPassword": {
     "title": "Set Semula Kata Laluan",
@@ -2125,7 +2131,8 @@
     "acccreated": "Akaun Dibuat!",
     "emailverify": "Sila sahkan alamat e-mel anda",
     "emailVerifiedLinkSent": "Kami telah menghantar pautan pengesahan ke <b>{0}</b>. Anda boleh mengesahkannya dengan mengklik pautan dalam e-mel anda untuk menikmati segalanya yang myTNB tawarkan!",
-    "continue": "Teruskan"
+    "continue": "Teruskan",
+    "backLogin": "Kembali ke Log Masuk"
   },
   "ApplicationStatusActivityLog": {
     "title": "Log Aktiviti",

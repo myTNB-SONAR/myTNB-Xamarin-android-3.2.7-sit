@@ -4,6 +4,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Net;
@@ -61,6 +62,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
                 {
                     sendUpdatePhoneTokenSMSRequest.SetUserName(request.UserName);
                 }
+
+                string s = JsonConvert.SerializeObject(sendUpdatePhoneTokenSMSRequest);
                 var updateMobileResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMSV2(sendUpdatePhoneTokenSMSRequest);
 
                 if (mView.IsActive())

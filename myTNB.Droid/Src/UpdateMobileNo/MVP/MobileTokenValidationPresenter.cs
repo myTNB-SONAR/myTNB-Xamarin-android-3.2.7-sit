@@ -373,6 +373,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         //string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
 
                         GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest();
+                        customerAccountListRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
+                        customerAccountListRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                         CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
                         if (customerAccountListResponse.IsSuccessResponse())
                         {

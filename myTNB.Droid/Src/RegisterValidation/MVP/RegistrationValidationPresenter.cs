@@ -14,6 +14,7 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.RegistrationForm.Requests;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
         public void OnNavigateToAccountListActivity()
         {
             //this.mView.ShowAccountListActivity();
-            this.mView.ShowEmailRegisterPopUp();
+            //this.mView.ShowEmailRegisterPopUp();
 ;
         }
 
@@ -86,6 +87,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                 CreateNewUserWithTokenRequest createNewUserWithTokenRequest = new CreateNewUserWithTokenRequest(userCredentialsEntity.Fullname, string.Format("{0}{1}{2}{3}", num1, num2, num3, num4),
                     userCredentialsEntity.Password, userCredentialsEntity.ICNo, userCredentialsEntity.IdType, userCredentialsEntity.MobileNo);
                 createNewUserWithTokenRequest.SetUserName(userCredentialsEntity.Email);
+
+                string dt = JsonConvert.SerializeObject(createNewUserWithTokenRequest);
                 var userRegistrationResponse = await ServiceApiImpl.Instance.CreateNewUserWithToken_OT(createNewUserWithTokenRequest);
 
                 if (userRegistrationResponse.IsSuccessResponse())
@@ -97,113 +100,123 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     {
                         fcmToken = FirebaseTokenEntity.GetLatest().FBToken;
                     }
-                    UserAuthenticateRequest userAuthenticateRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), userCredentialsEntity.Password);
-                    userAuthenticateRequest.SetUserName(userCredentialsEntity.Email);
-                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthenticateRequest);
 
-                    if (!userResponse.IsSuccessResponse())
-                    {
-                        if (mView.IsActive())
-                        {
-                            this.mView.HideRegistrationProgress();
-                        }
-                        this.mView.ShowError(userResponse.Response.DisplayMessage);
-                    }
-                    else
-                    {
 
-                        List<NotificationTypesEntity> notificationTypes = NotificationTypesEntity.List();
-                        NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Utility.GetLocalizedCommonLabel("allNotifications"), true);
-                        foreach (NotificationTypesEntity notificationType in notificationTypes)
-                        {
-                            if (notificationType.ShowInFilterList)
-                            {
-                                NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
-                            }
-                        }
+                    this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
+                    this.mView.ShowEmailRegisterPopUp(userCredentialsEntity.Email);
+                    UserSessions.SavePhoneVerified(mSharedPref, true);
 
-                        int Id = UserEntity.InsertOrReplace(userResponse.GetData());
-                        if (Id > 0)
-                        {
-                            BaseRequest getUserNotificationRequest = new BaseRequest();
-                            getUserNotificationRequest.usrInf.eid = userCredentialsEntity.Email;
-                            UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(getUserNotificationRequest);
-                            if (response.IsSuccessResponse())
-                            {
-                                try
-                                {
-                                    UserNotificationEntity.RemoveAll();
-                                }
-                                catch (System.Exception ne)
-                                {
-                                    Utility.LoggingNonFatalError(ne);
-                                }
 
-                                if (response.GetData() != null && response.GetData().UserNotificationList != null &&
-                                    response.GetData().UserNotificationList.Count > 0)
-                                {
-                                    foreach (UserNotification userNotification in response.GetData().UserNotificationList)
-                                    {
-                                        // TODO : SAVE ALL NOTIFICATIONs
-                                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-                                    }
-                                }
-                            }
+                    //UserAuthenticateRequest userAuthenticateRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), userCredentialsEntity.Password);
+                    //userAuthenticateRequest.SetUserName(userCredentialsEntity.Email);
+                    //var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthenticateRequest);
 
-                            if (mView.IsActive())
-                            {
-                                this.mView.HideRegistrationProgress();
-                            }
+                    //if (!userResponse.IsSuccessResponse())
+                    //{
+                    //    if (mView.IsActive())
+                    //    {
+                    //        this.mView.HideRegistrationProgress();
+                    //    }
+                    //    this.mView.ShowError(userResponse.Response.DisplayMessage);
+                    //}
+                    //else
+                    //{
 
-                            try
-                            {
-                                RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
-                                mRewardParentEntity.DeleteTable();
-                                mRewardParentEntity.CreateTable();
-                                RewardsCategoryEntity mRewardCategoryEntity = new RewardsCategoryEntity();
-                                mRewardCategoryEntity.DeleteTable();
-                                mRewardCategoryEntity.CreateTable();
-                                RewardsEntity mRewardEntity = new RewardsEntity();
-                                mRewardEntity.DeleteTable();
-                                mRewardEntity.CreateTable();
-                            }
-                            catch (Exception ex)
-                            {
-                                Utility.LoggingNonFatalError(ex);
-                            }
 
-                            try
-                            {
-                                WhatsNewParentEntity mWhatsNewParentEntity = new WhatsNewParentEntity();
-                                mWhatsNewParentEntity.DeleteTable();
-                                mWhatsNewParentEntity.CreateTable();
-                                WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
-                                mWhatsNewCategoryEntity.DeleteTable();
-                                mWhatsNewCategoryEntity.CreateTable();
-                                WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
-                                mWhatsNewEntity.DeleteTable();
-                                mWhatsNewEntity.CreateTable();
-                            }
-                            catch (Exception ex)
-                            {
-                                Utility.LoggingNonFatalError(ex);
-                            }
+                    //    List<NotificationTypesEntity> notificationTypes = NotificationTypesEntity.List();
+                    //    NotificationFilterEntity.InsertOrReplace(Constants.ZERO_INDEX_FILTER, Utility.GetLocalizedCommonLabel("allNotifications"), true);
+                    //    foreach (NotificationTypesEntity notificationType in notificationTypes)
+                    //    {
+                    //        if (notificationType.ShowInFilterList)
+                    //        {
+                    //            NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
+                    //        }
+                    //    }
 
-                            this.mView.ShowNotificationCount(UserNotificationEntity.Count());
-                            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                            HomeMenuUtils.ResetAll();
-                            //this.mView.ShowAccountListActivity();
-                            this.mView.ShowEmailRegisterPopUp();
-                            UserSessions.SavePhoneVerified(mSharedPref, true);
-                        }
-                        else
-                        {
-                            if (mView.IsActive())
-                            {
-                                this.mView.HideRegistrationProgress();
-                            }
-                        }
-                    }
+                    //    int Id = UserEntity.InsertOrReplace(userResponse.GetData());
+                    //    if (Id > 0)
+                    //    {
+                    //        BaseRequest getUserNotificationRequest = new BaseRequest();
+                    //        getUserNotificationRequest.usrInf.eid = userCredentialsEntity.Email;
+                    //        UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(getUserNotificationRequest);
+                    //        if (response.IsSuccessResponse())
+                    //        {
+                    //            try
+                    //            {
+                    //                UserNotificationEntity.RemoveAll();
+                    //            }
+                    //            catch (System.Exception ne)
+                    //            {
+                    //                Utility.LoggingNonFatalError(ne);
+                    //            }
+
+                    //            if (response.GetData() != null && response.GetData().UserNotificationList != null &&
+                    //                response.GetData().UserNotificationList.Count > 0)
+                    //            {
+                    //                foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                    //                {
+                    //                    // TODO : SAVE ALL NOTIFICATIONs
+                    //                    int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                    //                }
+                    //            }
+                    //        }
+
+                    //        if (mView.IsActive())
+                    //        {
+                    //            this.mView.HideRegistrationProgress();
+                    //        }
+
+                    //        try
+                    //        {
+                    //            RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
+                    //            mRewardParentEntity.DeleteTable();
+                    //            mRewardParentEntity.CreateTable();
+                    //            RewardsCategoryEntity mRewardCategoryEntity = new RewardsCategoryEntity();
+                    //            mRewardCategoryEntity.DeleteTable();
+                    //            mRewardCategoryEntity.CreateTable();
+                    //            RewardsEntity mRewardEntity = new RewardsEntity();
+                    //            mRewardEntity.DeleteTable();
+                    //            mRewardEntity.CreateTable();
+                    //        }
+                    //        catch (Exception ex)
+                    //        {
+                    //            Utility.LoggingNonFatalError(ex);
+                    //        }
+
+                    //        try
+                    //        {
+                    //            WhatsNewParentEntity mWhatsNewParentEntity = new WhatsNewParentEntity();
+                    //            mWhatsNewParentEntity.DeleteTable();
+                    //            mWhatsNewParentEntity.CreateTable();
+                    //            WhatsNewCategoryEntity mWhatsNewCategoryEntity = new WhatsNewCategoryEntity();
+                    //            mWhatsNewCategoryEntity.DeleteTable();
+                    //            mWhatsNewCategoryEntity.CreateTable();
+                    //            WhatsNewEntity mWhatsNewEntity = new WhatsNewEntity();
+                    //            mWhatsNewEntity.DeleteTable();
+                    //            mWhatsNewEntity.CreateTable();
+                    //        }
+                    //        catch (Exception ex)
+                    //        {
+                    //            Utility.LoggingNonFatalError(ex);
+                    //        }
+
+                    //        this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                    //        MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    //        HomeMenuUtils.ResetAll();
+                    //        //this.mView.ShowAccountListActivity();
+                    //        this.mView.ShowEmailRegisterPopUp();
+                    //        UserSessions.SavePhoneVerified(mSharedPref, true);
+                    //    }
+                    //    else
+                    //    {
+                    //        if (mView.IsActive())
+                    //        {
+                    //            this.mView.HideRegistrationProgress();
+                    //        }
+                    //    }
+                    //}
 
                 }
                 else
@@ -287,6 +300,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             {
                 SendRegistrationTokenSMSRequest sendRegistrationTokenSMSRequest = new SendRegistrationTokenSMSRequest(userCredentialsEntity.MobileNo);
                 sendRegistrationTokenSMSRequest.SetUserName(userCredentialsEntity.Email);
+                string dt = JsonConvert.SerializeObject(sendRegistrationTokenSMSRequest);
                 var verificationResponse = await ServiceApiImpl.Instance.SendRegistrationTokenSMS(sendRegistrationTokenSMSRequest);
                 if (!verificationResponse.IsSuccessResponse())
                 {

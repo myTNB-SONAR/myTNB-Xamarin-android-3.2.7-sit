@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token); //lyana //merge DBR
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v1/account/Getaccount")]
+        [Post("/v2/account/Getaccount")]
         Task<T> GetCustomerAccountListAppLaunch<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);  //lyana //aws applaunch only
 
         [Headers("Content-Type:application/json; charset=utf-8")]
@@ -99,7 +99,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetAccountActivityLogList")]
-        Task<T> GetAccountActivityLogList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //wan //api log activity user access
+        Task<T> GetAccountActivityLogList<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);              //wan //api log activity user access
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdateAccountAccessRight")]

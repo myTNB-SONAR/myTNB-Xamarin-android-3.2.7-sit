@@ -311,7 +311,10 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                LogUserAccessResponse logUserAccessResponse = await ServiceApiImpl.Instance.GetAccountActivityLogList(new LogUserAccessRequest(accountData.AccountNum));
+                LogUserAccessRequest logUserAccessRequest = new LogUserAccessRequest(accountData.AccountNum);
+                logUserAccessRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
+                string dt = JsonConvert.SerializeObject(logUserAccessRequest);
+                LogUserAccessResponse logUserAccessResponse = await ServiceApiImpl.Instance.GetAccountActivityLogList(logUserAccessRequest);
 
                 if (mView.IsActive())
                 {

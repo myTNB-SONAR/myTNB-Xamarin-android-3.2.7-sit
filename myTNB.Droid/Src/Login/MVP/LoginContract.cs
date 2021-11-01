@@ -45,7 +45,7 @@ namespace myTNB_Android.Src.Login.MVP
             ///  Shows the invalid email/password error returned from the API
             ///  Post-Validation
             /// </summary>
-            void ShowInvalidEmailPasswordError(string errorMessage);
+            void ShowInvalidEmailPasswordError(string errorMessageTitle, string errorMessageDetails);
 
             /// <summary>
             /// Clears email & password errors
@@ -56,6 +56,12 @@ namespace myTNB_Android.Src.Login.MVP
             /// Shows Dashboard Activity
             /// </summary>
             void ShowDashboard();
+
+            /// <summary>
+            /// Shows Add Account Activity
+            /// </summary>
+            void ShowAddAccount();
+            
 
             /// <summary>
             /// Shows Reset Password ACtivity provided there is a reset flag
@@ -119,6 +125,20 @@ namespace myTNB_Android.Src.Login.MVP
             /// </summary>
             void ShowUpdatePhoneNumber(UserAuthenticationRequest request, string phoneNumber);
 
+            void ShowEmailVerifyDialog();
+
+            // /// <summary>
+            // /// Shows a snackbar after success resend email verification
+            // /// </summary>
+            void ShowEmailUpdateSuccess(string message, string email);
+
+            // /// <summary>
+            // /// Shows error message
+            // /// </summary>
+            // /// <param name="errorMessage"></param>
+            void ShowError(string errorMessage);
+
+
 #if STUB
             string GetCustomerAccountsStub();
 
@@ -160,6 +180,13 @@ namespace myTNB_Android.Src.Login.MVP
             /// Cancels in-progress login
             /// </summary>
             void CancelLogin();
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="email"></param>
+            void ResendEmailVerify(string apiKeyId, string email);
+
         }
     }
 }

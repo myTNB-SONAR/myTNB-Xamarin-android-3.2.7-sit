@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
@@ -60,6 +61,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         ViewBillContract.IUserActionsListener userActionsListener;
         ViewBillPresenter mPresenter;
+        ISharedPreferences mPref;
 
         string savedPDFPath = string.Empty;
 
@@ -195,9 +197,10 @@ namespace myTNB_Android.Src.ViewBill.Activity
                         }
                         else
                         {
+                            bool isWhiteList = UserSessions.GetWhiteList(PreferenceManager.GetDefaultSharedPreferences(this));
                             if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
                             {
-                                if (selectedAccount.IsHaveAccess == true)
+                                if (selectedAccount.IsHaveAccess == true || isWhiteList)
                                 {
                                     selectedAccount.IsOwner = true;
                                 }
@@ -208,7 +211,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                             }
                             else
                             {
-                                if (selectedAccount.IsHaveAccess == true)
+                                if (selectedAccount.IsHaveAccess == true || isWhiteList)
                                 {
                                     selectedAccount.IsOwner = true;
                                 }
@@ -557,9 +560,11 @@ namespace myTNB_Android.Src.ViewBill.Activity
         {
             try
             {
+                bool isWhiteList = UserSessions.GetWhiteList(PreferenceManager.GetDefaultSharedPreferences(this));
                 if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
                 {
-                    if (selectedAccount.IsHaveAccess == true)
+                   
+                    if (selectedAccount.IsHaveAccess == true || isWhiteList)
                     {
                         selectedAccount.IsOwner = true;
                     }
@@ -571,7 +576,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 }
                 else
                 {
-                    if (selectedAccount.IsHaveAccess == true)
+                    if (selectedAccount.IsHaveAccess == true || isWhiteList)
                     {
                         selectedAccount.IsOwner = true;
                     }

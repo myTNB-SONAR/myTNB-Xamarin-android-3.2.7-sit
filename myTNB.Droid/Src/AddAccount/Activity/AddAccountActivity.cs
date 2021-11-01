@@ -44,6 +44,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 fromRegisterPage = Intent.Extras.GetBoolean("fromRegisterPage", true);
             }
 
+            
             Bundle bundle = new Bundle();
             bundle.PutBoolean("fromRegisterPage", fromRegisterPage);
             //bundle.PutBoolean("hasRights", false);

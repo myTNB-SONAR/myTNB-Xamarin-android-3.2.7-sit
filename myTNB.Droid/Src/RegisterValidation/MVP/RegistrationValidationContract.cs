@@ -25,6 +25,11 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             void ShowResendPin();
 
             /// <summary>
+            /// Shows a login page
+            /// </summary>
+            //void ShowLogin();
+
+            /// <summary>
             /// 
             /// </summary>
             void StartProgress();
@@ -87,7 +92,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             /// </summary>
             void ShowAccountListActivity();
 
-            void ShowEmailRegisterPopUp();
+            void ShowEmailRegisterPopUp(string email);
 
             /// <summary>
             /// Show snackbar error from api response

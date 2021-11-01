@@ -473,47 +473,51 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.userActionsListener.OnMenuSelect(e.Item.ItemId);
         }
 
-        /*public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            return base.OnCreateOptionsMenu(menu);
-        }*/
-
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             //if (DashboardHomeActivity.GO_TO_INNER_DASHBOARD)
             //{
-                CustomerBillingAccount selected = new CustomerBillingAccount();
-                selected = CustomerBillingAccount.GetSelected();
-                DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
-                MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
-                ManageSupplyAccountMenu = menu;
-                ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.manage_account)).SetVisible(true);
-                Handler h = new Handler();
-                Action myAction = () =>
-                {
-                    NewAppTutorialUtils.ForceCloseNewAppTutorial(); 
-                    if (!UserSessions.HasManageAccessIconTutorialShown(this.mPref))
-                    {
-                        OnManageAccessIconTutorialDialog(selected.isOwned, selected.AccountTypeId);
-                        
-                    }
-                    //else
-                    //{
-                    //    //DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
-                    //    //if (!fragment.GetIsMDMSDown())
-                    //    //{
-                    //        DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
-                    //        fragment.GovermentCommercial();
-                    //    //}
-                        
-                        
-                    //}
-
-                    
-                };
-                h.PostDelayed(myAction, 50);
+                
             //}
-            
+            //else
+            //{
+                if (currentFragment.GetType() == typeof(HomeMenuFragment) ||
+                    currentFragment.GetType() == typeof(ProfileMainMenuFragment) ||
+                    currentFragment.GetType() == typeof(RewardMenuFragment) ||
+                    currentFragment.GetType() == typeof(ItemisedBillingMenuFragment) ||
+                    currentFragment.GetType() == typeof(FeedbackMenuFragment) ||
+                    currentFragment.GetType() == typeof(WhatsNewMenuFragment))
+                {
+                    //CustomerBillingAccount selected = new CustomerBillingAccount();
+                    //selected = CustomerBillingAccount.GetSelected();
+                    //DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
+                    MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
+                    ManageSupplyAccountMenu = menu;
+                    ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.manage_account)).SetVisible(false);
+                }
+                else
+                {
+                    CustomerBillingAccount selected = new CustomerBillingAccount();
+                    selected = CustomerBillingAccount.GetSelected();
+                    DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
+                    MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
+                    ManageSupplyAccountMenu = menu;
+                    ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.manage_account)).SetVisible(true);
+                    Handler h = new Handler();
+                    Action myAction = () =>
+                    {
+                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                        if (!UserSessions.HasManageAccessIconTutorialShown(this.mPref))
+                        {
+                            OnManageAccessIconTutorialDialog(selected.isOwned, selected.AccountTypeId);
+
+                        }
+                    };
+                    h.PostDelayed(myAction, 50);
+                }
+                
+            //}
+
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -527,12 +531,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             h.PostDelayed(myAction, 100);
         }
 
-        //public void ShowCommercialDialog()
-        //{
-        //    DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
-        //    fragment.GovermentCommercial();
-        //}
-
+        
 
         public int GetViewBillButtonHeight()
         {

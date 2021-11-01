@@ -17,6 +17,7 @@ using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.RegisterValidation.Activity;
 using myTNB_Android.Src.RegisterValidation.MVP;
 using myTNB_Android.Src.RegistrationForm.Models;
@@ -367,6 +368,14 @@ namespace myTNB_Android.Src.RegisterValidation
             this.userActionsListener = userActionListener;
         }
 
+        // public void ShowLogin()
+        // {
+
+        //     Intent LoginIntent = new Intent(this, typeof(LoginActivity));
+        //     LoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+        //     StartActivity(LoginIntent);
+        // }
+
         public void ShowInvalidPin()
         {
             //throw new NotImplementedException();
@@ -413,11 +422,11 @@ namespace myTNB_Android.Src.RegisterValidation
             StartActivity(LinkAccountIntent);
         }
 
-        public void ShowEmailRegisterPopUp()
+        public void ShowEmailRegisterPopUp(string email)
         {
-            Intent LinkAccountIntent = new Intent(this, typeof(EmailRegisterPopupActivity));
-            LinkAccountIntent.PutExtra("fromDashboard", true);
-            StartActivity(LinkAccountIntent);
+            Intent LoginIntent = new Intent(this, typeof(EmailRegisterPopupActivity));
+            LoginIntent.PutExtra(Constants.APP_CONFIG.API_KEY_ID, email); 
+            StartActivity(LoginIntent);
         }
 
 

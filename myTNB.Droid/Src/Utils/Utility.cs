@@ -401,6 +401,33 @@ namespace myTNB_Android.Src.Utils
             }).Show();
         }
 
+        public static void ShowEmailVerificationLoginDialog(Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("Login", "verifyEmailPopupTitle"))
+                        .SetMessage(Utility.GetLocalizedLabel("Login", "verifyEmailPopupBody"))
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Login", "gotIt"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Login", "resend"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
         public static void ShowIdentificationErrorDialog(Activity context, Action confirmAction, Action cancelAction = null)
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
@@ -408,6 +435,32 @@ namespace myTNB_Android.Src.Utils
                         .SetMessage(Utility.GetLocalizedLabel("OneLastThing", "IdBodyError"))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
+        public static void ShowInvalidEmailPasswordErrorDialog(string errorMessageTitle, string errorMessageDetails, Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(errorMessageTitle)
+                        .SetMessage(errorMessageDetails)
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "ok"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();

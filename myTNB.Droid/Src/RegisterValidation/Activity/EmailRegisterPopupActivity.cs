@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using myTNB_Android.Src.RegisterValidation.MVP;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Login.Activity;
 
 namespace myTNB_Android.Src.RegisterValidation.Activity
 {
@@ -50,6 +51,8 @@ namespace myTNB_Android.Src.RegisterValidation.Activity
 
         const string PAGE_ID = "Register";
 
+        public string emailCredentials;
+
         public override int ResourceId()
         {
             return Resource.Layout.EmailPopup;
@@ -61,9 +64,19 @@ namespace myTNB_Android.Src.RegisterValidation.Activity
 
             try
             {
+                Bundle extras = Intent.Extras;
+
+                if (extras != null)
+                {
+
+                    if (extras.ContainsKey(Constants.APP_CONFIG.API_KEY_ID))
+                    {
+                        emailCredentials = extras.GetString(Constants.APP_CONFIG.API_KEY_ID);
+                    }
+                }
 
                 UserEntity userEntity = UserEntity.GetActive();
-                var email = userEntity.Email;
+                var email = emailCredentials;
                 string data;
                 data = Utility.GetLocalizedLabel("RegisterSuccess", "emailVerifiedLinkSent");
                 TextViewUtils.SetMuseoSans300Typeface(
@@ -83,7 +96,7 @@ namespace myTNB_Android.Src.RegisterValidation.Activity
                 //txtVerifyNotification.Text = string.Format(Utility.GetLocalizedLabel("Register", "emailVerifiedLinkSent"), email);
                 string temp = string.Format(data, email);
                 txtVerifyNotification.TextFormatted = GetFormattedText(temp);
-                btnContinue.Text = Utility.GetLocalizedLabel("RegisterSuccess", "continue");
+                btnContinue.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backLogin");
                 //btnContinue.Text = GetLabelCommonByLanguage("continue");
 
                 btnContinue.Click += OnClickAddAccount;
@@ -104,17 +117,21 @@ namespace myTNB_Android.Src.RegisterValidation.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                ShowAccountListActivity();
+                ShowLoginActivity();
             }
         }
 
-        public void ShowAccountListActivity()
+        public void ShowLoginActivity()
         {
-            Intent LinkAccountIntent = new Intent(this, typeof(LinkAccountActivity));
-            LinkAccountIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            LinkAccountIntent.PutExtra("fromDashboard", true);
-            LinkAccountIntent.PutExtra("fromRegisterPage", true);
-            StartActivity(LinkAccountIntent);
+            //Intent LinkAccountIntent = new Intent(this, typeof(LinkAccountActivity));
+            //LinkAccountIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            //LinkAccountIntent.PutExtra("fromDashboard", true);
+            //LinkAccountIntent.PutExtra("fromRegisterPage", true);
+            //StartActivity(LinkAccountIntent);
+
+            Intent LoginIntent = new Intent(this, typeof(LoginActivity));
+            LoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(LoginIntent);
         }
 
         public void ShowProgressDialog()

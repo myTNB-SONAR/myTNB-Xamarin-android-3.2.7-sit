@@ -6,12 +6,14 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using ValidateManualAccountRequest = myTNB_Android.Src.MyTNBService.Request.ValidateManualAccountRequest;
 
 namespace myTNB_Android.Src.AddAccount.MVP
 {
@@ -200,6 +202,9 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
             try
             {
+                ValidateManualAccountRequest addaccRequest = new ValidateManualAccountRequest(accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner.ToString());
+              
+                string dt = JsonConvert.SerializeObject(addaccRequest);
                 var result = await ServiceApiImpl.Instance.ValidateManualAccount(new MyTNBService.Request.ValidateManualAccountRequest(accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner.ToString()));
                 if (mView.IsActive())
                 {
