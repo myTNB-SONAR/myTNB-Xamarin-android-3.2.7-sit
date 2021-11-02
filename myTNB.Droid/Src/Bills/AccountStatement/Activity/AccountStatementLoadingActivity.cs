@@ -153,8 +153,14 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
             return false;
         }
 
+        private void ShowBackButton(bool flag)
+        {
+            this.SupportActionBar.SetDisplayHomeAsUpEnabled(flag);
+            this.SupportActionBar.SetDisplayShowHomeEnabled(flag);
+        }
+
         [OnClick(Resource.Id.acctStmntBtnRefresh)]
-        public void ButtonNextOnClick(object sender, EventArgs eventArgs)
+        public void ButtonRefreshOnClick(object sender, EventArgs eventArgs)
         {
             if (!this.GetIsClicked())
             {
@@ -168,7 +174,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
         {
             RunOnUiThread(() =>
             {
-                this.toolbar.Visibility = ViewStates.Gone;
+                ShowBackButton(true);
                 acctStmntLoadingLayout.Visibility = ViewStates.Gone;
                 acctStmntRefreshLayout.Visibility = ViewStates.Visible;
                 acctStmntRefreshButtonLayout.Visibility = ViewStates.Visible;
@@ -179,7 +185,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
         {
             RunOnUiThread(() =>
             {
-                this.toolbar.Visibility = ViewStates.Visible;
+                ShowBackButton(false);
                 acctStmntLoadingLayout.Visibility = ViewStates.Visible;
                 acctStmntRefreshLayout.Visibility = ViewStates.Gone;
                 acctStmntRefreshButtonLayout.Visibility = ViewStates.Gone;
