@@ -88,10 +88,10 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string ZERO_INDEX_TITLE = "All Notifications";
 
         internal static readonly string NO_SM_DATA_FOUND = ".noDataFound";
-        internal static readonly string SELECTED_BILL_STATEMENT = ".selectedBillMonths";
 
         internal static readonly string ACCT_STMNT_EMPTY = ".accountStatementEmpty";
         internal static readonly string ACCT_STMNT_PDF_FILE_PATH = ".accountStatementFilePath";
+        internal static readonly string BILL_HISTORY_IS_EMPTY = ".billHistoryIsEmpty";
 
         /// <summary>
         /// BARCODE REQUEST TYPE
@@ -290,7 +290,6 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly int SELECT_ACCOUNT_PDF_REQUEST_CODE = 9078;
         internal static readonly int SELECT_ACCOUNT_DBR_REQUEST_CODE = 9079;
-        internal static readonly int SELECT_ACCOUNT_STATEMENT_PDF_REQUEST_CODE = 9080;
 
         internal static readonly string CODE_KEY = "CODE_KEY";
         internal static readonly string DBR_KEY = "DBR_KEY";

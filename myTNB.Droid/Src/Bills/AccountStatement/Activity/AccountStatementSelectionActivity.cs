@@ -11,7 +11,6 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using myTNB_Android.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
-using myTNB_Android.Src.ViewBill.Activity;
 using myTNB.Mobile;
 
 namespace myTNB_Android.Src.Bills.AccountStatement.Activity
@@ -47,6 +46,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
         bool isThreeMonthSelected = false;
 
         AccountData selectedAccount;
+        private bool billHistoryIsEmpty;
 
         const string PAGE_ID = "StatementPeriod";
 
@@ -173,6 +173,10 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
                     {
                         selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                     }
+                    if (extras.ContainsKey(Constants.BILL_HISTORY_IS_EMPTY))
+                    {
+                        billHistoryIsEmpty = extras.GetBoolean(Constants.BILL_HISTORY_IS_EMPTY);
+                    }
                 }
                 imgTheeMonthsAction.SetMaxHeight(txtThreeMonths.Height);
                 imgSixMonthsAction.SetMaxHeight(txtSixMonth.Height);
@@ -212,40 +216,32 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
                 : Resource.Drawable.silver_chalice_button_background);
         }
 
-        public void ShowBillStatementPDF()
-        {
-            string selectedMonths = string.Empty;
-            Intent viewBill = new Intent(this, typeof(ViewBillActivity));
-            viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_STATEMENT_PDF_REQUEST_CODE);
-            if (isSixMonthSelected)
-            {
-                selectedMonths = AccountStatementConstants.PAST_6_MONTHS;
-            }
-            if (isThreeMonthSelected)
-            {
-                selectedMonths = AccountStatementConstants.PAST_3_MONTHS;
-            }
-            viewBill.PutExtra(AccountStatementConstants.SELECTED_MONTH_FOR_ACCOUNT_STATEMENT, selectedMonths);
-            StartActivity(viewBill);
-        }
-
         private void OnShowAccountStatementLoading()
         {
             this.SetIsClicked(true);
-            string selectedMonths = string.Empty;
-            Intent acctStmntLoadingIntent = new Intent(this, typeof(AccountStatementLoadingActivity));
-            acctStmntLoadingIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            if (isSixMonthSelected)
+            if (billHistoryIsEmpty)
             {
-                selectedMonths = AccountStatementConstants.PAST_6_MONTHS;
+                Intent acctStmntTimeOutIntent = new Intent(this, typeof(AccountStatementTimeOutActivity));
+                acctStmntTimeOutIntent.PutExtra(Constants.ACCT_STMNT_EMPTY, billHistoryIsEmpty);
+                acctStmntTimeOutIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                StartActivity(acctStmntTimeOutIntent);
             }
-            if (isThreeMonthSelected)
+            else
             {
-                selectedMonths = AccountStatementConstants.PAST_3_MONTHS;
+                string selectedMonths = string.Empty;
+                Intent acctStmntLoadingIntent = new Intent(this, typeof(AccountStatementLoadingActivity));
+                acctStmntLoadingIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                if (isSixMonthSelected)
+                {
+                    selectedMonths = AccountStatementConstants.PAST_6_MONTHS;
+                }
+                if (isThreeMonthSelected)
+                {
+                    selectedMonths = AccountStatementConstants.PAST_3_MONTHS;
+                }
+                acctStmntLoadingIntent.PutExtra(AccountStatementConstants.SELECTED_MONTH_FOR_ACCOUNT_STATEMENT, selectedMonths);
+                StartActivity(acctStmntLoadingIntent);
             }
-            acctStmntLoadingIntent.PutExtra(AccountStatementConstants.SELECTED_MONTH_FOR_ACCOUNT_STATEMENT, selectedMonths);
-            StartActivity(acctStmntLoadingIntent);
         }
     }
 }

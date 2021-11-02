@@ -183,6 +183,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         private DecimalFormat mDecimalFormat = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         IMenuItem billFilterMenuItem;
+        IMenuItem billDownloadMenuItem;
 
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
         const string PAGE_ID = "Bills";
@@ -215,8 +216,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             switch (item.ItemId)
             {
-                case Resource.Id.action_notification:
+                case Resource.Id.action_bills_filter:
                     ShowSelectFilter();
+                    return true;
+                case Resource.Id.action_bills_download:
+                    DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Bill.View_Account_Statement);
+                    ShowDownloadBill();
                     return true;
             }
             return base.OnOptionsItemSelected(item);
@@ -228,12 +233,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 ((DashboardHomeActivity)this.Activity).SetToolBarTitle(myHistoryTitle);
                 billFilterMenuItem.SetVisible(true);
+                billDownloadMenuItem.SetVisible(true);
                 UpdateFilterIcon();
             }
             else
             {
                 ((DashboardHomeActivity)this.Activity).SetToolBarTitle(billTitle);
                 billFilterMenuItem.SetVisible(false);
+                billDownloadMenuItem.SetVisible(false);
             }
         }
 
@@ -385,6 +392,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 {
                     this.SetIsClicked(true);
                     Intent newIntent = new Intent(this.Activity, typeof(AccountStatementSelectionActivity));
+                    newIntent.PutExtra(Constants.BILL_HISTORY_IS_EMPTY, selectedBillingHistoryModelList != null ? selectedBillingHistoryModelList.Count == 0 : true);
                     newIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
                     StartActivity(newIntent);
                 }
@@ -993,7 +1001,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         private void EnableActionButtons(bool isEnable)
         {
-            billFilterIcon.Clickable = isEnable;
             btnViewDetails.Enabled = isEnable;
 
             if (isEnable)
@@ -1054,15 +1061,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 UpdateFilterItems(billPayFilters);
             }
 
+            SetShowAccountStatementIcon();
+            billFilterIcon.Visibility = ViewStates.Visible;
+            billFilterIcon.Enabled = true;
+
             if (billingHistoryModelList.Count > 0)
             {
                 selectedBillingHistoryModelList = new List<AccountBillPayHistoryModel>();
                 selectedBillingHistoryModelList = billingHistoryModelList;
                 emptyItemisedBillingList.Visibility = ViewStates.Gone;
                 itemisedBillingList.Visibility = ViewStates.Visible;
-                SetShowAccountStatementIcon();
-                billFilterIcon.Visibility = ViewStates.Visible;
-                billFilterIcon.Enabled = true;
+
                 EnableActionButtons(true);
                 RenderBillingHistoryList(null);
 
@@ -1095,9 +1104,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             else
             {
-                billFilterIcon.Visibility = ViewStates.Gone;
-                download_bill_icon.Visibility = ViewStates.Gone;
-                billFilterIcon.Enabled = true;
                 bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
                 if (isREAccount)
                 {
@@ -1488,10 +1494,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
         {
-            inflater.Inflate(Resource.Menu.DashboardToolbarMenu, menu);
-            billFilterMenuItem = menu.FindItem(Resource.Id.action_notification);
+            inflater.Inflate(Resource.Menu.BillsToolbarMenu, menu);
+
+            billFilterMenuItem = menu.FindItem(Resource.Id.action_bills_filter);
             billFilterMenuItem.SetIcon(ContextCompat.GetDrawable(this.Activity, Resource.Drawable.bill_screen_filter_icon));
             billFilterMenuItem.SetVisible(false);
+            billDownloadMenuItem = menu.FindItem(Resource.Id.action_bills_download);
+            billDownloadMenuItem.SetIcon(ContextCompat.GetDrawable(this.Activity, Resource.Drawable.Icon_Acct_Stmnt_Download_White));
+            billDownloadMenuItem.SetVisible(false);
             base.OnCreateOptionsMenu(menu, inflater);
         }
 
@@ -1598,7 +1608,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             else
             {
-                billFilterMenuItem.SetIcon(Resource.Drawable.filter_white);
+                billFilterMenuItem.SetIcon(Resource.Drawable.Icon_Bills_Filter_White);
                 billFilterIcon.SetImageResource(Resource.Drawable.bill_screen_filter_icon);
             }
         }

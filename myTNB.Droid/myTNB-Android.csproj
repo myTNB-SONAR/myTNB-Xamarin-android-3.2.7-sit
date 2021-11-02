@@ -4211,15 +4211,10 @@
     </AndroidResource>
     <Compile Include="Src\Utils\NewAppTutorialUtils.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\filter_blue.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\filter_white.png" />
     <AndroidResource Include="Resources\drawable-mdpi\filter_blue.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\filter_white.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\filter_blue.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\filter_white.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\filter_blue.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\filter_white.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\filter_blue.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\filter_white.png" />
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_0.png" />
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_0.png" />
     <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_0.png" />
@@ -6923,7 +6918,7 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Enquiry\GSL\Fragment\GSLInfoItemListComponent.cs" />
-    <Compile Include="Src\Bills\AccountStatement\Activity\AccountStatementActivity.cs" />
+    <Compile Include="Src\Bills\AccountStatement\Activity\AccountStatementSelectionActivity.cs" />
     <Compile Include="Src\Bills\AccountStatement\Activity\AccountStatementLoadingActivity.cs" />
     <AndroidResource Include="Resources\layout\AccountStatementLoadingView.xml">
       <SubType></SubType>
@@ -7019,6 +7014,50 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Acct_Stmnt_Empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\menu\BillsToolbarMenu.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Acct_Stmnt_Download_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Acct_Stmnt_Download_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Acct_Stmnt_Download_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Acct_Stmnt_Download_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Acct_Stmnt_Download_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Bills_Filter_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Bills_Filter_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Bills_Filter_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Bills_Filter_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Bills_Filter_White.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

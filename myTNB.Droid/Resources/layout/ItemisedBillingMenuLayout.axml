@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -268,8 +269,9 @@
 						android:id="@+id/download_bill_icon"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginRight="12dp"
+						android:layout_marginRight="16dp"
 						android:visibility="gone"
+						tools:visibility="visible"
 						android:src="@drawable/download_bill_statement"/>
 					<ImageView
 						android:id="@+id/bill_filter_icon"
