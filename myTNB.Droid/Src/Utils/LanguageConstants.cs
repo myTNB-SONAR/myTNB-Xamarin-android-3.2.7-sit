@@ -20,6 +20,7 @@
             internal static readonly string NEXT = "next";
             internal static readonly string MOBILE_NO = "mobileNo";
             internal static readonly string CANCEL = "cancel";
+            internal static readonly string OK = "ok";
         }
 
         internal struct Error

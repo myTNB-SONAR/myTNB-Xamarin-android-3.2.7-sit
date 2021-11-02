@@ -182,6 +182,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                     datePickerDialog.DatePicker.MinDate = minCalendar.TimeInMillis;
                 }
                 datePickerDialog.DatePicker.MaxDate = calendar.TimeInMillis;
+                datePickerDialog.SetButton(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK), datePickerDialog);
+                datePickerDialog.SetButton2(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.CANCEL), datePickerDialog);
                 datePickerDialog.Show();
             }
             catch (Exception e)
@@ -198,6 +200,8 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                 int hour = calendar.Get(CalendarField.HourOfDay);
                 int minute = calendar.Get(CalendarField.Minute);
                 TimePickerDialog timePickerDialog = new TimePickerDialog(this.mActivity, AlertDialog.ThemeHoloLight, this, hour, minute, false);
+                timePickerDialog.SetButton(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK), timePickerDialog);
+                timePickerDialog.SetButton2(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.CANCEL), timePickerDialog);
                 timePickerDialog.Show();
             }
             catch (Exception e)
@@ -278,16 +282,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
                             if (restorationDate.Date == incidentDate.Date)
                             {
                                 TimeSpan minTime = new TimeSpan(incidentDate.Hour, incidentDate.Minute, 0);
-                                TimeSpan maxTime = new TimeSpan(dateTimeNow.Hour, dateTimeNow.Minute, 0);
                                 int compareMin = selectedTime.CompareTo(minTime);
-                                int compareMax = selectedTime.CompareTo(maxTime);
                                 if (compareMin < 0)
                                 {
                                     selectedTime = minTime;
-                                }
-                                else if (compareMax > 0)
-                                {
-                                    selectedTime = maxTime;
                                 }
                             }
                             else if (restorationDate.Date == dateTimeNow.Date)
