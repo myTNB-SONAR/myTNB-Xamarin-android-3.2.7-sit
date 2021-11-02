@@ -12,19 +12,19 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
             {
                 return StatusCode switch
                 {
-                    "GS01" => EnquiryGSLStatusCode.GS01,//Created***
-                    "GL01" => EnquiryGSLStatusCode.GL01,//Created***
-                    "GS08" => EnquiryGSLStatusCode.GS08,//Closed***
-                    "GL05" => EnquiryGSLStatusCode.GL05,//Closed***
-                    "GS06" => EnquiryGSLStatusCode.GS06,//Accepted***
-                    "GL03" => EnquiryGSLStatusCode.GL03,//Accepted***
-                    "GS07" => EnquiryGSLStatusCode.GS07,//Rejected***
-                    "GL04" => EnquiryGSLStatusCode.GL04,//Rejected***
-                    "GS05" => EnquiryGSLStatusCode.GS05,//Rejected***
-                    "GS02" => EnquiryGSLStatusCode.GS02,//In Progress***
-                    "GL02" => EnquiryGSLStatusCode.GL02,//In Progress***
-                    "GS03" => EnquiryGSLStatusCode.GS03,//Pending Approval***
-                    "GS04" => EnquiryGSLStatusCode.GS04,//Approved***
+                    "GS01" => EnquiryGSLStatusCode.GS01,
+                    "GL01" => EnquiryGSLStatusCode.GL01,
+                    "GS08" => EnquiryGSLStatusCode.GS08,
+                    "GL05" => EnquiryGSLStatusCode.GL05,
+                    "GS06" => EnquiryGSLStatusCode.GS06,
+                    "GL03" => EnquiryGSLStatusCode.GL03,
+                    "GS07" => EnquiryGSLStatusCode.GS07,
+                    "GL04" => EnquiryGSLStatusCode.GL04,
+                    "GS05" => EnquiryGSLStatusCode.GS05,
+                    "GS02" => EnquiryGSLStatusCode.GS02,
+                    "GL02" => EnquiryGSLStatusCode.GL02,
+                    "GS03" => EnquiryGSLStatusCode.GS03,
+                    "GS04" => EnquiryGSLStatusCode.GS04,
                     _ => EnquiryGSLStatusCode.NONE,
                 };
             }
@@ -42,9 +42,9 @@ namespace myTNB_Android.Src.Enquiry.GSL.MVP
                     EnquiryGSLStatusCode.GS08 => Resource.Color.createdColorSubmit,
                     EnquiryGSLStatusCode.GL01 => Resource.Color.createdColorSubmit,
                     EnquiryGSLStatusCode.GL03 => Resource.Color.createdColorSubmit,
-                    EnquiryGSLStatusCode.GL05 => Resource.Color.createdColorSubmit,
                     EnquiryGSLStatusCode.GS02 => Resource.Color.inProgressColor,
                     EnquiryGSLStatusCode.GL02 => Resource.Color.inProgressColor,
+                    EnquiryGSLStatusCode.GL05 => Resource.Color.completedColor,
                     EnquiryGSLStatusCode.GS05 => Resource.Color.cancelledColor,
                     EnquiryGSLStatusCode.GS07 => Resource.Color.cancelledColor,
                     EnquiryGSLStatusCode.GL04 => Resource.Color.cancelledColor,

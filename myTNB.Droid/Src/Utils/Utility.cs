@@ -47,9 +47,9 @@ namespace myTNB_Android.Src.Utils
             return rg.IsMatch(strToCheck);
         }
 
-        public static bool IsNotNumeric(string strToCheck)
+        public static bool IsNotASCII(string strToCheck)
         {
-            Regex rg = new Regex(@"^([^0-9]*)$");
+            Regex rg = new Regex(@"[^\x00-\x7F]");
             return rg.IsMatch(strToCheck);
         }
 

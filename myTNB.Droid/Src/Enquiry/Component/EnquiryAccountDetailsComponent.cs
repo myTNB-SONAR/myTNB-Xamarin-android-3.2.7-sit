@@ -256,8 +256,16 @@ namespace myTNB_Android.Src.Enquiry.Component
             string fullName = txtEnquiryAcctDetailsFullName.Text;
             if (fullName.Trim().IsValid())
             {
-                ClearErrors(EnquiryAccountDetailType.FULL_NAME);
-                isValid = true;
+                if (!Utility.IsNotASCII(fullName.Trim()))
+                {
+                    ClearErrors(EnquiryAccountDetailType.FULL_NAME);
+                    isValid = true;
+                }
+                else
+                {
+                    ShowInvalidErrror(EnquiryAccountDetailType.FULL_NAME);
+                    isValid = false;
+                }
             }
             else
             {
