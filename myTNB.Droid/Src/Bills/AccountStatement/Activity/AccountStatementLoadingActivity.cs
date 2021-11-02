@@ -168,6 +168,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
         {
             RunOnUiThread(() =>
             {
+                this.toolbar.Visibility = ViewStates.Gone;
                 acctStmntLoadingLayout.Visibility = ViewStates.Gone;
                 acctStmntRefreshLayout.Visibility = ViewStates.Visible;
                 acctStmntRefreshButtonLayout.Visibility = ViewStates.Visible;
@@ -178,9 +179,11 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
         {
             RunOnUiThread(() =>
             {
+                this.toolbar.Visibility = ViewStates.Visible;
                 acctStmntLoadingLayout.Visibility = ViewStates.Visible;
                 acctStmntRefreshLayout.Visibility = ViewStates.Gone;
                 acctStmntRefreshButtonLayout.Visibility = ViewStates.Gone;
+                this.SetIsClicked(false);
             });
         }
 
