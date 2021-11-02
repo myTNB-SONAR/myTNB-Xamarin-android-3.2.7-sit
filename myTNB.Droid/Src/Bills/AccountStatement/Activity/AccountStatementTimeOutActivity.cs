@@ -72,6 +72,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
                 : Resource.Style.Theme_Dashboard);
 
             SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.TITLE));
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
 
             TextViewUtils.SetMuseoSans500Typeface(acctStmntTimeOutBtnBack);
             TextViewUtils.SetTextSize16(acctStmntTimeOutBtnBack);

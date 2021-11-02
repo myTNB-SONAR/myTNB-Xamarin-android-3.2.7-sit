@@ -18,9 +18,6 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
     [Activity(ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class AccountStatementPDFActivity : BaseToolbarAppCompatActivity
     {
-        [BindView(Resource.Id.acctStmntProgressBar)]
-        public ProgressBar acctStmntProgressBar;
-
         [BindView(Resource.Id.acctStmntBaseView)]
         public static LinearLayout acctStmntBaseView;
 
@@ -57,6 +54,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
                 : Resource.Style.Theme_Dashboard);
 
             SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.TITLE));
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

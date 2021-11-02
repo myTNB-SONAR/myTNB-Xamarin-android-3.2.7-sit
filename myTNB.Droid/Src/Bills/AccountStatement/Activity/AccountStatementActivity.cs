@@ -193,6 +193,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
             TextViewUtils.SetTextSize14(txtAcctStmtHeaderLabel, txtAcctStmtFooterLabel);
 
             SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.TITLE));
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
 
             txtPageTitleInfo.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.REQUEST_TITLE);
             txtThreeMonths.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.PAST_3_MONTHS);

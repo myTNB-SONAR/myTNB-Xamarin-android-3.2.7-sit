@@ -15,6 +15,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.MVP
             void OnShowTimeOutScreen(bool isEmpty);
             void ShowRefreshView();
             void ShowLoadingView();
+            void APICallHasFinished();
         }
 
         public interface IUserActionsListener : IBasePresenter

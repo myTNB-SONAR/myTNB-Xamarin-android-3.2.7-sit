@@ -77,24 +77,25 @@ namespace myTNB_Android.Src.Bills.AccountStatement.MVP
             {
                 if (accountStatementResponse.Content.AccountStatement == null)
                 {
-                    System.Console.WriteLine("Account Statement is Empty");
-                    Log.Debug("[DEBUG]", "Account Statement is Empty");
+                    this.view?.APICallHasFinished();
                     this.view?.OnShowTimeOutScreen(true);
                 }
                 else
                 {
                     try
                     {
-                        Log.Debug("[DEBUG]", "Account Statement is Not Empty");
                         string refNo = accountStatementResponse.Content.ReferenceNo;
                         string fileName = string.Format("{0} {1}.pdf", Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.TITLE), this.selectedAccount.AccountNum);
                         byte[] pdfByte = accountStatementResponse.Content.AccountStatement;
                         string filePath = await FileUtils.SaveAsyncPDF(this.mContext, pdfByte, FileUtils.PDF_FOLDER, fileName);
+                        this.view?.APICallHasFinished();
                         this.view?.OnShowAccountStamentScreen(filePath);
                     }
                     catch (Exception e)
                     {
                         Utility.LoggingNonFatalError(e);
+                        this.view?.APICallHasFinished();
+                        this.view?.ShowRefreshView();
                     }
                 }
             }
@@ -102,15 +103,13 @@ namespace myTNB_Android.Src.Bills.AccountStatement.MVP
                 accountStatementResponse.StatusDetail != null &&
                 accountStatementResponse.StatusDetail.IsTimeout)
             {
+                this.view?.APICallHasFinished();
                 this.view?.OnShowTimeOutScreen(false);
-                System.Console.WriteLine("Account Statement has Timed Out");
-                Log.Debug("[DEBUG]", "Account Statement has Timed Out");
             }
             else
             {
+                this.view?.APICallHasFinished();
                 this.view?.ShowRefreshView();
-                System.Console.WriteLine("Account Statement is in Refresh View");
-                Log.Debug("[DEBUG]", "Account Statement is in Refresh View");
             }
         }
     }
