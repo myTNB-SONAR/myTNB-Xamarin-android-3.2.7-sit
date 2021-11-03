@@ -154,13 +154,13 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 //TextViewUtils.SetTextSize14(txtAccountAddress, txtNickName, txtAccountNumber, btnTextUpdateNickName, btnRemoveAccount, txtInputLayoutNickName);
 
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
-                TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName, infoAddress);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName, manageBillTitle, txtNewLabel);
                 //txtInputLayoutNickName.SetHintTextAppearance(TextViewUtils.IsLargeFonts
                 //    ? Resource.Style.TextInputLayout_TextAppearance_Large
                 //    : Resource.Style.TextInputLayout_TextAppearance_Small);
                 TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
-                TextViewUtils.SetTextSize14(txtAccountNumber, txtAccountAddress, btnTextUpdateNickName, manageBillTitle);
+                TextViewUtils.SetTextSize14(txtAccountNumber, txtAccountAddress, btnTextUpdateNickName, manageBillTitle, infoAddress);
                 TextViewUtils.SetTextSize16(btnRemoveAccount, txtNickName);
 
                 txtAccountNumber.Text = accountData.AccountNum;

@@ -55,7 +55,7 @@ namespace myTNB.Mobile
  
 
 #if DEBUG
-        public static string ApiDomain = DEV3;
+        public static string ApiDomain = SITAWS;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;

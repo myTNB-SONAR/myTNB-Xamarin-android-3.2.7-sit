@@ -84,6 +84,9 @@ namespace myTNB_Android.Src.ManageUser.Activity
         [BindView(Resource.Id.btnResendInviteAccessUser)]
         Button btnResendInviteAccessUser;
 
+        [BindView(Resource.Id.btnResendInviteDisable)]
+        Button btnResendInviteDisable;
+        
         private IMenu ManageSupplyAccountMenu;
 
         AccountData accountData;
@@ -134,7 +137,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtEmail);
                 TextViewUtils.SetMuseoSans300Typeface(infoManageUser);
                 TextViewUtils.SetMuseoSans300Typeface(itemTitleFullBill, itemTitleBilling);
-                TextViewUtils.SetMuseoSans500Typeface(btnSave, itemTitle, btnCancelAddAccess, btnResendInviteAccessUser);
+                TextViewUtils.SetMuseoSans500Typeface(btnSave, itemTitle, btnCancelAddAccess, btnResendInviteAccessUser, btnResendInviteDisable);
                 //TextViewUtils.SetMuseoSans500Typeface(bottomLayout_Cancel_Resend, bottomLayoutSave);
 
                 TextViewUtils.SetTextSize14(txtInputLayoutEmail, txtNickName, txtEmail, itemTitleFullBill, itemTitleBilling, infoManageUser, btnSave, itemTitle, btnCancelAddAccess, btnResendInviteAccessUser);
@@ -148,6 +151,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 btnSave.Text = GetLabelCommonByLanguage("saveChanges");
                 btnCancelAddAccess.Text = GetLabelCommonByLanguage("cancel");
                 btnResendInviteAccessUser.Text = Utility.GetLocalizedLabel("Tnb_Profile", "resend");
+                btnResendInviteDisable.Text = Utility.GetLocalizedLabel("Tnb_Profile", "resend");
                 infoManageUser.Text = Utility.GetLocalizedLabel("Usage", "missedReadTitle");
 
 
@@ -159,6 +163,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 {
                     PopulateCheckBoxPreRegister();
                     bottomLayout_Cancel_Resend.Visibility = ViewStates.Visible;
+                    btnResendInviteDisable.Visibility = ViewStates.Gone;
                     bottomLayoutSave.Visibility = ViewStates.Gone;
                     view2.Visibility = ViewStates.Gone;
                     txtNameLayout.Visibility = ViewStates.Gone;
@@ -610,11 +615,13 @@ namespace myTNB_Android.Src.ManageUser.Activity
             isSelectionChange = false;
         }
 
-
+        
         public void DisableResendButton()
         {
-            btnResendInviteAccessUser.Enabled = false;
-            btnResendInviteAccessUser.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            btnResendInviteAccessUser.Visibility = ViewStates.Gone;
+            btnResendInviteDisable.Visibility = ViewStates.Visible;
+            btnResendInviteDisable.Enabled = false;
+            btnResendInviteDisable.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_outline);
         }
 
 

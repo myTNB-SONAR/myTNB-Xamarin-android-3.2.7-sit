@@ -251,12 +251,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewMyUsage"),
                                delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
-                            if (notificationDetails.MerchantTransId != null)
-                            {
-                                secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "addNickname"),
-                                delegate () { ViewManageAccess(notificationDetails); });
-                                ctaList.Add(secondaryCTA);
-                            }
+                            
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "addNickname"),
+                            delegate () { ViewManageAccess(notificationDetails); });
+                            ctaList.Add(secondaryCTA);
+                            
 
                             break;
                         }
