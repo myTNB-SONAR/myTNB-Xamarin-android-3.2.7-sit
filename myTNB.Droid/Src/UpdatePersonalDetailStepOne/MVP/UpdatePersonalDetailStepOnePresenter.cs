@@ -17,8 +17,8 @@ using myTNB_Android.Src.Utils;
 namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
 {
 
-   
-   public class UpdatePersonalDetailStepOnePresenter : UpdatePersonalDetailStepOneContract.IUserActionsListener
+
+    public class UpdatePersonalDetailStepOnePresenter : UpdatePersonalDetailStepOneContract.IUserActionsListener
     {
         UpdatePersonalDetailStepOneContract.IView mView;
         public void Start()
@@ -168,12 +168,12 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
             this.mView.ShowinfoLabelDoIneedOwnerConsent();
         }
 
-        public void CheckRequiredFields(string iC, bool toggleChkBoxIC, string ownerName,bool toggleChkOwnerName,bool  mobileNumber, bool toggleChkMobileNumber, string emailAddress, bool toggleChkEmailAddress, string mailingAddress, bool toggleChkMailingAddress, string premiseAddress, bool toggleChkPremiseAddress, string otherRelationstip, bool isOtherChoosed)
+        public void CheckRequiredFields(string iC, bool toggleChkBoxIC, string ownerName, bool toggleChkOwnerName, bool mobileNumber, bool toggleChkMobileNumber, string emailAddress, bool toggleChkEmailAddress, string mailingAddress, bool toggleChkMailingAddress, string premiseAddress, bool toggleChkPremiseAddress, string otherRelationstip, bool isOtherChoosed)
         {
             try
             {
-                bool shoudButtonEnable=true;
-               // this.mView.ClearErrors();
+                bool shoudButtonEnable = true;
+                // this.mView.ClearErrors();
                 if (toggleChkBoxIC)
                 {
                     if (!TextUtils.IsEmpty(iC.Trim()))
@@ -193,9 +193,16 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                 {
                     if (!TextUtils.IsEmpty(ownerName.Trim()))
                     {
-                        this.mView.ClearInvalidError(typeOfLayout.ownerName);
-                
-                        this.mView.EnableSubmitButton();
+                        if (!Utility.IsNotASCII(ownerName.Trim()))
+                        {
+                            this.mView.ClearInvalidError(typeOfLayout.ownerName);
+                            this.mView.EnableSubmitButton();
+                        }
+                        else
+                        {
+                            this.mView.ShowInvalidError(typeOfLayout.ownerName);
+                            shoudButtonEnable = false;
+                        }
                     }
                     else
                     {
@@ -241,24 +248,24 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                     }
                 }
 
-                
+
                 if (toggleChkMailingAddress)
                 {
                     if (!TextUtils.IsEmpty(mailingAddress.Trim()))
                     {
                         this.mView.EnableSubmitButton();
                         this.mView.ClearInvalidError(typeOfLayout.mailingAddress);
-                    
+
                     }
                     else
                     {
-                   
+
                         this.mView.ShowEmptyError(typeOfLayout.mailingAddress);
                         shoudButtonEnable = false;
                     }
                 }
-      
-                
+
+
                 if (toggleChkPremiseAddress)
                 {
                     if (!TextUtils.IsEmpty(premiseAddress.Trim()))
@@ -289,7 +296,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
 
                 if (shoudButtonEnable)
                 {
-                    if(toggleChkBoxIC|| toggleChkOwnerName||toggleChkMobileNumber||toggleChkEmailAddress||toggleChkMailingAddress|| toggleChkPremiseAddress )
+                    if (toggleChkBoxIC || toggleChkOwnerName || toggleChkMobileNumber || toggleChkEmailAddress || toggleChkMailingAddress || toggleChkPremiseAddress)
                     {
                         this.mView.EnableSubmitButton();
                     }
