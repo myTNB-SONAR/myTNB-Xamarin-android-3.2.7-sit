@@ -1540,7 +1540,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
-                        else if (((ItemisedBillingMenuFragment)this.mFragment).IsCADBREligible() && position == 3)
+                        else if (((ItemisedBillingMenuFragment)this.mFragment).IsDigitalContainerVisible() && position == 3)
                         {
                             int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(95f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight() - (int)DPUtils.ConvertDPToPx(5f);
@@ -1626,12 +1626,12 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
-                        else if (((ItemisedBillingMenuFragment)this.mFragment)._isBillStatement && position == 4)
+                        else if ((((ItemisedBillingMenuFragment)this.mFragment)._isBillStatement && position == 4 && ((ItemisedBillingMenuFragment)this.mFragment).IsDigitalContainerVisible()) || (((ItemisedBillingMenuFragment)this.mFragment)._isBillStatement && position == 3))
                         {
                             int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight() + (int)DPUtils.ConvertDPToPx(95f);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(35f);
                             int middleWidth = (int)DPUtils.ConvertDPToPx(35f);
-                            float h2 = 35f;
+                            float h2 = 39f;
                             int rightWidth = (int)DPUtils.ConvertDPToPx(h2);
 
                             int leftWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - rightWidth - middleWidth;// (int)DPUtils.ConvertDPToPx(h1);

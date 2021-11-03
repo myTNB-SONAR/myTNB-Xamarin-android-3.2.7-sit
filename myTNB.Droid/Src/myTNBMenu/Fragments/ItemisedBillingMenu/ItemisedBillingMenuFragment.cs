@@ -191,7 +191,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         private string myHistoryTitle = "";
         private string billTitle = "";
         private bool isViewBillDisable = false;
-
+        private bool isDigitalContainerVisible = false;
         private bool isPendingPayment = false;
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -335,7 +335,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             try
             {
-                download_bill_icon.Visibility = ViewStates.Gone;
                 ((DashboardHomeActivity)Activity).OnSelectAccount();
             }
             catch (System.Exception e)
@@ -649,10 +648,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             {
                                 if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
                                 {
+                                    isDigitalContainerVisible = false;
                                     digital_container.Visibility = ViewStates.Gone;
                                 }
                                 else
                                 {
+                                    isDigitalContainerVisible = true;
                                     digital_container.Visibility = ViewStates.Visible;
                                     if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBill
                                         || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
@@ -711,11 +712,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             return chargeAvailableNoCTAContainer.Height;
         }
+
         public bool IsCADBREligible()
         {
             return DBRUtility.Instance.IsCAEligible(mSelectedAccountData.AccountNum);
         }
 
+        public bool IsDigitalContainerVisible()
+        {
+            return isDigitalContainerVisible;
+        }
 
         private void SetDynatraceScreenTags()
         {
@@ -1525,7 +1531,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         Utility.LoggingNonFatalError(e);
                     }
                 });
-                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(_isOwner, IsCADBREligible(), _isBillStatement));
+                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(_isOwner, isDigitalContainerVisible, _isBillStatement));
 
             }
             catch (System.Exception ex)
