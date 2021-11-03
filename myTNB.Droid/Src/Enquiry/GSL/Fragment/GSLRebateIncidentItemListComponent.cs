@@ -167,7 +167,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
         {
             try
             {
-                Calendar calendar = Calendar.GetInstance(Locale.Default);
+                Calendar calendar = Calendar.GetInstance(LocaleUtils.GetCurrentLocale());
                 var dateTimeNow = DateTime.Now;
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(this.mActivity, AlertDialog.ThemeHoloLight, this, dateTimeNow.Year, dateTimeNow.Month - 1, dateTimeNow.Day);
@@ -196,7 +196,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Fragment
         {
             try
             {
-                Calendar calendar = Calendar.GetInstance(Locale.Default);
+                Calendar calendar = Calendar.GetInstance(LocaleUtils.GetCurrentLocale());
                 int hour = calendar.Get(CalendarField.HourOfDay);
                 int minute = calendar.Get(CalendarField.Minute);
                 TimePickerDialog timePickerDialog = new TimePickerDialog(this.mActivity, AlertDialog.ThemeHoloLight, this, hour, minute, false);
