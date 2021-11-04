@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.MVP
                 if (accountStatementResponse.Content.AccountStatement == null)
                 {
                     this.view?.APICallHasFinished();
-                    this.view?.OnShowTimeOutScreen(true);
+                    this.view?.OnShowTimeOutScreen(false);
                 }
                 else
                 {

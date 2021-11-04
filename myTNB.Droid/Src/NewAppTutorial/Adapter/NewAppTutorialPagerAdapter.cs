@@ -1634,7 +1634,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             float h2 = 39f;
                             int rightWidth = (int)DPUtils.ConvertDPToPx(h2);
 
-                            int leftWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - rightWidth - middleWidth;// (int)DPUtils.ConvertDPToPx(h1);
+                            int leftWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels - rightWidth - middleWidth);// (int)DPUtils.ConvertDPToPx(h1);
 
                             LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                             topLayoutParam.Height = topHeight;
@@ -1656,9 +1656,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(97f);
+                            var margin = rightWidth + (int)DPUtils.ConvertDPToPx((35f / 2) - 4);
+                            var msgHeight = TextViewUtils.IsLargeFonts ? 200f : 150f;
+                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(msgHeight);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(46f);
+                            innerTopLayoutParam.RightMargin = TextViewUtils.IsLargeFonts ? rightWidth - 4 : margin;
                             innerTopLayout.RequestLayout();
                         }
                         else
