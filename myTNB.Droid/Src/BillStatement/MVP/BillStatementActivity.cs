@@ -118,7 +118,7 @@ namespace myTNB_Android.Src.BillStatement.MVP
             {
                 try
                 {
-                    DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.StatementPeriod.View_Account_Statement);
+                    DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.StatementPeriod.Confirm);
                     this.SetIsClicked(true);
                     ShowBillStatementPDF();
                     FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Buttom Clicked");

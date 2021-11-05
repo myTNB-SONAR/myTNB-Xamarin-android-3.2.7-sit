@@ -634,7 +634,8 @@
     "dislikeButton": "Not really",
     "dontAskAgain": "Don't Ask Again",
     "feedback2SuccessTitle": "Thank you for your feedback!",
-    "feedback2SuccessButton": "Okay"
+    "feedback2SuccessButton": "Okay",
+    "viewAccountStatement": "View Account Statement"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -1049,29 +1050,31 @@
   "SubmitEnquiry": {
     "enquireTitle": "Enquiry",
     "submitEnquiryTitle": "Submit New Enquiry",
-    "submitEnquiryDescription": "Let us know your thoughts and concerns.",
+    "submitEnquiryDescription": "Let us know your opinions and concerns",
     "viewSubmittedEnquiry": "View Submitted Enquiry",
-    "viewEnquiryTitle": "View status updates on your enquiry here.",
+    "viewEnquiryTitle": "View status updates on your enquiry",
     "accNumberHint": "Account Number",
     "accNumberInfo": "Where is my account number?",
     "enquiringTitle": "What are you enquiring about?",
     "generalEnquiryTitle": "General Enquiry",
-    "generalEnquiryDescription": "I want to submit my thoughts and concerns.",
+    "generalEnquiryDescription": "I want to submit my opinions and concerns",
     "updatePersonalDetTitle": "Update Personal Details",
-    "personalDetailsDescription": "I want to update personal details.",
+    "personalDetailsDescription": "I want to update my personal details",
     "stepTitle1of2": "Step 1 of 2",
     "enquiryAboutTitle": "I want to enquire about:",
     "messageHint": "Your Message",
     "uploadDocTitle": "Upload supporting documents:",
     "attachTitle": "Upload Supporting Documents (optional)",
-    "attachDescription": "Maximum document size is 1MB. (PDF, JPG & JPEG format only)",
+    "attachDescription": "Maximum document size is 1MB (PDF, JPG, JPEG or PNG formats only)",
     "stepTitle2of2": "Step 2 of 2",
     "contactEnquiryTitle": "How can we contact you regarding this enquiry?",
     "nameHint": "Your Full Name",
     "emailHint": "Email Address",
     "mobileHint": "Mobile Number",
     "thankYouTitle": "Thank you for your enquiry!",
+    "thankYouGSLTitle": "Thank you for your request!",
     "thankYouDescription": "We’ll get back to you soon. In the meantime, stay updated by tracking your enquiry status.",
+    "thankYouGSLDescription": "We'll get back to you soon. In the meantime, stay updated by tracking your rebate status.",
     "serviceNoTitle": "Service Request Number",
     "backHomeButton": "Back to Home",
     "submittedEnquiryTitle": "Submitted Enquiry",
@@ -1174,12 +1177,12 @@
     "viewNo": "No",
     "documentPdf": "Document",
     "aboutMyBillTitle": "About My Bill",
-    "aboutMyBillDescription": "I want to enquire about my bill and payment.",
+    "aboutMyBillDescription": "I want to enquire about my bill and payment",
     "selectEnquiryType": "Select Enquiry Type",
     "iNeedHelpWith": "I NEED HELP WITH",
     //GSL
-    "gslTitle": "Guaranteed Service Level (GSL)",
-    "gslDescription": "I want to claim for GSL Rebate",
+    "gslTitle": "Guaranteed Service Level (GSL) Rebate",
+    "gslDescription": "I want to claim a GSL Rebate",
     "gslHeaderTitle": "GSL Rebate",
     "stepTitle": "Step {0} of {1}",
     "rebateClaimTitle": "What type of rebates are you claiming?",
@@ -1193,8 +1196,6 @@
     "restorationDate": "Date of Restoration",
     "restorationTime": "Time of Restoration",
     "uploadDocumentTitle": "Upload Required Document",
-    "tenancyAgreementTitle": "Tenancy Agreement",
-    "tenancyAgreementAttachmentDescription": "Maximum document size is 2MB (PDF, JPG, JPEG, PNG, DOC, DOCX, XLS or XLSX formats only)",
     "status": "Status:"
   },
   "SubmitEnquiry_selector": {
@@ -2565,7 +2566,7 @@
     "dbrInfoDescription0": "Swipe left to learn how you can benefit from going paperless today!",
     "dbrInfoDescription1": "Reduce your paper waste and be the first to make your impact in our collective move towards a more sustainable future.",
     "dbrInfoDescription2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills conveniently on myTNB App & Portal, anytime, anywhere.",
-    "dbrInfoDescription2V2": "Enjoy faster and on-the-dot delivery of your freshly improved TNB bills directly on myTNB App & Portal. Learn more about the new bill layout <a style=\"text-decoration:none\" href =\"inAppScreen=NewBillDesignComms\">here</a>.",
+    "dbrInfoDescription2V2": "Enjoy faster and on-the-dot delivery of your freshly improved TNB bills directly on myTNB App & Portal. Learn more about the new bill layout <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/bill-layout\">here</a>.",
     "dbrInfoDescription3": "Get your bills directly and securely on myTNB. No more worries about others seeing your bills, risk getting stolen or lost in the mail.",
     "anotherDeliveryMethod": "What if I want another bill delivery method?",
     "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "What if I want another bill delivery method?",
@@ -2618,7 +2619,8 @@
     "IsAboutMyBillEnquiryEnabled": true,
     "IsUpdatePersonalDetailsEnquiryEnabled": true,
     "IsGSLRebateEnabled": true,
-    "AccountStatementTimeout": 5000
+    "AccountStatementTimeout": 5000,
+    "ShouldShowAccountStatementToNonOwner": false
   },
   "StatementPeriod": {
     "title": "Account Statement",
@@ -2632,11 +2634,8 @@
     "processingRequestMessage": "Thank you for waiting, it may takes a few seconds to process your request.",
     "timeoutTitle": "Sorry it took longer than expected!",
     "timeoutMessage": "We will notify you when your account statement is ready to view here, and will email a copy to <b>{0}</b>.",
-    "backToBills": "Back to Bills"
-  },
-  "AccountStatement": {
-    "past6MonthsTitle": "Past 6 Months Statement",
-    "past3MonthsTitle": "Past 3 Months Statement"
+    "backToBills": "Back to Bills",
+    "noTransactionMessage": "Seems like you have no transaction history to request for an account statement, try again next time!"
   },
   "NewBillDesignComms": {
     "title": "TNB New Bill Design",

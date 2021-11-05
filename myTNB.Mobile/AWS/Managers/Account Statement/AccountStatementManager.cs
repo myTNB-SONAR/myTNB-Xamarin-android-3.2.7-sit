@@ -42,10 +42,11 @@ namespace myTNB.Mobile
                     StatementPeriod = statementPeriod,
                     IsOwnedAccount = isOwner
                 };
+                Debug.WriteLine("[DEBUG] PostAccountStatement Request: " + JsonConvert.SerializeObject(request));
 
                 IAccountStatementService service = RestService.For<IAccountStatementService>(AWSConstants.Domains.Domain);
                 HttpResponseMessage rawResponse = await service.PostAccountStatement(request
-                   , NetworkService.GetCancellationToken(timeout == 0 ? AWSConstants.TimeOut : timeout)
+                   , NetworkService.GetCancellationToken(timeout == 0 ? AWSConstants.AccountStatementTimeOut : timeout)
                    , accessToken
                    , AppInfoManager.Instance.ViewInfo);
                 //Mark: Check for 404 First
@@ -86,21 +87,28 @@ namespace myTNB.Mobile
             }
             catch (ApiException apiEx)
             {
+#if DEBUG
                 Debug.WriteLine("[DEBUG] [PostAccountStatement] Refit Exception: " + apiEx.Message);
+#endif
             }
             catch (OperationCanceledException operationCancelledError)
             {
+#if DEBUG
                 Debug.WriteLine("[DEBUG] [PostAccountStatement] OperationCanceledException: " + operationCancelledError.Message);
+#endif
                 response = new PostAccountStatementResponse
                 {
                     StatusDetail = new StatusDetail()
                 };
                 response.StatusDetail = AWSConstants.Services.PostAccountStatement.GetStatusDetails(MobileConstants.TIMEOUT);
+                Debug.WriteLine("[DEBUG] [PostAccountStatement]: " + JsonConvert.SerializeObject(response));
                 return response;
             }
             catch (Exception ex)
             {
+#if DEBUG
                 Debug.WriteLine("[DEBUG] [PostAccountStatement] General Exception: " + ex.Message);
+#endif
             }
 
             response = new PostAccountStatementResponse
@@ -108,6 +116,7 @@ namespace myTNB.Mobile
                 StatusDetail = new StatusDetail()
             };
             response.StatusDetail = AWSConstants.Services.PostAccountStatement.GetStatusDetails(MobileConstants.DEFAULT);
+            Debug.WriteLine("[DEBUG] [PostAccountStatement]: " + JsonConvert.SerializeObject(response));
             return response;
         }
     }
