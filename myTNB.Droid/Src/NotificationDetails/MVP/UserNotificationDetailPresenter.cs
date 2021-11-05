@@ -255,7 +255,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
                                 delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
-                            
+
                             secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewTips"),
                             delegate () { ViewTips(); });
                             ctaList.Add(secondaryCTA);
@@ -271,6 +271,15 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewTips"),
                             delegate () { ViewTips(); });
                             ctaList.Add(secondaryCTA);
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_ACCT_STATEMENT_READY:
+                        {
+                            imageResourceBanner = Resource.Drawable.Banner_Acct_Stmnt_Notification_Detail;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.VIEW_ACCT_STMNT),
+                                delegate () { ViewAccountStatement(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
                             break;
                         }
                     default:
@@ -399,6 +408,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             {
                 this.mView.ShowRetryOptionsApiException(null);
             }
+        }
+
+        private void ViewAccountStatement(Models.NotificationDetails notificationDetails)
+        {
+            //View Account Statement logic goes here
         }
 
 
@@ -757,7 +771,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         {
             try
             {
-                int[] myIntArray = {6,7};
+                int[] myIntArray = { 6, 7 };
                 var questionRespone = await ServiceApiImpl.Instance.ShowEnergyBudgetRatingPage(new GetFeedbackTwoQuestionRequest(myIntArray));
 
                 if (questionRespone.IsSuccessResponse())
@@ -804,7 +818,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         public async void GetRateUsQuestionsNo()
         {
             try
-            {            
+            {
                 string questionCategoryID = "6";
                 var questionRespone = await ServiceApiImpl.Instance.GetRateUsQuestions(new GetRateUsQuestionRequest(questionCategoryID));
                 if (!questionRespone.IsSuccessResponse())

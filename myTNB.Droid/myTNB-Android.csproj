@@ -187,9 +187,6 @@
     <Reference Include="Square.OkHttp, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Square.OkHttp.2.4.0.0\lib\MonoAndroid\Square.OkHttp.dll</HintPath>
     </Reference>
-    <Reference Include="Square.OkIO, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Square.OkIO.1.5.0.0\lib\MonoAndroid\Square.OkIO.dll</HintPath>
-    </Reference>
     <Reference Include="Square.Picasso, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Square.Picasso.2.5.2.1\lib\MonoAndroid\Square.Picasso.dll</HintPath>
     </Reference>
@@ -338,7 +335,7 @@
       <HintPath>..\packages\Xamarin.Facebook.Shimmer.1.0.0\lib\monoandroid50\Xamarin.Facebook.Shimmer.Android.dll</HintPath>
     </Reference>
     <Reference Include="Lottie.Android">
-      <HintPath>..\packages\Com.Airbnb.Android.Lottie.2.7.0\lib\monoandroid90\Lottie.Android.dll</HintPath>
+      <HintPath>..\packages\Com.Airbnb.Android.Lottie.4.1.0\lib\monoandroid10.0\Lottie.Android.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Annotations">
       <HintPath>..\packages\Xamarin.Android.Support.Annotations.28.0.0.3\lib\monoandroid90\Xamarin.Android.Support.Annotations.dll</HintPath>
@@ -741,6 +738,9 @@
     </Reference>
     <Reference Include="Xamarin.AndroidX.ViewPager2">
       <HintPath>..\packages\Xamarin.AndroidX.ViewPager2.1.0.0.9\lib\monoandroid90\Xamarin.AndroidX.ViewPager2.dll</HintPath>
+    </Reference>
+    <Reference Include="Square.OkIO">
+      <HintPath>..\packages\Square.OkIO.1.17.4\lib\monoandroid44\Square.OkIO.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -4211,15 +4211,10 @@
     </AndroidResource>
     <Compile Include="Src\Utils\NewAppTutorialUtils.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\filter_blue.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\filter_white.png" />
     <AndroidResource Include="Resources\drawable-mdpi\filter_blue.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\filter_white.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\filter_blue.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\filter_white.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\filter_blue.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\filter_white.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\filter_blue.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\filter_white.png" />
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_0.png" />
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_0.png" />
     <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_0.png" />
@@ -6923,6 +6918,149 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Enquiry\GSL\Fragment\GSLInfoItemListComponent.cs" />
+    <Compile Include="Src\Bills\AccountStatement\Activity\AccountStatementSelectionActivity.cs" />
+    <Compile Include="Src\Bills\AccountStatement\Activity\AccountStatementLoadingActivity.cs" />
+    <AndroidResource Include="Resources\layout\AccountStatementLoadingView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Bills\AccountStatement\MVP\AccountStatementLoadingContract.cs" />
+    <Compile Include="Src\Bills\AccountStatement\MVP\AccountStatementLoadingPresenter.cs" />
+    <AndroidResource Include="Resources\layout\AccountStatementTimeOutView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Bills\AccountStatement\Activity\AccountStatementTimeOutActivity.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_Acct_Stmnt_TimeOut.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_Acct_Stmnt_TimeOut.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_Acct_Stmnt_TimeOut.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_Acct_Stmnt_TimeOut.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_Acct_Stmnt_TimeOut.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Bills\AccountStatement\AccountStatementConstants.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_Acct_Stmnt_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_Acct_Stmnt_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_Acct_Stmnt_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_Acct_Stmnt_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_Acct_Stmnt_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Notification_Acct_Stmnt.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Notification_Acct_Stmnt.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Notification_Acct_Stmnt.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Notification_Acct_Stmnt.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Notification_Acct_Stmnt.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Bills\AccountStatement\Activity\AccountStatementPDFActivity.cs" />
+    <AndroidResource Include="Resources\layout\AccountStatementPDFView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Acct_Stmnt_Empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Acct_Stmnt_Empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Acct_Stmnt_Empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Acct_Stmnt_Empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Acct_Stmnt_Empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\menu\BillsToolbarMenu.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Acct_Stmnt_Download_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Acct_Stmnt_Download_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Acct_Stmnt_Download_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Acct_Stmnt_Download_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Acct_Stmnt_Download_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Bills_Filter_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Bills_Filter_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Bills_Filter_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Bills_Filter_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Bills_Filter_White.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7639,11 +7777,10 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\BillStatement.axml">
+    <AndroidResource Include="Resources\layout\AccountStatementSelectionView.axml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\BillStatement\MVP\BillStatementActivity.cs" />
     <Compile Include="Src\Device Cache\DeviceSizeCache.cs" />
     <Compile Include="Src\Bills\NewBillRedesign\Activity\NBRDiscoverMoreActivity.cs" />
     <Compile Include="Src\Bills\NewBillRedesign\MVP\NBRDiscoverMoreContract.cs" />
@@ -8006,6 +8143,7 @@
     <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidAsset Include="Assets\account_statement_loading.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -8484,6 +8622,9 @@
     <Folder Include="Src\Enquiry\Adapter\" />
     <Folder Include="Src\Enquiry\Common\" />
     <Folder Include="Src\Enquiry\GSL\MVP\GSLSubmittedDetails\" />
+    <Folder Include="Src\Bills\AccountStatement\" />
+    <Folder Include="Src\Bills\AccountStatement\Activity\" />
+    <Folder Include="Src\Bills\AccountStatement\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

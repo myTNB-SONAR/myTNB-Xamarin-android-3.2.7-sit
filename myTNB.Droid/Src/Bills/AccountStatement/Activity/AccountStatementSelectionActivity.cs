@@ -8,19 +8,15 @@ using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
-using System.Globalization;
-using myTNB_Android.Src.Base.Fragments;
-using Google.Android.Material.TextField;
 using AndroidX.Core.Content;
 using myTNB_Android.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
-using myTNB_Android.Src.ViewBill.Activity;
 using myTNB.Mobile;
 
-namespace myTNB_Android.Src.BillStatement.MVP
+namespace myTNB_Android.Src.Bills.AccountStatement.Activity
 {
-    [Activity(Label = "Select Creation Date", Theme = "@style/Theme.RegisterForm")]
-    public class BillStatementActivity : BaseActivityCustom
+    [Activity(Theme = "@style/Theme.Dashboard")]
+    public class AccountStatementSelectionActivity : BaseActivityCustom
     {
         [BindView(Resource.Id.imgSixMonthsAction)]
         ImageView imgSixMonthsAction;
@@ -37,6 +33,12 @@ namespace myTNB_Android.Src.BillStatement.MVP
         [BindView(Resource.Id.txtSixMonth)]
         TextView txtSixMonth;
 
+        [BindView(Resource.Id.txtAcctStmtHeaderLabel)]
+        TextView txtAcctStmtHeaderLabel;
+
+        [BindView(Resource.Id.txtAcctStmtFooterLabel)]
+        TextView txtAcctStmtFooterLabel;
+
         [BindView(Resource.Id.btnSubmit)]
         Button btnSubmit;
 
@@ -44,14 +46,13 @@ namespace myTNB_Android.Src.BillStatement.MVP
         bool isThreeMonthSelected = false;
 
         AccountData selectedAccount;
+        private bool billHistoryIsEmpty;
 
-        const string PAGE_ID = "ViewAccountStatement";
-
-        MonthYearPickerDialog pd;
+        const string PAGE_ID = "StatementPeriod";
 
         public override int ResourceId()
         {
-            return Resource.Layout.BillStatement;
+            return Resource.Layout.AccountStatementSelectionView;
         }
 
         public override string GetPageId()
@@ -103,7 +104,7 @@ namespace myTNB_Android.Src.BillStatement.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "View Account Statement");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Account Statement");
             }
             catch (Exception e)
             {
@@ -120,8 +121,8 @@ namespace myTNB_Android.Src.BillStatement.MVP
                 {
                     DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.StatementPeriod.Confirm);
                     this.SetIsClicked(true);
-                    ShowBillStatementPDF();
-                    FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Buttom Clicked");
+                    OnShowAccountStatementLoading();
+                    FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Button Clicked");
                 }
                 catch (System.Exception ne)
                 {
@@ -145,6 +146,7 @@ namespace myTNB_Android.Src.BillStatement.MVP
             DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.StatementPeriod.Past_6_Months);
             SetCTAEnable();
         }
+
         [OnClick(Resource.Id.threeMonthsContainer)]
         internal void OnthreeMonthsContainerClick(object sender, EventArgs e)
         {
@@ -155,33 +157,54 @@ namespace myTNB_Android.Src.BillStatement.MVP
             DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.StatementPeriod.Past_3_Months);
             SetCTAEnable();
         }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            txtThreeMonths.Text = Utility.GetLocalizedLabel("StatementPeriod", "past3Months");
-            txtPageTitleInfo.Text = Utility.GetLocalizedLabel("StatementPeriod", "iWantToViewTitle");
-            txtSixMonth.Text = Utility.GetLocalizedLabel("StatementPeriod", "past6Months");
-
-            TextViewUtils.SetMuseoSans500Typeface(txtPageTitleInfo, btnSubmit);
-            TextViewUtils.SetMuseoSans300Typeface(txtThreeMonths, txtSixMonth);
-            TextViewUtils.SetTextSize16(txtPageTitleInfo, txtThreeMonths, txtSixMonth, btnSubmit);
-
-            SetToolBarTitle("View Account Statement");
-
-            Bundle extras = Intent.Extras;
-
-            if (extras != null)
+            try
             {
-                if (extras.ContainsKey("SELECTED_ACCOUNT"))
-                {
-                    selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString("SELECTED_ACCOUNT"));
-                }
-            }
-            imgTheeMonthsAction.SetMaxHeight(txtThreeMonths.Height);
-            imgSixMonthsAction.SetMaxHeight(txtSixMonth.Height);
+                SetUpViews();
 
-            SetCTAEnable();
+                Bundle extras = Intent.Extras;
+
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                    }
+                    if (extras.ContainsKey(Constants.BILL_HISTORY_IS_EMPTY))
+                    {
+                        billHistoryIsEmpty = extras.GetBoolean(Constants.BILL_HISTORY_IS_EMPTY);
+                    }
+                }
+                imgTheeMonthsAction.SetMaxHeight(txtThreeMonths.Height);
+                imgSixMonthsAction.SetMaxHeight(txtSixMonth.Height);
+
+                SetCTAEnable();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void SetUpViews()
+        {
+            TextViewUtils.SetMuseoSans500Typeface(txtPageTitleInfo, btnSubmit);
+            TextViewUtils.SetMuseoSans300Typeface(txtThreeMonths, txtSixMonth, txtAcctStmtHeaderLabel, txtAcctStmtFooterLabel);
+            TextViewUtils.SetTextSize16(txtPageTitleInfo, txtThreeMonths, txtSixMonth, btnSubmit);
+            TextViewUtils.SetTextSize14(txtAcctStmtHeaderLabel, txtAcctStmtFooterLabel);
+
+            SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.TITLE));
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+
+            txtPageTitleInfo.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.REQUEST_TITLE);
+            txtThreeMonths.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.PAST_3_MONTHS);
+            txtSixMonth.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.PAST_6_MONTHS);
+
+            txtAcctStmtFooterLabel.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.DISCLAIMER);
+            txtAcctStmtHeaderLabel.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.STATEMENT_PERIOD_TITLE);
         }
 
         private void SetCTAEnable()
@@ -192,23 +215,33 @@ namespace myTNB_Android.Src.BillStatement.MVP
                 ? Resource.Drawable.green_button_background
                 : Resource.Drawable.silver_chalice_button_background);
         }
-        public void ShowBillStatementPDF()
+
+        private void OnShowAccountStatementLoading()
         {
-            string selectedMonths = string.Empty;
-            Intent viewBill = new Intent(this, typeof(ViewBillActivity));
-            viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_STATEMENT_PDF_REQUEST_CODE);
-            if (isSixMonthSelected)
+            this.SetIsClicked(true);
+            if (billHistoryIsEmpty)
             {
-                selectedMonths = "6";
+                Intent acctStmntTimeOutIntent = new Intent(this, typeof(AccountStatementTimeOutActivity));
+                acctStmntTimeOutIntent.PutExtra(Constants.ACCT_STMNT_EMPTY, billHistoryIsEmpty);
+                acctStmntTimeOutIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                StartActivity(acctStmntTimeOutIntent);
             }
-            if (isThreeMonthSelected)
+            else
             {
-                selectedMonths = "3";
+                string selectedMonths = string.Empty;
+                Intent acctStmntLoadingIntent = new Intent(this, typeof(AccountStatementLoadingActivity));
+                acctStmntLoadingIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                if (isSixMonthSelected)
+                {
+                    selectedMonths = AccountStatementConstants.PAST_6_MONTHS;
+                }
+                if (isThreeMonthSelected)
+                {
+                    selectedMonths = AccountStatementConstants.PAST_3_MONTHS;
+                }
+                acctStmntLoadingIntent.PutExtra(AccountStatementConstants.SELECTED_MONTH_FOR_ACCOUNT_STATEMENT, selectedMonths);
+                StartActivity(acctStmntLoadingIntent);
             }
-            viewBill.PutExtra(Constants.SELECTED_BILL_STATEMENT, selectedMonths);
-            StartActivity(viewBill);
-            this.SetIsClicked(false);
         }
     }
 }

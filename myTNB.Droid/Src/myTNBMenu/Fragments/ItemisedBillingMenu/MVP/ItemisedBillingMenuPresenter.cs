@@ -647,7 +647,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             return mainBillingHistoryList != null && mainAccountChargeModelList != null;
         }
 
-        public List<NewAppModel> OnGeneraNewAppTutorialList(bool _isOwner,bool _isCADBREligible, bool _isBillStatement)
+        public List<NewAppModel> OnGeneraNewAppTutorialList(bool _isOwner, bool _isCADBREligible, bool _isBillStatement)
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
@@ -655,7 +655,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 
             int ItemCount = 0;
 
-            for(int i = 0; i < mainBillingHistoryList.Count; i++)
+            for (int i = 0; i < mainBillingHistoryList.Count; i++)
             {
                 ItemCount += mainBillingHistoryList[i].BillingHistoryDataList.Count;
             }
@@ -797,7 +797,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         });
                     }
                 }
-                if(_isBillStatement)
+                if (_isBillStatement)
                 {
                     newList.Add(new NewAppModel()
                     {

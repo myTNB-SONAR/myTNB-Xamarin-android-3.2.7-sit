@@ -35,6 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="fitXY"
+				    android:adjustViewBounds="true"
                     android:src="@drawable/notification_new_bill_banner"/>
                 <TextView
                     android:id="@+id/notificationDetailTitle"

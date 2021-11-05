@@ -53,6 +53,7 @@ using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Utils.Deeplink;
 using myTNB_Android.Src.AddAccount.Activity;
+using myTNB_Android.Src.Bills.AccountStatement;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -266,7 +267,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             Bundle extras = Intent?.Extras;
 
-            if (extras != null && (extras.ContainsKey("FROM_NOTIFICATION") || extras.ContainsKey("FROM_MANAGE_BILL_DELIVERY")))
+            if (extras != null && (extras.ContainsKey("FROM_NOTIFICATION") ||
+                extras.ContainsKey("FROM_MANAGE_BILL_DELIVERY") ||
+                extras.ContainsKey(AccountStatementConstants.FROM_ACCOUNT_STATEMENT)))
             {
                 if (extras.ContainsKey("MENU"))
                 {

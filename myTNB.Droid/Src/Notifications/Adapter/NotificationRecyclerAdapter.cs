@@ -151,6 +151,10 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_listing_eb_icon));
                 }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_ACCT_STATEMENT_READY))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notification_Acct_Stmnt));
+                }
                 else
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_generic));
@@ -160,7 +164,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
                 string notificationAccountName = MyTNBAccountManagement.GetInstance().GetNotificationAccountName(notificationData.AccountNum);
                 viewHolder.txtNotificationContent.Text = Regex.Replace(notificationData.Message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
-                
+
                 if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_PROFILENAME_PATTERN))
                 {
                     viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);

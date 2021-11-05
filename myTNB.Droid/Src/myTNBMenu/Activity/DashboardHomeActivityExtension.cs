@@ -7,7 +7,7 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Bills.NewBillRedesign;
-using myTNB_Android.Src.BillStatement.MVP;
+using myTNB_Android.Src.Bills.AccountStatement.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Enquiry.GSL.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
@@ -193,8 +193,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         internal static void ShowViewAccountStatement(this DashboardHomeActivity mainActivity, CustomerBillingAccount account)
         {
             AccountData accountData = AccountData.Copy(account, true);
-            Intent newIntent = new Intent(mainActivity, typeof(BillStatementActivity));
-            newIntent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(accountData));
+            Intent newIntent = new Intent(mainActivity, typeof(AccountStatementSelectionActivity));
+            newIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
             mainActivity.StartActivity(newIntent);
         }
 
