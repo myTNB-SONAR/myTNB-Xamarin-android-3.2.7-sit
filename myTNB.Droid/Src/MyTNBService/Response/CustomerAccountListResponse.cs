@@ -65,6 +65,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "BudgetAmount")]
             public string BudgetAmount { get; set; }
+
+            [JsonProperty(PropertyName = "InstallationType")]
+            public string InstallationType { get; set; }
         }
     }
 }

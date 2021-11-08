@@ -619,13 +619,13 @@
     "viewTips": "Rujuk Tips",
     "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks",
     "EnergyBudgetTitle": "Energy Budget",
-    "energyBudgetSavingTips":"Tips cekap tenaga",
-    "feedback2Title":"Adakah anda rasa Energy Budget ini berguna pada anda?",
-    "likeButtonDetails":"Ya",
-    "dislikeButton":"Tidak",
-    "dontAskAgain":"Tidak Berminat",
-    "feedback2SuccessTitle":"Terima kasih atas maklumbalas anda",
-    "feedback2SuccessButton":"OK"
+    "energyBudgetSavingTips": "Tips cekap tenaga",
+    "feedback2Title": "Adakah anda rasa Energy Budget ini berguna pada anda?",
+    "likeButtonDetails": "Ya",
+    "dislikeButton": "Tidak",
+    "dontAskAgain": "Tidak Berminat",
+    "feedback2SuccessTitle": "Terima kasih atas maklumbalas anda",
+    "feedback2SuccessButton": "OK"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -2479,13 +2479,13 @@
     "title": "Pilih Akaun Meter Pintar",
     "tootltipTitle": "Kenapa sesetengah akaun saya yang tidak tersenarai?",
     "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
-    "headerTitle":"Mari mulakan dengan memilih akaun Smart Meter anda"
+    "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"
   },
 
   "EnergyBudgetPopup": {
-    "title": "Tahniah! Rasai pengalaman baru dalam mengawal penggunaan elektrik bersama Energy Budget!",
+    "title": "Kawal penggunaan elektrik anda dengan mudah bersama Energy Budget!",
     "threeEasyStep": "Penjimatan wang melalui 3 cara mudah:",
-    "firstStep": "TETAPKAN tahap penggunaan bulanan meter pintar terpilih anda",
+    "firstStep": "TETAPKAN tahap penggunaan bulanan anda",
     "secondStep": "PANTAU penggunaan harian dengan mudah",
     "thirdStep": "BERJIMAT apabila anda menghampiri penggunaan yang anda tetapkan",
     "txtLetgetstarted": "Mula Sekarang",

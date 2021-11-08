@@ -1042,6 +1042,7 @@
 									<LinearLayout
 										android:id="@+id/energyBudget_sm_account_status"
 										android:visibility="gone"
+										android:fitsSystemWindows="true"
 										android:layout_width="match_parent"
 										android:layout_height="wrap_content"
 										android:orientation="vertical">
@@ -1096,7 +1097,6 @@
 												<EditText
 													android:id="@+id/energyBudgetRMinput"
 													android:windowSoftInputMode="adjustResize"
-													android:fitsSystemWindows="true"
 													android:layout_width="wrap_content"
 													android:layout_height="match_parent"
 													android:textColor="@color/charcoalGrey"

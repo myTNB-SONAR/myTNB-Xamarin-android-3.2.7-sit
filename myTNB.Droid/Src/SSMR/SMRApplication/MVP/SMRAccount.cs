@@ -16,5 +16,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         public bool isTaggedSMR { get; set; }
         public string accountOwnerName { get; set; }
         public string BudgetAmount { get; set; }
+        public string InstallationType { get; set; }
+
     }
 }
