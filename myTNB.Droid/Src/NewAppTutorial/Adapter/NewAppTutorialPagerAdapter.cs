@@ -1657,10 +1657,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
                             var margin = rightWidth + (int)DPUtils.ConvertDPToPx((35f / 2) - 4);
-                            var msgHeight = TextViewUtils.IsLargeFonts ? 200f : 150f;
+                            var msgHeight = TextViewUtils.IsLargeFonts ? 220f : 150f;
                             innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(msgHeight);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTopLayoutParam.RightMargin = TextViewUtils.IsLargeFonts ? rightWidth - 4 : margin;
+                            innerTopLayoutParam.RightMargin = margin;
                             innerTopLayout.RequestLayout();
                         }
                         else
