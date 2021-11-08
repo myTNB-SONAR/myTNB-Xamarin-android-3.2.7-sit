@@ -145,32 +145,6 @@
                                 android:textColor="#49494a"
                                 android:textSize="14dp"/>
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:orientation="horizontal"
-                        android:id="@+id/roundingAdjustmentLayout"
-                        android:visibility="gone">
-                            <TextView
-                                android:id="@+id/roundingAdjustmentLabel"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.5"
-                                android:gravity="left"
-                                android:text="My latest bill"
-                                android:textColor="#49494a"
-                                android:textSize="14dp"/>
-                            <TextView
-                                android:id="@+id/roundingAdjustmentValue"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.5"
-                                android:gravity="right"
-                                android:text="RM 0.00"
-                                android:textColor="#49494a"
-                                android:textSize="14dp"/>
-                    </LinearLayout>
                     <myTNB_Android.Src.CompoundView.ExpandableTextViewComponent
                         android:id="@+id/otherChargesExpandableView"
                         android:layout_width="match_parent"

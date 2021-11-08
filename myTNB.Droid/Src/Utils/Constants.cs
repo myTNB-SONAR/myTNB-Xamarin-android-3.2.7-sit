@@ -96,7 +96,6 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int BARCODE_REQUEST_CODE = 0x01;
 
         internal static readonly int SELECT_ACCOUNT_REQUEST_CODE = 0x02;
-        internal static readonly int NEW_BILL_REDESIGN_REQUEST_CODE = 0x12;
         internal static readonly int SELECT_FEEDBACK_STATE = 0x02;
         internal static readonly int SELECT_FEEDBACK_TYPE = 0x02;
 

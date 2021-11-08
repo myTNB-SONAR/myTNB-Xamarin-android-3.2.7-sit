@@ -1459,17 +1459,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private void ShowEPPTooltip()
         {
-            var isBREligible = BillRedesignUtility.Instance.IsCAEligible(selectedAccount.AccountNum);
-            var resourceId = isBREligible ? Resource.Drawable.Banner_EPP_BR_Tooltip : Resource.Drawable.Banner_EPP_Tooltip;
-            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData(this.activity, resourceId);
+            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData(this.activity, Resource.Drawable.Banner_EPP_Tooltip);
 
             if (modelList != null && modelList.Count > 0)
             {
-                var index = modelList.Count > 1 && isBREligible ? 1 : 0;
+                if (modelList.Count == 0)
+                {
+                    return;
+                }
                 MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-                    .SetHeaderImageBitmap(modelList[index].ImageBitmap)
-                    .SetTitle(modelList[index].PopUpTitle)
-                    .SetMessage(modelList[index].PopUpBody)
+                    .SetHeaderImageBitmap(modelList[0].ImageBitmap)
+                    .SetTitle(modelList[0].PopUpTitle)
+                    .SetMessage(modelList[0].PopUpBody)
                     .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                     .SetCTAaction(() => { this.SetIsClicked(false); })
                     .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
@@ -9435,7 +9436,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     StopSMStatisticShimmer();
                     string acctypeID;
-                    if (selectedCusBillAcc.AccountTypeId == null )
+                    if (selectedCusBillAcc.AccountTypeId == null)
                     {
                         acctypeID = "0";
                     }
@@ -9449,7 +9450,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         if (ChartDataType == ChartDataType.RM)
                         {
-                            smStatisticTooltip.Visibility = ViewStates.Visible; 
+                            smStatisticTooltip.Visibility = ViewStates.Visible;
                             smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
                             smStatisticBill.Visibility = ViewStates.Visible;
                             smStatisticBillCurrency.Visibility = ViewStates.Visible;
@@ -11226,6 +11227,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(e);
             }
-        }   
+        }
     }
 }

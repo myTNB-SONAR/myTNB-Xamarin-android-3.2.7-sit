@@ -182,8 +182,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void OnResetWhereIsMyAccNumber();
 
             void NavigateToAddAccount();
-
-            void NavigateToNBR();
         }
 
         public interface IUserActionsListener : IBasePresenter

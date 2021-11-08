@@ -6,11 +6,9 @@ using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Bills.NewBillRedesign;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Enquiry.GSL.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Deeplink;
 using Newtonsoft.Json;
@@ -177,12 +175,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             Intent linkAccount = new Intent(mainActivity, typeof(LinkAccountActivity));
             linkAccount.PutExtra("fromDashboard", true);
             mainActivity.StartActivity(linkAccount);
-        }
-
-        internal static void ShowNewBillRedesign(this DashboardHomeActivity mainActivity)
-        {
-            Intent nbrDiscoverMoreIntent = new Intent(mainActivity, typeof(NBRDiscoverMoreActivity));
-            mainActivity.StartActivityForResult(nbrDiscoverMoreIntent, Constants.NEW_BILL_REDESIGN_REQUEST_CODE);
         }
 
         internal static void ShowGSLInfoScreen(this DashboardHomeActivity mainActivity)

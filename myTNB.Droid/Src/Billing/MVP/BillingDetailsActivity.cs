@@ -73,12 +73,6 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.accountMinChargeLabel)]
         TextView accountMinChargeLabel;
 
-        [BindView(Resource.Id.roundingAdjustmentLabel)]
-        TextView roundingAdjustmentLabel;
-
-        [BindView(Resource.Id.roundingAdjustmentValue)]
-        TextView roundingAdjustmentValue;
-
         [BindView(Resource.Id.paperlessTitle)]
         TextView paperlessTitle;
 
@@ -87,9 +81,6 @@ namespace myTNB_Android.Src.Billing.MVP
 
         [BindView(Resource.Id.accountMinChargeLabelContainer)]
         LinearLayout accountMinChargeLabelContainer;
-
-        [BindView(Resource.Id.roundingAdjustmentLayout)]
-        LinearLayout roundingAdjustmentLayout;
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -215,7 +206,7 @@ namespace myTNB_Android.Src.Billing.MVP
             TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, refreshBillingDetailMessage, paperlessTitle);
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency,
-                accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh, roundingAdjustmentLabel, roundingAdjustmentValue);
+                accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
 
             if (TextViewUtils.IsLargeFonts)
             {
@@ -232,7 +223,7 @@ namespace myTNB_Android.Src.Billing.MVP
             TextViewUtils.SetTextSize11(infoLabelDetailEPP);
             TextViewUtils.SetTextSize12(accountAddress, refreshBillingDetailMessage, accountMinChargeLabel, paperlessTitle);
             TextViewUtils.SetTextSize14(accountPayAmountDate, accountName, accountChargeLabel, accountChargeValue
-                , accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, roundingAdjustmentLabel, roundingAdjustmentValue);
+                , accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel);
             TextViewUtils.SetTextSize16(myBillDetailsLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
 
             billingDetailsPresenter = new BillingDetailsPresenter(this);
@@ -307,8 +298,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
             accountName.Text = selectedAccountData.AccountNickName;
             accountAddress.Text = selectedAccountData.AddStreet;
-            var billThisMonthString = BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum) ? GetLabelByLanguage(LanguageConstants.BillDetails.BILL_THIS_MONTH_V2)
-                : GetLabelByLanguage(LanguageConstants.BillDetails.BILL_THIS_MONTH);
+            var billThisMonthString = GetLabelByLanguage(LanguageConstants.BillDetails.BILL_THIS_MONTH);
             accountBillThisMonthLabel.Text = billThisMonthString;
 
             if (selectedAccountChargeModel != null && !isCheckPendingPaymentNeeded)
@@ -588,45 +578,18 @@ namespace myTNB_Android.Src.Billing.MVP
             }
             else
             {
-                var accountChargeString = BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum) ? GetLabelByLanguage(LanguageConstants.BillDetails.OUTSTANDING_CHARGES_V2)
-                    : GetLabelByLanguage(LanguageConstants.BillDetails.OUTSTANDING_CHARGES);
+                var accountChargeString = GetLabelByLanguage(LanguageConstants.BillDetails.OUTSTANDING_CHARGES);
                 accountChargeLabel.Text = accountChargeString;// "My outstanding charges";
                 accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
 
-            if (BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum) && selectedAccountChargeModel.ShouldShowRoundingAdjustment)
+            if (selectedAccountChargeModel.CurrentCharges < 0f)
             {
-                if (selectedAccountChargeModel.CurrentCharges < 0f)
-                {
-                    accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.ActualCurrentCharges * -1).ToString("#,##0.00", currCult);
-                }
-                else
-                {
-                    accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.ActualCurrentCharges.ToString("#,##0.00", currCult);  //ori code
-                }
-
-                roundingAdjustmentLayout.Visibility = ViewStates.Visible;
-                roundingAdjustmentLabel.Text = GetLabelByLanguage(LanguageConstants.BillDetails.ROUNDING_ADJUSTMENT);
-
-                if (selectedAccountChargeModel.RoundingAmount < 0f)
-                {
-                    roundingAdjustmentValue.Text = "- RM " + (selectedAccountChargeModel.RoundingAmount * -1).ToString("#,##0.00", currCult);
-                }
-                else
-                {
-                    roundingAdjustmentValue.Text = "RM " + selectedAccountChargeModel.RoundingAmount.ToString("#,##0.00", currCult);
-                }
+                accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.CurrentCharges * -1).ToString("#,##0.00", currCult);
             }
             else
             {
-                if (selectedAccountChargeModel.CurrentCharges < 0f)
-                {
-                    accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.CurrentCharges * -1).ToString("#,##0.00", currCult);
-                }
-                else
-                {
-                    accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00", currCult);  //ori code
-                }
+                accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00", currCult);  //ori code
             }
 
             accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("#,##0.00", currCult);
@@ -682,13 +645,12 @@ namespace myTNB_Android.Src.Billing.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                var isBREligible = BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum);
-                SitecoreCmsEntity.SITE_CORE_ID siteCoreId = isBREligible ? SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIPV2 : SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP;
+                SitecoreCmsEntity.SITE_CORE_ID siteCoreId = SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP;
 
                 List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData(this, siteCoreId);
                 if (modelList != null && modelList.Count > 0)
                 {
-                    UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList, isBREligible);
+                    UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
                         .SetAdapter(adapter)
                         .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.GOT_IT))
@@ -772,20 +734,21 @@ namespace myTNB_Android.Src.Billing.MVP
 
         public void ShowEPPDetailsTooltip()
         {
-            var isBREligible = BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum);
-            var resourceId = isBREligible ? Resource.Drawable.Banner_EPP_BR_Tooltip : Resource.Drawable.Banner_EPP_Tooltip;
-            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData(this, resourceId);
+            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData(this, Resource.Drawable.Banner_EPP_Tooltip);
 
             if (modelList != null && modelList.Count > 0)
             {
                 if (!this.GetIsClicked())
                 {
-                    var index = modelList.Count > 1 && isBREligible ? 1 : 0;
+                    if (modelList.Count == 0)
+                    {
+                        return;
+                    }
                     this.SetIsClicked(true);
                     MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-                       .SetHeaderImageBitmap(modelList[index].ImageBitmap)
-                       .SetTitle(modelList[index].PopUpTitle)
-                       .SetMessage(modelList[index].PopUpBody)
+                       .SetHeaderImageBitmap(modelList[0].ImageBitmap)
+                       .SetTitle(modelList[0].PopUpTitle)
+                       .SetMessage(modelList[0].PopUpBody)
                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                        .SetCTAaction(() => { this.SetIsClicked(false); })
 

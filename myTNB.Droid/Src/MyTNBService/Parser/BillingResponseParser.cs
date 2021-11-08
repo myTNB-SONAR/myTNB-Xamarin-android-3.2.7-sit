@@ -47,7 +47,6 @@ namespace myTNB_Android.Src.MyTNBService.Parser
                     ActualCurrentCharges = accountCharge.ActualCurrentCharges,
                     OutstandingCharges = accountCharge.OutstandingCharges,
                     AmountDue = accountCharge.AmountDue,
-                    RoundingAmount = accountCharge.RoundingAmount,
                     DueDate = accountCharge.DueDate,
                     BillDate = accountCharge.BillDate,
                     IncrementREDueDateByDays = accountCharge.IncrementREDueDateByDays,

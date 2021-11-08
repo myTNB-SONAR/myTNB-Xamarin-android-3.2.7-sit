@@ -25,13 +25,10 @@ using myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP;
 using myTNB_Android.Src.PreLogin.Activity;
-using myTNB_Android.Src.Rating.Activity;
-using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.ViewReceipt.Activity;
 using static Android.Views.View;
 using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
 using myTNB_Android.Src.WhatsNewDetail.MVP;
@@ -45,14 +42,12 @@ using AndroidX.Core.Content;
 using Android.Text;
 using Android.Text.Style;
 using myTNB.Mobile.SessionCache;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Utils.Deeplink;
-using myTNB_Android.Src.AddAccount.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -2482,11 +2477,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void NavigateToAddAccount()
         {
             this.ShowAddAccount();
-        }
-
-        public void NavigateToNBR()
-        {
-            this.ShowNewBillRedesign();
         }
 
         public void NavigateToGSL()

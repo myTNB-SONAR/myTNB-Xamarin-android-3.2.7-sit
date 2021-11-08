@@ -16,7 +16,6 @@ namespace myTNB_Android.Src.MyTNBService.Model
         public double ActualCurrentCharges { get; set; }
         public double OutstandingCharges { get; set; }
         public double AmountDue { get; set; }
-        public double RoundingAmount { get; set; }
         public string DueDate { get; set; }
         public string BillDate { get; set; }
         public string IncrementREDueDateByDays { get; set; }
@@ -25,13 +24,6 @@ namespace myTNB_Android.Src.MyTNBService.Model
         public bool IsNeedPay { get; set; }
         public bool ShowEppToolTip { get; set; }
         public MandatoryChargeModel MandatoryCharges { get; set; }
-        public bool ShouldShowRoundingAdjustment
-        {
-            get
-            {
-                return RoundingAmount != 0;
-            }
-        }
     }
 
     public class MandatoryChargeModel

@@ -283,6 +283,8 @@ namespace myTNB_Android.Src.Utils
             {
                 RecyclerView recyclerView = this.dialog.FindViewById<RecyclerView>(Resource.Id.dialogRecyclerView);
                 TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipCTA);
+                TextViewUtils.SetTextSize16(tooltipCTA);
                 tooltipCTA.Text = this.ctaLabel;
                 LinearLayout indicatorContainer = this.dialog.FindViewById<LinearLayout>(Resource.Id.dialoagListViewIndicatorContainer);
 

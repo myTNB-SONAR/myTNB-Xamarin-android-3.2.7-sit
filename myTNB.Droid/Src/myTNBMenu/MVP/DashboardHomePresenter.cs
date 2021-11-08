@@ -5,7 +5,6 @@ using Android.Runtime;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB_Android.Src.AppLaunch.Activity;
-using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
@@ -18,8 +17,6 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -234,13 +231,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
                             this.mView.ShowBillMenu(accountData);
                         }
-                    }
-                }
-                else if (requestCode == Constants.NEW_BILL_REDESIGN_REQUEST_CODE)
-                {
-                    if (resultCode == Result.Ok)
-                    {
-                        OnMenuSelect(Resource.Id.menu_bill);
                     }
                 }
             }

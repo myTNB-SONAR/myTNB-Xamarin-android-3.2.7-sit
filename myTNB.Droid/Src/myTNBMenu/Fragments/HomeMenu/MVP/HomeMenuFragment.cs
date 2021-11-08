@@ -276,15 +276,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.discoverMoreSectionTitle)]
         TextView discoverMoreSectionTitle;
 
-        [BindView(Resource.Id.discoverMoreNBRContainer)]
-        LinearLayout discoverMoreNBRContainer;
-
-        [BindView(Resource.Id.newBillRedesignBanner)]
-        ImageView newBillRedesignBanner;
-
         [BindView(Resource.Id.whatsNewUnreadImg)]
         ImageView whatsNewUnreadImg;
-
 
         [BindView(Resource.Id.discovercontainer)]
         LinearLayout discovercontainer;
@@ -511,7 +504,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetDBRDiscoverView();
-                SetUpNBRView();
                 SetupNewFAQView();
 
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
@@ -3775,35 +3767,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
-        }
-
-        private void SetUpNBRView()
-        {
-            try
-            {
-                Activity.RunOnUiThread(() =>
-                {
-                    if (BillRedesignUtility.Instance.ShouldShowHomeCard && BillRedesignUtility.Instance.IsAccountEligible)
-                    {
-                        discoverMoreSectionTitle.Visibility = ViewStates.Visible;
-                        discoverMoreNBRContainer.Visibility = ViewStates.Visible;
-                        newBillRedesignBanner.Visibility = ViewStates.Visible;
-                        newBillRedesignBanner.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.Banner_Home_NBR_MS
-                            : Resource.Drawable.Banner_Home_NBR_EN);
-                    }
-                });
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        [OnClick(Resource.Id.newBillRedesignBanner)]
-        void NewBillRedesignBannerOnClick(object sender, EventArgs eventArgs)
-        {
-            DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Home.Home_Banner);
-            ((DashboardHomeActivity)Activity).NavigateToNBR();
         }
     }
 }

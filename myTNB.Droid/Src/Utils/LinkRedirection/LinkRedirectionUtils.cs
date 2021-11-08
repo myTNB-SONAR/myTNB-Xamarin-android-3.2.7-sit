@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
@@ -13,7 +12,6 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Bills.NewBillRedesign;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
@@ -23,7 +21,6 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.WhatsNewDetail.MVP;
 
-using Constant = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.Constants;
 using Screen = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.ScreenEnum;
 
 namespace myTNB_Android.Src.Utils
@@ -365,51 +362,11 @@ namespace myTNB_Android.Src.Utils
                             }
                         }
                     }
-                    //for:
-                    //"inAppScreen="
-                    else if (url.Contains(RedirectTypeList[11]))
-                    {
-                        var targetScreen = GetTargetInAppScreen(url);
-                        if (targetScreen.Contains(Screen.NewBillDesignComms.ToString()))
-                        {
-                            TargetScreen = Screen.NewBillDesignComms;
-                        }
-                        NavigateToTargetScreen(TargetScreen);
-                    }
                 }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        private string GetTargetInAppScreen(string path)
-        {
-            string value = string.Empty;
-            string pattern = string.Format(Constant.Pattern, Constant.InAppScreenKey);
-            Regex regex = new Regex(pattern);
-            Match match = regex.Match(path);
-            if (match.Success)
-            {
-                value = match.Value.Replace(string.Format(Constant.ReplaceKey, Constant.InAppScreenKey), string.Empty);
-            }
-
-            return value;
-        }
-
-        private void NavigateToTargetScreen(Screen targetScreen)
-        {
-            switch (targetScreen)
-            {
-                case Screen.NewBillDesignComms:
-                    {
-                        Intent nbrDiscoverMoreIntent = new Intent(mActivity, typeof(NBRDiscoverMoreActivity));
-                        mActivity.StartActivityForResult(nbrDiscoverMoreIntent, Constants.NEW_BILL_REDESIGN_REQUEST_CODE);
-                    }
-                    break;
-                default:
-                    break;
             }
         }
 

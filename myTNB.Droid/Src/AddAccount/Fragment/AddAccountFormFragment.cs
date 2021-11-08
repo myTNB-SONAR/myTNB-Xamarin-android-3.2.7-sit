@@ -187,8 +187,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 };
 
                 btnWhereIsMyAccountNo = rootView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
-                btnWhereIsMyAccountNo.Text = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitleV2") :
-                    Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
+                btnWhereIsMyAccountNo.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
 
                 TextViewUtils.SetMuseoSans500Typeface(btnWhereIsMyAccountNo);
                 TextViewUtils.SetTextSize12(btnWhereIsMyAccountNo);
@@ -959,13 +958,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         private void ShowWhereIsMyAccountNoTooltip()
         {
-            var title = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitleV2") :
-                            Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
-            var message = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetailsV2") :
-            Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
+            var title = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
+            var message = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
 
             MyTNBAppToolTipBuilder whereIsMyAccountNo = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-               .SetHeaderImage(BillRedesignUtility.Instance.IsAccountEligible ? Resource.Drawable.img_register_acct_noV2 : Resource.Drawable.img_register_acct_no)
+               .SetHeaderImage(Resource.Drawable.img_register_acct_no)
                .SetTitle(title)
                .SetMessage(message)
                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))

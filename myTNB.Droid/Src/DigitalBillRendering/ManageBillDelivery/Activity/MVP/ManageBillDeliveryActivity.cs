@@ -929,13 +929,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     TenantDeliveringAddress.Text = selectedEligibleAccount.accountAddress;
                 }
             }
-            else if (requestCode == Constants.NEW_BILL_REDESIGN_REQUEST_CODE)
-            {
-                if (resultCode == Result.Ok)
-                {
-                    ShowBillsMenu();
-                }
-            }
         }
 
         public void SetAccountName(CustomerBillingAccount selectedAccount)
@@ -1140,33 +1133,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             }
 
             return i;
-        }
-
-        private void ShowBillsMenu()
-        {
-            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-            if (accountList.Count > 0)
-            {
-                CustomerBillingAccount selected = accountList[0];
-                CustomerBillingAccount.RemoveSelected();
-                CustomerBillingAccount.SetSelected(selected.AccNum);
-
-                AccountData accountData = new AccountData();
-                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);
-                accountData.AccountNickName = selected.AccDesc;
-                accountData.AccountName = selected.OwnerName;
-                accountData.AddStreet = selected.AccountStAddress;
-                accountData.IsOwner = customerBillingAccount.isOwned;
-                accountData.AccountNum = selected.AccNum;
-                accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
-
-                Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-                DashboardIntent.PutExtra("FROM_MANAGE_BILL_DELIVERY", true);
-                DashboardIntent.PutExtra("MENU", "BillMenu");
-                DashboardIntent.PutExtra("DATA", JsonConvert.SerializeObject(accountData));
-                DashboardIntent.AddFlags(ActivityFlags.ClearTop);
-                StartActivity(DashboardIntent);
-            }
         }
     }
 }

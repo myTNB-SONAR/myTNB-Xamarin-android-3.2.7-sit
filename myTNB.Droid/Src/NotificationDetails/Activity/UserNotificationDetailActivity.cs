@@ -5,7 +5,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -509,45 +508,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 .SetContentGravity(GravityFlags.Center)
                 .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                 .Build().Show();
-        }
-
-        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-            if (requestCode == Constants.NEW_BILL_REDESIGN_REQUEST_CODE)
-            {
-                if (resultCode == Result.Ok)
-                {
-                    ShowBillsMenu();
-                }
-            }
-        }
-
-        private void ShowBillsMenu()
-        {
-            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-            if (accountList.Count > 0)
-            {
-                CustomerBillingAccount selected = accountList[0];
-                CustomerBillingAccount.RemoveSelected();
-                CustomerBillingAccount.SetSelected(selected.AccNum);
-
-                AccountData accountData = new AccountData();
-                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);
-                accountData.AccountNickName = selected.AccDesc;
-                accountData.AccountName = selected.OwnerName;
-                accountData.AddStreet = selected.AccountStAddress;
-                accountData.IsOwner = customerBillingAccount.isOwned;
-                accountData.AccountNum = selected.AccNum;
-                accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
-
-                Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-                DashboardIntent.PutExtra("FROM_NOTIFICATION", true);
-                DashboardIntent.PutExtra("MENU", "BillMenu");
-                DashboardIntent.PutExtra("DATA", JsonConvert.SerializeObject(accountData));
-                DashboardIntent.AddFlags(ActivityFlags.ClearTop);
-                StartActivity(DashboardIntent);
-            }
         }
 
         protected override void OnPause()
