@@ -183,10 +183,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void NavigateToAddAccount();
 
-            void NavigateToViewAccountStatement(CustomerBillingAccount account);
-
-            void TriggerIneligiblePopUp();
-
             void NavigateToNBR();
         }
 
@@ -277,8 +273,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             Task OnWhereIsMyAccNumberContentDetail();
             Task OnGetBillTooltipContent();
-
-            void OnGetBillEligibilityCheck(string accountNumber);
 
             void ShowBillMenuWithAccount(CustomerBillingAccount account);
         }

@@ -1674,11 +1674,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         {
             UserSessions.DoHomeTutorialShown(this.mSharedPref);
         }
-
-        public void OnGetBillEligibilityCheck(string accountNumber)
-        {
-            this.GetBillEligibilityCheck(accountNumber);
-        }
     }
 
 }

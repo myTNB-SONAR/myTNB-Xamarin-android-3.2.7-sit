@@ -7,7 +7,6 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Bills.NewBillRedesign;
-using myTNB_Android.Src.BillStatement.MVP;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Enquiry.GSL.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
@@ -35,9 +34,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     break;
                 case Deeplink.ScreenEnum.ApplicationDetails:
                     DeeplinkAppDetailsValidation(mainActivity);
-                    break;
-                case Deeplink.ScreenEnum.GetBill:
-                    DeeplinkGetBillValidation(mainActivity);
                     break;
                 default:
                     break;
@@ -176,36 +172,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             mainActivity.HideProgressDialog();
         }
 
-        private static void DeeplinkGetBillValidation(DashboardHomeActivity mainActivity)
-        {
-            string accountNum = DeeplinkUtil.Instance.ScreenKey;
-            mainActivity.mPresenter.OnGetBillEligibilityCheck(accountNum);
-            DeeplinkUtil.Instance.ClearDeeplinkData();
-        }
-
         internal static void ShowAddAccount(this DashboardHomeActivity mainActivity)
         {
             Intent linkAccount = new Intent(mainActivity, typeof(LinkAccountActivity));
             linkAccount.PutExtra("fromDashboard", true);
             mainActivity.StartActivity(linkAccount);
-        }
-
-        internal static void ShowViewAccountStatement(this DashboardHomeActivity mainActivity, CustomerBillingAccount account)
-        {
-            AccountData accountData = AccountData.Copy(account, true);
-            Intent newIntent = new Intent(mainActivity, typeof(BillStatementActivity));
-            newIntent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(accountData));
-            mainActivity.StartActivity(newIntent);
-        }
-
-        internal static void ShowIneligiblePopUp(this DashboardHomeActivity mainActivity)
-        {
-            MyTNBAppToolTipBuilder whatIsThisTooltip = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.BILLS, LanguageConstants.Bills.TOOLTIP_ACT_STMT_TITLE))
-                .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.BILLS, LanguageConstants.Bills.TOOLTIP_ACT_STMT_MSG))
-                .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.GOT_IT))
-                .Build();
-            whatIsThisTooltip.Show();
         }
 
         internal static void ShowNewBillRedesign(this DashboardHomeActivity mainActivity)
