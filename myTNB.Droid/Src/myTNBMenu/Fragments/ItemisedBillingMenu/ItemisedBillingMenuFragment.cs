@@ -537,6 +537,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
             itemisedBillingInfoShimmer.StartShimmer();
             billFilterIcon.Enabled = false;
+            download_bill_icon.Enabled = false;
             this.HasOptionsMenu = true;
             BillOnScrollChangeListener billOnScrollChangeListener = new BillOnScrollChangeListener(ShowBillFilterToolbar, bills_list_title_container);
             itemisedBillingScrollView.SetOnScrollChangeListener(billOnScrollChangeListener);
@@ -1052,6 +1053,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             _isBillStatement = BillRedesignUtility.Instance.IsAccountStatementEligible(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner);
             download_bill_icon.Visibility = _isBillStatement ? ViewStates.Visible : ViewStates.Gone;
+            download_bill_icon.Enabled = false;
         }
         public void PopulateBillingHistoryList(List<AccountBillPayHistoryModel> billingHistoryModelList, List<AccountBillPayFilter> billPayFilters)
         {
@@ -1064,6 +1066,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
             billFilterIcon.Visibility = ViewStates.Visible;
             billFilterIcon.Enabled = true;
+            download_bill_icon.Enabled = true;
 
             if (billingHistoryModelList.Count > 0)
             {
