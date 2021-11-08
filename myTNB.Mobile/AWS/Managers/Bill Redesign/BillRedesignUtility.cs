@@ -42,7 +42,9 @@ namespace myTNB.Mobile
             }
             catch (Exception e)
             {
+#if DEBUG
                 Debug.WriteLine("[DEBUG]GetBillRedesignCAs Exception: " + e.Message);
+#endif
             }
             return caList;
         }
@@ -103,10 +105,45 @@ namespace myTNB.Mobile
             }
             catch (Exception e)
             {
+#if DEBUG
                 Debug.WriteLine("[DEBUG]IsCAEligible Exception: " + e.Message);
+#endif
             }
             return false;
         }
+
+        public bool IsAccountStatementEligible(string ca
+            , bool isOwner)
+        {
+            try
+            {
+                bool isCAEligible = IsCAEligible(ca);
+                if (isOwner)
+                {
+                    return isCAEligible;
+                }
+                else
+                {
+                    bool isEligibleForNonOwner = LanguageManager.Instance.GetConfigToggleValue(LanguageManager.TogglePropertyEnum.ShouldShowAccountStatementToNonOwner);
+                    if (isEligibleForNonOwner)
+                    {
+                        return isCAEligible;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine("[DEBUG]IsAccountStatementEligible Exception: " + e.Message);
+#endif
+            }
+            return false;
+        }
+
 
         public bool ShouldShowHomeCard
         {
@@ -128,7 +165,9 @@ namespace myTNB.Mobile
                 }
                 catch (Exception e)
                 {
+#if DEBUG
                     Debug.WriteLine("[DEBUG] ShouldShowHomeCard Exception: " + e.Message);
+#endif
                 }
                 return false;
             }

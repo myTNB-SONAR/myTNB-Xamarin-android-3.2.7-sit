@@ -1117,8 +1117,8 @@
     "consentInfo": "Bagaimanakah contoh bukti persetujuan?",
     "stepTitle3of3": "Langkah 3 dari 3",
     "supportingDocTitle": "Dokumen sokongan",
-    "contactDetailsTitle": "Butiran untuk Dihubungi",
-    "infoHowcan": "Apakah yang anda ingin tanyakan?",
+    "contactDetailsTitle": "Maklumat untuk dihubungi",
+    "infoHowcan": "Apakah yang ingin anda tanyakan?",
     "icReq": "Nombor pengenalan diperlukan",
     "emailReq": "Alamat e-mel diperlukan",
     "mailingReq": "Alamat surat-menyurat diperlukan",
@@ -2619,7 +2619,8 @@
     "IsAboutMyBillEnquiryEnabled": true,
     "IsUpdatePersonalDetailsEnquiryEnabled": true,
     "IsGSLRebateEnabled": true,
-    "AccountStatementTimeout": 5000
+    "AccountStatementTimeout": 5000,
+    "ShouldShowAccountStatementToNonOwner": false
   },
   "StatementPeriod": {
     "title": "MS_Account Statement",
@@ -2633,7 +2634,8 @@
     "processingRequestMessage": "MS_Thank you for waiting, it may takes a few seconds to process your request.",
     "timeoutTitle": "MS_Sorry it took longer than expected!",
     "timeoutMessage": "MS_We will notify you when your account statement is ready to view here, and will email a copy to <b>{0}</b>.",
-    "backToBills": "MS_Back to Bills"
+    "backToBills": "MS_Back to Bills",
+    "noTransactionMessage": "MS_Seems like you have no transaction history to request for an account statement, try again next time!"
   },
   "NewBillDesignComms": {
     "title": "Wajah Bil TNB Baharu",

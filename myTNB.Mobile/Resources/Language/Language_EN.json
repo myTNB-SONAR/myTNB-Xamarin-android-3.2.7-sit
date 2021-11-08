@@ -2619,7 +2619,8 @@
     "IsAboutMyBillEnquiryEnabled": true,
     "IsUpdatePersonalDetailsEnquiryEnabled": true,
     "IsGSLRebateEnabled": true,
-    "AccountStatementTimeout": 5000
+    "AccountStatementTimeout": 5000,
+    "ShouldShowAccountStatementToNonOwner": false
   },
   "StatementPeriod": {
     "title": "Account Statement",
@@ -2633,7 +2634,8 @@
     "processingRequestMessage": "Thank you for waiting, it may takes a few seconds to process your request.",
     "timeoutTitle": "Sorry it took longer than expected!",
     "timeoutMessage": "We will notify you when your account statement is ready to view here, and will email a copy to <b>{0}</b>.",
-    "backToBills": "Back to Bills"
+    "backToBills": "Back to Bills",
+    "noTransactionMessage": "Seems like you have no transaction history to request for an account statement, try again next time!"
   },
   "NewBillDesignComms": {
     "title": "TNB New Bill Design",
