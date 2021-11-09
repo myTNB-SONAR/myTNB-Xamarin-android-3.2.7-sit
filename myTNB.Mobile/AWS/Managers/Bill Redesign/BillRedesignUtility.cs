@@ -117,7 +117,7 @@ namespace myTNB.Mobile
         {
             try
             {
-                bool isCAEligible = IsCAEligible(ca);
+                bool isCAEligible = IsCAEligible(ca) && IsAccountEligible;
                 if (isOwner)
                 {
                     return isCAEligible;

@@ -8,46 +8,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
     {
         internal static void GetBillEligibilityCheck(this DashboardHomePresenter presenter, string accountNumber)
         {
-            if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                    , EligibilitySessionCache.FeatureProperty.Enabled))
+            if (CAIsInTheList(accountNumber, out CustomerBillingAccount account))
             {
-                if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR,
-                    EligibilitySessionCache.FeatureProperty.TargetGroup))
+                if (BillRedesignUtility.Instance.IsAccountStatementEligible(accountNumber, account.isOwned))
                 {
-                    if (CAIsInTheList(accountNumber, out CustomerBillingAccount account))
-                    {
-                        if (BillRedesignUtility.Instance.IsCAEligible(accountNumber))
-                        {
-                            presenter.mView.NavigateToViewAccountStatement(account);
-                        }
-                        else
-                        {
-                            presenter.mView.TriggerIneligiblePopUp();
-                        }
-                    }
-                    else
-                    {
-                        presenter.mView.NavigateToAddAccount();
-                    }
+                    presenter.mView.NavigateToViewAccountStatement(account);
                 }
                 else
                 {
-                    if (CAIsInTheList(accountNumber, out CustomerBillingAccount account))
-                    {
-                        if (account.IsSmartMeter && account.isOwned)
-                        {
-                            presenter.mView.NavigateToViewAccountStatement(account);
-                        }
-                        else
-                        {
-                            presenter.mView.TriggerIneligiblePopUp();
-                        }
-                    }
-                    else
-                    {
-                        presenter.mView.NavigateToAddAccount();
-                    }
+                    presenter.mView.TriggerIneligiblePopUp();
                 }
+            }
+            else
+            {
+                presenter.mView.NavigateToAddAccount();
             }
         }
 
