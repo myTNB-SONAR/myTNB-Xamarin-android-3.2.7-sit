@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using static myTNB.Mobile.EligibilitySessionCache;
 using static myTNB.Mobile.FeatureInfoClass;
 
+
 namespace myTNB.Mobile
 {
     public class FeatureInfoManager
@@ -48,7 +49,28 @@ namespace myTNB.Mobile
                 //Convert Enum to list
                 List<string> TypeOfFeature = new List<string>() { Features.EB.ToString() };
 
-                if (response != null
+                if (EBUtility.Instance.IsPublicRelease)
+                {
+
+                    List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
+
+                    eligibleCA.Add(new FeaturesContractAccount
+                    {
+                        contractAccount = "10001010100101",  //dummy ca to pass to back end if IsPublicRelease
+                        acted = true,
+                        modifiedDate = ""
+                    });
+
+                    ListOfFeature.Add(
+
+                    new FeatureInfo()
+                    {
+                        FeatureName = Features.EB.ToString(),
+                        ContractAccount = eligibleCA
+                    });
+                }
+
+                else if (response != null
                     && response.StatusDetail != null
                     && response.StatusDetail.IsSuccess
                     && response.Content != null)

@@ -42,7 +42,9 @@ namespace myTNB.Mobile
             }
             catch (Exception e)
             {
+#if DEBUG
                 Debug.WriteLine("[DEBUG]GetBillRedesignCAs Exception: " + e.Message);
+#endif
             }
             return caList;
         }
@@ -51,7 +53,8 @@ namespace myTNB.Mobile
         {
             get
             {
-                if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.Enabled))
+                return false;
+                /*if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.Enabled))
                 {
                     if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup))
                     {
@@ -84,13 +87,14 @@ namespace myTNB.Mobile
                 else
                 {
                     return false;
-                }
+                }*/
             }
         }
 
         public bool IsCAEligible(string ca)
         {
-            try
+            return false;
+            /*try
             {
                 DBRModel brContent = EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.BR);
                 if (brContent != null
@@ -103,16 +107,53 @@ namespace myTNB.Mobile
             }
             catch (Exception e)
             {
+#if DEBUG
                 Debug.WriteLine("[DEBUG]IsCAEligible Exception: " + e.Message);
+#endif
             }
-            return false;
+            return false;*/
         }
+
+        public bool IsAccountStatementEligible(string ca
+            , bool isOwner)
+        {
+            return false;
+            /*try
+            {
+                bool isCAEligible = IsCAEligible(ca);
+                if (isOwner)
+                {
+                    return isCAEligible;
+                }
+                else
+                {
+                    bool isEligibleForNonOwner = LanguageManager.Instance.GetConfigToggleValue(LanguageManager.TogglePropertyEnum.ShouldShowAccountStatementToNonOwner);
+                    if (isEligibleForNonOwner)
+                    {
+                        return isCAEligible;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine("[DEBUG]IsAccountStatementEligible Exception: " + e.Message);
+#endif
+            }
+            return false;*/
+        }
+
 
         public bool ShouldShowHomeCard
         {
             get
             {
-                try
+                return false;
+                /*try
                 {
                     if (LanguageManager.Instance.GetServiceConfig("ServiceConfiguration", "ForceHideBillRedesignBanner") is JToken config
                         && config != null
@@ -128,9 +169,11 @@ namespace myTNB.Mobile
                 }
                 catch (Exception e)
                 {
+#if DEBUG
                     Debug.WriteLine("[DEBUG] ShouldShowHomeCard Exception: " + e.Message);
+#endif
                 }
-                return false;
+                return false;*/
             }
         }
     }

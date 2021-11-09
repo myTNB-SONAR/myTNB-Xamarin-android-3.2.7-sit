@@ -56,7 +56,7 @@
     "english": "English",
     "bahasa": "Bahasa Malaysia",
     "saveChanges": "Simpan",
-    "gotIt": "Ok",
+    "gotIt": "Okay!",
     "login": "Log Masuk",
     "next": "Seterusnya",
     "resend": "Hantar semula",
@@ -201,7 +201,7 @@
     "payBill": "Bayar<br>Bil Saya",
     "payBills": "Bayar<br>Bil Saya",
     "submitFeedback": "Hantar<br>Maklum Balas",
-    "submitEnquiry": "Hantar<br>Pertanyaan",
+    "submitEnquiry": "Hantar &<br>Semak Pertanyaan",
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "Lihat Bil / Makluman Saya",
     "tutorialAccountTitle": "Ringkasan akaun anda.",
@@ -410,10 +410,10 @@
   "SelectElectricityAccounts": {
     "title": "Pilih Akaun Elektrik",
     "accountsMissing": "Mengapa akaun saya tiada di sini?",
-    "dbrAccountsMissingTitlePilot": "Mengapa akaun saya tiada di sini?",
-    "dbrMissingAccountsMessagePilot": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
-    "dbrAccountsMissingTitleNationwide": "Mengapa akaun saya tiada di sini?",
-    "dbrMissingAccountsMessageNationwide": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!"
+    "dbrAccountsMissingTitlePilot": "Mengapa akaun saya tidak ada di sini?",
+    "dbrMissingAccountsMessagePilot": "Program perintis ini untuk akaun Kediaman di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang berkenaan akan dibolehkan untuk 'paperless'. Ciri ini akan berkembang ke seluruh negara tidak lama lagi. Nantikan!",
+    "dbrAccountsMissingTitleNationwide": "Mengapa akaun saya tidak ada di sini?",
+    "dbrMissingAccountsMessageNationwide": "Program perintis ini untuk akaun Kediaman di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang berkenaan akan dibolehkan untuk 'paperless'. Ciri ini akan berkembang ke seluruh negara tidak lama lagi. Nantikan!"
   },
   "Usage": {
     "title": "Usage",
@@ -634,7 +634,8 @@
     "dislikeButton": "Tidak",
     "dontAskAgain": "Tidak Berminat",
     "feedback2SuccessTitle": "Terima kasih atas maklumbalas anda",
-    "feedback2SuccessButton": "OK"
+    "feedback2SuccessButton": "OK",
+    "viewAccountStatement": "Semak Penyata Akaun"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -753,7 +754,7 @@
     "findUs": "Temui Kami",
     "callUs": "Hubungi Kami",
     "feedback": "Hantar Maklum Balas",
-    "enquiry": "Hantar Pertanyaan",
+    "enquiry": "Hantar & Semak Pertanyaan",
     "changeLanguage": "Change language to English",
     "applicationStatus": "Status Permohonan"
   },
@@ -1048,32 +1049,36 @@
   },
   "SubmitEnquiry": {
     "enquireTitle": "Pertanyaan",
-    "submitEnquiryTitle": "Hantar Pertanyaan Baru",
+    "submitEnquiryTitle": "Hantar Permohonan Baru",
     "submitEnquiryDescription": "Kongsikan bagaimana kami boleh membantu anda",
-    "viewSubmittedEnquiry": "Lihat Pertanyaan yang Dihantar",
-    "viewEnquiryTitle": "Lihat kemas kini status pertanyaan anda di sini.",
+    "viewSubmittedEnquiry": "Semak Permohonan",
+    "viewEnquiryTitle": "Semak status terkini permohonan anda di sini",
     "accNumberHint": "Nombor Akaun",
     "accNumberInfo": "Dimanakah nombor akaun saya?",
-    "enquiringTitle": "Apakah yang anda ingin tanyakan?",
+    "enquiringTitle": "Apakah yang ingin anda tanyakan?",
     "generalEnquiryTitle": "Pertanyaan Umum",
     "generalEnquiryDescription": "Saya ingin hantar pendapat dan saranan.",
     "updatePersonalDetTitle": "Kemas kini Maklumat Peribadi",
     "personalDetailsDescription": "Saya ingin mengemaskini maklumat peribadi.",
+    "overVoltageClaimTitle": "Tuntutan Voltan Berlebihan",
+    "overVoltageClaimDescription": "Saya ingin membuat tuntutan untuk kerosakan harta benda yang disebabkan oleh lonjakan elektrik.",
     "stepTitle1of2": "Langkah 1 dari 2",
     "enquiryAboutTitle": "Saya ingin bertanya mengenai:",
     "messageHint": "Mesej Anda",
     "uploadDocTitle": "Muat naik dokumen sokongan:",
     "attachTitle": "Muat naik dokumen sokongan  (tidak wajib)",
-    "attachDescription": "Saiz maksimum dokumen adalah 1MB. (Format PDF, JPG & JPEG sahaja)",
+    "attachDescription": "Saiz maksimum dokumen adalah 1MB (format PDF, JPG, JPEG atau PNG sahaja)",
     "stepTitle2of2": "Langkah 2 dari 2",
     "contactEnquiryTitle": "Bagaimanakah kami boleh menghubungi anda mengenai pertanyaan ini?",
     "nameHint": "Nama Penuh Anda",
     "emailHint": "Alamat E-mel",
     "mobileHint": "Nombor telefon",
     "thankYouTitle": "Terima kasih atas pertanyaan anda!",
+    "thankYouGSLTitle": "Terima kasih atas permohonan anda!",
     "thankYouDescription": "Kami akan menghubungi anda tidak lama lagi. Sementara itu, dapatkan maklumat terkini dengan memantau status pertanyaan anda.",
+    "thankYouGSLDescription": "Kami akan menghubungi anda tidak lama lagi. Sementara itu, dapatkan maklumat terkini dengan memantau status rebat anda.",
     "serviceNoTitle": "Nombor Permintaan Perkhidmatan",
-    "backHomeButton": "Kembali ke Halaman Utama",
+    "backHomeButton": "Kembali ke Laman Utama",
     "submittedEnquiryTitle": "Pertanyaan yang Dihantar",
     "enquiryDetailsTitle": "Butiran Pertanyaan",
     "photoTitle": "Gambar / Tangkapan Skrin",
@@ -1114,8 +1119,8 @@
     "consentInfo": "Bagaimanakah contoh bukti persetujuan?",
     "stepTitle3of3": "Langkah 3 dari 3",
     "supportingDocTitle": "Dokumen sokongan",
-    "contactDetailsTitle": "Butiran untuk Dihubungi",
-    "infoHowcan": "Apakah yang anda ingin tanyakan?",
+    "contactDetailsTitle": "Maklumat untuk dihubungi",
+    "infoHowcan": "Apakah yang ingin anda tanyakan?",
     "icReq": "Nombor pengenalan diperlukan",
     "emailReq": "Alamat e-mel diperlukan",
     "mailingReq": "Alamat surat-menyurat diperlukan",
@@ -1134,7 +1139,7 @@
     "newMailing": "Alamat Surat Menyurat Baharu",
     "newPremisesAdd": "Alamat Premis Baharu",
     "plsEnterAcc": "Sila masukkan atau pilih nombor akaun elektrik anda terlebih dahulu.",
-    "viewSubmitted": "Lihat Pertanyaan yang Dihantar",
+    "viewSubmitted": "Semak Pertanyaan yang Dihantar",
     "title": "Hantar Pertanyaan Baru",
     "scanMessage": "Imbas kod bar pada bil anda untuk mendapatkan butiran akaun.",
     "enquiryTnc": "Dengan menghantar, saya telah membaca dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat</strong></a>",
@@ -1173,28 +1178,82 @@
     "viewYes": "Ya",
     "viewNo": "Tidak",
     "documentPdf": "Dokumen",
+    //Overvoltage Claim Translation Start
+    "backToHome": "Kembali ke Halaman Utama",
+    "leaveThisPage": "Tinggalkan halaman ini?",
+    "leaveThisPageDescription": "Anda akan hilang semua maklumat yang anda isi. Sila tekan 'Ya' untuk teruskan, atau 'Batal' untuk kekal di halaman ini.",
+    "thankYouForYourRequest": "Terima kasih atas permohonan anda!",
+    "thankYouForYourRequestDescription": "Kami akan kembali kepada anda sebentar nanti. Buat sementara waktu, info terkini boleh didapati dengan memeriksa status permohonan anda",
+    "thankYouForYourEnquiry": "Permohonan anda telah dibatalkan.", //
+    "thankYouForYourEnquiryDescription": "Permohonan anda untuk tuntutan voltan berlebihan telah dibatalkan.", //
+    "thankYouForYourAppointment": "Janji temu anda telah dibatalkan.", //
+    "thankYouForYourAppointmentDescription": "Janji temu permohonan tuntutan voltan berlebihan anda telah dibatalkan.", //
+    "thankYouForYourAgree": "Terima kasih di atas maklum balas anda!", //
+    "thankYouForYourAgreeDescription": "Untuk meneruskan pembayaran, hantarkan maklumat pembayaran yang diperlukan di halaman pertanyaan yang dihantar.", //
+    "thankYouForYourDisagree": "Permohonan rundingan anda telah dihantar.", //
+    "thankYouForYourDisagreeDescription": "Kami akan menghubungi anda tidak lama lagi. Dapatkan maklumat terkini di status pertanyaan anda.", //
+    "proccedToPaymentInformation": "Terus ke Maklumat Pembayaran", //button name
+    "setNewAppointment": "Jadualkan Janji Temu Baharu", //button name
+    "appointmentSet": "Janji Temu Dijadualkan! ", //
+    "appointmentUpdate": "Tarikh janji temu anda telah dikemaskini.",
+    "appointmentSetDescription": "Terima kasih! Janji temu anda telah disahkan dengan butiran di bawah.", //
+    "dateTitle": "TARIKH JANJI TEMU", //
+    "technicianName": "NAMA JURUTEKNIK", //
+    "incidentAddress": "ALAMAT KEJADIAN", //
+    "thankYouForProvidingYourDetails": "Terima kasih di atas semua maklumat yang diberikan!", //
+    "thankYouForProvidingYourDetailsDescription": "Kami akan menyemak maklumat anda dan anda akan dimaklumkan setelah kami mengesahkannya. Jumlah pembayaran akan diproses ke akaun bank anda dalam tempoh 14 hari bekerja.", //
+    "totalClaimAmount": "Jumlah (RM)", //
+    "thankYouForYourSubmission": "Terima kasih di atas maklum balas anda!", //
+    "yourRatingWillHelpUsServeYouBetter": "Penilaian anda akan membantu kami memberikan perkhidmatan yang lebih baik.", //
+    "enterPaymentDetailsTitle": "Masukkan Butiran Pembayaran", //
+    "rateYourExperienceTitle": "Nilaikan Pengalaman Anda", //
+    "setAppointmentTitle": "Jadualkan Janji Temu", //
+    "negotiationRequestTitle": "Permohonan Rundingan", //
+    "compensationAgreementTitle": "Perjanjian Pampasan", //
+    "updatePaymentDetailsTitle": "Kemas kini Butiran Pembayaran", //
+    "exGratiaAgreementTitle": "Persetujuan Ex-gratia", //
+    "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.", //
+    "overVoltageClaimIsCurrentlyNotEnabledForAccountTitle": "Tuntutan Voltan Berlebihan pada masa ini tidak diaktifkan untuk ", //
+    "overVoltageClaimIsCurrentlyNotEnabledForAccountDescription": "Nombor akaun yang dipilih pada masa ini tidak diaktifkan untuk Tuntutan Voltan Berlebihan melalui myTNB. Sila hubungi TNB CareLine kami di talian 1300-88-5454 atau hantarkan e-mel kepada kami di tnbcareline@tnb.com.my atau kunjungi Kedai Tenaga.", //
+    "currentlyNotEnabledForMelakaTitle": "Buat masa ini tidak diaktifkan untuk ", //
+    "Gotit": "Okay!", //button
+    "overVoltageMaintenanceLabel": "Servis Tuntutan Voltan Berlebihan sedang dalam penyelenggaraan.", //
+    "overVoltageMaintenanceTitle": "Kami akan kembali tidak lama lagi.", //
+    "overVoltageMaintenanceDescription": "Maaf, servis Tuntutan Voltan Berlebihan sedang dalam penyelenggaraan. Sila semak semula kemudian.", //
+    "overVoltageClaimtemproryUnavailable": "Servis Tuntutan Voltan Berlebihan tidak tersedia untuk sementara waktu", //
+    "overVoltageClaimtemproryUnavailableTitle": "Servis tidak tersedia untuk sementara waktu", //
+    "overVoltageClaimtemproryUnavailableDescription": "Kami sedang memulihkan servis Tuntutan Voltan Berlebihan secepat yang mungkin. Sila cuba sebentar lagi.", //
+    "termsAndConditionTitle": "Terma dan Syarat", //
+    "selectCountryTitle": "Pilih Negara/Wilayah", //
+    "rescheduleAppointmentTitle": "Jadualkan Semula Janji Temu",
+    "ServerDownTitle": "Servis Tuntutan Voltan Berlebihan tidak tersedia untuk sementara waktu.", //
+    "overvoltageClaimMaintanceTitle": "Servis Tuntutan Voltan Berlebihan sedang dalam penyelenggaraan.", //
+    "myTNB": "myTNB OVIS", //
+    "PermissionAlertTitle": "Ingin Mengakses Kamera", //
+    "PermissionAlertBody": "Benarkan myTNB untuk mengakses kamera untuk muat naik gambar dan menyimpan gambar yang diambil oleh aplikasi.", //
+    "DontAllowButton": "Tidak", //
+    "SettingButton": "Tetapan" //
+    //Overvoltage Claim Translation End
     "aboutMyBillTitle": "Berkaitan Bil Saya",
     "aboutMyBillDescription": "Saya ingin bertanya mengenai bil dan pembayaran.",
     "selectEnquiryType": "Pilih Jenis Pertanyaan",
     "iNeedHelpWith": "SAYA PERLU BANTUAN MENGENAI",
     //GSL
-    "gslTitle": "Jaminan Tahap Perkhidmatan (GSL)",
+    "gslTitle": "Rebat Jaminan Tahap Perkhidmatan (GSL)",
     "gslDescription": "Saya ingin menebus rebat Jaminan Tahap Perkhidmatan (GSL)",
     "gslHeaderTitle": "Rebat GSL",
     "stepTitle": "Langkah {0} dari {1}",
     "rebateClaimTitle": "Jenis rebat apa yang ingin anda tuntut?",
     "rebateTypeTitle": "Jenis Rebat",
     "tenantInfoTitle": "Maklumat Penyewaan Anda",
-    "addIncidentCTA": "MS_Add New Incident",
+    "addIncidentCTA": "Tambah Insiden Baru",
     "incidentInformationTitle": "Maklumat Insiden",
     "incidentTitle": "Insiden {0}",
     "incidentDate": "Tarikh Insiden",
     "incidentTime": "Masa Insiden",
     "restorationDate": "Tarikh Pemulihan",
-    "restorationTime": "Masa Insiden",
+    "restorationTime": "Masa Pemulihan",
     "uploadDocumentTitle": "Muat Naik Dokumen Sokongan",
-    "tenancyAgreementTitle": "Perjanjian Penyewaan",
-    "tenancyAgreementAttachmentDescription": "Saiz maksimum dokumen adalah 2MB (format PDF, JPG, JPEG, PNG, DOC, DOCX, XLS & XLSX sahaja)",
     "status": "Status:"
   },
   "SubmitEnquiry_selector": {
@@ -1239,7 +1298,7 @@
       },
       {
         "key": "GSL5",
-        "description": "GSl 5:  Prosedur Pemotongan Bekalan",
+        "description": "GSl 5: Prosedur Pemutusan Bekalan",
         "needsIncident": false
       }
     ]
@@ -2545,9 +2604,9 @@
     "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"
   },
   "EnergyBudgetPopup": {
-    "title": "Tahniah! Rasai pengalaman baru dalam mengawal penggunaan elektrik bersama Energy Budget!",
+    "title": "Kawal penggunaan elektrik anda dengan mudah bersama Energy Budget!",
     "threeEasyStep": "Penjimatan wang melalui 3 cara mudah:",
-    "firstStep": "TETAPKAN tahap penggunaan bulanan meter pintar terpilih anda",
+    "firstStep": "TETAPKAN tahap penggunaan bulanan anda",
     "secondStep": "PANTAU penggunaan harian dengan mudah",
     "thirdStep": "BERJIMAT apabila anda menghampiri penggunaan yang anda tetapkan",
     "txtLetgetstarted": "Mula Sekarang",
@@ -2565,7 +2624,7 @@
     "dbrInfoDescription0": "Leret ke kiri untuk mengetahui kelebihan dengan memilih kaedah 'paperless' hari ini!",
     "dbrInfoDescription1": "Kurangkan pembaziran kertas anda dan jadilah yang pertama memberi impak di dalam usaha kolektif kita semua ke arah masa depan yang lebih mesra alam.",
     "dbrInfoDescription2": "Alami penghantaran bil elektrik bulanan anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB, bila-bila masa dan di mana sahaja.",
-    "dbrInfoDescription2V2": "Alami penghantaran bil terbaharu anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB. Ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppScreen=NewBillDesignComms\">sini</a>.",
+    "dbrInfoDescription2V2": "Alami penghantaran bil terbaharu anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB. Ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/bill-layout\">sini</a>.",
     "dbrInfoDescription3": "Dapatkan bil anda dengan terjamin di myTNB. Tidak perlu risau lagi bil anda terdedah, dicuri atau tercicir.",
     "anotherDeliveryMethod": "Bagaimana jika saya mahu cara penerimaan bil lain?",
     "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "Bagaimana jika saya mahu cara penerimaan bil lain?",
@@ -2582,9 +2641,9 @@
     "updatingDescription": "Akaun anda sedang dikemaskinikan dan dijangka mengambil masa sehingga 5 minit. Kembali semula nanti!",
     "selectAccount": "PILIH AKAUN ANDA",
     "notEligibleAccountsTitlePilot": "Mengapa akaun saya tidak ada di sini?",
-    "notEligibleAccountsMessagePilot": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
+    "notEligibleAccountsMessagePilot": "Program perintis ini untuk akaun Kediaman di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang berkenaan akan dibolehkan untuk 'paperless'. Ciri ini akan berkembang ke seluruh negara tidak lama lagi. Nantikan!",
     "notEligibleAccountsTitleNationwide": "Mengapa akaun saya tidak ada di sini?",
-    "notEligibleAccountsMessageNationwide": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
+    "notEligibleAccountsMessageNationwide": "Program perintis ini untuk akaun Kediaman di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang berkenaan akan dibolehkan untuk 'paperless'. Ciri ini akan berkembang ke seluruh negara tidak lama lagi. Nantikan!",
     "nonOwnerPaperTitle": "Anda menerima Bil Bercetak untuk akaun ini.",
     "nonOwnerPaperMessage": "Bil anda dihantar ke alamat premis akaun ini.",
     "nonOwnerEBillTitle": "Akaun anda adalah mesra alam dengan Bil myTNB!",
@@ -2618,25 +2677,23 @@
     "IsAboutMyBillEnquiryEnabled": true,
     "IsUpdatePersonalDetailsEnquiryEnabled": true,
     "IsGSLRebateEnabled": true,
-    "AccountStatementTimeout": 5000
+    "AccountStatementTimeout": 5000,
+    "ShouldShowAccountStatementToNonOwner": false
   },
   "StatementPeriod": {
-    "title": "MS_Account Statement",
-    "confirm": "MS_Confirm",
-    "preferredStatementPeriodTitle": "MS_Select your preferred statement period to request.",
-    "iWantToRequestForTitle": "MS_I want to request for:",
-    "past3Months": "3 bulan lepas",
-    "past6Months": "6 bulan lepas",
-    "disclaimer": "MS_This may take more than a few seconds but we will notify you and email you a copy if it takes longer than expected.",
-    "processingRequestTitle": "MS_We’re processing your request",
-    "processingRequestMessage": "MS_Thank you for waiting, it may takes a few seconds to process your request.",
-    "timeoutTitle": "MS_Sorry it took longer than expected!",
-    "timeoutMessage": "MS_We will notify you when your account statement is ready to view here, and will email a copy to <b>{0}</b>.",
-    "backToBills": "MS_Back to Bills"
-  },
-  "AccountStatement": {
-    "past6MonthsTitle": "Penyata 6 Bulan Lepas ",
-    "past3MonthsTitle": "Penyata 3 Bulan Lepas "
+    "title": "Penyata Akaun",
+    "confirm": "Okay!",
+    "preferredStatementPeriodTitle": "Pilih tempoh penyata akaun yang dikehendaki.",
+    "iWantToRequestForTitle": "Saya ingin menyemak:",
+    "past3Months": "3 bulan yang lalu",
+    "past6Months": "6 bulan yang lalu",
+    "disclaimer": "Proses ini akan mengambil masa beberapa saat. Kami akan memberi notifikasi & menghantar salinan melalui e-mel jika proses ini mengambil masa yang lebih lama dari jangkaan.",
+    "processingRequestTitle": "Kami sedang memproses permintaan anda",
+    "processingRequestMessage": "Terima kasih kerana menunggu. Permintaan anda akan mengambil masa beberapa saat untuk diproses.",
+    "timeoutTitle": "Maaf, proses ini mengambil masa yang lebih lama dari jangkaan!",
+    "timeoutMessage": "Kami akan maklumkan anda apabila penyata akaun telah tersedia. Salinan akan di e-mel kepada <b>{0}</b>.",
+    "backToBills": "Kembali ke Bil",
+    "noTransactionMessage": "Nampaknya anda belum mempunyai bil untuk akaun ini. Sila cuba lagi selepas mendapat bil pertama anda."
   },
   "NewBillDesignComms": {
     "title": "Wajah Bil TNB Baharu",
@@ -2759,8 +2816,8 @@
             "description": "Kami akan memastikan meter anda dipasang setelah anda membuat bayaran deposit."
           },
           {
-            "title": "Prosedur Pemotongan Bekalan",
-            "description": "Untuk sebarang Pemotongan bekalan, prosesnya adalah mengikut prosedur atau undang-undang terpakai."
+            "title": "Prosedur Pemutusan Bekalan",
+            "description": "Untuk sebarang Pemutusan bekalan, prosesnya adalah mengikut prosedur atau undang-undang terpakai."
           }
         ]
       },
