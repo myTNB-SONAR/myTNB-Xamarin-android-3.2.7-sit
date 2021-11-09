@@ -23,7 +23,6 @@ namespace myTNB.Mobile
         public EBUtility()
         {
         }
-
         
         public bool IsPublicRelease
         {
@@ -34,7 +33,6 @@ namespace myTNB.Mobile
                     // if target group is false then it will lead to public release
                     if (!EligibilitySessionCache.Instance.IsFeatureEligible(Features.EB, FeatureProperty.TargetGroup))
                     {
-  
                         return true;
                     }
 

@@ -207,7 +207,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             ///<summary>
             /// Show Maintenance Screen
             ///</summary>
-            void ShowMaintenance(AppLaunchMasterDataResponse masterDataResponse);
+            void ShowMaintenance(AppLaunchMasterDataResponseAWS masterDataResponse);
 
             void SetAppLaunchSuccessfulFlag(bool flag, AppLaunchNavigation navigationWay);
 

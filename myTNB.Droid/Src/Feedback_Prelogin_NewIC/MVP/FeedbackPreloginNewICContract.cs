@@ -49,6 +49,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
             void ShowSelectAccount();
 
             void ShowGSLRebate(bool isOwner);
+
+            void ShowOvervoltageClaim();
         }
 
         public interface IUserActionsListener : IBasePresenter

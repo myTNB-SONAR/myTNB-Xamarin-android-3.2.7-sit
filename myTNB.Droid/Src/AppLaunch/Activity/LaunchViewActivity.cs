@@ -47,6 +47,10 @@ using Firebase.Iid;
 using myTNB_Android.Src.NotificationDetails.Activity;
 using myTNB_Android.Src.Utils.Deeplink;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Notifications.Models;
+using myTNB_Android.Src.NotificationDetails.Models;
+using myTNB_Android.Src.Notifications.Adapter;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -63,6 +67,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
     {
         [BindView(Resource.Id.rootView)]
         RelativeLayout rootView;
+        public static bool FcmPushNotificationFlagFromBackground;
 
         public static readonly string TAG = typeof(LaunchViewActivity).Name;
         private AppLaunchPresenter mPresenter;
@@ -82,17 +87,25 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private bool isAppLaunchLoadSuccessful = false;
         private bool isAppLaunchDone = false;
 
-        private AppLaunchMasterDataResponse cacheResponseData = null;
+        private AppLaunchMasterDataResponseAWS cacheResponseData = null;
+
+        string ClaimId = "";
 
         private Snackbar mSnackBar;
         private Snackbar mNoInternetSnackbar;
         private Snackbar mUnknownExceptionSnackBar;
 
         private AppLaunchNavigation currentNavigation = AppLaunchNavigation.Nothing;
+        public static string DynatraceSessionUUID;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            //UUID number for dynatrace webview navigation	
+            Guid myuuid = Guid.NewGuid();
+            DynatraceSessionUUID = myuuid.ToString();
+
             Utility.SetAppUpdateId(this);
             LanguageUtil.SetInitialAppLanguage();
             try
@@ -156,6 +169,12 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         }
+                    }
+
+                    if (Intent.Extras.ContainsKey("claimId"))
+                    {
+                        ClaimId = Intent.Extras.GetString("claimId");
+                        currentNavigation = AppLaunchNavigation.Notification;
                     }
                 }
                 UserSessions.SetUploadFileNameCounter(PreferenceManager.GetDefaultSharedPreferences(this), 1);
@@ -625,7 +644,16 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowNotification()
         {
-            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
+            if (!string.IsNullOrEmpty(ClaimId))
+            {
+                FcmPushNotificationFlagFromBackground = true;
+                isAppLaunchDone = true;
+                Intent Intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+                Intent.AddFlags(ActivityFlags.ClearTop);
+                Intent.PutExtra("ClaimId", ClaimId);
+                StartActivity(Intent);
+            }
+            else if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
                 isAppLaunchDone = true;
                 Intent notificationIntent = new Intent(this, typeof(NotificationActivity));
@@ -993,7 +1021,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
-        public void ShowMaintenance(AppLaunchMasterDataResponse masterDataResponse)
+        public void ShowMaintenance(AppLaunchMasterDataResponseAWS masterDataResponse)
         {
             try
             {
@@ -1002,8 +1030,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     isAppLaunchDone = true;
                     Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
-                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Response.DisplayTitle);
-                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Response.DisplayMessage);
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.DisplayTitle);
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.DisplayMessage);
                     StartActivity(maintenanceScreen);
                 }
             }

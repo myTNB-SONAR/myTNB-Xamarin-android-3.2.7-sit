@@ -45,6 +45,19 @@ namespace myTNB_Android.Src.Base.Models
                     "CL03" => EnquiryStatusCode.CL03,
                     "CL04" => EnquiryStatusCode.CL04,
                     "CLO6" => EnquiryStatusCode.CL06,
+                    "CLO7" => EnquiryStatusCode.CL07,
+                    "CLO8" => EnquiryStatusCode.CL08,
+                    "CLO9" => EnquiryStatusCode.CL09,
+                    "CL10" => EnquiryStatusCode.CL10,
+                    "CL11" => EnquiryStatusCode.CL11,
+                    "CL12" => EnquiryStatusCode.CL12,
+                    "CL13" => EnquiryStatusCode.CL13,
+                    "CL14" => EnquiryStatusCode.CL14,
+                    "CL15" => EnquiryStatusCode.CL15,
+                    "CL16" => EnquiryStatusCode.CL16,
+                    "CL17" => EnquiryStatusCode.CL17,
+                    "CL18" => EnquiryStatusCode.CL18,
+                    "CL19" => EnquiryStatusCode.CL19,
                     _ => EnquiryStatusCode.NONE,
                 };
             }
@@ -57,12 +70,25 @@ namespace myTNB_Android.Src.Base.Models
             {
                 return EnquiryStatusCode switch
                 {
-                    EnquiryStatusCode.CL01 => Resource.Color.createdColorSubmit,
-                    EnquiryStatusCode.CL02 => Resource.Color.inProgressColor,
+                    EnquiryStatusCode.CL01 => Resource.Color.tunagrey,
+                    EnquiryStatusCode.CL02 => Resource.Color.black,
                     EnquiryStatusCode.CL03 => Resource.Color.completedColor,
                     EnquiryStatusCode.CL04 => Resource.Color.completedColor,
-                    EnquiryStatusCode.CL06 => Resource.Color.cancelledColor,
-                    _ => Resource.Color.createdColorSubmit,
+                    EnquiryStatusCode.CL06 => Resource.Color.black,
+                    EnquiryStatusCode.CL07 => Resource.Color.black,
+                    EnquiryStatusCode.CL08 => Resource.Color.lightOrange,
+                    EnquiryStatusCode.CL09 => Resource.Color.tunagrey,
+                    EnquiryStatusCode.CL10 => Resource.Color.tunagrey,
+                    EnquiryStatusCode.CL11 => Resource.Color.lightOrange,
+                    EnquiryStatusCode.CL12 => Resource.Color.tunagrey,
+                    EnquiryStatusCode.CL13 => Resource.Color.lightOrange,
+                    EnquiryStatusCode.CL14 => Resource.Color.lightOrange,
+                    EnquiryStatusCode.CL15 => Resource.Color.tunagrey,
+                    EnquiryStatusCode.CL16 => Resource.Color.freshGreen,
+                    EnquiryStatusCode.CL17 => Resource.Color.tunagrey,
+                    EnquiryStatusCode.CL18 => Resource.Color.tunagrey,
+                    EnquiryStatusCode.CL19 => Resource.Color.lightOrange,
+                    _ => Resource.Color.black,
                 };
             }
         }

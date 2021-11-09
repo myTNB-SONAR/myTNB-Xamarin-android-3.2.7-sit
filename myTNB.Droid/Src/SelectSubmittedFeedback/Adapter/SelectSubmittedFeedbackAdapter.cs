@@ -84,7 +84,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 int statusColor = item.FeedbackCategoryId.Equals("9") ? item.GSLStatusColor : item.StatusColor;
 
                 vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, statusColor)));
-                vh.txtFeedbackTitle.Text = item.FeedbackCategoryName;
+                vh.txtFeedbackTitle.Text = item.FeedbackCategoryId.Equals("11") ? Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle") : item.FeedbackCategoryName;
             }
             catch (Exception e)
             {
@@ -116,6 +116,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 TextViewUtils.SetMuseoSans300Typeface(txtSRNumber);
                 TextViewUtils.SetTextSize11(txtFeedbackDate);
                 TextViewUtils.SetTextSize14(txtFeedbackTitle);
+                TextViewUtils.SetTextSize12(txtSRstatus, txtSRNumber);
             }
         }
     }

@@ -9,6 +9,7 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Enquiry.GSL.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Deeplink;
 using Newtonsoft.Json;
@@ -32,6 +33,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     break;
                 case Deeplink.ScreenEnum.ApplicationDetails:
                     DeeplinkAppDetailsValidation(mainActivity);
+                    break;
+                case Deeplink.ScreenEnum.OvervoltageClaimDetails:
+                    DeeplinkOvervoltageFeedbackValidation(mainActivity);
                     break;
                 default:
                     break;
@@ -170,6 +174,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             mainActivity.HideProgressDialog();
         }
 
+        private static void DeeplinkOvervoltageFeedbackValidation(DashboardHomeActivity mainActivity)
+        {
+            UserEntity user = UserEntity.GetActive();
+            if (user.UserID == EnquiryDetailsDeeplinkCache.Instance.UserID)
+            {
+                //Overvoltage detail page
+                ShowOverVoltageFeedback(mainActivity);
+            }
+        }
+
         internal static void ShowAddAccount(this DashboardHomeActivity mainActivity)
         {
             Intent linkAccount = new Intent(mainActivity, typeof(LinkAccountActivity));
@@ -181,6 +195,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             Intent gslInfoIntent = new Intent(mainActivity, typeof(GSLRebateInfoActivity));
             mainActivity.StartActivity(gslInfoIntent);
+        }
+
+        internal static void ShowOverVoltageFeedback(this DashboardHomeActivity mainActivity)
+        {
+            Intent viewReceipt = new Intent(mainActivity, typeof(OverVoltageFeedbackDetailActivity));
+            viewReceipt.PutExtra("ClaimId", EnquiryDetailsDeeplinkCache.Instance.ClaimID);
+            mainActivity.StartActivity(viewReceipt);
         }
     }
 }

@@ -27,6 +27,12 @@ namespace myTNB.Mobile
         public const string SitecorePassword = "mytnbapiuser!3$@2";
         internal const string ApiUrlPath = "v6/mytnbappws.asmx";
 
+        //AWS ENV POINT
+        private const string AWS_DEV1 = "https://stagingapi.mytnb.com.my/asmx-97";
+        private const string AWS_DEV2 = "https://stagingapi.mytnb.com.my/asmx-98";
+        private const string AWS_SIT = "https://stagingapi.mytnb.com.my/asmx";
+
+        //ON PREM POINT
         private const string DEV1 = "http://10.215.128.191:88";
         private const string DEV2 = "http://10.215.128.191:89";
         private const string DEV3 = "http://10.215.128.191:97";

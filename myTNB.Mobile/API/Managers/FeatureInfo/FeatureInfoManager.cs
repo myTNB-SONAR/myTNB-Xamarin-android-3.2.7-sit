@@ -69,7 +69,6 @@ namespace myTNB.Mobile
                         ContractAccount = eligibleCA
                     });
                 }
-
                 else if (response != null
                     && response.StatusDetail != null
                     && response.StatusDetail.IsSuccess
