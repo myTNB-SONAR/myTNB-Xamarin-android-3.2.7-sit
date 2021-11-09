@@ -90,6 +90,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private static async void DeeplinkAppListingValidation(DashboardHomeActivity mainActivity)
         {
+            DeeplinkUtil.Instance.ClearDeeplinkData();
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
@@ -125,6 +126,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private static async void DeeplinkAppDetailsValidation(DashboardHomeActivity mainActivity)
         {
+            DeeplinkUtil.Instance.ClearDeeplinkData();
             mainActivity.ShowProgressDialog();
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
@@ -176,6 +178,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private static void DeeplinkOvervoltageFeedbackValidation(DashboardHomeActivity mainActivity)
         {
+            DeeplinkUtil.Instance.ClearDeeplinkData();
             UserEntity user = UserEntity.GetActive();
             if (user.UserID == EnquiryDetailsDeeplinkCache.Instance.UserID)
             {
