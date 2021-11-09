@@ -2708,6 +2708,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         MyTNBAccountManagement.GetInstance().SetIsEBUser(false);
                     }
                 }
+                else if (EBUtility.Instance.IsPublicRelease)
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsEBUser(true);
+                }
                 else
                 {
                     MyTNBAccountManagement.GetInstance().SetIsEBUser(false);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using Android;
 using Android.App;
 using Android.Content;
@@ -53,7 +54,8 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 
         public bool FcmPushNotificationFlagFromBackground;
         public static bool FcmPushNotificationFlagFromForkground;
-        
+        private static System.Timers.Timer aTimer;
+        MyTNBAppToolTipBuilder leaveDialog;
         string ClaimId;
         string TempTitle,TempStepperTitle;
         DTOWebView data;
@@ -70,7 +72,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         //File upload
         public static bool isCapture = false;
         private Action<int, Result, Intent> resultCallbackvalue;
-
+        public bool IsStopTime = false;
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown;
@@ -126,6 +128,8 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         {
             try
             {
+                TextViewUtils.SetMuseoSans300Typeface(txtstep1of2);
+                TextViewUtils.SetTextSize12(txtstep1of2);
                 //device info
                 var AppVersion = DeviceIdUtils.GetAppVersionName();
                 var OsVersion = "Android" + DeviceIdUtils.GetAndroidVersion();
@@ -198,11 +202,39 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
                 webView.SetWebChromeClient(new WebViewClient(this, webView) { });
                 webView.LoadUrl(url);
                 await Task.Delay(0);
+                SetTimer();
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+        public void SetTimer()
+        {
+            aTimer = new System.Timers.Timer(25000);
+            aTimer.Elapsed += OnTimedEvent;
+            aTimer.AutoReset = true;
+            aTimer.Enabled = true;
+        }
+        public void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            if (!IsStopTime)
+            {
+                HideProgressDialog();
+                RunOnUiThread(() => { showpopup(); });
+                aTimer.Stop();
+            }
+            aTimer.Stop();
+        }
+        public void showpopup()
+        {
+            leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+              .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+              .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
+              .SetCTALabel(Utility.GetLocalizedLabel("Common", "ok"))
+              .SetCTAaction(() => { base.OnBackPressed(); })
+              .Build();
+            leaveDialog.Show();
         }
         //File upload
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -659,13 +691,21 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
             return true;
 
         }
-
+        public override void OnReceivedTitle(WebView view, string title)
+        {
+            base.OnReceivedTitle(view, title);
+            if (title == "Webpage not available")
+            {
+                _OverVoltageFeedbackDetailActivity.showpopup();
+            }
+        }
         public override void OnProgressChanged(WebView view, int newProgress)
         {
             base.OnProgressChanged(view, newProgress);
 
             if (newProgress == 100)
             {
+                _OverVoltageFeedbackDetailActivity.IsStopTime = true;
                 this._OverVoltageFeedbackDetailActivity.HideProgressDialog();               
             }
 
