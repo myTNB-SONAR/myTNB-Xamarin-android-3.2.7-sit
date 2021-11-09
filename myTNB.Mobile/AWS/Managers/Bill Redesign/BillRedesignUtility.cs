@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using myTNB.Mobile.AWS.Models;
 using Newtonsoft.Json.Linq;
@@ -53,9 +52,9 @@ namespace myTNB.Mobile
         {
             get
             {
-                if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.Enabled))
+                if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.BR, FeatureProperty.Enabled))
                 {
-                    if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup))
+                    if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.BR, FeatureProperty.TargetGroup))
                     {
                         if (GetCAList() is List<string> caList
                             && caList != null
