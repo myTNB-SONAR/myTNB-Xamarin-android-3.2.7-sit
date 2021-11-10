@@ -9,6 +9,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
+using myTNB.Mobile;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.PDFView;
@@ -45,6 +46,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+            DynatraceHelper.OnTrack(DynatraceConstants.BR.Screens.AccountStatement.View_Account_Statement);
         }
 
         private void SetUpViews()

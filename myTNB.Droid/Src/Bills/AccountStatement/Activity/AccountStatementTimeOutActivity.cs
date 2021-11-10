@@ -13,6 +13,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.Bills.AccountStatement.Activity
 {
@@ -177,6 +178,9 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
         {
             if (!this.GetIsClicked())
             {
+                DynatraceHelper.OnTrack(isEmpty
+                    ? DynatraceConstants.BR.CTAs.Error.No_History_Back_To_Bills
+                    : DynatraceConstants.BR.CTAs.Error.Timeout_Back_To_Bills);
                 this.SetIsClicked(true);
                 Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
                 DashboardIntent.PutExtra("FROM_ACCOUNT_STATEMENT", true);

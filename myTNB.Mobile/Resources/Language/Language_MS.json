@@ -410,10 +410,10 @@
   "SelectElectricityAccounts": {
     "title": "Pilih Akaun Elektrik",
     "accountsMissing": "Mengapa akaun saya tiada di sini?",
-    "dbrAccountsMissingTitlePilot": "Mengapa akaun saya tiada di sini?",
-    "dbrMissingAccountsMessagePilot": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
-    "dbrAccountsMissingTitleNationwide": "Mengapa akaun saya tiada di sini?",
-    "dbrMissingAccountsMessageNationwide": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!"
+    "dbrAccountsMissingTitlePilot": "Mengapa akaun saya tidak ada di sini?",
+    "dbrMissingAccountsMessagePilot": "Program perintis ini untuk akaun Kediaman di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang berkenaan akan dibolehkan untuk 'paperless'. Ciri ini akan berkembang ke seluruh negara tidak lama lagi. Nantikan!",
+    "dbrAccountsMissingTitleNationwide": "Mengapa akaun saya tidak ada di sini?",
+    "dbrMissingAccountsMessageNationwide": "Program perintis ini untuk akaun Kediaman di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang berkenaan akan dibolehkan untuk 'paperless'. Ciri ini akan berkembang ke seluruh negara tidak lama lagi. Nantikan!"
   },
   "Usage": {
     "title": "Usage",
@@ -635,7 +635,7 @@
     "dontAskAgain": "Tidak Berminat",
     "feedback2SuccessTitle": "Terima kasih atas maklumbalas anda",
     "feedback2SuccessButton": "OK",
-    "viewAccountStatement": "MS_View Account Statement"
+    "viewAccountStatement": "Semak Penyata Akaun"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -1188,7 +1188,7 @@
     "rebateClaimTitle": "Jenis rebat apa yang ingin anda tuntut?",
     "rebateTypeTitle": "Jenis Rebat",
     "tenantInfoTitle": "Maklumat Penyewaan Anda",
-    "addIncidentCTA": "MS_Add New Incident",
+    "addIncidentCTA": "Tambah Insiden Baru",
     "incidentInformationTitle": "Maklumat Insiden",
     "incidentTitle": "Insiden {0}",
     "incidentDate": "Tarikh Insiden",
@@ -2521,6 +2521,17 @@
             "type": "none",
             "isTimeout": true
           }
+        ],
+        "AccountStatementNotification": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -2583,9 +2594,9 @@
     "updatingDescription": "Akaun anda sedang dikemaskinikan dan dijangka mengambil masa sehingga 5 minit. Kembali semula nanti!",
     "selectAccount": "PILIH AKAUN ANDA",
     "notEligibleAccountsTitlePilot": "Mengapa akaun saya tidak ada di sini?",
-    "notEligibleAccountsMessagePilot": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
+    "notEligibleAccountsMessagePilot": "Program perintis ini untuk akaun Kediaman di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang berkenaan akan dibolehkan untuk 'paperless'. Ciri ini akan berkembang ke seluruh negara tidak lama lagi. Nantikan!",
     "notEligibleAccountsTitleNationwide": "Mengapa akaun saya tidak ada di sini?",
-    "notEligibleAccountsMessageNationwide": "Kami memperkenalkan program perintis ini untuk akaun Smart Meter di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang dipaparkan yang layak untuk 'paperless'. Kami sedang berusaha keras untuk program ini berkembang ke seluruh negara dan ke semua akaun anda tidak lama lagi! Nantikan!",
+    "notEligibleAccountsMessageNationwide": "Program perintis ini untuk akaun Kediaman di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang berkenaan akan dibolehkan untuk 'paperless'. Ciri ini akan berkembang ke seluruh negara tidak lama lagi. Nantikan!",
     "nonOwnerPaperTitle": "Anda menerima Bil Bercetak untuk akaun ini.",
     "nonOwnerPaperMessage": "Bil anda dihantar ke alamat premis akaun ini.",
     "nonOwnerEBillTitle": "Akaun anda adalah mesra alam dengan Bil myTNB!",
@@ -2623,19 +2634,19 @@
     "ShouldShowAccountStatementToNonOwner": false
   },
   "StatementPeriod": {
-    "title": "MS_Account Statement",
-    "confirm": "MS_Confirm",
-    "preferredStatementPeriodTitle": "MS_Select your preferred statement period to request.",
-    "iWantToRequestForTitle": "MS_I want to request for:",
-    "past3Months": "3 bulan lepas",
-    "past6Months": "6 bulan lepas",
-    "disclaimer": "MS_This may take more than a few seconds but we will notify you and email you a copy if it takes longer than expected.",
-    "processingRequestTitle": "MS_We’re processing your request",
-    "processingRequestMessage": "MS_Thank you for waiting, it may takes a few seconds to process your request.",
-    "timeoutTitle": "MS_Sorry it took longer than expected!",
-    "timeoutMessage": "MS_We will notify you when your account statement is ready to view here, and will email a copy to <b>{0}</b>.",
-    "backToBills": "MS_Back to Bills",
-    "noTransactionMessage": "MS_Seems like you have no transaction history to request for an account statement, try again next time!"
+    "title": "Penyata Akaun",
+    "confirm": "Okay!",
+    "preferredStatementPeriodTitle": "Pilih tempoh penyata akaun yang dikehendaki.",
+    "iWantToRequestForTitle": "Saya ingin menyemak:",
+    "past3Months": "3 bulan yang lalu",
+    "past6Months": "6 bulan yang lalu",
+    "disclaimer": "Proses ini akan mengambil masa beberapa saat. Kami akan memberi notifikasi & menghantar salinan melalui e-mel jika proses ini mengambil masa yang lebih lama dari jangkaan.",
+    "processingRequestTitle": "Kami sedang memproses permintaan anda",
+    "processingRequestMessage": "Terima kasih kerana menunggu. Permintaan anda akan mengambil masa beberapa saat untuk diproses.",
+    "timeoutTitle": "Maaf, proses ini mengambil masa yang lebih lama dari jangkaan!",
+    "timeoutMessage": "Kami akan maklumkan anda apabila penyata akaun telah tersedia. Salinan akan di e-mel kepada <b>{0}</b>.",
+    "backToBills": "Kembali ke Bil",
+    "noTransactionMessage": "Nampaknya anda belum mempunyai bil untuk akaun ini. Sila cuba lagi selepas mendapat bil pertama anda."
   },
   "NewBillDesignComms": {
     "title": "Wajah Bil TNB Baharu",

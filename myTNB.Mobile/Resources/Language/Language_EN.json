@@ -410,10 +410,10 @@
   "SelectElectricityAccounts": {
     "title": "Select Electricity Account",
     "accountsMissing": "Why are some of my accounts not here?",
-    "dbrAccountsMissingTitlePilot": "Why are some of my accounts not here?",
-    "dbrMissingAccountsMessagePilot": "In our push for a more sustainable future, we’re introducing this as a pilot program for Smart Meter accounts in smaller areas of Malaysia and are showing you only <b>electricity accounts that are eligible for digital bills</b>. We’re working hard for the program to expand nationwide and be available to all your other accounts soon!",
-    "dbrAccountsMissingTitleNationwide": "Why are some of my accounts not here?",
-    "dbrMissingAccountsMessageNationwide": "In our push for a more sustainable future, we’re introducing this as a pilot program for Smart Meter accounts in smaller areas of Malaysia and are showing you only <b>electricity accounts that are eligible for digital bills</b>. We’re working hard for the program to expand nationwide and be available to all your other accounts soon!"
+    "dbrAccountsMissingTitlePilot": "Why are some of my accounts not eligible?",
+    "dbrMissingAccountsMessagePilot": "We’re introducing this as a pilot program for Residential accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We'll continue to expand nationwide in due time. Stay tuned!",
+    "dbrAccountsMissingTitleNationwide": "Why are some of my accounts not eligible?",
+    "dbrMissingAccountsMessageNationwide": "We’re introducing this as a pilot program for Residential accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We'll continue to expand nationwide in due time. Stay tuned!"
   },
   "Usage": {
     "title": "Usage",
@@ -2521,6 +2521,17 @@
             "type": "none",
             "isTimeout": true
           }
+        ],
+        "AccountStatementNotification": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -2582,10 +2593,10 @@
     "updatingTitle": "We’re currently updating your bill delivery method.",
     "updatingDescription": "It may take up to 5 minutes to reflect the changes on your myTNB account and you won’t be able to view it during this time. Check back later!",
     "selectAccount": "SELECT YOUR ACCOUNT",
-    "notEligibleAccountsTitlePilot": "Why are some of my accounts not here?",
-    "notEligibleAccountsMessagePilot": "We're introducing this as a pilot program for Smart Meter accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We’re working hard towards expanding it nationwide, so it'll be available to all your other accounts soon! Please stay tuned!",
-    "notEligibleAccountsTitleNationwide": "Why are some of my accounts not here?",
-    "notEligibleAccountsMessageNationwide": "We're introducing this as a pilot program for Smart Meter accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We’re working hard towards expanding it nationwide, so it'll be available to all your other accounts soon! Please stay tuned!",
+    "notEligibleAccountsTitlePilot": "Why are some of my accounts not eligible?",
+    "notEligibleAccountsMessagePilot": "We’re introducing this as a pilot program for Residential accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We'll continue to expand nationwide in due time. Stay tuned!",
+    "notEligibleAccountsTitleNationwide": "Why are some of my accounts not eligible?",
+    "notEligibleAccountsMessageNationwide": "We’re introducing this as a pilot program for Residential accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We'll continue to expand nationwide in due time. Stay tuned!",
     "nonOwnerPaperTitle": "You’re receiving Paper Bill for this account.",
     "nonOwnerPaperMessage": "Your bills are being delivered to its premises address.",
     "nonOwnerEBillTitle": "Your account is environmentally friendly with myTNB Bill!",
@@ -2625,15 +2636,15 @@
   "StatementPeriod": {
     "title": "Account Statement",
     "confirm": "Confirm",
-    "preferredStatementPeriodTitle": "Select your preferred statement period to request.",
-    "iWantToRequestForTitle": "I want to request for:",
+    "preferredStatementPeriodTitle": "Select your preferred account statement period.",
+    "iWantToRequestForTitle": "I want to view:",
     "past3Months": "Past 3 months",
     "past6Months": "Past 6 months",
-    "disclaimer": "This may take more than a few seconds but we will notify you and email you a copy if it takes longer than expected.",
+    "disclaimer": "This may take more than a few seconds. We will notify & email you a copy if it takes longer than expected.",
     "processingRequestTitle": "We’re processing your request",
-    "processingRequestMessage": "Thank you for waiting, it may takes a few seconds to process your request.",
-    "timeoutTitle": "Sorry it took longer than expected!",
-    "timeoutMessage": "We will notify you when your account statement is ready to view here, and will email a copy to <b>{0}</b>.",
+    "processingRequestMessage": "Thanks for waiting. It may take a few seconds to process your request.",
+    "timeoutTitle": "Sorry, it took longer than expected!",
+    "timeoutMessage": "We will notify you once your account statement is ready. A copy will also be emailed to <b>{0}</b>.",
     "backToBills": "Back to Bills",
     "noTransactionMessage": "Seems like you have no transaction history to request for an account statement, try again next time!"
   },

@@ -30,7 +30,9 @@ namespace myTNB.Mobile
         private const string DEV1 = "http://10.215.128.191:88";
         private const string DEV2 = "http://10.215.128.191:89";
         private const string DEV3 = "http://10.215.128.191:97";
-        private const string SIT = "https://stagingapi.mytnb.com.my/asmx-97";//"https://mobiletestingws.tnb.com.my";
+        private const string SIT = "https://stagingapi.mytnb.com.my/asmx-97";
+        //private const string SIT = "https://mobiletestingws.tnb.com.my";
+
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
         //Mark: http://tnbcsdevapp.tnb.my/
@@ -48,11 +50,11 @@ namespace myTNB.Mobile
         private const string Passphrase_PROD = "PW-myTNB-PROD";
 
         //AWS GetAccount
-        public static string AWSApiDomainSIT = "https://core.stg-mytnb.com/api"; 
+        public static string AWSApiDomainSIT = "https://core.stg-mytnb.com/api";
         public static string AWSApiDomainDEV = "https://mytnb-core-staging-362772745.ap-southeast-1.elb.amazonaws.com/api";
         public static string AWSApiDomainPROD = "https://core.prod-mytnb.com/api";
 
-#if DEBUG
+#if DEBUGx
         public static string ApiDomain = DEV1;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;

@@ -14,5 +14,12 @@ namespace myTNB.Mobile.AWS.Services.AccountStatement
             , [Header(AWSConstants.Headers.Authorization)] string accessToken
             , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
             , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey);
+
+        [Post("/Account/api/v1/AccountDetails/AccountStatementNotification")]
+        Task<HttpResponseMessage> PostAccountStatementNotification([Body] PostAccountStatementNotificationRequest request
+            , CancellationToken cancellationToken
+            , [Header(AWSConstants.Headers.Authorization)] string accessToken
+            , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
+            , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey);
     }
 }
