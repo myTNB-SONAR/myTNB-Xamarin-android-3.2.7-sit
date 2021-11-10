@@ -1083,7 +1083,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
-
                 //checking energy budget empty
                 SMEnergybudgetCheck = CustomerBillingAccount.EnergyBudgetRM(selectedAccount.AccountNum);
                 selectedCusBillAcc = SMEnergybudgetCheck[0];
@@ -8240,7 +8239,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
                     }
-
                 }
                 catch (System.Exception ne)
                 {
@@ -8460,7 +8458,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     if (setEnergyBudgetlayout && bottomSheetBehavior.State == BottomSheetBehavior.StateHidden)  //after click edit
                                     {
-
                                         if (screenHeightWithoutVirtualHeight > screenHeightWithoutBottomSheet)
                                         {
                                             bottomSheet.RequestLayout();

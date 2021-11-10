@@ -207,7 +207,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 TextViewUtils.SetTextSize12(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, infoLabeltxtWhereIsMyAcc, txtAboutBillEnquiry_subContent, txtGSLRebateSubTitle, txtOverVoltageClaimContent, InfoLabel);
                 TextViewUtils.SetTextSize14(txtGeneralEnquiry, txtUpdatePersonal, txtAboutBillEnquiry, txtGSLRebateTitle, txtOverVoltageClaim);
                 TextViewUtils.SetTextSize16(txtAccountNo, howCanWeHelpYou);
-
+                
                 //set translation of string 
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberHint");
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");
@@ -238,6 +238,18 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 txtAccountNo.SetOnTouchListener(this);  //set listener on dropdown arrow at TextLayout
                 txtAccountNo.TextChanged += TextChange;  //adding listener on text change
                 txtAccountNo.FocusChange += TxtAccountNo_FocusChange;
+                
+                //Keyboard done button click
+                txtAccountNo.EditorAction += delegate (object sender, TextView.EditorActionEventArgs e)
+                {
+                    if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
+                    {
+                        txtAccountNo.ClearFocus();
+                        // Hide keyboard
+                        var inputManager = (InputMethodManager)GetSystemService(InputMethodService);
+                        inputManager.HideSoftInputFromWindow(txtAccountNo.WindowToken, HideSoftInputFlags.None);
+                    }
+                };
 
                 //Keyboard done button click
                 txtAccountNo.EditorAction += delegate (object sender, TextView.EditorActionEventArgs e)
@@ -1080,7 +1092,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 }
             }
         }
-
+        
         [OnClick(Resource.Id.overvoltageclaimConstraint)]
         void OnovervoltageclaimConstraint(object sender, EventArgs eventArgs)
         {
@@ -1089,28 +1101,27 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 //Overvoltage clickable with blue color
                 if (IsWhiteListedArea)
                 {
-                    if (DownTimeEntity.IsBCRMDown())
+                if (DownTimeEntity.IsBCRMDown())
+                {
+                    OnBCRMDownTimeErrorMessage();
+                    this.SetIsClicked(false);
+                }
+                else
+                {
+                    string accno = txtAccountNo.Text.ToString().Trim();
+                    bool isAllowed = this.userActionsListener.CheckRequiredFields(accno);
+
+                    if (isAllowed)
                     {
-                        OnBCRMDownTimeErrorMessage();
-                        this.SetIsClicked(false);
+                        this.SetIsClicked(true);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), EnquiryTypeEnum.OvervoltageClaim);
                     }
                     else
                     {
-                        string accno = txtAccountNo.Text.ToString().Trim();
-                        bool isAllowed = this.userActionsListener.CheckRequiredFields(accno);
-
-                        if (isAllowed)
-                        {
-                            this.SetIsClicked(true);
-                            this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), EnquiryTypeEnum.OvervoltageClaim);
-                        }
-                        else
-                        {
-                            this.SetIsClicked(false);
-                        }
-
+                        this.SetIsClicked(false);
                     }
                 }
+            }
                 //Overvoltage clickable with gray color
                 else
                 {
@@ -1186,7 +1197,6 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 }
             }
         }
-
 
         Snackbar mErrorMessageSnackBar;
         public void OnBCRMDownTimeErrorMessage(string message = null)
