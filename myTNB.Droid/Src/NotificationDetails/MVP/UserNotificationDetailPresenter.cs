@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Android.Content;
-using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.EnergyBudgetRating.Request;
@@ -22,9 +18,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.NotificationDetails.Models;
-using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
-using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -412,7 +406,25 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
         private void ViewAccountStatement(Models.NotificationDetails notificationDetails)
         {
-            //View Account Statement logic goes here
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.SetSelected(notificationDetails.AccountNum);
+            AccountData accountData = new AccountData();
+            CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+
+            if (account != null)
+            {
+                accountData.AccountNickName = account.AccDesc;
+                accountData.AccountName = account.OwnerName;
+                accountData.AddStreet = account.AccountStAddress;
+                accountData.IsOwner = account.isOwned;
+                accountData.AccountNum = account.AccNum;
+                accountData.AccountCategoryId = account.AccountCategoryId;
+                this.mView.ViewAccountStatement(accountData, "06");//stub
+            }
+            else
+            {
+                this.mView.ShowRetryOptionsApiException(null);
+            }
         }
 
 

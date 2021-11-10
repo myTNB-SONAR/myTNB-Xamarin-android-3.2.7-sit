@@ -14,6 +14,8 @@ using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Billing.MVP;
+using myTNB_Android.Src.Bills.AccountStatement;
+using myTNB_Android.Src.Bills.AccountStatement.Activity;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.EnergyBudgetRating.Activity;
@@ -499,6 +501,14 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
             payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
             StartActivity(payment_activity);
+        }
+
+        public void ViewAccountStatement(AccountData mSelectedAccountData, string statementPeriod)
+        {
+            Intent acctStmntLoadingIntent = new Intent(this, typeof(AccountStatementLoadingActivity));
+            acctStmntLoadingIntent.PutExtra(AccountStatementConstants.STATEMENT_PERIOD, statementPeriod);
+            acctStmntLoadingIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+            StartActivity(acctStmntLoadingIntent);
         }
 
         public void ShowPaymentReceiptError()

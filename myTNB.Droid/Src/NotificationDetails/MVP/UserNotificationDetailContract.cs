@@ -25,6 +25,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void ShowLoadingScreen();
             void HideLoadingScreen();
             void ViewTips();
+            void ViewAccountStatement(AccountData mSelectedAccountData, string statementPeriod);
 
             /// <summary>
             /// 
@@ -48,15 +49,15 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             /// Show notification list as deleted
             /// </summary>
             void ShowNotificationListAsDeleted();
-            
+
             void RenderUI();
-            
+
             void ReturnToDashboard();
-            
+
             void ShowFeedBackSetupPageRating();
-            
+
             void GetFeedbackTwoQuestionsNo(GetRateUsQuestionResponse questionRespone);
-            
+
             void GetFeedbackTwoQuestionsYes(GetRateUsQuestionResponse questionRespone);
         }
     }

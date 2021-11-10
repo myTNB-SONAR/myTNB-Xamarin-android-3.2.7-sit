@@ -240,7 +240,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
                 {
                     selectedMonths = AccountStatementConstants.PAST_3_MONTHS;
                 }
-                acctStmntLoadingIntent.PutExtra(AccountStatementConstants.SELECTED_MONTH_FOR_ACCOUNT_STATEMENT, selectedMonths);
+                acctStmntLoadingIntent.PutExtra(AccountStatementConstants.STATEMENT_PERIOD, selectedMonths);
                 StartActivity(acctStmntLoadingIntent);
             }
         }

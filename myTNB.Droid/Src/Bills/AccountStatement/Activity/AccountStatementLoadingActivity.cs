@@ -58,9 +58,9 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
                     {
                         this.presenter?.SetSelectedAccount(JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT)));
                     }
-                    if (extras.ContainsKey(AccountStatementConstants.SELECTED_MONTH_FOR_ACCOUNT_STATEMENT))
+                    if (extras.ContainsKey(AccountStatementConstants.STATEMENT_PERIOD))
                     {
-                        this.presenter?.SetPreferredMonths(extras.GetString(AccountStatementConstants.SELECTED_MONTH_FOR_ACCOUNT_STATEMENT));
+                        this.presenter?.SetPreferredMonths(extras.GetString(AccountStatementConstants.STATEMENT_PERIOD));
                     }
                 }
 
