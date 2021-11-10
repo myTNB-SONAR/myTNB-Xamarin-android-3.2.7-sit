@@ -49,14 +49,15 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="API\Managers\FeatureInfo\" />
-    <Folder Include="API\Models\Feature Info\" />
     <Folder Include="Business\Managers\" />
     <Folder Include="Resources\" />
     <Folder Include="Resources\TnC\" />
     <Folder Include="Resources\FAQ\" />
     <Folder Include="Resources\Language\" />
     <Folder Include="Resources\Country\" />
+    <Folder Include="API\" />
+    <Folder Include="API\Managers\" />
+    <Folder Include="API\Models\" />
     <Folder Include="API\Base\" />
     <Folder Include="API\Models\Application Status\" />
     <Folder Include="API\Services\" />
@@ -114,7 +115,6 @@
     <Folder Include="AWS\Services\Access Token\" />
     <Folder Include="AWS\Models\DBR\" />
     <Folder Include="AWS\Models\DBR\Get Bill Rendering\" />
-    <Folder Include="AWS\Models\DBR\Get Eligibility\" />
     <Folder Include="AWS\Managers\DBR\" />
     <Folder Include="AWS\Services\DBR\" />
     <Folder Include="AWS\Managers\Eligibility\" />
@@ -124,6 +124,12 @@
     <Folder Include="API\Managers\FeatureInfo\" />
     <Folder Include="API\Models\Feature Info\" />
     <Folder Include="AWS\Managers\EB\" />
+    <Folder Include="AWS\Managers\Bill Redesign\" />
+    <Folder Include="AWS\Models\Eligibility\" />
+    <Folder Include="AWS\Models\Eligibility\Get Eligibility\" />
+    <Folder Include="AWS\Managers\Account Statement\" />
+    <Folder Include="AWS\Models\Account Statement\" />
+    <Folder Include="AWS\Services\Account Statement\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -174,20 +180,24 @@
     <None Remove="Resources\Country\CountryList.json" />
     <None Remove="Resources\Notification\NotificationInfo_10071.json" />
     <None Remove="Resources\Notification\NotificationInfo_10072.json" />
-    <None Remove="Test Data\Application Search\Search01.json" />
     <None Remove="AWS\Models\DBR\Get Multi Bill Rendering\" />
     <None Remove="AWS\Models\DBR\Post Installation Details\" />
     <None Remove="AWS\Models\DBR\Post Multi Installation Details\" />
     <None Remove="API\Models\Notification\Notification Details\" />
     <None Remove="API\Managers\FeatureInfo\" />
     <None Remove="API\Models\Feature Info\" />
-    <None Remove="Xamarin.Essentials" />
     <None Remove="AWS\Managers\EB\" />
+    <None Remove="AWS\Managers\Bill Redesign\" />
+    <None Remove="AWS\Models\Eligibility\" />
+    <None Remove="AWS\Models\Eligibility\Get Eligibility\" />
+    <None Remove="AWS\Managers\Account Statement\" />
+    <None Remove="AWS\Models\Account Statement\" />
+    <None Remove="AWS\Services\Account Statement\" />
+    <None Remove="Xamarin.Essentials" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />
     <Compile Remove="Business\Managers\AccountUsageManager.cs" />
-    <Compile Remove="Test Data\Application Search\SearchTestManager.cs" />
   </ItemGroup>
 </Project>

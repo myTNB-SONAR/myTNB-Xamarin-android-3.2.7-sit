@@ -558,8 +558,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                         {
                             ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                         });
-
-                        TextView_ownerIC.Visibility = ViewStates.Visible;
                     }
                 }
 
@@ -595,7 +593,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                         {
                             ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                         });
-                        TextView_yourIC_image.Visibility = ViewStates.Visible;
                     }
                 }
                 OnCheckingAttachment();
@@ -630,8 +627,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                         {
                             ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                         });
-
-                        TextView_proofOfConsent_image.Visibility = ViewStates.Visible;
                     }
                 }
                 OnCheckingAttachment();
@@ -668,8 +663,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                         {
                             ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                         });
-
-                        TextView_proofOfConsent_image3.Visibility = ViewStates.Visible;
                     }
                 }
                 OnCheckingAttachment();
@@ -1203,11 +1196,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                         attachImage.IsLoading = false;
                         adapter.Update(position, attachImage);
                     }
-
-                    //hide mb file size 
-                    TextView_ownerIC.Visibility = ViewStates.Gone;
-
-
                 }
                 if (type.Equals(ADAPTER_TYPE.OWN_IC))
                 {
@@ -1219,10 +1207,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                         attachImage.IsLoading = false;
                         ic_adapter.Update(position, attachImage);
                     }
-
-                    //hide mb file size 
-                    TextView_yourIC_image.Visibility = ViewStates.Gone;
-
                 }
                 if (type.Equals(ADAPTER_TYPE.SUPPORTING_DOC))
                 {
@@ -1234,10 +1218,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                         attachImage.IsLoading = false;
                         SupportingDocAdapter.Update(position, attachImage);
                     }
-
-                    //hide mb file size 
-                    TextView_proofOfConsent_image.Visibility = ViewStates.Gone;
-
                 }
                 if (type.Equals(ADAPTER_TYPE.PERMISES))
                 {
@@ -1249,10 +1229,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                         attachImage.IsLoading = false;
                         permiseAdapter.Update(position, attachImage);
                     }
-
-                    //hide mb file size 
-                    TextView_proofOfConsent_image3.Visibility = ViewStates.Gone;
-
                 }
             }
             catch (Exception e)

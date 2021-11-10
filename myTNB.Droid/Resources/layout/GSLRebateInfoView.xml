@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/rootView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true"
+	android:orientation="vertical">
+	<LinearLayout
+		android:id="@+id/mainView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:isScrollContainer="false"
+		android:orientation="vertical">
+		<include
+			android:id="@+id/toolbar"
+			layout="@layout/toolbar" />
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_weight="1"
+			android:overScrollMode="never"
+			android:scrollbars="none"
+			android:fillViewport="true"
+			android:id="@+id/gslInfoScrollView"
+			android:layout_height="wrap_content"
+			android:background="@color/background_pale_grey">
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/gslInfoScrollViewContainer">
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingBottom="16dp"
+					android:id="@+id/gslInfoViewList"/>
+			</LinearLayout>
+		</ScrollView>
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="16dp"
+			android:paddingLeft="16dp"
+			android:paddingBottom="16dp"
+			android:paddingRight="16dp"
+			android:background="@color/white"
+			android:id="@+id/buttonLayout">
+			<Button
+				android:id="@+id/gslInfoBtnBack"
+				android:layout_height="48dp"
+				android:layout_weight=".5"
+				style="@style/LightButton"
+				android:textAllCaps="false" />
+			<Button
+				android:id="@+id/gslInfoBtnProceed"
+				android:layout_weight=".5"
+				android:layout_height="48dp"
+				style="@style/DarkButton"
+				android:textAllCaps="false" />
+		</LinearLayout>
+	</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,6 +2,7 @@
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Service;
 using myTNB_Android.Src.SitecoreCMS.Model;
+using myTNB_Android.Src.SitecoreCMS.Service;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -417,13 +418,13 @@ namespace myTNB.SitecoreCMS.Services
             return respModel;
         }
 
-        public BillDetailsTooltipResponseModel GetBillDetailsTooltipItem()
+        public BillDetailsTooltipResponseModel GetBillDetailsTooltipItem(BillsTooltipVersionEnum version)
         {
             BillDetailsTooltipResponseModel respModel = new BillDetailsTooltipResponseModel();
             try
             {
                 BillDetailsTooltipService service = new BillDetailsTooltipService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
+                var data = service.GetItems(version);
                 var resp = CheckData(data.ToList<object>());
                 string serializedObj = JsonConvert.SerializeObject(resp);
                 respModel = JsonConvert.DeserializeObject<BillDetailsTooltipResponseModel>(serializedObj);
@@ -453,13 +454,13 @@ namespace myTNB.SitecoreCMS.Services
             }
             return respModel;
         }
-        public BillDetailsTooltipTimeStampResponseModel GetBillDetailsTooltipTimestampItem()
+        public BillDetailsTooltipTimeStampResponseModel GetBillDetailsTooltipTimestampItem(BillsTooltipVersionEnum version)
         {
             BillDetailsTooltipTimeStampResponseModel respModel = new BillDetailsTooltipTimeStampResponseModel();
             try
             {
                 BillDetailsTooltipService service = new BillDetailsTooltipService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
+                var data = service.GetTimeStamp(version);
                 var listData = AddDataToList(data);
                 var resp = CheckData(listData);
                 string serializedObj = JsonConvert.SerializeObject(resp);
@@ -887,6 +888,43 @@ namespace myTNB.SitecoreCMS.Services
             catch (Exception e)
             {
                 Debug.WriteLine("Exception in GetItemsService/GetHowDoesProofOfConsentTimeStampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public NewBillDesignTimeStampResponseModel GetNewBillDesignTimestampItem()
+        {
+            NewBillDesignTimeStampResponseModel respModel = new NewBillDesignTimeStampResponseModel();
+            try
+            {
+                NewBillDesignService service = new NewBillDesignService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<NewBillDesignTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetNewBillDesignTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public NewBillDesignResponseModel GetNewBillDesignItem()
+        {
+            NewBillDesignResponseModel respModel = new NewBillDesignResponseModel();
+            try
+            {
+                NewBillDesignService service = new NewBillDesignService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<NewBillDesignResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetNewBillDesignItem: " + e.Message);
             }
             return respModel;
         }

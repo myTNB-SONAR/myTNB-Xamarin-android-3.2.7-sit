@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/rootView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true"
+	android:orientation="vertical"
+	android:theme="@style/Theme.Enquiry">
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/white"
+		android:orientation="vertical">
+		<TextView
+			android:id="@+id/txtUploadDocumentLabel"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="16dp"
+			android:layout_marginTop="16dp"
+			android:layout_marginRight="16dp"
+			android:layout_weight="1"
+			android:text="UI - Copy of owner's identification (IC / Passport)"
+			android:textAllCaps="false"
+			android:textColor="@color/tunaGrey"
+			android:textSize="14dp" />
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/recyclerViewUploadDocument"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_marginTop="8dp"
+			android:layout_marginLeft="16dp"
+			android:layout_marginRight="16dp"
+			android:layout_marginBottom="4dp" />
+		<TextView
+			android:id="@+id/txtUploadDocumentHint"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="16dp"
+			android:layout_marginRight="16dp"
+			android:layout_marginBottom="16dp"
+			android:layout_weight="1"
+			android:background="@color/white"
+			android:text="@string/GeneralEnquiry1of2_uploadSupporting_img_sub"
+			android:textSize="9dp" />
+		<FrameLayout
+			android:id="@+id/uploadDocumentTooltipLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/white"
+			android:paddingBottom="18dp">
+			<LinearLayout
+				android:id="@+id/uploadDocumentTooltipSubView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:layout_marginRight="16dp"
+				android:layout_marginLeft="16dp"
+				android:paddingLeft="4dp"
+				android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
+				android:gravity="center|left"
+				android:orientation="horizontal">
+				<TextView
+					android:id="@+id/txtUploadDocumentToolTip"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="11dp"
+					android:textColor="#1c79ca"
+					android:drawablePadding="8dp"
+					android:gravity="center_vertical"
+					android:text="UI - How does copy of identification look like?"
+					android:drawableLeft="@drawable/smr_why_accounts_info"/>
+			</LinearLayout>
+		</FrameLayout>
+	</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

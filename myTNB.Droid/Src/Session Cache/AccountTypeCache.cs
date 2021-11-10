@@ -99,7 +99,7 @@ namespace myTNB_Android.Src.SessionCache
         internal async Task<ApplicationPaymentDetail> UpdateApplicationPayment(ApplicationPaymentDetail applicationPaymentDetail
             , BaseAppCompatActivity activity)
         {
-            if (DBRUtility.Instance.IsAccountDBREligible
+            if (DBRUtility.Instance.IsAccountEligible
                 && applicationPaymentDetail != null
                 && !string.IsNullOrEmpty(applicationPaymentDetail.caNo)
                 && !string.IsNullOrWhiteSpace(applicationPaymentDetail.caNo))
@@ -108,7 +108,7 @@ namespace myTNB_Android.Src.SessionCache
 
                 List<string> caList = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                         , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                    ? DBRUtility.Instance.GetDBRCAs()
+                    ? DBRUtility.Instance.GetCAList()
                     : DBREligibleCAs;
                 int index = caList.FindIndex(x => x == caNumber);
                 if (index > -1)

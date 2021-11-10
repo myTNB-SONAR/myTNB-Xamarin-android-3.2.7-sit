@@ -263,7 +263,6 @@
     "tncSubscribeTNC": "<a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy Policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
     "tncsmrNew": "By subscribing to Self Meter Reading, I understand and agree on the <a href=\"\\\"><strong>Self Meter Reading Terms and Conditions</strong></a>, <a href=\"\\\"><strong>TNB's Terms of Use and Personal Data Protection Policy</strong></a>. I also agree to submit meter reading on a monthly basis except non Self Meter Reading month"
   },
-
   "SSMRApplicationTnc": {
     "title": "Self Meter Reading",
     "termsnCondition": "Self Meter Reading Terms and Conditions",
@@ -273,7 +272,6 @@
     "pdpaPolicy": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
     "tncData": "<p>1.Upon successful registration, you are required to submit your reading for all months except for April, August and December where we will do the reading.</p><p>2.Every month, you will receive a notification from us to submit your reading. Kindly submit the readings within the specified date.</p><p>3.We will validate your readings immediately upon submission. Once validated, you can view your bill via myTNB Portal and myTNB App on the following day.</p><p>4.We will estimate your reading based on average consumption; if the validation is unsuccessful or not submitted within the specified period.</p><p>5.We shall make the necessary adjustments if there are any differences found in the readings submitted.</p><p>6.You may no longer enjoy this service if:</p><p> a)There are no readings submitted for 2 consecutive months.</p><p> b)If you no longer meet the requirements (E.g. Supply disconnected, Close of Account, Change of Tariff and others)</p>"
   },
-
   "Status": {
     "feedbackSuccessTitle": "Feedback Successful",
     "feedbackFailTitle": "Feedback Unsuccessful",
@@ -412,10 +410,10 @@
   "SelectElectricityAccounts": {
     "title": "Select Electricity Account",
     "accountsMissing": "Why are some of my accounts not here?",
-    "dbrAccountsMissingTitlePilot": "Why are some of my accounts not here?",
-    "dbrMissingAccountsMessagePilot": "In our push for a more sustainable future, we’re introducing this as a pilot program for Smart Meter accounts in smaller areas of Malaysia and are showing you only <b>electricity accounts that are eligible for digital bills</b>. We’re working hard for the program to expand nationwide and be available to all your other accounts soon!",
-    "dbrAccountsMissingTitleNationwide": "Why are some of my accounts not here?",
-    "dbrMissingAccountsMessageNationwide": "In our push for a more sustainable future, we’re introducing this as a pilot program for Smart Meter accounts in smaller areas of Malaysia and are showing you only <b>electricity accounts that are eligible for digital bills</b>. We’re working hard for the program to expand nationwide and be available to all your other accounts soon!"
+    "dbrAccountsMissingTitlePilot": "Why are some of my accounts not eligible?",
+    "dbrMissingAccountsMessagePilot": "We’re introducing this as a pilot program for Residential accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We'll continue to expand nationwide in due time. Stay tuned!",
+    "dbrAccountsMissingTitleNationwide": "Why are some of my accounts not eligible?",
+    "dbrMissingAccountsMessageNationwide": "We’re introducing this as a pilot program for Residential accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We'll continue to expand nationwide in due time. Stay tuned!"
   },
   "Usage": {
     "title": "Usage",
@@ -503,7 +501,9 @@
     "emptyBillHistory": "Looks like you have no bills yet. This will appear here once you have any.",
     "emptyHistoryRE": "Looks like your history is empty at the moment. The advice and payment history will appear here once you have any.",
     "emptyPaymentHistoryRE": "Looks like we have not made any payments yet. Once we have, the payment history will appear here.",
-    "emptyBillHistoryRE": "Looks like you have no advices yet. Once you do, your advice history will appear here."
+    "emptyBillHistoryRE": "Looks like you have no advices yet. Once you do, your advice history will appear here.",
+    "accountStatementTenantTitle": "Your account is ineligible to view the account statement.",
+    "accountStatementTenantMessage": "It looks like this is a tenant account, which does not grant access to view the bill history & other transactions in the account statement. Only TNB account owners have access to this information.<br><br>If you would like to view the account statement, please contact your landlord."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
@@ -525,7 +525,10 @@
     "title": "Details",
     "billDetails": "My Charges",
     "outstandingCharges": "My outstanding charges",
+    "outstandingChargesV2": "My previous balance",
     "billThisMonth": "My latest bill",
+    "billThisMonthV2": "My current charges",
+    "roundingAdjustment": "Rounding adjustment",
     "needToPay": "My amount due",
     "by": "by",
     "paidExtra": "I’ve paid extra",
@@ -536,6 +539,10 @@
     "tooltiptitle2": "Items from your demand letter",
     "tooltipdesc1": "I need to pay|My outstanding charges|My bill this month (electricity usage only)",
     "tooltipdesc2": "Security Deposit|Stamp Duty|Processing Fee|Meter Fee",
+    "tooltiptitle1V2": "Items from your paper/PDF bill",
+    "tooltiptitle2V2": "Items from your demand letter",
+    "tooltipdesc1V2": "My amount due|My previous balance|My current charges|Rounding adjustment",
+    "tooltipdesc2V2": "Security Deposit|Stamp Duty|Processing Fee|Meter Fee",
     "pay": "Pay",
     "tutorialTitle": "View your Bill.",
     "tutorialDesc": "Tap here to acess the PDF version of your bill.",
@@ -543,8 +550,10 @@
   },
   "BillFilter": {
     "title": "Filter Views",
+    "selectViewTitle": "Select View",
     "description": "View your invoiced bills, payment receipts or both.",
     "descriptionRE": "View your advices, payment receipts or both.",
+    "descriptionRedesign": "View your bills, payment receipts or both.",
     "filterBy": "Filter By",
     "applyFilter": "Apply Filter",
     "selectFilter": "Select Filter"
@@ -625,7 +634,8 @@
     "dislikeButton": "Not really",
     "dontAskAgain": "Don't Ask Again",
     "feedback2SuccessTitle": "Thank you for your feedback!",
-    "feedback2SuccessButton": "Okay"
+    "feedback2SuccessButton": "Okay",
+    "viewAccountStatement": "View Account Statement"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -645,6 +655,8 @@
     "rocNumber": "ROC Number",
     "whereIsMyAccountTitle": "Where is my account number?",
     "whereIsMyAccountDetails": "Your 12-digit account number can be found on the top left corner of your monthly paper bill.",
+    "whereIsMyAccountTitleV2": "Where is my account number?",
+    "whereIsMyAccountDetailsV2": "Your 12-digit account number can be found at the top right corner of your monthly paper bill.",
     "selectAccountType": "Select Account Type",
     "residential": "Residential",
     "commercial": "Commercial",
@@ -1038,16 +1050,16 @@
   "SubmitEnquiry": {
     "enquireTitle": "Submit & Track Enquiry",
     "submitEnquiryTitle": "Submit New Enquiry",
-    "submitEnquiryDescription": "Let us know your thoughts and concerns.",
+    "submitEnquiryDescription": "Let us know your opinions and concerns",
     "viewSubmittedEnquiry": "View Submitted Enquiry",
-    "viewEnquiryTitle": "View status updates on your enquiry here.",
+    "viewEnquiryTitle": "View status updates on your enquiry",
     "accNumberHint": "Account Number",
     "accNumberInfo": "Where is my account number?",
     "enquiringTitle": "What are you enquiring about?",
     "generalEnquiryTitle": "General Enquiry",
-    "generalEnquiryDescription": "I want to submit my thoughts and concerns.",
+    "generalEnquiryDescription": "I want to submit my opinions and concerns",
     "updatePersonalDetTitle": "Update Personal Details",
-    "personalDetailsDescription": "I want to update personal details.",
+    "personalDetailsDescription": "I want to update my personal details",
     "overVoltageClaimTitle": "Overvoltage Claim",
     "overVoltageClaimDescription": "I would like to claim for damages in my property caused by an electricity surge.",
     "stepTitle1of2": "Step 1 of 2",
@@ -1055,14 +1067,16 @@
     "messageHint": "Your Message",
     "uploadDocTitle": "Upload supporting documents:",
     "attachTitle": "Upload Supporting Documents (optional)",
-    "attachDescription": "Maximum document size is 1MB. (PDF, JPG & JPEG format only)",
+    "attachDescription": "Maximum document size is 1MB (PDF, JPG, JPEG or PNG formats only)",
     "stepTitle2of2": "Step 2 of 2",
     "contactEnquiryTitle": "How can we contact you regarding this enquiry?",
     "nameHint": "Your Full Name",
     "emailHint": "Email Address",
     "mobileHint": "Mobile Number",
     "thankYouTitle": "Thank you for your enquiry!",
+    "thankYouGSLTitle": "Thank you for your request!",
     "thankYouDescription": "We’ll get back to you soon. In the meantime, stay updated by tracking your enquiry status.",
+    "thankYouGSLDescription": "We'll get back to you soon. In the meantime, stay updated by tracking your rebate status.",
     "serviceNoTitle": "Service Request Number",
     "backHomeButton": "Back to Home",
     "submittedEnquiryTitle": "Submitted Enquiry",
@@ -1135,6 +1149,7 @@
     "imageCopyIC": "-/media/myTNBapp/SubmitEnquiry/imgIcCopy2x.png",
     "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x2.png",
     "accNumberDetails": "Your 12-digit account no. can be found at the top left corner of your monthly paper bill.",
+    "accNumberDetailsV2": "Your 12-digit account number can be found at the top right corner of your monthly paper bill.",
     "updateNoOwnerTitle": "Which information you would like to update?",
     "newAccNoOwnerName": "Enter New Account Name",
     "newAccNoOwnerNameReq": "Account name is required",
@@ -1163,8 +1178,8 @@
     "viewYes": "Yes",
     "viewNo": "No",
     "documentPdf": "Document",
-
     //Overvoltage Claim Translation Start
+    "backToHome": "Back to Home",
     "leaveThisPage": "Leave this page?",
     "leaveThisPageDescription": "You will lose all changes made since your last save. Press Yes to continue, or Cancel to stay on the current page.",
     "thankYouForYourRequest": "Thank you for your request!",
@@ -1201,7 +1216,7 @@
     "overVoltageClaimIsCurrentlyNotEnabledForAccountTitle": "Overvoltage Claim is currently not enabled for ",
     "overVoltageClaimIsCurrentlyNotEnabledForAccountDescription": "The selected account number is currently not enabled for Overvoltage Claim via myTNB. Please contact our TNB CareLine at 1300-88-5454 or email us at tnbcareline@tnb.com.my or visit Kedai Tenaga.",
     "currentlyNotEnabledForMelakaTitle": "Currently not enabled for ",
-    "Gotit": "Got it!",
+    "Gotit": "Got it!", //button
     "overVoltageMaintenanceLabel": "Overvoltage Claim service is currently under maintenance.",
     "overVoltageMaintenanceTitle": "We'll be back soon.",
     "overVoltageMaintenanceDescription": "Sorry, Overvoltage Claim service is currently under maintenance. Please check back later.",
@@ -1209,9 +1224,84 @@
     "overVoltageClaimtemproryUnavailableTitle": "Service temporarily unavailable",
     "overVoltageClaimtemproryUnavailableDescription": "We're working to restore Overvoltage Claim service as quickly as possible. Please check back soon.",
     "termsAndConditionTitle": "Terms and Conditions",
+    "selectCountryTitle": "Select Country/Region",
     "rescheduleAppointmentTitle": "Reschedule Appointment",
+    "ServerDownTitle": "Overvoltage Claim service temporarily unavailable.",
+    "overvoltageClaimMaintanceTitle": "Overvoltage Claim service is currently under maintenance.",
+    "myTNB": "myTNB OVIS",
+    "PermissionAlertTitle": "Would Like to Access the Camera",
+    "PermissionAlertBody": "Enable myTNB to access your camera roll to upload photos and save ones you've taken with the app",
+    "DontAllowButton": "Don't Allow",
+    "SettingButton": "Setting",
     //Overvoltage Claim Translation End
-    "selectCountryTitle": "Select Country/Region"
+    "aboutMyBillTitle": "About My Bill",
+    "aboutMyBillDescription": "I want to enquire about my bill and payment",
+    "selectEnquiryType": "Select Enquiry Type",
+    "iNeedHelpWith": "I NEED HELP WITH",
+    //GSL
+    "gslTitle": "Guaranteed Service Level (GSL) Rebate",
+    "gslDescription": "I want to claim a GSL Rebate",
+    "gslHeaderTitle": "GSL Rebate",
+    "stepTitle": "Step {0} of {1}",
+    "rebateClaimTitle": "What type of rebates are you claiming?",
+    "rebateTypeTitle": "Type of Rebates",
+    "tenantInfoTitle": "Your Tenancy Information",
+    "addIncidentCTA": "Add New Incident",
+    "incidentInformationTitle": "Incident Information",
+    "incidentTitle": "Incident {0}",
+    "incidentDate": "Date of Incident",
+    "incidentTime": "Time of Incident",
+    "restorationDate": "Date of Restoration",
+    "restorationTime": "Time of Restoration",
+    "uploadDocumentTitle": "Upload Required Document",
+    "status": "Status:"
+  },
+  "SubmitEnquiry_selector": {
+    "enquiryType": [
+      {
+        "key": "01",
+        "description": "Bill Calculation / Charges"
+      },
+      {
+        "key": "02",
+        "description": "Bill Delivery Method"
+      },
+      {
+        "key": "03",
+        "description": "Payment History / Receipt"
+      },
+      {
+        "key": "04",
+        "description": "Others"
+      }
+    ],
+    "rebateType": [
+      {
+        "key": "GSL1",
+        "description": "GSL 1: Frequency of Interruptions",
+        "needsIncident": true
+      },
+      {
+        "key": "GSL2",
+        "description": "GSL 2: Restoration Time",
+        "needsIncident": true
+      },
+      {
+        "key": "GSL3",
+        "description": "GSL 3: Service Connection Installation",
+        "needsIncident": false
+      },
+      {
+        "key": "GSL4",
+        "description": "GSL 4: Meter Installation",
+        "needsIncident": false
+      },
+      {
+        "key": "GSL5",
+        "description": "GSL 5: Disconnection Procedures",
+        "needsIncident": false
+      }
+    ]
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
@@ -1241,7 +1331,9 @@
     "manageDeliveryMethodUpdateCTATitle": "Manage your bill delivery method.",
     "manageDeliveryMethodUpdateCTAMessage": "Update your bill delivery method for this account here.",
     "manageDeliveryMethodEmailTitle": "Recipient(s) of email bills.",
-    "manageDeliveryMethodEmailMessage": "View email recipients who are receiving monthly bills for this account."
+    "manageDeliveryMethodEmailMessage": "View email recipients who are receiving monthly bills for this account.",
+    "billStatementTitle": "Download your account statement.",
+    "billStatementMessage": "You can now download a summary of your accounts monthly statements and bills by your preferred statement period."
   },
   "ApplicationStatusLanding": {
     "title": "Application Status",
@@ -1265,6 +1357,8 @@
     "whereToGetThisNumber": "Where do I get this number?",
     "whereToGetThisNumberTitleCA": "Where do I get these numbers?",
     "whereToGetThisNumberMessageCA": "Your 12-digit electricity account number can be found at the top left corner of your monthly paper bill.",
+    "whereToGetThisNumberTitleCAV2": "Where do I get these numbers?",
+    "whereToGetThisNumberMessageCAV2": "Your 12-digit account number can be found at the top right corner of your monthly paper bill.",
     "whereToGetThisNumberTitle": "Where do I get these numbers?",
     "whereToGetThisNumberMessage": "You can find the <b>{0}</b> in your submitted application details at ‘Application Status’ page and is available upon request by contacting TNB CareLine."
   },
@@ -2464,6 +2558,27 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "AccountStatement": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "timeout",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "none",
+            "isTimeout": true
+          }
         ]
       }
     ]
@@ -2482,14 +2597,12 @@
       }
     ]
   },
-
   "EnregyBudgetListing": {
     "title": "Select Smart Meter Account",
     "tootltipTitle": "Why are some of my accounts not listed?",
     "tooltipBody": "As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. This feature however is available only for residential type smart meter account until further enhancement.",
     "headerTitle": "Let's get started by selecting your Smart Meter account"
   },
-
   "EnergyBudgetPopup": {
     "title": "Take control of your energy usage with the new Energy Budget feature!",
     "threeEasyStep": "Saving money in 3 easy steps:",
@@ -2500,17 +2613,18 @@
     "txtViewmybudget": "View Budget",
     "txtMaybelater": "Maybe Later"
   },
-
   "ManageDigitalBillLanding": {
     "title": "Manage Bill Delivery",
     "dbrViewBillDelivery": "View Bill Delivery",
     "dbrInfoTitle0": "You’re receiving Paper Bill for this account.",
     "dbrInfoTitle1": "A step towards a greener earth.",
     "dbrInfoTitle2": "Fast and convenient bill viewing.",
+    "dbrInfoTitle2V2": "Fast bill viewing with the all-new bill layout.",
     "dbrInfoTitle3": "Secure billing for peace of mind.",
     "dbrInfoDescription0": "Swipe left to learn how you can benefit from going paperless today!",
     "dbrInfoDescription1": "Reduce your paper waste and be the first to make your impact in our collective move towards a more sustainable future.",
     "dbrInfoDescription2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills conveniently on myTNB App & Portal, anytime, anywhere.",
+    "dbrInfoDescription2V2": "Enjoy faster and on-the-dot delivery of your freshly improved TNB bills directly on myTNB App & Portal. Learn more about the new bill layout <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/bill-layout\">here</a>.",
     "dbrInfoDescription3": "Get your bills directly and securely on myTNB. No more worries about others seeing your bills, risk getting stolen or lost in the mail.",
     "anotherDeliveryMethod": "What if I want another bill delivery method?",
     "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "What if I want another bill delivery method?",
@@ -2526,10 +2640,10 @@
     "updatingTitle": "We’re currently updating your bill delivery method.",
     "updatingDescription": "It may take up to 5 minutes to reflect the changes on your myTNB account and you won’t be able to view it during this time. Check back later!",
     "selectAccount": "SELECT YOUR ACCOUNT",
-    "notEligibleAccountsTitlePilot": "Why are some of my accounts not here?",
-    "notEligibleAccountsMessagePilot": "We're introducing this as a pilot program for Smart Meter accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We’re working hard towards expanding it nationwide, so it'll be available to all your other accounts soon! Please stay tuned!",
-    "notEligibleAccountsTitleNationwide": "Why are some of my accounts not here?",
-    "notEligibleAccountsMessageNationwide": "We're introducing this as a pilot program for Smart Meter accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We’re working hard towards expanding it nationwide, so it'll be available to all your other accounts soon! Please stay tuned!",
+    "notEligibleAccountsTitlePilot": "Why are some of my accounts not eligible?",
+    "notEligibleAccountsMessagePilot": "We’re introducing this as a pilot program for Residential accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We'll continue to expand nationwide in due time. Stay tuned!",
+    "notEligibleAccountsTitleNationwide": "Why are some of my accounts not eligible?",
+    "notEligibleAccountsMessageNationwide": "We’re introducing this as a pilot program for Residential accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We'll continue to expand nationwide in due time. Stay tuned!",
     "nonOwnerPaperTitle": "You’re receiving Paper Bill for this account.",
     "nonOwnerPaperMessage": "Your bills are being delivered to its premises address.",
     "nonOwnerEBillTitle": "Your account is environmentally friendly with myTNB Bill!",
@@ -2543,7 +2657,8 @@
     "confirmPopupTitle": "Leave this page?",
     "confirmPopupMessage": "You are about to close this page and end your session.",
     "nevermind": "Nevermind",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "shareFeedbackTitle": "Share Feedback"
   },
   "ServiceConfiguration": {
     "Eligibility": {
@@ -2555,11 +2670,105 @@
       "callInterval": 480
     },
     "ForceHideDBRBanner": false,
+    "ForceHideBillRedesignBanner": false,
     "BillRendering": {
       "enabled": true
-    }
+    },
+    "IsAboutMyBillEnquiryEnabled": true,
+    "IsUpdatePersonalDetailsEnquiryEnabled": true,
+    "IsGSLRebateEnabled": true,
+    "AccountStatementTimeout": 5000,
+    "ShouldShowAccountStatementToNonOwner": false
   },
-
+  "StatementPeriod": {
+    "title": "Account Statement",
+    "confirm": "Confirm",
+    "preferredStatementPeriodTitle": "Select your preferred account statement period.",
+    "iWantToRequestForTitle": "I want to view:",
+    "past3Months": "Past 3 months",
+    "past6Months": "Past 6 months",
+    "disclaimer": "This may take more than a few seconds. We will notify & email you a copy if it takes longer than expected.",
+    "processingRequestTitle": "We’re processing your request",
+    "processingRequestMessage": "Thanks for waiting. It may take a few seconds to process your request.",
+    "timeoutTitle": "Sorry, it took longer than expected!",
+    "timeoutMessage": "We will notify you once your account statement is ready. A copy will also be emailed to <b>{0}</b>.",
+    "backToBills": "Back to Bills",
+    "noTransactionMessage": "Seems like you have no transaction history to request for an account statement, try again next time!"
+  },
+  "NewBillDesignComms": {
+    "title": "TNB New Bill Design",
+    "viewYourBills": "View Your Bills"
+  },
+  "NewBillDesignComms_selector": {
+    "newBillDesignContent": [
+      {
+        "Title": "Experience the all-new TNB bill!",
+        "Description": "The all-new TNB bill is now in an easy-to-read and simplified format to help you make better decisions on managing your energy usage! Let's see what's new:",
+        "Image1": "New-Bill-Design-Header-1",
+        "Image2": "New-Bill-Design-Header-2",
+        "IsZoomable": false,
+        "IsHeader": true,
+        "IsFooter": false,
+        "ShouldTrack": false,
+        "DynatraceTag": ""
+      },
+      {
+        "Title": "Your account’s bill summary",
+        "Description": "Based on the infographic above, you can view your total amount due (Jumlah Bil Anda), the bill due date (Sila Bayar Sebelum), previous balance (Baki Terdahulu), current charges (Caj Semasa), and rounding adjustment (Pelarasan Penggenapan).",
+        "Image1": "New-Bill-Design-Content-1",
+        "Image2": "",
+        "IsZoomable": false,
+        "IsHeader": false,
+        "IsFooter": false,
+        "ShouldTrack": false,
+        "DynatraceTag": ""
+      },
+      {
+        "Title": "Historical energy usage",
+        "Description": "You can now track your previous 6 months usage and its average to have a better understanding of your usage and charges.",
+        "Image1": "New-Bill-Design-Content-2",
+        "Image2": "",
+        "IsZoomable": false,
+        "IsHeader": false,
+        "IsFooter": false,
+        "ShouldTrack": false,
+        "DynatraceTag": ""
+      },
+      {
+        "Title": "Your full account statement",
+        "Description": "You can scan this QR code to access a summary of your bills and payments for the past 6 months.",
+        "Image1": "New-Bill-Design-Content-3",
+        "Image2": "",
+        "IsZoomable": false,
+        "IsHeader": false,
+        "IsFooter": false,
+        "ShouldTrack": false,
+        "DynatraceTag": ""
+      },
+      {
+        "Title": "Your electricity usage and tariff",
+        "Description": "Understand your usage charges in kWh & RM units based on this easy-to-read TNB’s tariff block. View more information on your tariff rates <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/pricing-tariff\">here</a>.",
+        "Image1": "New-Bill-Design-Content-4",
+        "Image2": "",
+        "IsZoomable": false,
+        "IsHeader": false,
+        "IsFooter": false,
+        "ShouldTrack": true,
+        "DynatraceTag": "App_Action_NewBillDesign_TariffHere"
+      },
+      {
+        "Title": "",
+        "Description": "Go to the bill page to view your bills or learn more about the new bill <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/bill-layout\">here</a>.",
+        "Image1": "",
+        "Image2": "",
+        "IsZoomable": false,
+        "IsHeader": false,
+        "IsFooter": true,
+        "ShouldTrack": true,
+        "DynatraceTag": "App_Action_NewBillDesign_NewBillHere"
+      }
+    ]
+  },
   "FeedBackEB": {
     "title": "Energy Budget Set-Up Feedback",
     "improveTitle": "What can be improved?",
@@ -2569,7 +2778,6 @@
     "btnNoThank": "No Thanks",
     "btnShare": "Share"
   },
-
   "FeedBackEBNotification": {
     "title": "Energy Budget Feedback",
     "thumbUpYes": "Yes, absolutely",
@@ -2579,5 +2787,70 @@
     "titleSelectApplies": "Select all that applies",
     "tellusMore": "Tell us more (Optional)",
     "hinttellusMore": "characters left"
+  },
+  "GSL": {
+    "title": "Guaranteed Service Level (GSL)",
+    "primaryCTA": "Back",
+    "secondaryCTA": "Proceed"
+  },
+  "GSL_selector": {
+    "gslInfo": [
+      {
+        "title": "What is a Guaranteed Service Level (GSL)?",
+        "description": "The Guaranteed Service Level (GSL) is our promise to our customers to meet minimum standard requirements. We are here to make your life brighter by providing your electricity supply in a timely and efficient manner.<br><br>Types of GSL:",
+        "expandCollapseList": [
+          {
+            "title": "Frequency of Interruptions",
+            "description": "We’ll make sure that interruptions to your electricity is minimised."
+          },
+          {
+            "title": "Restoration Time",
+            "description": "We promise to restore your electricity as soon as we can for unplanned disruptions."
+          },
+          {
+            "title": "Service Connection Installation",
+            "description": "We’ll make sure that you receive your electricity connection as quickly and efficiently as we can."
+          },
+          {
+            "title": "Meter Installation",
+            "description": "After you’ve paid your deposit, we’ll make sure that your meter is installed."
+          },
+          {
+            "title": "Disconnection Procedures",
+            "description": "In the event of a disconnection, the execution will be carried out in accordance to the applicable legislation or disconnection procedures."
+          }
+        ]
+      },
+      {
+        "title": "How can I claim for a Guaranteed Service Level (GSL) rebate?",
+        "description": "We will guide you thoroughly on how to claim GSL rebates by following our simple steps. Before you start, please ensure that you have prepared all documents required for our reference as below:<br><br>Documents Required:<br>1. Identity Card / Passport",
+        "expandCollapseList": [
+          {
+            "title": "Step 1",
+            "description": "Choose an account from the drop-down list, then click on \"Guaranteed Service Level (GSL) Rebate\""
+          },
+          {
+            "title": "Step 2",
+            "description": "Identify and select the type of rebate to claim. For tenants, fill in the contact details. Then click \"Proceed\""
+          },
+          {
+            "title": "Step 3",
+            "description": "Select the date and time of the incident, then click \"Next\". (You can add more incidents if needed.)"
+          },
+          {
+            "title": "Step 4",
+            "description": "Download & sign the GSL Application Form. Then, upload it together with your other supporting documents and click \"Next\"."
+          },
+          {
+            "title": "Step 5",
+            "description": "Review and confirm your contact details, then proceed to submit."
+          },
+          {
+            "title": "Step 6",
+            "description": "You may view the status of your claims on the \"View Submitted Enquiry\" page."
+          }
+        ]
+      }
+    ]
   }
 }

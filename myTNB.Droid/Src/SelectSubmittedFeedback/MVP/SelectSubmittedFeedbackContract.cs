@@ -36,7 +36,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             /// Show bill related feedback details 
             /// </summary>
             /// <param name="submittedFeedback">SubmittedFeedbackDetails</param>
-            void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedbackDetail, SubmittedFeedback submittedFeedback);
+            void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedbackDetail, SubmittedFeedback submittedFeedback, bool isAboutMyBill);
 
             /// <summary>
             /// Show faulty street lamps feedback details
@@ -84,6 +84,12 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             /// </summary>
             /// <param name="exception">the returned exception</param>
             void ShowBCRMDownException(String msg);
+
+            /// <summary>
+            /// Show GSL feedback details
+            /// </summary>
+            /// <param name="submittedFeedback">SubmittedFeedbackDetails</param>
+            void ShowFeedbackDetailsGSL();
         }
 
         public interface IUserActionsListener : IBasePresenter

@@ -3,6 +3,7 @@
     public static class AWSConstants
     {
         internal const int TimeOut = 10000;
+        internal const int AccountStatementTimeOut = 5000;
         internal const string Channel = "myTNB_API_Mobile";
         internal const int RoleID = 16;
 
@@ -32,7 +33,8 @@
         //Domains
         public struct Domains
         {
-#if DEBUGs
+#if DEBUG
+            internal const string Domain = "https://devapi.mytnb.com.my";
             internal const string GenerateAccessToken = "https://devapi.mytnb.com.my/Identity/api/v1";
             internal const string GetEligibility = "https://devapi.mytnb.com.my/Eligibility/api/v1";
             internal const string GetBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
@@ -43,6 +45,7 @@
             internal const string OptInToPaperBill = "https://devdbr.mytnb.com.my/PaperBill/OptIn";
             public const string SSO = "https://devdbr.mytnb.com.my/Sso?s={0}";
 #elif MASTER || SIT || DEBUG
+            internal const string Domain = "https://stagingapi.mytnb.com.my";
             internal const string GenerateAccessToken = "https://stagingapi.mytnb.com.my/Identity/api/v1";
             internal const string GetEligibility = "https://stagingapi.mytnb.com.my/Eligibility/api/v1";
             internal const string GetBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
@@ -53,6 +56,7 @@
             internal const string OptInToPaperBill = "https://stagingdbr.mytnb.com.my/PaperBill/OptIn";
             public const string SSO = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
 #else
+            internal const string Domain = "https://api.mytnb.com.my";
             internal const string GenerateAccessToken = "https://api.mytnb.com.my/Identity/api/v1";
             internal const string GetEligibility = "https://api.mytnb.com.my/Eligibility/api/v1";
             internal const string GetBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
@@ -65,7 +69,7 @@
 #endif
         }
 
-#if DEBUGs
+#if DEBUG
         internal const string Environment = Environment_DEV;
         internal const string XAPIKey = XAPIKey_DEV;
         public const string SaltKey = SaltKey_DEV;
@@ -98,6 +102,7 @@
             internal const string PostMultiBillRendering = "MultiBillRendering";
             internal const string PostInstallationDetails = "InstallationDetails";
             internal const string PostMultiInstallationDetails = "MultiInstallationDetails";
+            internal const string PostAccountStatement = "AccountStatement";
             public const string GetEligibility = "Eligibility";
         }
     }

@@ -51,7 +51,8 @@ namespace myTNB.Mobile
                 HttpResponseMessage rawResponse = await service.GetEligibility(userID ?? string.Empty
                    , NetworkService.GetCancellationToken()
                    , accessToken
-                   , AppInfoManager.Instance.ViewInfo); 
+                   , AppInfoManager.Instance.ViewInfo);
+
                 //Mark: Check for 404 First
                 if ((int)rawResponse.StatusCode != 200)
                 {

@@ -42,10 +42,6 @@
     </AndroidSupportedAbis>
     <MandroidI18n />
     <LangVersion>8.0</LangVersion>
-    <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
-    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
-    <BundleAssemblies>false</BundleAssemblies>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
@@ -6103,7 +6099,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\AppointmentTimeSelectorBackground.xml" />
-    <Compile Include="Src\Utils\LinkRedirectionUtils.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailContract.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailPresenter.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\Img_application_Active_Payment.png">
@@ -6803,6 +6798,111 @@
     <Compile Include="Src\myTNBMenu\Async\EligibilityAPI.cs" />
     <Compile Include="Src\Device Cache\AccessTokenCache.cs" />
     <Compile Include="Src\MyTNBService\Response\CustomerAccountListResponseAppLaunch.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_GSL_Rebate_Enquiry.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_GSL_Rebate_Enquiry.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_GSL_Rebate_Enquiry.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_GSL_Rebate_Enquiry.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\Activity\GSLRebateStepOneActivity.cs" />
+    <AndroidResource Include="Resources\layout\GSLRebateStepOneView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepOneContract.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepOnePresenter.cs" />
+    <Compile Include="Src\Enquiry\EnquiryConstants.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateModel.cs" />
+    <AndroidResource Include="Resources\values\EnquiryStyle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\Activity\GSLRebateStepTwoActivity.cs" />
+    <AndroidResource Include="Resources\layout\GSLRebateStepTwoView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\GSLRebateIncidentItemListView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\Fragment\GSLRebateIncidentItemListComponent.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepTwoContract.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepTwoPresenter.cs" />
+    <Compile Include="Src\Enquiry\GSL\Activity\GSLRebateStepThreeActivity.cs" />
+    <AndroidResource Include="Resources\layout\GSLRebateStepThreeView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepThreeContract.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepThreePresenter.cs" />
+    <Compile Include="Src\Enquiry\Component\UploadDocumentItemListComponent.cs" />
+    <AndroidResource Include="Resources\layout\UploadDocumentItemListView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\Adapter\UploadDocumentItemAdapter.cs" />
+    <AndroidResource Include="Resources\layout\UploadDocumentItemAdapterImageView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\UploadDocumentItemAdapterEmptyView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\Activity\GSLRebateStepFourActivity.cs" />
+    <AndroidResource Include="Resources\layout\GSLRebateStepFourView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepFourContract.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLRebateStepFourPresenter.cs" />
+    <Compile Include="Src\Enquiry\Component\EnquiryAccountDetailsComponent.cs" />
+    <AndroidResource Include="Resources\layout\EnquiryAccountDetailsComponentView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\Common\EnquiryTnCActivity.cs" />
+    <AndroidResource Include="Resources\layout\EnquiryTnCView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\Activity\GSLRebateInfoActivity.cs" />
+    <AndroidResource Include="Resources\layout\GSLRebateInfoView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\MyTNBService\Request\SubmitGSLEnquiryRequest.cs" />
+    <Compile Include="Src\Enquiry\GSL\Activity\GSLRebateSubmittedDetailsActivity.cs" />
+    <AndroidResource Include="Resources\layout\GSLRebateSubmittedDetailsView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLSubmittedDetails\GSLRebateSubmittedDetailsContract.cs" />
+    <Compile Include="Src\Enquiry\GSL\MVP\GSLSubmittedDetails\GSLRebateSubmittedDetailsPresenter.cs" />
+    <AndroidResource Include="Resources\layout\ExpandableContentView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\GSLInfoItemListView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Enquiry\GSL\Fragment\GSLInfoItemListComponent.cs" />
     <AndroidResource Include="Resources\layout\OvervoltageClaim.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -7764,11 +7864,115 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\icons_display_email.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
+      <SubType></SubType>
+      <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\BillStatement.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SitecoreCMS\Model\NewBillDesignModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\NewBillDesignService.cs" />
+    <Compile Include="Src\Utils\Deeplink\DeeplinkUtil.cs" />
+    <Compile Include="Src\Utils\Deeplink\Deeplink.cs" />
+    <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivityExtension.cs" />
+    <Compile Include="Src\Utils\LanguageConstants.cs" />
+    <AndroidResource Include="Resources\menu\ViewBillStatementMenu.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\icons_ic_header_share.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\icons_ic_header_share.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\icons_ic_header_share.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\icons_ic_header_share.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icons_ic_header_share.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\icons_display_bill_related.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\icons_display_bill_related.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\icons_display_bill_related.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\icons_display_bill_related.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icons_display_bill_related.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedbackAboutBillEnquiryStepOneActivityView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\Activity\FeedbackAboutBillEnquiryStepOneActivity.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\Adapter\FeedbackAboutBillEnquiryStepOneImageRecyclerAdapter.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\MVP\FeedbackAboutBillEnquiryStepOneContract.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\MVP\FeedbackAboutBillEnquiryStepOnePresenter.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepTwo\Activity\FeedbackAboutBillEnquiryStepTwoActivity.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepTwo\Model\FeedbackUpdateDetailsModel.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepTwo\MVP\FeedbackAboutBillEnquiryStepTwoContract.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepTwo\MVP\FeedbackAboutBillEnquiryStepTwoPresenter.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_EPP_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_EPP_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_EPP_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_EPP_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_EPP_Tooltip.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Utils\LinkRedirection\LinkRedirection.cs" />
+    <Compile Include="Src\Utils\LinkRedirection\LinkRedirectionUtils.cs" />
+    <AndroidResource Include="Resources\layout\MyTNBDialogWithImageAndButton.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\blue_button_solid_background.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedbackAboutBillEnquiryStepTwoView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedbackAboutBillEnquiryStepOneImageRow.axml" />
+    <AndroidResource Include="Resources\layout\FeedbackAboutBillEnquiryStepOneImageEmptyRow.axml" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\Activity\FeedbackSelectCategoryActivity.cs" />
+    <Compile Include="Src\FeedbackAboutBillEnquiryStepOne\Adapter\FeedbackSelectCategoryAdapter.cs" />
+    <AndroidResource Include="Resources\layout\AppSetCategoryLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\MyTNBService\Request\SubmitEnquiryTypeRequest.cs" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\icons_form_paper_bill.png">
       <SubType>
       </SubType>
@@ -8201,6 +8405,19 @@
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\" />
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\" />
     <Folder Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\" />
+    <Folder Include="Src\Utils\Deeplink\" />
+    <Folder Include="Src\FeedbackAboutBillEnquiryStepOne\" />
+    <Folder Include="Src\FeedbackAboutBillEnquiryStepTwo\" />
+    <Folder Include="Src\Utils\LinkRedirection\" />
+    <Folder Include="Src\Enquiry\" />
+    <Folder Include="Src\Enquiry\GSL\" />
+    <Folder Include="Src\Enquiry\GSL\Activity\" />
+    <Folder Include="Src\Enquiry\GSL\MVP\" />
+    <Folder Include="Src\Enquiry\GSL\Fragment\" />
+    <Folder Include="Src\Enquiry\Component\" />
+    <Folder Include="Src\Enquiry\Adapter\" />
+    <Folder Include="Src\Enquiry\Common\" />
+    <Folder Include="Src\Enquiry\GSL\MVP\GSLSubmittedDetails\" />
     <Folder Include="Src\OverVoltageClaim\" />
     <Folder Include="Src\OverVoltageClaim\Activity\" />
     <Folder Include="Src\OverVoltageClaimSuccessPage\" />

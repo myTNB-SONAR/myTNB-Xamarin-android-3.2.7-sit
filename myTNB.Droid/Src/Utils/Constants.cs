@@ -73,6 +73,9 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string PAGE_TITLE = ".pageTitle";
         internal static readonly string PAGE_STEP_TITLE = ".pageStepTitle";
         internal static readonly string ACCOUNT_NUMBER = ".accountNumber";
+        internal static readonly string IS_OWNER = ".isOwner";
+        internal static readonly string ENQUIRYID = ".enquiryId";
+        internal static readonly string ENQUIRYNAME = ".enquiryName";
         internal static readonly string REQ_EMAIL = ".requesterEmail";
         internal static readonly string REQ_IC = ".requesterIC";
 
@@ -85,6 +88,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string ZERO_INDEX_TITLE = "All Notifications";
 
         internal static readonly string NO_SM_DATA_FOUND = ".noDataFound";
+        internal static readonly string SELECTED_BILL_STATEMENT = ".selectedBillMonths";
 
         /// <summary>
         /// BARCODE REQUEST TYPE
@@ -122,8 +126,11 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int RUNTIME_PERMISSION_LOCATION_REQUEST_CODE = 0x08;
         internal static readonly int RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE = 0x10;
         internal static readonly int RUNTIME_PERMISSION_CALENDAR_REQUEST_CODE = 0x11;
+        internal static readonly int SELECT_ENQUIRY_REQUEST_CODE = 0x13;
 
         internal static readonly int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+
 
         internal struct SERVER_URL
         {
@@ -278,6 +285,7 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly int SELECT_ACCOUNT_PDF_REQUEST_CODE = 9078;
         internal static readonly int SELECT_ACCOUNT_DBR_REQUEST_CODE = 9079;
+        internal static readonly int SELECT_ACCOUNT_STATEMENT_PDF_REQUEST_CODE = 9080;
 
         internal static readonly string CODE_KEY = "CODE_KEY";
         internal static readonly string DBR_KEY = "DBR_KEY";
@@ -310,7 +318,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID = "53";
         public const string BCRM_NOTIFICATION_PAYMENT_FAILED_ID = "71";
         public const string BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID = "72";
-        
+
         //DBR
         public const string BCRM_NOTIFICATION_DBR_EMAIL = "21003";
         public const string BCRM_NOTIFICATION_DBR_EBILL = "21001";
@@ -325,6 +333,9 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_RC = "CEP RC";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_NEWS = "98";
 
+        //App Update
+        public const string BCRM_NOTIFICATION_APP_UPDATE = "20006";
+        
         //Bill Estimation
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";
 

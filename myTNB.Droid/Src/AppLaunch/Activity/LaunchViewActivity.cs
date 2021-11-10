@@ -45,6 +45,7 @@ using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile.AWS.Models;
 using Firebase.Iid;
 using myTNB_Android.Src.NotificationDetails.Activity;
+using myTNB_Android.Src.Utils.Deeplink;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.NotificationDetails.Models;
@@ -88,9 +89,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         private AppLaunchMasterDataResponseAWS cacheResponseData = null;
 
-        private string urlSchemaData = "";
-        private string urlSchemaPath = "";
         string ClaimId = "";
+
         private Snackbar mSnackBar;
         private Snackbar mNoInternetSnackbar;
         private Snackbar mUnknownExceptionSnackBar;
@@ -169,22 +169,15 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         }
-                    }  
+                    }
 
                     if (Intent.Extras.ContainsKey("claimId"))
                     {
-                       ClaimId = Intent.Extras.GetString("claimId");
-                       currentNavigation = AppLaunchNavigation.Notification;
-                    }
-
-                    // Get CategoryBrowsable intent data
-                    var data = Intent?.Data?.EncodedAuthority;
-                    if (!string.IsNullOrEmpty(data))
-                    {
-                        urlSchemaData = data;
-                        urlSchemaPath = Intent?.Data?.EncodedPath;
+                        ClaimId = Intent.Extras.GetString("claimId");
+                        currentNavigation = AppLaunchNavigation.Notification;
                     }
                 }
+                UserSessions.SetUploadFileNameCounter(PreferenceManager.GetDefaultSharedPreferences(this), 1);
             }
             catch (Exception e)
             {
@@ -317,14 +310,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
                     DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                    if (!string.IsNullOrEmpty(urlSchemaData))
-                    {
-                        DashboardIntent.PutExtra("urlSchemaData", urlSchemaData);
-                        if (!string.IsNullOrEmpty(urlSchemaPath))
-                        {
-                            DashboardIntent.PutExtra("urlSchemaPath", urlSchemaPath);
-                        }
-                    }
                     StartActivity(DashboardIntent);
                 }
                 else
@@ -342,7 +327,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
-            
+
         }
 
         public async void ShowApplicationStatusDetails()
@@ -389,7 +374,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public async void OnShowManageBillDelivery()
         {
-            bool isDBREnabled = DBRUtility.Instance.IsAccountDBREligible;
+            bool isDBREnabled = DBRUtility.Instance.IsAccountEligible;
             if (!isDBREnabled)
             {
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -404,7 +389,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     EligibilitySessionCache.Instance.SetData(data);
                     //Use data or any EligibilitySessionCache functionality
                 }
-                isDBREnabled = DBRUtility.Instance.IsAccountDBREligible;
+                isDBREnabled = DBRUtility.Instance.IsAccountEligible;
             }
             if (!isDBREnabled
                 || string.IsNullOrEmpty(UserSessions.DBROwnerNotificationAccountNumber)
@@ -469,14 +454,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
                     PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                    if (!string.IsNullOrEmpty(urlSchemaData))
-                    {
-                        PreLoginIntent.PutExtra("urlSchemaData", urlSchemaData);
-                        if (!string.IsNullOrEmpty(urlSchemaPath))
-                        {
-                            PreLoginIntent.PutExtra("urlSchemaPath", urlSchemaPath);
-                        }
-                    }
                     StartActivity(PreLoginIntent);
                 }
                 else
@@ -667,7 +644,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowNotification()
         {
-            if(!string.IsNullOrEmpty(ClaimId))
+            if (!string.IsNullOrEmpty(ClaimId))
             {
                 FcmPushNotificationFlagFromBackground = true;
                 isAppLaunchDone = true;
@@ -684,11 +661,11 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 StartActivity(notificationIntent);
             }
         }
-        
+
         public void ShowNotificationDetails()
-        { 
+        {
             var usrsession = UserSessions.Notification;
-            mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);            
+            mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);
         }
 
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details)
@@ -719,7 +696,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-       
+
         public void ShowNotificationCount(int count)
         {
             try
@@ -1273,44 +1250,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             PendingDynamicLinkData pendingResult = result.JavaCast<PendingDynamicLinkData>();
 
-            Android.Net.Uri deepLink = null;
             if (pendingResult != null)
             {
-                deepLink = pendingResult.Link;
-                string deepLinkUrl = deepLink.ToString();
-                if (!string.IsNullOrEmpty(deepLinkUrl))
-                {
-                    if (deepLinkUrl.Contains("rewards"))
-                    {
-                        urlSchemaData = "rewards";
-                        string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
-                        urlSchemaPath = "rewardId=" + id;
-                    }
-                    else if (deepLinkUrl.Contains("whatsnew"))
-                    {
-                        urlSchemaData = "whatsnew";
-                        string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
-                        urlSchemaPath = "whatsNewId=" + id;
-                    }
-                    else if (deepLinkUrl.Contains("applicationListing"))
-                    {
-                        urlSchemaData = "applicationListing";
-                    }
-                    else if (deepLinkUrl.Contains("applicationDetails"))
-                    {
-                        urlSchemaData = "applicationDetails";
-                        ApplicationDetailsDeeplinkCache.Instance.SetData(deepLinkUrl);
-                    }
-                    else if (deepLinkUrl.Contains("overvoltageClaimDetails"))
-                    {
-                        urlSchemaData = "enquiryDetails";
-                        EnquiryDetailsDeeplinkCache.Instance.SetData(deepLinkUrl);
-#if DEBUG
-                        Log.Debug(TAG, "[Dynamic Link] overvoltageClaimDetails = " + deepLinkUrl);
-#endif
-                        //TODO: go to enquiryDetails instead, and use something like EnquiryDetailsDeeplinkCache
-                    }
-                }
+                DeeplinkUtil.Instance.InitiateDeepLink(pendingResult.Link);
             }
         }
 

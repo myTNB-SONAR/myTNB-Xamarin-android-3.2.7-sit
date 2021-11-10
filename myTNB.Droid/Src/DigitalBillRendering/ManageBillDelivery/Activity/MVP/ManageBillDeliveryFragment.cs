@@ -1,4 +1,5 @@
-﻿using Android.OS;
+﻿using Android.Content;
+using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -15,6 +16,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         private static string IS_LAST_ITEM = "islastitem";
         private string appLanguage;
         const string PAGE_ID = "";
+        private Android.App.Activity mActivity;
 
         [BindView(Resource.Id.walkthrough_layout)]
         LinearLayout bgLayout;
@@ -35,7 +37,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             // Create your fragment here
         }
 
-        public static ManageBillDeliveryFragment Instance(ManageBillDeliveryModel model, bool isLastItem)
+        public static ManageBillDeliveryFragment Instance(ManageBillDeliveryModel model, bool isLastItem, Android.App.Activity activity)
         {
             ManageBillDeliveryFragment fragment = new ManageBillDeliveryFragment();
             Bundle args = new Bundle();
@@ -44,6 +46,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             args.PutString(DESCRIPTION, model.Description);
             args.PutBoolean(IS_LAST_ITEM, isLastItem);
             fragment.Arguments = args;
+            fragment.mActivity = activity;
             return fragment;
         }
 
@@ -91,6 +94,13 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
             titleView.Text = title;
             descriptionView.TextFormatted = GetFormattedText(description);
+
+            descriptionView = LinkRedirectionUtils
+                            .Create(this.mActivity, "")
+                            .SetTextView(descriptionView)
+                            .SetMessage(description)
+                            .Build()
+                            .GetProcessedTextView();
         }
 
         public override int ResourceId()

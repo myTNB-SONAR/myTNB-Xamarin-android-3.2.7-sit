@@ -1,4 +1,4 @@
-﻿using Android;
+using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -47,6 +47,8 @@ namespace myTNB_Android.Src.ViewBill.Activity
         private bool downloadClicked = false;
         private bool isLoadedDocument = false;
         private bool isFromQuickAction = false;
+        private bool isBillStatementAction = false;
+        private string billSelectedMonths = string.Empty;
         private bool isTaxInvoice = false;
 
         CancellationTokenSource cts;
@@ -117,7 +119,20 @@ namespace myTNB_Android.Src.ViewBill.Activity
             {
                 title = Utility.GetLocalizedLabel("ApplicationStatusDetails", "taxInvoice");
             }
-
+            if(isBillStatementAction)
+            {
+                if (billSelectedMonths != string.Empty)
+                {
+                    if (billSelectedMonths == "3")
+                    {
+                        title = "Past 3 Months Statement";
+                    }
+                    if (billSelectedMonths == "6")
+                    {
+                        title = "Past 6 Months Statement";
+                    }
+                }
+            }
             return title;
         }
 
@@ -136,6 +151,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
             Bundle extras = Intent.Extras;
 
             isFromQuickAction = false;
+            isBillStatementAction = false;
 
             if (extras != null)
             {
@@ -153,7 +169,14 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 {
                     isFromQuickAction = true;
                 }
-
+                if (extras.ContainsKey(Constants.CODE_KEY) && extras.GetInt(Constants.CODE_KEY) == Constants.SELECT_ACCOUNT_STATEMENT_PDF_REQUEST_CODE)
+                {
+                    isBillStatementAction = true;
+                }
+                if (extras.ContainsKey(Constants.SELECTED_BILL_STATEMENT) && extras.GetString(Constants.SELECTED_BILL_STATEMENT) != null)
+                {
+                    billSelectedMonths = extras.GetString(Constants.SELECTED_BILL_STATEMENT);
+                }
                 if (extras.ContainsKey("IsTaxInvoice") && extras.GetBoolean("IsTaxInvoice"))
                 {
                     isTaxInvoice = true;
@@ -219,7 +242,14 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.ViewBillReceiptMenu, menu);
+            if(isBillStatementAction)
+            {
+                MenuInflater.Inflate(Resource.Menu.ViewBillStatementMenu, menu);
+            }
+            else
+            {
+                MenuInflater.Inflate(Resource.Menu.ViewBillReceiptMenu, menu);
+            }
             //downloadOption = menu.GetItem(Resource.Id.action_download);
             return base.OnCreateOptionsMenu(menu);
         }
@@ -231,6 +261,17 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 switch (item.ItemId)
                 {
                     case Resource.Id.action_download:
+                        if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
+                        {
+                            RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+                        }
+                        else
+                        {
+                            downloadClicked = true;
+                            OnSavePDF();
+                        }
+                        return true;
+                    case Resource.Id.action_share:
                         if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
                         {
                             RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
@@ -549,6 +590,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
                 Date d = null;
                 string title = Utility.GetLocalizedLabel("ViewBill", "titleBill");
+                
                 if (selectedAccount != null)
                 {
                     if (selectedAccount.AccountCategoryId != null && selectedAccount.AccountCategoryId.Equals("2"))

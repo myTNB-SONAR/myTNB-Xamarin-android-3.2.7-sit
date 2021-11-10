@@ -8,11 +8,9 @@ using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing.Printing;
 
 namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
 {
@@ -59,7 +57,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 SubmittedFeedback item = GetItemObject(position);
 
                 Date d = null;
-                string title = "Bill";
                 try
                 {
                     d = simpleDateParser.Parse(item.DateCreated);
@@ -70,13 +67,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                     vh.txtFeedbackDate.Text = "NA";
                     Utility.LoggingNonFatalError(e);
                 }
-
-                //  vh.txtFeedbackTitle.Text = !string.IsNullOrEmpty(item.FeedbackNameInListView) ? item.FeedbackNameInListView : item.FeedbackCategoryName;
-
-                // vh.txtFeedbackTitle.SetPadding(0, 24, 0, 0);  //inject padding;
-                // vh.txtFeedbackDate.SetPadding(0, 24, 0, 0);
-                // vh.txtFeedbackContent.Text = item.FeedbackMessage;
-                // vh.txtFeedbackContent.Visibility = ViewStates.Gone;
 
                 vh.txtSRstatus.Text = item.StatusDesc;
                 vh.txtSRNumber.Text = "SR: " + item.FeedbackId;
@@ -91,121 +81,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                     vh.completeIndicator.Visibility = ViewStates.Gone;
                 }
 
-                //statusCode color 
-                vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.black)));
-                if (item.StatusCode.Equals("CL01"))
-                {
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
-                }
-                else if (item.StatusCode.Equals("CL02"))
-                {
+                int statusColor = item.FeedbackCategoryId.Equals("9") ? item.GSLStatusColor : item.StatusColor;
 
-                }
-                else if (item.StatusCode.Equals("CL03"))
-                {
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.completedColor)));
-                }
-                else if (item.StatusCode.Equals("CL04"))
-                {
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.completedColor)));
-                }
-                else if (item.StatusCode.Equals("CL06"))
-                {
-
-                }
-                //new added
-                else if (item.StatusCode.Equals("CL07"))
-                {
-                    //Submitted & Awaiting Verification
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
-                }
-                else if (item.StatusCode.Equals("CL08"))
-                {
-                    //Claim Verified & Appointment Required
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.lightOrange)));
-                }
-                else if (item.StatusCode.Equals("CL09"))
-                {
-                    //Appointment Made & Awaiting Inspection
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
-                }
-                else if (item.StatusCode.Equals("CL10"))
-                {
-                    //Inspection Done & Awaiting Eligibility Decision
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
-                }
-                else if (item.StatusCode.Equals("CL11"))
-                {
-                    ///Eligible for Claim & Claim Response Required
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.lightOrange)));
-                }
-                else if (item.StatusCode.Equals("CL12"))
-                {
-                    //Negotiation Requested & Awaiting Negotiation  
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
-                }
-                else if (item.StatusCode.Equals("CL13"))
-                {
-                    //Negotiation Done & Claim Response Required
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.lightOrange)));
-                }
-                else if (item.StatusCode.Equals("CL14"))
-                {
-                    //Accepted Claim Offer & Payment Information Required
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.lightOrange)));
-                }
-                else if (item.StatusCode.Equals("CL15"))
-                {
-                    //Payment Information Submitted & Starting Payment Process
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
-                }
-                else if (item.StatusCode.Equals("CL16"))
-                {
-                    //Payment Processed & Completed
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.freshGreen)));
-                }
-                else if (item.StatusCode.Equals("CL17"))
-                {
-                    //Ineligible for Claim
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
-                }
-                else if (item.StatusCode.Equals("CL18"))
-                {
-                    //Cancelled
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
-                }
-                else if (item.StatusCode.Equals("CL19"))
-                {
-                    //Ineligible for Claim & Claim Response Required (Ex-gratia)
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.lightOrange)));
-                }
-
-
-
-                if (item.FeedbackCategoryId.Equals("1"))
-                {
-                    // vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.general_enquiry));
-                    vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle");
-
-                }
-                else if (item.FeedbackCategoryId.Equals("2"))
-                {
-                    // vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_streetlamp));
-                }
-                else if (item.FeedbackCategoryId.Equals("3"))
-                {
-                    //   vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_others));
-                }
-                else if (item.FeedbackCategoryId.Equals("4"))
-                {
-                    //  vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.update_personal_details));
-                    vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
-                    //  vh.txtFeedbackTitle.SetPadding(0, 24, 7, 0);
-                }
-                else if (item.FeedbackCategoryId.Equals("11"))
-                {
-                    vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle");
-                }
+                vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, statusColor)));
+                vh.txtFeedbackTitle.Text = item.FeedbackCategoryId.Equals("11") ? Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle") : item.FeedbackCategoryName;
             }
             catch (Exception e)
             {

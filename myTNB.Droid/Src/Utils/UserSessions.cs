@@ -80,7 +80,7 @@ namespace myTNB_Android.Src.Utils
         {
             return prefs.GetString("notificationType", null);
         }
-        
+
         internal static void SetApplicationStatusNotification(string saveID
             , string applciationID
             , string applicationType
@@ -678,7 +678,7 @@ namespace myTNB_Android.Src.Utils
             }
             return selectAccountList;
         }
-        
+
         public static void SetSMREligibilityAccountList(List<SMRAccount> sMRAccounts)
         {
             ISharedPreferencesEditor editor = mPreferences.Edit();
@@ -818,6 +818,30 @@ namespace myTNB_Android.Src.Utils
             editor.PutString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, string.Empty);
             editor.PutString(MobileConstants.SharePreferenceKey.AccessToken, string.Empty);
             editor.Apply();
+        }
+
+        public static int GetUploadFileNameCounter(ISharedPreferences preferences)
+        {
+            return preferences.GetInt("UPLOAD_FILE_NAME_COUNTER", 0);
+        }
+
+        public static void SetUploadFileNameCounter(ISharedPreferences preferences, int counter)
+        {
+            ISharedPreferencesEditor editor = preferences.Edit();
+            editor.PutInt("UPLOAD_FILE_NAME_COUNTER", counter);
+            editor.Apply();
+        }
+
+        public static void SaveDBRPopUpFlag(ISharedPreferences prefs, bool flag)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("DBRPopUpHasShown", flag);
+            editor.Apply();
+        }
+
+        public static bool GetDBRPopUpFlag(ISharedPreferences preferences)
+        {
+            return preferences.GetBoolean("DBRPopUpHasShown", false);
         }
     }
 }

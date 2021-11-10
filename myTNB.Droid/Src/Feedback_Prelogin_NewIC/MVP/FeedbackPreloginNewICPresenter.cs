@@ -6,6 +6,7 @@ using Android.Telephony;
 using Android.Text;
 using Castle.Core.Internal;
 using Java.Text;
+using myTNB;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
@@ -21,10 +22,12 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using static myTNB.LanguageManager;
+using static myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity.FeedbackPreloginNewICActivity;
 
 namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 {
-   public  class FeedbackPreloginNewICPresenter  : FeedbackPreloginNewICContract.IUserActionsListener
+    public class FeedbackPreloginNewICPresenter : FeedbackPreloginNewICContract.IUserActionsListener
     {
 
         FeedbackPreloginNewICContract.IView mView;
@@ -46,9 +49,27 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
             this.mView.ShowGeneralEnquiry();
         }
 
-       public void onUpdatePersonalDetail()
+        public void OnAboutBillEnquiry()
+        {
+            this.mView.ShowAboutBillEnquiry();
+        }
+
+        public void onUpdatePersonalDetail()
         {
             this.mView.showUpdatePersonalDetail();
+        }
+
+        private void OnGSLRebate(bool isOwner)
+        {
+            if (LanguageManager.Instance.GetConfigToggleValue(TogglePropertyEnum.IsGSLRebateEnabled))
+            {
+                this.mView.ShowGSLRebate(isOwner);
+            }
+        }
+
+        private void OnOvervoltageClaim()
+        {
+            this.mView.ShowOvervoltageClaim();
         }
 
         public void Start()
@@ -88,7 +109,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 
                 bool allowToProceed = true;
 
-                if (!TextUtils.IsEmpty(accno) )
+                if (!TextUtils.IsEmpty(accno))
                 {
 
                     if (!Utility.AddAccountNumberValidation(accno.Length))
@@ -100,12 +121,12 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                     else
                     {
                         this.mView.RemoveNumberErrorMessage();
-                    
+
                     }
 
                 }
                 else
-                {   
+                {
                     //if empty
                     this.mView.ShowEnterOrSelectAccNumber();
                     allowToProceed = false;
@@ -131,54 +152,60 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
             }
         }
 
-        public async void ValidateAccountAsync(string contractAccounts , bool isUpdateUserInfo)
+        public async void ValidateAccountAsync(string contractAccount, EnquiryTypeEnum type)
         {
-           
-
             try
             {
-
                 if (mView.IsActive())
                 {
                     this.mView.ShowProgressDialog();
-                }
+                    GetSearchForAccountRequest con = new GetSearchForAccountRequest(contractAccount);
 
-                //GetSearchForAccountRequest caReq = new GetSearchForAccountRequest();
-                //caReq.SetAcc(contractAccounts);
+                    var result = await ServiceApiImpl.Instance.ValidateAccIsExist(con);
 
-                GetSearchForAccountRequest con = new GetSearchForAccountRequest(contractAccounts);
-
-               // Console.WriteLine(SerializeObject(con));
-          
-                var result = await ServiceApiImpl.Instance.ValidateAccIsExist(con);
-
-                if (result != null && !result.GetSearchForAccount[0].FullName.IsNullOrEmpty()  && !result.GetSearchForAccount[0].IC.IsNullOrEmpty())
-               
-                {
-                    this.mView.HideProgressDialog();
-                    var data = result.GetSearchForAccount[0];
-                    UserSessions.SaveGetAccountIsExist(mSharedPref, JsonConvert.SerializeObject(data));
-
-                    if (isUpdateUserInfo)
+                    if (result != null && !result.GetSearchForAccount[0].FullName.IsNullOrEmpty() && !result.GetSearchForAccount[0].IC.IsNullOrEmpty())
                     {
-                        onUpdatePersonalDetail();
+                        this.mView.HideProgressDialog();
+                        var data = result.GetSearchForAccount[0];
+                        UserSessions.SaveGetAccountIsExist(mSharedPref, JsonConvert.SerializeObject(data));
+
+                        switch (type)
+                        {
+                            case EnquiryTypeEnum.General:
+                                OnGeneralEnquiry();
+                                break;
+                            case EnquiryTypeEnum.UpdatePersonalDetails:
+                                onUpdatePersonalDetail();
+                                break;
+                            case EnquiryTypeEnum.AboutMyBill:
+                                OnAboutBillEnquiry();
+                                break;
+                            case EnquiryTypeEnum.GSLRebate:
+                                if (UserEntity.IsCurrentlyActive())
+                                {
+                                    var ic = data.IC.Trim();
+                                    var icAcct = UserEntity.GetActive().IdentificationNo.Trim();
+                                    OnGSLRebate(ic.Equals(icAcct));
+                                }
+                                else
+                                {
+                                    OnGSLRebate(false);
+                                }
+                                break;
+                            case EnquiryTypeEnum.OvervoltageClaim:
+                                OnOvervoltageClaim();
+                                break;
+                            default:
+                                break;
+                        }
                     }
                     else
-                    {
-                        OnGeneralEnquiry();
+                    {   // no data
+                        this.mView.HideProgressDialog();
+                        this.mView.ShowInvalidAccountNumberError();
+                        this.mView.makeSetClick(false);
                     }
-
-
-                   
                 }
-                else
-                {   // no data
-                    this.mView.HideProgressDialog();
-                    this.mView.ShowInvalidAccountNumberError();
-                    this.mView.makeSetClick(false);
-
-                }
-
             }
             catch (System.OperationCanceledException e)
             {
@@ -187,7 +214,6 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                     this.mView.HideProgressDialog();
                 }
                 this.mView.makeSetClick(false);
-                //this.mView.ShowFail();
                 this.mView.OnSubmitError();
                 Utility.LoggingNonFatalError(e);
             }
@@ -197,7 +223,6 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                //this.mView.ShowFail();
                 this.mView.makeSetClick(false);
                 this.mView.OnSubmitError();
                 Utility.LoggingNonFatalError(apiException);
@@ -208,14 +233,10 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
-                //this.mView.ShowFail();
                 this.mView.makeSetClick(false);
                 this.mView.OnSubmitError();
                 Utility.LoggingNonFatalError(e);
             }
-
         }
-
-
     }
 }

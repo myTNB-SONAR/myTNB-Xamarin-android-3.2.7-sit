@@ -1,38 +1,23 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
+﻿using Android.Content;
 using Android.Text;
 using Android.Util;
-using Firebase.Iid;
 using fbm = Firebase.Messaging;
 using myTNB;
-using myTNB.SitecoreCMS.Model;
-using myTNB.SitecoreCMS.Services;
-using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using System.Threading;
-using System.Threading.Tasks;
 using Android.Gms.Extensions;
-
 namespace myTNB_Android.Src.Login.MVP
 {
     public class LoginPresenter : LoginContract.IUserActionsListener
@@ -239,6 +224,7 @@ namespace myTNB_Android.Src.Login.MVP
                         {
                             SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP);
                             SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP);
+                            SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIPV2);
                         }
                         catch (Exception ex)
                         {
@@ -632,6 +618,7 @@ namespace myTNB_Android.Src.Login.MVP
                     }
                     CustomerBillingAccount.MakeFirstAsSelected();
                 }
+                CustomerBillingAccount.SetCAListForEligibility();
             }
             catch (Exception e)
             {

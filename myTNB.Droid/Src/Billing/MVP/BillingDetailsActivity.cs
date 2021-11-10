@@ -29,6 +29,8 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
 using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.Database.Model;
+using static myTNB_Android.Src.CompoundView.ExpandableTextViewComponent;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -226,7 +228,6 @@ namespace myTNB_Android.Src.Billing.MVP
 
             billingDetailsPresenter = new BillingDetailsPresenter(this);
             myBillDetailsLabel.Text = GetLabelByLanguage("billDetails");
-            accountBillThisMonthLabel.Text = GetLabelByLanguage("billThisMonth");
             accountMinChargeLabel.Text = GetLabelByLanguage("minimumChargeDescription");
             btnViewBill.Text = GetLabelCommonByLanguage("viewBill");
             btnPayBill.Text = GetLabelByLanguage("pay");
@@ -297,6 +298,9 @@ namespace myTNB_Android.Src.Billing.MVP
 
             accountName.Text = selectedAccountData.AccountNickName;
             accountAddress.Text = selectedAccountData.AddStreet;
+            var billThisMonthString = GetLabelByLanguage(LanguageConstants.BillDetails.BILL_THIS_MONTH);
+            accountBillThisMonthLabel.Text = billThisMonthString;
+
             if (selectedAccountChargeModel != null && !isCheckPendingPaymentNeeded)
             {
                 topLayout.Visibility = ViewStates.Visible;
@@ -408,7 +412,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 SetDynatraceCTATags();
                 _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
                     ? selectedAccountData.IsOwner
-                    : DBRUtility.Instance.IsCADBREligible(selectedAccountData.AccountNum);
+                    : DBRUtility.Instance.IsCAEligible(selectedAccountData.AccountNum);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
                 intent.PutExtra("accountNumber", selectedAccountData.AccountNum);
@@ -546,6 +550,7 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 otherChargesExpandableView.Visibility = ViewStates.Visible;
                 accountMinChargeLabelContainer.Visibility = ViewStates.Visible;
+                otherChargesExpandableView.SetExpandableType(ExpandableTextViewType.APPLICATION_CHARGES);
                 otherChargesExpandableView.SetApplicationChargesLabel(GetLabelByLanguage("applicationCharges"));
                 otherChargesExpandableView.SetOtherCharges(selectedAccountChargeModel.MandatoryCharges.TotalAmount, selectedAccountChargeModel.MandatoryCharges.ChargeModelList);
                 otherChargesExpandableView.RequestLayout();
@@ -573,7 +578,8 @@ namespace myTNB_Android.Src.Billing.MVP
             }
             else
             {
-                accountChargeLabel.Text = GetLabelByLanguage("outstandingCharges");// "My outstanding charges";
+                var accountChargeString = GetLabelByLanguage(LanguageConstants.BillDetails.OUTSTANDING_CHARGES);
+                accountChargeLabel.Text = accountChargeString;// "My outstanding charges";
                 accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
 
@@ -585,7 +591,6 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00", currCult);  //ori code
             }
-
 
             accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("#,##0.00", currCult);
             if (selectedAccountChargeModel.IsNeedPay)
@@ -640,13 +645,15 @@ namespace myTNB_Android.Src.Billing.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData(this);
+                SitecoreCmsEntity.SITE_CORE_ID siteCoreId = SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP;
+
+                List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData(this, siteCoreId);
                 if (modelList != null && modelList.Count > 0)
                 {
                     UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
                         .SetAdapter(adapter)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                        .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.GOT_IT))
                         .SetCTAaction(() => { this.SetIsClicked(false); })
                         .Build()
                         .Show();
@@ -727,12 +734,16 @@ namespace myTNB_Android.Src.Billing.MVP
 
         public void ShowEPPDetailsTooltip()
         {
-            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData();
+            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData(this, Resource.Drawable.Banner_EPP_Tooltip);
 
             if (modelList != null && modelList.Count > 0)
             {
                 if (!this.GetIsClicked())
                 {
+                    if (modelList.Count == 0)
+                    {
+                        return;
+                    }
                     this.SetIsClicked(true);
                     MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
                        .SetHeaderImageBitmap(modelList[0].ImageBitmap)

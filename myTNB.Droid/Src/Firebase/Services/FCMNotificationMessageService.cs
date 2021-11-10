@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Gms.Common.Apis;
 using Android.Graphics;
 using Android.Media;
+using Android.Util;
 using AndroidX.Core.App;
 using Firebase.Messaging;
 using myTNB_Android.Src.Database.Model;
@@ -55,23 +56,29 @@ namespace myTNB_Android.Src.Firebase.Services
             {
                 message = remoteMessage.GetNotification().Body;
             }
-
-            if (remoteData.ContainsKey("Type") && remoteData.ContainsKey("EventId") && remoteData.ContainsKey("RequestTransId"))
+            try
             {
-                UserSessions.SetNotification(remoteData["Type"], remoteData["EventId"], remoteData["RequestTransId"]);
+                if (remoteData.ContainsKey("Type") && remoteData.ContainsKey("EventId") && remoteData.ContainsKey("RequestTransId"))
+                {
+                    UserSessions.SetNotification(remoteData["Type"], remoteData["EventId"], remoteData["RequestTransId"]);
+                }
+
+                SendNotification(title, message, remoteData);
+                if (remoteData.ContainsKey("Badge") && int.TryParse(remoteData["Badge"], out int count))
+                {
+                    if (count <= 0)
+                    {
+                        ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+                    }
+                    else
+                    {
+                        ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
+                    }
+                }
             }
-
-            SendNotification(title, message, remoteData);
-            if (remoteData.ContainsKey("Badge") && int.TryParse(remoteData["Badge"], out int count))
+            catch (Exception e)
             {
-                if (count <= 0)
-                {
-                    ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-                }
-                else
-                {
-                    ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.ApplicationContext, count);
-                }
+                Log.Debug("ERROR", e.Message);
             }
         }
 

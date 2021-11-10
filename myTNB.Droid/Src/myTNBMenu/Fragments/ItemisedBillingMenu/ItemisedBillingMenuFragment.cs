@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Android.App;
@@ -168,6 +168,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         List<AccountBillPayHistoryModel> selectedBillingHistoryModelList;
         List<AccountBillPayFilter> billPayFilterList;
         internal bool _isOwner { get; set; }
+        public bool _isBillStatement { get; set; }
+
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
 
@@ -350,7 +352,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
-                    Intent newIntent = new Intent(this.Activity, typeof(FilterBillHistoryActivity));
+                    Intent newIntent = new Intent(this.Activity, typeof(SelectItemActivity));
                     string filterDescription = "NONRE";
                     bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
                     if (isREAccount)
@@ -358,6 +360,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         filterDescription = "RE";
                     }
                     newIntent.PutExtra("FILTER_DESCRIPTION", filterDescription);
+                    newIntent.PutExtra("LIST_TITLE", Utility.GetLocalizedLabel(LanguageConstants.BILL_FILTER, LanguageConstants.BillFilter.FILTER_TITLE));
+                    newIntent.PutExtra("LIST_DESCRIPTION", Utility.GetLocalizedLabel(LanguageConstants.BILL_FILTER, LanguageConstants.BillFilter.FILTER_DESC));
                     newIntent.PutExtra("ITEM_LIST", JsonConvert.SerializeObject(itemFilterList));
                     StartActivityForResult(newIntent, 12345);
                 }
@@ -428,7 +432,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 {
                     if (resultCode == (int)Result.Ok)
                     {
-                        UpdateBillingHistory(data.GetStringExtra("SELECTED_ITEM_FILTER"));
+                        itemFilterList = JsonConvert.DeserializeObject<List<Item>>(data.GetStringExtra("SELECTED_ITEM_LIST"));
+                        Item selectedFilter = itemFilterList.Find(itemFilter =>
+                        {
+                            return itemFilter.selected;
+                        });
+
+                        if (_isBillStatement)
+                        {
+                            string dynatraceTag = string.Empty;
+                            if (selectedFilter.type.ToUpper() == "ALL")
+                            {
+                                dynatraceTag = DynatraceConstants.BR.CTAs.BillFilter.All;
+                            }
+                            else if (selectedFilter.type.ToUpper() == "BILL")
+                            {
+                                dynatraceTag = DynatraceConstants.BR.CTAs.BillFilter.Bills;
+                            }
+                            else if (selectedFilter.type.ToUpper() == "ADVICE")
+                            {
+                                dynatraceTag = DynatraceConstants.BR.CTAs.BillFilter.Advice;
+                            }
+                            else if (selectedFilter.type.ToUpper() == "PAYMENT")
+                            {
+                                dynatraceTag = DynatraceConstants.BR.CTAs.BillFilter.Payments;
+                            }
+                            DynatraceHelper.OnTrack(dynatraceTag);
+                        }
+
+                        UpdateBillingHistory(selectedFilter);
                         itemisedBillingScrollView.ScrollTo(0, 0);
                     }
                 }
@@ -532,7 +564,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     {
                         GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                         AccountData dbrAccount = selectedAccount;
-                        bool isEligible = DBRUtility.Instance.IsAccountDBREligible;
+                        bool isEligible = DBRUtility.Instance.IsAccountEligible;
                         if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                             , EligibilitySessionCache.FeatureProperty.TargetGroup))
                         {
@@ -570,7 +602,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                 , AccessTokenCache.Instance.GetAccessToken(this.Activity));
                             _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
                                 ? selectedAccount.IsOwner
-                                : DBRUtility.Instance.IsCADBREligible(dbrAccount.AccountNum);
+                                : DBRUtility.Instance.IsCAEligible(dbrAccount.AccountNum);
 
                             if (billRenderingResponse != null
                                 && billRenderingResponse.StatusDetail != null
@@ -641,6 +673,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             return chargeAvailableNoCTAContainer.Height;
         }
+        public bool IsCADBREligible()
+        {
+            return DBRUtility.Instance.IsCAEligible(mSelectedAccountData.AccountNum);
+        }
+
 
         private void SetDynatraceScreenTags()
         {
@@ -725,9 +762,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer.Visibility = ViewStates.Visible;
         }
 
-        public void UpdateBillingHistory(string filterItemString)
+        public void UpdateBillingHistory(Item selectedFilter)
         {
-            Item selectedFilter = JsonConvert.DeserializeObject<Item>(filterItemString);
             itemFilterList.ForEach(filterItem =>
             {
                 filterItem.selected = (filterItem.type == selectedFilter.type) ? true : false;
@@ -1153,6 +1189,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             Intent viewBill = new Intent(Activity, typeof(ViewBillActivity));
             viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
             viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
+            if (_isBillStatement)
+            {
+                DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Bill.View_Bill);
+                DynatraceHelper.OnTrack(DynatraceConstants.BR.Screens.Bill.View_Bill);
+            }
             StartActivity(viewBill);
         }
 
@@ -1429,7 +1470,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         Utility.LoggingNonFatalError(e);
                     }
                 });
-                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(_isOwner));
+                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(_isOwner, IsCADBREligible(), _isBillStatement));
 
             }
             catch (System.Exception ex)

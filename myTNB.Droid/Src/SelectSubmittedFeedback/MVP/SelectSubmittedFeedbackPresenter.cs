@@ -59,20 +59,26 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                     }
                     else
                     {
+                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
                         if (submittedFeedback.FeedbackCategoryId.Equals("1"))
                         {
-                            UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
-                            this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback);
+                            this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback, false);
                         }
                         else if (submittedFeedback.FeedbackCategoryId.Equals("2"))
                         {
-                            UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
                             this.mView.ShowFeedbackDetailsFaultyLamps(detailsResponse.GetData());
                         }
                         else if (submittedFeedback.FeedbackCategoryId.Equals("4"))
                         {
-                            UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
-                            this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback);
+                            this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback, false);
+                        }
+                        else if (submittedFeedback.FeedbackCategoryId.Equals("8"))
+                        {
+                            this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback, true);
+                        }
+                        else if (submittedFeedback.FeedbackCategoryId.Equals("9"))
+                        {
+                            this.mView.ShowFeedbackDetailsGSL();
                         }
                         else
                         {
@@ -142,7 +148,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             {
                 var submittedFeedbackResponse = await ServiceApiImpl.Instance.SubmittedFeedbackList(new SubmittedFeedbackListRequest());
 
-                
+
 
                 if (submittedFeedbackResponse.IsSuccessResponse())
                 {

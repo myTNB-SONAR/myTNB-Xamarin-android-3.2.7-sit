@@ -1,4 +1,4 @@
-﻿using Android.App;
+using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
@@ -461,7 +461,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
                             {
                                 topHeight = (int)DPUtils.ConvertDPToPx(TextViewUtils.IsLargeFonts ? 385f : 345f);
-                                topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f); 
+                                topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
                             }
                             if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
                             {
@@ -902,7 +902,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(135);
                                 }
-                                topHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight) - middleHeight - ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight() +(int)DPUtils.ConvertDPToPx(20f); ;
+                                topHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight) - middleHeight - ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight() + (int)DPUtils.ConvertDPToPx(20f); ;
                             }
 
                             LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
@@ -1028,7 +1028,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(135);
                                 }
-                                topHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight) - middleHeight - ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight() +(int)DPUtils.ConvertDPToPx(20f); ;
+                                topHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight) - middleHeight - ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight() + (int)DPUtils.ConvertDPToPx(20f); ;
                             }
 
                             LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
@@ -1197,9 +1197,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else
                         {
-                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight() + (TextViewUtils.IsLargeFonts? (int)DPUtils.ConvertDPToPx(85f): (int)DPUtils.ConvertDPToPx(75f));
+                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight() + (TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(85f) : (int)DPUtils.ConvertDPToPx(75f));
                             int middleHeight = (int)DPUtils.ConvertDPToPx(130f);
-                           
+
 
                             if (model.ItemCount == 0)
                             {
@@ -1428,7 +1428,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     {
                         if (position == 0)
                         {
-                            float h1 =  55f;
+                            float h1 = 55f;
                             int topHeight = (int)DPUtils.ConvertDPToPx(h1);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight();
                             int checkPoint = (int)DPUtils.ConvertDPToPx(200f);
@@ -1476,7 +1476,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         {
                             int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + (int)DPUtils.ConvertDPToPx(55f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(8f);
-                           
+
                             int rightWidth = (int)DPUtils.ConvertDPToPx(12f);
                             int middleWidth = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonWidth() + (int)DPUtils.ConvertDPToPx(8f);
                             int leftWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - rightWidth - middleWidth;
@@ -1510,7 +1510,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         {
                             int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + (int)DPUtils.ConvertDPToPx(55f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(8f);
-                           
+
                             int leftWidth = (int)DPUtils.ConvertDPToPx(12f);
                             int middleWidth = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonWidth() + (int)DPUtils.ConvertDPToPx(8f);
                             int rightWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - leftWidth - middleWidth;
@@ -1540,7 +1540,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
-                        else if (DBRUtility.Instance.IsAccountDBREligible && position == 3)
+                        else if (((ItemisedBillingMenuFragment)this.mFragment).IsCADBREligible() && position == 3)
                         {
                             int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(95f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight() - (int)DPUtils.ConvertDPToPx(5f);
@@ -1624,6 +1624,41 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                            innerTopLayout.RequestLayout();
+                        }
+                        else if (((ItemisedBillingMenuFragment)this.mFragment)._isBillStatement && position == 4)
+                        {
+                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight() + (int)DPUtils.ConvertDPToPx(95f);
+                            int middleHeight = (int)DPUtils.ConvertDPToPx(35f);
+                            int middleWidth = (int)DPUtils.ConvertDPToPx(35f);
+                            float h2 = 35f;
+                            int rightWidth = (int)DPUtils.ConvertDPToPx(h2);
+
+                            int leftWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - rightWidth - middleWidth;// (int)DPUtils.ConvertDPToPx(h1);
+
+                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            topLayoutParam.Height = topHeight;
+                            topLayout.RequestLayout();
+                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            middleLayoutParam.Height = middleHeight;
+                            middleLayout.RequestLayout();
+                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            highlightedLeftLayoutParam.Width = leftWidth;
+                            highlightedLeftLayout.RequestLayout();
+                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            highlightedLayoutParam.Width = middleWidth;
+                            highlightedLayout.RequestLayout();
+                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            highlightedRightLayoutParam.Width = rightWidth;
+                            highlightedRightLayout.RequestLayout();
+                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                            bottomLayout.RequestLayout();
+
+                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(97f);
+                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0f);
+                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(46f);
                             innerTopLayout.RequestLayout();
                         }
                         else
@@ -2245,7 +2280,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 if (model.DisplayMode == "Extra")
                 {
                     int topHeight = (int)DPUtils.ConvertDPToPx(55f);
-                    int middleHeight = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(220f): (int)DPUtils.ConvertDPToPx(200f);
+                    int middleHeight = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(220f) : (int)DPUtils.ConvertDPToPx(200f);
 
                     int leftWidth = 0;
                     int rightWidth = 0;
@@ -2516,7 +2551,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
                 highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
                 highlightedRightLayout.RequestLayout();
-               
+
 
                 LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
                 bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
@@ -2528,7 +2563,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 innerTopLayout.RequestLayout();
 
             }
-            else if (DBRUtility.Instance.IsAccountDBREligible && this.mContext is ManageBillDeliveryActivity)
+            else if (DBRUtility.Instance.IsAccountEligible && this.mContext is ManageBillDeliveryActivity)
             {
                 int middleHeight = 0;
                 int topHeight = 0;
@@ -2537,7 +2572,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     float h1 = 130f;
                     float h2 = TextViewUtils.IsLargeFonts ? 110 : 105f;
                     middleHeight = (int)DPUtils.ConvertDPToPx(h2);
-                    topHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmail_layoutrHeight()+ ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() +
+                    topHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmail_layoutrHeight() + ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() +
                                              ((ManageBillDeliveryActivity)this.mContext).GetSelectAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(h1);
                     LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                     topLayoutParam.Height = topHeight;
@@ -2547,7 +2582,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     middleLayout.RequestLayout();
                     LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
                     highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                    highlightedLeftLayout.RequestLayout();  
+                    highlightedLeftLayout.RequestLayout();
                     LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
                     highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
                     highlightedLayout.RequestLayout();

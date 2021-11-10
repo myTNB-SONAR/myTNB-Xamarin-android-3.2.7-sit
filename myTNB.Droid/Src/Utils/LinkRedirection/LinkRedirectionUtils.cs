@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
@@ -22,6 +21,8 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.WhatsNewDetail.MVP;
 
+using Screen = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.ScreenEnum;
+
 namespace myTNB_Android.Src.Utils
 {
     public class LinkRedirectionUtils
@@ -34,7 +35,12 @@ namespace myTNB_Android.Src.Utils
         private TextView mTextView;
         private string mHeaderTitle;
         private Action mAction;
+        private Screen TargetScreen = Screen.None;
+        private string dynatraceTag = string.Empty;
 
+        /// <summary>
+        /// WARNING: Please add new type at the bottom of the list and DO NOT rearrange existing items
+        /// </summary>
         public static List<string> RedirectTypeList = new List<string> {
             "inAppBrowser=",
             "externalBrowser=",
@@ -46,7 +52,8 @@ namespace myTNB_Android.Src.Utils
             "tel:",
             "whatsnewid=",
             "faqid=",
-            "rewardid="
+            "rewardid=",
+            "inAppScreen="
         };
 
         private LinkRedirectionUtils(Android.App.Activity activity, string headerTitle)
@@ -83,8 +90,9 @@ namespace myTNB_Android.Src.Utils
             return this;
         }
 
-        public LinkRedirectionUtils Build()
+        public LinkRedirectionUtils Build(string dynatraceTag = "")
         {
+            this.dynatraceTag = dynatraceTag;
             if (!string.IsNullOrEmpty(this.mMessage))
             {
                 SpannableString s = new SpannableString(mTextView.TextFormatted);
@@ -127,10 +135,21 @@ namespace myTNB_Android.Src.Utils
             try
             {
                 if (this.mAction != null)
+                {
                     this.mAction();
+                }
 
                 if (!string.IsNullOrEmpty(url))
                 {
+                    if (!string.IsNullOrEmpty(this.dynatraceTag)
+                        && !string.IsNullOrWhiteSpace(this.dynatraceTag))
+                    {
+                        DynatraceHelper.OnTrack(this.dynatraceTag);
+                    }
+                    //for:
+                    //"inAppBrowser="
+                    //"externalBrowser="
+                    //"http"
                     if (url.Contains(RedirectTypeList[0])
                         || url.Contains(RedirectTypeList[1])
                         || url.Contains(RedirectTypeList[6]))
@@ -152,12 +171,14 @@ namespace myTNB_Android.Src.Utils
                             uri = "http://" + uri;
                         }
 
+                        //External Browser
                         if (url.Contains(RedirectTypeList[1]))
                         {
                             Intent intent = new Intent(Intent.ActionView);
                             intent.SetData(Android.Net.Uri.Parse(uri));
                             mActivity.StartActivity(intent);
                         }
+                        //In App Browser
                         else
                         {
                             if (compareText.Contains(".pdf") && !compareText.Contains("docs.google"))
@@ -183,6 +204,9 @@ namespace myTNB_Android.Src.Utils
                             }
                         }
                     }
+                    //for:
+                    //"tel="
+                    //"tel:"
                     else if (url.Contains(RedirectTypeList[2])
                                 || url.Contains(RedirectTypeList[7]))
                     {
@@ -203,6 +227,9 @@ namespace myTNB_Android.Src.Utils
                             mActivity.StartActivity(callIntent);
                         }
                     }
+                    //for:
+                    //"whatsnew="
+                    //"whatsnewid="
                     else if (url.Contains(RedirectTypeList[3])
                                 || url.Contains(RedirectTypeList[8]))
                     {
@@ -246,6 +273,9 @@ namespace myTNB_Android.Src.Utils
                             }
                         }
                     }
+                    //for:
+                    //"faq="
+                    //"faqid="
                     else if (url.Contains(RedirectTypeList[4])
                                 || url.Contains(RedirectTypeList[9]))
                     {
@@ -286,6 +316,9 @@ namespace myTNB_Android.Src.Utils
                             mActivity.StartActivity(faqIntent);
                         }
                     }
+                    //for:
+                    //"reward="
+                    //"rewardid="
                     else if (url.Contains(RedirectTypeList[5])
                                 || url.Contains(RedirectTypeList[10]))
                     {

@@ -66,7 +66,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         , ViewTreeObserver.IOnGlobalLayoutListener
         , View.IOnFocusChangeListener
     {
-        internal static bool IsFromLogin;
         GetBillRenderingResponse billRenderingResponse;
 
         [BindView(Resource.Id.newFAQShimmerView)]
@@ -227,9 +226,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.bottomContainer)]
         LinearLayout bottomContainer;
 
-        [BindView(Resource.Id.discoverMoreTitle)]
-        TextView discoverMoreTitle;
-
         [BindView(Resource.Id.txtTitleDiscoverMore)]
         TextView txtTitleDiscoverMore;
 
@@ -280,13 +276,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.img_discover_digital_bill)]
         ImageView img_discover_digital_bill;
 
-        [BindView(Resource.Id.discoverTitle)]
-        TextView discoverTitle;
-
+        [BindView(Resource.Id.discoverMoreSectionTitle)]
+        TextView discoverMoreSectionTitle;
 
         [BindView(Resource.Id.whatsNewUnreadImg)]
         ImageView whatsNewUnreadImg;
-
 
         [BindView(Resource.Id.discovercontainer)]
         LinearLayout discovercontainer;
@@ -345,6 +339,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         NewFAQAdapter newFAQAdapter;
 
         const string PAGE_ID = "DashboardHome";
+
+        const string FAQ_TAGS_SEPARATOR = "|";
+        const string GSL_TAG = "GSL";
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -500,7 +497,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
-                IsAccountDBREligible = DBRUtility.Instance.IsAccountDBREligible; 
+                IsAccountDBREligible = DBRUtility.Instance.IsAccountEligible;
                 summaryNestScrollView.SmoothScrollingEnabled = true;
                 isSearchClose = true;
                 isFirstInitiate = true;
@@ -513,14 +510,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupNewFAQView();
 
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
-                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, discoverMoreTitle, btnRefresh, txtAdd
+                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
                     , myServiceLoadMoreLabel, txtNewLabel, txtDate, txtTitleDiscoverMore, btnMyServiceRefresh);
                 TextViewUtils.SetTextSize8(txtNewLabel);
                 TextViewUtils.SetTextSize10(txtDate);
                 TextViewUtils.SetTextSize12(addActionLabel, txtTitleDiscoverMore, searchActionLabel, rearrangeLabel
                     , loadMoreLabel, myServiceLoadMoreLabel, txtMyServiceRefreshMessage);
-                TextViewUtils.SetTextSize14(refreshMsg, discoverMoreTitle, txtAdd, newFAQTitle, accountHeaderTitle);
+                TextViewUtils.SetTextSize14(refreshMsg, txtAdd, newFAQTitle, accountHeaderTitle);
                 TextViewUtils.SetTextSize16(accountGreeting, accountGreetingName, btnMyServiceRefresh, btnRefresh);
                 SearchView searchView = new SearchView(this.Context);
                 LinearLayout linearLayout1 = (LinearLayout)searchView.GetChildAt(0);
@@ -535,7 +532,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 newFAQTitle.Text = GetLabelByLanguage("needHelp");
                 rearrangeLabel.Text = GetLabelByLanguage("rearrangeAccts");
                 loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
-                discoverMoreTitle.Text = GetLabelByLanguage("DiscoverMore");
                 txtTitleDiscoverMore.Text = GetLabelByLanguage("DiscoverMoreTitle");
                 myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
 
@@ -643,10 +639,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        [OnClick(Resource.Id.discoverView)]
+        [OnClick(Resource.Id.img_discover_digital_bill)]
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
-            if (DBRUtility.Instance.IsAccountDBREligible)
+            if (DBRUtility.Instance.IsAccountEligible)
             {
                 DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Home_Banner);
                 GetBillRenderingAsync();
@@ -658,7 +654,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 ShowProgressDialog();
                 string caNumber = string.Empty;
-                if (DBRUtility.Instance.IsAccountDBREligible
+                if (DBRUtility.Instance.IsAccountEligible
                    && !EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                        , EligibilitySessionCache.FeatureProperty.TargetGroup))
                 {
@@ -671,7 +667,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else
                 {
                     CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
-                    _isOwner = DBRUtility.Instance.IsCADBREligible(dbrAccount.AccNum);
+                    if (dbrAccount == null)
+                    {
+                        HideProgressDialog();
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+                            .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
+                            .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                            .Build();
+                        errorPopup.Show();
+                        return;
+                    }
+                    _isOwner = DBRUtility.Instance.IsCAEligible(dbrAccount.AccNum);
                     caNumber = dbrAccount.AccNum;
                 }
 
@@ -731,7 +738,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
             List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                         , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                ? DBRUtility.Instance.GetDBRCAs()
+                ? DBRUtility.Instance.GetCAList()
                 : AccountTypeCache.Instance.DBREligibleCAs;
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             CustomerBillingAccount account = new CustomerBillingAccount();
@@ -747,19 +754,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     foreach (var dbrca in dBRCAs)
                     {
                         account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
-                        break;
+                        if (account != null)
+                        {
+                            break;
+                        }
                     }
                 }
             }
-            /*else
-            {
-                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                     .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
-                                    .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
-                                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
-                     .Build();
-                errorPopup.Show();
-            }*/
             return account;
         }
         public void SetRefreshLayoutParams()
@@ -966,19 +967,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private void SetupDiscoverView()
         {
             discoverView.Visibility = ViewStates.Visible;
-            discoverView.SetBackgroundResource(LanguageUtil.GetAppLanguage() == "MS"
+            img_discover_digital_bill.Visibility = ViewStates.Visible;
+            img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS"
                 ? Resource.Drawable.banner_home_voluntary_ms
                 : Resource.Drawable.banner_home_voluntary_en);
-
-            LinearLayout.LayoutParams layout = discoverView.LayoutParameters as LinearLayout.LayoutParams;
-            int imgWidth = GetDeviceHorizontalScaleInPixel(0.917f);
-            float heightRatio = 55f / 128f;
-            int imgHeight = (int)(imgWidth * (heightRatio));
-            if (layout != null)
-            {
-                layout.Width = imgWidth;
-                layout.Height = imgHeight;
-            }
         }
 
         public void SetMyServiceRecycleView()
@@ -1179,9 +1171,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     try
                     {
-                        discoverTitle.Visibility = ViewStates.Gone;
-                        discoverMoreTitle.Visibility = ViewStates.Gone;
                         discoverView.Visibility = ViewStates.Gone;
+                        img_discover_digital_bill.Visibility = ViewStates.Gone;
                     }
                     catch (System.Exception ex)
                     {
@@ -1215,29 +1206,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.IsAccountDBREligible = IsAccountDBREligible;
                         if (IsAccountDBREligible)
                         {
-
                             SetupDiscoverView();
                             discovercontainer.Visibility = ViewStates.Visible;
                             discoverView.Visibility = ViewStates.Visible;
-                            discoverTitle.Visibility = ViewStates.Visible;
-                            discoverMoreTitle.Visibility = ViewStates.Gone;
+                            img_discover_digital_bill.Visibility = ViewStates.Visible;
+                            discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+
                             UserEntity user = UserEntity.GetActive();
                             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
+                            bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
 
-                            if (IsFromLogin && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeDBRCard && GetHomeTutorialCallState())
+                            if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && GetHomeTutorialCallState())
                             {
                                 ShowMarketingTooltip();
-                                IsFromLogin = false;
-                            }
-                            if (!GetHomeTutorialCallState())
-                            {
-                                IsFromLogin = true;
+                                UserSessions.SaveDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity), true);
                             }
                         }
                         else
                         {
                             discovercontainer.Visibility = ViewStates.Gone;
-                            discoverTitle.Visibility = ViewStates.Gone;
                         }
                     }
                     catch (System.Exception ex)
@@ -1260,18 +1247,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                     .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
-                    .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupTitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupMessage"))
-                    .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "gotIt"))
-                    .SetCTAaction(() =>
+                    .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_TITLE))
+                    .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_MESSAGE))
+                    .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_START_NOW))
+                    .SetCTAaction(() => ShowManageBill())
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.GOT_IT))
+                    .SetSecondaryCTAaction(() =>
                     {
                         this.SetIsClicked(false);
                         DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
                     })
-                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupStartNow"))
-                    .SetSecondaryCTAaction(() => ShowManageBill())
                     .Build();
                 marketingTooltip.Show();
             }
@@ -1479,17 +1466,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 searchText.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                 searchText.SetHintTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sixty_opacity_white)));
                 TextViewUtils.SetTextSize12(searchText);
-                if (TextViewUtils.IsLargeFonts)
-                {
-                    TextViewUtils.SetTextSize16(discoverTitle);
-                }
-                else
-                {
-                    TextViewUtils.SetTextSize14(discoverTitle);
-                }
-
-                TextViewUtils.SetMuseoSans500Typeface(searchText, discoverTitle);
-                discoverTitle.Text = Utility.GetLocalizedLabel("DashboardHome", "DiscoverMore");
+                TextViewUtils.SetTextSize14(discoverMoreSectionTitle);
+                TextViewUtils.SetMuseoSans500Typeface(searchText, discoverMoreSectionTitle);
+                discoverMoreSectionTitle.Text = Utility.GetLocalizedLabel("DashboardHome", "DiscoverMore");
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     searchText.SetPadding((int)DPUtils.ConvertDPToPx(34f), 0, 0, 0);
@@ -1824,9 +1803,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.SetIsClicked(true);
 
                         NewFAQ selectedNewFAQ = currentNewFAQList[position];
-                        Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-                        faqIntent.PutExtra(Constants.FAQ_ID_PARAM, selectedNewFAQ.TargetItem);
-                        Activity.StartActivity(faqIntent);
+
+                        if (FAQHasGSLTag(selectedNewFAQ.Tags))
+                        {
+                            ((DashboardHomeActivity)Activity).NavigateToGSL();
+                        }
+                        else
+                        {
+                            Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                            faqIntent.PutExtra(Constants.FAQ_ID_PARAM, selectedNewFAQ.TargetItem);
+                            Activity.StartActivity(faqIntent);
+                        }
 
                         try
                         {
@@ -1843,6 +1830,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private bool FAQHasGSLTag(string tags)
+        {
+            var hasGSLTag = false;
+            if (tags.IsValid())
+            {
+                var tagsList = tags.Split(FAQ_TAGS_SEPARATOR).ToList();
+                if (tagsList != null && tagsList.Count > 0)
+                {
+                    int findIndex = tagsList.FindIndex(tag => tag == GSL_TAG);
+                    hasGSLTag = findIndex > -1;
+                }
+            }
+            return hasGSLTag;
         }
 
         public void ShowFeedbackMenu()
@@ -1957,9 +1959,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         }
 
         public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
-        {           
+        {
             accountsAdapter.SetAccountCards(accountList);
-            accountsRecyclerView.SetAdapter(accountsAdapter);          
+            accountsRecyclerView.SetAdapter(accountsAdapter);
         }
 
         public void SetAccountListCardsFromLocal(List<SummaryDashBoardDetails> accountList)
@@ -2309,7 +2311,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMaintenanceMsg);
                 }
                 discoverMoreContainer.Visibility = ViewStates.Gone;
-                discoverMoreTitle.Visibility = ViewStates.Gone;
             }
             else
             {
@@ -2327,7 +2328,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
                 string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
                 discoverMoreContainer.Visibility = ViewStates.Gone;
-                discoverMoreTitle.Visibility = ViewStates.Gone;
                 btnRefresh.Text = refreshBtnTxt;
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
@@ -2440,7 +2440,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 UserSessions.SetSMRAccountList(currentSmrAccountList);
                 UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
-                UserSessions.EnergyBudget(allSMRBlillingAccounts);                 
+                UserSessions.EnergyBudget(allSMRBlillingAccounts);
 
                 accountListRefreshContainer.Visibility = ViewStates.Gone;
                 accountListViewContainer.Visibility = ViewStates.Visible;
@@ -3706,19 +3706,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void ShowDiscoverMoreLayout()
         {
-            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() 
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify()
                 && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
             {
                 discoverMoreContainer.Visibility = ViewStates.Visible;
-                if(discoverTitle.Visibility == ViewStates.Visible)
-                {
-                    discoverMoreTitle.Visibility = ViewStates.Gone;
-                }
-                else
-                {
-                    discoverMoreTitle.Visibility = ViewStates.Visible;
-                }
-                
+                discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+
                 try
                 {
                     DateTime publishDateTime = DateTime.UtcNow;
@@ -3743,7 +3736,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             else
             {
                 discoverMoreContainer.Visibility = ViewStates.Gone;
-                discoverMoreTitle.Visibility = ViewStates.Gone;
             }
         }
 

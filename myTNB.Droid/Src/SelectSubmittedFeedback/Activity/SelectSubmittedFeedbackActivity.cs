@@ -13,6 +13,7 @@ using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Enquiry.GSL.Activity;
 using myTNB_Android.Src.FeedbackDetails.Activity;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.SelectSubmittedFeedback.Adapter;
@@ -61,7 +62,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             // Create your application here
             try
             {
-                if(Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
+                if (Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
                 {
                     SetToolBarTitle(Intent.GetStringExtra("TITLE"));
                 }
@@ -167,7 +168,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         }
 
         public void ShowList(List<SubmittedFeedback> list)
-        {    
+        {
             //adapter.AddAll(list);
             if (list != null && list.Count > 0)
             {
@@ -189,7 +190,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         {
             try
             {
-                LoadingOverlayUtils.OnRunLoadingAnimation(this);      
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -293,10 +294,14 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             }
         }
 
-        public void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedbackDetail, SubmittedFeedback submittedFeedback)
+        public void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedbackDetail, SubmittedFeedback submittedFeedback, bool isAboutMyBill)
         {
             var billIntent = new Intent(this, typeof(FeedbackDetailsBillRelatedActivity));
             billIntent.PutExtra("TITLE", !string.IsNullOrEmpty(submittedFeedback.FeedbackNameInListView) ? submittedFeedback.FeedbackNameInListView : submittedFeedback.FeedbackCategoryName);
+            if (isAboutMyBill)
+            {
+                billIntent.PutExtra("ABOUTMYBILL", "true");
+            }
             StartActivity(billIntent);
         }
 
@@ -312,6 +317,12 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             StartActivity(othersIntent);
         }
 
+        public void ShowFeedbackDetailsGSL()
+        {
+            Intent gslDetailsIntent = new Intent(this, typeof(GSLRebateSubmittedDetailsActivity));
+            StartActivity(gslDetailsIntent);
+        }
+        
         public void ShowFeedbackDetailsOverVoltage(SubmittedFeedbackDetails submittedFeedbackdetail, SubmittedFeedback submittedFeedback, string ClaimId)
         {
             if (ClaimId != null)

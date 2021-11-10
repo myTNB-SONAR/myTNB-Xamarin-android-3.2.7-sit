@@ -4,7 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
@@ -888,6 +887,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
                     ctr++;
                 }
+
+                CustomerBillingAccount.SetCAListForEligibility();
 
                 SummaryDashBoardAccountEntity.RemoveAll();
 

@@ -29,6 +29,7 @@ using myTNB_Android.Src.SessionCache;
 using Android.Graphics;
 using static myTNB.Mobile.MobileEnums;
 using myTNB_Android.Src.DigitalBillRendering.ManageBillDelivery.Activity.MVP;
+using myTNB_Android.Src.myTNBMenu.Activity;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -149,9 +150,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             // Create your application here
             presenter = new ManageBillDeliveryPresenter(this);
 
-            AddViewPager();
-
-            UpdateAccountListIndicator();
             Bundle extras = Intent.Extras;
             digitalBillLabel.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "anotherDeliveryMethod");
             btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "startDigitalBillCTA");
@@ -160,9 +158,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "goPaperlessCTA");
             txtSelectedAccountTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "selectAccount");
             TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill, deliveringTitle, txtTitle);
-            TextViewUtils.SetMuseoSans300Typeface(deliveringAddress, TenantDeliveringAddress, txtMessage, txtSelectedAccountTitle);
+            TextViewUtils.SetMuseoSans300Typeface(deliveringAddress, TenantDeliveringAddress, txtMessage, txtSelectedAccountTitle, txt_ca_name);
             TextViewUtils.SetTextSize12(digitalBillLabel, txtSelectedAccountTitle);
-            TextViewUtils.SetTextSize16(btnStartDigitalBill, deliveringTitle, txtTitle);
+            TextViewUtils.SetTextSize16(btnStartDigitalBill, deliveringTitle, txtTitle, txt_ca_name);
             TextViewUtils.SetTextSize14(deliveringAddress, TenantDeliveringAddress, txtMessage);
 
             if (extras != null)
@@ -178,6 +176,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         txt_ca_name.Text = mSelectedAccountData.AccountNickName + " - " + mSelectedAccountData.AccountNum;
                         selectedAccountNumber = mSelectedAccountData.AccountNum;
                     }
+                    AddViewPager();
+                    UpdateAccountListIndicator();
                 }
                 if (extras.ContainsKey("isOwner"))
                 {
@@ -191,7 +191,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
                 {
                     currentAppNavigation = extras.GetString(Constants.APP_NAVIGATION_KEY);
-                    ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
+                    ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList(mSelectedAccountData));
                     vPager.Adapter = ManageBillDeliveryAdapter;
                     UpdateAccountListIndicator();
                 }
@@ -240,8 +240,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             };
             vPager.AddOnPageChangeListener(this);
             viewPagerLayout.AddView(vPager, 0);
-            ManageBillDeliveryAdapter = new ManageBillDeliveryAdapter(SupportFragmentManager);
-            ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
+            ManageBillDeliveryAdapter = new ManageBillDeliveryAdapter(SupportFragmentManager, this);
+            ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList(mSelectedAccountData));
             vPager.Adapter = ManageBillDeliveryAdapter;
         }
 
@@ -893,6 +893,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
+            base.OnActivityResult(requestCode, resultCode, data);
             if (requestCode == DBR_SELECT_ACCOUNT_ACTIVITY_CODE)
             {
                 if (resultCode == Result.Ok)
@@ -905,7 +906,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         && _billRenderingResponse.StatusDetail.IsSuccess
                         && _billRenderingResponse.Content != null)
                     {
-                        _isOwner = DBRUtility.Instance.IsCADBREligible(selectedAccountNumber);
+                        _isOwner = DBRUtility.Instance.IsCAEligible(selectedAccountNumber);
                         _accountNumber = selectedAccountNumber;
                         SetToolBarTitle(GetLabelByLanguage(_isOwner ? "title" : "dbrViewBillDelivery"));
                         GetDeliveryDisplay(_billRenderingResponse);
@@ -928,7 +929,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     TenantDeliveringAddress.Text = selectedEligibleAccount.accountAddress;
                 }
             }
-            base.OnActivityResult(requestCode, resultCode, data);
         }
 
         public void SetAccountName(CustomerBillingAccount selectedAccount)
@@ -1036,7 +1036,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                 , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                    ? DBRUtility.Instance.GetDBRCAs()
+                    ? DBRUtility.Instance.GetCAList()
                     : AccountTypeCache.Instance.DBREligibleCAs;
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             List<CustomerBillingAccount> eligibleDBRAccountList = new List<CustomerBillingAccount>();
@@ -1049,7 +1049,10 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 foreach (var dbrca in dBRCAs)
                 {
                     account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
-                    eligibleDBRAccountList.Add(account);
+                    if (account != null)
+                    {
+                        eligibleDBRAccountList.Add(account);
+                    }
                 }
 
                 DBRAccount dbrEligibleAccount;
