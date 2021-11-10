@@ -22,6 +22,7 @@ using myTNB_Android.Src.Enquiry.GSL.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using static Android.Views.View;
 
 namespace myTNB_Android.Src.Enquiry.GSL.Activity
 {
@@ -90,6 +91,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                     if (extras.ContainsKey(Constants.IS_OWNER))
                     {
                         this.userActionsListener?.SetIsOwner(extras.GetBoolean(Constants.IS_OWNER));
+                        this.userActionsListener?.SaveAccountInfo();
                         gslTenantInfoContainer.Visibility = this.userActionsListener.GetGSLRebateModel().IsOwner ? ViewStates.Gone : ViewStates.Visible;
                     }
                 }
@@ -124,13 +126,12 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             txtGSLTenantFullNameLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
             txtGSLTenantEmailLayout.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
 
-            txtGSLTenantFullNameLayout.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
-            txtGSLTenantEmailLayout.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
-
             txtGSLTenantFullName.TextChanged += FullNameTextChanged;
+            txtGSLTenantFullName.FocusChange += FullNameTextOnFocusChanged;
             txtGSLTenantFullName.AddTextChangedListener(new InputFilterFormField(txtGSLTenantFullName, txtGSLTenantFullNameLayout));
 
             txtGSLTenantEmail.TextChanged += EmailTextChanged;
+            txtGSLTenantEmail.FocusChange += EmailTextOnFocusChanged;
             txtGSLTenantEmail.AddTextChangedListener(new InputFilterFormField(txtGSLTenantEmail, txtGSLTenantEmailLayout));
 
             Drawable fullNameIcon = ContextCompat.GetDrawable(this, Resource.Drawable.placeholder_name);
@@ -151,8 +152,11 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             txtRebatetType.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_REBATE_TYPE_TITLE);
             txtTenantInfoTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_TENANT_INFO_TITLE);
 
-            txtGSLTenantFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT).ToUpper();
-            txtGSLTenantEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT).ToUpper();
+            txtGSLTenantFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT);
+            txtGSLTenantEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT);
+
+            txtGSLTenantFullNameLayout.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+            txtGSLTenantEmailLayout.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
 
             gslStepOnebtnNext.Text = Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.NEXT);
 
@@ -208,6 +212,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
 
                 txtGSLTenantFullName.Text = name;
                 txtGSLTenantEmail.Text = email;
+
+                CheckHintDisplay(GSLLayoutType.FULL_NAME, true);
+                CheckHintDisplay(GSLLayoutType.EMAIL_ADDRESS, true);
+
                 SetMobileNumberField(mobile);
 
                 CheckFieldsForButtonState();
@@ -227,13 +235,13 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
                     string fullName = txtGSLTenantFullName.Text;
                     if (fullName.Trim().IsValid())
                     {
-                        if (!Utility.isAlphaNumeric(fullName.Trim()))
+                        if (!Utility.IsNotASCII(fullName.Trim()))
                         {
-                            ShowInvalidErrror(GSLLayoutType.FULL_NAME);
+                            ClearErrors(type);
                         }
                         else
                         {
-                            ClearErrors(type);
+                            ShowInvalidErrror(type);
                         }
                     }
                     else
@@ -271,19 +279,19 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             string email = txtGSLTenantEmail.Text;
             bool fullNameIsValid;
             bool emailIsValid;
-            bool mobileIsValid = !mobileNumberInputComponent.IsTextClear();
+            bool mobileIsValid = ValidateMobileNumField();
 
             if (fullName.Trim().IsValid())
             {
-                if (!Utility.isAlphaNumeric(fullName.Trim()))
+                if (!Utility.IsNotASCII(fullName.Trim()))
                 {
-                    this.ShowInvalidErrror(GSLLayoutType.FULL_NAME);
-                    fullNameIsValid = false;
+                    this.ClearErrors(GSLLayoutType.FULL_NAME);
+                    fullNameIsValid = true;
                 }
                 else
                 {
-                    this.ClearErrors(GSLLayoutType.FULL_NAME);
-                    fullNameIsValid = true; ;
+                    this.ShowInvalidErrror(GSLLayoutType.FULL_NAME);
+                    fullNameIsValid = false;
                 }
             }
             else
@@ -312,6 +320,22 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             }
 
             UpdateButtonState(fullNameIsValid && emailIsValid && mobileIsValid);
+        }
+
+        private bool ValidateMobileNumField()
+        {
+            bool isValid;
+            if (mobileNumberInputComponent.IsTextClear())
+            {
+                mobileNumberInputComponent.RaiseError(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.MOBILE_ERROR));
+                isValid = false;
+            }
+            else
+            {
+                mobileNumberInputComponent.ClearError();
+                isValid = true;
+            }
+            return isValid;
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -351,6 +375,58 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             }
         }
 
+        [Preserve]
+        private void FullNameTextOnFocusChanged(object sender, FocusChangeEventArgs focusChangedEventArgs)
+        {
+            if (focusChangedEventArgs.HasFocus)
+            {
+                CheckHintDisplay(GSLLayoutType.FULL_NAME, true);
+            }
+            else
+            {
+                CheckHintDisplay(GSLLayoutType.FULL_NAME, false);
+            }
+        }
+
+        [Preserve]
+        private void EmailTextOnFocusChanged(object sender, FocusChangeEventArgs focusChangedEventArgs)
+        {
+            if (focusChangedEventArgs.HasFocus)
+            {
+                CheckHintDisplay(GSLLayoutType.EMAIL_ADDRESS, true);
+            }
+            else
+            {
+                CheckHintDisplay(GSLLayoutType.EMAIL_ADDRESS, false);
+            }
+        }
+
+        private void CheckHintDisplay(GSLLayoutType type, bool onFocus)
+        {
+            if (type == GSLLayoutType.FULL_NAME)
+            {
+                if (onFocus)
+                {
+                    txtGSLTenantFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT).ToUpper();
+                }
+                else if (!txtGSLTenantFullName.Text.IsValid())
+                {
+                    txtGSLTenantFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT);
+                }
+            }
+            else if (type == GSLLayoutType.EMAIL_ADDRESS)
+            {
+                if (onFocus)
+                {
+                    txtGSLTenantEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT).ToUpper();
+                }
+                else if (!txtGSLTenantEmail.Text.IsValid())
+                {
+                    txtGSLTenantEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT);
+                }
+            }
+        }
+
         [OnClick(Resource.Id.selectorGSLTypeOfRebate)]
         public void Onselector_account_type(object sender, EventArgs eventArgs)
         {
@@ -367,7 +443,10 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                SaveFields();
+                if (!this.userActionsListener.GetGSLRebateModel().IsOwner)
+                {
+                    SaveFields();
+                }
 
                 if (this.userActionsListener.CheckRequiredFields())
                 {

@@ -5,7 +5,6 @@ using Android.Runtime;
 using Android.Util;
 using Android.Widget;
 using AndroidX.Core.Content;
-using Google.Android.Material.TextField;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Common.Model;
 using myTNB_Android.Src.CompoundView;
@@ -15,7 +14,7 @@ namespace myTNB_Android.Src.Enquiry.Component
 {
     public class EnquiryAccountDetailsComponent : LinearLayout
     {
-        TextInputLayout txtEnquiryAcctDetailsFullNameLayout, txtEnquiryAcctDetailsEmailLayout;
+        Google.Android.Material.TextField.TextInputLayout txtEnquiryAcctDetailsFullNameLayout, txtEnquiryAcctDetailsEmailLayout;
         EditText txtEnquiryAcctDetailsFullName, txtEnquiryAcctDetailsEmail;
         LinearLayout enquiryAcctDetailsLMobileNumContainer;
 
@@ -49,8 +48,8 @@ namespace myTNB_Android.Src.Enquiry.Component
         public void Init(Context context)
         {
             Inflate(context, Resource.Layout.EnquiryAccountDetailsComponentView, this);
-            txtEnquiryAcctDetailsFullNameLayout = FindViewById<TextInputLayout>(Resource.Id.txtEnquiryAcctDetailsFullNameLayout);
-            txtEnquiryAcctDetailsEmailLayout = FindViewById<TextInputLayout>(Resource.Id.txtEnquiryAcctDetailsEmailLayout);
+            txtEnquiryAcctDetailsFullNameLayout = FindViewById<Google.Android.Material.TextField.TextInputLayout>(Resource.Id.txtEnquiryAcctDetailsFullNameLayout);
+            txtEnquiryAcctDetailsEmailLayout = FindViewById<Google.Android.Material.TextField.TextInputLayout>(Resource.Id.txtEnquiryAcctDetailsEmailLayout);
 
             txtEnquiryAcctDetailsFullName = FindViewById<EditText>(Resource.Id.txtEnquiryAcctDetailsFullName);
             txtEnquiryAcctDetailsEmail = FindViewById<EditText>(Resource.Id.txtEnquiryAcctDetailsEmail);
@@ -74,9 +73,11 @@ namespace myTNB_Android.Src.Enquiry.Component
             txtEnquiryAcctDetailsEmailLayout.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
 
             txtEnquiryAcctDetailsFullName.TextChanged += FullNameTextChanged;
+            txtEnquiryAcctDetailsFullName.FocusChange += FullNameTextOnFocusChanged;
             txtEnquiryAcctDetailsFullName.AddTextChangedListener(new InputFilterFormField(txtEnquiryAcctDetailsFullName, txtEnquiryAcctDetailsFullNameLayout));
 
             txtEnquiryAcctDetailsEmail.TextChanged += EmailTextChanged;
+            txtEnquiryAcctDetailsEmail.FocusChange += EmailTextOnFocusChanged;
             txtEnquiryAcctDetailsEmail.AddTextChangedListener(new InputFilterFormField(txtEnquiryAcctDetailsEmail, txtEnquiryAcctDetailsEmailLayout));
 
             Drawable fullNameIcon = ContextCompat.GetDrawable(this.mActivity, Resource.Drawable.placeholder_name);
@@ -85,8 +86,8 @@ namespace myTNB_Android.Src.Enquiry.Component
             Drawable emailIcon = ContextCompat.GetDrawable(this.mActivity, Resource.Drawable.placeholder_email);
             txtEnquiryAcctDetailsEmail.SetCompoundDrawablesWithIntrinsicBounds(emailIcon, null, null, null);
 
-            txtEnquiryAcctDetailsFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT).ToUpper();
-            txtEnquiryAcctDetailsEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT).ToUpper();
+            txtEnquiryAcctDetailsFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT);
+            txtEnquiryAcctDetailsEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT);
 
             enquiryAcctDetailsLMobileNumContainer.RemoveAllViews();
             mobileNumberInputComponent = new MobileNumberInputComponent(this.mContext);
@@ -100,11 +101,13 @@ namespace myTNB_Android.Src.Enquiry.Component
         public void SetFullNameField(string value)
         {
             txtEnquiryAcctDetailsFullName.Text = value;
+            txtEnquiryAcctDetailsFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT).ToUpper();
         }
 
         public void SetEmailAddressField(string value)
         {
             txtEnquiryAcctDetailsEmail.Text = value;
+            txtEnquiryAcctDetailsEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT).ToUpper();
         }
 
         public void SetMobileNumberField(string value)
@@ -157,6 +160,58 @@ namespace myTNB_Android.Src.Enquiry.Component
             this.ValidateFieldWithType(EnquiryAccountDetailType.EMAIL_ADDRESS);
         }
 
+        [Preserve]
+        private void FullNameTextOnFocusChanged(object sender, FocusChangeEventArgs focusChangedEventArgs)
+        {
+            if (focusChangedEventArgs.HasFocus)
+            {
+                CheckHintDisplay(EnquiryAccountDetailType.FULL_NAME, true);
+            }
+            else
+            {
+                CheckHintDisplay(EnquiryAccountDetailType.FULL_NAME, false);
+            }
+        }
+
+        [Preserve]
+        private void EmailTextOnFocusChanged(object sender, FocusChangeEventArgs focusChangedEventArgs)
+        {
+            if (focusChangedEventArgs.HasFocus)
+            {
+                CheckHintDisplay(EnquiryAccountDetailType.EMAIL_ADDRESS, true);
+            }
+            else
+            {
+                CheckHintDisplay(EnquiryAccountDetailType.EMAIL_ADDRESS, false);
+            }
+        }
+
+        private void CheckHintDisplay(EnquiryAccountDetailType type, bool onFocus)
+        {
+            if (type == EnquiryAccountDetailType.FULL_NAME)
+            {
+                if (onFocus)
+                {
+                    txtEnquiryAcctDetailsFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT).ToUpper();
+                }
+                else if (!txtEnquiryAcctDetailsFullName.Text.IsValid())
+                {
+                    txtEnquiryAcctDetailsFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT);
+                }
+            }
+            else if (type == EnquiryAccountDetailType.EMAIL_ADDRESS)
+            {
+                if (onFocus)
+                {
+                    txtEnquiryAcctDetailsEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT).ToUpper();
+                }
+                else if (!txtEnquiryAcctDetailsEmail.Text.IsValid())
+                {
+                    txtEnquiryAcctDetailsEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT);
+                }
+            }
+        }
+
         public void SetOnTapCountryCodeAction(Action action)
         {
             this.OnTapCountryCodeAction = action;
@@ -201,15 +256,15 @@ namespace myTNB_Android.Src.Enquiry.Component
             string fullName = txtEnquiryAcctDetailsFullName.Text;
             if (fullName.Trim().IsValid())
             {
-                if (!Utility.isAlphaNumeric(fullName.Trim()))
-                {
-                    ShowInvalidErrror(EnquiryAccountDetailType.FULL_NAME);
-                    isValid = false;
-                }
-                else
+                if (!Utility.IsNotASCII(fullName.Trim()))
                 {
                     ClearErrors(EnquiryAccountDetailType.FULL_NAME);
                     isValid = true;
+                }
+                else
+                {
+                    ShowInvalidErrror(EnquiryAccountDetailType.FULL_NAME);
+                    isValid = false;
                 }
             }
             else

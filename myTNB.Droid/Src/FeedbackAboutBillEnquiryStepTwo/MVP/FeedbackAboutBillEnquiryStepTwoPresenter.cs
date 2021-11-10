@@ -65,17 +65,16 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
 
                 if (!TextUtils.IsEmpty(fullname))
                 {
-                    if (!Utility.isAlphaNumeric(fullname))
+                    if (!Utility.IsNotASCII(fullname))
+                    {
+                        this.mView.ClearFullNameError();
+                    }
+                    else
                     {
                         this.mView.ShowFullNameError();
                         enableButton = false;
                     }
-                    else
-                    {
-                        this.mView.ClearFullNameError();
-                    }
                 }
-
 
                 if (!TextUtils.IsEmpty(email))
                 {
@@ -89,7 +88,6 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
                         this.mView.ClearInvalidEmailError();
                     }
                 }
-
 
                 if (isNeedTNC)
                 {

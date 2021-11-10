@@ -69,7 +69,16 @@ namespace myTNB_Android.Src.Base.Activity
                     metrics.ScaledDensity = configuration.FontScale * metrics.Density;
                     //System.Console.WriteLine("[DEBUG] SCALED DENSITY 2: " + metrics.ScaledDensity);
 
-                    Resources.UpdateConfiguration(configuration, metrics);
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBeanMr1)
+                    {
+                        configuration.SetLocale(LocaleUtils.GetCurrentLocale());
+                        CreateConfigurationContext(configuration);
+                    }
+                    else
+                    {
+                        configuration.Locale = LocaleUtils.GetCurrentLocale();
+                        Resources.UpdateConfiguration(configuration, Resources.DisplayMetrics);
+                    }
                 }
                 catch (Java.Lang.Exception javaEx)
                 {

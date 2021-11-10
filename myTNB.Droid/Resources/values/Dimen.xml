@@ -10,5 +10,6 @@
 	<dimen name="receipt_value_size">14sp</dimen>
 	<dimen name="receipt_title">20sp</dimen>
 	<dimen name="receipt_total_amt">24sp</dimen>
-	<dimen name="default_margin">16dp</dimen>
+	<dimen name="default_padding">16dp</dimen>
+	<dimen name="small_padding">5dp</dimen>
 </resources>

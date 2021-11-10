@@ -48,9 +48,9 @@ namespace myTNB_Android.Src.MyTNBService.Request
                 this.relationshipDesc = "";
                 this.EnquiryId = string.Empty;
                 this.EnquiryName = string.Empty;
-                this.TenantFullName = gSLRebateModel.TenantInfo.FullName;
-                this.TenantEmail = gSLRebateModel.TenantInfo.Email;
-                this.TenantMobileNumber = gSLRebateModel.TenantInfo.MobileNumber;
+                this.TenantFullName = gSLRebateModel.IsOwner ? string.Empty : gSLRebateModel.TenantInfo.FullName;
+                this.TenantEmail = gSLRebateModel.IsOwner ? string.Empty : gSLRebateModel.TenantInfo.Email;
+                this.TenantMobileNumber = gSLRebateModel.IsOwner ? string.Empty : gSLRebateModel.TenantInfo.MobileNumber;
                 this.RebateId = gSLRebateModel.RebateTypeKey;
             }
 

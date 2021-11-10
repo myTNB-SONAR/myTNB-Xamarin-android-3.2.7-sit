@@ -102,6 +102,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
 
                 micrositeWebView = FindViewById<WebView>(Resource.Id.tncWebView);
                 micrositeWebView.Settings.JavaScriptEnabled = true;
+                micrositeWebView.Settings.CacheMode = CacheModes.CacheElseNetwork;
                 micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
                 SetToolBarTitle(GetLabelByLanguage(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
                     ? "goPaperless"

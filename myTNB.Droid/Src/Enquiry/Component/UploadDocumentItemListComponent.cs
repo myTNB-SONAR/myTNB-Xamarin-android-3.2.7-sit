@@ -89,11 +89,6 @@ namespace myTNB_Android.Src.Enquiry.Component
             uploadDocumentTooltipLayout.Visibility = isVisible ? Android.Views.ViewStates.Visible : Android.Views.ViewStates.Gone;
         }
 
-        public void SetHintToHidden(bool isHidden)
-        {
-            txtUploadDocumentHint.Visibility = isHidden ? Android.Views.ViewStates.Gone : Android.Views.ViewStates.Visible;
-        }
-
         public void SetLayoutManager(LinearLayoutManager layoutManager)
         {
             recyclerViewUploadDocument.SetLayoutManager(layoutManager);

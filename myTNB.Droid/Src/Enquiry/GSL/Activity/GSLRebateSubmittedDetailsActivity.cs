@@ -267,7 +267,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             txtGSLDetailContactFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT).ToUpper();
             txtGSLDetailEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT).ToUpper();
             txtGSLDetailMobileLayout.Hint = Utility.GetLocalizedCommonLabel(LanguageConstants.Common.MOBILE_NO).ToUpper();
-            txtGSLDetailAddressLayout.Hint = "PREMISES ADDRESS";//stub
+            txtGSLDetailAddressLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.PREMISES_ADDRESS).ToUpper();
 
             txtGSLTenantInfoFullNameLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.FULL_NAME_HINT).ToUpper();
             txtGSLTenantInfoEmailLayout.Hint = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.EMAIL_HINT).ToUpper();
