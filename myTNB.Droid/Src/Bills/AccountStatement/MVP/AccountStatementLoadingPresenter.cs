@@ -77,8 +77,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.MVP
             {
                 if (accountStatementResponse.Content.AccountStatement == null)
                 {
-                    this.view?.APICallHasFinished();
-                    this.view?.OnShowTimeOutScreen(false);
+                    this.view?.OnShowTimeOutScreen();
                 }
                 else
                 {
@@ -88,13 +87,11 @@ namespace myTNB_Android.Src.Bills.AccountStatement.MVP
                         string fileName = string.Format("{0} {1}.pdf", Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.TITLE), this.selectedAccount.AccountNum);
                         byte[] pdfByte = accountStatementResponse.Content.AccountStatement;
                         string filePath = await FileUtils.SaveAsyncPDF(this.mContext, pdfByte, FileUtils.PDF_FOLDER, fileName);
-                        this.view?.APICallHasFinished();
                         this.view?.OnShowAccountStamentScreen(filePath);
                     }
                     catch (Exception e)
                     {
                         Utility.LoggingNonFatalError(e);
-                        this.view?.APICallHasFinished();
                         this.view?.ShowRefreshView();
                     }
                 }
@@ -103,12 +100,10 @@ namespace myTNB_Android.Src.Bills.AccountStatement.MVP
                 accountStatementResponse.StatusDetail != null &&
                 accountStatementResponse.StatusDetail.IsTimeout)
             {
-                this.view?.APICallHasFinished();
-                this.view?.OnShowTimeOutScreen(false);
+                this.view?.OnShowTimeOutScreen();
             }
             else
             {
-                this.view?.APICallHasFinished();
                 this.view?.ShowRefreshView();
             }
         }
