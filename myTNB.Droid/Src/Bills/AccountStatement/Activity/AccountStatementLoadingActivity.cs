@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using Android.Views;
 using System.Timers;
 using myTNB;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.Bills.AccountStatement.Activity
 {
@@ -104,6 +105,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
             {
                 try
                 {
+                    DynatraceHelper.OnTrack(DynatraceConstants.BR.Screens.LoadingAccountStatement.Loading);
                     LottieAnimationView loadingAnimation = FindViewById<LottieAnimationView>(Resource.Id.acctStmntLoadingView);
                     loadingAnimation.Progress = 0f;
                     loadingAnimation.PlayAnimation();
@@ -214,6 +216,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
         {
             if (!this.GetIsClicked())
             {
+                DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Error.Refresh_Now);
                 this.SetIsClicked(true);
                 ShowLoadingView();
                 StartTimer();
@@ -242,6 +245,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
             {
                 if (!hasReahedDefaultTimeOut)
                 {
+                    DynatraceHelper.OnTrack(DynatraceConstants.BR.Screens.LoadingAccountStatement.Loading);
                     ShowBackButton(false);
                     acctStmntLoadingLayout.Visibility = ViewStates.Visible;
                     acctStmntRefreshLayout.Visibility = ViewStates.Gone;

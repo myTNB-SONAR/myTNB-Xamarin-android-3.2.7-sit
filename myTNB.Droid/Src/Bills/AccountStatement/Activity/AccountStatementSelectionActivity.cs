@@ -133,6 +133,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
 
         public override void OnBackPressed()
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.StatementPeriod.Back);
             base.OnBackPressed();
         }
 

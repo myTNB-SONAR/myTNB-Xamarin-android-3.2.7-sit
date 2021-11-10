@@ -32,9 +32,10 @@ namespace myTNB.Mobile
         {
             PostAccountStatementResponse response = new PostAccountStatementResponse();
             int timeout = LanguageManager.Instance.GetConfigTimeout(LanguageManager.TogglePropertyEnum.AccountStatementTimeout);
+            IAccountStatementService service = RestService.For<IAccountStatementService>(AWSConstants.Domains.Domain);
+            Guid referenceNumber = Guid.NewGuid();
             try
             {
-                Guid referenceNumber = Guid.NewGuid();
                 PostAccountStatementRequest request = new PostAccountStatementRequest
                 {
                     ReferenceNo = referenceNumber.ToString(),
@@ -44,7 +45,6 @@ namespace myTNB.Mobile
                 };
                 Debug.WriteLine("[DEBUG] PostAccountStatement Request: " + JsonConvert.SerializeObject(request));
 
-                IAccountStatementService service = RestService.For<IAccountStatementService>(AWSConstants.Domains.Domain);
                 HttpResponseMessage rawResponse = await service.PostAccountStatement(request
                    , NetworkService.GetCancellationToken(timeout == 0 ? AWSConstants.AccountStatementTimeOut : timeout)
                    , accessToken
@@ -82,7 +82,7 @@ namespace myTNB.Mobile
                         response.StatusDetail = AWSConstants.Services.PostAccountStatement.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                 }
-                Debug.WriteLine("[DEBUG] [PostAccountStatement]: " + JsonConvert.SerializeObject(response));
+                Debug.WriteLine("[DEBUG] [PostAccountStatement] Response: " + JsonConvert.SerializeObject(response));
                 return response;
             }
             catch (ApiException apiEx)
@@ -96,12 +96,13 @@ namespace myTNB.Mobile
 #if DEBUG
                 Debug.WriteLine("[DEBUG] [PostAccountStatement] OperationCanceledException: " + operationCancelledError.Message);
 #endif
+                OnPostAccountStatementNotification(referenceNumber.ToString(), accessToken);
                 response = new PostAccountStatementResponse
                 {
                     StatusDetail = new StatusDetail()
                 };
                 response.StatusDetail = AWSConstants.Services.PostAccountStatement.GetStatusDetails(MobileConstants.TIMEOUT);
-                Debug.WriteLine("[DEBUG] [PostAccountStatement]: " + JsonConvert.SerializeObject(response));
+                Debug.WriteLine("[DEBUG] [PostAccountStatement] Response: " + JsonConvert.SerializeObject(response));
                 return response;
             }
             catch (Exception ex)
@@ -116,8 +117,47 @@ namespace myTNB.Mobile
                 StatusDetail = new StatusDetail()
             };
             response.StatusDetail = AWSConstants.Services.PostAccountStatement.GetStatusDetails(MobileConstants.DEFAULT);
-            Debug.WriteLine("[DEBUG] [PostAccountStatement]: " + JsonConvert.SerializeObject(response));
+            Debug.WriteLine("[DEBUG] [PostAccountStatement] Response: " + JsonConvert.SerializeObject(response));
             return response;
+        }
+
+        private void OnPostAccountStatementNotification(string referenceNumber
+            , string accessToken)
+        {
+            try
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    IAccountStatementService service = RestService.For<IAccountStatementService>(AWSConstants.Domains.Domain);
+                    PostAccountStatementNotificationRequest request = new PostAccountStatementNotificationRequest
+                    {
+                        ReferenceNo = referenceNumber
+                    };
+                    Debug.WriteLine("[DEBUG] [OnPostAccountStatementNotification] Request: " + JsonConvert.SerializeObject(request));
+                    _ = service.PostAccountStatementNotification(request
+                        , NetworkService.GetCancellationToken()
+                        , accessToken
+                        , AppInfoManager.Instance.ViewInfo);
+                }).ConfigureAwait(false);
+            }
+            catch (ApiException apiEx)
+            {
+#if DEBUG
+                Debug.WriteLine("[DEBUG] [OnPostAccountStatementNotification] Refit Exception: " + apiEx.Message);
+#endif
+            }
+            catch (OperationCanceledException operationCancelledError)
+            {
+#if DEBUG
+                Debug.WriteLine("[DEBUG] [OnPostAccountStatementNotification] OperationCanceledException: " + operationCancelledError.Message);
+#endif
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                Debug.WriteLine("[DEBUG] [OnPostAccountStatementNotification] General Exception: " + ex.Message);
+#endif
+            }
         }
     }
 }

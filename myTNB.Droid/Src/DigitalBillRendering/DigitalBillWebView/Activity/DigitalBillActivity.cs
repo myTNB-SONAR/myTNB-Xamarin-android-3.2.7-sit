@@ -115,19 +115,29 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             }
         }
 
-        private void OnTag(bool isWebViewClient = false)
+        private void OnTag(bool isWebViewClient = false, bool isFail = false)
         {
             if (isWebViewClient)
             {
-                if (BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+                if (isFail)
                 {
-                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Confirm);
-                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Start_Paperless_Success);
+                    DynatraceHelper.OnTrack(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
+                        ? DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Confirm
+                        : DynatraceConstants.DBR.CTAs.Webview.Back_To_Paper_Confirm);
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Fail);
                 }
                 else
                 {
-                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Back_To_Paper_Confirm);
-                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Back_To_Paper_Success);
+                    if (BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+                    {
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Confirm);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Start_Paperless_Success);
+                    }
+                    else
+                    {
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Back_To_Paper_Confirm);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Back_To_Paper_Success);
+                    }
                 }
             }
             else
@@ -372,6 +382,12 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                         mActivity.ShouldBackToHome = true;
                         mActivity.IsDBR = true;
                         mActivity.OnTag(true);
+                    }
+                    else if (url.ToString().Contains("Home/Error"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                        mActivity.IsDBR = true;
+                        mActivity.OnTag(true, true);
                     }
                     else if (url.ToString().Contains("Feedback/Rate")
                        || url.ToString().Contains("FeedbackRating/Success"))
