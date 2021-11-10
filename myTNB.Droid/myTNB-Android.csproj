@@ -7867,107 +7867,10 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\icons_form_paper_bill.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_dbr_banner_ebill.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_dbr_banner_email.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\banner_home_voluntary_ms.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\banner_home_voluntary_en.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\banner_home_voluntary_en.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\banner_home_voluntary_ms.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\banner_home_voluntary_en.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\banner_home_voluntary_ms.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\banner_home_voluntary_en.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\banner_home_voluntary_ms.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\banner_home_voluntary_ms.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\banner_home_voluntary_en.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-        <AndroidResource Include="Resources\layout\ManageBillDeliveryEmailGroupItemLayout.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <Compile Include="Src\Utils\DynatraceHelper.cs" />
-    <Compile Include="Src\Session Cache\AccountTypeCache.cs" />
-    <Compile Include="Src\DigitalBillRendering\DigitalBillWebView\Activity\DigitalBillActivity.cs" />
-    <Compile Include="Src\DigitalBillRendering\DigitalBillWebView\MVP\DigitalBillContract.cs" />
-    <Compile Include="Src\DigitalBillRendering\DigitalBillWebView\MVP\DigitalBillPresenter.cs" />
-    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\DBRAccount.cs" />
-    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\ManageBillDeliveryActivity.cs" />
-    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\ManageBillDeliveryAdapter.cs" />
-    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\ManageBillDeliveryContract.cs" />
-    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\ManageBillDeliveryFragment.cs" />
-    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\ManageBillDeliveryModel.cs" />
-    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\ManageBillDeliveryPresenter.cs" />
-    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\SelectDBRAccountActivity.cs" />
-    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\ManageBillDeliveryEmailListAdapter.cs" />
-    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Adapter\SelectAccountAdapter.cs" />
-    <Compile Include="Src\DigitalBillRendering\ManageBillDelivery\Activity\MVP\CustomViewPager.cs" />
-    <AndroidResource Include="Resources\menu\DBRWebViewMenu.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_display_validation_success.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_display_validation_success.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_validation_success.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_validation_success.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_validation_success.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\BillStatement.axml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\Device Cache\DeviceSizeCache.cs" />
     <Compile Include="Src\SitecoreCMS\Model\NewBillDesignModel.cs" />
     <Compile Include="Src\SitecoreCMS\Service\NewBillDesignService.cs" />
     <Compile Include="Src\Utils\Deeplink\DeeplinkUtil.cs" />
@@ -8070,30 +7973,6 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\MyTNBService\Request\SubmitEnquiryTypeRequest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <AndroidAsset Include="Assets\fonts\MuseoSans_300.otf" />
-    <AndroidAsset Include="Assets\fonts\MuseoSans_500.otf" />
-    <None Include="GettingStarted.Xamarin" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Resources\AboutResources.txt" />
-    <None Include="Properties\AndroidManifest.xml">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\layout\Toolbar.axml" />
-    <AndroidResource Include="Resources\layout\LoginView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\notification_reaching_eb_icon.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\icons_form_paper_bill.png">
       <SubType>
       </SubType>

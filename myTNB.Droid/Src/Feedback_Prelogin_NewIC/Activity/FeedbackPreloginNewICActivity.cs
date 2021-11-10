@@ -165,7 +165,6 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
         MyTNBAppToolTipBuilder leaveDialog;
 
-
         public enum EnquiryTypeEnum
         {
             General,
@@ -193,7 +192,6 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 listData.contactAccountNumbers = contactAccountNumbers;
                 //Verify CA number
                 CANumberVerification(listData);
-
 
                 //init shared preferences 
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
@@ -240,6 +238,18 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 txtAccountNo.SetOnTouchListener(this);  //set listener on dropdown arrow at TextLayout
                 txtAccountNo.TextChanged += TextChange;  //adding listener on text change
                 txtAccountNo.FocusChange += TxtAccountNo_FocusChange;
+
+                //Keyboard done button click
+                txtAccountNo.EditorAction += delegate (object sender, TextView.EditorActionEventArgs e)
+                {
+                    if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
+                    {
+                        txtAccountNo.ClearFocus();
+                        // Hide keyboard
+                        var inputManager = (InputMethodManager)GetSystemService(InputMethodService);
+                        inputManager.HideSoftInputFromWindow(txtAccountNo.WindowToken, HideSoftInputFlags.None);
+                    }
+                };
 
                 //Keyboard done button click
                 txtAccountNo.EditorAction += delegate (object sender, TextView.EditorActionEventArgs e)
@@ -422,7 +432,6 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                             {
                                 ServerDown();
                             }
-
                         }
                         else
                         {
@@ -793,7 +802,6 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 {
                     title = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForAccountTitle") + "\"" + AccNoDesc + " - " + txtAccountNo.Text + "\"";
                 }
-
                 leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                  .SetTitle(title)
                  .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimIsCurrentlyNotEnabledForAccountDescription"))
@@ -1178,6 +1186,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 }
             }
         }
+
 
         Snackbar mErrorMessageSnackBar;
         public void OnBCRMDownTimeErrorMessage(string message = null)
