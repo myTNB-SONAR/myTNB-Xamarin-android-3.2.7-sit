@@ -638,7 +638,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         {
             if ((storedAccountTypeValue == "RE" && !UserSessions.HasItemizedBillingRETutorialShown(this.mPref)) || (storedAccountTypeValue != "RE" && !UserSessions.HasItemizedBillingNMSMTutorialShown(this.mPref)))
             {
-                this.mView.OnShowItemizedFragmentTutorialDialog();
+                if (!this.mView.GetIsIneligiblePopUpActive())
+                {
+                    this.mView.OnShowItemizedFragmentTutorialDialog();
+                }
             }
         }
 

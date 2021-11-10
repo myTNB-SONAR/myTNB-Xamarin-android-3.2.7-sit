@@ -186,6 +186,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         IMenuItem billDownloadMenuItem;
 
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
+        const string INELIGIBLE_POP_UP_ACTIVE_KEY = "isIneligiblePopUpActive";
         const string PAGE_ID = "Bills";
         private bool isFiltered = false;
         private string myHistoryTitle = "";
@@ -193,6 +194,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         private bool isViewBillDisable = false;
         private bool isDigitalContainerVisible = false;
         private bool isPendingPayment = false;
+        private bool isIneligiblePopUpActive = false;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -204,6 +206,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
                 GetBillRenderingAsync(mSelectedAccountData);
+            }
+            if (extras.ContainsKey(INELIGIBLE_POP_UP_ACTIVE_KEY))
+            {
+                isIneligiblePopUpActive = extras.GetBoolean(INELIGIBLE_POP_UP_ACTIVE_KEY);
             }
         }
 
@@ -513,17 +519,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         }
 
         internal static ItemisedBillingMenuFragment NewInstance(AccountData selectedAccount
-            , GetBillRenderingResponse billRenderingModel = null
-            , bool _isOwner = false)
+            , bool isIneligiblePopUpActive = false)
         {
             ItemisedBillingMenuFragment billsMenuFragment = new ItemisedBillingMenuFragment();
             Bundle args = new Bundle();
             args.PutString(SELECTED_ACCOUNT_KEY, JsonConvert.SerializeObject(selectedAccount));
-            if (billRenderingModel != null)
-            {
-                args.PutString("billrenderingresponse", JsonConvert.SerializeObject(billRenderingModel));
-                args.PutString("_isOwner", JsonConvert.SerializeObject(_isOwner));
-            }
+            args.PutBoolean(INELIGIBLE_POP_UP_ACTIVE_KEY, isIneligiblePopUpActive);
             billsMenuFragment.Arguments = args;
             return billsMenuFragment;
         }
@@ -1619,6 +1620,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public bool GetIsPendingPayment()
         {
             return isPendingPayment;
+        }
+
+        public bool GetIsIneligiblePopUpActive()
+        {
+            return isIneligiblePopUpActive;
         }
     }
 }

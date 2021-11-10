@@ -19,7 +19,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// Shows the bill menu
             /// </summary>
             /// <param name="selectedAccount">AccountData</param>
-            void ShowBillMenu(AccountData selectedAccount);
+            void ShowBillMenu(AccountData selectedAccount, bool isIneligiblePopUpActive = false);
 
             /// <summary>
             /// Enable bill menu
@@ -206,7 +206,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// Action to select menu
             /// </summary>
             /// <param name="resourceId">integer</param>
-            void OnMenuSelect(int resourceId);
+            void OnMenuSelect(int resourceId, bool isIneligiblePopUpActive = false);
 
             /// <summary>
             /// The returned result from another activity

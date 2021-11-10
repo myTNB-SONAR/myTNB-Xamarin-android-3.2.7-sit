@@ -487,7 +487,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         }
 
-        public void ShowBillMenu(AccountData selectedAccount)
+        public void ShowBillMenu(AccountData selectedAccount, bool isIneligiblePopUpActive = false)
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             txtAccountName.Visibility = ViewStates.Gone;
@@ -496,7 +496,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 SupportFragmentManager.PopBackStack();
                 currentFragment = null;
             }
-            currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount);
+            currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount, isIneligiblePopUpActive);
             SupportFragmentManager.BeginTransaction()
                 .Replace(Resource.Id.content_layout, currentFragment)
                 .CommitAllowingStateLoss();
@@ -2495,7 +2495,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void TriggerIneligiblePopUp()
         {
-            userActionsListener.OnMenuSelect(Resource.Id.menu_bill);
+            userActionsListener.OnMenuSelect(Resource.Id.menu_bill, true);
             this.ShowIneligiblePopUp();
         }
 

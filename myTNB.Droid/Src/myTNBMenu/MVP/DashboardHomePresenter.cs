@@ -250,7 +250,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
-        public void OnMenuSelect(int resourceId)
+        public void OnMenuSelect(int resourceId, bool isIneligiblePopUpActive = false)
         {
             if (!this.mView.GetAlreadyStarted())
             {
@@ -340,7 +340,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         accountData.IsOwner = customerBillingAccount.isOwned;
                         accountData.AccountNum = selected.AccNum;
                         accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
-                        this.mView.ShowBillMenu(accountData);
+                        this.mView.ShowBillMenu(accountData, isIneligiblePopUpActive);
                     }
                     else
                     {
