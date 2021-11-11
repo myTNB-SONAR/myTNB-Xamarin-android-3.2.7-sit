@@ -21,6 +21,7 @@
             internal static readonly string MOBILE_NO = "mobileNo";
             internal static readonly string CANCEL = "cancel";
             internal static readonly string OK = "ok";
+            internal static readonly string SUBMIT = "submit";
         }
 
         internal struct Error
