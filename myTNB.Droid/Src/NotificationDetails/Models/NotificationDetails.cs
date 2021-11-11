@@ -52,6 +52,9 @@ namespace myTNB_Android.Src.NotificationDetails.Models
         [JsonProperty("AccountDetails", Required = Newtonsoft.Json.Required.AllowNull)]
         public AccountDetailsData AccountDetails;
 
+        [JsonProperty("AccountStatementDetail", Required = Newtonsoft.Json.Required.AllowNull)]
+        public AccountStatementDetailData AccountStatementDetail;
+
 
         public class AccountDetailsData
         {
@@ -61,6 +64,12 @@ namespace myTNB_Android.Src.NotificationDetails.Models
             public double AmountPayable { get; set; }
             [JsonProperty("PaymentDueDate")]
             public string PaymentDueDate { get; set; }
+        }
+
+        public class AccountStatementDetailData
+        {
+            [JsonProperty("StatementPeriod")]
+            public string StatementPeriod { get; set; }
         }
     }
 }

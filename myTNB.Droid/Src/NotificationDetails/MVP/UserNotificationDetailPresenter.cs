@@ -424,7 +424,15 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 accountData.IsOwner = account.isOwned;
                 accountData.AccountNum = account.AccNum;
                 accountData.AccountCategoryId = account.AccountCategoryId;
-                this.mView.ViewAccountStatement(accountData, "06");//stub
+
+                if (notificationDetails.AccountStatementDetail != null && notificationDetails.AccountStatementDetail.StatementPeriod.IsValid())
+                {
+                    this.mView.ViewAccountStatement(accountData, notificationDetails.AccountStatementDetail.StatementPeriod);
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
             }
             else
             {

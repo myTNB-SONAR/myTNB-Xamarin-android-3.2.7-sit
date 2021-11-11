@@ -28,9 +28,9 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Post("/v6/mytnbappws.asmx/AddTNBAccountToUserReg")]
         Task<T> AddAccountToCustomer<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
-		[Headers("Content-Type:application/json; charset=utf-8")]
-		[Post("/v6/mytnbappws.asmx/ValidateManualAccountLinking")]
-		Task<T> ValidateManualAccount<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/ValidateManualAccountLinking")]
+        Task<T> ValidateManualAccount<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetSearchForAccount")]
@@ -116,7 +116,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetRegisteredCards")]
         Task<T> GetRegisteredCards<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
-              
+
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetSubmittedFeedbackDetails")]
         Task<T> SubmittedFeedbackDetails<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
@@ -125,8 +125,8 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Post("/v6/mytnbappws.asmx/GetSubmittedFeedbackWithContactDetails")]
         Task<T> SubmittedFeedbackContactDetails<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
-        
-        
+
+
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/CreateNewUserWithToken")]
         Task<T> CreateNewUserWithToken<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
@@ -228,7 +228,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetUserNotificationsV2<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //cep new api //yana
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetNotificationDetails")]
+        [Post("/v6/mytnbappws.asmx/GetNotificationDetailedInfo_V2")]
         Task<T> GetNotificationDetails<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]

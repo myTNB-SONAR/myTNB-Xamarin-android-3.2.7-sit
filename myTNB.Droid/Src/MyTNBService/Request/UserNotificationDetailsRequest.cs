@@ -7,10 +7,12 @@ namespace myTNB_Android.Src.MyTNBService.Request
     {
         public string NotificationType;
         public string NotificationId;
+        public DeviceInfoRequest deviceInf;
         public UserNotificationDetailsRequest(string notificationId, string notificationType)
         {
             NotificationId = notificationId;
             NotificationType = notificationType;
+            deviceInf = new DeviceInfoRequest();
         }
     }
 }
