@@ -104,9 +104,9 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
 
         private void SetStaticLabels()
         {
-            string successTitle = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, feedbackCategoryId.Equals(EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID) ?
+            string successTitle = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, feedbackCategoryId != null && feedbackCategoryId.Equals(EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID) ?
                 LanguageConstants.SubmitEnquiry.GSL_SUCCESS_TITLE : LanguageConstants.SubmitEnquiry.SUCCESS_TITLE);
-            string successDesc = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, feedbackCategoryId.Equals(EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID) ?
+            string successDesc = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, feedbackCategoryId != null && feedbackCategoryId.Equals(EnquiryConstants.GSL_FEEDBACK_CATEGORY_ID) ?
                 LanguageConstants.SubmitEnquiry.GSL_SUCCESS_DESC : LanguageConstants.SubmitEnquiry.SUCCESS_DESC);
 
             txtTitleInfo.Text = successTitle;
