@@ -25,6 +25,7 @@
             internal static readonly string REFRESH_MSG = "refreshDescription";
             internal static readonly string REFRESH_NOW = "refreshNow";
             internal static readonly string OK = "ok";
+            internal static readonly string SUBMIT = "submit";
         }
 
         internal struct Error
