@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
+using Android.Runtime;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -18,6 +19,7 @@ using myTNB_Android.Src.Login.MVP;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB_Android.Src.PreLogin.Activity;
 using myTNB_Android.Src.RegistrationForm.Activity;
 using myTNB_Android.Src.ResetPassword.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
@@ -85,12 +87,30 @@ namespace myTNB_Android.Src.Login.Activity
 
         const string PAGE_ID = "Login";
 
+        private bool UpdateUserStatusActivate = false;
+        private bool UpdateUserStatusDeactivate = false;
+        private bool fromlink = false;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             try
             {
+                if (Intent.HasExtra("UpdateUserStatusActivate"))
+                {
+                    UpdateUserStatusActivate = Intent.Extras.GetBoolean("UpdateUserStatusActivate", false);
+                }
+                else if (Intent.HasExtra("UpdateUserStatusDeactivate"))
+                {
+                    UpdateUserStatusDeactivate = Intent.Extras.GetBoolean("UpdateUserStatusDeactivate", false);
+                }
+
+                if (Intent.HasExtra("fromlink"))
+                {
+                    fromlink = Intent.Extras.GetBoolean("fromlink", false);
+                }
+
                 // Create your application here
                 mPresenter = new LoginPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
                 mProgressDialog = new AlertDialog.Builder(this)
@@ -137,6 +157,15 @@ namespace myTNB_Android.Src.Login.Activity
                 }
 
                 ClearFields();
+
+                if (UpdateUserStatusActivate)
+                {
+                    ShowUpdateUserStatusActivate();
+                }
+                else if (UpdateUserStatusDeactivate)
+                {
+                    ShowUpdateUserStatusDeactivate();
+                }
 
             }
             catch (Exception e)
@@ -288,6 +317,75 @@ namespace myTNB_Android.Src.Login.Activity
         {
             this.userActionsListener = userActionListener;
         }
+
+        public override void OnBackPressed()
+        {
+            base.OnBackPressed();
+            //if (fromlink)
+            //{
+                Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
+                PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(PreLoginIntent);
+            //}
+            //else
+            //{
+            //    Finish();
+            //}
+            
+        }
+
+        public void ShowUpdateUserStatusActivate()
+        {
+            try
+            {
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("Login", "toast_email_activated"))), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                                 UserSessions.DoResetLink(PreferenceManager.GetDefaultSharedPreferences(this));
+
+                             }
+                            );
+                View v = saveSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                TextViewUtils.SetTextSize14(tv);
+                saveSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowUpdateUserStatusDeactivate()
+        {
+            try
+            {
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("Login", "toast_email_deactivated"))), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = saveSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                TextViewUtils.SetTextSize14(tv);
+                saveSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         private Snackbar mEmptyEmailSnackBar;
         public void ShowEmptyEmailError()

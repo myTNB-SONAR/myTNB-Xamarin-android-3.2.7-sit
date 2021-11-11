@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.Content;
+using Android.Text;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
@@ -337,12 +338,22 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
                 }
 
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_REMOVE_ACCESS)
+                {
+                    CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+                    if (account == null)
+                    {
+                        string notificationAccountName = "Customer Account Number " + notificationDetails.AccountNum;
+                        notificationDetailMessage = Regex.Replace(notificationDetails.Message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
+                    }
+                    else
+                    {
+                        notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_NICKNAME_PATTERN, accountName);
+                    }
+                }
+
                 if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_NEW_ACCESS_ADDED)
                 {
-                    //CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
-                    //string address = Utility.StringSpaceMasking(Utility.Masking.Address, account.AccountStAddress);
-                    //string message = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName);
-                    //notificationDetailMessage = Regex.Replace(message, Constants.ACCOUNT_ADDRESS_PATTERN, address);
                     notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName);
                 }
 

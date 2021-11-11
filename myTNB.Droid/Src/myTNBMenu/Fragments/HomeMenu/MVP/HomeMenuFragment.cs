@@ -555,8 +555,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             Utility.LoggingNonFatalError(err);
                         }
-                        //Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
-                        Intent linkAccount = new Intent(this.Activity, typeof(MyAccountActivity));
+                        Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
+                        //Intent linkAccount = new Intent(this.Activity, typeof(MyAccountActivity));
                         linkAccount.PutExtra("fromDashboard", true);
                         StartActivity(linkAccount);
                     }

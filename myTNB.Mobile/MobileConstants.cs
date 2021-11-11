@@ -51,8 +51,8 @@ namespace myTNB.Mobile
         //AWS GetAccount
         public static string AWSApiDomainSIT = "https://stagingapi.mytnb.com.my/core/api"; //"https://core.stg-mytnb.com/api";
         public static string AWSApiDomainDEV = "https://mytnb-core-staging-362772745.ap-southeast-1.elb.amazonaws.com/api";
-        public static string AWSApiDomainPROD = "https://core.prod-mytnb.com/api";  
- 
+        public static string AWSApiDomainPROD = "https://core.prod-mytnb.com/api";
+
 
 #if DEBUG
         public static string ApiDomain = SITAWS;

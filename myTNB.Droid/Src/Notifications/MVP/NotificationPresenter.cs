@@ -502,8 +502,8 @@ namespace myTNB_Android.Src.Notifications.MVP
                     {
                         if (!TextUtils.IsEmpty(entity.NotificationTypeId))
                         {
-                            //NotificationTypesEntity notificationTypesEntity = new NotificationTypesEntity();
-                            //notificationTypesEntity = NotificationTypesEntity.GetById(entity.NotificationTypeId);
+                            NotificationTypesEntity notificationTypesEntity = new NotificationTypesEntity();
+                            notificationTypesEntity = NotificationTypesEntity.GetById(entity.NotificationTypeId);
                             if (!TextUtils.IsEmpty(entity.NotificationTypeId))
                             {
                                 UserNotificationData userNotificationData = UserNotificationData.Get(entity, entity.NotificationTypeId);
@@ -546,7 +546,17 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                     listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                 }
                                             }
+                                            else
+                                            {
+                                                
+                                                if (userNotificationData.NotificationTypeId == "1000005" && userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_REMOVE_ACCESS)
+                                                {
+                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                }
+                                                
+                                            }
                                         }
+                                        
                                    
                                     }
                                     else

@@ -46,6 +46,8 @@ using myTNB.Mobile.AWS.Models;
 using Firebase.Iid;
 using myTNB_Android.Src.NotificationDetails.Activity;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Login.Activity;
+using System.Text.RegularExpressions;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -462,6 +464,41 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
+        public void ShowLogin(string urlSchemaData)
+        {
+            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
+            {
+                isAppLaunchDone = true;
+                if (UserSessions.HasUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this)))
+                {
+                    //Intent LoginIntent = new Intent(this, typeof(LoginActivity));
+                    //LoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    //StartActivity(LoginIntent);
+                    string fromlink = "fromlink";
+                    Intent login = new Intent(this, typeof(LoginActivity));
+                    login.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    if (!string.IsNullOrEmpty(urlSchemaData))
+                    {
+                        login.PutExtra(urlSchemaData, true);
+                        if (!string.IsNullOrEmpty(urlSchemaPath))
+                        {
+                            login.PutExtra(urlSchemaData, true);
+                            login.PutExtra(fromlink, true);
+                            SetResult(Result.Ok, login);
+                        }
+                    }
+                    StartActivity(login);
+
+                }
+                else
+                {
+                    Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
+                    WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.PreLogin.ToString());
+                    StartActivity(WalkthroughIntent);
+                }
+            }
+        }
+
         public void ShowResetPassword()
         {
             if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
@@ -765,7 +802,13 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     ShowMaintenance(cacheResponseData);
                 }
+                else if (currentNavigation == AppLaunchNavigation.Login)
+                {
+                    ShowLogin(urlSchemaData);
+                }
+
             }
+            
         }
 
         public void OnTimeStampRecieved(string timestamp)
@@ -1265,6 +1308,37 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         urlSchemaData = "applicationDetails";
                         ApplicationDetailsDeeplinkCache.Instance.SetData(deepLinkUrl);
+                    }
+                    else if (deepLinkUrl.Contains("UpdateUserStatusActivate"))
+                    {
+                        urlSchemaData = "UpdateUserStatusActivate";
+
+                        Regex regex = new Regex("\\bUpdateUserStatusActivate.*\\b");
+                        Match match = regex.Match(deepLinkUrl);
+                        string value = match.Value.Replace("UpdateUserStatusActivate", "");
+                        string userID = value.Replace(@"/", "");
+
+                        UserSessions.DoValidateEmailPage(PreferenceManager.GetDefaultSharedPreferences(this));
+                        UserSessions.SaveUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this), userID);
+                        SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Login);
+                        ShowLogin(urlSchemaData);
+                        
+                    }
+                    else if (deepLinkUrl.Contains("UpdateUserStatusDeactivate"))
+                    {
+                        
+                        urlSchemaData = "UpdateUserStatusDeactivate";
+
+                        Regex regex = new Regex("\\bUpdateUserStatusActivate.*\\b");
+                        Match match = regex.Match(deepLinkUrl);
+                        string value = match.Value.Replace("UpdateUserStatusActivate", "");
+                        string userID = value.Replace(@"/", "");
+
+                        UserSessions.DoValidateEmailPage(PreferenceManager.GetDefaultSharedPreferences(this));
+                        UserSessions.SaveUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this), userID);
+                        SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Login);
+                        ShowLogin(urlSchemaData);
+
                     }
                 }
             }

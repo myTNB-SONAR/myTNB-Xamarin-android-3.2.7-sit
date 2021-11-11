@@ -138,6 +138,37 @@ namespace myTNB_Android.Src.Utils
                 .Apply();
         }
 
+        public static bool HasValidateEmailPage(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasValidateEmailPage", false);
+        }
+
+        //public static void DoValidateEmailPage(ISharedPreferences prefs, string data)    
+        //{
+        //    ISharedPreferencesEditor editor = prefs.Edit();
+        //    editor.PutString("hasValidateEmailPage", data);
+        //    editor.Apply();
+        //}
+
+        public static void DoValidateEmailPage(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasValidateEmailPage", true);
+            editor.Apply();
+        }
+
+        public static bool HasResetLink(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("ResetLink", false);
+        }
+
+        public static void DoResetLink(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("ResetLink", true);
+            editor.Apply();
+        }
+
         public static bool HasSkipped(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasSkipped", false);
@@ -581,6 +612,18 @@ namespace myTNB_Android.Src.Utils
         }
 
         public static string GetCheckEmailVerified(ISharedPreferences prefs)              //for Check Email Verified
+        {
+            return prefs.GetString("IsFeedbackUpdateDetailDisabled", null);
+        }
+
+        public static void SaveUserIDEmailVerified(ISharedPreferences prefs, string data)    //for Save userID Email Verified
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("IsFeedbackUpdateDetailDisabled", data);
+            editor.Apply();
+        }
+
+        public static string GetUserIDEmailVerified(ISharedPreferences prefs)              //for Save userID Email Verified
         {
             return prefs.GetString("IsFeedbackUpdateDetailDisabled", null);
         }

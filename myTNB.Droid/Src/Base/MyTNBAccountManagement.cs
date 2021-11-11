@@ -303,6 +303,7 @@ namespace myTNB_Android.Src.Base
 
         public string GetNotificationAccountName(string accountNumber)
         {
+           
             string notificationAccountName = string.Empty;
             CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountNumber);
             if (customerBillingAccount != null)

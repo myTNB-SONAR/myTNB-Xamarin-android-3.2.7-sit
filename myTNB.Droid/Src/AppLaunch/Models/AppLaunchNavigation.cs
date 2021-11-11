@@ -9,6 +9,7 @@
         PreLogin = 4,
         Walkthrough = 5,
         Maintenance = 6,
-        LargeFont = 7
+        LargeFont = 7,
+        Login = 8
     }
 }

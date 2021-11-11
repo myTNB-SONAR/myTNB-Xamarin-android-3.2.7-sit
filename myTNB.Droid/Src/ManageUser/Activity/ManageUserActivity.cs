@@ -446,7 +446,8 @@ namespace myTNB_Android.Src.ManageUser.Activity
             {
                 ShowBackDialog(this, () =>
                 {
-                    this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, account.userId, checkboxfullbill, checkboxbilling, account.email);
+                    OnBackProceed();
+                    //this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, account.userId, checkboxfullbill, checkboxbilling, account.email);
                 });
             }
             else
@@ -501,8 +502,15 @@ namespace myTNB_Android.Src.ManageUser.Activity
                         }).Build();
             tooltipBuilder.SetCTAaction(() =>
             {
-                tooltipBuilder.DismissDialog();
-                OnBackProceed();
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
             }).Show();
         }
 

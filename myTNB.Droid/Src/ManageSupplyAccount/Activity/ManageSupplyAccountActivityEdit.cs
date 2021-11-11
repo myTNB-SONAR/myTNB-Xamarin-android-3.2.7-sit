@@ -166,23 +166,34 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 txtAccountNumber.Text = accountData.AccountNum;
                 //txtAccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, accountData.AddStreet);
 
+                bool isWhiteList = UserSessions.GetWhiteList(PreferenceManager.GetDefaultSharedPreferences(this));
                 //if not owner mask the address IRUL
                 if (!accountData.IsOwner == true)
                 {
-                    if (!accountData.IsHaveAccess == true)
-                    {
-                        //txtAccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
-                        txtAccountAddress.Text = accountData.AddStreet;
-                        infoAddress.Visibility = ViewStates.Visible;
-                    }
-                    else
+                    if(isWhiteList)
                     {
                         txtAccountAddress.Text = accountData.AddStreet;
                         infoAddress.Visibility = ViewStates.Gone;
                     }
+                    else
+                    {
+                        if (!accountData.IsHaveAccess == true)
+                        {
+                            //txtAccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
+                            txtAccountAddress.Text = accountData.AddStreet;
+                            infoAddress.Visibility = ViewStates.Visible;
+                        }
+                        else
+                        {
+                            txtAccountAddress.Text = accountData.AddStreet;
+                            infoAddress.Visibility = ViewStates.Gone;
+                        }
+                    }
+                    
                 }
                 else
                 {
+                    
                     txtAccountAddress.Text = accountData.AddStreet;
                     infoAddress.Visibility = ViewStates.Gone;
                 }

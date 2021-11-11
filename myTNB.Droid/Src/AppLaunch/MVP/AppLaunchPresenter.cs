@@ -360,7 +360,18 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         UserSessions.UpdateDeviceId(mSharedPref);
                                         UserSessions.SaveDeviceId(mSharedPref, this.mView.GetDeviceId());
                                     }
-                                    this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.PreLogin);
+
+
+                                    if (!UserSessions.HasResetLink(mSharedPref) && UserSessions.HasValidateEmailPage(mSharedPref))
+                                    {
+                                        this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Login);
+                                    }
+                                    else
+                                    {
+                                        this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.PreLogin);
+
+                                    }
+
                                     AppInfoManager.Instance.SetUserInfo("0"
                                         , string.Empty
                                         , string.Empty
@@ -369,7 +380,12 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         , myTNB.Mobile.MobileConstants.OSType.Android
                                         , TextViewUtils.FontInfo
                                         , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
-                                    mView.ShowPreLogin();
+
+                                    if (UserSessions.HasResetLink(mSharedPref) && !UserSessions.HasValidateEmailPage(mSharedPref))
+                                    {
+                                        mView.ShowPreLogin();
+                                    }
+                                   
                                 }
                                 else //baru install
                                 {
@@ -439,18 +455,18 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                 GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                 baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
+                baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(baseRequest);
                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
-                //CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
                 if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null)
                 {
-                    
                     //if (customerAccountListResponse.GetData().Count > 0)
-                    if (customerAccountListResponse.customerAccountData.Count > 0)
+                    if (customerAccountListResponse.customerAccountData.Count == 0 || customerAccountListResponse.customerAccountData.Count > 0)
                     {
                         CustomerBillingAccount.RemoveActive();
-                        ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
                         //ProcessCustomerAccount(customerAccountListResponse.GetData());
+                        ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
+
 
                     }
                     else
@@ -565,18 +581,21 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                 GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                 baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
+                baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(baseRequest);
                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
-                //CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
                 if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null)
                 {
 
+
+
                     //if (customerAccountListResponse.GetData().Count > 0)
-                    if (customerAccountListResponse.customerAccountData.Count > 0)
+                    if (customerAccountListResponse.customerAccountData.Count == 0 || customerAccountListResponse.customerAccountData.Count > 0)
                     {
                         CustomerBillingAccount.RemoveActive();
-                        ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
                         //ProcessCustomerAccount(customerAccountListResponse.GetData());
+                        ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
+
 
                     }
                     else
@@ -1340,6 +1359,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         }
 
         
+       
+       
         //private void ProcessCustomerAccount(List<CustomerAccountListResponse.CustomerAccountData> list)
         private void ProcessCustomerAccount(List<CustomerAccountListResponseAppLaunch.CustomerAccountData> list)
         {

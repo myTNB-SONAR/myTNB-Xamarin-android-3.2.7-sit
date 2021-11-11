@@ -878,8 +878,10 @@
     "resend": "Resend Link",
     "verifyEmailPopupTitle": "Pending Email Verification ",
     "verifyEmailPopupBody": "Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
-    "toast_email_send": "An email verification link has been sent to {0}"
-    
+    "toast_email_send": "An email verification link has been sent to {0}",
+    "toast_email_activated": "You've successfully activated your myTNB account. Log in now to discover myTNB",
+    "toast_email_deactivated": "You've successfully removed your email and deactivated your myTNB account."
+
   },
   "ForgotPassword": {
     "title": "Reset Password",
