@@ -132,7 +132,7 @@ namespace myTNB_Android.Src.Enquiry.GSL.Activity
             gslStepFourPageTitle.Text = stepTitleString;
 
             txtStepFourYourContactTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.CONTACT_DETAILS_TITLE);
-            gslStepFourbtnNext.Text = Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.NEXT);
+            gslStepFourbtnNext.Text = Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.SUBMIT);
 
             gslStepFourTnCCheckBox.Checked = false;
             txtGSLTnC.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.ENQUIRY_TNC));
