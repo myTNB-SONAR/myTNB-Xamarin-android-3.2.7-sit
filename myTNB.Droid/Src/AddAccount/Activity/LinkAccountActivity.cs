@@ -859,6 +859,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             newAccount.isOwned = item.isOwned;
                             newAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             newAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
+                            newAccount.InstallationType = item.InstallationType == null ? "0" : item.InstallationType;
                             finalAccountList.Add(newAccount);
                         }
                     }
@@ -874,6 +875,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.isOwned = item.isOwned;
                             extraAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             extraAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
+                            extraAccount.InstallationType = item.InstallationType == null ? "0" : item.InstallationType;
                             finalAccountList.Add(extraAccount);
                         }
                     }

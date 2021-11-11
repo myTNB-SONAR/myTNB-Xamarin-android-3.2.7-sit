@@ -67,6 +67,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
             }
         }
 
+        private void OnOvervoltageClaim()
+        {
+            this.mView.ShowOvervoltageClaim();
+        }
+
         public void Start()
         {
         }
@@ -186,6 +191,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                                 {
                                     OnGSLRebate(false);
                                 }
+                                break;
+                            case EnquiryTypeEnum.OvervoltageClaim:
+                                OnOvervoltageClaim();
                                 break;
                             default:
                                 break;

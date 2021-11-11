@@ -342,6 +342,9 @@ namespace myTNB_Android.Src.Utils
 
         //App Update
         public const string BCRM_NOTIFICATION_APP_UPDATE = "20006";
+        
+        //Bill Estimation
+        public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";
 
         public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
 
@@ -479,5 +482,11 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string EB_initiate_Duration = "EB_initiate_Duration";
 #endif
 
+        //Dynatrce Test
+        public static string TOUCH_ON_VIEW_SUBMITTED_ENQUIRY = "VIEW_SUBMITTED_ENQUIRY"; //Touch on View Submitted Enquiry
+        public static string TOUCH_ON_SUBMIT_AND_TRACK_ENQUIRY = "SUBMIT_AND_TRACK_ENQUIRY";//Touch on Submit & Track Enquiry
+        public static string TOUCH_ON_SUBMIT_NEW_ENQUIRY = "SUBMIT_NEW_ENQUIRY"; //Touch on Submit New Enquiry
+        public static string TOUCH_ON_VIEW_OVERVOLTAGE_CLAIM_FROM_LIST = "VIEW_OVERVOLTAGE_CLAIM_FROM_LIST";
+        public static string TOUCH_ON_SUBMIT_OVERVOLTAGE_CLAIM = "SUBMIT_OVERVOLTAGE_CLAIM";
     }
 }

@@ -95,6 +95,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("BudgetAmount")]
         public string BudgetAmount { get; set; }
 
+        [Column("InstallationType")]
+        public string InstallationType { get; set; }
+
         [JsonIgnore]
         public bool IsNormalMeter
         {
@@ -169,7 +172,8 @@ namespace myTNB_Android.Src.Database.Model
                 SmartMeterCode = accountResponse.smartMeterCode == null ? "0" : accountResponse.smartMeterCode,
                 IsSelected = isSelected,
                 IsTaggedSMR = accountResponse.IsTaggedSMR,
-                BudgetAmount = accountResponse.BudgetAmount == null ? "0" : accountResponse.BudgetAmount
+                BudgetAmount = accountResponse.BudgetAmount == null ? "0" : accountResponse.BudgetAmount,
+                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -233,7 +237,8 @@ namespace myTNB_Android.Src.Database.Model
                 isOwned = accountResponse.IsOwned,
                 IsSMROnBoardingDontShowAgain = false,
                 IsPeriodOpen = false,
-                BudgetAmount = accountResponse.BudgetAmount
+                BudgetAmount = accountResponse.BudgetAmount,
+                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -265,7 +270,8 @@ namespace myTNB_Android.Src.Database.Model
                 isOwned = accountResponse.IsOwned,
                 IsSMROnBoardingDontShowAgain = false,
                 IsPeriodOpen = false,
-                BudgetAmount = accountResponse.BudgetAmount
+                BudgetAmount = accountResponse.BudgetAmount,
+                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -1283,7 +1289,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             var db = DBHelper.GetSQLiteConnection();
             List<CustomerBillingAccount> eligibleSMAccounts = new List<CustomerBillingAccount>();
-            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode != '0' AND accountTypeId == 1").ToList().OrderBy(x => x.AccDesc).ToList();
+            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode != '0' AND accountTypeId == 1 AND InstallationType != 25").ToList().OrderBy(x => x.AccDesc).ToList();
             return eligibleSMAccounts;
         }
 

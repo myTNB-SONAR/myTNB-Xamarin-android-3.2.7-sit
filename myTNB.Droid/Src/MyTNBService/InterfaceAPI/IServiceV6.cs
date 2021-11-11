@@ -13,7 +13,11 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetAppLaunchMasterData<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetAccounts")]
+        [Post("/v1/launch/GetAppLaunchMasterData")]
+        Task<T> GetAppLaunchMasterDataAWS<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetAccountsV2")]
         Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
@@ -63,6 +67,14 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetSubmittedFeedbackList")]
         Task<T> SubmittedFeedbackList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetOvervoltageClaimDetail")]
+        Task<T> OvervoltageClaimDetail<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/TriggerOVISServices")]
+        Task<T> TriggerOVISServices<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         //TODO
         [Headers("Content-Type:application/json; charset=utf-8")]

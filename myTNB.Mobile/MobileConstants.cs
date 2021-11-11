@@ -27,12 +27,18 @@ namespace myTNB.Mobile
         public const string SitecorePassword = "mytnbapiuser!3$@2";
         internal const string ApiUrlPath = "v6/mytnbappws.asmx";
 
+        //AWS ENV POINT
+        private const string AWS_DEV1 = "https://stagingapi.mytnb.com.my/asmx-97";
+        private const string AWS_DEV2 = "https://stagingapi.mytnb.com.my/asmx-98";
+        private const string AWS_SIT = "https://stagingapi.mytnb.com.my/asmx";
+
+        //ON PREM POINT
         private const string DEV1 = "http://10.215.128.191:88";
         private const string DEV2 = "http://10.215.128.191:89";
         private const string DEV3 = "http://10.215.128.191:97";
         private const string SIT = "https://stagingapi.mytnb.com.my/asmx-97";
         //private const string SIT = "https://mobiletestingws.tnb.com.my";
-
+        //private const string SIT = "http://mytnbwsovisstg.ap.ngrok.io";
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
         //Mark: http://tnbcsdevapp.tnb.my/
@@ -50,17 +56,27 @@ namespace myTNB.Mobile
         private const string Passphrase_PROD = "PW-myTNB-PROD";
 
         //AWS GetAccount
-        public static string AWSApiDomainSIT = "https://core.stg-mytnb.com/api";
+        public static string AWSApiDomainSIT = "https://stagingapi.mytnb.com.my/core/api";
         public static string AWSApiDomainDEV = "https://mytnb-core-staging-362772745.ap-southeast-1.elb.amazonaws.com/api";
-        public static string AWSApiDomainPROD = "https://core.prod-mytnb.com/api";
+        public static string AWSApiDomainPROD = "https://api.mytnb.com.my/core/api";
 
-#if DEBUGx
+        //OVIS Webview
+        //public static string OvisWebviewBaseUrlDEV = "http://192.168.1.157:3000";
+        //public static string OvisWebviewBaseUrlDEV = "http://mytnbwvovis.ap.ngrok.io";
+        public static string OvisWebviewBaseUrlDEV = "http://dev-mytnbappwv.tnbovis.com";
+        //public static string OvisWebviewBaseUrlSTG = "http://mytnbwvovisstg.ap.ngrok.io";
+        public static string OvisWebviewBaseUrlSTG = "http://qa-mytnbappwv.tnbovis.com";
+        //public static string OvisWebviewBaseUrlSTG = "https://stage-mytnbappwv.ovis.tnb.com.my";
+        public static string OvisWebviewBaseUrlPROD = "https://mytnbappwv.ovis.tnb.com.my";
+
+#if DEBUG
         public static string ApiDomain = DEV1;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
         public static string AWSApiDomain = AWSApiDomainSIT;
+        public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlDEV;
 
 #elif MASTER || SIT || DEBUG
         public static string ApiDomain = SIT;
@@ -69,6 +85,7 @@ namespace myTNB.Mobile
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
         public static string AWSApiDomain = AWSApiDomainSIT;
+        public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlSTG;
 #else
         public static string ApiDomain = PROD;
         public const string ApiKeyId = ApiKeyIdPROD;
@@ -76,6 +93,8 @@ namespace myTNB.Mobile
         internal const string SaltKey = SaltKey_PROD;
         internal const string PassPhrase = Passphrase_PROD;
         public static string AWSApiDomain = AWSApiDomainPROD;
+        public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlPROD;
+
 #endif
 
         //Service Name

@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+     <LinearLayout
+        android:id="@+id/bottomLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+         android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+       android:layout_alignParentBottom="true">
+          <Button
+                    android:id="@+id/buttonBackToHome"
+                    style="@style/WhiteButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Back to Home" />
+           <Button
+                    android:id="@+id/btnViewSubmitted"
+                    style="@style/WhiteButton1"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center_horizontal"
+                    android:text="View Submitted Enquiry" />
+    </LinearLayout>
+    <ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:fillViewport="true"
+		android:overScrollMode="never"
+		android:layout_above="@+id/bottomLayout2">
+          <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="center"
+            android:background="@drawable/smr_application_white_background">
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_display_successful_new"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="16dp"
+                android:textColor="@color/blue"
+                android:text="Appointment Set!"
+                android:id="@+id/txtTitleInfo"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="14dp"
+                android:lineSpacingExtra="4dp"
+                android:id="@+id/txtMessageInfo"
+                android:textColor="@color/tunaGrey"
+                android:gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Thank you! Your appointment is confirmed with details below."
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginTop="8dp" />
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/platinumGrey"/>
+             <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="15dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/silverChalice"
+                    android:text="SERVICE REQUEST NUMBER"
+                    android:id="@+id/servicerequestLabel"/>
+               
+            </LinearLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="14dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/tunaGrey"
+                    android:text="1001571305"
+                    android:id="@+id/servicerequestnumber"/>
+              
+            </LinearLayout>
+             <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+               
+                android:background="@color/platinumGrey"/>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="15dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/silverChalice"
+                    android:text="APPOINTMENT DATE"
+                    android:id="@+id/appointmentLabel"/>
+              
+            </LinearLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="14dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/tunaGrey"
+                    android:text="16 May 2021"
+                    android:id="@+id/appointmentdate"/>
+               
+            </LinearLayout>
+             <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+               
+                android:background="@color/platinumGrey"/>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="15dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/silverChalice"
+                    android:text="TECHNICIAN NAME"
+                    android:id="@+id/premiseLabel"/>
+                
+            </LinearLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="14dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/tunaGrey"
+                    android:text="Rahman bin Naz"
+                    android:id="@+id/technicianname"/>
+               
+            </LinearLayout>
+             <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"               
+                android:background="@color/platinumGrey"/>
+
+             <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="15dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/silverChalice"
+                    android:text="INCIDENT ADDRESS"
+                    android:id="@+id/addressLabel"/>                
+            </LinearLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="30dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="14dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/tunaGrey"
+                    android:text="Level 1, S-0876, Mid Valley City, 58000, Kuala Lumpur, Federal Territory of Kuala Lumpur."
+                    android:id="@+id/incidentadd"/>
+               
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+  
+</RelativeLayout>

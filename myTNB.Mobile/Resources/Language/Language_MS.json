@@ -56,7 +56,7 @@
     "english": "English",
     "bahasa": "Bahasa Malaysia",
     "saveChanges": "Simpan",
-    "gotIt": "Ok",
+    "gotIt": "Okay!",
     "login": "Log Masuk",
     "next": "Seterusnya",
     "resend": "Hantar semula",
@@ -201,7 +201,7 @@
     "payBill": "Bayar<br>Bil Saya",
     "payBills": "Bayar<br>Bil Saya",
     "submitFeedback": "Hantar<br>Maklum Balas",
-    "submitEnquiry": "Hantar<br>Pertanyaan",
+    "submitEnquiry": "Hantar &<br>Semak Pertanyaan",
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "Lihat Bil / Makluman Saya",
     "tutorialAccountTitle": "Ringkasan akaun anda.",
@@ -754,7 +754,7 @@
     "findUs": "Temui Kami",
     "callUs": "Hubungi Kami",
     "feedback": "Hantar Maklum Balas",
-    "enquiry": "Hantar Pertanyaan",
+    "enquiry": "Hantar & Semak Pertanyaan",
     "changeLanguage": "Change language to English",
     "applicationStatus": "Status Permohonan"
   },
@@ -1060,6 +1060,8 @@
     "generalEnquiryDescription": "Saya ingin hantar pendapat dan saranan.",
     "updatePersonalDetTitle": "Kemas kini Maklumat Peribadi",
     "personalDetailsDescription": "Saya ingin mengemaskini maklumat peribadi.",
+    "overVoltageClaimTitle": "Tuntutan Voltan Berlebihan",
+    "overVoltageClaimDescription": "Saya ingin membuat tuntutan untuk kerosakan harta benda yang disebabkan oleh lonjakan elektrik.",
     "stepTitle1of2": "Langkah 1 dari 2",
     "enquiryAboutTitle": "Saya ingin bertanya mengenai:",
     "messageHint": "Mesej Anda",
@@ -1137,7 +1139,7 @@
     "newMailing": "Alamat Surat Menyurat Baharu",
     "newPremisesAdd": "Alamat Premis Baharu",
     "plsEnterAcc": "Sila masukkan atau pilih nombor akaun elektrik anda terlebih dahulu.",
-    "viewSubmitted": "Lihat Pertanyaan yang Dihantar",
+    "viewSubmitted": "Semak Pertanyaan yang Dihantar",
     "title": "Hantar Pertanyaan Baru",
     "scanMessage": "Imbas kod bar pada bil anda untuk mendapatkan butiran akaun.",
     "enquiryTnc": "Dengan menghantar, saya telah membaca dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat</strong></a>",
@@ -1196,7 +1198,55 @@
     "restorationDate": "Tarikh Pemulihan",
     "restorationTime": "Masa Pemulihan",
     "uploadDocumentTitle": "Muat Naik Dokumen Sokongan",
-    "status": "Status:"
+    "status": "Status:",
+    //Overvoltage Claim Translation Start
+    "leaveThisPage": "Tinggalkan halaman ini?",
+    "leaveThisPageDescription": "Anda akan hilang semua maklumat yang anda isi. Sila tekan 'Ya' untuk teruskan, atau 'Batal' untuk kekal di halaman ini.",
+    "thankYouForYourRequest": "Terima kasih atas permohonan anda!",
+    "thankYouForYourRequestDescription": "Kami akan kembali kepada anda sebentar nanti. Buat sementara waktu, info terkini boleh didapati dengan memeriksa status permohonan anda",
+    "thankYouForYourEnquiry": "Permohonan anda telah dibatalkan.", //
+    "thankYouForYourEnquiryDescription": "Permohonan anda untuk tuntutan voltan berlebihan telah dibatalkan.", //
+    "thankYouForYourAppointment": "Janji temu anda telah dibatalkan.", //
+    "thankYouForYourAppointmentDescription": "Janji temu permohonan tuntutan voltan berlebihan anda telah dibatalkan.", //
+    "thankYouForYourAgree": "Terima kasih di atas maklum balas anda!", //
+    "thankYouForYourAgreeDescription": "Untuk meneruskan pembayaran, hantarkan maklumat pembayaran yang diperlukan di halaman pertanyaan yang dihantar.", //
+    "thankYouForYourDisagree": "Permohonan rundingan anda telah dihantar.", //
+    "thankYouForYourDisagreeDescription": "Kami akan menghubungi anda tidak lama lagi. Dapatkan maklumat terkini di status pertanyaan anda.", //
+    "proccedToPaymentInformation": "Terus ke Maklumat Pembayaran", //button name
+    "setNewAppointment": "Jadualkan Janji Temu Baharu", //button name
+    "appointmentSet": "Janji Temu Dijadualkan! ", //
+    "appointmentUpdate": "Tarikh janji temu anda telah dikemaskini.",
+    "appointmentSetDescription": "Terima kasih! Janji temu anda telah disahkan dengan butiran di bawah.", //
+    "dateTitle": "TARIKH JANJI TEMU", //
+    "technicianName": "NAMA JURUTEKNIK", //
+    "incidentAddress": "ALAMAT KEJADIAN", //
+    "thankYouForProvidingYourDetails": "Terima kasih di atas semua maklumat yang diberikan!", //
+    "thankYouForProvidingYourDetailsDescription": "Kami akan menyemak maklumat anda dan anda akan dimaklumkan setelah kami mengesahkannya. Jumlah pembayaran akan diproses ke akaun bank anda dalam tempoh 14 hari bekerja.", //
+    "totalClaimAmount": "Jumlah (RM)", //
+    "thankYouForYourSubmission": "Terima kasih di atas maklum balas anda!", //
+    "yourRatingWillHelpUsServeYouBetter": "Penilaian anda akan membantu kami memberikan perkhidmatan yang lebih baik.", //
+    "enterPaymentDetailsTitle": "Masukkan Butiran Pembayaran", //
+    "rateYourExperienceTitle": "Nilaikan Pengalaman Anda", //
+    "setAppointmentTitle": "Jadualkan Janji Temu", //
+    "negotiationRequestTitle": "Permohonan Rundingan", //
+    "compensationAgreementTitle": "Perjanjian Pampasan", //
+    "updatePaymentDetailsTitle": "Kemas kini Butiran Pembayaran",
+    "exGratiaAgreementTitle": "Persetujuan Ex-gratia",
+    "defaultErrorMessage": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.",
+    "overVoltageClaimIsCurrentlyNotEnabledForAccountTitle": "Tuntutan Voltan Berlebihan pada masa ini tidak diaktifkan untuk ", //
+    "overVoltageClaimIsCurrentlyNotEnabledForAccountDescription": "Nombor akaun yang dipilih pada masa ini tidak diaktifkan untuk Tuntutan Voltan Berlebihan melalui myTNB. Sila hubungi TNB CareLine kami di talian 1300-88-5454 atau hantarkan e-mel kepada kami di tnbcareline@tnb.com.my atau kunjungi Kedai Tenaga.",
+    "currentlyNotEnabledForMelakaTitle": "Buat masa ini tidak diaktifkan untuk ",
+    "Gotit": "Okay!", //,
+    "overVoltageMaintenanceLabel": "Servis Tuntutan Voltan Berlebihan sedang dalam penyelenggaraan.",
+    "overVoltageMaintenanceTitle": "Kami akan kembali tidak lama lagi.",
+    "overVoltageMaintenanceDescription": "Maaf, servis Tuntutan Voltan Berlebihan sedang dalam penyelenggaraan. Sila semak semula kemudian.",
+    "overVoltageClaimtemproryUnavailable": "Servis Tuntutan Voltan Berlebihan tidak tersedia untuk sementara waktu",
+    "overVoltageClaimtemproryUnavailableTitle": "Servis tidak tersedia untuk sementara waktu",
+    "overVoltageClaimtemproryUnavailableDescription": "Kami sedang memulihkan servis Tuntutan Voltan Berlebihan secepat yang mungkin. Sila cuba sebentar lagi.",
+    "termsAndConditionTitle": "Terma dan Syarat",
+    "rescheduleAppointmentTitle": "Jadualkan Semula Janji Temu",
+    //Overvoltage Claim Translation End
+    "selectCountryTitle": "Pilih Negara/Wilayah"
   },
   "SubmitEnquiry_selector": {
     "enquiryType": [
@@ -2557,9 +2607,9 @@
     "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"
   },
   "EnergyBudgetPopup": {
-    "title": "Tahniah! Rasai pengalaman baru dalam mengawal penggunaan elektrik bersama Energy Budget!",
+    "title": "Kawal penggunaan elektrik anda dengan mudah bersama Energy Budget!",
     "threeEasyStep": "Penjimatan wang melalui 3 cara mudah:",
-    "firstStep": "TETAPKAN tahap penggunaan bulanan meter pintar terpilih anda",
+    "firstStep": "TETAPKAN tahap penggunaan bulanan anda",
     "secondStep": "PANTAU penggunaan harian dengan mudah",
     "thirdStep": "BERJIMAT apabila anda menghampiri penggunaan yang anda tetapkan",
     "txtLetgetstarted": "Mula Sekarang",

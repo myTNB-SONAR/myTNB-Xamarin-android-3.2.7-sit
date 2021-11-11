@@ -28,6 +28,19 @@
         CL03,
         CL04,
         CL06,
+        CL07,
+        CL08,
+        CL09,
+        CL10,
+        CL11,
+        CL12,
+        CL13,
+        CL14,
+        CL15,
+        CL16,
+        CL17,
+        CL18,
+        CL19,
         NONE
     };
 

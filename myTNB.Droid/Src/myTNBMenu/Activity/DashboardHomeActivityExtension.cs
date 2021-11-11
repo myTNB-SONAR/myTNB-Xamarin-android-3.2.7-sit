@@ -15,6 +15,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Deeplink;
 using Newtonsoft.Json;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -35,6 +36,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     break;
                 case Deeplink.ScreenEnum.ApplicationDetails:
                     DeeplinkAppDetailsValidation(mainActivity);
+                    break;
+                case Deeplink.ScreenEnum.OvervoltageClaimDetails:
+                    DeeplinkOvervoltageFeedbackValidation(mainActivity);
                     break;
                 case Deeplink.ScreenEnum.GetBill:
                     DeeplinkGetBillValidation(mainActivity);
@@ -92,6 +96,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private static async void DeeplinkAppListingValidation(DashboardHomeActivity mainActivity)
         {
+            DeeplinkUtil.Instance.ClearDeeplinkData();
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
@@ -127,6 +132,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private static async void DeeplinkAppDetailsValidation(DashboardHomeActivity mainActivity)
         {
+            DeeplinkUtil.Instance.ClearDeeplinkData();
             mainActivity.ShowProgressDialog();
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
@@ -176,6 +182,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             mainActivity.HideProgressDialog();
         }
 
+        private static void DeeplinkOvervoltageFeedbackValidation(DashboardHomeActivity mainActivity)
+        {
+            DeeplinkUtil.Instance.ClearDeeplinkData();
+            UserEntity user = UserEntity.GetActive();
+            if (user.UserID == EnquiryDetailsDeeplinkCache.Instance.UserID)
+            {
+                //Overvoltage detail page
+                ShowOverVoltageFeedback(mainActivity);
+            }
+        }
+
         private static void DeeplinkGetBillValidation(DashboardHomeActivity mainActivity)
         {
             string accountNum = DeeplinkUtil.Instance.ScreenKey;
@@ -218,6 +235,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             Intent gslInfoIntent = new Intent(mainActivity, typeof(GSLRebateInfoActivity));
             mainActivity.StartActivity(gslInfoIntent);
+        }
+
+        internal static void ShowOverVoltageFeedback(this DashboardHomeActivity mainActivity)
+        {
+            Intent viewReceipt = new Intent(mainActivity, typeof(OverVoltageFeedbackDetailActivity));
+            viewReceipt.PutExtra("ClaimId", EnquiryDetailsDeeplinkCache.Instance.ClaimID);
+            mainActivity.StartActivity(viewReceipt);
         }
     }
 }

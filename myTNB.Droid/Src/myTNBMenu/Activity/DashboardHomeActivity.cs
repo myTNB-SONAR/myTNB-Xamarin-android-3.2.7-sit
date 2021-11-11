@@ -54,6 +54,8 @@ using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Utils.Deeplink;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Bills.AccountStatement;
+using Android.Content.Res;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -2443,6 +2445,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         MyTNBAccountManagement.GetInstance().SetIsEBUser(false);
                     }
+                }
+                else if (EBUtility.Instance.IsPublicRelease)
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsEBUser(true);
                 }
                 else
                 {

@@ -26,7 +26,7 @@ namespace myTNB_Android.Src.AppLaunch.Models
         public string MasterId { get; set; }
 
         [JsonProperty("IsOpted")]
-        public bool IsOpted { get; set; }
+        public bool ? IsOpted { get; set; }
 
         [JsonProperty("ShowInPreference")]
         public bool ShowInPreference { get; set; }

@@ -13,10 +13,10 @@ namespace myTNB_Android.Src.AppLaunch.Async
     public class MasterApiDBOperation : AsyncTask
     {
 
-        private AppLaunchMasterDataResponse masterDataResponse = null;
+        private AppLaunchMasterDataResponseAWS masterDataResponse = null;
         private ISharedPreferences preferences = null;
 
-        public MasterApiDBOperation(AppLaunchMasterDataResponse masterDataResponse, ISharedPreferences preferences)
+        public MasterApiDBOperation(AppLaunchMasterDataResponseAWS masterDataResponse, ISharedPreferences preferences)
         {
             this.preferences = preferences;
             this.masterDataResponse = masterDataResponse;
@@ -26,31 +26,31 @@ namespace myTNB_Android.Src.AppLaunch.Async
         {
 
             Console.WriteLine("========= 0000 MasterApiDBOperation started");
-            if (masterDataResponse != null && masterDataResponse.Response != null)
+            if (masterDataResponse != null && masterDataResponse.ErrorCode != null)
             {
-                if (masterDataResponse.Response.ErrorCode == "7200" && masterDataResponse.Response.ErrorCode != "7000")
+                if (masterDataResponse.ErrorCode == "7200" && masterDataResponse.ErrorCode != "7000")
                 {
                     MyTNBAccountManagement.GetInstance().SetMasterDataResponse(masterDataResponse);
 
-                    if (masterDataResponse.GetData().WebLinks != null)
+                    if (masterDataResponse.Data.WebLinks != null)
                     {
-                        foreach (Weblink web in masterDataResponse.GetData().WebLinks)
+                        foreach (Weblink web in masterDataResponse.Data.WebLinks)
                         {
                             int newRecord = WeblinkEntity.InsertOrReplace(web);
                         }
                     }
 
                     FeedbackCategoryEntity.RemoveActive();
-                    if (masterDataResponse.GetData().FeedbackCategorysV2 != null && masterDataResponse.GetData().FeedbackCategorysV2.Count > 0)
+                    if (masterDataResponse.Data.FeedbackCategorysV2 != null && masterDataResponse.Data.FeedbackCategorysV2.Count > 0)
                     {
-                        foreach (FeedbackCategory cat in masterDataResponse.GetData().FeedbackCategorysV2)
+                        foreach (FeedbackCategory cat in masterDataResponse.Data.FeedbackCategorysV2)
                         {
                             int newRecord = FeedbackCategoryEntity.InsertOrReplace(cat);
                         }
                     }
                     else
                     {
-                        foreach (FeedbackCategory cat in masterDataResponse.GetData().FeedbackCategorys)
+                        foreach (FeedbackCategory cat in masterDataResponse.Data.FeedbackCategorys)
                         {
                             int newRecord = FeedbackCategoryEntity.InsertOrReplace(cat);
                         }
@@ -58,7 +58,7 @@ namespace myTNB_Android.Src.AppLaunch.Async
 
                     int ctr = 0;
                     FeedbackStateEntity.RemoveActive();
-                    foreach (FeedbackState state in masterDataResponse.GetData().States)
+                    foreach (FeedbackState state in masterDataResponse.Data.States)
                     {
                         bool isSelected = ctr == 0 ? true : false;
                         int newRecord = FeedbackStateEntity.InsertOrReplace(state, isSelected);
@@ -68,7 +68,7 @@ namespace myTNB_Android.Src.AppLaunch.Async
 
                     FeedbackTypeEntity.RemoveActive();
                     ctr = 0;
-                    foreach (FeedbackType type in masterDataResponse.GetData().FeedbackTypes)
+                    foreach (FeedbackType type in masterDataResponse.Data.FeedbackTypes)
                     {
                         bool isSelected = ctr == 0 ? true : false;
                         int newRecord = FeedbackTypeEntity.InsertOrReplace(type, isSelected);
@@ -77,24 +77,24 @@ namespace myTNB_Android.Src.AppLaunch.Async
                     }
 
 
-                    foreach (NotificationChannels notificationChannel in masterDataResponse.GetData().NotificationTypeChannels)
+                    foreach (NotificationChannels notificationChannel in masterDataResponse.Data.NotificationTypeChannels)
                     {
                         int newRecord = NotificationChannelEntity.InsertOrReplace(notificationChannel);
                     }
 
-                    foreach (NotificationTypes notificationTypes in masterDataResponse.GetData().NotificationTypes)
+                    foreach (NotificationTypes notificationTypes in masterDataResponse.Data.NotificationTypes)
                     {
                         int newRecord = NotificationTypesEntity.InsertOrReplace(notificationTypes);
                     }
 
                     LocationTypesEntity.InsertFristRecord();
-                    foreach (LocationType loc in masterDataResponse.GetData().LocationTypes)
+                    foreach (LocationType loc in masterDataResponse.Data.LocationTypes)
                     {
                         int newRecord = LocationTypesEntity.InsertOrReplace(loc);
                     }
 
                     DownTimeEntity.RemoveActive();
-                    foreach (DownTime cat in masterDataResponse.GetData().Downtimes)
+                    foreach (DownTime cat in masterDataResponse.Data.Downtimes)
                     {
                         int newRecord = DownTimeEntity.InsertOrReplace(cat);
                     }

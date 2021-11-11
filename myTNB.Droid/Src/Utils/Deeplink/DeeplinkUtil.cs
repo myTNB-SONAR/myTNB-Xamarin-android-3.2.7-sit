@@ -56,6 +56,9 @@ namespace myTNB_Android.Src.Utils.Deeplink
                 case Screen.ApplicationDetails:
                     ApplicationDetailsDeeplinkCache.Instance.SetData(deeplink.ToString());
                     break;
+                case Screen.OvervoltageClaimDetails:
+                    EnquiryDetailsDeeplinkCache.Instance.SetData(deeplink.ToString());
+                    break;
                 default:
                     break;
             }
@@ -90,6 +93,11 @@ namespace myTNB_Android.Src.Utils.Deeplink
                     {
                         TargetScreen = Screen.ApplicationDetails;
                         SaveDeeplinkDetails(Screen.ApplicationDetails, deeplink);
+                    }
+                    else if (deepLinkUrlString.Contains(Screen.OvervoltageClaimDetails.ToString().ToLower()))
+                    {
+                        TargetScreen = Screen.OvervoltageClaimDetails;
+                        SaveDeeplinkDetails(Screen.OvervoltageClaimDetails, deeplink);
                     }
                 }
             }

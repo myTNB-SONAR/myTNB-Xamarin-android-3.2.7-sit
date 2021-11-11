@@ -21,6 +21,7 @@ namespace myTNB_Android.Src.Utils.Deeplink
             WhatsNew,
             ApplicationListing,
             ApplicationDetails,
+            OvervoltageClaimDetails,
             QR,
             GetBill,
             None
