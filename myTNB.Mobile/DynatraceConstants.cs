@@ -56,6 +56,7 @@
                     public const string Back_To_Paper = "App_Visit_OptBackPaperBill";
                     public const string Back_To_Paper_Success = "App_Visit_OptBackPaperSuccess";
                     public const string Start_Paperless_Share_Feedback = "App_Visit_DBRRating";
+                    public const string Fail = "App_Visit_Fail";
                 }
             }
 
