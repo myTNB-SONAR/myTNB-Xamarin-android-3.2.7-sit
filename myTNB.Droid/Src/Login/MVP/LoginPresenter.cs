@@ -477,13 +477,6 @@ namespace myTNB_Android.Src.Login.MVP
             }
         }
 
-
-
-        public void NavigateToDashboard()
-        {
-            this.mView.ShowDashboard();
-        }
-
         public void NavigateToForgetPassword()
         {
             this.mView.ShowForgetPassword();

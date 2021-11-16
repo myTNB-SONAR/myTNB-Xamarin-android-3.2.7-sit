@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using System.Threading.Tasks;
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Content.Res;
@@ -64,17 +65,14 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             try
             {
-                RunOnUiThread(() =>
+                try
                 {
-                    try
-                    {
-                        SetDefaultData();
-                    }
-                    catch (System.Exception er)
-                    {
-                        Utility.LoggingNonFatalError(er);
-                    }
-                });
+                    SetDefaultData();
+                }
+                catch (System.Exception er)
+                {
+                    Utility.LoggingNonFatalError(er);
+                }
             }
             catch (System.Exception e)
             {
@@ -100,15 +98,13 @@ namespace myTNB_Android.Src.DigitalBill.Activity
 
                 mPresenter = new DigitalBillPresenter(this);
 
-                micrositeWebView = FindViewById<WebView>(Resource.Id.tncWebView);
-                micrositeWebView.Settings.JavaScriptEnabled = true;
-                micrositeWebView.Settings.CacheMode = CacheModes.CacheElseNetwork;
-                micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
                 SetToolBarTitle(GetLabelByLanguage(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
                     ? "goPaperless"
                     : "updateBillDelivery"));
                 OnTag();
-                ShowDigitalBill(true);
+
+                micrositeWebView = FindViewById<WebView>(Resource.Id.tncWebView);
+                this.mPresenter.Start();
             }
             catch (System.Exception e)
             {
@@ -229,23 +225,37 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             try
             {
-                UserEntity user = UserEntity.GetActive();
-                string myTNBAccountName = user?.DisplayName ?? string.Empty;
-                string signature = SSOManager.Instance.GetSignature(myTNBAccountName
-                    , AccessTokenCache.Instance.GetAccessToken(this)
-                    , user.DeviceId ?? string.Empty
-                    , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
-                    , 16
-                    , (LanguageUtil.GetAppLanguage() == "MS"
-                        ? LanguageManager.Language.MS
-                        : LanguageManager.Language.EN).ToString()
-                    , TextViewUtils.FontInfo ?? "N"
-                    , BillRendering.Content.OriginURL
-                    , BillRendering.Content.RedirectURL
-                    , _accountNumber);
+                Task.Run(() =>
+                {
+                    UserEntity user = UserEntity.GetActive();
+                    string myTNBAccountName = user?.DisplayName ?? string.Empty;
+                    string signature = SSOManager.Instance.GetSignature(myTNBAccountName
+                        , AccessTokenCache.Instance.GetAccessToken(this)
+                        , user.DeviceId ?? string.Empty
+                        , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
+                        , 16
+                        , (LanguageUtil.GetAppLanguage() == "MS"
+                            ? LanguageManager.Language.MS
+                            : LanguageManager.Language.EN).ToString()
+                        , TextViewUtils.FontInfo ?? "N"
+                        , BillRendering.Content.OriginURL
+                        , BillRendering.Content.RedirectURL
+                        , _accountNumber);
 
-                string ssoURL = string.Format(AWSConstants.Domains.SSO, signature);
-                micrositeWebView.LoadUrl(ssoURL);
+                    string ssoURL = string.Format(AWSConstants.Domains.SSO, signature);
+                    RunOnUiThread(() =>
+                    {
+                        WebSettings settings = micrositeWebView.Settings;
+                        settings.JavaScriptEnabled = true;
+                        settings.LoadWithOverviewMode = true;
+                        settings.UseWideViewPort = true;
+                        settings.DomStorageEnabled = true;
+                        settings.SetAppCacheEnabled(true);
+                        settings.JavaScriptCanOpenWindowsAutomatically = true;
+                        micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
+                        micrositeWebView.LoadUrl(ssoURL);
+                    });
+                });
             }
             catch (System.Exception e)
             {

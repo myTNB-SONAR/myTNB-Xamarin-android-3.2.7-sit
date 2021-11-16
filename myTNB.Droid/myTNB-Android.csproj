@@ -9817,9 +9817,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_bill_toggled.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\menu\ViewBillReceiptMenu.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\menu\NotificationDetailMenu.xml" />
   </ItemGroup>
   <ItemGroup>
