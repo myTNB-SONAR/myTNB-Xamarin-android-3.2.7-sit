@@ -1,7 +1,7 @@
 ﻿using System;
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class ResendInviteUserAccessRequest : BaseRequest
+    public class ResendInviteUserAccessRequest : BaseRequestV4
     {
         public string Email;
         public string AccountNo;

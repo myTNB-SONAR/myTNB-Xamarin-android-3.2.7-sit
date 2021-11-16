@@ -83,8 +83,8 @@ namespace myTNB_Android.Src.UpdateID.Activity
         [BindView(Resource.Id.selector_account_type)]
         TextView identityType;
 
-        [BindView(Resource.Id.btnRegister)]
-        Button btnRegister;
+        [BindView(Resource.Id.btnUpdate)]
+        Button btnUpdate;
 
         private bool isClicked = false;
         private bool fromAddAccPage = false;
@@ -129,16 +129,16 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 TextViewUtils.SetMuseoSans300Typeface(
                     textInputLayoutICNo);
 
-                TextViewUtils.SetMuseoSans500Typeface(btnRegister);
+                TextViewUtils.SetMuseoSans500Typeface(btnUpdate);
 
                 TextViewUtils.SetTextSize14(txtAccountType, identityType, txtICNumber, LabelDetails);
-                TextViewUtils.SetTextSize16(btnRegister);
+                TextViewUtils.SetTextSize16(btnUpdate);
 
                 txtAccountType.Text = Utility.GetLocalizedLabel("OneLastThing", "idtypeTitle").ToUpper();
                 textInputLayoutICNo.Hint = Utility.GetLocalizedLabel("OneLastThing", "idNumberhint");
                 SetToolBarTitle(Utility.GetLocalizedLabel("UpdateID", "title"));
                 //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-                btnRegister.Text = Utility.GetLocalizedLabel("UpdateID", "confrimButton");
+                btnUpdate.Text = Utility.GetLocalizedLabel("UpdateID", "confrimButton");
                 LabelTitle.Text = Utility.GetLocalizedLabel("UpdateID", "updateIdLabelTitle");
                 LabelDetails.Text = Utility.GetLocalizedLabel("UpdateID", "updateIdLabelDetails");
 
@@ -502,7 +502,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
         }
 
 
-        [OnClick(Resource.Id.btnRegister)]
+        [OnClick(Resource.Id.btnUpdate)]
         void OnRegister(object sender, EventArgs eventArgs)
         {
             try
@@ -715,14 +715,14 @@ namespace myTNB_Android.Src.UpdateID.Activity
 
         public void EnableRegisterButton()
         {
-            btnRegister.Enabled = true;
-            btnRegister.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+            btnUpdate.Enabled = true;
+            btnUpdate.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
         }
 
         public void DisableRegisterButton()
         {
-            btnRegister.Enabled = false;
-            btnRegister.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            btnUpdate.Enabled = false;
+            btnUpdate.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
 
         public void ClearIdentificationHint()

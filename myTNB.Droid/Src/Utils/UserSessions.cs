@@ -138,34 +138,22 @@ namespace myTNB_Android.Src.Utils
                 .Apply();
         }
 
-        public static bool HasValidateEmailPage(ISharedPreferences prefs)
+        public static bool HasDynamicLink(ISharedPreferences prefs)
         {
-            return prefs.GetBoolean("hasValidateEmailPage", false);
+            return prefs.GetBoolean("hasDynamicLink", false);
         }
 
-        //public static void DoValidateEmailPage(ISharedPreferences prefs, string data)    
-        //{
-        //    ISharedPreferencesEditor editor = prefs.Edit();
-        //    editor.PutString("hasValidateEmailPage", data);
-        //    editor.Apply();
-        //}
-
-        public static void DoValidateEmailPage(ISharedPreferences prefs)
+        public static void DoflagDynamicLink(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutBoolean("hasValidateEmailPage", true);
+            editor.PutBoolean("hasDynamicLink", true);
             editor.Apply();
         }
 
-        public static bool HasResetLink(ISharedPreferences prefs)
+        internal static void DoUnflagDynamicLink(ISharedPreferences mSharedPref)
         {
-            return prefs.GetBoolean("ResetLink", false);
-        }
-
-        public static void DoResetLink(ISharedPreferences prefs)
-        {
-            ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutBoolean("ResetLink", true);
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("hasDynamicLink");
             editor.Apply();
         }
 
@@ -616,16 +604,42 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetString("IsFeedbackUpdateDetailDisabled", null);
         }
 
-        public static void SaveUserIDEmailVerified(ISharedPreferences prefs, string data)    //for Save userID Email Verified
+        public static void SaveUserIDEmailVerified(ISharedPreferences prefs, string data)    //for Save userID Email Verified Dynamic link
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutString("IsFeedbackUpdateDetailDisabled", data);
+            editor.PutString("UserIDEmailVerified", data);
             editor.Apply();
         }
 
-        public static string GetUserIDEmailVerified(ISharedPreferences prefs)              //for Save userID Email Verified
+        internal static void UpdateUserIDEmailVerified(ISharedPreferences mSharedPref)       //for update userID Email Verified Dynamic link
         {
-            return prefs.GetString("IsFeedbackUpdateDetailDisabled", null);
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("UserIDEmailVerified");
+            editor.Apply();
+        }
+
+        public static string GetUserIDEmailVerified(ISharedPreferences prefs)              //for Check userID Email Verified Dynamic link
+        {
+            return prefs.GetString("UserIDEmailVerified", "");
+        }
+
+        public static void SaveLoginflag(ISharedPreferences prefs, bool flag)    //for Save login flag for dynamic link
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("Loginflag", flag);
+            editor.Apply();
+        }
+
+        internal static void UpdateLoginflag(ISharedPreferences mSharedPref)       //for update login flag for dynamic link
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("Loginflag");
+            editor.Apply();
+        }
+
+        public static bool GetLoginflag(ISharedPreferences prefs)              //for Check login flag for dynamic link
+        {
+            return prefs.GetBoolean("Loginflag",false);
         }
 
         public static void SaveDeviceId(ISharedPreferences prefs, string deviceID)

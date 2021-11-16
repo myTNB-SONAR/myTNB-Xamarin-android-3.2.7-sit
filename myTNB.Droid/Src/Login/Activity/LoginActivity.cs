@@ -90,6 +90,7 @@ namespace myTNB_Android.Src.Login.Activity
         private bool UpdateUserStatusActivate = false;
         private bool UpdateUserStatusDeactivate = false;
         private bool fromlink = false;
+        private string userId;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -110,6 +111,11 @@ namespace myTNB_Android.Src.Login.Activity
                 {
                     fromlink = Intent.Extras.GetBoolean("fromlink", false);
                 }
+
+                //if (Intent.HasExtra("userId"))
+                //{
+                //    userId = Intent.Extras.GetString("userId");
+                //}
 
                 // Create your application here
                 mPresenter = new LoginPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
@@ -160,11 +166,21 @@ namespace myTNB_Android.Src.Login.Activity
 
                 if (UpdateUserStatusActivate)
                 {
-                    ShowUpdateUserStatusActivate();
+                    //var sharedpref_data = UserSessions.GetUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this)).ToString();
+                    //bool userid = string.Parse(sharedpref_data);
+                    //ShowUpdateUserStatusActivate();
+                    //string userid = UserSessions.GetUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this)).ToString();
+                    string userID = UserSessions.GetUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this));
+                    this.userActionsListener.UpdateUserStatusActivate(userID);
+                   
                 }
                 else if (UpdateUserStatusDeactivate)
                 {
-                    ShowUpdateUserStatusDeactivate();
+                    //ShowUpdateUserStatusDeactivate();
+                    //UserSessions.DoUnflagDynamicLink(PreferenceManager.GetDefaultSharedPreferences(this));
+
+                    string userID = UserSessions.GetUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this));
+                    this.userActionsListener.UpdateUserStatusDeactivate(userID);
                 }
 
             }
@@ -343,7 +359,8 @@ namespace myTNB_Android.Src.Login.Activity
                              (view) =>
                              {
                                  // EMPTY WILL CLOSE SNACKBAR
-                                 UserSessions.DoResetLink(PreferenceManager.GetDefaultSharedPreferences(this));
+                                 //UserSessions.DoResetLink(PreferenceManager.GetDefaultSharedPreferences(this));
+                                 UserSessions.DoUnflagDynamicLink(PreferenceManager.GetDefaultSharedPreferences(this));
 
                              }
                             );

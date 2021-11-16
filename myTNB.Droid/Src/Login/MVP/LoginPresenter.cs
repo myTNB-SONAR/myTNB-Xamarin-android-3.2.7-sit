@@ -50,6 +50,128 @@ namespace myTNB_Android.Src.Login.MVP
             this.mView.SetPresenter(this);
         }
 
+
+        public async void UpdateUserStatusActivate(string userid)
+        {
+            try
+            {
+                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid);
+                string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
+                var updateUserStatusActivateResponse = await ServiceApiImpl.Instance.UpdateUserStatusActivate(updateUserStatusActivateRequest);
+
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+
+
+                if (updateUserStatusActivateResponse.IsSuccessResponse())
+                {
+                   
+                    this.mView.HideProgressDialog();
+                    this.mView.ShowUpdateUserStatusActivate();
+                    UserSessions.DoUnflagDynamicLink(mSharedPref);
+                        
+                    
+                }
+                else
+                {
+                    this.mView.HideProgressDialog();
+                }
+
+
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                this.mView.ShowRetryOptionsCancelledException(cancelledException);
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception exception)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                this.mView.ShowRetryOptionsUnknownException(exception);
+                Utility.LoggingNonFatalError(exception);
+            }
+        }
+
+        public async void UpdateUserStatusDeactivate(string userid)
+        {
+            try
+            {
+                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid);
+                string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
+                var updateUserStatusActivateResponse = await ServiceApiImpl.Instance.UpdateUserStatusDeactivate(updateUserStatusActivateRequest);
+
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+
+
+                if (updateUserStatusActivateResponse.IsSuccessResponse())
+                {
+
+                    this.mView.HideProgressDialog();
+                    this.mView.ShowUpdateUserStatusDeactivate();
+                    UserSessions.DoUnflagDynamicLink(mSharedPref);
+
+
+                }
+                else
+                {
+                    this.mView.HideProgressDialog();
+                }
+
+
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                this.mView.ShowRetryOptionsCancelledException(cancelledException);
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception exception)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                this.mView.ShowRetryOptionsUnknownException(exception);
+                Utility.LoggingNonFatalError(exception);
+            }
+        }
+
+
         public void CancelLogin()
         {
             try
@@ -189,6 +311,7 @@ namespace myTNB_Android.Src.Login.MVP
                         ///THIS TO SAVE WHITELIST
                         ///</summary>
                         UserSessions.SaveWhiteList(mSharedPref, userResponse.GetData().IsWhiteList);
+                        UserSessions.SaveLoginflag(mSharedPref, true);
 
                         // TODO : REMOVE PASSWORD PERSISTANCE INSTEAD FOLLOW IOS WORKFLOW
                         // TODO : IF THERES AN EXISTING FORGET PASSWORD DO NOT SAVE USER

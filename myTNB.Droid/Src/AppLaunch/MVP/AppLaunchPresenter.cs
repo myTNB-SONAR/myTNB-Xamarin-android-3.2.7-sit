@@ -44,6 +44,7 @@ using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.DeviceCache;
 using fbm = Firebase.Messaging;
 using Android.Gms.Extensions;
+using Android.Preferences;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -362,14 +363,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     }
 
 
-                                    if (!UserSessions.HasResetLink(mSharedPref) && UserSessions.HasValidateEmailPage(mSharedPref))
+                                    bool link = UserSessions.HasDynamicLink(mSharedPref);
+                                    if (link == true)
                                     {
                                         this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Login);
                                     }
                                     else
                                     {
                                         this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.PreLogin);
-
                                     }
 
                                     AppInfoManager.Instance.SetUserInfo("0"
@@ -381,7 +382,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         , TextViewUtils.FontInfo
                                         , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
 
-                                    if (UserSessions.HasResetLink(mSharedPref) && !UserSessions.HasValidateEmailPage(mSharedPref))
+                                    if (!UserSessions.HasDynamicLink(mSharedPref))
                                     {
                                         mView.ShowPreLogin();
                                     }
@@ -389,7 +390,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 }
                                 else //baru install
                                 {
-                                    if (!UserSessions.IsDeviceIdUpdated(mSharedPref) || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
+                                    if (!UserSessions.IsDeviceIdUpdated(mSharedPref) && !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
                                     {
                                         UserSessions.UpdateDeviceId(mSharedPref);
                                         UserSessions.SaveDeviceId(mSharedPref, this.mView.GetDeviceId());
@@ -1490,6 +1491,127 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        public async void UpdateUserStatusActivate(string userid)
+        {
+            try
+            {
+                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid);
+                string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
+                var updateUserStatusActivateResponse = await ServiceApiImpl.Instance.UpdateUserStatusActivate(updateUserStatusActivateRequest);
+
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+
+
+                if (updateUserStatusActivateResponse.IsSuccessResponse())
+                {
+
+                    this.mView.HideProgressDialog();
+                    //this.mView.ShowUpdateUserStatusActivate();
+                    UserSessions.DoUnflagDynamicLink(mSharedPref);
+
+
+                }
+                else
+                {
+                    this.mView.HideProgressDialog();
+                }
+
+
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                this.mView.ShowRetryOptionsCancelledException(cancelledException);
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception exception)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                this.mView.ShowRetryOptionsUnknownException(exception);
+                Utility.LoggingNonFatalError(exception);
+            }
+        }
+
+        public async void UpdateUserStatusDeactivate(string userid)
+        {
+            try
+            {
+                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid);
+                string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
+                var updateUserStatusActivateResponse = await ServiceApiImpl.Instance.UpdateUserStatusDeactivate(updateUserStatusActivateRequest);
+
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+
+
+                if (updateUserStatusActivateResponse.IsSuccessResponse())
+                {
+
+                    this.mView.HideProgressDialog();
+                    //this.mView.ShowUpdateUserStatusDeactivate();
+                    UserSessions.DoUnflagDynamicLink(mSharedPref);
+
+
+                }
+                else
+                {
+                    this.mView.HideProgressDialog();
+                }
+
+
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                this.mView.ShowRetryOptionsCancelledException(cancelledException);
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception exception)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                this.mView.ShowRetryOptionsUnknownException(exception);
+                Utility.LoggingNonFatalError(exception);
             }
         }
     }

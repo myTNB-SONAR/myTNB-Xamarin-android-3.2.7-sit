@@ -321,9 +321,8 @@ namespace myTNB_Android.Src.Utils
                         .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "bodyIcUpdate"))
                         .SetTitleCheckBox(Utility.GetLocalizedLabel("Common", "dontShowThisAgain"))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
-                        .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "later"))
-                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "proceed"))
-                        .SetSecondaryCTAaction(() =>
+                        .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "proceed"))
+                        .SetCTAaction(() =>
                         {
                             confirmAction();
                         })
@@ -336,7 +335,8 @@ namespace myTNB_Android.Src.Utils
                             uncheckboxAction();
                         })
                         .Build();
-            tooltipBuilder.SetCTAaction(() =>
+
+            tooltipBuilder.SetSecondaryCTAaction(() =>
             {
                 if (cancelAction != null)
                 {

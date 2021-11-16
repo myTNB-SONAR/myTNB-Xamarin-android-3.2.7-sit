@@ -83,11 +83,11 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/CancelInvitation_OT")]
-        Task<T> CancelInvitation_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //wan //api cancel invited user
+        Task<T> CancelInvitation_OT<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);              //wan //api cancel invited user
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/SendReInviteEmail")]
-        Task<T> SendReInviteEmail<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //irul //api resend invited user
+        Task<T> SendReInviteEmail<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);              //irul //api resend invited user
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/AddUserAccess_OT")]
@@ -366,6 +366,14 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetPaymentTransactionId")]
         Task<T> GetPaymentTransactionId<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
-        
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/UpdateUserStatusActivate")]
+        Task<T> UpdateUserStatusActivate<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);   //dynamic link verified
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/UpdateUserStatusDeactivate")]
+        Task<T> UpdateUserStatusDeactivate<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);   //dynamic link removed account
+
     }
 }

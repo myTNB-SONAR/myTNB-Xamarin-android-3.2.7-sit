@@ -5,6 +5,7 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -88,6 +89,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
                     this.mView.DisableSaveButton();
                     MyTNBAccountManagement.GetInstance().AddNewUserAdded(false);
                     this.mView.ShowSaveSuccess();
+
                 }
                 else
                 {
@@ -138,7 +140,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
             try
             {
                 CancelInviteUserAccessRequest cancelInviteUserAccessRequest = new CancelInviteUserAccessRequest(email, AccNum, userId);
-                
+                cancelInviteUserAccessRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(cancelInviteUserAccessRequest);
                 var updateUserAccessReponse = await ServiceApiImpl.Instance.CancelInvitation_OT(cancelInviteUserAccessRequest);
 
@@ -202,7 +204,9 @@ namespace myTNB_Android.Src.ManageUser.MVP
 
             try
             {
-                var updateUserResendAccessReponse = await ServiceApiImpl.Instance.SendReInviteEmail(new ResendInviteUserAccessRequest(email, AccNum, IsHaveAccess,IsApplyEBilling));
+                ResendInviteUserAccessRequest addUserAccessAccountRequest = new ResendInviteUserAccessRequest(email, AccNum, IsHaveAccess, IsApplyEBilling);
+                addUserAccessAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
+                var updateUserResendAccessReponse = await ServiceApiImpl.Instance.SendReInviteEmail(addUserAccessAccountRequest);
 
                 if (mView.IsActive())
                 {

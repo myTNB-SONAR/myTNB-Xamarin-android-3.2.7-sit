@@ -463,23 +463,23 @@ namespace myTNB_Android.Src.Utils
                 TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
                 TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
-                TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
+                //TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
                 CheckBox tooltipCheckBoxCTA = this.dialog.FindViewById<CheckBox>(Resource.Id.ToolTipCheckBox);
                 TextView tooltipCheckBoxText = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitleCheckBox);
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
-                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA, tooltipCheckBoxText);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipCheckBoxText);
                 TextViewUtils.SetTextSize14(tooltipTitle, tooltipCheckBoxText, tooltipMessage);
-                TextViewUtils.SetTextSize16(tooltipPrimaryCTA, tooltipSecondaryCTA);
+                TextViewUtils.SetTextSize16(tooltipPrimaryCTA);
 
                 tooltipTitle.Gravity = this.mGravityFlag;
                 tooltipMessage.Gravity = this.mGravityFlag;
 
-                tooltipPrimaryCTA.Click += delegate
-                {
-                    this.dialog.Dismiss();
-                    this.ctaAction?.Invoke();
-                };
+                //tooltipPrimaryCTA.Click += delegate
+                //{
+                //    this.dialog.Dismiss();
+                //    this.ctaAction?.Invoke();
+                //};
 
                 tooltipCheckBoxCTA.CheckedChange += (sender, e) =>
                 {
@@ -493,12 +493,12 @@ namespace myTNB_Android.Src.Utils
                     }
                 };
 
-                tooltipSecondaryCTA.Click += delegate
+                tooltipPrimaryCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
-                    if (secondaryCTAAction != null)
+                    if (ctaAction != null)
                     {
-                        this.secondaryCTAAction();
+                        this.ctaAction();
                     }
                 };
 
@@ -519,7 +519,7 @@ namespace myTNB_Android.Src.Utils
                     .Build()
                     .GetProcessedTextView();
                 tooltipPrimaryCTA.Text = this.ctaLabel;
-                tooltipSecondaryCTA.Text = this.secondaryCTALabel;
+                //tooltipSecondaryCTA.Text = this.secondaryCTALabel;
             }
             else if (this.toolTipType == ToolTipType.IMAGE_HEADER_TWO_BUTTON)
             {

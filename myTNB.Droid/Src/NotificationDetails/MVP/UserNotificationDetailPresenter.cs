@@ -343,7 +343,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
                     if (account == null)
                     {
-                        string notificationAccountName = "Customer Account Number " + notificationDetails.AccountNum;
+                        string notificationAccountName = "Contract Account Number " + notificationDetails.AccountNum;
                         notificationDetailMessage = Regex.Replace(notificationDetails.Message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
                     }
                     else

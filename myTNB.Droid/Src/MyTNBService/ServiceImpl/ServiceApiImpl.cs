@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using myTNB_Android.Src.Login.Models;
 using myTNB_Android.Src.MyTNBService.InterfaceAPI;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
@@ -224,7 +225,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<ManageAccessAccountListNullResponse> CancelInvitation_OT([Body] Request.BaseRequest request)
+        public Task<ManageAccessAccountListNullResponse> CancelInvitation_OT([Body] Request.BaseRequestV4 request)
         {
             return api.CancelInvitation_OT<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api cancel invited user
         }
@@ -235,7 +236,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<ManageAccessAccountListNullResponse> SendReInviteEmail([Body] Request.BaseRequest request)
+        public Task<ManageAccessAccountListNullResponse> SendReInviteEmail([Body] Request.BaseRequestV4 request)
         {
             return api.SendReInviteEmail<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //irul   //api resend invited user
         }
@@ -789,6 +790,26 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<PaymentTransactionIdResponse> GetPaymentTransactionId([Body] Request.BaseRequest request)
         {
             return api.GetPaymentTransactionId<PaymentTransactionIdResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetPaymentTransactionId with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UpdateUserStatusActivateResponse> UpdateUserStatusActivate([Body] Request.BaseRequestV4 request)
+        {
+            return api.UpdateUserStatusActivate<UpdateUserStatusActivateResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetPaymentTransactionId with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UpdateUserStatusActivateResponse> UpdateUserStatusDeactivate([Body] Request.BaseRequestV4 request)
+        {
+            return api.UpdateUserStatusDeactivate<UpdateUserStatusActivateResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
     }
 }

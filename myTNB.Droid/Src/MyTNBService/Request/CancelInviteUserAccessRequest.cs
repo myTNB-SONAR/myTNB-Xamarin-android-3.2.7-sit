@@ -1,7 +1,7 @@
 ﻿using System;
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class CancelInviteUserAccessRequest : BaseRequest
+    public class CancelInviteUserAccessRequest : BaseRequestV4
     {
         public string Email;
         public string AccountId;

@@ -7127,6 +7127,8 @@
     <Compile Include="Src\MyTNBService\Request\GetUserNotificationTypePreferencesRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetAcccountsV4Request.cs" />
     <AndroidResource Include="Resources\drawable\silver_chalice_button_outline_word.xml" />
+    <Compile Include="Src\MyTNBService\Request\UpdateUserStatusActivateRequest.cs" />
+    <Compile Include="Src\Login\Models\UpdateUserStatusActivateResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

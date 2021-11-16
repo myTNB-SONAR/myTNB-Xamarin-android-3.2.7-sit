@@ -107,7 +107,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 		public void Logout()
 		{
-			UserEntity.RemoveActive();
+            UserEntity.RemoveActive();
 			UserRegister.RemoveActive();
 			CustomerBillingAccount.RemoveActive();
             UserManageAccessAccount.RemoveActive();
@@ -122,7 +122,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			SummaryDashBoardAccountEntity.RemoveAll();
 			SelectBillsEntity.RemoveAll();
 			mView.ShowPreLogin();
-		}
+            
+        }
 
 		public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
 		{

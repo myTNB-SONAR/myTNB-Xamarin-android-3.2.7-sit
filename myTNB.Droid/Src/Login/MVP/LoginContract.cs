@@ -139,6 +139,18 @@ namespace myTNB_Android.Src.Login.MVP
             void ShowError(string errorMessage);
 
 
+            // /// <summary>
+            // /// Shows a snackbar after success email verification through dynamic link
+            // /// </summary>
+            void ShowUpdateUserStatusActivate();
+
+
+            // /// <summary>
+            // /// Shows a snackbar after success removed account through dynamic link
+            // /// </summary>
+            void ShowUpdateUserStatusDeactivate();
+
+
 #if STUB
             string GetCustomerAccountsStub();
 
@@ -186,6 +198,18 @@ namespace myTNB_Android.Src.Login.MVP
             /// </summary>
             /// <param name="email"></param>
             void ResendEmailVerify(string apiKeyId, string email);
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="userId"></param>
+            void UpdateUserStatusActivate(string userId);
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="userId"></param>
+            void UpdateUserStatusDeactivate(string userId);
 
         }
     }

@@ -289,6 +289,19 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             Task OnGetAppLaunchCache();
 
             Task OnWaitSplashScreenDisplay(int millisecondDelay);
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="userId"></param>
+            void UpdateUserStatusActivate(string userId);
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="userId"></param>
+            void UpdateUserStatusDeactivate(string userId);
+
         }
     }
 }

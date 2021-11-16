@@ -84,7 +84,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
+           <!-- <TextView
                 android:id="@+id/txtBtnPrimary"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -97,16 +97,16 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:text="Later"
-                android:textSize="16dp" />
-            <View
+                android:textSize="16dp" />-->
+            <!--<View
                 android:id="@id/divider"
                 android:layout_width="1dp"
                 android:alpha="0.2"
                 android:layout_height="53dp"
                 android:layout_centerHorizontal="true"
-                android:background="@color/tunaGrey" />
+                android:background="@color/tunaGrey" />-->
             <TextView
-                android:id="@+id/txtBtnSecondary"
+                android:id="@+id/txtBtnPrimary"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_alignParentRight="true"

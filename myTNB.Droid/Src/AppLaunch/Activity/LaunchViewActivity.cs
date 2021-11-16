@@ -48,6 +48,8 @@ using myTNB_Android.Src.NotificationDetails.Activity;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Login.Activity;
 using System.Text.RegularExpressions;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -87,6 +89,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         private string urlSchemaData = "";
         private string urlSchemaPath = "";
+        private string userID = "";
         private Snackbar mSnackBar;
         private Snackbar mNoInternetSnackbar;
         private Snackbar mUnknownExceptionSnackBar;
@@ -484,6 +487,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             login.PutExtra(urlSchemaData, true);
                             login.PutExtra(fromlink, true);
+                            //login.PutExtra("userID", userID);
                             SetResult(Result.Ok, login);
                         }
                     }
@@ -1317,27 +1321,46 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         Match match = regex.Match(deepLinkUrl);
                         string value = match.Value.Replace("UpdateUserStatusActivate", "");
                         string userID = value.Replace(@"/", "");
+                        bool flag = UserSessions.GetLoginflag(PreferenceManager.GetDefaultSharedPreferences(this));
 
-                        UserSessions.DoValidateEmailPage(PreferenceManager.GetDefaultSharedPreferences(this));
-                        UserSessions.SaveUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this), userID);
-                        SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Login);
-                        ShowLogin(urlSchemaData);
-                        
+                        if (flag)
+                        {
+                            this.userActionsListener.UpdateUserStatusActivate(userID);
+                        }
+                        else
+                        {
+                            UserSessions.DoflagDynamicLink(PreferenceManager.GetDefaultSharedPreferences(this));
+                            UserSessions.UpdateUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this));
+                            UserSessions.SaveUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this), userID);
+                            SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Login);
+                            ShowLogin(urlSchemaData);
+
+                        }
                     }
                     else if (deepLinkUrl.Contains("UpdateUserStatusDeactivate"))
                     {
                         
                         urlSchemaData = "UpdateUserStatusDeactivate";
 
-                        Regex regex = new Regex("\\bUpdateUserStatusActivate.*\\b");
+                        Regex regex = new Regex("\\bUpdateUserStatusDeactivate.*\\b");
                         Match match = regex.Match(deepLinkUrl);
-                        string value = match.Value.Replace("UpdateUserStatusActivate", "");
+                        string value = match.Value.Replace("UpdateUserStatusDeactivate", "");
                         string userID = value.Replace(@"/", "");
+                        bool flag = UserSessions.GetLoginflag(PreferenceManager.GetDefaultSharedPreferences(this));
 
-                        UserSessions.DoValidateEmailPage(PreferenceManager.GetDefaultSharedPreferences(this));
-                        UserSessions.SaveUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this), userID);
-                        SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Login);
-                        ShowLogin(urlSchemaData);
+                        if (flag)
+                        {
+                            this.userActionsListener.UpdateUserStatusDeactivate(userID);
+                        }
+                        else
+                        {
+
+                            UserSessions.DoflagDynamicLink(PreferenceManager.GetDefaultSharedPreferences(this));
+                            UserSessions.UpdateUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this));
+                            UserSessions.SaveUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this), userID);
+                            SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Login);
+                            ShowLogin(urlSchemaData);
+                        }
 
                     }
                 }
