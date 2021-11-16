@@ -19,8 +19,6 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
 
             void ShowErrorMessage(string msg);
 
-            void OnDownloadPDF();
-
             void CreatePDF(GetPaymentReceiptResponse response);
 
             void ShowPaymentReceiptError();
