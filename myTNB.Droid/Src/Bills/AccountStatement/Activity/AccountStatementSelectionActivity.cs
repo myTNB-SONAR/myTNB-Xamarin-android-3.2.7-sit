@@ -206,6 +206,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
 
             txtAcctStmtFooterLabel.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.DISCLAIMER);
             txtAcctStmtHeaderLabel.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.STATEMENT_PERIOD_TITLE);
+            btnSubmit.Text = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.CONFIRM);
         }
 
         private void SetCTAEnable()

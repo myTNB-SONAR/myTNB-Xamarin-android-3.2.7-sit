@@ -161,6 +161,7 @@
             internal static readonly string STATEMENT_PERIOD_TITLE = "preferredStatementPeriodTitle";
             internal static readonly string PAST_3_MONTHS = "past3Months";
             internal static readonly string PAST_6_MONTHS = "past6Months";
+            internal static readonly string CONFIRM = "confirm";
         }
 
         internal struct PushNotificationDetails
