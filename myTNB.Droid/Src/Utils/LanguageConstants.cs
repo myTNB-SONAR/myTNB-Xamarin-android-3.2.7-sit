@@ -162,6 +162,7 @@
             internal static readonly string PAST_3_MONTHS = "past3Months";
             internal static readonly string PAST_6_MONTHS = "past6Months";
             internal static readonly string CONFIRM = "confirm";
+            internal static readonly string NO_TRANSACTION_MSG = "noTransactionMessage";
         }
 
         internal struct PushNotificationDetails

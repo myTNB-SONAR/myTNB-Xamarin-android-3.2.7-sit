@@ -130,9 +130,7 @@ namespace myTNB_Android.Src.Bills.AccountStatement.Activity
 
             try
             {
-                //string message = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.TIMEOUT_MSG)
-                //stub
-                string message = "Seems like you have no transaction history to request for an account statement, try again next time! ";
+                string message = Utility.GetLocalizedLabel(LanguageConstants.STATEMENT_PERIOD, LanguageConstants.StatementPeriod.NO_TRANSACTION_MSG);
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     txtAcctStmntEmptyMsg.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
