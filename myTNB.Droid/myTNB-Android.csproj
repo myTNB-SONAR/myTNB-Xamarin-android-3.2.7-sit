@@ -7136,6 +7136,8 @@
     <Compile Include="Src\Helper\UrlUtility.cs" />
     <Compile Include="Src\OverVoltageClaim\Model\DTOWebView.cs" />
     <Compile Include="Src\OverVoltageFeedback\Model\DTOWebView.cs" />
+    <Compile Include="Src\Utils\Notification\NotificationUtil.cs" />
+    <Compile Include="Src\Utils\Notification\Notification.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -8880,6 +8882,7 @@
     <Folder Include="Src\PaymentInfoSunmittedSuccess\Activity\" />
     <Folder Include="Src\Helper\" />
     <Folder Include="Src\OverVoltageClaim\Model\" />
+    <Folder Include="Src\Utils\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

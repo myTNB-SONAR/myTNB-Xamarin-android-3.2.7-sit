@@ -31,20 +31,14 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
 using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponseAWS;
 using myTNB;
-using System.Net.Http;
-using DynatraceAndroid;
-using myTNB_Android.Src.Notifications.Models;
-using myTNB_Android.Src.NotificationDetails.Models;
-using static myTNB_Android.Src.MyTNBService.Response.UserNotificationDetailsResponse;
-using myTNB_Android.Src.SummaryDashBoard.Models;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Async;
-using myTNB_Android.Src.DeviceCache;
 using fbm = Firebase.Messaging;
 using Android.Gms.Extensions;
 using myTNB_Android.Src.Utils.Deeplink;
 using myTNB.Mobile;
+using myTNB_Android.Src.Utils.Notification;
+
+using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -319,7 +313,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                                         bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
 
-                                        if (UserSessions.GetNotificationType(mSharedPref) != null
+                                        if (hasNotification && isLoggedInEmail && (NotificationUtil.Instance.Type == NotificationType.AppUpdate ||
+                                            NotificationUtil.Instance.Type == NotificationType.AccountStatement))
+                                        {
+                                            UserSessions.RemoveNotificationSession(mSharedPref);
+                                            MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
+                                            this.mView.ShowNotificationDetailsForType(NotificationUtil.Instance.Type);
+                                        }
+                                        else if (UserSessions.GetNotificationType(mSharedPref) != null
                                             && "APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper())
                                             && UserSessions.ApplicationStatusNotification != null)
                                         {
@@ -634,6 +635,66 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
         }
 
+        public async void OnShowNotificationDetailsForType(string notificationType, string pushMapId)
+        {
+            try
+            {
+                this.mView.ShowProgress();
+                UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(string.Empty, notificationType)
+                {
+                    PushMapId = pushMapId
+                };
+                UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetails(request);
+                if (response.IsSuccessResponse())
+                {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
+                    //stub need to check on how to set the notification to read
+                    //UserNotificationEntity.UpdateIsRead(response.GetData().UserNotificationDetail.Id, true);
+                    this.mView.ShowDetailsForType(response.GetData().UserNotificationDetail);
+                }
+                else
+                {
+                    //stub check with ios on the handling for failed scenario
+                    //this.mView.ShowRetryOptionsCancelledException(null);
+                    //this.mView.HideProgressDialog();
+                    GetAccountAWS();
+                }
+
+                ////MOCK RESPONSE
+                //this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
+                this.mView.HideProgressDialog();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         /// <summary>
         /// Evaluate failed AppLaunchMasterData service for retry.

@@ -144,6 +144,8 @@ namespace myTNB.Mobile
             public const string DBR_Owner = "DBROWNER";
             public const string DBR_NonOwner = "DBRNONOWNER";
             public const string APPLICATIONSTATUS = "APPLICATIONSTATUS";
+            public const string APP_UPDATE = "APPUPDATE";
+            public const string ACCOUNT_STATEMENT = "ACCOUNTSTATEMENT";
         }
 
         public struct OSType

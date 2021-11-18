@@ -12,7 +12,7 @@ using Refit;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
     public class AppLaunchContract
@@ -107,7 +107,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// <param name="notificationData">UserNotificationData</param>
             /// <param name="position">integer</param>
             void ShowDetails(NotificationDetails.Models.NotificationDetails details);
-            
+
+            void ShowDetailsForType(NotificationDetails.Models.NotificationDetails details);
 
             /// <summary>
             /// Show notification details
@@ -227,6 +228,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void ShowSomethingWrongException();
             //void OnShowNotificationDetails();
             void ShowNotificationDetails();
+
+            void ShowNotificationDetailsForType(NotificationType type);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -278,6 +281,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void OnUpdateApp();
 
             void OnShowNotificationDetails(string NotificationTypeId, string BCRMNotificationTypeId, string NotificationRequestId);
+
+            void OnShowNotificationDetailsForType(string notificationType, string pushMapId);
 
             Task OnGetAppLaunchCache();
 

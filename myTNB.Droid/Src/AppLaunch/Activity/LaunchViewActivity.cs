@@ -43,14 +43,12 @@ using Newtonsoft.Json;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile.AWS.Models;
-using Firebase.Iid;
 using myTNB_Android.Src.NotificationDetails.Activity;
 using myTNB_Android.Src.Utils.Deeplink;
 using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Notifications.Models;
-using myTNB_Android.Src.NotificationDetails.Models;
-using myTNB_Android.Src.Notifications.Adapter;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
+using myTNB_Android.Src.Utils.Notification;
+using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -144,6 +142,12 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             string accountNumber = Intent.Extras.GetString("AccountNumber");
                             UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
+                        }
+                        else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE)
+                        {
+                            NotificationUtil.Instance.SaveData(Intent.Extras);
+                            UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         }
                         else
                         {
@@ -667,6 +671,19 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);
         }
 
+        public void ShowNotificationDetailsForType(NotificationType type)
+        {
+            switch (type)
+            {
+                case NotificationType.AppUpdate:
+                case NotificationType.AccountStatement:
+                    this.mPresenter.OnShowNotificationDetailsForType(NotificationUtil.Instance.NotificationType, NotificationUtil.Instance.PushMapId);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details)
         {
             try
@@ -678,6 +695,14 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 Utility.LoggingNonFatalError(ne);
             }
+            isAppLaunchDone = true;
+            Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
+            notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+            StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+        }
+
+        public void ShowDetailsForType(NotificationDetails.Models.NotificationDetails details)
+        {
             isAppLaunchDone = true;
             Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
