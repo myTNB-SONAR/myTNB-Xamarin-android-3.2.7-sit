@@ -369,11 +369,11 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdateUserStatusActivate")]
-        Task<T> UpdateUserStatusActivate<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);   //dynamic link verified
+        Task<T> UpdateUserStatusActivate<T>([Body] MyTNBService.Request.UpdateUserStatusActivateRequest request, CancellationToken token);   //dynamic link verified
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdateUserStatusDeactivate")]
-        Task<T> UpdateUserStatusDeactivate<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);   //dynamic link removed account
+        Task<T> UpdateUserStatusDeactivate<T>([Body] MyTNBService.Request.UpdateUserStatusActivateRequest request, CancellationToken token);   //dynamic link removed account
 
     }
 }

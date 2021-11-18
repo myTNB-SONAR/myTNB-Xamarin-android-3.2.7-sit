@@ -50,31 +50,6 @@
             android:text="Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!"
             android:textSize="14dp"
             android:lineSpacingExtra="3dp"/>
-        <LinearLayout
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <CheckBox
-                android:id="@+id/ToolTipCheckBox"
-                android:layout_marginLeft="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/checkbox_selector" />
-            <TextView
-                android:id="@+id/txtToolTipTitleCheckBox"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_gravity="center_vertical"
-                android:textStyle="normal"
-                android:text="Don't show this again"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="16dp"
-                android:textColor="@color/tunaGrey"
-                android:textSize="12dp"
-                android:lineSpacingExtra="3dp"/>
-        </LinearLayout>
         <View
             android:layout_marginTop="8dp"
             android:layout_height="1dp"
@@ -84,27 +59,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-           <TextView
-                android:id="@+id/txtBtnPrimary"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/divider"
-                android:gravity="center"
-                android:textColor="@color/powerBlue"
-                android:padding="16dp"
-                android:singleLine="true"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text="Later"
-                android:textSize="16dp" />
-           <View
-                android:id="@id/divider"
-                android:layout_width="1dp"
-                android:alpha="0.2"
-                android:layout_height="53dp"
-                android:layout_centerHorizontal="true"
-                android:background="@color/tunaGrey" />
             <TextView
                 android:id="@+id/txtBtnPrimary"
                 android:layout_height="wrap_content"

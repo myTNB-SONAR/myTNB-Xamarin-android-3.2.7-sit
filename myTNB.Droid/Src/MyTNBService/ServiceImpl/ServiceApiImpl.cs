@@ -797,7 +797,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<UpdateUserStatusActivateResponse> UpdateUserStatusActivate([Body] Request.BaseRequestV4 request)
+        public Task<UpdateUserStatusActivateResponse> UpdateUserStatusActivate([Body] Request.UpdateUserStatusActivateRequest request)
         {
             return api.UpdateUserStatusActivate<UpdateUserStatusActivateResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
@@ -807,7 +807,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<UpdateUserStatusActivateResponse> UpdateUserStatusDeactivate([Body] Request.BaseRequestV4 request)
+        public Task<UpdateUserStatusActivateResponse> UpdateUserStatusDeactivate([Body] Request.UpdateUserStatusActivateRequest request)
         {
             return api.UpdateUserStatusDeactivate<UpdateUserStatusActivateResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }

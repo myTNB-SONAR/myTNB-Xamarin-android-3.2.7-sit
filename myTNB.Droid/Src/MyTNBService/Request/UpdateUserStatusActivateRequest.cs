@@ -1,15 +1,15 @@
 ﻿using System;
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class UpdateUserStatusActivateRequest : BaseRequestV4
+    public class UpdateUserStatusActivateRequest
     {
         public string userID;
-        //public string lang;
+        public string lang;
 
-        public UpdateUserStatusActivateRequest(string userID)
+        public UpdateUserStatusActivateRequest(string userID, string lang)
         {
             this.userID = userID;
-            //this.lang = lang;
+            this.lang = lang;
         }
     }
 }

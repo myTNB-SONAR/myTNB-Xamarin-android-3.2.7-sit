@@ -1499,7 +1499,17 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             try
             {
-                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid);
+                string lang;
+                if (LanguageUtil.GetAppLanguage() == "MS")
+                {
+                    lang = "MS";
+                }
+                else
+                {
+                    lang = "EN";
+                }
+
+                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid,lang);
                 string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
                 var updateUserStatusActivateResponse = await ServiceApiImpl.Instance.UpdateUserStatusActivate(updateUserStatusActivateRequest);
 
@@ -1559,7 +1569,17 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             try
             {
-                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid);
+                string lang;
+                if (LanguageUtil.GetAppLanguage() == "MS")
+                {
+                    lang = "MS";
+                }
+                else
+                {
+                    lang = "EN";
+                }
+
+                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid,lang);
                 string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
                 var updateUserStatusActivateResponse = await ServiceApiImpl.Instance.UpdateUserStatusDeactivate(updateUserStatusActivateRequest);
 

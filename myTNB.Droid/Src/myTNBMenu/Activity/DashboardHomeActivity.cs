@@ -652,19 +652,26 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 if(user.IdentificationNo.Equals("") && !UserSessions.IsIdDialogUpdated(this.mPref))
                 {
+                    //with check box
+                    //Utility.ShowIdentificationUpdateProfileDialog(this, () =>
+                    //{
+                    //    ShowIdentificationUpdate();
+                    //},
+                    //() =>
+                    //{
+                    //    UserSessions.UpdateIdDialog(this.mPref);
+                    //},
+                    //() =>
+                    //{
+                    //    this.mPref.Edit().Remove("DialogIDUpdated").Apply();
+                    //}
+                    //);
+
                     Utility.ShowIdentificationUpdateProfileDialog(this, () =>
                     {
                         ShowIdentificationUpdate();
-                    },
-                    () =>
-                    {
-                        UserSessions.UpdateIdDialog(this.mPref);
-                    },
-                    () =>
-                    {
-                        this.mPref.Edit().Remove("DialogIDUpdated").Apply();
                     }
-                    );
+                   );
                 }
             }
             catch (System.Exception e)

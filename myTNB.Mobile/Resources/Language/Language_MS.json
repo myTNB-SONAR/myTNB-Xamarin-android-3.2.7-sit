@@ -234,10 +234,10 @@
     //addby wan
     "later": "Tangguhkan",
     "update": "Kemas kini",
-    "proceed": "Teruskan",
+    "btnIcUpdate": "Kemas Kini Sekarang",
     "chkBoxTitle": "Jangan tunjuk ini lagi",
-    "titleIcUpdate": "Lengkapkan profil myTNB anda sekarang untuk pengalaman myTNB yang lebih baik!",
-    "bodyIcUpdate": "Nombor pengenalan anda tidak tercatat dalam profil myTNB anda. Kemas kini sekarang untuk akses dan kawalan yang lebih menyeluruh atas akaun elektrik anda!",
+    "titleIcUpdate": "Kemas kini profil anda sekarang untuk terus menikmati myTNB!",
+    "bodyIcUpdate": "Nombor kad pengenalan anda tidak direkodkan di dalam profil myTNB, kemas kini profil anda untuk menikmati lebih tawaran di myTNB!",
     "tutorialUpdateNicknameBtn": "Kemas kini Nama Gelaran",
     "tutorialUsageTitle": "Lihat dan urus akaun di sini.",
     "tutorialUsageDesc": "Lihat butiran akaun anda dengan mudah dan urus pengguna lain yang mempunyai akses pada akaun anda di sini.",
@@ -1433,7 +1433,7 @@
     "apply": "Guna Pilihan"
   },
   "UpdateID": {
-    "title": "Kemas kini Nombor Pengenalan",
+    "title": "Lengkapkan Profil Anda",
     "updateIdLabelTitle": "Sediakan kami nombor pengenalan anda untuk pengalaman yang lebih baik!",
     "updateIdLabelDetails": "Dapatkan akses dan kawalan yang lebih menyeluruh atas akaun elektrik anda di myTNB dengan membantu kami mengesahkan pengenalan diri anda",
     "confrimButton": "Sahkan"

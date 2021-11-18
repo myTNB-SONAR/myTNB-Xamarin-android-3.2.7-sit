@@ -166,19 +166,11 @@ namespace myTNB_Android.Src.Login.Activity
 
                 if (UpdateUserStatusActivate)
                 {
-                    //var sharedpref_data = UserSessions.GetUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this)).ToString();
-                    //bool userid = string.Parse(sharedpref_data);
-                    //ShowUpdateUserStatusActivate();
-                    //string userid = UserSessions.GetUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this)).ToString();
                     string userID = UserSessions.GetUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this));
                     this.userActionsListener.UpdateUserStatusActivate(userID);
-                   
                 }
                 else if (UpdateUserStatusDeactivate)
                 {
-                    //ShowUpdateUserStatusDeactivate();
-                    //UserSessions.DoUnflagDynamicLink(PreferenceManager.GetDefaultSharedPreferences(this));
-
                     string userID = UserSessions.GetUserIDEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this));
                     this.userActionsListener.UpdateUserStatusDeactivate(userID);
                 }
@@ -350,18 +342,15 @@ namespace myTNB_Android.Src.Login.Activity
             
         }
 
-        public void ShowUpdateUserStatusActivate()
+        public void ShowUpdateUserStatusActivate(string message)
         {
             try
             {
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("Login", "toast_email_activated"))), Snackbar.LengthIndefinite)
+                Snackbar saveSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {
-                                 // EMPTY WILL CLOSE SNACKBAR
-                                 //UserSessions.DoResetLink(PreferenceManager.GetDefaultSharedPreferences(this));
                                  UserSessions.DoUnflagDynamicLink(PreferenceManager.GetDefaultSharedPreferences(this));
-
                              }
                             );
                 View v = saveSnackBar.View;
@@ -378,15 +367,15 @@ namespace myTNB_Android.Src.Login.Activity
             }
         }
 
-        public void ShowUpdateUserStatusDeactivate()
+        public void ShowUpdateUserStatusDeactivate(string message)
         {
             try
             {
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("Login", "toast_email_deactivated"))), Snackbar.LengthIndefinite)
+                Snackbar saveSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {
-                                 // EMPTY WILL CLOSE SNACKBAR
+                                 UserSessions.DoUnflagDynamicLink(PreferenceManager.GetDefaultSharedPreferences(this));
                              }
                             );
                 View v = saveSnackBar.View;

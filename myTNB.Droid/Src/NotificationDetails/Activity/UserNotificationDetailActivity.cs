@@ -485,7 +485,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             Intent manageAccount = new Intent(this, typeof(ManageSupplyAccountActivityEdit));
             manageAccount.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            manageAccount.PutExtra(Constants.SELECTED_ACCOUNT_POSITION, position);
+            //manageAccount.PutExtra(Constants.SELECTED_ACCOUNT_POSITION, position);
             StartActivityForResult(manageAccount, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
         }
 

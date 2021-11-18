@@ -137,6 +137,7 @@
     <LangVersion>8.0</LangVersion>
     <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
     <EnableLLVM>false</EnableLLVM>
+    <AndroidManagedSymbols>false</AndroidManagedSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AndroidEasingFunctions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -7129,6 +7130,10 @@
     <AndroidResource Include="Resources\drawable\silver_chalice_button_outline_word.xml" />
     <Compile Include="Src\MyTNBService\Request\UpdateUserStatusActivateRequest.cs" />
     <Compile Include="Src\Login\Models\UpdateUserStatusActivateResponse.cs" />
+    <AndroidResource Include="Resources\layout\CustomToolTipWithIDDialogWithButtonLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

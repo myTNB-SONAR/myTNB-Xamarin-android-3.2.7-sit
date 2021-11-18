@@ -142,13 +142,13 @@ namespace myTNB_Android.Src.Login.MVP
             // /// <summary>
             // /// Shows a snackbar after success email verification through dynamic link
             // /// </summary>
-            void ShowUpdateUserStatusActivate();
+            void ShowUpdateUserStatusActivate(string message);
 
 
             // /// <summary>
             // /// Shows a snackbar after success removed account through dynamic link
             // /// </summary>
-            void ShowUpdateUserStatusDeactivate();
+            void ShowUpdateUserStatusDeactivate(string message);
 
 
 #if STUB

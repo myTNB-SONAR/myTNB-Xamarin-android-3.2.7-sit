@@ -314,25 +314,53 @@ namespace myTNB_Android.Src.Utils
         }
 
 
-        public static void ShowIdentificationUpdateProfileDialog(Activity context, Action confirmAction, Action checkboxAction, Action uncheckboxAction, Action cancelAction = null)
+        //public static void ShowIdentificationUpdateProfileDialog(Activity context, Action confirmAction, Action checkboxAction, Action uncheckboxAction, Action cancelAction = null)
+        //{
+        //    MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.DIALOGBOX_WITH_CHECKBOX)
+        //                .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "titleIcUpdate"))
+        //                .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "bodyIcUpdate"))
+        //                .SetTitleCheckBox(Utility.GetLocalizedLabel("Common", "dontShowThisAgain"))
+        //                .SetContentGravity(Android.Views.GravityFlags.Left)
+        //                .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "proceed"))
+        //                .SetSecondaryCTAaction(() =>
+        //                {
+        //                    confirmAction();
+        //                })
+        //                .SetCheckBoxCTaction(() =>
+        //                {
+        //                    checkboxAction();
+        //                })
+        //                .SetUnCheckBoxCTaction(() =>
+        //                {
+        //                    uncheckboxAction();
+        //                })
+        //                .Build();
+
+        //    tooltipBuilder.SetCTAaction(() =>
+        //    {
+        //        if (cancelAction != null)
+        //        {
+        //            cancelAction();
+        //            tooltipBuilder.DismissDialog();
+        //        }
+        //        else
+        //        {
+        //            tooltipBuilder.DismissDialog();
+        //        }
+        //    }).Show();
+        //}
+
+        public static void ShowIdentificationUpdateProfileDialog(Activity context, Action confirmAction, Action cancelAction = null)
         {
-            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.DIALOGBOX_WITH_CHECKBOX)
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.DIALOGBOX_WITH_IMAGE_ONE_BUTTON)
                         .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "titleIcUpdate"))
                         .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "bodyIcUpdate"))
                         .SetTitleCheckBox(Utility.GetLocalizedLabel("Common", "dontShowThisAgain"))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
-                        .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "proceed"))
+                        .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "btnIcUpdate"))
                         .SetCTAaction(() =>
                         {
                             confirmAction();
-                        })
-                        .SetCheckBoxCTaction(() =>
-                        {
-                            checkboxAction();
-                        })
-                        .SetUnCheckBoxCTaction(() =>
-                        {
-                            uncheckboxAction();
                         })
                         .Build();
 
@@ -349,6 +377,8 @@ namespace myTNB_Android.Src.Utils
                 }
             }).Show();
         }
+
+        
 
         public static void ShowEmailErrorDialog(Activity context, string selectedAction, Action confirmAction, Action cancelAction = null)
         {

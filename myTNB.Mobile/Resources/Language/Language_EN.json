@@ -235,10 +235,10 @@
     //addby wan
     "later": "Later",
     "update": "Update",
-    "proceed": "Proceed",
+    "btnIcUpdate": "Update Now",
     "chkBoxTitle": "Don’t show this again",
-    "titleIcUpdate": "Complete your myTNB profile now for a better myTNB experience!",
-    "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!",
+    "titleIcUpdate": "Update your profile now to continue enjoying myTNB!",
+    "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update your profile now to continue enjoying more TNB offerings!",
     "tutorialUpdateNicknameBtn": "Update Nickname",
     "tutorialUsageTitle": "View and manage your account details here.",
     "tutorialUsageDesc": "Easily view your account details and manage who has access to your account from here.",
@@ -1438,7 +1438,7 @@
     "apply": "Apply"
   },
   "UpdateID": {
-    "title": "Update Identification Number",
+    "title": "Complete Your Profile",
     "updateIdLabelTitle": "Provide your identification number for better experience!",
     "updateIdLabelDetails": "Get better access and controls over your electricity accounts on myTNB by helping us validate your identification",
     "confrimButton": "Confirm"

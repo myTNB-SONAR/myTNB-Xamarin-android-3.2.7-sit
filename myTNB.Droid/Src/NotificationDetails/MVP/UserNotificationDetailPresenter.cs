@@ -714,6 +714,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             accountData.AddStreet = account.AccountStAddress;
             accountData.IsOwner = account.isOwned;
             accountData.AccountCategoryId = account.AccountCategoryId;
+            accountData.IsHaveAccess = account.IsHaveAccess;
+            accountData.IsApplyEBilling = account.IsApplyEBilling;
             this.mView.ViewManageAccess(accountData);
         }
 

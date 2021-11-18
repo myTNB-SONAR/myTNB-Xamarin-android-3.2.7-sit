@@ -55,7 +55,17 @@ namespace myTNB_Android.Src.Login.MVP
         {
             try
             {
-                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid);
+                string lang;
+                if (LanguageUtil.GetAppLanguage() == "MS")
+                {
+                    lang = "MS";
+                }
+                else
+                {
+                    lang = "EN";
+                }
+
+                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid, lang);
                 string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
                 var updateUserStatusActivateResponse = await ServiceApiImpl.Instance.UpdateUserStatusActivate(updateUserStatusActivateRequest);
 
@@ -70,7 +80,7 @@ namespace myTNB_Android.Src.Login.MVP
                 {
                    
                     this.mView.HideProgressDialog();
-                    this.mView.ShowUpdateUserStatusActivate();
+                    this.mView.ShowUpdateUserStatusActivate(updateUserStatusActivateResponse.Response.DisplayMessage);
                     UserSessions.DoUnflagDynamicLink(mSharedPref);
                         
                     
@@ -115,7 +125,17 @@ namespace myTNB_Android.Src.Login.MVP
         {
             try
             {
-                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid);
+                string lang;
+                if (LanguageUtil.GetAppLanguage() == "MS")
+                {
+                    lang = "MS";
+                }
+                else
+                {
+                    lang = "EN";
+                }
+
+                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid,lang);
                 string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
                 var updateUserStatusActivateResponse = await ServiceApiImpl.Instance.UpdateUserStatusDeactivate(updateUserStatusActivateRequest);
 
@@ -130,7 +150,7 @@ namespace myTNB_Android.Src.Login.MVP
                 {
 
                     this.mView.HideProgressDialog();
-                    this.mView.ShowUpdateUserStatusDeactivate();
+                    this.mView.ShowUpdateUserStatusDeactivate(updateUserStatusActivateResponse.Response.DisplayMessage);
                     UserSessions.DoUnflagDynamicLink(mSharedPref);
 
 
