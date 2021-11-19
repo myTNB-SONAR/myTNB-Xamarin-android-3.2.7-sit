@@ -180,6 +180,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM))
                     {
                         notificationDetails = DeSerialze<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
+                        SetToolBarTitle(notificationDetails.HeaderTitle);
                     }
 
                     if (extras.ContainsKey(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM))
@@ -191,7 +192,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_LIST_ITEM))
                     {
                         userNotificationData = DeSerialze<UserNotificationData>(extras.GetString(Constants.SELECTED_NOTIFICATION_LIST_ITEM));
-                        SetToolBarTitle(userNotificationData.Title);
+                        SetToolBarTitle(userNotificationData.HeaderTitle);
                     }
 
                     position = extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION);

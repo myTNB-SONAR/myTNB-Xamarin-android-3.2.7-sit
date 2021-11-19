@@ -64,6 +64,9 @@ namespace myTNB_Android.Src.Notifications.Models
         [JsonProperty("isForceDisplay")]
         public bool IsForceDisplay { get; set; }
 
+        [JsonProperty("HeaderTitle")]
+        public string HeaderTitle { get; set; }
+
         public bool ShowSelectButton
         {
             get
@@ -107,7 +110,8 @@ namespace myTNB_Android.Src.Notifications.Models
                 NotificationType = userNotification.NotificationType,
                 Target = userNotification.Target,
                 ODNBatchSubcategory = userNotification.ODNBatchSubcategory,
-                IsForceDisplay = userNotification.IsForceDisplay
+                IsForceDisplay = userNotification.IsForceDisplay,
+                HeaderTitle = userNotification.HeaderTitle
             };
         }
     }

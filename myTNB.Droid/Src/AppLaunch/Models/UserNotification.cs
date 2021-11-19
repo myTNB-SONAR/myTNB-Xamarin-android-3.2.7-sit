@@ -48,5 +48,8 @@ namespace myTNB_Android.Src.AppLaunch.Models
 
         [JsonProperty("isForceDisplay")]
         public bool IsForceDisplay { get; set; }
+
+        [JsonProperty("HeaderTitle")]
+        public string HeaderTitle { get; set; }
     }
 }

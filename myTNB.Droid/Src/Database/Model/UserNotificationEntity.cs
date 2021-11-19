@@ -59,6 +59,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("isForceDisplay")]
         public bool IsForceDisplay { get; set; }
 
+        [Column("HeaderTitle")]
+        public string HeaderTitle { get; set; }
+
         public static int CreateTable()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
@@ -98,7 +101,8 @@ namespace myTNB_Android.Src.Database.Model
                 NotificationType = userNotification.NotificationType,
                 Target = userNotification.Target,
                 ODNBatchSubcategory = userNotification.ODNBatchSubcategory,
-                IsForceDisplay = userNotification.IsForceDisplay
+                IsForceDisplay = userNotification.IsForceDisplay,
+                HeaderTitle = userNotification.HeaderTitle
             };
             int rows = db.InsertOrReplace(newRecord);
             //db.Close();
@@ -128,7 +132,8 @@ namespace myTNB_Android.Src.Database.Model
                 NotificationType = userNotification.NotificationType,
                 Target = userNotification.Target,
                 ODNBatchSubcategory = userNotification.ODNBatchSubcategory,
-                IsForceDisplay = userNotification.IsForceDisplay
+                IsForceDisplay = userNotification.IsForceDisplay,
+                HeaderTitle = userNotification.HeaderTitle
             };
 
             //db.InsertOrReplaceAsync(newRecord);

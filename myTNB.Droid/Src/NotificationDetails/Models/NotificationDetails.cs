@@ -55,6 +55,8 @@ namespace myTNB_Android.Src.NotificationDetails.Models
         [JsonProperty("AccountStatementDetail", Required = Newtonsoft.Json.Required.AllowNull)]
         public AccountStatementDetailData AccountStatementDetail;
 
+        [JsonProperty("HeaderTitle")]
+        public string HeaderTitle { get; set; }
 
         public class AccountDetailsData
         {
