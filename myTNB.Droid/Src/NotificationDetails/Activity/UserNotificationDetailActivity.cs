@@ -192,7 +192,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_LIST_ITEM))
                     {
                         userNotificationData = DeSerialze<UserNotificationData>(extras.GetString(Constants.SELECTED_NOTIFICATION_LIST_ITEM));
-                        SetToolBarTitle(userNotificationData.HeaderTitle);
                     }
 
                     position = extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION);
