@@ -76,5 +76,14 @@ namespace myTNB_Android.Src.Utils.Notification
                 }
             }
         }
+
+        public void ClearData()
+        {
+            Type = Type.None;
+            AccountNumber = string.Empty;
+            NotificationType = string.Empty;
+            PushMapId = string.Empty;
+            Email = string.Empty;
+        }
     }
 }

@@ -316,9 +316,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         if (hasNotification && isLoggedInEmail && (NotificationUtil.Instance.Type == NotificationType.AppUpdate ||
                                             NotificationUtil.Instance.Type == NotificationType.AccountStatement))
                                         {
-                                            UserSessions.RemoveNotificationSession(mSharedPref);
-                                            MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
-                                            this.mView.ShowNotificationDetailsForType(NotificationUtil.Instance.Type);
+                                            GetAccountAWS();
                                         }
                                         else if (UserSessions.GetNotificationType(mSharedPref) != null
                                             && "APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper())
@@ -597,67 +595,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 else
                 {
                     this.mView.ShowRetryOptionsCancelledException(null);
-                }
-
-                ////MOCK RESPONSE
-                //this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
-                this.mView.HideProgressDialog();
-            }
-            catch (System.OperationCanceledException e)
-            {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-                // ADD OPERATION CANCELLED HERE
-                this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
-            }
-            catch (ApiException apiException)
-            {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-                // ADD HTTP CONNECTION EXCEPTION HERE
-                this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
-            }
-            catch (Exception e)
-            {
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-                // ADD UNKNOWN EXCEPTION HERE
-                this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public async void OnShowNotificationDetailsForType(string notificationType, string pushMapId)
-        {
-            try
-            {
-                this.mView.ShowProgress();
-                UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(string.Empty, notificationType)
-                {
-                    PushMapId = pushMapId
-                };
-                UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetails(request);
-                if (response.IsSuccessResponse())
-                {
-                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
-                    //stub need to check on how to set the notification to read
-                    //UserNotificationEntity.UpdateIsRead(response.GetData().UserNotificationDetail.Id, true);
-                    this.mView.ShowDetailsForType(response.GetData().UserNotificationDetail);
-                }
-                else
-                {
-                    //stub check with ios on the handling for failed scenario
-                    //this.mView.ShowRetryOptionsCancelledException(null);
-                    //this.mView.HideProgressDialog();
-                    GetAccountAWS();
                 }
 
                 ////MOCK RESPONSE

@@ -56,6 +56,9 @@ using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Bills.AccountStatement;
 using Android.Content.Res;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
+using myTNB_Android.Src.Utils.Notification;
+
+using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -626,6 +629,24 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 this.DeeplinkValidation();
             }
+        }
+
+        public void OnCheckNotification()
+        {
+            bool hasNotification = UserSessions.HasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+            string loggedInEmail = UserEntity.GetActive() != null ? UserEntity.GetActive().Email : string.Empty;
+            bool isLoggedInEmail = loggedInEmail.Equals(UserSessions.GetUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this)));
+            if (hasNotification &&
+                isLoggedInEmail &&
+                NotificationUtil.Instance.Type != NotificationType.None)
+            {
+                this.NotificationValidation();
+            }
+            else
+            {
+                NotificationUtil.Instance.ClearData();
+            }
+            UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(this));
         }
 
         public void ShowFeedbackMenu()

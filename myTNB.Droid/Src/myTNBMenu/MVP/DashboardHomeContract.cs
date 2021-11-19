@@ -149,6 +149,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void OnCheckDeeplink();
 
+            void OnCheckNotification();
+
             void OnCheckUserReward(bool isSitecoreApiFailed);
 
             void OnCheckUserRewardApiFailed();

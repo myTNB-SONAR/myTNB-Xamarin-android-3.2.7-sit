@@ -529,6 +529,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
 
             this.mView.OnCheckDeeplink();
+            this.mView.OnCheckNotification();
         }
 
         private void LoadUsageHistory(CustomerBillingAccount accountSelected)

@@ -16,6 +16,14 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Deeplink;
 using Newtonsoft.Json;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
+using myTNB_Android.Src.Utils.Notification;
+using Android.Preferences;
+using Refit;
+using System;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.NotificationDetails.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -242,6 +250,77 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             Intent viewReceipt = new Intent(mainActivity, typeof(OverVoltageFeedbackDetailActivity));
             viewReceipt.PutExtra("ClaimId", EnquiryDetailsDeeplinkCache.Instance.ClaimID);
             mainActivity.StartActivity(viewReceipt);
+        }
+
+        internal static void NotificationValidation(this DashboardHomeActivity mainActivity)
+        {
+            switch (NotificationUtil.Instance.Type)
+            {
+                case Notification.TypeEnum.AppUpdate:
+                case Notification.TypeEnum.AccountStatement:
+                    UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
+                    OnGetNotificationDetails(mainActivity);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private async static void OnGetNotificationDetails(DashboardHomeActivity mainActivity)
+        {
+            mainActivity.ShowProgressDialog();
+            try
+            {
+                string notifType = NotificationUtil.Instance.NotificationType;
+                string pushMapId = NotificationUtil.Instance.PushMapId;
+                UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(string.Empty, notifType)
+                {
+                    PushMapId = pushMapId
+                };
+                UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetails(request);
+                if (response.IsSuccessResponse())
+                {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
+                    ShowNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+                    mainActivity.HideProgressDialog();
+                }
+                else
+                {
+                    mainActivity.HideProgressDialog();
+                }
+                NotificationUtil.Instance.ClearData();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mainActivity.IsActive())
+                {
+                    mainActivity.HideProgressDialog();
+                }
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mainActivity.IsActive())
+                {
+                    mainActivity.HideProgressDialog();
+                }
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mainActivity.IsActive())
+                {
+                    mainActivity.HideProgressDialog();
+                }
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        internal static void ShowNotificationDetails(this DashboardHomeActivity mainActivity, NotificationDetails.Models.NotificationDetails details)
+        {
+            Intent notificationDetails = new Intent(mainActivity, typeof(UserNotificationDetailActivity));
+            notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+            mainActivity.StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
         }
     }
 }
