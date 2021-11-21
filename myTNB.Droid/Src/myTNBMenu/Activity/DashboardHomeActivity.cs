@@ -25,13 +25,10 @@ using myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP;
 using myTNB_Android.Src.PreLogin.Activity;
-using myTNB_Android.Src.Rating.Activity;
-using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.ViewReceipt.Activity;
 using static Android.Views.View;
 using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
 using myTNB_Android.Src.WhatsNewDetail.MVP;
@@ -45,17 +42,13 @@ using AndroidX.Core.Content;
 using Android.Text;
 using Android.Text.Style;
 using myTNB.Mobile.SessionCache;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Utils.Deeplink;
-using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Bills.AccountStatement;
-using Android.Content.Res;
-using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.Utils.Notification;
 
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
@@ -2454,8 +2447,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             if (MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
             {
-                EBModel isEbfeature = new EBModel();
-                isEbfeature = EligibilitySessionCache.Instance.GetFeatureContent<EBModel>(EligibilitySessionCache.Features.EB);
+                BaseCAListModel isEbfeature = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(EligibilitySessionCache.Features.EB);
                 if (isEbfeature != null)
                 {
                     if (isEbfeature.ContractAccounts != null)

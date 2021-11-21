@@ -32,7 +32,7 @@ namespace myTNB.Mobile
             List<string> caList = new List<string>();
             try
             {
-                DBRModel billRedesignContent = EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.BR);
+                BaseCAListModel billRedesignContent = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.BR);
                 if (billRedesignContent != null
                     && billRedesignContent.ContractAccounts != null
                     && billRedesignContent.ContractAccounts.Count > 0)
@@ -94,7 +94,7 @@ namespace myTNB.Mobile
         {
             try
             {
-                DBRModel brContent = EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.BR);
+                BaseCAListModel brContent = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.BR);
                 if (brContent != null
                     && brContent.ContractAccounts != null
                     && brContent.ContractAccounts.Count > 0)

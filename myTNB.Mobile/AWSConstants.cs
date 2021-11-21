@@ -33,7 +33,7 @@
         //Domains
         public struct Domains
         {
-#if DEBUGx
+#if DEBUG
             internal const string Domain = "https://devapi.mytnb.com.my";
             internal const string GenerateAccessToken = "https://devapi.mytnb.com.my/Identity/api/v1";
             internal const string GetEligibility = "https://devapi.mytnb.com.my/Eligibility/api/v1";
@@ -69,7 +69,7 @@
 #endif
         }
 
-#if DEBUGx
+#if DEBUG
         internal const string Environment = Environment_DEV;
         internal const string XAPIKey = XAPIKey_DEV;
         public const string SaltKey = SaltKey_DEV;

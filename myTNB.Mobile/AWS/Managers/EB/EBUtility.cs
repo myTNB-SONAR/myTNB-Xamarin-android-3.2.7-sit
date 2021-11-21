@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using myTNB.Mobile.AWS.Models;
-using Newtonsoft.Json.Linq;
 using static myTNB.Mobile.EligibilitySessionCache;
 
 namespace myTNB.Mobile
@@ -20,10 +15,8 @@ namespace myTNB.Mobile
                 return lazy.Value;
             }
         }
-        public EBUtility()
-        {
-        }
 
+        public EBUtility() { }
 
         public bool IsPublicRelease
         {
@@ -34,10 +27,8 @@ namespace myTNB.Mobile
                     // if target group is false then it will lead to public release
                     if (!EligibilitySessionCache.Instance.IsFeatureEligible(Features.EB, FeatureProperty.TargetGroup))
                     {
-
                         return true;
                     }
-
                     return false;
                 }
                 else
@@ -46,6 +37,5 @@ namespace myTNB.Mobile
                 }
             }
         }
-
     }
 }

@@ -69,6 +69,7 @@ namespace myTNB.Mobile
                         ContractAccount = eligibleCA
                     });
                 }
+
                 else if (response != null
                     && response.StatusDetail != null
                     && response.StatusDetail.IsSuccess
@@ -84,7 +85,7 @@ namespace myTNB.Mobile
                             object obj = props.GetValue(response.Content, null);
                             if (obj != null)
                             {
-                                EBModel tempData = JsonConvert.DeserializeObject<EBModel>(JsonConvert.SerializeObject(obj));
+                                BaseCAListModel tempData = JsonConvert.DeserializeObject<BaseCAListModel>(JsonConvert.SerializeObject(obj));
                                 foreach (ContractAccountsModel i in tempData.ContractAccounts)
                                 {
                                     eligibleCA.Add(new FeaturesContractAccount

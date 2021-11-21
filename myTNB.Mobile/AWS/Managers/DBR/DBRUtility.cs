@@ -33,7 +33,7 @@ namespace myTNB.Mobile
             List<string> caList = new List<string>();
             try
             {
-                DBRModel dbrContent = EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.DBR);
+                BaseCAListModel dbrContent = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.DBR);
                 if (dbrContent != null
                     && dbrContent.ContractAccounts != null
                     && dbrContent.ContractAccounts.Count > 0)
@@ -57,7 +57,7 @@ namespace myTNB.Mobile
         {
             try
             {
-                DBRModel dbrContent = EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.DBR);
+                BaseCAListModel dbrContent = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.DBR);
                 if (dbrContent != null
                     && dbrContent.ContractAccounts != null
                     && dbrContent.ContractAccounts.Count > 0)
@@ -158,7 +158,7 @@ namespace myTNB.Mobile
                 return false;
             }
             bool ismyTNBAccountEligible = IsAccountEligible;
-            if (EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.DBR) is DBRModel dbrList
+            if (EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.DBR) is BaseCAListModel dbrList
                 && dbrList != null
                 && dbrList.ContractAccounts != null
                 && dbrList.ContractAccounts.Count > 0)

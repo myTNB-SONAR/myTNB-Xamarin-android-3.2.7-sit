@@ -9,5 +9,9 @@
         public static string TYPE = "Type";
         public static string PARAM_REQUESTTRANSID = "RequestTransId";
         public static string Param_EVENTID = "EventId";
+
+        //App Update || Account Statement
+        public string NotificationType { set; get; }
+        public string PushMapId { set; get; }
     }
 }
