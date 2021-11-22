@@ -83,19 +83,9 @@ namespace myTNB.Mobile
                     {
                         if (GetCAList() is List<string> caList
                             && caList != null
-                            && caList.Count > 0
-                            && EligibilitySessionCache.Instance.CAList != null
-                            && EligibilitySessionCache.Instance.CAList.Count > 0)
+                            && caList.Count > 0)
                         {
-                            for (int i = 0; i < caList.Count; i++)
-                            {
-                                int index = EligibilitySessionCache.Instance.CAList.FindIndex(x => x.CA == caList[i]);
-                                if (index > -1)
-                                {
-                                    return true;
-                                }
-                            }
-                            return false;
+                            return true;
                         }
                         else
                         {
