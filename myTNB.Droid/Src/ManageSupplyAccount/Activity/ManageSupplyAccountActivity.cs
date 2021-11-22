@@ -171,7 +171,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 this.userActionsListener.OnUpdateNickname();
             }
         }
-        
+
         [OnClick(Resource.Id.btnRemoveAccount)]
         void OnClickRemoveAccount(object sender, EventArgs eventArgs)
         {
@@ -457,33 +457,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             try
             {
                 ShowProgressDialog();
-                bool isEligible = DBRUtility.Instance.IsAccountEligible;
-                if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                            , EligibilitySessionCache.FeatureProperty.TargetGroup))
-                {
-                    isEligible = isEligible
-                        && AccountTypeCache.Instance.IsAccountEligible(selectedAccount.AccountNum);
-                    Console.WriteLine("[DEBUG] Profile IsDBREnabled 0: " + isEligible);
-                    if (isEligible)
-                    {
-                        PostInstallationDetailsResponse installationDetailsResponse = await DBRManager.Instance.PostInstallationDetails(selectedAccount.AccountNum
-                            , AccessTokenCache.Instance.GetAccessToken(this));
-                        Console.WriteLine("[DEBUG] Profile RateCategory: " + installationDetailsResponse.RateCategory);
-                        Console.WriteLine("[DEBUG] Profile IsResidential: " + installationDetailsResponse.IsResidential);
-                        if (installationDetailsResponse != null
-                            && installationDetailsResponse.StatusDetail != null
-                            && installationDetailsResponse.StatusDetail.IsSuccess
-                            && installationDetailsResponse.IsResidential)
-                        {
-                            isEligible = true;
-                        }
-                        else
-                        {
-                            isEligible = false;
-                        }
-                    }
-                }
-                if (isEligible)
+                if (DBRUtility.Instance.IsAccountEligible)
                 {
                     GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                     AccountData dbrAccount = selectedAccount;

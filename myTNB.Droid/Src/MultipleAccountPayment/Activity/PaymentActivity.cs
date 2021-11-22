@@ -486,10 +486,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         public string GetEligibleDBRAccount()
         {
-            List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                        , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                ? DBRUtility.Instance.GetCAList()
-                : AccountTypeCache.Instance.DBREligibleCAs;
+            List<string> dBRCAs = DBRUtility.Instance.IsAccountEligible ? DBRUtility.Instance.GetCAList() : AccountTypeCache.Instance.DBREligibleCAs;
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             string account = string.Empty;
             if (dBRCAs.Count > 0)

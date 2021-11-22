@@ -607,34 +607,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     {
                         GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                         AccountData dbrAccount = selectedAccount;
-                        bool isEligible = DBRUtility.Instance.IsAccountEligible;
-                        if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                            , EligibilitySessionCache.FeatureProperty.TargetGroup))
-                        {
-                            isEligible = isEligible
-                                && AccountTypeCache.Instance.IsAccountEligible(dbrAccount.AccountNum);
-                            Console.WriteLine("[DEBUG] Bills IsDBREnabled 0: " + isEligible);
-                            if (isEligible)
-                            {
-                                PostInstallationDetailsResponse installationDetailsResponse = await DBRManager.Instance.PostInstallationDetails(dbrAccount.AccountNum
-                                    , AccessTokenCache.Instance.GetAccessToken(this.Activity));
-                                Console.WriteLine("[DEBUG] Bills RateCategory: " + installationDetailsResponse.RateCategory);
-                                Console.WriteLine("[DEBUG] Bills IsResidential: " + installationDetailsResponse.IsResidential);
-                                if (installationDetailsResponse != null
-                                    && installationDetailsResponse.StatusDetail != null
-                                    && installationDetailsResponse.StatusDetail.IsSuccess
-                                    && installationDetailsResponse.IsResidential)
-                                {
-                                    isEligible = true;
-                                }
-                                else
-                                {
-                                    isEligible = false;
-                                }
-                            }
-                        }
 
-                        if (isEligible)
+                        if (DBRUtility.Instance.IsAccountEligible)
                         {
                             if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
                             {

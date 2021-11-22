@@ -144,11 +144,9 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
         {
             if (e.Position == accountList.Count)//Handling Account list Info tooltip from list
             {
-                bool isPilot = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                    , EligibilitySessionCache.FeatureProperty.TargetGroup);
                 MyTNBAppToolTipBuilder dbrTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                    .SetTitle(Utility.GetLocalizedLabel("SelectElectricityAccounts", isPilot ? "dbrAccountsMissingTitlePilot" : "dbrAccountsMissingTitleNationwide"))
-                    .SetMessage(Utility.GetLocalizedLabel("SelectElectricityAccounts", isPilot ? "dbrMissingAccountsMessagePilot" : "dbrMissingAccountsMessageNationwide"))
+                    .SetTitle(Utility.GetLocalizedLabel("SelectElectricityAccounts", DBRUtility.Instance.IsAccountEligible ? "dbrAccountsMissingTitlePilot" : "dbrAccountsMissingTitleNationwide"))
+                    .SetMessage(Utility.GetLocalizedLabel("SelectElectricityAccounts", DBRUtility.Instance.IsAccountEligible ? "dbrMissingAccountsMessagePilot" : "dbrMissingAccountsMessageNationwide"))
                     .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                     .Build();
                 dbrTooltip.Show();

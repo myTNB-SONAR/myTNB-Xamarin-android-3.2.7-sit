@@ -228,8 +228,7 @@ namespace myTNB_Android.Src.Base
                     tooltipModel = new UnderstandTooltipModel();
                     tooltipModel.TooltipImage = null;
                     List<string> itemList = new List<string>();
-                    if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
-                            && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
+                    if (BillRedesignUtility.Instance.IsAccountEligible)
                     {
                         tooltipModel.Title = baseActivity.GetLabelByLanguage("tooltiptitle1V2");
                         itemList = baseActivity.GetLabelByLanguage("tooltipdesc1V2").Split('|').ToList();
@@ -243,13 +242,12 @@ namespace myTNB_Android.Src.Base
                         tooltipModel.ItemList = itemList;
                         tooltipModelDataList.Add(tooltipModel);
                     }
-                    
-                    
+
+
 
                     tooltipModel = new UnderstandTooltipModel();
                     tooltipModel.TooltipImage = null;
-                    if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.Enabled)
-                        && EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.BR, EligibilitySessionCache.FeatureProperty.TargetGroup))
+                    if (BillRedesignUtility.Instance.IsAccountEligible)
                     {
                         tooltipModel.Title = baseActivity.GetLabelByLanguage("tooltiptitle2V2");
                         itemList = baseActivity.GetLabelByLanguage("tooltipdesc2V2").Split('|').ToList();

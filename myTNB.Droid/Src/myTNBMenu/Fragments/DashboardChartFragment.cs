@@ -5244,38 +5244,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             try
             {
                 ShowProgressDialog();
-                bool isEligible = DBRUtility.Instance.IsAccountEligible;
-                if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                    , EligibilitySessionCache.FeatureProperty.TargetGroup))
-                {
-                    isEligible = isEligible
-                        && AccountTypeCache.Instance.IsAccountEligible(selectedAccount.AccountNum);
-                    Console.WriteLine("[DEBUG] DashboardFrag IsDBREnabled 0: " + isEligible);
-                    if (isEligible)
-                    {
-                        PostInstallationDetailsResponse installationDetailsResponse = await DBRManager.Instance.PostInstallationDetails(selectedAccount.AccountNum
-                            , AccessTokenCache.Instance.GetAccessToken(this.Activity));
-                        Console.WriteLine("[DEBUG] DashboardFrag RateCategory: " + installationDetailsResponse.RateCategory);
-                        Console.WriteLine("[DEBUG] DashboardFrag IsResidential: " + installationDetailsResponse.IsResidential);
-                        if (installationDetailsResponse != null
-                            && installationDetailsResponse.StatusDetail != null
-                            && installationDetailsResponse.StatusDetail.IsSuccess
-                            && installationDetailsResponse.IsResidential)
-                        {
-                            isEligible = true;
-                        }
-                        else
-                        {
-                            isEligible = false;
-                        }
-                    }
-                }
 
                 Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
                 intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
                 intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
 
-                if (isEligible)
+                if (DBRUtility.Instance.IsAccountEligible)
                 {
                     GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                     AccountData dbrAccount = selectedAccount;
@@ -5317,10 +5291,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public string GetEligibleDBRAccount(AccountData selectedAccount)
         {
             CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-            List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                        , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                ? DBRUtility.Instance.GetCAList()
-                : AccountTypeCache.Instance.DBREligibleCAs;
+            List<string> dBRCAs = DBRUtility.Instance.IsAccountEligible ? DBRUtility.Instance.GetCAList() : AccountTypeCache.Instance.DBREligibleCAs;
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             CustomerBillingAccount account = new CustomerBillingAccount();
             string dbraccount = string.Empty;

@@ -842,12 +842,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [OnClick(Resource.Id.ic_ca_info)]
         void OnDisplayNotEligibleTooltip(object sender, EventArgs eventArgs)
         {
-            bool isPilot = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                , EligibilitySessionCache.FeatureProperty.TargetGroup);
-
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", isPilot ? "notEligibleAccountsTitlePilot" : "notEligibleAccountsTitleNationwide"))
-                .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", isPilot ? "notEligibleAccountsMessagePilot" : "notEligibleAccountsMessageNationwide"))
+                .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", DBRUtility.Instance.IsAccountEligible ? "notEligibleAccountsTitlePilot" : "notEligibleAccountsTitleNationwide"))
+                .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", DBRUtility.Instance.IsAccountEligible ? "notEligibleAccountsMessagePilot" : "notEligibleAccountsMessageNationwide"))
                 .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                 .SetCTAaction(() => { this.SetIsClicked(false); })
                 .Build()
@@ -1041,10 +1038,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         public List<DBRAccount> GetEligibleDBRAccountList()
         {
-            List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                    ? DBRUtility.Instance.GetCAList()
-                    : AccountTypeCache.Instance.DBREligibleCAs;
+            List<string> dBRCAs = DBRUtility.Instance.IsAccountEligible ? DBRUtility.Instance.GetCAList() : AccountTypeCache.Instance.DBREligibleCAs;
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             List<CustomerBillingAccount> eligibleDBRAccountList = new List<CustomerBillingAccount>();
             CustomerBillingAccount account = new CustomerBillingAccount();

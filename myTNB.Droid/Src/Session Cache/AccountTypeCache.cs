@@ -106,10 +106,7 @@ namespace myTNB_Android.Src.SessionCache
             {
                 string caNumber = applicationPaymentDetail.caNo;
 
-                List<string> caList = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                        , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                    ? DBRUtility.Instance.GetCAList()
-                    : DBREligibleCAs;
+                List<string> caList = DBRUtility.Instance.IsAccountEligible ? DBRUtility.Instance.GetCAList() : DBREligibleCAs;
                 int index = caList.FindIndex(x => x == caNumber);
                 if (index > -1)
                 {
