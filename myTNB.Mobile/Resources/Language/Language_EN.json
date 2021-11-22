@@ -235,10 +235,10 @@
     //addby wan
     "later": "Later",
     "update": "Update",
-    "btnIcUpdate": "Update Now",
+    "btnIcUpdate": "Update",
     "chkBoxTitle": "Don’t show this again",
     "titleIcUpdate": "Update your profile now to continue enjoying myTNB!",
-    "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update your profile now to continue enjoying more TNB offerings!",
+    "bodyIcUpdate": "Your account security is our top priority. We strongly recommend updating your profile now to safeguard your myTNB account and continue enjoying TNB offerings!",
     "tutorialUpdateNicknameBtn": "Update Nickname",
     "tutorialUsageTitle": "View and manage your account details here.",
     "tutorialUsageDesc": "Easily view your account details and manage who has access to your account from here.",
