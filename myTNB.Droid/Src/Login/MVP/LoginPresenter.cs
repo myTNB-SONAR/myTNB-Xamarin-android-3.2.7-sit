@@ -163,7 +163,7 @@ namespace myTNB_Android.Src.Login.MVP
                             this.mView.ShowResetPassword(usrNme, pwd);
                         }
                     }
-                    else if (!userResponse.GetData().isPhoneVerified)
+                    else if (userResponse.GetData().isPhoneVerified)
                     {
                         UserAuthenticationRequest loginRequest = new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
                         {
@@ -262,10 +262,9 @@ namespace myTNB_Android.Src.Login.MVP
                         try
                         {
                             int loginCount = UserLoginCountEntity.GetLoginCount(userResponse.GetData().Email);
-                            int recordId;
                             if (loginCount < 2)
                             {
-                                recordId = UserLoginCountEntity.InsertOrReplace(userResponse.GetData(), loginCount + 1);
+                                _ = UserLoginCountEntity.InsertOrReplace(userResponse.GetData(), loginCount + 1);
                             }
                         }
                         catch (Exception e)
@@ -275,17 +274,6 @@ namespace myTNB_Android.Src.Login.MVP
                         if (Id > 0)
                         {
                             UserEntity.UpdateDeviceId(deviceId);
-                            await LanguageUtil.SaveUpdatedLanguagePreference();
-
-                            AppInfoManager.Instance.SetUserInfo("16"
-                                , UserEntity.GetActive().UserID
-                                , UserEntity.GetActive().UserName
-                                , UserSessions.GetDeviceId()
-                                , DeviceIdUtils.GetAppVersionName()
-                                , myTNB.Mobile.MobileConstants.OSType.Android
-                                , TextViewUtils.FontInfo
-                                , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
-                            AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
 
                             GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
                             baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
@@ -366,7 +354,6 @@ namespace myTNB_Android.Src.Login.MVP
                                     , TextViewUtils.FontInfo
                                     , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                 AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
-
 
                                 if (LanguageUtil.GetAppLanguage() == "MS")
                                 {

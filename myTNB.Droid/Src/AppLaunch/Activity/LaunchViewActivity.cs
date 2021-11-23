@@ -471,18 +471,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
-        public void ShowResetPassword()
-        {
-            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
-            {
-                isAppLaunchDone = true;
-                Intent ResetPasswordIntent = new Intent(this, typeof(ResetPasswordActivity));
-                ResetPasswordIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                ResetPasswordIntent.PutExtra(Constants.FROM_ACTIVITY, LaunchViewActivity.TAG);
-                StartActivity(ResetPasswordIntent);
-            }
-        }
-
         public string GetDeviceId()
         {
             return this.DeviceId();

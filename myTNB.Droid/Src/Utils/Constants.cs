@@ -10,8 +10,6 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly string DEVICE_PLATFORM = "1"; // 1 for Android (for iOS its 2)
 
-        internal static readonly string FROM_ACTIVITY = ".fromActivity";
-
         internal static readonly int INACTIVE = 0;
         internal static readonly int ACTIVE = 1;
 
@@ -342,7 +340,7 @@ namespace myTNB_Android.Src.Utils
 
         //App Update
         public const string BCRM_NOTIFICATION_APP_UPDATE = "20006";
-        
+
         //Bill Estimation
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";
 

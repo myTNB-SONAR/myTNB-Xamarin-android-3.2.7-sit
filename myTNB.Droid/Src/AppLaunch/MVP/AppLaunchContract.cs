@@ -25,11 +25,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void ShowWalkThrough();
 
             /// <summary>
-            /// Navigates/Show the ResetPassword
-            /// </summary>
-            void ShowResetPassword();
-
-            /// <summary>
             /// Navigates/Show the PreLogin
             /// </summary>
             void ShowPreLogin();
