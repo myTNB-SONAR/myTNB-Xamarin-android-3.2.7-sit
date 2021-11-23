@@ -286,7 +286,6 @@ namespace myTNB_Android.Src.Login.MVP
                                 , TextViewUtils.FontInfo
                                 , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                             AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
-                            bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
 
                             GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
                             baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
@@ -377,6 +376,8 @@ namespace myTNB_Android.Src.Login.MVP
                                 {
                                     AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
                                 }
+
+                                _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
 
                                 this.mView.ShowDashboard();
                             }
@@ -522,13 +523,18 @@ namespace myTNB_Android.Src.Login.MVP
                             IsRegistered = acc.IsRegistered,
                             IsPaid = acc.IsPaid,
                             isOwned = acc.IsOwned,
+                            IsError = acc.IsError,
                             AccountTypeId = acc.AccountTypeId,
                             AccountStAddress = acc.AccountStAddress,
                             OwnerName = acc.OwnerName,
                             AccountCategoryId = acc.AccountCategoryId,
                             SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
                             IsSelected = false,
-                            BudgetAmount = acc.BudgetAmount
+                            BudgetAmount = acc.BudgetAmount,
+                            IsApplyEBilling = acc.IsApplyEBilling,
+                            IsHaveAccess = acc.IsHaveAccess,
+                            BusinessArea = acc.BusinessArea,
+                            RateCategory = acc.RateCategory
                         };
 
                         if (index != -1)
@@ -562,13 +568,18 @@ namespace myTNB_Android.Src.Login.MVP
                                 IsRegistered = newAcc.IsRegistered,
                                 IsPaid = newAcc.IsPaid,
                                 isOwned = newAcc.IsOwned,
+                                IsError = newAcc.IsError,
                                 AccountTypeId = newAcc.AccountTypeId,
                                 AccountStAddress = newAcc.AccountStAddress,
                                 OwnerName = newAcc.OwnerName,
                                 AccountCategoryId = newAcc.AccountCategoryId,
                                 SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
                                 IsSelected = false,
-                                BudgetAmount = newAcc.BudgetAmount
+                                BudgetAmount = newAcc.BudgetAmount,
+                                IsApplyEBilling = newAcc.IsApplyEBilling,
+                                IsHaveAccess = newAcc.IsHaveAccess,
+                                BusinessArea = newAcc.BusinessArea,
+                                RateCategory = newAcc.RateCategory
                             };
 
                             newExistingList.Add(newRecord);

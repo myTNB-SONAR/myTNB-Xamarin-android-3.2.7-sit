@@ -167,7 +167,7 @@ namespace myTNB.Mobile
             internal const string BC_Paper = "ZINV";
         }
 
-        internal static List<string> ResidentialTariffTypeList = new List<string>
+        public static List<string> ResidentialTariffTypeList = new List<string>
         {
             "A_LV"
             , "A_LV_D"

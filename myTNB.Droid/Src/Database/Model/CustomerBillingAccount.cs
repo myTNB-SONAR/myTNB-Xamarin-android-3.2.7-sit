@@ -42,6 +42,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("isOwned")]
         public bool isOwned { get; set; }
 
+        [Column("isError")]
+        public bool IsError { get; set; }
+
         [Column("accountTypeId")]
         public string AccountTypeId { get; set; }
 
@@ -97,6 +100,32 @@ namespace myTNB_Android.Src.Database.Model
 
         [Column("InstallationType")]
         public string InstallationType { get; set; }
+
+        [Column("IsApplyEBilling")]
+        public bool IsApplyEBilling { get; set; }
+
+        [Column("IsHaveAccess")]
+        public bool IsHaveAccess { get; set; }
+
+        [Column("BusinessArea")]
+        public string BusinessArea { get; set; }
+
+        [Column("RateCategory")]
+        public string RateCategory { get; set; }
+
+        [JsonIgnore]
+        public bool IsResidential
+        {
+            get
+            {
+                if (RateCategory.IsValid())
+                {
+                    int index = MobileConstants.ResidentialTariffTypeList.FindIndex(x => x == RateCategory.ToUpper());
+                    return index > -1;
+                }
+                return false;
+            }
+        }
 
         [JsonIgnore]
         public bool IsNormalMeter

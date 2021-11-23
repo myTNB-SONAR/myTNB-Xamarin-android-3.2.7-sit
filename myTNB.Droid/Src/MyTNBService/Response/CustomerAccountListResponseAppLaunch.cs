@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using myTNB.Mobile;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 
@@ -49,7 +51,7 @@ namespace myTNB_Android.Src.MyTNBService.Response
             //public bool IsOwned = true;
 
             [JsonProperty(PropertyName = "isError")]
-            public string IsError { get; set; }
+            public bool IsError { get; set; }
             //public string IsError = "false";
 
             [JsonProperty(PropertyName = "message")]
@@ -87,8 +89,32 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "InstallationType")]
             public string InstallationType { get; set; }
             //public string InstallationType = "01";
+
+            [JsonProperty(PropertyName = "IsApplyEBilling")]
+            public bool IsApplyEBilling { get; set; } = false;
+
+            [JsonProperty(PropertyName = "IsHaveAccess")]
+            public bool IsHaveAccess { get; set; } = false;
+
+            [JsonProperty(PropertyName = "BusinessArea")]
+            public string BusinessArea { get; set; }
+
+            [JsonProperty(PropertyName = "RateCategory")]
+            public string RateCategory { get; set; }
+
+            [JsonIgnore]
+            public bool IsResidential
+            {
+                get
+                {
+                    if (RateCategory.IsValid())
+                    {
+                        int index = MobileConstants.ResidentialTariffTypeList.FindIndex(x => x == RateCategory.ToUpper());
+                        return index > -1;
+                    }
+                    return false;
+                }
+            }
         }
-
-
     }
 }

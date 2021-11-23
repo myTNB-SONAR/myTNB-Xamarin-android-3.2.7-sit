@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Runtime;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
@@ -66,11 +67,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
             {
                 var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(accountData.AccountNum, isTaggedSmartMeter));
 
-                if (mView.IsActive())
-                {
-                    this.mView.HideRemoveProgress();
-                }
-
                 if (removeAccountResponse.IsSuccessResponse())
                 {
                     bool isSelectedAcc = false;
@@ -107,6 +103,14 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                     SummaryDashBoardAccountEntity.RemoveAll();
                     MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                     HomeMenuUtils.ResetAll();
+
+                    _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
+
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideRemoveProgress();
+                    }
+
                     this.mView.ShowSuccessRemovedAccount();
                 }
                 else

@@ -311,8 +311,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                 : LanguageManager.Language.EN);
                                         AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
 
-                                        bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
-
                                         if (hasNotification && isLoggedInEmail && (NotificationUtil.Instance.Type == NotificationType.AppUpdate ||
                                             NotificationUtil.Instance.Type == NotificationType.AccountStatement))
                                         {
@@ -475,7 +473,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     if (customerAccountListResponse.customerAccountData.Count > 0)
                     {
                         ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
-
                     }
                     else
                     {
@@ -549,6 +546,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
                     this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
+
+                    bool isForceCall = !UserSessions.HasUpdateSkipped(this.mSharedPref);
+                    _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, isForceCall);
+
                     this.mView.ShowDashboard();
                 }
                 else
@@ -1234,13 +1235,18 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             IsRegistered = acc.IsRegistered,
                             IsPaid = acc.IsPaid,
                             isOwned = acc.IsOwned,
+                            IsError = acc.IsError,
                             AccountTypeId = acc.AccountTypeId,
                             AccountStAddress = acc.AccountStAddress,
                             OwnerName = acc.OwnerName,
                             AccountCategoryId = acc.AccountCategoryId,
                             SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
                             IsSelected = false,
-                            BudgetAmount = acc.BudgetAmount
+                            BudgetAmount = acc.BudgetAmount,
+                            IsApplyEBilling = acc.IsApplyEBilling,
+                            IsHaveAccess = acc.IsHaveAccess,
+                            BusinessArea = acc.BusinessArea,
+                            RateCategory = acc.RateCategory
                         };
 
                         if (index != -1)
@@ -1274,13 +1280,18 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 IsRegistered = newAcc.IsRegistered,
                                 IsPaid = newAcc.IsPaid,
                                 isOwned = newAcc.IsOwned,
+                                IsError = newAcc.IsError,
                                 AccountTypeId = newAcc.AccountTypeId,
                                 AccountStAddress = newAcc.AccountStAddress,
                                 OwnerName = newAcc.OwnerName,
                                 AccountCategoryId = newAcc.AccountCategoryId,
                                 SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
                                 IsSelected = false,
-                                BudgetAmount = newAcc.BudgetAmount
+                                BudgetAmount = newAcc.BudgetAmount,
+                                IsApplyEBilling = newAcc.IsApplyEBilling,
+                                IsHaveAccess = newAcc.IsHaveAccess,
+                                BusinessArea = newAcc.BusinessArea,
+                                RateCategory = newAcc.RateCategory
                             };
 
                             newExistingList.Add(newRecord);

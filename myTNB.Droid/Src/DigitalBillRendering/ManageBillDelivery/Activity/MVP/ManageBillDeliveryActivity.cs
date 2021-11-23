@@ -1038,7 +1038,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         public List<DBRAccount> GetEligibleDBRAccountList()
         {
-            List<string> dBRCAs = DBRUtility.Instance.IsAccountEligible ? DBRUtility.Instance.GetCAList() : AccountTypeCache.Instance.DBREligibleCAs;
+            List<string> dBRCAs = DBRUtility.Instance.GetCAList();
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             List<CustomerBillingAccount> eligibleDBRAccountList = new List<CustomerBillingAccount>();
             CustomerBillingAccount account = new CustomerBillingAccount();

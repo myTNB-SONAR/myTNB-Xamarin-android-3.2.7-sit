@@ -111,7 +111,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                         int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                         if (Id > 0)
                         {
-                            bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
+                            _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
 
                             GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
                             baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
@@ -324,7 +324,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                     {
                         newExisitingListArray.Sort();
 
-                        foreach(int index in newExisitingListArray)
+                        foreach (int index in newExisitingListArray)
                         {
                             CustomerBillingAccount oldAcc = existingSortedList[index];
 

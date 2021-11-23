@@ -664,7 +664,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 string caNumber = string.Empty;
                 if (DBRUtility.Instance.IsAccountEligible)
                 {
-                    List<string> caList = AccountTypeCache.Instance.DBREligibleCAs;
+                    List<string> caList = DBRUtility.Instance.GetCAList();
                     caNumber = caList != null && caList.Count > 0
                         ? caList[0]
                         : string.Empty;
@@ -742,7 +742,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public CustomerBillingAccount GetEligibleDBRAccount()
         {
             CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-            List<string> dBRCAs = DBRUtility.Instance.IsAccountEligible ? DBRUtility.Instance.GetCAList() : AccountTypeCache.Instance.DBREligibleCAs;
+            List<string> dBRCAs = DBRUtility.Instance.GetCAList();
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             CustomerBillingAccount account = new CustomerBillingAccount();
             if (dBRCAs.Count > 0)

@@ -14,6 +14,7 @@ using myTNB_Android.Src.AddAccount.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
@@ -838,7 +839,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             }
         }
 
-        public void ShowAddAccountSuccess(List<Models.AddAccount> responseData)
+        public async void ShowAddAccountSuccess(List<Models.AddAccount> responseData)
         {
 
             try
@@ -891,6 +892,13 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 CustomerBillingAccount.SetCAListForEligibility();
 
                 SummaryDashBoardAccountEntity.RemoveAll();
+
+                _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this, true);
+
+                if (IsActive())
+                {
+                    HideAddingAccountProgressDialog();
+                }
 
                 Intent sucessIntent = new Intent(this, typeof(AddAccountSuccessActivity));
                 sucessIntent.PutExtra("Accounts", JsonConvert.SerializeObject(finalAccountList));

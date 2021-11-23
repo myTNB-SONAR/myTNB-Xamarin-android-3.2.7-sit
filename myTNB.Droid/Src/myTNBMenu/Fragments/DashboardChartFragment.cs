@@ -5251,7 +5251,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 if (DBRUtility.Instance.IsAccountEligible)
                 {
-                    GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                     AccountData dbrAccount = selectedAccount;
                     if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
                     {
@@ -5291,7 +5290,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public string GetEligibleDBRAccount(AccountData selectedAccount)
         {
             CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-            List<string> dBRCAs = DBRUtility.Instance.IsAccountEligible ? DBRUtility.Instance.GetCAList() : AccountTypeCache.Instance.DBREligibleCAs;
+            List<string> dBRCAs = DBRUtility.Instance.GetCAList();
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             CustomerBillingAccount account = new CustomerBillingAccount();
             string dbraccount = string.Empty;
