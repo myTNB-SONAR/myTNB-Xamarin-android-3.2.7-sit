@@ -163,7 +163,7 @@ namespace myTNB_Android.Src.Login.MVP
                             this.mView.ShowResetPassword(usrNme, pwd);
                         }
                     }
-                    else if (userResponse.GetData().isPhoneVerified)
+                    else if (!userResponse.GetData().isPhoneVerified)
                     {
                         UserAuthenticationRequest loginRequest = new UserAuthenticationRequest(Constants.APP_CONFIG.API_KEY_ID)
                         {
