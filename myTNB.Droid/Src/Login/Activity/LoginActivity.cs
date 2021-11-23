@@ -844,14 +844,10 @@ namespace myTNB_Android.Src.Login.Activity
         //    }).Show();
         //}
 
-        public void ShowEmailUpdateSuccess(string message, string email)
+        public void ShowEmailUpdateSuccess(string email)
         {
             try
             {
-                //string Email = "";
-                //UserEntity userEntity = UserEntity.GetActive();
-                //Email = userEntity.Email;
-                //string Email = txtEmail.Text;
                 Snackbar updateEmailBar = Snackbar.Make(rootView, string.Format(Utility.GetLocalizedLabel("Login", "toast_email_send"), email), Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>

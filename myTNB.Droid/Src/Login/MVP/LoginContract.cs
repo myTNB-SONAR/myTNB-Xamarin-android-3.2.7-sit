@@ -130,7 +130,7 @@ namespace myTNB_Android.Src.Login.MVP
             // /// <summary>
             // /// Shows a snackbar after success resend email verification
             // /// </summary>
-            void ShowEmailUpdateSuccess(string message, string email);
+            void ShowEmailUpdateSuccess(string email);
 
             // /// <summary>
             // /// Shows error message

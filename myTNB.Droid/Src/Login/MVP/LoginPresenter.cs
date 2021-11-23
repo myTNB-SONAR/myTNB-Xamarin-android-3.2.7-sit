@@ -905,6 +905,8 @@ namespace myTNB_Android.Src.Login.MVP
 
             try
             {
+                SendEmailVerificationRequest sendEmailVerificationRequest = new SendEmailVerificationRequest(email);
+                string s = JsonConvert.SerializeObject(sendEmailVerificationRequest);
                 var emailVerificationResponse = await ServiceApiImpl.Instance.SendEmailVerify(new SendEmailVerificationRequest(email));
 
                 if (mView.IsActive())
@@ -914,8 +916,8 @@ namespace myTNB_Android.Src.Login.MVP
 
                 if (emailVerificationResponse.IsSuccessResponse())
                 {
-                    string message = emailVerificationResponse.Response.Message;
-                    this.mView.ShowEmailUpdateSuccess(message, email);
+                    //string message = emailVerificationResponse.Response.Message;
+                    this.mView.ShowEmailUpdateSuccess(email);
                 }
                 else
                 {
