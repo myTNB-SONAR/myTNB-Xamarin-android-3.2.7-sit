@@ -72,7 +72,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<CustomerAccountListResponse> GetCustomerAccountList([Body] Request.BaseRequest request)
         {
-            return api.GetCustomerAccountList<CustomerAccountListResponse>(request,CancellationTokenSourceWrapper.GetToken());
+            return api.GetCustomerAccountList<CustomerAccountListResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -99,17 +99,6 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
-        /// Call GetAccounts with timeout set.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public Task<CustomerAccountListResponse> GetCustomerAccountListAppLaunch([Body] Request.BaseRequest request, CancellationToken token)
-        {
-            return apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponse>(request, token);
-        }
-
-        /// <summary>
         /// Call AddAccountToCustomer with default timeout.
         /// </summary>
         /// <param name="request"></param>
@@ -125,9 +114,9 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <param name="request"></param>
         /// <returns></returns>
         public Task<ValidateManualAccountResponse> ValidateManualAccount([Body] Request.BaseRequest request)
-		{
-			return api.ValidateManualAccount<ValidateManualAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
-		}
+        {
+            return api.ValidateManualAccount<ValidateManualAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
 
         /// <summary>
         /// Call ValidateAccisExist with default timeout.
@@ -329,7 +318,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.SubmittedFeedbackDetails<SubmittedFeedbackDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
-          /// <summary>
+        /// <summary>
         /// Call GetSubmittedFeedbackWithCotactDetails with default timeout.
         /// </summary>
         /// <param name="request"></param>

@@ -29,13 +29,23 @@
         public string accountTypeId { get; set; }
 
         public string smartMeterCode { get; set; }
-        
+
         public bool IsTaggedSMR { get; set; }
 
         public bool isOwned { get; set; }
 
+        public bool IsError { get; set; }
+
         public string BudgetAmount { get; set; }
 
         public string InstallationType { get; set; }
+
+        public bool IsApplyEBilling { get; set; }
+
+        public bool IsHaveAccess { get; set; }
+
+        public string BusinessArea { get; set; }
+
+        public string RateCategory { get; set; }
     }
 }

@@ -858,9 +858,14 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             newAccount.ownerName = item.accountOwnerName;
                             newAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
                             newAccount.isOwned = item.isOwned;
+                            newAccount.IsError = item.IsError;
                             newAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             newAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                             newAccount.InstallationType = item.InstallationType == null ? "0" : item.InstallationType;
+                            newAccount.IsApplyEBilling = item.IsApplyEBilling;
+                            newAccount.IsHaveAccess = item.IsHaveAccess;
+                            newAccount.BusinessArea = item.BusinessArea;
+                            newAccount.RateCategory = item.RateCategory;
                             finalAccountList.Add(newAccount);
                         }
                     }
@@ -874,9 +879,14 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.ownerName = item.accountOwnerName;
                             extraAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
                             extraAccount.isOwned = item.isOwned;
+                            extraAccount.IsError = item.IsError;
                             extraAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             extraAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                             extraAccount.InstallationType = item.InstallationType == null ? "0" : item.InstallationType;
+                            extraAccount.IsApplyEBilling = item.IsApplyEBilling;
+                            extraAccount.IsHaveAccess = item.IsHaveAccess;
+                            extraAccount.BusinessArea = item.BusinessArea;
+                            extraAccount.RateCategory = item.RateCategory;
                             finalAccountList.Add(extraAccount);
                         }
                     }

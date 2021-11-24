@@ -11,6 +11,7 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.SessionCache;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Async
@@ -41,7 +42,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     userAccountID = account.UserAccountId,
                     accDesc = account.AccDesc,
                     icNum = account.ICNum,
-                    amCurrentChg = double.Parse(account.AmtCurrentChg),
+                    amCurrentChg = account.AmtCurrentChg.IsValid() ? double.Parse(account.AmtCurrentChg) : 0,
                     isRegistered = account.IsRegistered.ToString(),
                     isOwned = account.isOwned.ToString(),
                     isPaid = account.IsPaid.ToString(),
@@ -53,7 +54,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     accountCategoryId = account.AccountCategoryId,
                     SmartMeterCode = account.SmartMeterCode,
                     isTaggedSMR = account.IsTaggedSMR.ToString(),
-                    BudgetAmount = Int32.Parse(account.BudgetAmount),
+                    BudgetAmount = account.BudgetAmount.IsValid() ? Int32.Parse(account.BudgetAmount) : 0,
                     InstallationType = account.InstallationType,
                     IsApplyEBilling = account.IsApplyEBilling,
                     IsHaveAccess = account.IsHaveAccess,
