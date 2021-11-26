@@ -115,87 +115,101 @@ namespace myTNB.Mobile
             return response;
         }
 
+        /// <summary>
+        /// Get Eligible CAs
+        /// Gte Eligible Features
+        /// </summary>
+        /// <param name="userID">User Id from IsUserAuthV2</param>
+        /// <param name="caList">List of CA and it's properties from GetAccounts</param>
+        /// <param name="accessToken">Generated Token</param>
+        /// <returns></returns>
         public async Task<GetEligibilityResponse> PostEligibility(string userID
             , List<ContractAccountModel> caList
             , string accessToken)
         {
             PostEligibilityResponse postResponse = new PostEligibilityResponse();
             GetEligibilityResponse response = new GetEligibilityResponse();
-            try
+            int maxAccountList = LanguageManager.Instance.GetConfigTimeout(LanguageManager.TogglePropertyEnum.MaxAccountList);
+            maxAccountList = maxAccountList == 0 ? MobileConstants.MaxAccountList : maxAccountList;
+            if (caList != null
+                && caList.Count <= maxAccountList)
             {
-                IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.Domain);
-
-                PostEligibilityRequest request = new PostEligibilityRequest
+                try
                 {
-                    UserID = userID ?? string.Empty,
-                    ContractAccounts = caList
-                };
-                Debug.WriteLine("[DEBUG] PostEligibility Request: " + JsonConvert.SerializeObject(request));
+                    IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.Domain);
 
-                HttpResponseMessage rawResponse = await service.PostEligibility(request
-                   , NetworkService.GetCancellationToken()
-                   , accessToken
-                   , AppInfoManager.Instance.ViewInfo);
-
-                //Mark: Check for 404 First
-                if ((int)rawResponse.StatusCode != 200)
-                {
-                    GetEligibilityResponse httpErrorResponse = new GetEligibilityResponse();
-                    httpErrorResponse.StatusDetail = new StatusDetail();
-                    httpErrorResponse.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(MobileConstants.DEFAULT);
-                    httpErrorResponse.StatusDetail.IsSuccess = false;
-                    return httpErrorResponse;
-                }
-
-                string responseString = await rawResponse.Content.ReadAsStringAsync();
-                postResponse = JsonConvert.DeserializeObject<PostEligibilityResponse>(responseString);
-                if (postResponse != null
-                    && postResponse.Content != null
-                    && postResponse.StatusDetail != null
-                    && postResponse.StatusDetail.Code.IsValid())
-                {
-                    postResponse.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(postResponse.StatusDetail.Code);
-
-                    response.StatusDetail = postResponse.StatusDetail;
-                    response.Content = new GetEligibilityModel
+                    PostEligibilityRequest request = new PostEligibilityRequest
                     {
-                        EligibileFeatures = postResponse.Content.EligibileFeaturesList
+                        UserID = userID ?? string.Empty,
+                        ContractAccounts = caList
                     };
-                    ParsePostEleigibilityFeature(ref response, postResponse);
-                }
-                else
-                {
+                    Debug.WriteLine("[DEBUG] PostEligibility Request: " + JsonConvert.SerializeObject(request));
+
+                    HttpResponseMessage rawResponse = await service.PostEligibility(request
+                       , NetworkService.GetCancellationToken()
+                       , accessToken
+                       , AppInfoManager.Instance.ViewInfo);
+
+                    //Mark: Check for 404 First
+                    if ((int)rawResponse.StatusCode != 200)
+                    {
+                        GetEligibilityResponse httpErrorResponse = new GetEligibilityResponse();
+                        httpErrorResponse.StatusDetail = new StatusDetail();
+                        httpErrorResponse.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(MobileConstants.DEFAULT);
+                        httpErrorResponse.StatusDetail.IsSuccess = false;
+                        return httpErrorResponse;
+                    }
+
+                    string responseString = await rawResponse.Content.ReadAsStringAsync();
+                    postResponse = JsonConvert.DeserializeObject<PostEligibilityResponse>(responseString);
                     if (postResponse != null
+                        && postResponse.Content != null
                         && postResponse.StatusDetail != null
                         && postResponse.StatusDetail.Code.IsValid())
                     {
                         postResponse.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(postResponse.StatusDetail.Code);
+
+                        response.StatusDetail = postResponse.StatusDetail;
+                        response.Content = new GetEligibilityModel
+                        {
+                            EligibileFeatures = postResponse.Content.EligibileFeaturesList
+                        };
+                        ParsePostEleigibilityFeature(ref response, postResponse);
                     }
                     else
                     {
-                        postResponse = new PostEligibilityResponse
+                        if (postResponse != null
+                            && postResponse.StatusDetail != null
+                            && postResponse.StatusDetail.Code.IsValid())
                         {
-                            StatusDetail = new StatusDetail()
-                        };
-                        postResponse.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(MobileConstants.DEFAULT);
+                            postResponse.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(postResponse.StatusDetail.Code);
+                        }
+                        else
+                        {
+                            postResponse = new PostEligibilityResponse
+                            {
+                                StatusDetail = new StatusDetail()
+                            };
+                            postResponse.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(MobileConstants.DEFAULT);
+                        }
+                        response.StatusDetail = postResponse.StatusDetail;
                     }
-                    response.StatusDetail = postResponse.StatusDetail;
-                }
 
-                Debug.WriteLine("[DEBUG] PostEligibility Response: " + JsonConvert.SerializeObject(postResponse));
-                return response;
-            }
-            catch (ApiException apiEx)
-            {
+                    Debug.WriteLine("[DEBUG] PostEligibility Response: " + JsonConvert.SerializeObject(postResponse));
+                    return response;
+                }
+                catch (ApiException apiEx)
+                {
 #if DEBUG
-                Debug.WriteLine("[DEBUG][PostEligibility]Refit Exception: " + apiEx.Message);
+                    Debug.WriteLine("[DEBUG][PostEligibility]Refit Exception: " + apiEx.Message);
 #endif
-            }
-            catch (Exception ex)
-            {
+                }
+                catch (Exception ex)
+                {
 #if DEBUG
-                Debug.WriteLine("[DEBUG][PostEligibility]General Exception: " + ex.Message);
+                    Debug.WriteLine("[DEBUG][PostEligibility]General Exception: " + ex.Message);
 #endif
+                }
             }
 
             response = new GetEligibilityResponse

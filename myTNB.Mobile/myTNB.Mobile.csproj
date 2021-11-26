@@ -118,9 +118,8 @@
     <Folder Include="AWS\Services\DBR\" />
     <Folder Include="AWS\Managers\Eligibility\" />
     <Folder Include="AWS\Models\DBR\Post Multi Bill Rendering\" />
-    <Folder Include="AWS\Models\DBR\Post Installation Details\" />
     <Folder Include="AWS\Models\DBR\Post Multi Installation Details\" />
-    <Folder Include="API\Managers\FeatureInfo\" />
+    <Folder Include="API\Managers\Feature Info\" />
     <Folder Include="API\Models\Feature Info\" />
     <Folder Include="AWS\Managers\EB\" />
     <Folder Include="AWS\Managers\Bill Redesign\" />
@@ -132,6 +131,8 @@
     <Folder Include="AWS\Models\Account Statement\Statement\" />
     <Folder Include="AWS\Models\Account Statement\Notification\" />
     <Folder Include="AWS\Models\Eligibility\Post Eligibility\" />
+    <Folder Include="API\Services\Feature Info\" />
+    <Folder Include="API\Models\Base Model\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -183,7 +184,6 @@
     <None Remove="Resources\Notification\NotificationInfo_10071.json" />
     <None Remove="Resources\Notification\NotificationInfo_10072.json" />
     <None Remove="AWS\Models\DBR\Get Multi Bill Rendering\" />
-    <None Remove="AWS\Models\DBR\Post Installation Details\" />
     <None Remove="AWS\Models\DBR\Post Multi Installation Details\" />
     <None Remove="API\Models\Notification\Notification Details\" />
     <None Remove="API\Managers\FeatureInfo\" />
@@ -198,6 +198,8 @@
     <None Remove="AWS\Models\Account Statement\Statement\" />
     <None Remove="AWS\Models\Account Statement\Notification\" />
     <None Remove="AWS\Models\Eligibility\Post Eligibility\" />
+    <None Remove="API\Services\Feature Info\" />
+    <None Remove="API\Models\Base Model\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />

@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using myTNB.Mobile;
-using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 
@@ -101,20 +99,6 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "RateCategory")]
             public string RateCategory { get; set; }
-
-            [JsonIgnore]
-            public bool IsResidential
-            {
-                get
-                {
-                    if (RateCategory.IsValid())
-                    {
-                        int index = MobileConstants.ResidentialTariffTypeList.FindIndex(x => x == RateCategory.ToUpper());
-                        return index > -1;
-                    }
-                    return false;
-                }
-            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace myTNB.Mobile
 {
@@ -26,6 +27,7 @@ namespace myTNB.Mobile
         public const string SitecoreUsername = "api_user";
         public const string SitecorePassword = "mytnbapiuser!3$@2";
         internal const string ApiUrlPath = "v6/mytnbappws.asmx";
+        internal const int MaxAccountList = 50;
 
         private const string AWS_DEV1 = "https://stagingapi.mytnb.com.my/asmx-97";
         private const string AWS_DEV2 = "https://stagingapi.mytnb.com.my/asmx-98";
@@ -113,6 +115,7 @@ namespace myTNB.Mobile
         internal const string Service_GetAvailableAppointment = "AvailableAppointment";
         internal const string Service_PostSetAppointment = "SetAppointment";
         internal const string Service_SyncSRApplication = "SyncSRApplication";
+        internal const string Service_SaveFeatureInfo = "SaveFeatureInfo";
 
         //Language File Constants
         internal const string LanguageFile_ServiceDetails = "ServiceDetails";
@@ -167,7 +170,7 @@ namespace myTNB.Mobile
             internal const string BC_Paper = "ZINV";
         }
 
-        public static List<string> ResidentialTariffTypeList = new List<string>
+        internal static List<string> ResidentialTariffTypeList = new List<string>
         {
             "A_LV"
             , "A_LV_D"

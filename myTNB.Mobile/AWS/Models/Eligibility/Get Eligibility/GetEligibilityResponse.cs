@@ -43,6 +43,20 @@ namespace myTNB.Mobile.AWS.Models
         public List<ContractAccountsModel> ContractAccounts { set; get; }
     }
 
+    /*
+    public class DBRModel
+    {
+        [JsonProperty("contractAccounts")]
+        public List<ContractAccountsModel> ContractAccounts { set; get; }
+    }
+
+    public class EBModel
+    {
+        [JsonProperty("contractAccounts")]
+        public List<ContractAccountsModel> ContractAccounts { set; get; }
+    }
+     */
+
     public class ContractAccountsModel
     {
         [JsonProperty("contractAccount")]

@@ -296,7 +296,8 @@ namespace myTNB
             IsUpdatePersonalDetailsEnquiryEnabled,
             IsGSLRebateEnabled,
             AccountStatementTimeout,
-            ShouldShowAccountStatementToNonOwner
+            ShouldShowAccountStatementToNonOwner,
+            MaxAccountList
         }
 
         public Dictionary<string, List<T>> GetSelectorsByPage<T>(string pageName) where T : new()
