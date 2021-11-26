@@ -440,7 +440,28 @@
                             android:maxLines="1"
                             android:paddingTop="5dp" />
                     </com.google.android.material.textfield.TextInputLayout>
+                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txtInputLayoutEnquiryType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        app:errorEnabled="true"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
+                        <EditText
+                            android:id="@+id/txtEnquiryType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint="@string/bill_related_feedback"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutFeedback"
                         android:layout_width="match_parent"

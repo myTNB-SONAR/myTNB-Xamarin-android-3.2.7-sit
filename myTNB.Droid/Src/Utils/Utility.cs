@@ -9,6 +9,7 @@ using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB_Android.Src.Database.Model;
+using Newtonsoft.Json;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.SSMR.Util;
 using System;
@@ -66,6 +67,12 @@ namespace myTNB_Android.Src.Utils
         public static bool isAlpha(string strToCheck)
         {
             Regex rg = new Regex(@"^[a-zA-Z\s,]*$");
+            return rg.IsMatch(strToCheck);
+        }
+
+        public static bool IsNotASCII(string strToCheck)
+        {
+            Regex rg = new Regex(@"[^\x00-\x7F]");
             return rg.IsMatch(strToCheck);
         }
 

@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ToolBarStyle.Base"
-    android:id="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="?android:attr/actionBarSize"
-    android:background="@null">
-    <TextView
-        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-        android:id="@+id/toolbar_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:maxLines="1"
-        android:maxEms="10"
-        android:ellipsize="end"/>
+<androidx.appcompat.widget.Toolbar
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	style="@style/ToolBarStyle.Base"
+	android:id="@+id/toolbar"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:minHeight="?android:attr/actionBarSize"
+	app:contentInsetStartWithNavigation="0dp"
+	android:background="@null">
+	<TextView
+		style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+		android:id="@+id/toolbar_title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:maxLines="1"
+		android:layout_marginRight="@dimen/small_padding"
+		android:layout_gravity="center"
+		android:ellipsize="end"/>
 </androidx.appcompat.widget.Toolbar>

@@ -47,7 +47,8 @@ namespace myTNB_Android.Src.Utils
                 {
                     var result = await req.Content.ReadAsStringAsync();
 
-                    Log.Debug(TAG, $"{msg} {string.Join("", result.Cast<char>().Take(256))}...");
+                    //Log.Debug(TAG, $"{msg} {string.Join("", result.Cast<char>().Take(256))}...");
+                    Log.Debug(TAG, $"{msg} {string.Join("", result.Cast<char>())}");
                 }
             }
 
@@ -81,7 +82,8 @@ namespace myTNB_Android.Src.Utils
                 {
                     var result = await resp.Content.ReadAsStringAsync();
 
-                    Log.Debug(TAG, $"{msg} {string.Join("", result.Cast<char>().Take(256))}...");
+                    //Log.Debug(TAG, $"{msg} {string.Join("", result.Cast<char>().Take(256))}...");
+                    Log.Debug(TAG, $"{msg} {string.Join("", result.Cast<char>())}");
                 }
             }
 

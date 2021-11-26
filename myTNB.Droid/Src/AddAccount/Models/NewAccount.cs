@@ -65,5 +65,7 @@
         public string state { get; set; }
 
         public string BudgetAmount { get; set; }
+
+        public string InstallationType { get; set; }
     }
 }

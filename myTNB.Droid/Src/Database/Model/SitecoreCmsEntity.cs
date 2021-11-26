@@ -19,6 +19,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             APPLY_SSMR_WALKTHROUGH,
             BILL_TOOLTIP,
+            BILL_TOOLTIPV2,
             LANGUAGE_URL,
             LANGUAGE_EN,
             LANGUAGE_MS,
@@ -28,8 +29,8 @@ namespace myTNB_Android.Src.Database.Model
             WHO_IS_REGISTERED_OWNER,
             DO_I_NEED_OWNER_CONSENT,
             HOW_DOES_COPY_IC,
-            HOW_DOES_PROOF_OF_CONSENT
-
+            HOW_DOES_PROOF_OF_CONSENT,
+            NEW_BILL_DESIGN
         }
 
         public static void CreateTable()
@@ -55,7 +56,7 @@ namespace myTNB_Android.Src.Database.Model
 
         public static void InsertSiteCoreItem(SITE_CORE_ID itemId, string jsonItemData, string timestampData)
         {
-           try
+            try
             {
                 SitecoreCmsEntity item = new SitecoreCmsEntity();
                 item.itemId = itemId.ToString();
@@ -130,7 +131,7 @@ namespace myTNB_Android.Src.Database.Model
                 var db = DBHelper.GetSQLiteConnection();
                 db.Execute("DELETE FROM SitecoreCmsEntity where itemId = ?", itemId.ToString());
 
-                
+
             }
             catch (System.Exception e)
             {

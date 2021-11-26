@@ -10,8 +10,10 @@ using AndroidX.AppCompat.App;
 using AndroidX.ConstraintLayout.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
+using DynatraceAndroid;
 using Google.Android.Material.Snackbar;
 using Java.Lang;
+using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Feedback_Login_BillRelated.Activity;
@@ -276,6 +278,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {
             if (!this.GetIsClicked())
             {
+                try
+                {
+                    IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_SUBMIT_NEW_ENQUIRY);  // DYNA
+                    dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
+                    dynaTrace.LeaveAction();
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
 
                 this.SetIsClicked(true);
                 if (DownTimeEntity.IsBCRMDown())
@@ -331,6 +343,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {
             if (!this.GetIsClicked())
             {
+                try
+                {
+                    IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_VIEW_SUBMITTED_ENQUIRY);  // DYNA
+                    dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
+                    dynaTrace.LeaveAction();
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
                 this.SetIsClicked(true);
                 this.userActionsListener.OnSubmittedFeedback();
             }

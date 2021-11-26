@@ -55,6 +55,18 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call GetAppLaunchMasterDataAWS with timeout set.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public Task<AppLaunchMasterDataResponseAWS> GetAppLaunchMasterDataAWS([Body] Request.BaseRequest request)
+        {
+            Console.WriteLine("APIWAS call :" + apiAws.GetAppLaunchMasterDataAWS<AppLaunchMasterDataResponseAWS>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
+            return apiAws.GetAppLaunchMasterDataAWS<AppLaunchMasterDataResponseAWS>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
         /// Call GetAccounts with default timeout.
         /// </summary>
         /// <param name="request"></param>
@@ -188,7 +200,15 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.SubmitEnquiry<SubmitFeedbackResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
-
+        /// <summary>
+        /// Call submit enquiry with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SubmitFeedbackResponse> SubmitEnquiryWithType([Body] Request.BaseRequest request)
+        {
+            return api.SubmitEnquiryWithType<SubmitFeedbackResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
 
         /// <summary>
         /// Call GetSubmittedFeedbackList with default timeout.
@@ -198,6 +218,26 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<SubmittedFeedbackListResponse> SubmittedFeedbackList([Body] Request.BaseRequest request)
         {
             return api.SubmittedFeedbackList<SubmittedFeedbackListResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call SubmittedFeedbackClaimIdDetail with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<GetOvervoltageClaimDetailModel> OvervoltageClaimDetail([Body] Request.BaseRequest request)
+        {
+            return api.OvervoltageClaimDetail<GetOvervoltageClaimDetailModel>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// CA number Verify.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<TriggerOVISServicesResponseModel> TriggerOVISServices([Body] Request.BaseRequest request)
+        {
+            return api.TriggerOVISServices<TriggerOVISServicesResponseModel>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>

@@ -8,11 +8,9 @@ using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing.Printing;
 
 namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
 {
@@ -59,7 +57,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 SubmittedFeedback item = GetItemObject(position);
 
                 Date d = null;
-                string title = "Bill";
                 try
                 {
                     d = simpleDateParser.Parse(item.DateCreated);
@@ -70,13 +67,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                     vh.txtFeedbackDate.Text = "NA";
                     Utility.LoggingNonFatalError(e);
                 }
-
-                //  vh.txtFeedbackTitle.Text = !string.IsNullOrEmpty(item.FeedbackNameInListView) ? item.FeedbackNameInListView : item.FeedbackCategoryName;
-
-                // vh.txtFeedbackTitle.SetPadding(0, 24, 0, 0);  //inject padding;
-                // vh.txtFeedbackDate.SetPadding(0, 24, 0, 0);
-                // vh.txtFeedbackContent.Text = item.FeedbackMessage;
-                // vh.txtFeedbackContent.Visibility = ViewStates.Gone;
 
                 vh.txtSRstatus.Text = item.StatusDesc;
                 vh.txtSRNumber.Text = "SR: " + item.FeedbackId;
@@ -91,48 +81,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                     vh.completeIndicator.Visibility = ViewStates.Gone;
                 }
 
-                //statusCode color 
-                if (item.StatusCode.Equals("CL01"))
-                {
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
-                }
-                else if (item.StatusCode.Equals("CL02"))
-                {
+                int statusColor = item.FeedbackCategoryId.Equals("9") ? item.GSLStatusColor : item.StatusColor;
 
-                }
-                else if (item.StatusCode.Equals("CL03"))
-                {
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.completedColor)));
-                }
-                else if (item.StatusCode.Equals("CL04"))
-                {
-                    vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.completedColor)));
-                }
-                else if (item.StatusCode.Equals("CL06"))
-                {
-
-                }
-
-                if (item.FeedbackCategoryId.Equals("1"))
-                {
-                    // vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.general_enquiry));
-                    vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle");
-
-                }
-                else if (item.FeedbackCategoryId.Equals("2"))
-                {
-                    // vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_streetlamp));
-                }
-                else if (item.FeedbackCategoryId.Equals("3"))
-                {
-                    //   vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_others));
-                }
-                else if (item.FeedbackCategoryId.Equals("4"))
-                {
-                    //  vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.update_personal_details));
-                    vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
-                    //  vh.txtFeedbackTitle.SetPadding(0, 24, 7, 0);
-                }
+                vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, statusColor)));
+                vh.txtFeedbackTitle.Text = item.FeedbackCategoryId.Equals("11") ? Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle") : item.FeedbackCategoryName;
             }
             catch (Exception e)
             {
@@ -164,6 +116,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 TextViewUtils.SetMuseoSans300Typeface(txtSRNumber);
                 TextViewUtils.SetTextSize11(txtFeedbackDate);
                 TextViewUtils.SetTextSize14(txtFeedbackTitle);
+                TextViewUtils.SetTextSize12(txtSRstatus, txtSRNumber);
             }
         }
     }

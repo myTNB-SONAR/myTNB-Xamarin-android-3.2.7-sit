@@ -126,7 +126,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
                         _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
                             ? accountData.IsOwner
-                            : DBRUtility.Instance.IsCADBREligible(accountData.AccountNum);
+                            : DBRUtility.Instance.IsCAEligible(accountData.AccountNum);
                     }
                     //position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
                 }
@@ -412,7 +412,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             try
             {
                 ShowProgressDialog();
-                bool isEligible = DBRUtility.Instance.IsAccountDBREligible;
+                bool isEligible = DBRUtility.Instance.IsAccountEligible;
                 if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                             , EligibilitySessionCache.FeatureProperty.TargetGroup))
                 {

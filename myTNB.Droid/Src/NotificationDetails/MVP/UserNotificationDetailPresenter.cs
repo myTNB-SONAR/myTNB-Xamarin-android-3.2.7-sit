@@ -296,6 +296,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     //        ctaList.Add(primaryCTA);
                     //        break;
                     //    }
+                    case Constants.BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_smr_check_banner;
+                            break;
+                        }
                     case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80:
                         {
                             imageResourceBanner = Resource.Drawable.notification_reaching_eb_icon;

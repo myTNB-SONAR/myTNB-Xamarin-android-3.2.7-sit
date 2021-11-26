@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/rootView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true"
+	android:orientation="vertical">
+	<LinearLayout
+		android:id="@+id/mainView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:isScrollContainer="false"
+		android:orientation="vertical">
+		<include
+			android:id="@+id/toolbar"
+			layout="@layout/toolbar" />
+		<TextView
+			android:id="@+id/gslStepFourPageTitle"
+			android:layout_width="wrap_content"
+			android:layout_height="36dp"
+			android:layout_marginLeft="20dp"
+			android:layout_marginRight="20dp"
+			android:ellipsize="end"
+			android:gravity="top|center"
+			android:maxEms="20"
+			android:maxLines="1"
+			android:text="Step 4 of 4"
+			android:textColor="@color/white"
+			android:textSize="12dp" />
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_weight="1"
+			android:overScrollMode="never"
+			android:scrollbars="none"
+			android:fillViewport="true"
+			android:id="@+id/gslStepFourScrollView"
+			android:layout_height="wrap_content"
+			android:background="@color/background_pale_grey">
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/gslStepFourScrollViewContainer">
+				<TextView
+					android:text="Your contact details"
+					android:layout_marginLeft="16dp"
+					android:layout_marginTop="12dp"
+					android:layout_marginRight="16dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="@color/powerBlue"
+					android:id="@+id/txtStepFourYourContactTitle" />
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="12dp"
+					android:id="@+id/gslStepFourContactDetailsView"/>
+			</LinearLayout>
+		</ScrollView>
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="bottom"
+			android:background="@color/white"
+			android:id="@+id/gslStepFourTnCBtnCLayout">
+			<LinearLayout
+				android:id="@+id/gslStepFourTnCLayout"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:paddingTop="16dp"
+				android:paddingLeft="16dp"
+				android:paddingRight="16dp"
+				android:orientation="horizontal">
+				<CheckBox
+					android:id="@+id/gslStepFourTnCCheckBox"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:checked="true"
+					android:textColor="@color/charcoalGrey"
+					android:textSize="12dp"
+					android:layout_gravity="center_vertical"
+					android:button="@drawable/checkbox_selector" />
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:text="@string/registration_form_terms_conditions"
+					android:textAppearance="?android:attr/textAppearanceSmall"
+					android:textColorLink="@color/powerBlue"
+					android:textSize="12dp"
+					android:textColor="@color/tunagrey"
+					android:maxLines="10"
+					android:layout_gravity="center_vertical"
+					android:id="@+id/txtGSLTnC" />
+			</LinearLayout>
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:paddingTop="16dp"
+				android:paddingLeft="16dp"
+				android:paddingBottom="16dp"
+				android:paddingRight="16dp"
+				android:gravity="center|bottom"
+				android:background="@color/white"
+				android:id="@+id/gslStepFourbtnNextLayout">
+				<Button
+					android:id="@+id/gslStepFourbtnNext"
+					android:text="Next"
+					android:layout_width="match_parent"
+					android:layout_height="48dp"
+					style="@style/DarkButton"
+					android:textAllCaps="false" />
+			</LinearLayout>
+		</LinearLayout>
+	</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -149,7 +149,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
             // textFindUs = textFindUs.Replace(" ", "<br>");
             // textCallUs = textCallUs.Replace(" ", "<br>");
             textCheckStatus = textCheckStatus.Replace(" ", "<br>");
-            textSubmitFeedback = textSubmitFeedback.Replace(" ", "<br>");
+            //textSubmitFeedback = textSubmitFeedback.Replace(" ", "<br>");
 
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
@@ -201,9 +201,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 TextViewUtils.SetTextSize14(txtPromotion);
                 TextViewUtils.SetTextSize16(txtWelcome, btnRegister, btnLogin);
 
-                AppLaunchMasterDataResponse masterDataResponse = MyTNBAccountManagement.GetInstance().GetMasterDataResponse();
+                AppLaunchMasterDataResponseAWS masterDataResponse = MyTNBAccountManagement.GetInstance().GetMasterDataResponse();
                 if (masterDataResponse != null
-                    && masterDataResponse.GetData().ServicesPreLogin is List<MyService> services
+                    && masterDataResponse.Data.ServicesPreLogin is List<MyService> services
                     && services != null
                     && services.Count > 0)
                 {

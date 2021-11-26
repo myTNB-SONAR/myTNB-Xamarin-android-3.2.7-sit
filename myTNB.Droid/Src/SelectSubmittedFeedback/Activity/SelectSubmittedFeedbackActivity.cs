@@ -8,10 +8,14 @@ using Android.Preferences;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using DynatraceAndroid;
 using Google.Android.Material.Snackbar;
+using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Enquiry.GSL.Activity;
 using myTNB_Android.Src.FeedbackDetails.Activity;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.SelectSubmittedFeedback.Adapter;
 using myTNB_Android.Src.SelectSubmittedFeedback.MVP;
 using myTNB_Android.Src.Utils;
@@ -44,7 +48,12 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         SelectSubmittedFeedbackContract.IUserActionsListener userActionsListener;
         SelectSubmittedFeedbackPresenter mPresenter;
 
+        List<SubmittedFeedback> listData;
+
         MaterialDialog progressDialog;
+        MyTNBAppToolTipBuilder leaveDialog;
+        public static string status, crStatusCode;
+        public static string srNumber;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -53,7 +62,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             // Create your application here
             try
             {
-                if(Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
+                if (Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
                 {
                     SetToolBarTitle(Intent.GetStringExtra("TITLE"));
                 }
@@ -88,10 +97,17 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         {
             try
             {
+                this.SetIsClicked(false);
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
                     SubmittedFeedback feedback = adapter.GetItemObject(e.Position);
+                    srNumber = feedback.FeedbackId;
+                    //dynatrace 
+                    IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_VIEW_OVERVOLTAGE_CLAIM_FROM_LIST);  // DYNA
+                    dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
+                    dynaTrace.ReportValue("sr_number", feedback.FeedbackId.ToString());
+                    dynaTrace.LeaveAction();
                     this.userActionsListener.OnSelect(feedback);
                 }
             }
@@ -128,6 +144,21 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             base.OnResume();
             try
             {
+                if (!string.IsNullOrEmpty(status) && !string.IsNullOrEmpty(crStatusCode))
+                {
+                    int index = listData.FindIndex(s => s.FeedbackId.Equals(srNumber));
+                    if (index != -1)
+                    {
+                        listData[index].StatusDesc = status;
+                        listData[index].StatusCode = crStatusCode;
+                        //SubmittedFeedback.d.data[index].StatusDesc = status;
+                        //SubmittedFeedback.d.data[index].StatusCode = statusCode;
+                        //srNumber = null;
+                        status = null;
+                        //statusCode = null;
+                    }
+                    ShowList(listData);
+                }
                 FirebaseAnalyticsUtils.SetScreenName(this, "Select Submitted Feedback");
             }
             catch (Exception e)
@@ -137,10 +168,11 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         }
 
         public void ShowList(List<SubmittedFeedback> list)
-        {    
+        {
             //adapter.AddAll(list);
             if (list != null && list.Count > 0)
             {
+                listData = new List<SubmittedFeedback>(list);
                 ShowProgressDialog();
                 adapter = new SelectSubmittedFeedbackAdapter(this, list, true);
                 listView.Adapter = adapter;
@@ -158,7 +190,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         {
             try
             {
-                LoadingOverlayUtils.OnRunLoadingAnimation(this);      
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -262,10 +294,14 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             }
         }
 
-        public void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedbackDetail, SubmittedFeedback submittedFeedback)
+        public void ShowFeedbackDetailsBillRelated(SubmittedFeedbackDetails submittedFeedbackDetail, SubmittedFeedback submittedFeedback, bool isAboutMyBill)
         {
             var billIntent = new Intent(this, typeof(FeedbackDetailsBillRelatedActivity));
             billIntent.PutExtra("TITLE", !string.IsNullOrEmpty(submittedFeedback.FeedbackNameInListView) ? submittedFeedback.FeedbackNameInListView : submittedFeedback.FeedbackCategoryName);
+            if (isAboutMyBill)
+            {
+                billIntent.PutExtra("ABOUTMYBILL", "true");
+            }
             StartActivity(billIntent);
         }
 
@@ -279,6 +315,33 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         {
             var othersIntent = new Intent(this, typeof(FeedbackDetailsOthersActivity));
             StartActivity(othersIntent);
+        }
+
+        public void ShowFeedbackDetailsGSL()
+        {
+            Intent gslDetailsIntent = new Intent(this, typeof(GSLRebateSubmittedDetailsActivity));
+            StartActivity(gslDetailsIntent);
+        }
+        
+        public void ShowFeedbackDetailsOverVoltage(SubmittedFeedbackDetails submittedFeedbackdetail, SubmittedFeedback submittedFeedback, string ClaimId)
+        {
+            if (ClaimId != null)
+            {
+                var othersIntent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+                othersIntent.PutExtra("TITLE", !string.IsNullOrEmpty(submittedFeedback.FeedbackNameInListView) ? submittedFeedback.FeedbackNameInListView : submittedFeedback.FeedbackCategoryName);
+                othersIntent.PutExtra("ClaimId", ClaimId);
+                StartActivity(othersIntent);
+            }
+            else
+            {
+                leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
+                .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                .SetCTAaction(() => { this.SetIsClicked(false); })
+                .Build();
+                leaveDialog.Show();
+            }
         }
 
         private Snackbar bcrmExceptionSnackBar;

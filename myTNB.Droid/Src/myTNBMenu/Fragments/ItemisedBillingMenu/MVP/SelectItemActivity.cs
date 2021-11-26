@@ -1,10 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -26,6 +22,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         [BindView(Resource.Id.item_liste_view)]
         ListView listItemView;
 
+        [BindView(Resource.Id.itemListTitle)]
+        readonly TextView itemListTitle;
+
         SelectItemAdapter selectItemAdapter;
         List<Item> itemList;
         private string PAGE_ID = "";
@@ -43,6 +42,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         {
             base.OnCreate(savedInstanceState);
             SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+
+            TextViewUtils.SetMuseoSans500Typeface(itemListTitle);
+            TextViewUtils.SetTextSize16(itemListTitle);
+
             Bundle extras = Intent.Extras;
 
             itemList = new List<Item>();
@@ -56,9 +59,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     selectItemAdapter = new SelectItemAdapter(this, itemList);
                     listItemView.Adapter = selectItemAdapter;
                 }
+
+                if (extras.ContainsKey("LIST_TITLE"))
+                {
+                    SetToolBarTitle(extras.GetString("LIST_TITLE"));
+                }
+
+                if (extras.ContainsKey("LIST_DESCRIPTION"))
+                {
+                    itemListTitle.Text = extras.GetString("LIST_DESCRIPTION");
+                }
+                else
+                {
+                    itemListTitle.Visibility = ViewStates.Gone;
+                }
             }
 
-            SetToolBarTitle(Utility.GetLocalizedLabel("BillFilter", "selectFilter"));
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
         }
@@ -89,7 +105,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             SetResult(Result.Ok, resultIntent);
             Finish();
         }
-
 
         public override void OnTrimMemory(TrimMemory level)
         {

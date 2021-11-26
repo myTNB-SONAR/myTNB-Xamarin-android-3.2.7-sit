@@ -45,11 +45,16 @@ using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile.AWS.Models;
 using Firebase.Iid;
 using myTNB_Android.Src.NotificationDetails.Activity;
+using myTNB_Android.Src.Utils.Deeplink;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Login.Activity;
 using System.Text.RegularExpressions;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.Notifications.Models;
+using myTNB_Android.Src.NotificationDetails.Models;
+using myTNB_Android.Src.Notifications.Adapter;
+using myTNB_Android.Src.OverVoltageFeedback.Activity;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -66,6 +71,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
     {
         [BindView(Resource.Id.rootView)]
         RelativeLayout rootView;
+        public static bool FcmPushNotificationFlagFromBackground;
 
         public static readonly string TAG = typeof(LaunchViewActivity).Name;
         private AppLaunchPresenter mPresenter;
@@ -85,7 +91,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private bool isAppLaunchLoadSuccessful = false;
         private bool isAppLaunchDone = false;
 
-        private AppLaunchMasterDataResponse cacheResponseData = null;
+        private AppLaunchMasterDataResponseAWS cacheResponseData = null;
+
+        string ClaimId = "";
 
         private string urlSchemaData = "";
         private string urlSchemaPath = "";
@@ -95,10 +103,16 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private Snackbar mUnknownExceptionSnackBar;
 
         private AppLaunchNavigation currentNavigation = AppLaunchNavigation.Nothing;
+        public static string DynatraceSessionUUID;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            //UUID number for dynatrace webview navigation	
+            Guid myuuid = Guid.NewGuid();
+            DynatraceSessionUUID = myuuid.ToString();
+
             Utility.SetAppUpdateId(this);
             LanguageUtil.SetInitialAppLanguage();
             try
@@ -162,16 +176,15 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         }
-                    }  
+                    }
 
-                    // Get CategoryBrowsable intent data
-                    var data = Intent?.Data?.EncodedAuthority;
-                    if (!string.IsNullOrEmpty(data))
+                    if (Intent.Extras.ContainsKey("claimId"))
                     {
-                        urlSchemaData = data;
-                        urlSchemaPath = Intent?.Data?.EncodedPath;
+                        ClaimId = Intent.Extras.GetString("claimId");
+                        currentNavigation = AppLaunchNavigation.Notification;
                     }
                 }
+                UserSessions.SetUploadFileNameCounter(PreferenceManager.GetDefaultSharedPreferences(this), 1);
             }
             catch (Exception e)
             {
@@ -304,14 +317,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
                     DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                    if (!string.IsNullOrEmpty(urlSchemaData))
-                    {
-                        DashboardIntent.PutExtra("urlSchemaData", urlSchemaData);
-                        if (!string.IsNullOrEmpty(urlSchemaPath))
-                        {
-                            DashboardIntent.PutExtra("urlSchemaPath", urlSchemaPath);
-                        }
-                    }
                     StartActivity(DashboardIntent);
                 }
                 else
@@ -329,7 +334,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
-            
+
         }
 
         public async void ShowApplicationStatusDetails()
@@ -376,7 +381,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public async void OnShowManageBillDelivery()
         {
-            bool isDBREnabled = DBRUtility.Instance.IsAccountDBREligible;
+            bool isDBREnabled = DBRUtility.Instance.IsAccountEligible;
             if (!isDBREnabled)
             {
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -391,7 +396,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     EligibilitySessionCache.Instance.SetData(data);
                     //Use data or any EligibilitySessionCache functionality
                 }
-                isDBREnabled = DBRUtility.Instance.IsAccountDBREligible;
+                isDBREnabled = DBRUtility.Instance.IsAccountEligible;
             }
             if (!isDBREnabled
                 || string.IsNullOrEmpty(UserSessions.DBROwnerNotificationAccountNumber)
@@ -682,7 +687,16 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowNotification()
         {
-            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
+            if (!string.IsNullOrEmpty(ClaimId))
+            {
+                FcmPushNotificationFlagFromBackground = true;
+                isAppLaunchDone = true;
+                Intent Intent = new Intent(this, typeof(OverVoltageFeedbackDetailActivity));
+                Intent.AddFlags(ActivityFlags.ClearTop);
+                Intent.PutExtra("ClaimId", ClaimId);
+                StartActivity(Intent);
+            }
+            else if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
                 isAppLaunchDone = true;
                 Intent notificationIntent = new Intent(this, typeof(NotificationActivity));
@@ -690,11 +704,11 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 StartActivity(notificationIntent);
             }
         }
-        
+
         public void ShowNotificationDetails()
-        { 
+        {
             var usrsession = UserSessions.Notification;
-            mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);            
+            mPresenter.OnShowNotificationDetails(usrsession.Type, usrsession.EventId, usrsession.RequestTransId);
         }
 
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details)
@@ -725,7 +739,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-       
+
         public void ShowNotificationCount(int count)
         {
             try
@@ -1056,7 +1070,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
-        public void ShowMaintenance(AppLaunchMasterDataResponse masterDataResponse)
+        public void ShowMaintenance(AppLaunchMasterDataResponseAWS masterDataResponse)
         {
             try
             {
@@ -1065,8 +1079,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     isAppLaunchDone = true;
                     Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
-                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Response.DisplayTitle);
-                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Response.DisplayMessage);
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.DisplayTitle);
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.DisplayMessage);
                     StartActivity(maintenanceScreen);
                 }
             }
@@ -1285,35 +1299,14 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             PendingDynamicLinkData pendingResult = result.JavaCast<PendingDynamicLinkData>();
 
-            Android.Net.Uri deepLink = null;
             if (pendingResult != null)
             {
+                Android.Net.Uri deepLink = null;
                 deepLink = pendingResult.Link;
                 string deepLinkUrl = deepLink.ToString();
                 if (!string.IsNullOrEmpty(deepLinkUrl))
                 {
-                    if (deepLinkUrl.Contains("rewards"))
-                    {
-                        urlSchemaData = "rewards";
-                        string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
-                        urlSchemaPath = "rewardId=" + id;
-                    }
-                    else if (deepLinkUrl.Contains("whatsnew"))
-                    {
-                        urlSchemaData = "whatsnew";
-                        string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
-                        urlSchemaPath = "whatsNewId=" + id;
-                    }
-                    else if (deepLinkUrl.Contains("applicationListing"))
-                    {
-                        urlSchemaData = "applicationListing";
-                    }
-                    else if (deepLinkUrl.Contains("applicationDetails"))
-                    {
-                        urlSchemaData = "applicationDetails";
-                        ApplicationDetailsDeeplinkCache.Instance.SetData(deepLinkUrl);
-                    }
-                    else if (deepLinkUrl.Contains("UpdateUserStatusActivate"))
+                    if (deepLinkUrl.Contains("UpdateUserStatusActivate"))
                     {
                         urlSchemaData = "UpdateUserStatusActivate";
 
@@ -1364,6 +1357,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
                     }
                 }
+
+                DeeplinkUtil.Instance.InitiateDeepLink(pendingResult.Link);
             }
         }
 

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="false"
+	android:theme="@style/Theme.FaultyStreetLamps"
+	android:id="@+id/rootView">
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+		<include
+			android:id="@+id/toolbar"
+			layout="@layout/toolbar" />
+		<LinearLayout
+			android:id="@+id/bottomLayout"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="vertical"
+			android:paddingLeft="16dp"
+			android:paddingRight="16dp"
+			android:paddingBottom="8dp"
+			android:layout_alignParentBottom="true"
+			android:background="@color/white"
+			android:paddingTop="8dp">
+			<Button
+				android:id="@+id/btnSubmit"
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:text="View Account Statement"
+				android:textSize="16dp"
+				android:textAllCaps="false"
+				style="@style/DarkButton1"/>
+		</LinearLayout>
+		<LinearLayout
+			android:id="@+id/appLanguageContainer"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:layout_below="@+id/toolbar"
+			android:layout_above="@+id/bottomLayout"
+			android:orientation="vertical"
+			android:background="@color/lightGrey">
+			<ScrollView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:overScrollMode="never"
+				android:scrollbars="none"
+				android:fillViewport="true">
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+					<LinearLayout
+						android:id="@+id/viewontainer"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:background="@color/lightGrey"
+						android:orientation="vertical">
+						<TextView
+							android:id="@+id/txtPageTitleInfo"
+							android:layout_width="match_parent"
+							android:layout_height="24dp"
+							android:layout_marginBottom="8dp"
+							android:layout_marginLeft="16dp"
+							android:layout_marginTop="16dp"
+							android:gravity="left"
+							android:text="I want to view:"
+							android:textColor="@color/powerBlue"
+							android:textSize="16dp" />
+					</LinearLayout>
+					<LinearLayout
+						android:id="@+id/threeMonthsContainer"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:paddingBottom="13dp"
+						android:paddingTop="19dp"
+						android:background="@color/white"
+						android:orientation="vertical">
+						<RelativeLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content">
+						<TextView
+							android:id="@+id/txtThreeMonths"
+							android:layout_width="match_parent"
+							android:layout_height="24dp"
+							android:layout_marginLeft="16dp"
+							android:layout_marginRight="16dp"
+							android:text="Past 3 months"
+							android:textColor="#49494a"
+							android:textSize="16dp" />
+						<ImageView
+							android:id="@+id/imgTheeMonthsAction"
+							android:layout_width="22dp"
+							android:layout_height="wrap_content"
+							android:layout_marginRight="16dp"
+							android:visibility="gone"
+							android:src="@drawable/ic_action_tick"
+							android:layout_centerInParent="true"
+							android:layout_alignParentEnd="true" />
+						</RelativeLayout>
+					</LinearLayout>
+					<View 
+						android:layout_width="fill_parent"
+						android:layout_height="1dp"       
+						android:background="#e4e4e4" />
+					<LinearLayout
+						android:id="@+id/sixMonthContainer"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:paddingBottom="17dp"
+						android:paddingTop="16dp"
+						android:background="@color/white"
+						android:orientation="vertical">
+						<RelativeLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content">
+						<TextView
+							android:id="@+id/txtSixMonth"
+							android:layout_width="match_parent"
+							android:layout_height="24dp"
+							android:layout_marginLeft="16dp"
+							android:layout_marginRight="16dp"
+							android:text="Past 6 months"
+							android:textColor="#49494a"
+							android:textSize="16dp" />
+						<ImageView
+							android:id="@+id/imgSixMonthsAction"
+							android:layout_width="22dp"
+							android:layout_height="wrap_content"
+							android:layout_marginRight="16dp"
+							android:visibility="gone"
+							android:src="@drawable/ic_action_tick"
+							android:layout_centerInParent="true"
+							android:layout_alignParentEnd="true" />
+						</RelativeLayout>
+					</LinearLayout>
+				</LinearLayout>
+			</ScrollView>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="16dp"
+				android:orientation="vertical"
+				android:background="@color/lightGrey"/>
+		</LinearLayout>
+	</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -69,7 +69,7 @@ namespace myTNB_Android.Src.Database.Model
                 Type = channels.Type,
                 CreatedDate = channels.CreatedDate,
                 MasterId = channels.MasterId,
-                IsOpted = channels.IsOpted
+                IsOpted = channels.IsOpted == null ? true : false
             };
 
             int rows = db.InsertOrReplace(newRecord);
@@ -91,7 +91,7 @@ namespace myTNB_Android.Src.Database.Model
                 Type = channels.Type,
                 CreatedDate = channels.CreatedDate,
                 MasterId = channels.MasterId,
-                IsOpted = channels.IsOpted
+                IsOpted = channels.IsOpted == null ? true : false
             };
 
             //db.InsertOrReplaceAsync(newRecord);

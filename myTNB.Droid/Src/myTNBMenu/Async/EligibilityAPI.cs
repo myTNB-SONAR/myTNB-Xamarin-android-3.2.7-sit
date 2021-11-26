@@ -83,7 +83,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     //Use data or any EligibilitySessionCache functionality
                 }
 
-                if (DBRUtility.Instance.IsAccountDBREligible
+                if (DBRUtility.Instance.IsAccountEligible
                     && !EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                         , EligibilitySessionCache.FeatureProperty.TargetGroup))
                 {

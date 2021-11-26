@@ -134,10 +134,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 }
 
                 UserEntity user = UserEntity.GetActive();
-                var sharedpref_data = UserSessions.GetCheckEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
-                bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);  //get from shared pref
+                //var sharedpref_data = UserSessions.GetCheckEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                //bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);  //get from shared pref
 
-                if (string.IsNullOrEmpty(user.IdentificationNo) || !isUpdatePersonalDetail)
+                //if (string.IsNullOrEmpty(user.IdentificationNo) || !isUpdatePersonalDetail)
+                if (string.IsNullOrEmpty(user.IdentificationNo))
                 {
                     fromIDFlag = true;
                 }

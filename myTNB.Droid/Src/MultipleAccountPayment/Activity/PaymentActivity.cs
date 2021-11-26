@@ -444,7 +444,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     string dbrAccount = CAsWithPaperBillList[0];
                     _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
                             ? GetIsOwnerTag(dbrAccount)
-                            : DBRUtility.Instance.IsCADBREligible(dbrAccount);
+                            : DBRUtility.Instance.IsCAEligible(dbrAccount);
 
                     if (!AccessTokenCache.Instance.HasTokenSaved(this))
                     {
@@ -488,7 +488,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             List<string> dBRCAs = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
                         , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                ? DBRUtility.Instance.GetDBRCAs()
+                ? DBRUtility.Instance.GetCAList()
                 : AccountTypeCache.Instance.DBREligibleCAs;
             List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
             string account = string.Empty;

@@ -7,6 +7,8 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using myTNB_Android.Src.MyTNBService.Response;
+using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -99,6 +101,51 @@ namespace myTNB_Android.Src.Database.Model
         [Column("BudgetAmount")]
         public string BudgetAmount { get; set; }
 
+        [Column("InstallationType")]
+        public string InstallationType { get; set; }
+
+        [JsonIgnore]
+        public bool IsNormalMeter
+        {
+            get
+            {
+                var res = true;
+
+                if (!string.IsNullOrEmpty(SmartMeterCode))
+                {
+                    res = string.Compare(SmartMeterCode, "0") == 0;
+                }
+                return res;
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsREAccount
+        {
+            get
+            {
+                return AccountCategoryId != null && AccountCategoryId.Equals("2");
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsSmartMeter
+        {
+            get
+            {
+                return !IsNormalMeter && !IsREAccount;
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsSSMR
+        {
+            get
+            {
+                return IsTaggedSMR;
+            }
+        }
+
         public static int CreateTable()
         {
             var db = DBHelper.GetSQLiteConnection();
@@ -131,7 +178,8 @@ namespace myTNB_Android.Src.Database.Model
                 SmartMeterCode = accountResponse.smartMeterCode == null ? "0" : accountResponse.smartMeterCode,
                 IsSelected = isSelected,
                 IsTaggedSMR = accountResponse.IsTaggedSMR,
-                BudgetAmount = accountResponse.BudgetAmount == null ? "0" : accountResponse.BudgetAmount
+                BudgetAmount = accountResponse.BudgetAmount == null ? "0" : accountResponse.BudgetAmount,
+                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -197,7 +245,8 @@ namespace myTNB_Android.Src.Database.Model
                 IsPeriodOpen = false,
                 IsHaveAccess = accountResponse.IsHaveAccess,
                 IsApplyEBilling = accountResponse.IsApplyEBilling,
-                BudgetAmount = accountResponse.BudgetAmount
+                BudgetAmount = accountResponse.BudgetAmount,
+                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -231,7 +280,8 @@ namespace myTNB_Android.Src.Database.Model
                 IsPeriodOpen = false,
                 IsHaveAccess = accountResponse.IsHaveAccess,
                 IsApplyEBilling = accountResponse.IsApplyEBilling,
-                BudgetAmount = accountResponse.BudgetAmount
+                BudgetAmount = accountResponse.BudgetAmount,
+                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -1249,7 +1299,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             var db = DBHelper.GetSQLiteConnection();
             List<CustomerBillingAccount> eligibleSMAccounts = new List<CustomerBillingAccount>();
-            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode != '0' AND accountTypeId == 1").ToList().OrderBy(x => x.AccDesc).ToList();
+            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode != '0' AND accountTypeId == 1 AND InstallationType != 25").ToList().OrderBy(x => x.AccDesc).ToList();
             return eligibleSMAccounts;
         }
 
@@ -1281,5 +1331,26 @@ namespace myTNB_Android.Src.Database.Model
             eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accNum = ?", accNum).ToList().OrderBy(x => x.AccDesc).ToList();
             return eligibleSMAccounts;
         }
+
+        public static void SetCAListForEligibility()
+        {
+            List<CustomerBillingAccount> allAccountList = List();
+            List<CACriteriaModel> criteriaModelList = new List<CACriteriaModel>();
+
+            allAccountList.ForEach(account =>
+            {
+                CACriteriaModel criteriaModel = new CACriteriaModel();
+                criteriaModel.CA = account.AccNum;
+                criteriaModel.IsOwner = account.isOwned;
+                criteriaModel.IsSmartMeter = account.IsSmartMeter;
+                criteriaModel.IsNormalMeter = account.IsNormalMeter;
+                criteriaModel.IsRenewableEnergy = account.IsREAccount;
+                criteriaModel.IsSMR = account.IsSSMR;
+                criteriaModelList.Add(criteriaModel);
+            });
+
+            EligibilitySessionCache.Instance.SetCAList(criteriaModelList);
+        }
+
     }
 }

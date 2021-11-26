@@ -55,6 +55,8 @@
                     public const string Start_Paperless_Success = "App_Visit_StartPaperlessSuccess";
                     public const string Back_To_Paper = "App_Visit_OptBackPaperBill";
                     public const string Back_To_Paper_Success = "App_Visit_OptBackPaperSuccess";
+                    public const string Start_Paperless_Share_Feedback = "App_Visit_DBRRating";
+                    public const string Fail = "App_Visit_Fail";
                 }
             }
 
@@ -108,6 +110,82 @@
                     public const string Back_To_Paper_Close = "App_Action_OptBackPaperClose_Confirm";
                     public const string Start_Paperless_Confirm = "App_Action_StartPaperless_Confirm";
                     public const string Back_To_Paper_Confirm = "App_Action_OptBackPaper_Confirm";
+                    public const string Start_Paperless_Share_Feedback = "App_Action_StartPaperlessSuccess_ShareFeedback";
+                    public const string Submit_Rating = "App_Action_DBRRating_Submit";
+                    public const string Submit_Rating_Close = "App_Action_DBRRatingClose_Confirm";
+                }
+            }
+        }
+
+        public struct BR
+        {
+            public struct Screens
+            {
+                public struct Bill
+                {
+                    public const string View_Bill = "App_Visit_ViewBill";
+                }
+
+                public struct LoadingAccountStatement
+                {
+                    public const string Loading = "App_Visit_LoadAccountStatement";
+                }
+
+                public struct AccountStatement
+                {
+                    public const string View_Account_Statement = "App_Visit_ViewAccountStatement";
+                }
+            }
+
+            public struct CTAs
+            {
+                public struct Home
+                {
+                    public const string Home_Banner = "App_Action_Home_BRBanner";
+                }
+
+                public struct BillRedesignComms
+                {
+                    public const string View_Bill = "App_Action_NewBill_ViewYourBills";
+                }
+
+                public struct Bill
+                {
+                    public const string View_Bill = "App_Action_ViewBill_Arrow";
+                    public const string View_Account_Statement = "App_Action_Bill_AccountStatementIcon";
+                    public const string No_Access_Got_It = "App_Action_PaymentHistory_GotIt";
+                }
+
+                public struct StatementPeriod
+                {
+                    public const string Past_3_Months = "App_Action_ViewAccountStatement_Past3Months";
+                    public const string Past_6_Months = "App_Action_ViewAccountStatement_Past6Months";
+                    public const string Confirm = "App_Action_RequestAccountStatement_Confirm";
+                    public const string Back = "App_Action_RequestAccountStatement_BackArrow";
+                }
+
+                public struct BillFilter
+                {
+                    public const string All = "App_Action_BRViewFilter_All";
+                    public const string Advice = "App_Action_BRViewFilter_Advice";
+                    public const string Bills = "App_Action_BRViewFilter_Bills";
+                    public const string Payments = "App_Action_BRViewFilter_Payments";
+                }
+
+                public struct Notifications
+                {
+                    public const string Update = "App_Action_InAppPreGTM_UpdateNow";
+                    public const string Combined_Comms_Owner = "Push_Action_DiscoveryOwner_Banner";
+                    public const string Combined_Comms_Non_Owner = "Push_Action_CombinedDiscoveryNonOwner_Banner";
+                    public const string Combined_Comms_In_App_Non_Owner = "App_Action_InAppCombinedNonOwner_Here";
+                }
+
+                public struct Error
+                {
+                    public const string Timeout_Back_To_Bills = "App_Action_TimeoutAccountStatement_BackToBills";
+                    public const string Refresh_Now = "App_Action_ErrorAccountStatement_RefreshNow";
+                    public const string No_History_Back_To_Bills = "App_Action_ErrorAccountStatement_BackToBills";
+                    public const string Refresh_Back_To_Bills = "App_Action_ErrorAccountStatement_BackArrow";
                 }
             }
         }

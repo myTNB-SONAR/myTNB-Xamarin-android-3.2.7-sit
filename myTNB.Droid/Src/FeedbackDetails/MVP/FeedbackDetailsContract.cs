@@ -23,7 +23,7 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                 /// <param name="accountNoName">string</param>
                 /// <param name="feedback">string</param>
 
-                void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string accountNoName, string feedback , List<FeedbackUpdate> feedbackUpdateList, string name, string email, string mobile, int? relationShip, string relationshipDesc , bool? isOwner);
+                void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string accountNoName, string feedback , List<FeedbackUpdate> feedbackUpdateList, string name, string email, string mobile, int? relationShip, string relationshipDesc , bool? isOwner,string EnquiryName);
 
                 /// <summary>
                 /// Show/Add to adapter

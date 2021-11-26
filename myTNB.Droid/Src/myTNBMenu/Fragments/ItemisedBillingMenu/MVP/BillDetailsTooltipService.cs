@@ -23,22 +23,50 @@ namespace myTNB.SitecoreCMS.Service
             _language = language;
         }
 
-        internal List<BillsTooltipModelEntity> GetItems()
+        internal List<BillsTooltipModelEntity> GetItems(BillsTooltipVersionEnum version)
         {
+            string itemPath;
+            switch (version)
+            {
+                case BillsTooltipVersionEnum.V1:
+                    itemPath = Constants.Sitecore.ItemPath.BillDetailsTooltip;
+                    break;
+                case BillsTooltipVersionEnum.V2:
+                    itemPath = Constants.Sitecore.ItemPath.BillDetailsTooltipV2;
+                    break;
+                default:
+                    itemPath = Constants.Sitecore.ItemPath.BillDetailsTooltip;
+                    break;
+            }
+
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.BillDetailsTooltip
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, SiteCoreConfig.FiveSecondTimeSpan, _websiteURL, _language);
+            var req = sitecoreService.GetItemByPath(itemPath, PayloadType.Content, new List<ScopeType> { ScopeType.Children },
+                SiteCoreConfig.FiveSecondTimeSpan, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToChildrenItems(item);
             var itemList = list.Result;
             return itemList.ToList();
         }
 
-        internal BillsTooltipTimeStamp GetTimeStamp()
+        internal BillsTooltipTimeStamp GetTimeStamp(BillsTooltipVersionEnum version)
         {
+            string itemPath;
+            switch (version)
+            {
+                case BillsTooltipVersionEnum.V1:
+                    itemPath = Constants.Sitecore.ItemPath.BillDetailsTooltip;
+                    break;
+                case BillsTooltipVersionEnum.V2:
+                    itemPath = Constants.Sitecore.ItemPath.BillDetailsTooltipV2;
+                    break;
+                default:
+                    itemPath = Constants.Sitecore.ItemPath.BillDetailsTooltip;
+                    break;
+            }
+
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.BillDetailsTooltip
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, SiteCoreConfig.FiveSecondTimeSpan, _websiteURL, _language);
+            var req = sitecoreService.GetItemByPath(itemPath, PayloadType.Content, new List<ScopeType> { ScopeType.Self },
+                SiteCoreConfig.FiveSecondTimeSpan, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToTimestamp(item);
             var itemList = list.Result;

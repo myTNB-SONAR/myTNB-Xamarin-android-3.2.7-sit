@@ -41,6 +41,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         private const string SELECTED_ACCOUNT_KEY = ".selectedAccount";
 
         private string _accountNumber = string.Empty;
+        private bool IsDBR = true;
 
         internal bool ShouldBackToHome = false;
 
@@ -101,6 +102,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
 
                 micrositeWebView = FindViewById<WebView>(Resource.Id.tncWebView);
                 micrositeWebView.Settings.JavaScriptEnabled = true;
+                micrositeWebView.Settings.CacheMode = CacheModes.CacheElseNetwork;
                 micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
                 SetToolBarTitle(GetLabelByLanguage(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
                     ? "goPaperless"
@@ -114,26 +116,55 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             }
         }
 
-        private void OnTag(bool isWebViewClient = false)
+        private void OnTag(bool isWebViewClient = false, bool isFail = false)
         {
             if (isWebViewClient)
             {
-                if (BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+                if (isFail)
                 {
-                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Confirm);
-                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Start_Paperless_Success);
+                    DynatraceHelper.OnTrack(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
+                        ? DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Confirm
+                        : DynatraceConstants.DBR.CTAs.Webview.Back_To_Paper_Confirm);
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Fail);
                 }
                 else
                 {
-                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Back_To_Paper_Confirm);
-                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Back_To_Paper_Success);
+                    if (BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+                    {
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Confirm);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Start_Paperless_Success);
+                    }
+                    else
+                    {
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Back_To_Paper_Confirm);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Back_To_Paper_Success);
+                    }
                 }
             }
-            else {
+            else
+            {
                 DynatraceHelper.OnTrack(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
                     ? DynatraceConstants.DBR.Screens.Webview.Start_Paperless
                     : DynatraceConstants.DBR.Screens.Webview.Back_To_Paper);
             }
+        }
+
+        private void OnTagRatingDynatrace(bool isSuccess)
+        {
+            if (isSuccess)
+            {
+                DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Submit_Rating);
+            }
+            else
+            {
+                DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Share_Feedback);
+                DynatraceHelper.OnTrack(DynatraceConstants.DBR.Screens.Webview.Start_Paperless_Share_Feedback);
+            }
+        }
+
+        private void SetShareFeedbackTitle()
+        {
+            SetToolBarTitle(GetLabelByLanguage("shareFeedbackTitle"));
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -157,9 +188,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DBRWebview", "confirm"))
                 .SetSecondaryCTAaction(() =>
                 {
-                    DynatraceHelper.OnTrack(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
-                        ? DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Close
-                        : DynatraceConstants.DBR.CTAs.Webview.Back_To_Paper_Close);
+                    OnTagCloseDynatrace();
                     Log.Debug("[DEBUG]", "ShouldBackToHome: " + ShouldBackToHome);
                     if (ShouldBackToHome)
                     {
@@ -175,6 +204,20 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 .Build();
             exitTooltip.Show();
             return true;
+        }
+
+        private void OnTagCloseDynatrace()
+        {
+            if (IsDBR)
+            {
+                DynatraceHelper.OnTrack(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
+                    ? DynatraceConstants.DBR.CTAs.Webview.Start_Paperless_Close
+                    : DynatraceConstants.DBR.CTAs.Webview.Back_To_Paper_Close);
+            }
+            else
+            {
+                DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Webview.Submit_Rating_Close);
+            }
         }
 
         public override bool ShowBackArrowIndicator()
@@ -315,6 +358,21 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     if (url.ToString().Contains("BillDelivery/Success"))
                     {
                         mActivity.ShouldBackToHome = true;
+                        mActivity.IsDBR = true;
+                        mActivity.OnTag(true);
+                    }
+                    else if (url.ToString().Contains("Home/Error"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                        mActivity.IsDBR = true;
+                        mActivity.OnTag(true, true);
+                    }
+                    else if (url.ToString().Contains("Feedback/Rate")
+                        || url.ToString().Contains("FeedbackRating/Success"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                        mActivity.IsDBR = false;
+                        mActivity.OnTagRatingDynatrace(url.ToString().Contains("FeedbackRating/Success"));
                     }
                     Log.Debug("[DEBUG]", "MyTNBWebViewClient ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }
@@ -331,7 +389,22 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     if (url.ToString().Contains("BillDelivery/Success"))
                     {
                         mActivity.ShouldBackToHome = true;
+                        mActivity.IsDBR = true;
                         mActivity.OnTag(true);
+                    }
+                    else if (url.ToString().Contains("Home/Error"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                        mActivity.IsDBR = true;
+                        mActivity.OnTag(true, true);
+                    }
+                    else if (url.ToString().Contains("Feedback/Rate")
+                       || url.ToString().Contains("FeedbackRating/Success"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                        mActivity.IsDBR = false;
+                        mActivity.OnTagRatingDynatrace(url.ToString().Contains("FeedbackRating/Success"));
+                        mActivity.SetShareFeedbackTitle();
                     }
                     Log.Debug("[DEBUG]", "OnPageStarted ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }
@@ -350,6 +423,21 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     if (url.ToString().Contains("BillDelivery/Success"))
                     {
                         mActivity.ShouldBackToHome = true;
+                        mActivity.IsDBR = true;
+                        mActivity.OnTag(true);
+                    }
+                    else if (url.ToString().Contains("Home/Error"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                        mActivity.IsDBR = true;
+                        mActivity.OnTag(true, true);
+                    }
+                    else if (url.ToString().Contains("Feedback/Rate")
+                       || url.ToString().Contains("FeedbackRating/Success"))
+                    {
+                        mActivity.ShouldBackToHome = true;
+                        mActivity.IsDBR = false;
+                        mActivity.OnTagRatingDynatrace(url.ToString().Contains("FeedbackRating/Success"));
                     }
                     Log.Debug("[DEBUG]", "OnPageFinished ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }

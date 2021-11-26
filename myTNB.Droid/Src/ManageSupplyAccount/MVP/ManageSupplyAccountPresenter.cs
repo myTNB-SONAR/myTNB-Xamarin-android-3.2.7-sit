@@ -109,6 +109,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
 
                         CustomerBillingAccount.MakeFirstAsSelected();
                     }
+
+                    CustomerBillingAccount.SetCAListForEligibility();
+
                     SMUsageHistoryEntity.RemoveAccountData(accountData.AccountNum);
                     UsageHistoryEntity.RemoveAccountData(accountData.AccountNum);
                     BillHistoryEntity.RemoveAccountData(accountData.AccountNum);

@@ -7,6 +7,8 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
+using myTNB.Mobile;
+using myTNB_Android.Src.myTNBMenu.Models;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -14,6 +16,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
     {
         List<ManageBillDeliveryModel> ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
         ManageBillDeliveryContract.IView mView;
+
         //SMRregistrationApi api;
         public ManageBillDeliveryPresenter(ManageBillDeliveryContract.IView view)
         {
@@ -32,7 +35,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             }
         }
 
-        public List<ManageBillDeliveryModel> GenerateManageBillDeliveryList()
+        public List<ManageBillDeliveryModel> GenerateManageBillDeliveryList(AccountData selectedAccountData)
         {
             ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
             ManageBillDeliveryList.Add(new ManageBillDeliveryModel()

@@ -13,6 +13,7 @@ using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.AddAccount.Activity;
+using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ForgetPassword.Activity;
 using myTNB_Android.Src.Login.MVP;
@@ -515,8 +516,11 @@ namespace myTNB_Android.Src.Login.Activity
 
         public void ShowDashboard()
         {
+            //Guid
+            Guid myuuid = Guid.NewGuid();
+            LaunchViewActivity.DynatraceSessionUUID = myuuid.ToString();
+
             // TODO : START ACTIVITY DASHBOARD
-            HomeMenuFragment.IsFromLogin = true;
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.PutExtra("FromDashBoard", true);
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);

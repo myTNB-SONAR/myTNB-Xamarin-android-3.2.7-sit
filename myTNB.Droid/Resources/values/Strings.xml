@@ -872,6 +872,10 @@ You acknowledge that you have been provided with and have read and understood th
    <string name="submitICFeedback_GeneralEnquirySuBTitle">I want to submit my thought &amp; concerns.</string>
    <string name="submitICFeedback_UpdatePersonal">Update Personal Details</string>
    <string name="submitICFeedback_UpdatePersonalSub">I want to update my personal details.</string>
+   <string name="submitICFeedback_OverVoltageClaimTitle">Overvoltage Claim</string>
+   <string name="submitICFeedback_OverVoltageClaimDescription">I would like to claim for damages in my property caused by an electricity surge.</string>
+   <string name="submitICFeedback_OverVoltageClainSuccessPageThankyouRequest">Thank you for your request!</string>
+   <string name="submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent">We’ll get back to you soon. In the meantime, stay updated by tracking your claim status.</string>
   <!-- end of SubmitICFeedback -->
 
   <!-- GeneralEnquiry1of2 -->

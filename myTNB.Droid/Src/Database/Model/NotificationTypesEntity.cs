@@ -76,7 +76,7 @@ namespace myTNB_Android.Src.Database.Model
                 Type = type.Type,
                 CreatedDate = type.CreatedDate,
                 MasterId = type.MasterId,
-                IsOpted = type.IsOpted,
+                IsOpted = type.IsOpted == null ? true : false,
                 ShowInPreference = type.ShowInPreference,
                 ShowInFilterList = type.ShowInFilterList
             };
@@ -100,7 +100,7 @@ namespace myTNB_Android.Src.Database.Model
                 Type = type.Type,
                 CreatedDate = type.CreatedDate,
                 MasterId = type.MasterId,
-                IsOpted = type.IsOpted,
+                IsOpted = type.IsOpted == null ? true : false,
                 ShowInPreference = type.ShowInPreference,
                 ShowInFilterList = type.ShowInFilterList
             };
