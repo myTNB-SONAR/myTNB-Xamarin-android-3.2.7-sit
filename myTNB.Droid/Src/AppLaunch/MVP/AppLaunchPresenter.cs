@@ -550,6 +550,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     bool isForceCall = !UserSessions.HasUpdateSkipped(this.mSharedPref);
                     _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, isForceCall);
 
+                    _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(),
+                        FeatureInfoManager.QueueTopicEnum.getca, new UserInfo(), new DeviceInfoRequest()));
+
                     this.mView.ShowDashboard();
                 }
                 else

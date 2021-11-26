@@ -3,6 +3,7 @@ using Android.Content.PM;
 using Android.Text;
 using Android.Util;
 using myTNB;
+using myTNB.Mobile;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
@@ -25,6 +26,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.RegisterValidation.MVP
 {
@@ -506,6 +508,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         UserSessions.SavePhoneVerified(mSharedPref, true);
 
                         _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
+
+                        _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(),
+                                    FeatureInfoManager.QueueTopicEnum.getca, new UserInfo(), new DeviceInfoRequest()));
 
                         if (mView.IsActive())
                         {

@@ -9,12 +9,14 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
+using myTNB.Mobile;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Async;
+using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
@@ -22,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.AddAccount.Activity
 {
@@ -904,6 +907,16 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 SummaryDashBoardAccountEntity.RemoveAll();
 
                 _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this, true);
+
+                List<string> newCAList = new List<string>();
+
+                finalAccountList.ForEach(acct =>
+                {
+                    newCAList.Add(acct.accountNumber);
+                });
+
+                _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(newCAList),
+                    FeatureInfoManager.QueueTopicEnum.getca, new UserInfo(), new DeviceInfoRequest()));
 
                 if (IsActive())
                 {

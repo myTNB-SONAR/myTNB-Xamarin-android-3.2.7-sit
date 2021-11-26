@@ -18,6 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Android.Gms.Extensions;
+using System.Threading.Tasks;
+using myTNB.Mobile;
+
 namespace myTNB_Android.Src.Login.MVP
 {
     public class LoginPresenter : LoginContract.IUserActionsListener
@@ -302,7 +305,7 @@ namespace myTNB_Android.Src.Login.MVP
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
-                                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new BaseRequest());
+                                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new myTNB_Android.Src.MyTNBService.Request.BaseRequest());
                                 if (response.IsSuccessResponse())
                                 {
                                     if (response.GetData() != null)
@@ -365,6 +368,9 @@ namespace myTNB_Android.Src.Login.MVP
                                 }
 
                                 _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
+
+                                _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(),
+                                    FeatureInfoManager.QueueTopicEnum.getca, new UserInfo(), new DeviceInfoRequest()));
 
                                 this.mView.ShowDashboard();
                             }

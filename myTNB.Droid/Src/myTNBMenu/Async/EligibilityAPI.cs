@@ -30,13 +30,40 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 
         public CustomEligibility() { }
 
-        private List<ContractAccountModel> GetContractAccountList()
+        public List<ContractAccountModel> GetContractAccountList(List<string> accNumList = null)
         {
-            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+            List<CustomerBillingAccount> accountList;
             List<ContractAccountModel> contractAccountList = new List<ContractAccountModel>();
-            accountList.ForEach(account =>
+
+            if (accNumList != null && accNumList.Count > 0)
             {
-                ContractAccountModel contactAccount = new ContractAccountModel
+                accountList = CustomerBillingAccount.List();
+                accNumList.ForEach(accNum =>
+                {
+                    var account = CustomerBillingAccount.FindByAccNum(accNum);
+                    if (account != null)
+                    {
+                        contractAccountList.Add(GetAccountModel(account));
+                    }
+                });
+            }
+            else
+            {
+                accountList = CustomerBillingAccount.List();
+                accountList.ForEach(account =>
+                {
+                    contractAccountList.Add(GetAccountModel(account));
+                });
+            }
+
+            return contractAccountList;
+        }
+
+        private ContractAccountModel GetAccountModel(CustomerBillingAccount account)
+        {
+            try
+            {
+                ContractAccountModel accountModel = new ContractAccountModel
                 {
                     accNum = account.AccNum,
                     userAccountID = account.UserAccountId,
@@ -61,9 +88,13 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     BusinessArea = account.BusinessArea,
                     RateCategory = account.RateCategory
                 };
-                contractAccountList.Add(contactAccount);
-            });
-            return contractAccountList;
+                return accountModel;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                return new ContractAccountModel();
+            }
         }
 
         public async Task<bool> EvaluateEligibility(Context mView, bool isForceCall)
