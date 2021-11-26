@@ -1,5 +1,4 @@
 ﻿using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.SummaryDashBoard.Models;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,6 @@ using Newtonsoft.Json;
 using System;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB.Mobile.AWS.Models;
-using myTNB.Mobile;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -112,20 +110,6 @@ namespace myTNB_Android.Src.Database.Model
 
         [Column("RateCategory")]
         public string RateCategory { get; set; }
-
-        [JsonIgnore]
-        public bool IsResidential
-        {
-            get
-            {
-                if (RateCategory.IsValid())
-                {
-                    int index = MobileConstants.ResidentialTariffTypeList.FindIndex(x => x == RateCategory.ToUpper());
-                    return index > -1;
-                }
-                return false;
-            }
-        }
 
         [JsonIgnore]
         public bool IsNormalMeter
@@ -1367,9 +1351,6 @@ namespace myTNB_Android.Src.Database.Model
                 criteriaModel.IsSMR = account.IsSSMR;
                 criteriaModelList.Add(criteriaModel);
             });
-
-            EligibilitySessionCache.Instance.SetCAList(criteriaModelList);
         }
-
     }
 }

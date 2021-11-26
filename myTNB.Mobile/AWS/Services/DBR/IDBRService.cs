@@ -39,21 +39,5 @@ namespace myTNB.Mobile.AWS.Services.DBR
            , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
            , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
            , string environment = AWSConstants.Environment);
-
-        [Post("/Z_CS_SSP_GET_INSTL")]
-        Task<HttpResponseMessage> PostInstallationDetails([Body] PostInstallationDetailsRequest request
-          , CancellationToken cancellationToken
-          , [Header(AWSConstants.Headers.Authorization)] string accessToken
-          , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
-          , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
-          , string environment = AWSConstants.Environment);
-
-        [Post("/Z_CS_SSP_GET_INSTL/GetMultiple")]
-        Task<HttpResponseMessage> PostMultiInstallationDetails([Body] PostMultiInstallationDetailsRequest request
-          , CancellationToken cancellationToken
-          , [Header(AWSConstants.Headers.Authorization)] string accessToken
-          , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
-          , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
-          , string environment = AWSConstants.Environment);
     }
 }
