@@ -39,6 +39,7 @@ using myTNB.Mobile;
 using myTNB_Android.Src.Utils.Notification;
 
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
+using System.Net.Http;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {

@@ -49,6 +49,7 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.Utils.Notification;
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
+using Firebase.Iid;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
