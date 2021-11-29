@@ -351,6 +351,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         const string FAQ_TAGS_SEPARATOR = "|";
         const string GSL_TAG = "GSL";
 
+        SearchApplicationTypeResponse _searchApplicationTypeResponse;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -1664,7 +1666,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        async void OnClickChanged(object sender, int position)
+        private void OnClickChanged(object sender, int position)
         {
             try
             {
@@ -1729,37 +1731,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         else if (selectedService.ServiceCategoryId == "1006")
                         {
-                            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
-                            if (searchApplicationTypeResponse == null)
+                            _searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+                            if (_searchApplicationTypeResponse == null)
                             {
                                 ShowProgressDialog();
-                                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
-                                if (searchApplicationTypeResponse != null
-                                    && searchApplicationTypeResponse.StatusDetail != null
-                                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+
+                                Task.Run(() =>
                                 {
-                                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
-                                }
-                                HideProgressDialog();
-                            }
-                            if (searchApplicationTypeResponse != null
-                                && searchApplicationTypeResponse.StatusDetail != null
-                                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
-                            {
-                                AllApplicationsCache.Instance.Clear();
-                                AllApplicationsCache.Instance.Reset();
-                                Intent applicationLandingIntent = new Intent(this.Activity, typeof(ApplicationStatusLandingActivity));
-                                StartActivity(applicationLandingIntent);
+                                    _ = OnSearchApplicationTypeAsync();
+                                });
                             }
                             else
                             {
-                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
-                                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
-                                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
-                                     .Build();
-                                errorPopup.Show();
+                                CheckApplicationResponse();
                             }
+
                             this.SetIsClicked(false);
                         }
                         else if (selectedService.ServiceCategoryId == "1007" && (Utility.IsMDMSDownEnergyBudget() && !isRefreshShown))
@@ -1801,6 +1787,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private async Task OnSearchApplicationTypeAsync()
+        {
+            _searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+
+            SearchApplicationTypeCache.Instance.SetData(_searchApplicationTypeResponse);
+
+            HideProgressDialog();
+            CheckApplicationResponse();
+        }
+
+        private void CheckApplicationResponse()
+        {
+            if (_searchApplicationTypeResponse != null
+                && _searchApplicationTypeResponse.StatusDetail != null
+                && _searchApplicationTypeResponse.StatusDetail.IsSuccess)
+            {
+                AllApplicationsCache.Instance.Clear();
+                AllApplicationsCache.Instance.Reset();
+                Intent applicationLandingIntent = new Intent(this.Activity, typeof(ApplicationStatusLandingActivity));
+                StartActivity(applicationLandingIntent);
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                     .SetTitle(_searchApplicationTypeResponse.StatusDetail.Title)
+                     .SetMessage(_searchApplicationTypeResponse.StatusDetail.Message)
+                     .SetCTALabel(_searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
+                     .Build();
+                errorPopup.Show();
             }
         }
 
