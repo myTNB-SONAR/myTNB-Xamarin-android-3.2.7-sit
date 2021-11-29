@@ -972,8 +972,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             discoverView.Visibility = ViewStates.Visible;
             img_discover_digital_bill.Visibility = ViewStates.Visible;
             img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS"
-                ? Resource.Drawable.banner_home_voluntary_ms
-                : Resource.Drawable.banner_home_voluntary_en);
+                ? Resource.Drawable.Banner_Home_DBR_MS
+                : Resource.Drawable.Banner_Home_DBR_EN);
         }
 
         public void SetMyServiceRecycleView()

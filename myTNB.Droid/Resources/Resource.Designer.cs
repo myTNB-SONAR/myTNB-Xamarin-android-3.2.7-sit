@@ -8752,16 +8752,16 @@ namespace myTNB_Android
 			public const int Banner_EPP_Tooltip = 2131230847;
 			
 			// aapt resource value: 0x7F080080
-			public const int Banner_Home_NBR_EN = 2131230848;
+			public const int Banner_Home_DBR_EN = 2131230848;
 			
 			// aapt resource value: 0x7F080081
-			public const int Banner_Home_NBR_MS = 2131230849;
+			public const int Banner_Home_DBR_MS = 2131230849;
 			
 			// aapt resource value: 0x7F080082
-			public const int banner_home_voluntary_en = 2131230850;
+			public const int Banner_Home_NBR_EN = 2131230850;
 			
 			// aapt resource value: 0x7F080083
-			public const int banner_home_voluntary_ms = 2131230851;
+			public const int Banner_Home_NBR_MS = 2131230851;
 			
 			// aapt resource value: 0x7F080084
 			public const int Banner_NBR_Placeholder_0 = 2131230852;

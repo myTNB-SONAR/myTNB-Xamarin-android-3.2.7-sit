@@ -2670,7 +2670,9 @@
     "confirmPopupMessage": "You are about to close this page and end your session.",
     "nevermind": "Nevermind",
     "confirm": "Confirm",
-    "shareFeedbackTitle": "Share Feedback"
+    "shareFeedbackTitle": "Share Feedback",
+    "yes": "Yes",
+    "no": "No"
   },
   "ServiceConfiguration": {
     "Eligibility": {
