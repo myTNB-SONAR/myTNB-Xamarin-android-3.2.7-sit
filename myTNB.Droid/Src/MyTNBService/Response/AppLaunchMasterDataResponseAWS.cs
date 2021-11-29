@@ -155,9 +155,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [AliasAs("ServicesPreLogin")]
             public List<MyService> ServicesPreLogin { set; get; }
 
-            [JsonProperty(PropertyName = "UserVerificationInfo")]
-            [AliasAs("NotificatiUserVerificationInfoonType")]
-            public UserVerificationInfo UserVerificationInfo { get; set; }
+            //[JsonProperty(PropertyName = "UserVerificationInfo")]
+            //[AliasAs("NotificatiUserVerificationInfoonType")]
+            //public UserVerificationInfo UserVerificationInfo { get; set; }
         }
 
         public class ForceUpdateInfoData
