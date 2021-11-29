@@ -58,6 +58,7 @@ using myTNB_Android.Src.EBPopupScreen.Activity;
 using AndroidX.CardView.Widget;
 using System.Globalization;
 using DynatraceAndroid;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -653,14 +654,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (DBRUtility.Instance.IsAccountEligible)
             {
                 DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Home_Banner);
-                GetBillRenderingAsync();
+                GetBillRendering();
             }
         }
-        private async void GetBillRenderingAsync()
+
+        private void GetBillRendering()
+        {
+            ShowProgressDialog();
+            Task.Run(() =>
+            {
+                _ = GetBillRenderingAsync();
+            });
+        }
+
+        private async Task GetBillRenderingAsync()
         {
             try
             {
-                ShowProgressDialog();
                 string caNumber = string.Empty;
                 if (DBRUtility.Instance.IsAccountEligible)
                 {
@@ -696,6 +706,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 billRenderingResponse = await DBRManager.Instance.GetBillRendering(caNumber
                     , AccessTokenCache.Instance.GetAccessToken(this.Activity));
 
+                HideProgressDialog();
+
                 //Nullity Check
                 if (billRenderingResponse != null
                    && billRenderingResponse.StatusDetail != null
@@ -730,9 +742,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         .Build();
                     errorPopup.Show();
                 }
-
-                HideProgressDialog();
-
             }
             catch (System.Exception e)
             {

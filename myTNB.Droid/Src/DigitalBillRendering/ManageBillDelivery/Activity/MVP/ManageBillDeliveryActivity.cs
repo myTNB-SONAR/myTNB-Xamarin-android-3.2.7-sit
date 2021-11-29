@@ -157,10 +157,10 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             btnUpdateDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "updateBillDeliveryMethodCTA");
             btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "goPaperlessCTA");
             txtSelectedAccountTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "selectAccount");
-            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill, deliveringTitle, txtTitle);
+            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill, btnUpdateDigitalBill, deliveringTitle, txtTitle);
             TextViewUtils.SetMuseoSans300Typeface(deliveringAddress, TenantDeliveringAddress, txtMessage, txtSelectedAccountTitle, txt_ca_name);
             TextViewUtils.SetTextSize12(digitalBillLabel, txtSelectedAccountTitle);
-            TextViewUtils.SetTextSize16(btnStartDigitalBill, deliveringTitle, txtTitle, txt_ca_name);
+            TextViewUtils.SetTextSize16(btnStartDigitalBill, btnUpdateDigitalBill, deliveringTitle, txtTitle, txt_ca_name);
             TextViewUtils.SetTextSize14(deliveringAddress, TenantDeliveringAddress, txtMessage);
 
             if (extras != null)

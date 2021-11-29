@@ -15,6 +15,7 @@
         internal static readonly string GSL = "GSL";
         internal static readonly string STATEMENT_PERIOD = "StatementPeriod";
         internal static readonly string PUSH_NOTIF_DETAILS = "PushNotificationDetails";
+        internal static readonly string DBR_WEBVIEW = "DBRWebview";
 
         internal struct Common
         {
@@ -168,6 +169,16 @@
         internal struct PushNotificationDetails
         {
             internal static readonly string VIEW_ACCT_STMNT = "viewAccountStatement";
+        }
+
+        internal struct DBRWebview
+        {
+            internal static readonly string GO_PAPERLESS = "goPaperless";
+            internal static readonly string UPDATE_BILL_DELIVERY = "updateBillDelivery";
+            internal static readonly string CONFIRM_TITLE = "confirmPopupTitle";
+            internal static readonly string CONFIRM_MSG = "confirmPopupMessage";
+            internal static readonly string YES = "yes";
+            internal static readonly string NO = "no";
         }
     }
 }
