@@ -178,6 +178,7 @@ namespace myTNB_Android.Src.Database.Model
                 IsRegistered = accountResponse.isRegistered,
                 IsPaid = accountResponse.isPaid,
                 isOwned = accountResponse.isOwner,
+                IsError = accountResponse.IsError,
                 AccountTypeId = accountResponse.accountTypeId,
                 AccountStAddress = accountResponse.accountAddress,
                 OwnerName = accountResponse.ownerName,
@@ -186,39 +187,11 @@ namespace myTNB_Android.Src.Database.Model
                 IsSelected = isSelected,
                 IsTaggedSMR = accountResponse.IsTaggedSMR,
                 BudgetAmount = accountResponse.BudgetAmount == null ? "0" : accountResponse.BudgetAmount,
-                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType
-            };
-
-            int newRecordRow = db.InsertOrReplace(newRecord);
-
-            return newRecordRow;
-        }
-
-
-        public static int InsertOrReplace(Account accountResponse, bool isSelected)
-        {
-            var db = DBHelper.GetSQLiteConnection();
-
-            var newRecord = new CustomerBillingAccount()
-            {
-                Type = accountResponse.Type,
-                AccNum = accountResponse.AccountNumber,
-                AccDesc = string.IsNullOrEmpty(accountResponse.AccDesc) == true ? "--" : accountResponse.AccDesc,
-                UserAccountId = accountResponse.UserAccountID,
-                ICNum = accountResponse.IcNum,
-                AmtCurrentChg = accountResponse.AmCurrentChg,
-                IsRegistered = accountResponse.IsRegistered,
-                IsPaid = accountResponse.IsPaid,
-                IsSelected = isSelected,
-                AccountTypeId = accountResponse.AccountTypeId,
-                AccountStAddress = accountResponse.AccountStAddress,
-                OwnerName = accountResponse.OwnerName,
-                AccountCategoryId = accountResponse.AccountCategoryId,
-                SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
-                IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
-                isOwned = accountResponse.IsOwned,
-                IsSMROnBoardingDontShowAgain = false,
-                IsPeriodOpen = false
+                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
+                IsApplyEBilling = accountResponse.IsApplyEBilling,
+                IsHaveAccess = accountResponse.IsHaveAccess,
+                BusinessArea = accountResponse.BusinessArea,
+                RateCategory = accountResponse.RateCategory
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -248,10 +221,15 @@ namespace myTNB_Android.Src.Database.Model
                 SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
                 IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
                 isOwned = accountResponse.IsOwned,
+                IsError = accountResponse.IsError,
                 IsSMROnBoardingDontShowAgain = false,
                 IsPeriodOpen = false,
                 BudgetAmount = accountResponse.BudgetAmount,
-                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType
+                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
+                IsApplyEBilling = accountResponse.IsApplyEBilling,
+                IsHaveAccess = accountResponse.IsHaveAccess,
+                BusinessArea = accountResponse.BusinessArea,
+                RateCategory = accountResponse.RateCategory
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -281,10 +259,15 @@ namespace myTNB_Android.Src.Database.Model
                 SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
                 IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
                 isOwned = accountResponse.IsOwned,
+                IsError = accountResponse.IsError,
                 IsSMROnBoardingDontShowAgain = false,
                 IsPeriodOpen = false,
                 BudgetAmount = accountResponse.BudgetAmount,
-                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType
+                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
+                IsApplyEBilling = accountResponse.IsApplyEBilling,
+                IsHaveAccess = accountResponse.IsHaveAccess,
+                BusinessArea = accountResponse.BusinessArea,
+                RateCategory = accountResponse.RateCategory
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);

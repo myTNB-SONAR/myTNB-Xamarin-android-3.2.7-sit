@@ -241,14 +241,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         paymentItemAccountPayment.AccountOwnerName = customerBillingAccount.OwnerName;
                                         paymentItemAccountPayment.AccountNo = chargeModel.ContractAccount;
                                         paymentItemAccountPayment.AccountAmount = item.amount.ToString(currCult);
-                                        paymentItemAccountPayment.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1;
+                                        paymentItemAccountPayment.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && item.isOwner) > -1;
 
                                         List<AccountPayment> accountPaymentList = new List<AccountPayment>();
                                         chargeModel.MandatoryCharges.ChargeModelList.ForEach(charge =>
                                         {
-                                            AccountPayment accountPayment = new AccountPayment();
-                                            accountPayment.PaymentType = charge.Key;
-                                            accountPayment.PaymentAmount = charge.Amount.ToString(currCult);
+                                            AccountPayment accountPayment = new AccountPayment
+                                            {
+                                                PaymentType = charge.Key,
+                                                PaymentAmount = charge.Amount.ToString(currCult)
+                                            };
                                             accountPaymentList.Add(accountPayment);
                                         });
                                         paymentItemAccountPayment.AccountPayments = accountPaymentList;
@@ -256,11 +258,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                     }
                                     else
                                     {
-                                        PaymentItem payItem = new PaymentItem();
-                                        payItem.AccountOwnerName = customerBillingAccount.OwnerName;
-                                        payItem.AccountNo = chargeModel.ContractAccount;
-                                        payItem.AccountAmount = item.amount.ToString(currCult);
-                                        payItem.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1;
+                                        PaymentItem payItem = new PaymentItem
+                                        {
+                                            AccountOwnerName = customerBillingAccount.OwnerName,
+                                            AccountNo = chargeModel.ContractAccount,
+                                            AccountAmount = item.amount.ToString(currCult),
+                                            dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && item.isOwner) > -1
+                                        };
                                         selectedPaymentItemList.Add(payItem);
                                     }
                                 }
