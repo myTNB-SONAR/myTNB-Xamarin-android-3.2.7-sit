@@ -1803,22 +1803,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private void CheckApplicationResponse()
         {
             if (_searchApplicationTypeResponse != null
-                && _searchApplicationTypeResponse.StatusDetail != null
-                && _searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                && _searchApplicationTypeResponse.StatusDetail != null)
             {
-                AllApplicationsCache.Instance.Clear();
-                AllApplicationsCache.Instance.Reset();
-                Intent applicationLandingIntent = new Intent(this.Activity, typeof(ApplicationStatusLandingActivity));
-                StartActivity(applicationLandingIntent);
-            }
-            else
-            {
-                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                if (_searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                {
+                    AllApplicationsCache.Instance.Clear();
+                    AllApplicationsCache.Instance.Reset();
+                    Intent applicationLandingIntent = new Intent(this.Activity, typeof(ApplicationStatusLandingActivity));
+                    StartActivity(applicationLandingIntent);
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                      .SetTitle(_searchApplicationTypeResponse.StatusDetail.Title)
                      .SetMessage(_searchApplicationTypeResponse.StatusDetail.Message)
                      .SetCTALabel(_searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
                      .Build();
-                errorPopup.Show();
+                    errorPopup.Show();
+                }
             }
         }
 
