@@ -53,11 +53,6 @@ namespace myTNB.Mobile.AWS.Models
             get
             {
                 MobileEnums.DBRTypeEnum renderingType = MobileEnums.DBRTypeEnum.None;
-                if (EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR, EligibilitySessionCache.FeatureProperty.TargetGroup)
-                    && !DigitalBillEligibility.IsValid())
-                {
-                    return renderingType;
-                }
                 if (IsPaper)
                 {
                     renderingType = MobileEnums.DBRTypeEnum.Paper;

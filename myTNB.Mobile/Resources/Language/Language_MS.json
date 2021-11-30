@@ -2670,7 +2670,9 @@
     "confirmPopupMessage": "Anda akan menutup halaman ini dan menamatkan sesi anda.",
     "nevermind": "Tidak Mengapa",
     "confirm": "Sahkan",
-    "shareFeedbackTitle": "Nilaikan Perkhidmatan"
+    "shareFeedbackTitle": "Nilaikan Perkhidmatan",
+    "yes": "Ya",
+    "no": "Tidak"
   },
   "ServiceConfiguration": {
     "Eligibility": {

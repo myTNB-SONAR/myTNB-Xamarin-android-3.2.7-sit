@@ -66,25 +66,19 @@ namespace myTNB.Mobile
 
                 if (EBUtility.Instance.IsPublicRelease)
                 {
-
                     List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
-
                     eligibleCA.Add(new FeaturesContractAccount
                     {
                         contractAccount = "10001010100101",  //dummy ca to pass to back end if IsPublicRelease
                         acted = true,
                         modifiedDate = ""
                     });
-
-                    ListOfFeature.Add(
-
-                    new FeatureInfo()
+                    ListOfFeature.Add(new FeatureInfo
                     {
                         FeatureName = Features.EB.ToString(),
                         ContractAccount = eligibleCA
                     });
                 }
-
                 else if (response != null
                     && response.StatusDetail != null
                     && response.StatusDetail.IsSuccess
@@ -110,8 +104,7 @@ namespace myTNB.Mobile
                                         modifiedDate = i.ModifiedDate.ToString()
                                     });
                                 }
-                                ListOfFeature.Add(
-                                new FeatureInfo()
+                                ListOfFeature.Add(new FeatureInfo
                                 {
                                     FeatureName = features.ToString(),
                                     ContractAccount = eligibleCA
@@ -134,7 +127,7 @@ namespace myTNB.Mobile
             Data = new List<FeatureInfo>();
         }
 
-        #region SaveApplication
+        #region Save Feature Info
         public async Task<PostSaveFeatureInfoResponse> SaveFeatureInfo(List<ContractAccountModel> accounts
             , QueueTopicEnum queueTopic
             , object userInfo

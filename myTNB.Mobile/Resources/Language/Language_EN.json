@@ -100,7 +100,7 @@
     "paymentPendingMsg": "My payment is being processed",
     "processing": "Processing",
     "dontShowThisAgain": "Don't show this again",
-    "dbrPaperBill": "You’re receiving <b>Paper Bill</b> for this account. <b>Jom paperless today!</b>",
+    "dbrPaperBill": "You’re receiving <b>Paper Bill</b> for this account. <b>Go Paperless today!</b>",
     "dbrPaperBillNonOwner": "You’re receiving Paper Bill for this account.",
     "dbrEmail": "You’re receiving <b>myTNB & Email Bills</b> for this account.",
     "dbrWhatsApp": "You’re receiving <b>myTNB & Whatsapp Bills</b> for this account.",
@@ -220,7 +220,7 @@
     "serviceRefreshMessage": "Uh oh, looks like your quick actions have been unplugged. Refresh to stay plugged in!",
     "receivedExtra": "received extra",
     "applicationStatus": "Application<br>Status",
-    "dbrReminderPopupTitle": "Jom paperless with myTNB Bill today!",
+    "dbrReminderPopupTitle": "Go Paperless with myTNB Bill today!",
     "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill onwards! With myTNB, you have a better and more environmentally friendly way to receive your paperless bills digitally via myTNB App & Portal.",
     "dbrReminderPopupStartNow": "View More",
     //EnergyBudget
@@ -2641,7 +2641,7 @@
     "anotherDeliveryMethod": "What if I want another bill delivery method?",
     "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "What if I want another bill delivery method?",
     "nonOwnerPreLaunchAnotherDeliveryMethodDetails": "Your bills will always be available on myTNB App & Portal. However, if you prefer another method you may call TNB Careline at <a href=\"tel: 1300885454\">1-300-88-5454</a> or visit any Kedai Tenaga so we can assist you.",
-    "goPaperlessCTA": "Jom Paperless Now",
+    "goPaperlessCTA": "Go Paperless Now",
     "updateBillDeliveryMethodCTA": "Update Bill Delivery Method",
     "deliveringToTitle": "Delivering to",
     "you": "(You)",
@@ -2664,15 +2664,15 @@
     "nonOwnerEmailBillDescription": "Your bills are being delivered on myTNB App & Portal and email for this account."
   },
   "DBRWebview": {
-    "goPaperless": "Jom Paperless!",
+    "goPaperless": "Go Paperless!",
     "updateBillDelivery": "Update Bill Delivery Method",
     "confirmPopupTitle": "Leave this page?",
     "confirmPopupMessage": "You are about to close this page and end your session.",
     "nevermind": "Nevermind",
     "confirm": "Confirm",
     "shareFeedbackTitle": "Share Feedback",
-    "yes": "Yes",
-    "no": "No"
+    "yes": "Leave",
+    "no": "Stay"
   },
   "ServiceConfiguration": {
     "Eligibility": {
