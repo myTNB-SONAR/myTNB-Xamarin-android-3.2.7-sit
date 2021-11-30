@@ -576,7 +576,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private bool isBackendTariffDisabled = false;
 
         private static bool isREAccount = false;
-        bool _isOwner;
 
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy", LocaleUtils.GetDefaultLocale());
@@ -1465,21 +1464,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.SetIsClicked(false);
         }
 
-        private void showEPPTooltip()
+        private void ShowEPPTooltip()
         {
-            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData(this.activity, Resource.Drawable.Banner_EPP_Tooltip);
+            var isBREligible = BillRedesignUtility.Instance.IsCAEligible(selectedAccount.AccountNum);
+            var resourceId = isBREligible ? Resource.Drawable.Banner_EPP_BR_Tooltip : Resource.Drawable.Banner_EPP_Tooltip;
+            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData(this.activity, resourceId);
 
             if (modelList != null && modelList.Count > 0)
             {
+                var index = modelList.Count > 1 && isBREligible ? 1 : 0;
                 MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-                    .SetHeaderImageBitmap(modelList[0].ImageBitmap)
-                    .SetTitle(modelList[0].PopUpTitle)
-                    .SetMessage(modelList[0].PopUpBody)
-                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                    .SetCTAaction(() => { this.SetIsClicked(false); })
-                    .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
-                    .SetSecondaryCTAaction(() => ShowBillPDF())
-                    .Build();
+                   .SetHeaderImageBitmap(modelList[index].ImageBitmap)
+                   .SetTitle(modelList[index].PopUpTitle)
+                   .SetMessage(modelList[index].PopUpBody)
+                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                   .SetCTAaction(() => { this.SetIsClicked(false); })
+                   .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
+                   .SetSecondaryCTAaction(() => ShowBillPDF())
+                   .Build();
+
                 eppTooltip.Show();
             }
             else
@@ -1583,8 +1586,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
-                    showEPPTooltip();
-
+                    ShowEPPTooltip();
                 }
             }
             catch (System.Exception e)
@@ -5249,7 +5251,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccount));
                 intent.PutExtra("PENDING_PAYMENT", mIsPendingPayment);
 
-                if (DBRUtility.Instance.IsAccountEligible)
+                if (DBRUtility.Instance.IsAccountEligible && DBRUtility.Instance.IsCAEligible(selectedAccount.AccountNum))
                 {
                     AccountData dbrAccount = selectedAccount;
                     if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
@@ -5263,21 +5265,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                        && billrenderingresponse.StatusDetail != null
                        && billrenderingresponse.StatusDetail.IsSuccess)
                     {
-                        _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
-                            ? selectedAccount.IsOwner
-                            : DBRUtility.Instance.IsCAEligible(dbrAccount.AccountNum);
-
                         intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billrenderingresponse));
-                        intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
                     }
-                    else
-                    {
-                        intent.PutExtra("_isOwner", JsonConvert.SerializeObject(selectedAccount.IsOwner));
-                    }
-                }
-                else
-                {
-                    intent.PutExtra("_isOwner", JsonConvert.SerializeObject(selectedAccount.IsOwner));
                 }
                 StartActivity(intent);
             }
@@ -10262,7 +10251,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
             intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(accountData));
             intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
-            intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
             StartActivity(intent);
         }
 

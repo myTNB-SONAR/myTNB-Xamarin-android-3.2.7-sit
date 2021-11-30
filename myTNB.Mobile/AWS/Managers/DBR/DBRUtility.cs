@@ -186,24 +186,5 @@ namespace myTNB.Mobile
         {
             return ShouldShowCard(new List<string> { ca });
         }
-
-        /// <summary>
-        /// Determines if the Owner/Tenant tag should be from Eligibility or from device cache.
-        /// </summary>
-        public bool IsDBROTTagFromCache
-        {
-            get
-            {
-                try
-                {
-                    return !EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("[DEBUG]IsDBROTTagFromCache Exception: " + e.Message);
-                }
-                return false;
-            }
-        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -156,6 +157,11 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
             }
             else
             {
+                RunOnUiThread(() =>
+                {
+                    ShowProgressDialog();
+                });
+
                 for (int i = 0; i < accountList.Count; i++)
                 {
                     if (i == e.Position)
@@ -167,8 +173,7 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                         accountList[i].accountSelected = false;
                     }
                 }
-                GetBillRenderingAsync(accountList.Find(x => { return x.accountSelected; }).accountNumber);
-
+                GetBillRendering(accountList.Find(x => { return x.accountSelected; }).accountNumber);
             }
         }
 
@@ -184,11 +189,19 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        private async void GetBillRenderingAsync(string accountNumber)
+
+        private void GetBillRendering(string accountNumber)
+        {
+            Task.Run(() =>
+            {
+                _ = GetBillRenderingAsync(accountNumber);
+            });
+        }
+
+        private async Task GetBillRenderingAsync(string accountNumber)
         {
             try
             {
-                ShowProgressDialog();
                 if (!AccessTokenCache.Instance.HasTokenSaved(this))
                 {
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
