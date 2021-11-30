@@ -430,7 +430,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                         intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
                         intent.PutExtra("accountNumber", UserSessions.DBROwnerNotificationAccountNumber);
-                        intent.PutExtra("isOwner", true);
                         StartActivity(intent);
                     }
                     else

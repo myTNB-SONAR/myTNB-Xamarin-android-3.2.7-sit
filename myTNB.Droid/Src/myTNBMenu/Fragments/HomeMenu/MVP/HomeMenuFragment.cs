@@ -334,7 +334,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private bool isInitiate = false;
 
-        bool _isOwner;
         HomeMenuContract.IHomeMenuPresenter presenter;
         ISummaryFragmentToDashBoardActivtyListener mCallBack;
 
@@ -680,7 +679,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     caNumber = caList != null && caList.Count > 0
                         ? caList[0]
                         : string.Empty;
-                    _isOwner = true;
                 }
                 else
                 {
@@ -696,7 +694,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         errorPopup.Show();
                         return;
                     }
-                    _isOwner = DBRUtility.Instance.IsCAEligible(dbrAccount.AccNum);
                     caNumber = dbrAccount.AccNum;
                 }
 
@@ -720,7 +717,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                     intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
                     intent.PutExtra("accountNumber", caNumber);
-                    intent.PutExtra("isOwner", _isOwner);
                     StartActivity(intent);
                 }
                 else

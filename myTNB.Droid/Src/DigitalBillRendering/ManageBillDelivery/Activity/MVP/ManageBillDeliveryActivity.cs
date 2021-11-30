@@ -179,10 +179,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     AddViewPager();
                     UpdateAccountListIndicator();
                 }
-                if (extras.ContainsKey("isOwner"))
-                {
-                    _isOwner = extras.GetBoolean("isOwner");
-                }
                 if (extras.ContainsKey("billRenderingResponse"))
                 {
                     _billRenderingResponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billRenderingResponse"));
@@ -195,6 +191,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     vPager.Adapter = ManageBillDeliveryAdapter;
                     UpdateAccountListIndicator();
                 }
+
+                CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(selectedAccountNumber);
+                _isOwner = account.isOwned && DBRUtility.Instance.IsCAEligible(selectedAccountNumber);
 
                 SetToolBarTitle(GetLabelByLanguage(_isOwner ? "title" : "dbrViewBillDelivery"));
             }
@@ -906,7 +905,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         && _billRenderingResponse.StatusDetail.IsSuccess
                         && _billRenderingResponse.Content != null)
                     {
-                        _isOwner = DBRUtility.Instance.IsCAEligible(selectedAccountNumber);
+                        CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(selectedAccountNumber);
+                        _isOwner = account.isOwned && DBRUtility.Instance.IsCAEligible(selectedAccountNumber);
                         _accountNumber = selectedAccountNumber;
                         SetToolBarTitle(GetLabelByLanguage(_isOwner ? "title" : "dbrViewBillDelivery"));
                         GetDeliveryDisplay(_billRenderingResponse);

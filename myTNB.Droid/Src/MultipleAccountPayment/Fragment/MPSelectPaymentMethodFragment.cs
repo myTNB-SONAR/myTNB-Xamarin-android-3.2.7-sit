@@ -241,7 +241,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         paymentItemAccountPayment.AccountOwnerName = customerBillingAccount.OwnerName;
                                         paymentItemAccountPayment.AccountNo = chargeModel.ContractAccount;
                                         paymentItemAccountPayment.AccountAmount = item.amount.ToString(currCult);
-                                        paymentItemAccountPayment.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && item.isOwner) > -1;
+                                        paymentItemAccountPayment.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1;
 
                                         List<AccountPayment> accountPaymentList = new List<AccountPayment>();
                                         chargeModel.MandatoryCharges.ChargeModelList.ForEach(charge =>
@@ -263,7 +263,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                             AccountOwnerName = customerBillingAccount.OwnerName,
                                             AccountNo = chargeModel.ContractAccount,
                                             AccountAmount = item.amount.ToString(currCult),
-                                            dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && item.isOwner) > -1
+                                            dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1
                                         };
                                         selectedPaymentItemList.Add(payItem);
                                     }
