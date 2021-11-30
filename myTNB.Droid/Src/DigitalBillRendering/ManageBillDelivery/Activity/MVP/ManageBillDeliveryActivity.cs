@@ -175,6 +175,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         mSelectedAccountData = AccountData.Copy(allAccountList[accountIndex], true);
                         txt_ca_name.Text = mSelectedAccountData.AccountNickName + " - " + mSelectedAccountData.AccountNum;
                         selectedAccountNumber = mSelectedAccountData.AccountNum;
+
+                        CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(selectedAccountNumber);
+                        _isOwner = account.isOwned && DBRUtility.Instance.IsCAEligible(selectedAccountNumber);
                     }
                     AddViewPager();
                     UpdateAccountListIndicator();
@@ -191,9 +194,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     vPager.Adapter = ManageBillDeliveryAdapter;
                     UpdateAccountListIndicator();
                 }
-
-                CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(selectedAccountNumber);
-                _isOwner = account.isOwned && DBRUtility.Instance.IsCAEligible(selectedAccountNumber);
 
                 SetToolBarTitle(GetLabelByLanguage(_isOwner ? "title" : "dbrViewBillDelivery"));
             }
