@@ -47,6 +47,7 @@ namespace myTNB_Android.Src.Base
         private bool IsFromViewTips = false;
         private bool IsFromDashboard = false;
         private bool IsCOMCLandNEM = false;
+        private bool IsSDUser = false;
 
         private MyTNBAccountManagement()
         {
@@ -716,6 +717,16 @@ namespace myTNB_Android.Src.Base
         public bool COMCLandNEM()
         {
             return IsCOMCLandNEM;
+        }
+
+        public void SetIsSDUser(bool SDuser)
+        {
+            IsSDUser = SDuser;
+        }
+
+        public bool IsSDUserVerify()
+        {
+            return IsSDUser;
         }
     }
 }

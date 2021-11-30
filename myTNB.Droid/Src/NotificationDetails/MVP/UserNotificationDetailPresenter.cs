@@ -235,15 +235,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             imageResourceBanner = Resource.Drawable.notification_dbr_banner_ebill;
                             break;
                         }
-                    //case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET:
-                    //    {
-                    //        imageResourceBanner = Resource.Drawable.SMRillustration;
-                    //        //pageTitle = "EnergyBudget";
-                    //        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
-                    //            delegate () { ViewMyUsage(notificationDetails); });
-                    //        ctaList.Add(primaryCTA);
-                    //        break;
-                    //    }
                     case Constants.BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS:
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_check_banner;
@@ -280,6 +271,29 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                                 delegate () { ViewAccountStatement(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             ctaList.Add(primaryCTA);
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE:
+                        {
+                            imageResourceBanner = Resource.Drawable.sd_outage_notification;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS:
+                        {
+                            imageResourceBanner = Resource.Drawable.sd_in_progress_notification;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION:
+                        {
+                            imageResourceBanner = Resource.Drawable.sd_restoration_notification;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW:
+                        {
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "updateNow"),
+                                   delegate () { UpdateNow(); });
+                            ctaList.Add(secondaryCTA);
+                            imageResourceBanner = Resource.Drawable.notification_generic_banner;
                             break;
                         }
                     default:
@@ -407,6 +421,19 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             else
             {
                 this.mView.ShowRetryOptionsApiException(null);
+            }
+        }
+
+        private void UpdateNow()
+        {
+            try
+            {
+                this.mView.ShowUpateApp();
+            }
+            catch (Exception e)
+            {
+                this.mView.ShowRetryOptionsApiException(null);
+                Utility.LoggingNonFatalError(e);
             }
         }
 

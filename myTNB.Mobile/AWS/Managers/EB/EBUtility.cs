@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using myTNB.Mobile.AWS.Models;
 using static myTNB.Mobile.EligibilitySessionCache;
 
 namespace myTNB.Mobile
@@ -18,18 +22,50 @@ namespace myTNB.Mobile
 
         public EBUtility() { }
 
-        public bool IsPublicRelease
+
+        public List<string> GetCAList()
+        {
+            List<string> caList = new List<string>();
+            try
+            {
+                BaseCAListModel ebContent = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.EB);
+                if (ebContent != null
+                    && ebContent.ContractAccounts != null
+                    && ebContent.ContractAccounts.Count > 0)
+                {
+                    caList = ebContent.ContractAccounts.Select(x => x.ContractAccount).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG]GetEBCAs Exception: " + e.Message);
+            }
+            return caList;
+        }
+
+        public bool IsAccountEligible
         {
             get
             {
                 if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.EB, FeatureProperty.Enabled))
                 {
-                    // if target group is false then it will lead to public release
-                    if (!EligibilitySessionCache.Instance.IsFeatureEligible(Features.EB, FeatureProperty.TargetGroup))
+                    if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.EB, FeatureProperty.TargetGroup))
+                    {
+                        if (GetCAList() is List<string> caList
+                            && caList != null
+                            && caList.Count > 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
                     {
                         return true;
                     }
-                    return false;
                 }
                 else
                 {

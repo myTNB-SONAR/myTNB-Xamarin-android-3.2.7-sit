@@ -64,62 +64,43 @@ namespace myTNB.Mobile
                 //Convert Enum to list
                 List<string> TypeOfFeature = new List<string>() { Features.EB.ToString() };
 
-                if (EBUtility.Instance.IsPublicRelease)
+                if (EBUtility.Instance.IsAccountEligible)
                 {
 
                     List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
 
-                    eligibleCA.Add(new FeaturesContractAccount
+                    //Get AWS EB ca
+                    List <string> ebCAs= EBUtility.Instance.GetCAList();
+
+                    if (ebCAs != null )
                     {
-                        contractAccount = "10001010100101",  //dummy ca to pass to back end if IsPublicRelease
-                        acted = true,
-                        modifiedDate = ""
-                    });
+                        foreach (var ca in ebCAs)
+                        {
+                            eligibleCA.Add(new FeaturesContractAccount
+                            {
+                                contractAccount = ca,
+                                acted = true,
+                                modifiedDate = ""
+                            });
+                        }
+                    }
+                    else
+                    {   // Add dummy CA if target group false
+                        eligibleCA.Add(new FeaturesContractAccount
+                        {
+                            contractAccount = "1010101001010101",
+                            acted = true,
+                            modifiedDate = ""
+                        });
+                    }
 
-                    ListOfFeature.Add(
-
-                    new FeatureInfo()
+                    ListOfFeature.Add(new FeatureInfo
                     {
                         FeatureName = Features.EB.ToString(),
                         ContractAccount = eligibleCA
                     });
                 }
 
-                else if (response != null
-                    && response.StatusDetail != null
-                    && response.StatusDetail.IsSuccess
-                    && response.Content != null)
-                {
-                    Type content = response.Content.GetType();
-                    TypeOfFeature.ToList().ForEach(features =>
-                    {
-                        //List of CA that are eligible
-                        List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
-                        if (content != null && content.GetProperty(features.ToString()) is PropertyInfo props && props != null)
-                        {
-                            object obj = props.GetValue(response.Content, null);
-                            if (obj != null)
-                            {
-                                BaseCAListModel tempData = JsonConvert.DeserializeObject<BaseCAListModel>(JsonConvert.SerializeObject(obj));
-                                foreach (ContractAccountsModel i in tempData.ContractAccounts)
-                                {
-                                    eligibleCA.Add(new FeaturesContractAccount
-                                    {
-                                        contractAccount = i.ContractAccount,
-                                        acted = i.Acted,
-                                        modifiedDate = i.ModifiedDate.ToString()
-                                    });
-                                }
-                                ListOfFeature.Add(
-                                new FeatureInfo()
-                                {
-                                    FeatureName = features.ToString(),
-                                    ContractAccount = eligibleCA
-                                });
-                            }
-                        }
-                    });
-                }
                 Data = ListOfFeature;
             }
             catch (Exception e)
@@ -134,7 +115,7 @@ namespace myTNB.Mobile
             Data = new List<FeatureInfo>();
         }
 
-        #region SaveApplication
+        #region Save Feature Info
         public async Task<PostSaveFeatureInfoResponse> SaveFeatureInfo(List<ContractAccountModel> accounts
             , QueueTopicEnum queueTopic
             , object userInfo

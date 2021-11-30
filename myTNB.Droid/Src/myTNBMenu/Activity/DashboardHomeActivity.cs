@@ -251,6 +251,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
             }
             CheckStatusEligibleEB();
+            CheckStatusEligibleSD();
             IsRootTutorialShown = false;
             SetBottomNavigationLabels();
             bottomNavigationView.SetShiftMode(false, false);
@@ -2450,7 +2451,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 BaseCAListModel isEbfeature = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(EligibilitySessionCache.Features.EB);
                 if (isEbfeature != null)
                 {
-                    if (isEbfeature.ContractAccounts != null)
+                    if (EBUtility.Instance.IsAccountEligible)
                     {
                         MyTNBAccountManagement.GetInstance().SetIsEBUser(true);
                     }
@@ -2459,14 +2460,38 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         MyTNBAccountManagement.GetInstance().SetIsEBUser(false);
                     }
                 }
-                else if (EBUtility.Instance.IsPublicRelease)
-                {
-                    MyTNBAccountManagement.GetInstance().SetIsEBUser(true);
-                }
                 else
                 {
                     MyTNBAccountManagement.GetInstance().SetIsEBUser(false);
                 }
+            }
+        }
+
+        public void CheckStatusEligibleSD()
+        {
+            try
+            {
+                BaseCAListModel isSDfeature = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(EligibilitySessionCache.Features.SD);
+                if (isSDfeature != null)
+                {
+                    if (SDUtility.Instance.IsAccountEligible)
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsSDUser(true);
+                    }
+                    else
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsSDUser(false);
+                    }
+                }
+                else
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsSDUser(false);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                MyTNBAccountManagement.GetInstance().SetIsSDUser(false);
             }
         }
 

@@ -117,5 +117,29 @@ namespace myTNB_Android.Src.CompoundView
                 }
             }
         }
+
+        public void SetCustomCTAButton(List<NotificationDetailModel.NotificationCTA> ctaList)
+        {
+            if (ctaList.Count == 1)
+            {
+                Button primaryBtn = FindViewById<Button>(Resource.Id.btnPrimary);
+                TextViewUtils.SetTextSize16(primaryBtn);
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)primaryBtn.LayoutParameters;
+                layoutParams.Weight = 1f;
+                primaryBtn.LayoutParameters = layoutParams;
+                primaryBtn.Text = ctaList[0].label;
+
+                primaryBtn.SetTextColor(new Color(ContextCompat.GetColor(Context, Resource.Color.white)));
+                primaryBtn.Background = ContextCompat.GetDrawable(mContext, Resource.Drawable.green_button_background);
+
+
+                primaryBtn.Click += delegate
+                {
+                    ctaList[0].action();
+                };
+                TextViewUtils.SetMuseoSans500Typeface(primaryBtn);
+            }
+        }
     }
 }

@@ -171,6 +171,13 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                                 typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
                             }
                         }
+                        else if (type.MasterId == "1000028")
+                        {
+                            if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
+                            {
+                                typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                            }
+                        }
                         else
                         {
                             typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));

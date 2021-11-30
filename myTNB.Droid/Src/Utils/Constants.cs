@@ -344,6 +344,12 @@ namespace myTNB_Android.Src.Utils
         //Bill Estimation
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";
 
+        //Service Disruption
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE = "SDOUT";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS = "SDIP";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION = "SDOR";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW = "SDRC";
+
         public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
 
         public const string ACCOUNT_NICKNAME_PATTERN = "#accountNickname#";

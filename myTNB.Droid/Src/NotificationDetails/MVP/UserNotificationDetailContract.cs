@@ -59,6 +59,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void GetFeedbackTwoQuestionsNo(GetRateUsQuestionResponse questionRespone);
 
             void GetFeedbackTwoQuestionsYes(GetRateUsQuestionResponse questionRespone);
+
+            void ShowUpateApp();
         }
     }
 }

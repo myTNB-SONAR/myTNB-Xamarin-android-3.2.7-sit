@@ -156,6 +156,12 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notification_Acct_Stmnt));
                 }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_sd));
+                }
                 else
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_generic));
@@ -175,17 +181,6 @@ namespace myTNB_Android.Src.Notifications.Adapter
                     viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + notificationAccountName + "\"");
                 }
 
-                /*if (notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100
-                    || notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_TC || notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_RC)
-                {
-
-                    string message = Regex.Replace(notificationData.Message, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
-                    message = Regex.Replace(message, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + notificationAccountName + "\"");
-                    string ebMessage = Regex.Replace(message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
-                    viewHolder.txtNotificationContent.Text = ebMessage;
-
-                }*/
-
                 if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_PROFILENAME_PATTERN))
                 {
                     viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
@@ -194,17 +189,6 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 {
                     viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + notificationAccountName + "\"");
                 }
-
-                /*if (notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100
-                    || notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_TC || notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_RC)
-                {
-
-                    string message = Regex.Replace(notificationData.Message, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
-                    message = Regex.Replace(message, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + notificationAccountName + "\"");
-                    string ebMessage = Regex.Replace(message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
-                    viewHolder.txtNotificationContent.Text = ebMessage;
-
-                }*/
 
                 if (notificationData.ShowSelectButton)
                 {

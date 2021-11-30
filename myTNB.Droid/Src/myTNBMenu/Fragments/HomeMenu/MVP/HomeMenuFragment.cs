@@ -58,6 +58,7 @@ using myTNB_Android.Src.EBPopupScreen.Activity;
 using AndroidX.CardView.Widget;
 using System.Globalization;
 using DynatraceAndroid;
+using myTNB_Android.Src.ServiceDistruption.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -89,25 +90,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.myServiceShimmerView)]
         LinearLayout myServiceShimmerView;
 
-        //[BindView(Resource.Id.DiscoverMoreShimmerImgLayout)]
-        //LinearLayout DiscoverMoreShimmerImgLayout;
+        [BindView(Resource.Id.discoverMoreEBImgLayout)]
+        LinearLayout discoverMoreEBImgLayout;
 
-        //[BindView(Resource.Id.DiscoverMoreShimmerTxtLayout)]
-        //LinearLayout DiscoverMoreShimmerTxtLayout;
-
-        [BindView(Resource.Id.NewDiscoverMoreShimmerImgLayout)]
-        LinearLayout NewDiscoverMoreShimmerImgLayout;
+        [BindView(Resource.Id.discoverMoreSDImgLayout)]
+        LinearLayout discoverMoreSDImgLayout;
 
         [BindView(Resource.Id.discoverMoreContainer)]
         LinearLayout discoverMoreContainer;
 
-        [BindView(Resource.Id.newDiscoverMoreShimmerTxtLayout)]
-        RelativeLayout newDiscoverMoreShimmerTxtLayout;
-
-        //[BindView(Resource.Id.shimmerDiscoverMoreImageLayout)]
-        //ShimmerFrameLayout shimmerDiscoverMoreImageLayout;
-        //[BindView(Resource.Id.shimmerDiscoverMoreTxtLayout)]
-        //ShimmerFrameLayout shimmerDiscoverMoreTxtLayout;
+        [BindView(Resource.Id.discoverMoreSDContainer)]
+        LinearLayout discoverMoreSDContainer;
 
         [BindView(Resource.Id.myServiceList)]
         RecyclerView myServiceListRecycleView;
@@ -126,9 +119,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.accountGreetingName)]
         TextView accountGreetingName;
-
-        [BindView(Resource.Id.txtDate)]
-        TextView txtDate;
 
         [BindView(Resource.Id.searchAction)]
         ImageView searchActionIcon;
@@ -226,9 +216,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.bottomContainer)]
         LinearLayout bottomContainer;
 
-        [BindView(Resource.Id.txtTitleDiscoverMore)]
-        TextView txtTitleDiscoverMore;
-
         ImageView closeImageView;
 
         [BindView(Resource.Id.myServiceLoadMoreContainer)]
@@ -285,10 +272,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.newBillRedesignBanner)]
         ImageView newBillRedesignBanner;
 
-        [BindView(Resource.Id.whatsNewUnreadImg)]
-        ImageView whatsNewUnreadImg;
-
-
         [BindView(Resource.Id.discovercontainer)]
         LinearLayout discovercontainer;
 
@@ -308,6 +291,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         internal static readonly int SELECT_SM_ACCOUNT_REQUEST_CODE = 8809;
 
         internal static readonly int SELECT_SM_POPUP_REQUEST_CODE = 8810;
+
+        internal static readonly int SELECT_SD_POPUP_REQUEST_CODE = 8820;
 
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
@@ -478,9 +463,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     else
                     {
                         MyTNBAccountManagement.GetInstance().OnHoldWhatNew(true);
-                        /*MyTNBAccountManagement.GetInstance().SetMaybeLater(true);
-                        ShowDiscoverMoreLayout();
-                        RestartHomeMenu();*/
                     }
                 }
             }
@@ -520,10 +502,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
-                    , myServiceLoadMoreLabel, txtNewLabel, txtDate, txtTitleDiscoverMore, btnMyServiceRefresh);
+                    , myServiceLoadMoreLabel, txtNewLabel, btnMyServiceRefresh);
                 TextViewUtils.SetTextSize8(txtNewLabel);
-                TextViewUtils.SetTextSize10(txtDate);
-                TextViewUtils.SetTextSize12(addActionLabel, txtTitleDiscoverMore, searchActionLabel, rearrangeLabel
+                TextViewUtils.SetTextSize12(addActionLabel, searchActionLabel, rearrangeLabel
                     , loadMoreLabel, myServiceLoadMoreLabel, txtMyServiceRefreshMessage);
                 TextViewUtils.SetTextSize14(refreshMsg, txtAdd, newFAQTitle, accountHeaderTitle);
                 TextViewUtils.SetTextSize16(accountGreeting, accountGreetingName, btnMyServiceRefresh, btnRefresh);
@@ -540,7 +521,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 newFAQTitle.Text = GetLabelByLanguage("needHelp");
                 rearrangeLabel.Text = GetLabelByLanguage("rearrangeAccts");
                 loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
-                txtTitleDiscoverMore.Text = GetLabelByLanguage("DiscoverMoreTitle");
                 myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
 
                 addActionContainer.SetOnClickListener(null);
@@ -636,6 +616,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
                 ShowDiscoverMoreLayout();
+                ShowDiscoverMoreSDLayout();
             }
             catch (System.Exception e)
             {
@@ -966,7 +947,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             shimmerSnapHelper.AttachToRecyclerView(newFAQShimmerList);
         }
 
-
         private void SetupDiscoverView()
         {
             discoverView.Visibility = ViewStates.Visible;
@@ -975,6 +955,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ? Resource.Drawable.banner_home_voluntary_ms
                 : Resource.Drawable.banner_home_voluntary_en);
         }
+
+        private void SetupEBDiscoverView()
+        {
+            discoverMoreEBImgLayout.Visibility = ViewStates.Visible;
+            discoverMoreEBImgLayout.SetBackgroundResource(LanguageUtil.GetAppLanguage() == "MS"
+                ? Resource.Drawable.eb_discover_more_bm
+                : Resource.Drawable.eb_discover_more);
+
+            LinearLayout.LayoutParams layout = discoverMoreEBImgLayout.LayoutParameters as LinearLayout.LayoutParams;
+            int imgWidth = GetDeviceHorizontalScaleInPixel(0.917f);
+            float heightRatio = 55f / 128f;
+            int imgHeight = (int)(imgWidth * (heightRatio));
+            if (layout != null)
+            {
+                layout.Width = imgWidth;
+                layout.Height = imgHeight;
+            }
+        }
+
+        private void SetupSDDiscoverView()
+        {
+            discoverMoreSDImgLayout.Visibility = ViewStates.Visible;
+            discoverMoreSDImgLayout.SetBackgroundResource(LanguageUtil.GetAppLanguage() == "MS"
+                ? Resource.Drawable.sd_discover_more_bm
+                : Resource.Drawable.sd_discover_more);
+
+            LinearLayout.LayoutParams layout = discoverMoreSDImgLayout.LayoutParameters as LinearLayout.LayoutParams;
+            int imgWidth = GetDeviceHorizontalScaleInPixel(0.917f);
+            float heightRatio = 55f / 128f;
+            int imgHeight = (int)(imgWidth * (heightRatio));
+            if (layout != null)
+            {
+                layout.Width = imgWidth;
+                layout.Height = imgHeight;
+            }
+        }
+
 
         public void SetMyServiceRecycleView()
         {
@@ -2867,6 +2884,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        [OnClick(Resource.Id.discoverMoreSDContainer)]
+        internal void OndiscoverMoreSDCardView(object sender, EventArgs e)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                try
+                {
+                    //FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> SD Screen Popup");
+                    Intent SDDiscoverCom = new Intent(this.Activity, typeof(ServiceDisruptionActivity));
+                    SDDiscoverCom.PutExtra("fromDashboard", true);
+                    StartActivityForResult(SDDiscoverCom, SELECT_SD_POPUP_REQUEST_CODE);
+                }
+                catch (System.Exception err)
+                {
+                    Utility.LoggingNonFatalError(err);
+                }
+            }
+        }
+
         public void OnSavedEnergySavingTipsTimeStamp(string mSavedTimeStamp)
         {
             if (mSavedTimeStamp != null)
@@ -3712,33 +3749,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify()
                 && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
             {
+                SetupEBDiscoverView();
                 discoverMoreContainer.Visibility = ViewStates.Visible;
-                discoverMoreSectionTitle.Visibility = ViewStates.Visible;
-
-                try
-                {
-                    DateTime publishDateTime = DateTime.UtcNow;
-                    txtDate.Text = GetLabelByLanguage("DiscoverMoreDate");
-
-                    if (UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
-                    {
-                        whatsNewUnreadImg.Visibility = ViewStates.Gone;
-                    }
-                    else
-                    {
-                        whatsNewUnreadImg.Visibility = ViewStates.Visible;
-                    }
-
-                }
-                catch (System.Exception e)
-                {
-                    txtDate.Text = "";
-                    Utility.LoggingNonFatalError(e);
-                }
+                discoverMoreSectionTitle.Visibility = ViewStates.Visible;               
             }
             else
             {
                 discoverMoreContainer.Visibility = ViewStates.Gone;
+            }
+        }
+
+        public void ShowDiscoverMoreSDLayout()
+        {
+            if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
+            {
+                SetupSDDiscoverView();
+                discoverMoreSDContainer.Visibility = ViewStates.Visible;
+                discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                discoverMoreSDContainer.Visibility = ViewStates.Gone;
             }
         }
 

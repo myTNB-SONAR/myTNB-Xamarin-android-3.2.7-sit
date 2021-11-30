@@ -129,6 +129,40 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             Finish();
         }
 
+        public void ShowUpateApp()
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                if (WeblinkEntity.HasRecord("DROID"))
+                {
+                    WeblinkEntity entity = WeblinkEntity.GetByCode("DROID");
+                    try
+                    {
+                        string[] array = entity.Url.Split(new[] { "?id=" }, StringSplitOptions.None);
+
+                        if (array.Length > 1)
+                        {
+                            string id = array[1];
+                            var intent = new Intent(Intent.ActionView, Android.Net.Uri.Parse("market://details?id=" + id));
+                            // we need to add this, because the activity is in a new context.
+                            // Otherwise the runtime will block the execution and throw an exception
+                            intent.AddFlags(ActivityFlags.NewTask);
+
+                            Application.Context.StartActivity(intent);
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                        var uri = Android.Net.Uri.Parse(entity.Url);
+                        var intent = new Intent(Intent.ActionView, uri);
+                        StartActivity(intent);
+                    }
+                }
+            }
+        }
+
         public void OnClickSpan(string textMessage)
         {
             if (textMessage != null && textMessage.Contains("http"))
@@ -273,6 +307,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     {
                         ctaComponent.Visibility = ViewStates.Visible;
                         ctaComponent.SetCTAButton(detailModel.ctaList);
+
+                        if (notificationDetails != null)
+                        {
+                            if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW)
+                            {
+                                ctaComponent.Visibility = ViewStates.Visible;
+                                ctaComponent.SetCustomCTAButton(detailModel.ctaList);
+                            }
+                        }
                     }
                     else
                     {

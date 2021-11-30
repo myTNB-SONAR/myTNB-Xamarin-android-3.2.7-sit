@@ -138,5 +138,7 @@
     <color name="shadowRed">#33E54B20</color>
 
     <color name="darkerwhite">#F5F6F7</color>
+
+    <color name="darkergrey">#070707</color>
   
 </resources>
