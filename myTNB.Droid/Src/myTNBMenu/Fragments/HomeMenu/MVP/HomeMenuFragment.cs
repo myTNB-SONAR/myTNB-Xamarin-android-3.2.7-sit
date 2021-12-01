@@ -2125,10 +2125,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public void ShowDiscoverView(bool IsAccountDBREligible)
-        {
-            SetDiscoverResult(IsAccountDBREligible);
-        }
 
         public void ShowFAQFromHide()
         {

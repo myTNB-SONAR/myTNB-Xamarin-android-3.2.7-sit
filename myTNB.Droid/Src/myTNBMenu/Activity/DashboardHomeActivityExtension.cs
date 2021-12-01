@@ -24,6 +24,12 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NotificationDetails.Activity;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
+using System.Linq;
+using myTNB.Mobile.AWS.Models;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -50,6 +56,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     break;
                 case Deeplink.ScreenEnum.GetBill:
                     DeeplinkGetBillValidation(mainActivity);
+                    break;
+                case Deeplink.ScreenEnum.ManageBillDelivery:
+                    DeeplinkManageBillDeliveryValidation(mainActivity);
                     break;
                 default:
                     break;
@@ -208,6 +217,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             DeeplinkUtil.Instance.ClearDeeplinkData();
         }
 
+        private static void DeeplinkManageBillDeliveryValidation(DashboardHomeActivity mainActivity)
+        {
+            if (DBRUtility.Instance.IsAccountEligible)
+            {
+                GetBillRendering(mainActivity);
+            }
+            DeeplinkUtil.Instance.ClearDeeplinkData();
+        }
+
         internal static void ShowAddAccount(this DashboardHomeActivity mainActivity)
         {
             Intent linkAccount = new Intent(mainActivity, typeof(LinkAccountActivity));
@@ -321,6 +339,122 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             Intent notificationDetails = new Intent(mainActivity, typeof(UserNotificationDetailActivity));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
             mainActivity.StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+        }
+
+        internal static CustomerBillingAccount GetEligibleDBRAccount()
+        {
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+            List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            CustomerBillingAccount account = new CustomerBillingAccount();
+            if (dBRCAs.Count > 0)
+            {
+                var dbrSelected = dBRCAs.Where(x => x == customerAccount.AccNum).FirstOrDefault();
+                if (dbrSelected != string.Empty)
+                {
+                    account = allAccountList.Where(x => x.AccNum == dbrSelected).FirstOrDefault();
+                }
+                if (account == null)
+                {
+                    foreach (var dbrca in dBRCAs)
+                    {
+                        account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
+                        if (account != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            return account;
+        }
+
+        internal static void GetBillRendering(DashboardHomeActivity mainActivity)
+        {
+            mainActivity.ShowProgressDialog();
+            Task.Run(() =>
+            {
+                _ = GetBillRenderingAsync(mainActivity);
+            });
+        }
+
+        internal static async Task GetBillRenderingAsync(DashboardHomeActivity mainActivity)
+        {
+            try
+            {
+                string caNumber = string.Empty;
+                if (DBRUtility.Instance.IsAccountEligible)
+                {
+                    List<string> caList = DBRUtility.Instance.GetCAList();
+                    caNumber = caList != null && caList.Count > 0
+                        ? caList[0]
+                        : string.Empty;
+                }
+                else
+                {
+                    CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                    if (dbrAccount == null)
+                    {
+                        mainActivity.HideProgressDialog();
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+                            .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
+                            .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.GOT_IT))
+                            .Build();
+                        errorPopup.Show();
+                        return;
+                    }
+                    caNumber = dbrAccount.AccNum;
+                }
+
+                if (!AccessTokenCache.Instance.HasTokenSaved(mainActivity))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(mainActivity, accessToken);
+                }
+                GetBillRenderingResponse billRenderingResponse = await DBRManager.Instance.GetBillRendering(caNumber
+                    , AccessTokenCache.Instance.GetAccessToken(mainActivity));
+
+                mainActivity.HideProgressDialog();
+
+                //Nullity Check
+                if (billRenderingResponse != null
+                   && billRenderingResponse.StatusDetail != null
+                   && billRenderingResponse.StatusDetail.IsSuccess
+                   && billRenderingResponse.Content != null
+                   && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
+                {
+                    Intent intent = new Intent(mainActivity, typeof(ManageBillDeliveryActivity));
+                    intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                    intent.PutExtra("accountNumber", caNumber);
+                    mainActivity.StartActivity(intent);
+                }
+                else
+                {
+                    string title = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.Title.IsValid()
+                        ? billRenderingResponse?.StatusDetail?.Title
+                        : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE);
+
+                    string message = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.Message.IsValid()
+                       ? billRenderingResponse?.StatusDetail?.Message
+                       : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG);
+
+                    string cta = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.PrimaryCTATitle.IsValid()
+                       ? billRenderingResponse?.StatusDetail?.PrimaryCTATitle
+                       : Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK);
+
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(title ?? string.Empty)
+                        .SetMessage(message ?? string.Empty)
+                        .SetCTALabel(cta ?? string.Empty)
+                        .Build();
+                    errorPopup.Show();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }
