@@ -104,6 +104,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("InstallationType")]
         public string InstallationType { get; set; }
 
+        [JsonProperty("createdDate")]
+        public DateTime? CreatedDate { set; get; }
+
         [JsonIgnore]
         public bool IsNormalMeter
         {
@@ -179,7 +182,8 @@ namespace myTNB_Android.Src.Database.Model
                 IsSelected = isSelected,
                 IsTaggedSMR = accountResponse.IsTaggedSMR,
                 BudgetAmount = accountResponse.BudgetAmount == null ? "0" : accountResponse.BudgetAmount,
-                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType
+                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
+                CreatedDate = accountResponse.CreatedDate
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -246,7 +250,8 @@ namespace myTNB_Android.Src.Database.Model
                 IsHaveAccess = accountResponse.IsHaveAccess,
                 IsApplyEBilling = accountResponse.IsApplyEBilling,
                 BudgetAmount = accountResponse.BudgetAmount,
-                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType
+                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
+                CreatedDate = accountResponse.CreatedDate
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -281,7 +286,8 @@ namespace myTNB_Android.Src.Database.Model
                 IsHaveAccess = accountResponse.IsHaveAccess,
                 IsApplyEBilling = accountResponse.IsApplyEBilling,
                 BudgetAmount = accountResponse.BudgetAmount,
-                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType
+                InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
+                CreatedDate = accountResponse.CreatedDate
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -310,6 +316,7 @@ namespace myTNB_Android.Src.Database.Model
                 if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                 {
                     sortedList.AddRange(AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV));
+                    List<CustomerBillingAccount> excludeNonNCList = NonNCAccountListExclude(sortedList);
                     List<CustomerBillingAccount> excludeREList = REAccountListExclude(sortedList);
                     List<CustomerBillingAccount> excludeNonREList = NonREAccountListExclude(sortedList);
                     if (excludeREList != null && excludeREList.Count > 0)
@@ -320,15 +327,21 @@ namespace myTNB_Android.Src.Database.Model
                     {
                         sortedList.AddRange(excludeNonREList);
                     }
+                    if (excludeNonNCList != null && excludeNonNCList.Count > 0)
+                    {
+                        sortedList.AddRange(excludeNonNCList);
+                    }
                 }
                 else
                 {
+                    sortedList.AddRange(NCAccountList());
                     sortedList.AddRange(REAccountList());
                     sortedList.AddRange(NonREAccountList());
                 }
             }
             else
             {
+                sortedList.AddRange(NCAccountList());
                 sortedList.AddRange(REAccountList());
                 sortedList.AddRange(NonREAccountList());
             }
@@ -772,14 +785,48 @@ namespace myTNB_Android.Src.Database.Model
             return reAccountList;
         }
 
+        public static List<CustomerBillingAccount> NonNCAccountListExclude(List<CustomerBillingAccount> accList)
+        {
+            List<CustomerBillingAccount> ncAccountList = new List<CustomerBillingAccount>();
+            if (accList != null && accList.Count > 0)
+            {
+                string excludeList = "";
+                int i = 0;
+                foreach (CustomerBillingAccount acc in accList)
+                {
+                    if (i == accList.Count - 1)
+                    {
+                        excludeList += "'" + acc.AccNum + "'";
+                    }
+                    else
+                    {
+                        excludeList += "'" + acc.AccNum + "',";
+                    }
+                    i++;
+                }
+                var db = DBHelper.GetSQLiteConnection();
+                ncAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND accDesc LIKE ('Account%') AND accNum NOT IN (" + excludeList + ") ORDER BY CreatedDate ASC").ToList().OrderByDescending(x => x.CreatedDate).ToList();
+            }
+            return ncAccountList;
+        }
+
 
         public static List<CustomerBillingAccount> NonREAccountList()
         {
             var db = DBHelper.GetSQLiteConnection();
             List<CustomerBillingAccount> nonREAccountList = new List<CustomerBillingAccount>();
-            nonREAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            nonREAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND accDesc NOT LIKE ('Account%') ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
             return nonREAccountList;
         }
+
+        public static List<CustomerBillingAccount> NCAccountList()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            List<CustomerBillingAccount> ncAccountList = new List<CustomerBillingAccount>();
+            ncAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND accDesc LIKE ('Account%') ORDER BY CreatedDate ASC").ToList().OrderByDescending(x => x.CreatedDate).ToList();
+            return ncAccountList;
+        }
+
 
         public static List<CustomerBillingAccount> GetSortedCustomerBillingAccounts()
         {
@@ -791,6 +838,7 @@ namespace myTNB_Android.Src.Database.Model
                 if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                 {
                     sortedList.AddRange(AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV));
+                    List<CustomerBillingAccount> excludeNonNCList = NonNCAccountListExclude(sortedList);
                     List<CustomerBillingAccount> excludeREList = REAccountListExclude(sortedList);
                     List<CustomerBillingAccount> excludeNonREList = NonREAccountListExclude(sortedList);
                     if (excludeREList != null && excludeREList.Count > 0)
@@ -804,12 +852,14 @@ namespace myTNB_Android.Src.Database.Model
                 }
                 else
                 {
+                    sortedList.AddRange(NCAccountList());
                     sortedList.AddRange(REAccountList());
                     sortedList.AddRange(NonREAccountList());
                 }
             }
             else
             {
+                sortedList.AddRange(NCAccountList());
                 sortedList.AddRange(REAccountList());
                 sortedList.AddRange(NonREAccountList());
             }
@@ -826,6 +876,7 @@ namespace myTNB_Android.Src.Database.Model
         public static List<CustomerBillingAccount> GetDefaultSortedCustomerBillingAccounts()
         {
             List<CustomerBillingAccount> sortedList = new List<CustomerBillingAccount>();
+            sortedList.AddRange(NCAccountList());
             sortedList.AddRange(REAccountList());
             sortedList.AddRange(NonREAccountList());
             return sortedList;

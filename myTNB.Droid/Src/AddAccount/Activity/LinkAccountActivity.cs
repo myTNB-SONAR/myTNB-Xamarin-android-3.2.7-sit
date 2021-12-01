@@ -382,6 +382,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         if (adapter.ItemCount == 0 && additionalAdapter.ItemCount == 0)
                         {
                             this.userActionsListener.OnConfirm(accountList);
+                            UserSessions.UpdateEmailflag(PreferenceManager.GetDefaultSharedPreferences(this));
                         }
                         else if (totalAccountAdded > Constants.ADD_ACCOUNT_LIMIT)
                         {
@@ -1118,6 +1119,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             newAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             newAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                             newAccount.InstallationType = item.InstallationType == null ? "0" : item.InstallationType;
+                            newAccount.CreatedDate = item.CreatedDate;
                             finalAccountList.Add(newAccount);
 
                             //UserSessions.SaveAddress(mSharedPref, false);
@@ -1140,6 +1142,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             extraAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                             extraAccount.InstallationType = item.InstallationType == null ? "0" : item.InstallationType;
+                            extraAccount.CreatedDate = item.CreatedDate;
                             finalAccountList.Add(extraAccount);
                         }
                     }
@@ -1444,9 +1447,18 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     }
                     else
                     {
+                        bool flag = UserSessions.GetEmailflag(PreferenceManager.GetDefaultSharedPreferences(this));
                         if (txtboxcondition.Checked)
                         {
-                            EnableConfirmButton();
+                            if (flag)
+                            {
+                                DisableConfirmButton();
+                            }
+                            else
+                            {
+                                EnableConfirmButton();
+                            }
+                            
                         }
                         else
                         {

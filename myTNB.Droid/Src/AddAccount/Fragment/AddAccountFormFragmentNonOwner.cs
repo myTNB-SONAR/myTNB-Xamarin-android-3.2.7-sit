@@ -414,9 +414,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void ShowAddAccountFail(string errorMessage)
         {
-
+           
             textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_NotExistsAccountMessage");
+            
+
+            
             //textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_NotExistsAccountMessage");
             /* if (mSnackBar != null && mSnackBar.IsShown)
              {

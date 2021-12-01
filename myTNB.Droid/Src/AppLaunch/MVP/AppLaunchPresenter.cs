@@ -1443,7 +1443,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             IsSelected = false,
                             IsHaveAccess = acc.IsHaveAccess,
                             IsApplyEBilling = acc.IsApplyEBilling,
-                            BudgetAmount = acc.BudgetAmount
+                            BudgetAmount = acc.BudgetAmount,
+                            CreatedDate = acc.CreatedDate
                         };
 
                         if (index != -1)
@@ -1485,7 +1486,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 IsSelected = false,
                                 IsHaveAccess = newAcc.IsHaveAccess,
                                 IsApplyEBilling = newAcc.IsApplyEBilling,
-                                BudgetAmount = newAcc.BudgetAmount
+                                BudgetAmount = newAcc.BudgetAmount,
+                                CreatedDate = newAcc.CreatedDate
                             };
 
                             newExistingList.Add(newRecord);

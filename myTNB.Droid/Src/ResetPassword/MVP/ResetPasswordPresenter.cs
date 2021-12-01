@@ -117,15 +117,22 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                             // CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
                             bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
 
-                            GetCustomerAccountListRequest baseRequest = new GetCustomerAccountListRequest();
+                            //GetCustomerAccountListRequest baseRequest = new GetCustomerAccountListRequest();
+                            //baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
+                            //baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
+                            //CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
+                            GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                             baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                             baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                            CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
-                            if (customerAccountListResponse.IsSuccessResponse())
+                            string dt = JsonConvert.SerializeObject(baseRequest);
+                            CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
+                            if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null)
                             {
-                                if (customerAccountListResponse.GetData().Count > 0)
+                                //if (customerAccountListResponse.GetData().Count > 0)
+                                if (customerAccountListResponse.customerAccountData.Count == 0 || customerAccountListResponse.customerAccountData.Count > 0)
                                 {
-                                    ProcessCustomerAccount(customerAccountListResponse.GetData());
+                                    //ProcessCustomerAccount(customerAccountListResponse.GetData());
+                                    ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
                                 }
                                 else
                                 {
@@ -277,7 +284,8 @@ namespace myTNB_Android.Src.ResetPassword.MVP
             return isValid;
         }
 
-        private void ProcessCustomerAccount(List<CustomerAccountListResponse.CustomerAccountData> list)
+        //private void ProcessCustomerAccount(List<CustomerAccountListResponse.CustomerAccountData> list)
+        private void ProcessCustomerAccount(List<CustomerAccountListResponseAppLaunch.CustomerAccountData> list)
         {
             try
             {
@@ -292,13 +300,13 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                     List<int> newExisitingListArray = new List<int>();
                     List<CustomerBillingAccount> newAccountList = new List<CustomerBillingAccount>();
 
-                    foreach (CustomerAccountListResponse.CustomerAccountData acc in list)
+                    foreach (CustomerAccountListResponseAppLaunch.CustomerAccountData acc in list)
                     {
                         int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
 
                         var newRecord = new CustomerBillingAccount()
                         {
-                            Type = acc.Type,
+                           // Type = acc.Type,
                             AccNum = acc.AccountNumber,
                             AccDesc = string.IsNullOrEmpty(acc.AccDesc) == true ? "--" : acc.AccDesc,
                             UserAccountId = acc.UserAccountID,
@@ -333,11 +341,11 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                         {
                             CustomerBillingAccount oldAcc = existingSortedList[index];
 
-                            CustomerAccountListResponse.CustomerAccountData newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
+                            CustomerAccountListResponseAppLaunch.CustomerAccountData newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
 
                             var newRecord = new CustomerBillingAccount()
                             {
-                                Type = newAcc.Type,
+                                //Type = newAcc.Type,
                                 AccNum = newAcc.AccountNumber,
                                 AccDesc = string.IsNullOrEmpty(newAcc.AccDesc) == true ? "--" : newAcc.AccDesc,
                                 UserAccountId = newAcc.UserAccountID,
@@ -388,7 +396,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                 }
                 else
                 {
-                    foreach (CustomerAccountListResponse.CustomerAccountData acc in list)
+                    foreach (CustomerAccountListResponseAppLaunch.CustomerAccountData acc in list)
                     {
                         int rowChange = CustomerBillingAccount.InsertOrReplace(acc, false);
                     }

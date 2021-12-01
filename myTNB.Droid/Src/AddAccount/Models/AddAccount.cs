@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Refit;
 
 namespace myTNB_Android.Src.AddAccount.Models
@@ -92,5 +93,9 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty(PropertyName = "InstallationType")]
         [AliasAs("InstallationType")]
         public string  InstallationType { get; set; }
+
+        [JsonProperty("CreatedDate")]
+        [AliasAs("CreatedDate")]
+        public DateTime? CreatedDate { set; get; }
     }
 }

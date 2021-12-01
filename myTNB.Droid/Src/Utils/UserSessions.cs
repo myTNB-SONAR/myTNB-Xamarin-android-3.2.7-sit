@@ -642,12 +642,32 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetBoolean("Loginflag",false);
         }
 
+        public static void SaveEmailflag(ISharedPreferences prefs, bool flag)    //for Save email flag for add account
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("Emailflag", flag);
+            editor.Apply();
+        }
+
+        public static bool GetEmailflag(ISharedPreferences prefs)              //for Check email flag for add account
+        {
+            return prefs.GetBoolean("Emailflag", false);
+        }
+
+        internal static void UpdateEmailflag(ISharedPreferences mSharedPref)       //for update email flag for add account
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("Emailflag");
+            editor.Apply();
+        }
+
         public static void SaveDeviceId(ISharedPreferences prefs, string deviceID)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutString("deviceID", deviceID);
             editor.Apply();
         }
+
 
         public static string GetDeviceId(ISharedPreferences prefs)
         {
@@ -798,7 +818,7 @@ namespace myTNB_Android.Src.Utils
             return selectAccountList;
         }
 
-        internal static void SetCommercialList(List<AccountData> Accounts)                 //for Commercial dialog | yana
+        internal static void SetCommercialList(List<CustomerBillingAccount> Accounts)                 //for Commercial dialog | yana
         {
             ISharedPreferencesEditor editor = mPreferences.Edit();
             string jsonAccountList = JsonConvert.SerializeObject(Accounts);
@@ -806,13 +826,13 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static List<AccountData> GetCommercialList()                                  //for Commercial dialog | yana
+        public static List<CustomerBillingAccount> GetCommercialList()                                  //for Commercial dialog | yana
         {
             string accountList = mPreferences.GetString("COMMERCIAL_ACCOUNT_LIST", null);
-            List<AccountData> selectCommercialAccountList = new List<AccountData>();
+            List<CustomerBillingAccount> selectCommercialAccountList = new List<CustomerBillingAccount>();
             if (accountList != null)
             {
-                selectCommercialAccountList = JsonConvert.DeserializeObject<List<AccountData>>(accountList);
+                selectCommercialAccountList = JsonConvert.DeserializeObject<List<CustomerBillingAccount>>(accountList);
             }
             return selectCommercialAccountList;
         }

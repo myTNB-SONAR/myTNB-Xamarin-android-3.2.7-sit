@@ -192,6 +192,7 @@ namespace myTNB_Android.Src.Database.Model
                 try
                 {
                     customerAccounts = ReturnList(email, env);
+                    List<CustomerBillingAccount> excludeNonNCList = CustomerBillingAccount.NonNCAccountListExclude(customerAccounts);
                     List<CustomerBillingAccount> excludeREList = CustomerBillingAccount.REAccountListExclude(customerAccounts);
                     List<CustomerBillingAccount> excludeNonREList = CustomerBillingAccount.NonREAccountListExclude(customerAccounts);
                     if (excludeREList != null && excludeREList.Count > 0)
@@ -201,6 +202,10 @@ namespace myTNB_Android.Src.Database.Model
                     if (excludeNonREList != null && excludeNonREList.Count > 0)
                     {
                         customerAccounts.AddRange(excludeNonREList);
+                    }
+                    if (excludeNonNCList != null && excludeNonNCList.Count > 0)
+                    {
+                        customerAccounts.AddRange(excludeNonNCList);
                     }
                 }
                 catch (Exception e)

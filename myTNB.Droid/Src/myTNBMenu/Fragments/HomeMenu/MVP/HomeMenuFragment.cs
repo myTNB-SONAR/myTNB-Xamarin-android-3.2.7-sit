@@ -339,6 +339,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         NewFAQAdapter newFAQAdapter;
 
+        CustomerBillingAccount selectedAccount;
+
         const string PAGE_ID = "DashboardHome";
 
         const string FAQ_TAGS_SEPARATOR = "|";
@@ -3217,7 +3219,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 Utility.LoggingNonFatalError(e);
                             }
                             NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
+
+                            //List<CustomerBillingAccount> selectedAccountList = new List<CustomerBillingAccount>();
+                            //List<CustomerBillingAccount> selectedAccountList2 = new List<CustomerBillingAccount>();
+                            //List<CustomerBillingAccount> selectedAccountList3 = UserSessions.GetCommercialList();
+
+                            //if (selectedAccountList3.Count == 0)
+                            //{
+                            //    selectedAccountList.Add(selectedAccount);
+                            //    UserSessions.SetCommercialList(selectedAccountList);
+                            //    NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
+                            //}
+                            //else
+                            //{
+                            //    selectedAccountList2 = UserSessions.GetCommercialList();
+                            //    bool acc = false;
+                            //    foreach (CustomerBillingAccount accountData in selectedAccountList2)
+                            //    {
+                            //        selectedAccountList.Add(accountData);
+                            //        if (accountData.CreatedDate > selectedAccount.CreatedDate)
+                            //        {
+                            //            acc = true;
+                            //        }
+
+                            //    }
+
+                            //    if (acc)
+                            //    {
+                            //        NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
+                            //        UserSessions.SetCommercialList(selectedAccountList);
+
+                            //    }
+                            //}
+
+                             NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
                         };
                         h.PostDelayed(myAction, 50);
                     }

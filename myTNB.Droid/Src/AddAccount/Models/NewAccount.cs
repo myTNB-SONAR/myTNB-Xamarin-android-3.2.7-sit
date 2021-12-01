@@ -1,4 +1,6 @@
-﻿namespace myTNB_Android.Src.AddAccount.Models
+﻿using System;
+
+namespace myTNB_Android.Src.AddAccount.Models
 {
     public class NewAccount
     {
@@ -67,5 +69,7 @@
         public string BudgetAmount { get; set; }
 
         public string InstallationType { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
     }
 }

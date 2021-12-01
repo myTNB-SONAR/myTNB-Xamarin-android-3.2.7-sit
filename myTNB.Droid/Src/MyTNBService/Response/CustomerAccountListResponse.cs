@@ -99,6 +99,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "InstallationType")]
             public string InstallationType { get; set; }
+
+            [JsonProperty(PropertyName = "CreatedDate")]
+            public DateTime? CreatedDate { get; set; }
         }
     }
 }

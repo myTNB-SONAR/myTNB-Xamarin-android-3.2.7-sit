@@ -253,6 +253,7 @@ namespace myTNB_Android.Src.AddAccount
                         {
                             ShowInvalidEmailError();
                         }
+                        //UserSessions.UpdateEmailflag(PreferenceManager.GetDefaultSharedPreferences(context));
                     }
                 }
                 catch (Exception ex)
@@ -277,6 +278,8 @@ namespace myTNB_Android.Src.AddAccount
 
         public void ShowInvalidEmailError()
         {
+
+           
             textInputLayoutEmailEditText.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
                ? Resource.Style.TextInputLayoutBottomErrorHintLarge
                : Resource.Style.TextInputLayoutBottomErrorHint);
@@ -296,11 +299,13 @@ namespace myTNB_Android.Src.AddAccount
                     }
 
                     textInputLayoutEmailEditText.RequestLayout();
+                    UserSessions.SaveEmailflag(PreferenceManager.GetDefaultSharedPreferences(context), true);
                     //((LinkAccountActivity)context).DisableConfirmButton();
                 }
                 else
                 {
                     ClearEmailError();
+                    UserSessions.UpdateEmailflag(PreferenceManager.GetDefaultSharedPreferences(context));
                     //((LinkAccountActivity)context).EnableConfirmButton();
                 }
             }
