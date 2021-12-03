@@ -47,6 +47,7 @@ using Android.Gms.Extensions;
 using Android.Preferences;
 using myTNB_Android.Src.Utils.Deeplink;
 using myTNB.Mobile;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -169,6 +170,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest());
                 /*AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
                       (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));*/
+                string dt = JsonConvert.SerializeObject(new AppLaunchMasterDataRequest());
                 if (masterDataResponse != null && masterDataResponse.ErrorCode != null)
                 {
                     if (masterDataResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
@@ -478,6 +480,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             try
             {
+                //string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
+                
                 //GetCustomerAccountListRequest baseRequest = new GetCustomerAccountListRequest();
                 //baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                 //baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
@@ -496,8 +500,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         CustomerBillingAccount.RemoveActive();
                         //ProcessCustomerAccount(customerAccountListResponse.GetData());
-                        ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
 
+                        ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
 
                     }
                     else
@@ -569,6 +573,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
                     }
 
+                    GetNCAccountList();
                     MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
                     this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
@@ -576,6 +581,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 }
                 else
                 {
+                    
                     MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
                     this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
@@ -622,6 +628,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         CustomerBillingAccount.RemoveActive();
                         //ProcessCustomerAccount(customerAccountListResponse.GetData());
+
+                       
                         ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
 
 
@@ -739,6 +747,77 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 EvaluateServiceRetryNoti();
             }
         }
+
+        public void GetNCAccountList()
+        {
+            try
+            {
+                //bool ncAccounts = UserSessions.GetNCList(mSharedPref);
+                string ncAccounts = UserSessions.GetNCList(mSharedPref);
+                List<CustomerBillingAccount> listNC = CustomerBillingAccount.NCAccountList();
+
+                if (listNC != null)
+                {
+                    if (listNC.Count > 0)
+                    {
+                        var OldNCAccDate = ncAccounts;
+
+                        if (OldNCAccDate != null)
+                        {
+                            DateTime OldNCAccDateTime = Convert.ToDateTime(OldNCAccDate); //old datetime
+                            DateTime NewNCAccDateTime;
+
+                            int countNewNCAdded = 0;
+                            for (int x = 0; x < listNC.Count; x++)
+                            {
+                                NewNCAccDateTime = Convert.ToDateTime(listNC[x].CreatedDate);
+
+                                if (OldNCAccDateTime == NewNCAccDateTime)
+                                {
+                                    //same date
+
+                                }
+                                if (OldNCAccDateTime < NewNCAccDateTime)
+                                {
+                                    countNewNCAdded++;
+                                }
+                            }
+
+                            if (countNewNCAdded > 0)
+                            {
+                                UserSessions.UpdateNCFlag(mSharedPref);
+                                UserSessions.SetNCList(mSharedPref, listNC[0].CreatedDate);
+                                UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //overlay highlight flag
+                                //trigger home ovelay tutorial
+                                UserSessions.UpdateNCTutorialShown(mSharedPref);
+                                
+                            }
+
+                        }
+                        else
+                        {
+                            UserSessions.SetNCList(mSharedPref, listNC[0].CreatedDate); //save date kalau kosong
+
+                            UserSessions.UpdateNCFlag(mSharedPref);
+                            UserSessions.SaveNCFlag(mSharedPref, 0);
+                            
+                            //pannggil overlay
+                            UserSessions.UpdateNCTutorialShown(mSharedPref);
+
+                        }
+
+                    }
+
+
+                }
+
+            }
+            catch (System.Exception exe)
+            {
+                Utility.LoggingNonFatalError(exe);
+            }
+        }
+
 
         public async void OnShowNotificationDetails(string NotificationTypeId, string BCRMNotificationTypeId, string NotificationRequestId)
         {
@@ -1419,9 +1498,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     List<CustomerBillingAccount> newExistingList = new List<CustomerBillingAccount>();
                     List<int> newExisitingListArray = new List<int>();
                     List<CustomerBillingAccount> newAccountList = new List<CustomerBillingAccount>();
+                   
 
                     foreach (CustomerAccountListResponseAppLaunch.CustomerAccountData acc in list)
                     {
+                        
                         int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
 
                         var newRecord = new CustomerBillingAccount()
@@ -1524,7 +1605,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 }
                 else
                 {
-
                     foreach (CustomerAccountListResponseAppLaunch.CustomerAccountData acc in list)
                     {
                         int rowChange = CustomerBillingAccount.InsertOrReplace(acc, false);

@@ -480,6 +480,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                 }
             }
+           
         }
 
         public void SetNotificationIndicator()
@@ -2364,6 +2365,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             if (!HomeMenuUtils.GetIsLoadedHomeMenu())
             {
+                
                 List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
                 List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
                 List<CustomerBillingAccount> smartmeterAccounts = CustomerBillingAccount.SMeterBudgetAccountList();        //smart meter ca
@@ -2371,6 +2373,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
                 List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
                 List<SMRAccount> SMeterAccountList = new List<SMRAccount>();
+                
                 if (eligibleSMRBillingAccounts.Count > 0)
                 {
                     foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
@@ -2470,6 +2473,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
                 List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
                 List<SMRAccount> SMeterAccountList = new List<SMRAccount>();
+                //List<CustomerBillingAccount> ncList = CustomerBillingAccount.NCAccountList();
+                //UserSessions.SetNCList(ncList);
                 if (eligibleSMRBillingAccounts.Count > 0)
                 {
                     foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
@@ -3193,6 +3198,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
+               
                 Activity.RunOnUiThread(() =>
                 {
                     try
@@ -3219,40 +3225,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 Utility.LoggingNonFatalError(e);
                             }
                             NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                            
 
-                            //List<CustomerBillingAccount> selectedAccountList = new List<CustomerBillingAccount>();
-                            //List<CustomerBillingAccount> selectedAccountList2 = new List<CustomerBillingAccount>();
-                            //List<CustomerBillingAccount> selectedAccountList3 = UserSessions.GetCommercialList();
-
-                            //if (selectedAccountList3.Count == 0)
-                            //{
-                            //    selectedAccountList.Add(selectedAccount);
-                            //    UserSessions.SetCommercialList(selectedAccountList);
-                            //    NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
-                            //}
-                            //else
-                            //{
-                            //    selectedAccountList2 = UserSessions.GetCommercialList();
-                            //    bool acc = false;
-                            //    foreach (CustomerBillingAccount accountData in selectedAccountList2)
-                            //    {
-                            //        selectedAccountList.Add(accountData);
-                            //        if (accountData.CreatedDate > selectedAccount.CreatedDate)
-                            //        {
-                            //            acc = true;
-                            //        }
-
-                            //    }
-
-                            //    if (acc)
-                            //    {
-                            //        NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
-                            //        UserSessions.SetCommercialList(selectedAccountList);
-
-                            //    }
-                            //}
-
-                             NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
+                            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
                         };
                         h.PostDelayed(myAction, 50);
                     }
@@ -3267,6 +3242,76 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(exe);
             }
         }
+
+        //public void GetNCAccountList()
+        //{
+        //    try
+        //    {
+
+        //        //bool ncAccounts = UserSessions.GetNCList(mSharedPref);
+        //        string ncAccounts = UserSessions.GetNCList(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+        //        List<CustomerBillingAccount> listNC = CustomerBillingAccount.NCAccountList();
+
+        //        if (listNC != null)
+        //        {
+        //            if (listNC.Count > 0)
+        //            {
+        //                var OldNCAccDate = ncAccounts;
+
+        //                if (OldNCAccDate != null)
+        //                {
+        //                    DateTime OldNCAccDateTime = Convert.ToDateTime(OldNCAccDate); //old datetime
+        //                    DateTime NewNCAccDateTime;
+
+        //                    int countNewNCAdded = 0;
+        //                    for (int x = 0; x < listNC.Count; x++)
+        //                    {
+        //                        NewNCAccDateTime = Convert.ToDateTime(listNC[x].CreatedDate);
+
+        //                        if (OldNCAccDateTime == NewNCAccDateTime)
+        //                        {
+        //                            //same date
+
+        //                        }
+        //                        if (OldNCAccDateTime < NewNCAccDateTime)
+        //                        {
+        //                            countNewNCAdded++;
+        //                        }
+        //                    }
+
+        //                    if (countNewNCAdded > 0)
+        //                    {
+        //                        UserSessions.SetNCList(PreferenceManager.GetDefaultSharedPreferences(this.Activity), listNC[0].CreatedDate);
+        //                        //trigger balik ovelay tutorial
+        //                        //UserSessions.DoNCTutorialShown(mSharedPref, true);
+        //                        //UserSessions.DoHomeTutorialShown(mSharedPref);
+        //                        OnShowHomeMenuFragmentTutorialDialog();
+
+        //                    }
+
+        //                }
+        //                else
+        //                {
+        //                    UserSessions.SetNCList(PreferenceManager.GetDefaultSharedPreferences(this.Activity), listNC[0].CreatedDate); //save date kalau kosong
+
+        //                    //pannggil overlay
+        //                    OnShowHomeMenuFragmentTutorialDialog();
+        //                    //UserSessions.DoNCTutorialShown(mSharedPref, true);
+        //                    //UserSessions.DoHomeTutorialShown(mSharedPref);
+
+        //                }
+
+        //            }
+
+
+        //        }
+
+        //    }
+        //    catch (System.Exception exe)
+        //    {
+        //        Utility.LoggingNonFatalError(exe);
+        //    }
+        //}
 
         public void HomeMenuCustomScrolling(int yPosition)
         {

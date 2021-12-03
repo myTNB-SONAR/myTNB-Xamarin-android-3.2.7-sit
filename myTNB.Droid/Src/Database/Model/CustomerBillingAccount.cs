@@ -9,6 +9,7 @@ using System;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile;
+using Android.Preferences;
 
 namespace myTNB_Android.Src.Database.Model
 {
@@ -105,7 +106,7 @@ namespace myTNB_Android.Src.Database.Model
         public string InstallationType { get; set; }
 
         [JsonProperty("createdDate")]
-        public DateTime? CreatedDate { set; get; }
+        public string CreatedDate { set; get; }
 
         [JsonIgnore]
         public bool IsNormalMeter

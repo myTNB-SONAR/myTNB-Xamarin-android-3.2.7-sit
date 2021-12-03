@@ -346,6 +346,13 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        internal static void UpdateNCTutorialShown(ISharedPreferences mSharedPref)       //for update userID Email Verified Dynamic link
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("hasHomeTutorialShown");
+            editor.Apply();
+        }
+
         public static bool HasItemizedBillingNMSMTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasItemizedBillingNMSMTutorialShown", false);
@@ -661,6 +668,26 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+
+        public static int GetNCFlag(ISharedPreferences prefs)              
+        {
+            return prefs.GetInt("NCFlag", 0);
+        }
+
+        public static void SaveNCFlag(ISharedPreferences prefs, int data)    
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutInt("NCFlag", data);
+            editor.Apply();
+        }
+
+        internal static void UpdateNCFlag(ISharedPreferences mSharedPref)       
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("NCFlag");
+            editor.Apply();
+        }
+
         public static void SaveDeviceId(ISharedPreferences prefs, string deviceID)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
@@ -835,6 +862,18 @@ namespace myTNB_Android.Src.Utils
                 selectCommercialAccountList = JsonConvert.DeserializeObject<List<CustomerBillingAccount>>(accountList);
             }
             return selectCommercialAccountList;
+        }
+
+        public static void SetNCList(ISharedPreferences prefs, string date)                  //for NC Add account| yana
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("NC_ACCOUNT_LIST", date);
+            editor.Apply();
+        }
+
+        public static string GetNCList(ISharedPreferences prefs)
+        {
+            return prefs.GetString("NC_ACCOUNT_LIST", null);
         }
 
         public static void SetSMRAccountList(List<SMRAccount> sMRAccounts)

@@ -2664,7 +2664,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 isHomeMenuTutorialShown = true;
                 HomeMenuUtils.SetIsLoadedHomeMenu(true);
-
+                
                 if(!UserSessions.HasHomeTutorialShown(this.mPref))
                 {
                     if (HomeMenuUtils.GetIsRestartHomeMenu())

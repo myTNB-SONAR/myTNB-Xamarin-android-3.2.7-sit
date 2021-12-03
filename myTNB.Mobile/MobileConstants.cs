@@ -37,7 +37,6 @@ namespace myTNB.Mobile
         private const string DEV2 = "http://10.215.128.191:89";
         private const string DEV3 = "http://10.215.128.191:99";
         private const string SIT = "https://mobiletestingws.tnb.com.my";
-        private const string SITAWS = "https://stagingapi.mytnb.com.my/asmx";
         //private const string SIT = "http://10.215.128.191:99";
         //private const string DEV3 = "http://10.215.128.191:97";
 
@@ -78,7 +77,7 @@ namespace myTNB.Mobile
         public static string OvisWebviewBaseUrlPROD = "https://mytnbappwv.ovis.tnb.com.my";
 
 #if DEBUG
-        public static string ApiDomain = SITAWS;
+        public static string ApiDomain = AWS_SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;
@@ -87,7 +86,7 @@ namespace myTNB.Mobile
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlDEV;
 
 #elif MASTER || SIT || DEBUG
-        public static string ApiDomain = SITAWS;
+        public static string ApiDomain = AWS_SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;

@@ -51,6 +51,7 @@ namespace myTNB_Android.Src.Base
         private bool IsFromViewTips = false;
         private bool IsFromDashboard = false;
         private bool IsCOMCLandNEM = false;
+        private bool IsNCAcc = false;
 
         private MyTNBAccountManagement()
         {
@@ -690,6 +691,16 @@ namespace myTNB_Android.Src.Base
         public bool IsEBUserVerify()
         {
             return IsEBUser;
+        }
+
+        public void SetINCAccount(bool ncAcc)
+        {
+            IsNCAcc = ncAcc;
+        }
+
+        public bool IsNCAccount()
+        {
+            return IsNCAcc;
         }
 
         public void SetMaybeLater(bool maybeLater)

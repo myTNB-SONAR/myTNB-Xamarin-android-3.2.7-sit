@@ -70,6 +70,6 @@ namespace myTNB_Android.Src.AddAccount.Models
 
         public string InstallationType { get; set; }
 
-        public DateTime? CreatedDate { get; set; }
+        public string CreatedDate { get; set; }
     }
 }

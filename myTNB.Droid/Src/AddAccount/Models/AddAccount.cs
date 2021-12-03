@@ -96,6 +96,6 @@ namespace myTNB_Android.Src.AddAccount.Models
 
         [JsonProperty("CreatedDate")]
         [AliasAs("CreatedDate")]
-        public DateTime? CreatedDate { set; get; }
+        public string CreatedDate { set; get; }
     }
 }
