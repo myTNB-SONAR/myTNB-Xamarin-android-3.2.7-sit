@@ -754,7 +754,8 @@
     "titleNonOwnerAddAcc": "Teruskan memasuki akaun anda dan berikan nama gelaran untuk rujukan mudah.",
     "titleOwnerDetailRegion": "Sila masukkan alamat e-mel atau nombor telefon pemilik akaun ini supaya kami boleh memberikan makluman kepadanya.",
     //Add by lop
-    "accountNickNameError": "Akaun anda harus mempunyai nama panggilan. Anda boleh menggunakan huruf, angka dan simbol untuk nama panggilan akaun tersebut."
+    "accountNickNameError": "Akaun anda harus mempunyai nama panggilan. Anda boleh menggunakan huruf, angka dan simbol untuk nama panggilan akaun tersebut.",
+    "invalidROC": "Nombor KP yang anda masukkan tidak padan dengan nombor akaun ini. Sila semak dan cuba semula."
   },
   "Profile": {
     "title": "Profil",

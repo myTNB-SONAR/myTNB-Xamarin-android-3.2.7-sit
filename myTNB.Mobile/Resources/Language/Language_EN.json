@@ -756,7 +756,8 @@
     "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference.",
     "titleOwnerDetailRegion": "Please provide the owner’s email or mobile number for the account above so we can notify them.",
     //Add by lop
-    "accountNickNameError": "You must have a nickname for your account. You can use letters, numbers and special characters for the account nickname."
+    "accountNickNameError": "You must have a nickname for your account. You can use letters, numbers and special characters for the account nickname.",
+    "invalidROC": "The Identification Number you entered does not match this account number. Please check and try again."
   },
   "Profile": {
     "title": "Profile",

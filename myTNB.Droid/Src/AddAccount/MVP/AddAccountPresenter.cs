@@ -214,7 +214,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 {
                     mView.GovermentDialog();
                 }
-               else if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
+                else if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS && result.Response.DisplayMessage.Contains(Utility.GetLocalizedLabel("AddAccount", "invalidROC")))
+                {
+                    mView.ShowAddAccountROCFail(result.Response.DisplayMessage);
+                }
+                else if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
                 {
                     mView.ShowAddAccountFail(result.Response.DisplayMessage);
                 }

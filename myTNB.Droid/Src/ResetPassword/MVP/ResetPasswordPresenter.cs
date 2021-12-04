@@ -129,7 +129,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                             if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null)
                             {
                                 //if (customerAccountListResponse.GetData().Count > 0)
-                                if (customerAccountListResponse.customerAccountData.Count == 0 || customerAccountListResponse.customerAccountData.Count > 0)
+                                if (customerAccountListResponse.customerAccountData.Count > 0)
                                 {
                                     //ProcessCustomerAccount(customerAccountListResponse.GetData());
                                     ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
