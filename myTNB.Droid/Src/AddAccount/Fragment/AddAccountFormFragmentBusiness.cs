@@ -503,7 +503,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         {
             this.userActionsListener = userActionListener;
         }
-
+        
         public void ShowAddAccountFail(string errorMessage)
         {
 
@@ -527,23 +527,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void ShowAddAccountROCFail(string errorMessage)
         {
-
             textInputLayoutRocNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             textInputLayoutRocNo.Error = Utility.GetLocalizedErrorLabel("invalid_rocNumber");
-            //if (mSnackBar != null && mSnackBar.IsShown)
-            //{
-            //    mSnackBar.Dismiss();
-
-            //}
-
-            //mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            //.SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
-            //);
-            //View v = mSnackBar.View;
-            //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            //tv.SetMaxLines(5);
-
-            //mSnackBar.Show();
         }
 
         public void ShowAddAccountResponse(ServiceResponse response)
@@ -771,6 +756,30 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                         textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                         textInputLayoutAccountNo.Error = "";
                         textInputLayoutAccountNo.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ClearROCError()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        textInputLayoutRocNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                        textInputLayoutRocNo.Error = "";
+                        textInputLayoutRocNo.RequestLayout();
                     }
                     catch (Exception ex)
                     {

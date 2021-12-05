@@ -100,12 +100,12 @@ namespace myTNB_Android.Src.MyAccount.Activity
                     fromIDFlag = true;
                 }
 
-                var sharedpref_data = UserSessions.GetCheckEmailVerified(this.mPref);
-                bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);
-                if (isUpdatePersonalDetail)
-                {
-                    fromEmailVerify = true;
-                }
+                //var sharedpref_data = UserSessions.GetCheckEmailVerified(this.mPref);
+                //bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);
+                //if (isUpdatePersonalDetail)
+                //{
+                //    fromEmailVerify = true;
+                //}
 
                 ProfileDetailItemComponent myTNBProfileItem = GetMyTNBAccountItems();
                 profileMenuItemsContent.AddView(myTNBProfileItem);

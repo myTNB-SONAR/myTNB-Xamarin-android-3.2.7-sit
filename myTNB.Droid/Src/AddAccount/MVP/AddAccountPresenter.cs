@@ -288,7 +288,12 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     mView.RemoveNumberErrorMessage();
                 }
 
-             
+                if (ownerIC.Length == 0)
+                {
+                    mView.ClearROCError();
+                }
+
+
                 if (!TextUtils.IsEmpty(accountno) && !TextUtils.IsEmpty(accountNickName))
                 {
 
@@ -332,6 +337,10 @@ namespace myTNB_Android.Src.AddAccount.MVP
                             mView.RemoveNameErrorMessage();  // added
                             mView.RemoveNumberErrorMessage(); // added
                         }
+                    }
+                    else if (TextUtils.IsEmpty(ownerIC))
+                    {
+                        mView.ClearROCError();
                     }
                     else
                     {

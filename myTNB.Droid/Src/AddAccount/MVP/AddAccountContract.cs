@@ -123,7 +123,8 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
             void RemoveNameErrorMessage();
             void RemoveNumberErrorMessage();
-            
+            void ClearROCError();
+
         }
 
         public interface IUserActionsListener : IBasePresenter
