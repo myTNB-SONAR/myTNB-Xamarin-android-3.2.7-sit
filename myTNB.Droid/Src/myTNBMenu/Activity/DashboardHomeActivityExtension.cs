@@ -395,13 +395,24 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
                     if (dbrAccount == null)
                     {
-                        mainActivity.HideProgressDialog();
-                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                            .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
-                            .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
-                            .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.GOT_IT))
-                            .Build();
-                        errorPopup.Show();
+                        mainActivity.RunOnUiThread(() =>
+                        {
+                            try
+                            {
+                                mainActivity.HideProgressDialog();
+                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                    .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+                                    .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
+                                    .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.GOT_IT))
+                                    .Build();
+                                errorPopup.Show();
+                            }
+                            catch (System.Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+                        });
+
                         return;
                     }
                     caNumber = dbrAccount.AccNum;
@@ -443,12 +454,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                        ? billRenderingResponse?.StatusDetail?.PrimaryCTATitle
                        : Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK);
 
-                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                        .SetTitle(title ?? string.Empty)
-                        .SetMessage(message ?? string.Empty)
-                        .SetCTALabel(cta ?? string.Empty)
-                        .Build();
-                    errorPopup.Show();
+                    mainActivity.RunOnUiThread(() =>
+                    {
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(title ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+                            .SetMessage(message ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
+                            .SetCTALabel(cta ?? Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK))
+                            .Build();
+                        errorPopup.Show();
+                    });
                 }
             }
             catch (System.Exception e)

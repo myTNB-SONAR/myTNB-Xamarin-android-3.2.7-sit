@@ -223,14 +223,16 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                 }
                 else
                 {
-                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                        .SetTitle(response.StatusDetail.Title)
-                        .SetMessage(response.StatusDetail.Message)
-                        .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
-                        .Build();
-                    errorPopup.Show();
+                    RunOnUiThread(() =>
+                    {
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(response?.StatusDetail?.Title ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+                            .SetMessage(response?.StatusDetail?.Message ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
+                            .SetCTALabel(response?.StatusDetail?.PrimaryCTATitle ?? Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK))
+                            .Build();
+                        errorPopup.Show();
+                    });
                 }
-
             }
             catch (System.Exception e)
             {

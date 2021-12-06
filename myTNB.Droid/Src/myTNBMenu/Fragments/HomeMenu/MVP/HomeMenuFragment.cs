@@ -685,13 +685,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
                     if (dbrAccount == null)
                     {
-                        HideProgressDialog();
-                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                            .SetTitle(Utility.GetLocalizedLabel("Error", "defaultErrorTitle"))
-                            .SetMessage(Utility.GetLocalizedLabel("Error", "defaultErrorMessage"))
-                            .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
-                            .Build();
-                        errorPopup.Show();
+                        this.Activity.RunOnUiThread(() =>
+                        {
+                            HideProgressDialog();
+                            MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+                                .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
+                                .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.GOT_IT))
+                                .Build();
+                            errorPopup.Show();
+                        });
+
                         return;
                     }
                     caNumber = dbrAccount.AccNum;
@@ -721,24 +725,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 else
                 {
-                    string? title = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.Title.IsValid()
+                    string title = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.Title.IsValid()
                         ? billRenderingResponse?.StatusDetail?.Title
-                        : Utility.GetLocalizedLabel("Error", "defaultErrorTitle");
+                        : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE);
 
-                    string? message = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.Message.IsValid()
+                    string message = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.Message.IsValid()
                        ? billRenderingResponse?.StatusDetail?.Message
-                       : Utility.GetLocalizedLabel("Error", "defaultErrorMessage");
+                       : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG);
 
-                    string? cta = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.PrimaryCTATitle.IsValid()
+                    string cta = billRenderingResponse != null && billRenderingResponse.StatusDetail != null && billRenderingResponse.StatusDetail.PrimaryCTATitle.IsValid()
                        ? billRenderingResponse?.StatusDetail?.PrimaryCTATitle
-                       : Utility.GetLocalizedLabel("Common", "ok");
+                       : Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK);
 
-                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                        .SetTitle(title ?? string.Empty)
-                        .SetMessage(message ?? string.Empty)
-                        .SetCTALabel(cta ?? string.Empty)
-                        .Build();
-                    errorPopup.Show();
+                    this.Activity.RunOnUiThread(() =>
+                    {
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(title ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+                            .SetMessage(message ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
+                            .SetCTALabel(cta ?? Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK))
+                            .Build();
+                        errorPopup.Show();
+                    });
                 }
             }
             catch (System.Exception e)
@@ -1810,12 +1817,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 else
                 {
-                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                     .SetTitle(_searchApplicationTypeResponse.StatusDetail.Title)
-                     .SetMessage(_searchApplicationTypeResponse.StatusDetail.Message)
-                     .SetCTALabel(_searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
-                     .Build();
-                    errorPopup.Show();
+                    this.Activity.RunOnUiThread(() =>
+                    {
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(_searchApplicationTypeResponse?.StatusDetail?.Title ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+                            .SetMessage(_searchApplicationTypeResponse?.StatusDetail?.Message ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
+                            .SetCTALabel(_searchApplicationTypeResponse?.StatusDetail?.PrimaryCTATitle ?? Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK))
+                            .Build();
+                        errorPopup.Show();
+                    });
                 }
             }
         }
