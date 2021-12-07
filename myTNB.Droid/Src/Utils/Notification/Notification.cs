@@ -15,6 +15,7 @@
         {
             AppUpdate,
             AccountStatement,
+            NewBillDesign,
             None
         }
     }

@@ -144,7 +144,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
                         }
                         else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE)
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN)
                         {
                             if (UserEntity.IsCurrentlyActive())
                             {

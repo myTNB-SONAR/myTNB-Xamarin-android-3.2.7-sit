@@ -226,6 +226,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             DeeplinkUtil.Instance.ClearDeeplinkData();
         }
 
+        private static void DeeplinkNewBillDesignValidation(DashboardHomeActivity mainActivity)
+        {
+            if (BillRedesignUtility.Instance.ShouldShowHomeCard && BillRedesignUtility.Instance.IsAccountEligible)
+            {
+                mainActivity.NavigateToNBR();
+            }
+        }
+
         internal static void ShowAddAccount(this DashboardHomeActivity mainActivity)
         {
             Intent linkAccount = new Intent(mainActivity, typeof(LinkAccountActivity));
@@ -279,8 +287,19 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
                     OnGetNotificationDetails(mainActivity);
                     break;
+                case Notification.TypeEnum.NewBillDesign:
+                    NavigateToBillRedesign(mainActivity);
+                    break;
                 default:
                     break;
+            }
+        }
+
+        internal static void NavigateToBillRedesign(DashboardHomeActivity mainActivity)
+        {
+            if (BillRedesignUtility.Instance.ShouldShowHomeCard && BillRedesignUtility.Instance.IsAccountEligible)
+            {
+                mainActivity.NavigateToNBR();
             }
         }
 
