@@ -220,7 +220,7 @@
     "serviceRefreshMessage": "Uh oh, looks like your quick actions have been unplugged. Refresh to stay plugged in!",
     "receivedExtra": "received extra",
     "applicationStatus": "Application<br>Status",
-    "dbrReminderPopupTitle": "Go Paperless with myTNB Bill today!",
+    "dbrReminderPopupTitle": "Go Paperless with your bills",
     "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill onwards! With myTNB, you have a better and more environmentally friendly way to receive your paperless bills digitally via myTNB App & Portal.",
     "dbrReminderPopupStartNow": "View More",
     //EnergyBudget
@@ -2636,7 +2636,7 @@
     "dbrInfoDescription0": "Swipe left to learn how you can benefit from going paperless today!",
     "dbrInfoDescription1": "Reduce your paper waste and be the first to make your impact in our collective move towards a more sustainable future.",
     "dbrInfoDescription2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills conveniently on myTNB App & Portal, anytime, anywhere.",
-    "dbrInfoDescription2V2": "Enjoy faster and on-the-dot delivery of your freshly improved TNB bills directly on myTNB App & Portal. Learn more about the new bill layout <a style=\"text-decoration:none\" href =\"inAppBrowser=http://ee.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">here</a>.",
+    "dbrInfoDescription2V2": "Enjoy faster and on-the-dot delivery of your freshly improved TNB bills directly on myTNB App & Portal. Learn more about the new bill layout <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">here</a>.",
     "dbrInfoDescription3": "Get your bills directly and securely on myTNB. No more worries about others seeing your bills, risk getting stolen or lost in the mail.",
     "anotherDeliveryMethod": "What if I want another bill delivery method?",
     "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "What if I want another bill delivery method?",
@@ -2773,7 +2773,7 @@
       },
       {
         "Title": "",
-        "Description": "Go to the bill page to view your bills or learn more about the new bill <a style=\"text-decoration:none\" href =\"inAppBrowser=http://ee.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">here</a>.",
+        "Description": "Go to the bill page to view your bills or learn more about the new bill <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">here</a>.",
         "Image1": "",
         "Image2": "",
         "IsZoomable": false,
