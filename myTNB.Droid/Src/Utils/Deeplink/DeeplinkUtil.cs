@@ -99,6 +99,10 @@ namespace myTNB_Android.Src.Utils.Deeplink
                         TargetScreen = Screen.OvervoltageClaimDetails;
                         SaveDeeplinkDetails(Screen.OvervoltageClaimDetails, deeplink);
                     }
+                    else if (deepLinkUrlString.Contains(Screen.ManageBillDelivery.ToString().ToLower()))
+                    {
+                        TargetScreen = Screen.ManageBillDelivery;
+                    }
                 }
             }
         }

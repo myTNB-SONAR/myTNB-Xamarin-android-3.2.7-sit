@@ -57,7 +57,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 {
                     Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle2V2"),
                     Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription2V2"),
-                    Image = "dbr_paper_e_bill.png"
+                    Image = "dbr_paper_e_bill"
                 });
             }
             else

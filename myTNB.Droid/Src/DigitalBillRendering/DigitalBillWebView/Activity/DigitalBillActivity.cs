@@ -244,14 +244,33 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     string ssoURL = string.Format(AWSConstants.Domains.SSO, signature);
                     RunOnUiThread(() =>
                     {
-                        WebSettings settings = micrositeWebView.Settings;
-                        settings.JavaScriptEnabled = true;
-                        settings.LoadWithOverviewMode = true;
-                        settings.UseWideViewPort = true;
-                        settings.DomStorageEnabled = true;
-                        settings.SetAppCacheEnabled(true);
-                        settings.JavaScriptCanOpenWindowsAutomatically = true;
+                        micrositeWebView.ScrollBarStyle = ScrollbarStyles.InsideOverlay;
+                        micrositeWebView.Settings.JavaScriptEnabled = true;
+                        micrositeWebView.Settings.SetRenderPriority(WebSettings.RenderPriority.High);
+                        micrositeWebView.Settings.CacheMode = CacheModes.CacheElseNetwork;
+                        micrositeWebView.Settings.SetAppCacheEnabled(true);
+                        micrositeWebView.Settings.DomStorageEnabled = true;
+                        micrositeWebView.Settings.UseWideViewPort = true;
+                        micrositeWebView.Settings.SetEnableSmoothTransition(true);
+                        micrositeWebView.Settings.SetPluginState(WebSettings.PluginState.On);
+
+                        if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+                        {
+                            micrositeWebView.Settings.MixedContentMode = 0;
+                            micrositeWebView.SetLayerType(LayerType.Hardware, null);
+                        }
+                        else if (Build.VERSION.SdkInt >= BuildVersionCodes.Kitkat)
+                        {
+                            micrositeWebView.SetLayerType(LayerType.Hardware, null);
+                        }
+                        else
+                        {
+                            micrositeWebView.SetLayerType(LayerType.Software, null);
+                        }
+
+                        micrositeWebView.SetWebChromeClient(new WebChromeClient());
                         micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
+
                         micrositeWebView.LoadUrl(ssoURL);
                     });
                 });

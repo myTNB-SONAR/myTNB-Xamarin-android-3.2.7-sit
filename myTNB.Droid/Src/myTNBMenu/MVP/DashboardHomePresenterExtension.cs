@@ -8,7 +8,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
     {
         internal static void GetBillEligibilityCheck(this DashboardHomePresenter presenter, string accountNumber)
         {
-            if (BillRedesignUtility.Instance.IsAccountEligible && BillRedesignUtility.Instance.IsCAEligible(accountNumber))
+            if (BillRedesignUtility.Instance.IsCAEligible(accountNumber))
             {
                 if (CAIsInTheList(accountNumber, out CustomerBillingAccount account))
                 {
@@ -25,6 +25,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     presenter.mView.NavigateToAddAccount();
                 }
+            }
+            else if (!CAIsInTheList(accountNumber, out CustomerBillingAccount account))
+            {
+                presenter.mView.NavigateToAddAccount();
             }
         }
 
