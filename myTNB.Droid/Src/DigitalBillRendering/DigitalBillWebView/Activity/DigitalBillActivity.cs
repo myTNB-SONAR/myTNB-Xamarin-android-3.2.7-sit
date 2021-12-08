@@ -245,18 +245,18 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     RunOnUiThread(() =>
                     {
                         micrositeWebView.ScrollBarStyle = ScrollbarStyles.InsideOverlay;
-                        WebSettings settings = micrositeWebView.Settings;
-                        settings.JavaScriptEnabled = true;
-                        settings.SetRenderPriority(WebSettings.RenderPriority.High);
-                        settings.CacheMode = CacheModes.CacheElseNetwork;
-                        settings.SetAppCacheEnabled(true);
-                        settings.DomStorageEnabled = true;
-                        settings.UseWideViewPort = true;
-                        settings.SetEnableSmoothTransition(true);
+                        micrositeWebView.Settings.JavaScriptEnabled = true;
+                        micrositeWebView.Settings.SetRenderPriority(WebSettings.RenderPriority.High);
+                        micrositeWebView.Settings.CacheMode = CacheModes.CacheElseNetwork;
+                        micrositeWebView.Settings.SetAppCacheEnabled(true);
+                        micrositeWebView.Settings.DomStorageEnabled = true;
+                        micrositeWebView.Settings.UseWideViewPort = true;
+                        micrositeWebView.Settings.SetEnableSmoothTransition(true);
+                        micrositeWebView.Settings.SetPluginState(WebSettings.PluginState.On);
 
                         if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
                         {
-                            settings.MixedContentMode = 0;
+                            micrositeWebView.Settings.MixedContentMode = 0;
                             micrositeWebView.SetLayerType(LayerType.Hardware, null);
                         }
                         else if (Build.VERSION.SdkInt >= BuildVersionCodes.Kitkat)
@@ -269,7 +269,6 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                         }
 
                         micrositeWebView.SetWebChromeClient(new WebChromeClient());
-                        micrositeWebView.Settings.SetPluginState(WebSettings.PluginState.On);
                         micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
 
                         micrositeWebView.LoadUrl(ssoURL);
