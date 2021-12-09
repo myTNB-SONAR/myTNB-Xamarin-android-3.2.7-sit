@@ -340,6 +340,7 @@ namespace myTNB_Android.Src.Utils
 
         //App Update
         public const string BCRM_NOTIFICATION_APP_UPDATE = "20006";
+        public const string BCRM_NOTIFICATION_APP_UPDATE_2 = "20007";
 
         //Bill Estimation
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";

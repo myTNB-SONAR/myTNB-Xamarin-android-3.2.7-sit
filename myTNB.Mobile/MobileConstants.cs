@@ -27,7 +27,7 @@ namespace myTNB.Mobile
         public const string SitecoreUsername = "api_user";
         public const string SitecorePassword = "mytnbapiuser!3$@2";
         internal const string ApiUrlPath = "v6/mytnbappws.asmx";
-        internal const int MaxAccountList = 50;
+        internal const int MaxAccountList = 30;
 
         private const string AWS_DEV1 = "https://stagingapi.mytnb.com.my/asmx-97";
         private const string AWS_DEV2 = "https://stagingapi.mytnb.com.my/asmx-98";

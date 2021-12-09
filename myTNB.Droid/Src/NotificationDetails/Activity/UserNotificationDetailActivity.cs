@@ -249,7 +249,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     notificationDetailMessage.TextFormatted = GetFormattedText(detailModel.message);
 
                     string dynatraceTag = string.Empty;
-                    if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_APP_UPDATE)
+                    if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_APP_UPDATE ||
+                        notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_APP_UPDATE_2)
                     {
                         dynatraceTag = myTNB.Mobile.DynatraceConstants.BR.CTAs.Notifications.Update;
                     }

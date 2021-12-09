@@ -256,8 +256,7 @@
 
                 public const string AppLaunch = "/sitecore/content/myTNBapp/Contents/App Launch Image";
 
-                //public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
-                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help Test";
+                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
 
                 public const string ApplySSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR Apply";
 
