@@ -220,7 +220,7 @@
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
     "receivedExtra": "terima lebih",
     "applicationStatus": "Status<br>Permohonan",
-    "dbrReminderPopupTitle": "Jom paperless dengan Bil myTNB hari ini!",
+    "dbrReminderPopupTitle": "Jom Paperless dengan bil anda",
     "dbrReminderPopupMessage": "Jadilah orang pertama yang memberi impak dengan memilih kaedah paperless untuk bil anda yang seterusnya! Dengan myTNB, anda mempunyai cara yang lebih baik dan mesra alam untuk menerima bil secara digital melalui Aplikasi & Portal myTNB.",
     "dbrReminderPopupStartNow": "Ketahui Lanjut",
     //EnergyBudget
@@ -2636,7 +2636,7 @@
     "dbrInfoDescription0": "Leret ke kiri untuk mengetahui kelebihan dengan memilih kaedah 'paperless' hari ini!",
     "dbrInfoDescription1": "Kurangkan pembaziran kertas anda dan jadilah yang pertama memberi impak di dalam usaha kolektif kita semua ke arah masa depan yang lebih mesra alam.",
     "dbrInfoDescription2": "Alami penghantaran bil elektrik bulanan anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB, bila-bila masa dan di mana sahaja.",
-    "dbrInfoDescription2V2": "Alami penghantaran bil terbaharu anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB. Ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppBrowser=http://ee.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">sini</a>.",
+    "dbrInfoDescription2V2": "Alami penghantaran bil terbaharu anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB. Ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">sini</a>.",
     "dbrInfoDescription3": "Dapatkan bil anda dengan terjamin di myTNB. Tidak perlu risau lagi bil anda terdedah, dicuri atau tercicir.",
     "anotherDeliveryMethod": "Bagaimana jika saya mahu cara penerimaan bil lain?",
     "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "Bagaimana jika saya mahu cara penerimaan bil lain?",
@@ -2773,7 +2773,7 @@
       },
       {
         "Title": "",
-        "Description": "Semak bil anda di halaman bil atau ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppBrowser=http://ee.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">sini</a>.",
+        "Description": "Semak bil anda di halaman bil atau ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">sini</a>.",
         "Image1": "",
         "Image2": "",
         "IsZoomable": false,
