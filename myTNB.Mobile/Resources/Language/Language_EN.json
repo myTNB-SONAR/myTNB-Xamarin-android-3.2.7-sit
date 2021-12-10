@@ -2693,7 +2693,7 @@
     "IsGSLRebateEnabled": true,
     "AccountStatementTimeout": 5000,
     "ShouldShowAccountStatementToNonOwner": false,
-    "MaxAccountList": 50
+    "MaxAccountList": 30
   },
   "StatementPeriod": {
     "title": "Account Statement",
