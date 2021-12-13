@@ -346,7 +346,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        internal static void UpdateNCTutorialShown(ISharedPreferences mSharedPref)       //for update userID Email Verified Dynamic link
+        internal static void UpdateNCTutorialShown(ISharedPreferences mSharedPref)       //for update flag overlay
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();
             editor.Remove("hasHomeTutorialShown");

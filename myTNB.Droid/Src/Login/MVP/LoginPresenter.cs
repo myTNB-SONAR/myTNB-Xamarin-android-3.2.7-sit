@@ -469,7 +469,7 @@ namespace myTNB_Android.Src.Login.MVP
                                 string dt = JsonConvert.SerializeObject(baseRequest);
                                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
                                 //if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
-                                if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null)
+                                if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null && customerAccountListResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                                 {
                                     //if (customerAccountListResponse.GetData().Count > 0)
                                     if (customerAccountListResponse.customerAccountData.Count > 0)
@@ -553,6 +553,7 @@ namespace myTNB_Android.Src.Login.MVP
                                             AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
                                         }
 
+                                        GetNCAccountList();
                                         this.mView.ShowDashboard();
                                     }
                                     else
@@ -742,7 +743,75 @@ namespace myTNB_Android.Src.Login.MVP
             }
         }
 
+        public void GetNCAccountList()
+        {
+            try
+            {
+                //bool ncAccounts = UserSessions.GetNCList(mSharedPref);
+                string ncAccounts = UserSessions.GetNCList(mSharedPref);
+                List<CustomerBillingAccount> listNC = CustomerBillingAccount.NCAccountList();
 
+                if (listNC != null)
+                {
+                    if (listNC.Count > 0)
+                    {
+                        var OldNCAccDate = ncAccounts;
+
+                        if (OldNCAccDate != null)
+                        {
+                            DateTime OldNCAccDateTime = Convert.ToDateTime(OldNCAccDate); //old datetime
+                            DateTime NewNCAccDateTime;
+
+                            int countNewNCAdded = 0;
+                            for (int x = 0; x < listNC.Count; x++)
+                            {
+                                NewNCAccDateTime = Convert.ToDateTime(listNC[x].CreatedDate);
+
+                                if (OldNCAccDateTime == NewNCAccDateTime)
+                                {
+                                    //same date
+
+                                }
+                                if (OldNCAccDateTime < NewNCAccDateTime)
+                                {
+                                    countNewNCAdded++;
+                                }
+                            }
+
+                            if (countNewNCAdded > 0)
+                            {
+                                UserSessions.UpdateNCFlag(mSharedPref);
+                                UserSessions.SetNCList(mSharedPref, listNC[0].CreatedDate);
+                                UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //overlay highlight flag
+                                //trigger home ovelay tutorial
+                                UserSessions.UpdateNCTutorialShown(mSharedPref);
+
+                            }
+
+                        }
+                        else
+                        {
+                            UserSessions.SetNCList(mSharedPref, listNC[0].CreatedDate); //save date kalau kosong
+
+                            UserSessions.UpdateNCFlag(mSharedPref);
+                            UserSessions.SaveNCFlag(mSharedPref, 0);
+
+                            //pannggil overlay
+                            UserSessions.UpdateNCTutorialShown(mSharedPref);
+
+                        }
+
+                    }
+
+
+                }
+
+            }
+            catch (System.Exception exe)
+            {
+                Utility.LoggingNonFatalError(exe);
+            }
+        }
 
         public void NavigateToDashboard()
         {

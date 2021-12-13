@@ -3731,79 +3731,17 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
         ////yana
         private void BtnUpdate_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    Intent nextIntent = new Intent(this.mContext, typeof(MyAccountActivity));
-            //    this.mContext.StartActivityForResult(nextIntent, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Utility.LoggingNonFatalError(ex);
-            //}
-
-            Intent nextIntent = new Intent(this.mContext, typeof(MyAccountActivity));
-            this.mContext.StartActivityForResult(nextIntent, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
-
-            if (this.mFragment != null)
+            try
             {
-                if (this.mFragment is HomeMenuFragment)
-                {
-                    ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
-                    UserSessions.DoHomeTutorialShown(this.mPref);
-                    ((HomeMenuFragment)this.mFragment).RestartHomeMenu();
-                }
-                else if (this.mFragment is ItemisedBillingMenuFragment)
-                {
-                    ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                    if (list.Count == 2)
-                    {
-                        UserSessions.DoItemizedBillingRETutorialShown(this.mPref);
-                    }
-                    else
-                    {
-                        UserSessions.DoItemizedBillingNMSMTutorialShown(this.mPref);
-                    }
-                }
-                else if (this.mFragment is DashboardChartFragment)
-                {
-                    ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
-                    ((DashboardChartFragment)this.mFragment).ShowBottomSheet();
-                    UserSessions.DoSMRDashboardTutorialShown(this.mPref);
-                }
-                else if (this.mFragment is RewardMenuFragment)
-                {
-                    ((RewardMenuFragment)this.mFragment).StopScrolling();
-                    UserSessions.DoRewardsShown(this.mPref);
-                }
-                else if (this.mFragment is WhatsNewMenuFragment)
-                {
-                    ((WhatsNewMenuFragment)this.mFragment).StopScrolling();
-                    UserSessions.DoWhatsNewShown(this.mPref);
-                }
+                Intent nextIntent = new Intent(this.mContext, typeof(MyAccountActivity));
+                nextIntent.PutExtra("fromDashboard", true);
+                this.mContext.StartActivityForResult(nextIntent, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
+                UserSessions.DoHomeTutorialShown(this.mPref);
             }
-            else
+            catch (Exception ex)
             {
-                if (this.mContext is BillingDetailsActivity)
-                {
-                    UserSessions.DoItemizedBillingDetailTutorialShown(this.mPref);
-                }
-                else if (this.mContext is SSMRMeterHistoryActivity)
-                {
-                    ((SSMRMeterHistoryActivity)this.mContext).MeterHistoryCustomScrolling(0);
-                    UserSessions.DoSMRMeterHistoryTutorialShown(this.mPref);
-                }
-                else if (this.mContext is SubmitMeterReadingActivity)
-                {
-                    ((SubmitMeterReadingActivity)mContext).SubmitMeterCustomScrolling(0);
-                    UserSessions.DoSMRSubmitMeterTutorialShown(this.mPref);
-                }
-                else if (this.mContext is RewardDetailActivity)
-                {
-                    UserSessions.DoRewardsDetailShown(this.mPref);
-                }
+                Utility.LoggingNonFatalError(ex);
             }
-
-
         }
 
 

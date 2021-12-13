@@ -493,8 +493,8 @@ namespace myTNB_Android.Src.ManageUser.Activity
                         .SetTitle(string.Format(Utility.GetLocalizedLabel("ManageAccount", "manageUserBackTitle"), nickname))
                         .SetMessage(string.Format(Utility.GetLocalizedLabel("ManageAccount", "manageUserBackMessage"), nickname))
                         .SetContentGravity(GravityFlags.Left)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
-                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
+                        .SetCTALabel(Utility.GetLocalizedLabel("ManageAccount", "btnStay"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ManageAccount", "btnLeave"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();

@@ -463,6 +463,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             UserEntity.UpdatePhoneNumber(newPhone);
                         }
                         UserSessions.SavePhoneVerified(mSharedPref, true);
+                        GetNCAccountList();
                         this.mView.ShowDashboardMyAccount();
                     }
                     else
@@ -505,6 +506,76 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     this.mView.ShowRetryLoginUnknownException(e.StackTrace);
                 }
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void GetNCAccountList()
+        {
+            try
+            {
+                //bool ncAccounts = UserSessions.GetNCList(mSharedPref);
+                string ncAccounts = UserSessions.GetNCList(mSharedPref);
+                List<CustomerBillingAccount> listNC = CustomerBillingAccount.NCAccountList();
+
+                if (listNC != null)
+                {
+                    if (listNC.Count > 0)
+                    {
+                        var OldNCAccDate = ncAccounts;
+
+                        if (OldNCAccDate != null)
+                        {
+                            DateTime OldNCAccDateTime = Convert.ToDateTime(OldNCAccDate); //old datetime
+                            DateTime NewNCAccDateTime;
+
+                            int countNewNCAdded = 0;
+                            for (int x = 0; x < listNC.Count; x++)
+                            {
+                                NewNCAccDateTime = Convert.ToDateTime(listNC[x].CreatedDate);
+
+                                if (OldNCAccDateTime == NewNCAccDateTime)
+                                {
+                                    //same date
+
+                                }
+                                if (OldNCAccDateTime < NewNCAccDateTime)
+                                {
+                                    countNewNCAdded++;
+                                }
+                            }
+
+                            if (countNewNCAdded > 0)
+                            {
+                                UserSessions.UpdateNCFlag(mSharedPref);
+                                UserSessions.SetNCList(mSharedPref, listNC[0].CreatedDate);
+                                UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //overlay highlight flag
+                                //trigger home ovelay tutorial
+                                UserSessions.UpdateNCTutorialShown(mSharedPref);
+
+                            }
+
+                        }
+                        else
+                        {
+                            UserSessions.SetNCList(mSharedPref, listNC[0].CreatedDate); //save date kalau kosong
+
+                            UserSessions.UpdateNCFlag(mSharedPref);
+                            UserSessions.SaveNCFlag(mSharedPref, 0);
+
+                            //pannggil overlay
+                            UserSessions.UpdateNCTutorialShown(mSharedPref);
+
+                        }
+
+                    }
+
+
+                }
+
+            }
+            catch (System.Exception exe)
+            {
+                Utility.LoggingNonFatalError(exe);
             }
         }
 

@@ -979,7 +979,9 @@
     "manageUserBackTitle": "Adakah anda pasti mahu meninggalkan halaman ini tanpa menyimpan perubahan yang telah anda lakukan terhadap akses {0}?",
     "manageUserBackMessage": "Perubahan terhadap akses {0} tidak akan disimpan jika anda memilih untuk meninggalkan halaman ini dan akses pengguna akan kekal seperti biasa.",
     "manageUserAccess": "Menguruskan Akses Pengguna",
-    "manageAutopay": "BM_Manage Autopay"
+    "manageAutopay": "BM_Manage Autopay",
+    "btnStay": "Tidak",
+    "btnLeave": "Ya"
 
   },
   "Onboarding": {

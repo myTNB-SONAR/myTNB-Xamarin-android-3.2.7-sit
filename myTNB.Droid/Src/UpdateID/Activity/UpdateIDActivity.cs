@@ -533,18 +533,6 @@ namespace myTNB_Android.Src.UpdateID.Activity
                     {
                         ShowInvalidIdentificationError();
                         DisableRegisterButton();
-                        if (Idtype.Equals("1"))
-                        {
-                            ShowFullICError();
-                        }
-                        else if (Idtype.Equals("2"))
-                        {
-                            ShowFullArmyIdError();
-                        }
-                        else
-                        {
-                            ShowFullPassportError();
-                        }
                     }
                 }
             }

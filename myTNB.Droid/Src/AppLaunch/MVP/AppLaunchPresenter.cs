@@ -493,7 +493,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(baseRequest);
                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
-                if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null)
+                if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null && customerAccountListResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     //if (customerAccountListResponse.GetData().Count > 0)
                     if (customerAccountListResponse.customerAccountData.Count == 0 || customerAccountListResponse.customerAccountData.Count > 0)
@@ -621,7 +621,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(baseRequest);
                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
-                if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null)
+                if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null && customerAccountListResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     //if (customerAccountListResponse.GetData().Count > 0)
                     if (customerAccountListResponse.customerAccountData.Count == 0 || customerAccountListResponse.customerAccountData.Count > 0)

@@ -762,18 +762,18 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     {
                         ShowInvalidIdentificationError();
                         DisableRegisterButton();
-                        if (Idtype.Equals("1"))
-                        {
-                           ShowFullICError();
-                        }
-                        else if (Idtype.Equals("2"))
-                        {
-                          ShowFullArmyIdError();
-                        }
-                        else
-                        {
-                          ShowFullPassportError();
-                        }
+                        //if (Idtype.Equals("1"))
+                        //{
+                        //   ShowFullICError();
+                        //}
+                        //else if (Idtype.Equals("2"))
+                        //{
+                        //  ShowFullArmyIdError();
+                        //}
+                        //else
+                        //{
+                        //  ShowFullPassportError();
+                        //}
                     }
                 }
                 this.SetIsClicked(false);
@@ -1130,7 +1130,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         //    if (!textInputLayoutFullName.ErrorEnabled)
         //        textInputLayoutFullName.ErrorEnabled = true;
         //}
-
+       
         public void ShowFullICError()
         {
             //ClearICHint();
