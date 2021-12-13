@@ -27,7 +27,7 @@ namespace myTNB.Mobile
         public const string SitecoreUsername = "api_user";
         public const string SitecorePassword = "mytnbapiuser!3$@2";
         internal const string ApiUrlPath = "v6/mytnbappws.asmx";
-        internal const int MaxAccountList = 50;
+        internal const int MaxAccountList = 30;
 
         private const string AWS_DEV1 = "https://stagingapi.mytnb.com.my/asmx-97";
         private const string AWS_DEV2 = "https://stagingapi.mytnb.com.my/asmx-98";
@@ -38,9 +38,9 @@ namespace myTNB.Mobile
         private const string DEV3 = "http://10.215.128.191:97";
 
         //ASMX
-        //private const string SIT = "https://mobiletestingws.tnb.com.my";
+        private const string SIT = "https://mobiletestingws.tnb.com.my";
         //AWS ASMX Copy
-        private const string SIT = "https://stagingapi.mytnb.com.my/asmx-97";
+        //private const string SIT = "https://stagingapi.mytnb.com.my/asmx-97";
         //AWS OVIS
         //private const string SIT = "http://mytnbwsovisstg.ap.ngrok.io";
         private const string PROD = "https://mytnbapp.tnb.com.my";
@@ -150,6 +150,7 @@ namespace myTNB.Mobile
             public const string APPLICATIONSTATUS = "APPLICATIONSTATUS";
             public const string APP_UPDATE = "APPUPDATE";
             public const string ACCOUNT_STATEMENT = "ACCOUNTSTATEMENT";
+            public const string NEW_BILL_DESIGN = "NEWBILLDESIGN";
         }
 
         public struct OSType

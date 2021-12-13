@@ -99,8 +99,8 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 mPresenter = new DigitalBillPresenter(this);
 
                 SetToolBarTitle(GetLabelByLanguage(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
-                    ? "goPaperless"
-                    : "updateBillDelivery"));
+                    ? LanguageConstants.DBRWebview.GO_PAPERLESS
+                    : LanguageConstants.DBRWebview.UPDATE_BILL_DELIVERY));
                 OnTag();
 
                 micrositeWebView = FindViewById<WebView>(Resource.Id.tncWebView);
@@ -178,14 +178,13 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             MyTNBAppToolTipBuilder exitTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
                 .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
-                .SetTitle(Utility.GetLocalizedLabel("DBRWebview", "confirmPopupTitle"))
-                .SetMessage(Utility.GetLocalizedLabel("DBRWebview", "confirmPopupMessage"))
-                .SetCTALabel(Utility.GetLocalizedLabel("DBRWebview", "nevermind"))
-                .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DBRWebview", "confirm"))
+                .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DBR_WEBVIEW, LanguageConstants.DBRWebview.CONFIRM_TITLE))
+                .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DBR_WEBVIEW, LanguageConstants.DBRWebview.CONFIRM_MSG))
+                .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DBR_WEBVIEW, LanguageConstants.DBRWebview.NO))
+                .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DBR_WEBVIEW, LanguageConstants.DBRWebview.YES))
                 .SetSecondaryCTAaction(() =>
                 {
                     OnTagCloseDynatrace();
-                    Log.Debug("[DEBUG]", "ShouldBackToHome: " + ShouldBackToHome);
                     if (ShouldBackToHome)
                     {
                         OnShowDashboard();
@@ -245,14 +244,33 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     string ssoURL = string.Format(AWSConstants.Domains.SSO, signature);
                     RunOnUiThread(() =>
                     {
-                        WebSettings settings = micrositeWebView.Settings;
-                        settings.JavaScriptEnabled = true;
-                        settings.LoadWithOverviewMode = true;
-                        settings.UseWideViewPort = true;
-                        settings.DomStorageEnabled = true;
-                        settings.SetAppCacheEnabled(true);
-                        settings.JavaScriptCanOpenWindowsAutomatically = true;
+                        micrositeWebView.ScrollBarStyle = ScrollbarStyles.InsideOverlay;
+                        micrositeWebView.Settings.JavaScriptEnabled = true;
+                        micrositeWebView.Settings.SetRenderPriority(WebSettings.RenderPriority.High);
+                        micrositeWebView.Settings.CacheMode = CacheModes.CacheElseNetwork;
+                        micrositeWebView.Settings.SetAppCacheEnabled(true);
+                        micrositeWebView.Settings.DomStorageEnabled = true;
+                        micrositeWebView.Settings.UseWideViewPort = true;
+                        micrositeWebView.Settings.SetEnableSmoothTransition(true);
+                        micrositeWebView.Settings.SetPluginState(WebSettings.PluginState.On);
+
+                        if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+                        {
+                            micrositeWebView.Settings.MixedContentMode = 0;
+                            micrositeWebView.SetLayerType(LayerType.Hardware, null);
+                        }
+                        else if (Build.VERSION.SdkInt >= BuildVersionCodes.Kitkat)
+                        {
+                            micrositeWebView.SetLayerType(LayerType.Hardware, null);
+                        }
+                        else
+                        {
+                            micrositeWebView.SetLayerType(LayerType.Software, null);
+                        }
+
+                        micrositeWebView.SetWebChromeClient(new WebChromeClient());
                         micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
+
                         micrositeWebView.LoadUrl(ssoURL);
                     });
                 });

@@ -305,7 +305,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
                 intent.PutExtra("accountNumber", mSelectedAccountData.AccountNum);
-                intent.PutExtra("isOwner", _isOwner);
                 StartActivity(intent);
             }
         }
@@ -322,7 +321,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 intent.PutExtra("PENDING_PAYMENT", isPendingPayment);
                 intent.PutExtra("IS_VIEW_BILL_DISABLE", isViewBillDisable);
                 intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billRenderingResponse));
-                intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
 
                 StartActivity(intent);
             }
@@ -608,7 +606,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                         AccountData dbrAccount = selectedAccount;
 
-                        if (DBRUtility.Instance.IsAccountEligible)
+                        if (DBRUtility.Instance.IsAccountEligible && DBRUtility.Instance.IsCAEligible(dbrAccount.AccountNum))
                         {
                             if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
                             {
@@ -617,9 +615,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             }
                             billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum
                                 , AccessTokenCache.Instance.GetAccessToken(this.Activity));
-                            _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
-                                ? selectedAccount.IsOwner
-                                : DBRUtility.Instance.IsCAEligible(dbrAccount.AccountNum);
+                            _isOwner = selectedAccount.IsOwner && DBRUtility.Instance.IsCAEligible(dbrAccount.AccountNum);
 
                             if (billRenderingResponse != null
                                 && billRenderingResponse.StatusDetail != null

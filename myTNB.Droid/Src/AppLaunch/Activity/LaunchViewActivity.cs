@@ -145,7 +145,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
                         }
                         else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE)
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN)
                         {
                             if (UserEntity.IsCurrentlyActive())
                             {
@@ -431,7 +432,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                         intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
                         intent.PutExtra("accountNumber", UserSessions.DBROwnerNotificationAccountNumber);
-                        intent.PutExtra("isOwner", true);
                         StartActivity(intent);
                     }
                     else

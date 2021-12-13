@@ -296,6 +296,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             imageResourceBanner = Resource.Drawable.notification_generic_banner;
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_APP_UPDATE:
+                    case Constants.BCRM_NOTIFICATION_APP_UPDATE_2:
+                        {
+                            imageResourceBanner = Resource.Drawable.Banner_Notification_App_Update;
+                            break;
+                        }
                     default:
                         imageResourceBanner = Resource.Drawable.notification_generic_banner;
                         break;

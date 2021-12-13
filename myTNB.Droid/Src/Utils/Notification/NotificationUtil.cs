@@ -44,6 +44,9 @@ namespace myTNB_Android.Src.Utils.Notification
                     case MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT:
                         Type = Type.AccountStatement;
                         break;
+                    case MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN:
+                        Type = Type.NewBillDesign;
+                        break;
                     default:
                         break;
                 }

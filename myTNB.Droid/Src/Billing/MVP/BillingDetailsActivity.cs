@@ -133,8 +133,6 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.bill_paperless_icon)]
         ImageView bill_paperless_icon;
 
-        bool _isOwner;
-
         GetBillRenderingResponse billRenderingResponse;
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
@@ -420,13 +418,9 @@ namespace myTNB_Android.Src.Billing.MVP
             if (!this.GetIsClicked())
             {
                 SetDynatraceCTATags();
-                _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
-                    ? selectedAccountData.IsOwner
-                    : DBRUtility.Instance.IsCAEligible(selectedAccountData.AccountNum);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
                 intent.PutExtra("accountNumber", selectedAccountData.AccountNum);
-                intent.PutExtra("isOwner", _isOwner);
                 StartActivity(intent);
             }
         }

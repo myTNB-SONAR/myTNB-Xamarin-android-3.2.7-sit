@@ -105,9 +105,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                     }
                     position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
-                    _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
-                        ? accountData.IsOwner
-                        : DBRUtility.Instance.IsCAEligible(accountData.AccountNum);
+                    _isOwner = accountData.IsOwner && DBRUtility.Instance.IsCAEligible(accountData.AccountNum);
                 }
 
                 progress = new MaterialDialog.Builder(this)
@@ -156,7 +154,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         {
             DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.ManageElectricityAccount.Manage);
             Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
-            intent.PutExtra("isOwner", _isOwner);
             intent.PutExtra("accountNumber", accountData.AccountNum);
             intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(_billRenderingResponse));
             StartActivity(intent);
@@ -457,7 +454,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             try
             {
                 ShowProgressDialog();
-                if (DBRUtility.Instance.IsAccountEligible)
+                if (DBRUtility.Instance.IsAccountEligible && DBRUtility.Instance.IsCAEligible(selectedAccount.AccountNum))
                 {
                     GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                     AccountData dbrAccount = selectedAccount;

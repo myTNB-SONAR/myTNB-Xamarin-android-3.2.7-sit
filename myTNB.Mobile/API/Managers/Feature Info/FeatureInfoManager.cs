@@ -66,7 +66,6 @@ namespace myTNB.Mobile
 
                 if (EBUtility.Instance.IsAccountEligible)
                 {
-
                     List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
 
                     //Get AWS EB ca
@@ -100,7 +99,40 @@ namespace myTNB.Mobile
                         ContractAccount = eligibleCA
                     });
                 }
-
+                else if (response != null
+                    && response.StatusDetail != null
+                    && response.StatusDetail.IsSuccess
+                    && response.Content != null)
+                {
+                    Type content = response.Content.GetType();
+                    TypeOfFeature.ToList().ForEach(features =>
+                    {
+                        //List of CA that are eligible
+                        List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
+                        if (content != null && content.GetProperty(features.ToString()) is PropertyInfo props && props != null)
+                        {
+                            object obj = props.GetValue(response.Content, null);
+                            if (obj != null)
+                            {
+                                BaseCAListModel tempData = JsonConvert.DeserializeObject<BaseCAListModel>(JsonConvert.SerializeObject(obj));
+                                foreach (ContractAccountsModel i in tempData.ContractAccounts)
+                                {
+                                    eligibleCA.Add(new FeaturesContractAccount
+                                    {
+                                        contractAccount = i.ContractAccount,
+                                        acted = i.Acted,
+                                        modifiedDate = i.ModifiedDate.ToString()
+                                    });
+                                }
+                                ListOfFeature.Add(new FeatureInfo
+                                {
+                                    FeatureName = features.ToString(),
+                                    ContractAccount = eligibleCA
+                                });
+                            }
+                        }
+                    });
+                }
                 Data = ListOfFeature;
             }
             catch (Exception e)

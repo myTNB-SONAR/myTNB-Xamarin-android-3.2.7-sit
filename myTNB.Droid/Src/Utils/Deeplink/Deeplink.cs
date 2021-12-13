@@ -1,5 +1,4 @@
-﻿using System;
-namespace myTNB_Android.Src.Utils.Deeplink
+﻿namespace myTNB_Android.Src.Utils.Deeplink
 {
     public class Deeplink
     {
@@ -24,6 +23,7 @@ namespace myTNB_Android.Src.Utils.Deeplink
             OvervoltageClaimDetails,
             QR,
             GetBill,
+            ManageBillDelivery,
             None
         }
     }

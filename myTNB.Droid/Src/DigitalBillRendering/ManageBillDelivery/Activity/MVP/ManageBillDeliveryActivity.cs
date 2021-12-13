@@ -157,10 +157,10 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             btnUpdateDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "updateBillDeliveryMethodCTA");
             btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "goPaperlessCTA");
             txtSelectedAccountTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "selectAccount");
-            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill, deliveringTitle, txtTitle);
+            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill, btnUpdateDigitalBill, deliveringTitle, txtTitle);
             TextViewUtils.SetMuseoSans300Typeface(deliveringAddress, TenantDeliveringAddress, txtMessage, txtSelectedAccountTitle, txt_ca_name);
             TextViewUtils.SetTextSize12(digitalBillLabel, txtSelectedAccountTitle);
-            TextViewUtils.SetTextSize16(btnStartDigitalBill, deliveringTitle, txtTitle, txt_ca_name);
+            TextViewUtils.SetTextSize16(btnStartDigitalBill, btnUpdateDigitalBill, deliveringTitle, txtTitle, txt_ca_name);
             TextViewUtils.SetTextSize14(deliveringAddress, TenantDeliveringAddress, txtMessage);
 
             if (extras != null)
@@ -175,13 +175,12 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         mSelectedAccountData = AccountData.Copy(allAccountList[accountIndex], true);
                         txt_ca_name.Text = mSelectedAccountData.AccountNickName + " - " + mSelectedAccountData.AccountNum;
                         selectedAccountNumber = mSelectedAccountData.AccountNum;
+
+                        CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(selectedAccountNumber);
+                        _isOwner = account.isOwned && DBRUtility.Instance.IsCAEligible(selectedAccountNumber);
                     }
                     AddViewPager();
                     UpdateAccountListIndicator();
-                }
-                if (extras.ContainsKey("isOwner"))
-                {
-                    _isOwner = extras.GetBoolean("isOwner");
                 }
                 if (extras.ContainsKey("billRenderingResponse"))
                 {
@@ -906,7 +905,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         && _billRenderingResponse.StatusDetail.IsSuccess
                         && _billRenderingResponse.Content != null)
                     {
-                        _isOwner = DBRUtility.Instance.IsCAEligible(selectedAccountNumber);
+                        CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(selectedAccountNumber);
+                        _isOwner = account.isOwned && DBRUtility.Instance.IsCAEligible(selectedAccountNumber);
                         _accountNumber = selectedAccountNumber;
                         SetToolBarTitle(GetLabelByLanguage(_isOwner ? "title" : "dbrViewBillDelivery"));
                         GetDeliveryDisplay(_billRenderingResponse);

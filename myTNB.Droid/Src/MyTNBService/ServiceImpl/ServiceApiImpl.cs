@@ -76,17 +76,6 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
-        /// Call GetAccounts with timeout set.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        public Task<CustomerAccountListResponse> GetCustomerAccountList([Body] Request.BaseRequest request, CancellationToken token)
-        {
-            return api.GetCustomerAccountList<CustomerAccountListResponse>(request, token);
-        }
-
-        /// <summary>
         /// Call GetAccounts with default timeout.
         /// </summary>
         /// <param name = "request" ></ param >

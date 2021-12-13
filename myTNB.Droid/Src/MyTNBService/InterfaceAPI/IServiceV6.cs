@@ -17,7 +17,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetAppLaunchMasterDataAWS<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetAccountsV2")]
+        [Post("/v6/mytnbappws.asmx/GetAccountsV3")]
         Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
@@ -248,7 +248,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         //Task<T> AddMultipleAccounts<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/AddAccountsV2")]
+        [Post("/v6/mytnbappws.asmx/AddAccountsV3")]
         Task<T> AddMultipleAccounts<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);           //cep new api //wan
 
         [Headers("Content-Type:application/json; charset=utf-8")]

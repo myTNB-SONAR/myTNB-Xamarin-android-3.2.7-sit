@@ -313,7 +313,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
 
                                         if (hasNotification && isLoggedInEmail && (NotificationUtil.Instance.Type == NotificationType.AppUpdate ||
-                                            NotificationUtil.Instance.Type == NotificationType.AccountStatement))
+                                            NotificationUtil.Instance.Type == NotificationType.AccountStatement ||
+                                            NotificationUtil.Instance.Type == NotificationType.NewBillDesign))
                                         {
                                             GetAccountAWS();
                                         }
