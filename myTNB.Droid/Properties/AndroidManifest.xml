@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mytnb.mytnb" android:versionName="v2.5.0" android:installLocation="internalOnly" android:versionCode="393">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mytnb.mytnb" android:versionName="v2.5.0" android:installLocation="internalOnly" android:versionCode="394">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="30" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.CAMERA" />
