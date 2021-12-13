@@ -2865,5 +2865,12 @@
         ]
       }
     ]
+  },
+  "ServiceDistruptionComm": {
+    "title": "Stay Informed with Service Disruption Notifications!",
+    "subTitle1": "Starting now, you'll be able to receive Service Disruption notifications and restoration updates which allow you to stay up-to-date when you encounter a power outage.",
+    "subTitle2": "These notifications are only applicable to TNB electricity services and not any power-trips that may be happening within your premises.",
+    "note": "*Service disruption feature is currently only available in selected areas but we will be expanding to more areas soon!",
+    "buttonCTA": "Okay, Got It!"
   }
 }

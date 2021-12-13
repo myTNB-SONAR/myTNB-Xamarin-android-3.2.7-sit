@@ -636,7 +636,7 @@
     "feedback2SuccessTitle": "Terima kasih atas maklumbalas anda",
     "feedback2SuccessButton": "OK",
     "viewAccountStatement": "Semak Penyata Akaun",
-    "updateNow": "MS_Update Now"
+    "updateNow": "Kemaskini Sekarang"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -2865,5 +2865,12 @@
         ]
       }
     ]
+  },
+  "ServiceDistruptionComm": {
+    "title": "Dapatkan  Notifikasi Terkini dengan Ciri Gangguan Perkhidmatan!",
+    "subTitle1": "Anda kini boleh menerima notifikasi terkini sekiranya terdapat gangguan bekalan dan status pemulihan menerusi Ciri Gangguan Perkhidmatan.",
+    "subTitle2": "Notifikasi ini hanya tersedia untuk perkhidmatan elektrik TNB dan tidak termasuk mana-mana bekalan terputus yang terjadi di dalam premis.",
+    "note": "*Ciri gangguan perkhidmatan hanya disediakan di kawasan yang terpilih dan akan dikembangkan ke kawasan yang lain tidak lama lagi!",
+    "buttonCTA": "Baik, Faham!"
   }
 }
