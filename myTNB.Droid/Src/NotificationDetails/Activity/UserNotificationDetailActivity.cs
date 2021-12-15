@@ -248,6 +248,20 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 {
                     SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "EnergyBudgetTitle"));
                 }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE
+                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS
+                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION)
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "serviceDistruption"));
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW)
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "notification"));
+                }
+                else if (userNotificationData == null)
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "notification"));
+                }
 
                 if (pushFromDashboard)
                 {
@@ -302,6 +316,19 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                             .SetMessage(detailModel.message)
                             .Build(dynatraceTag ?? string.Empty)
                             .GetProcessedTextView();
+
+                        if (this.Resources.DisplayMetrics.WidthPixels <= 1200)
+                        {
+                            TextView textView = FindViewById<TextView>(Resource.Id.notificationDetailMessage);
+                            int layWidth = this.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.07f) - GetDeviceHorizontalScaleInPixel(0.07f);
+                            LinearLayout.LayoutParams paramsss = new LinearLayout.LayoutParams(layWidth, ViewGroup.LayoutParams.MatchParent);
+                            textView.LayoutParameters = paramsss;
+                            ViewGroup.MarginLayoutParams txtBody = (ViewGroup.MarginLayoutParams)notificationDetailMessage.LayoutParameters;
+                            txtBody.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+                            txtBody.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+                            notificationDetailMessage.LayoutParameters = txtBody;
+                            notificationDetailMessage.RequestLayout();
+                        }
                     }
 
                     if (detailModel.ctaList.Count > 0)

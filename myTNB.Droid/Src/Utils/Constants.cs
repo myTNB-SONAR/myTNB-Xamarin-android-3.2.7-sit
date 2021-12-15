@@ -346,6 +346,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";
 
         //Service Disruption
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_NEWS = "98";
         public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE = "SDOUT";
         public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS = "SDIP";
         public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION = "SDOR";

@@ -264,6 +264,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.img_discover_digital_bill)]
         ImageView img_discover_digital_bill;
 
+        [BindView(Resource.Id.img_discover_energy_budget)]
+        ImageView img_discover_energy_budget;
+
+        [BindView(Resource.Id.img_discover_service_disruption)]
+        ImageView img_discover_service_disruption;
+
         [BindView(Resource.Id.discoverMoreSectionTitle)]
         TextView discoverMoreSectionTitle;
 
@@ -973,37 +979,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private void SetupEBDiscoverView()
         {
             discoverMoreEBImgLayout.Visibility = ViewStates.Visible;
-            discoverMoreEBImgLayout.SetBackgroundResource(LanguageUtil.GetAppLanguage() == "MS"
+            img_discover_energy_budget.SetImageResource(LanguageUtil.GetAppLanguage() == "MS"
                 ? Resource.Drawable.eb_discover_more_bm
                 : Resource.Drawable.eb_discover_more);
-
-            LinearLayout.LayoutParams layout = discoverMoreEBImgLayout.LayoutParameters as LinearLayout.LayoutParams;
-            int imgWidth = GetDeviceHorizontalScaleInPixel(0.917f);
-            float heightRatio = 55f / 128f;
-            int imgHeight = (int)(imgWidth * (heightRatio));
-            if (layout != null)
-            {
-                layout.Width = imgWidth;
-                layout.Height = imgHeight;
-            }
         }
 
         private void SetupSDDiscoverView()
         {
             discoverMoreSDImgLayout.Visibility = ViewStates.Visible;
-            discoverMoreSDImgLayout.SetBackgroundResource(LanguageUtil.GetAppLanguage() == "MS"
+            img_discover_service_disruption.SetImageResource(LanguageUtil.GetAppLanguage() == "MS"
                 ? Resource.Drawable.sd_discover_more_bm
                 : Resource.Drawable.sd_discover_more);
-
-            LinearLayout.LayoutParams layout = discoverMoreSDImgLayout.LayoutParameters as LinearLayout.LayoutParams;
-            int imgWidth = GetDeviceHorizontalScaleInPixel(0.917f);
-            float heightRatio = 55f / 128f;
-            int imgHeight = (int)(imgWidth * (heightRatio));
-            if (layout != null)
-            {
-                layout.Width = imgWidth;
-                layout.Height = imgHeight;
-            }
         }
 
 

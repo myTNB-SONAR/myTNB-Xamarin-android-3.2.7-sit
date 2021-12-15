@@ -280,8 +280,9 @@ namespace myTNB_Android.Src.Login.MVP
 
                             GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
                             baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
-                            CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
-                            if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                            //CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
+                            CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
+                            if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                             {
                                 if (customerAccountListResponse.GetData().Count > 0)
                                 {
@@ -486,7 +487,7 @@ namespace myTNB_Android.Src.Login.MVP
             // NO IMPL
         }
 
-        private void ProcessCustomerAccount(List<CustomerAccountListResponse.CustomerAccountData> list)
+        private void ProcessCustomerAccount(List<CustomerAccountListResponseAppLaunch.CustomerAccountData> list)
         {
             try
             {
@@ -501,13 +502,13 @@ namespace myTNB_Android.Src.Login.MVP
                     List<int> newExisitingListArray = new List<int>();
                     List<CustomerBillingAccount> newAccountList = new List<CustomerBillingAccount>();
 
-                    foreach (CustomerAccountListResponse.CustomerAccountData acc in list)
+                    foreach (CustomerAccountListResponseAppLaunch.CustomerAccountData acc in list)
                     {
                         int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
 
                         var newRecord = new CustomerBillingAccount()
                         {
-                            Type = acc.Type,
+                            Type = "",// acc.Type,
                             AccNum = acc.AccountNumber,
                             AccDesc = string.IsNullOrEmpty(acc.AccDesc) == true ? "--" : acc.AccDesc,
                             UserAccountId = acc.UserAccountID,
@@ -548,11 +549,11 @@ namespace myTNB_Android.Src.Login.MVP
                         {
                             CustomerBillingAccount oldAcc = existingSortedList[index];
 
-                            CustomerAccountListResponse.CustomerAccountData newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
+                            CustomerAccountListResponseAppLaunch.CustomerAccountData newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
 
                             var newRecord = new CustomerBillingAccount()
                             {
-                                Type = newAcc.Type,
+                                Type = "",//newAcc.Type,
                                 AccNum = newAcc.AccountNumber,
                                 AccDesc = string.IsNullOrEmpty(newAcc.AccDesc) == true ? "--" : newAcc.AccDesc,
                                 UserAccountId = newAcc.UserAccountID,
@@ -609,7 +610,7 @@ namespace myTNB_Android.Src.Login.MVP
                 }
                 else
                 {
-                    foreach (CustomerAccountListResponse.CustomerAccountData acc in list)
+                    foreach (CustomerAccountListResponseAppLaunch.CustomerAccountData acc in list)
                     {
                         int rowChange = CustomerBillingAccount.InsertOrReplace(acc, false);
                     }

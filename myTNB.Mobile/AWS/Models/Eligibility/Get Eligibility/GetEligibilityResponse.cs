@@ -19,6 +19,8 @@ namespace myTNB.Mobile.AWS.Models
         public BaseCAListModel EB { set; get; }
         [JsonProperty("br")]
         public BaseCAListModel BR { set; get; }
+        [JsonProperty("sd")]
+        public BaseCAListModel SD { set; get; }
     }
 
     public class EligibileFeaturesModel

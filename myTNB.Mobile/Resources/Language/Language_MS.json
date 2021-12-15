@@ -636,7 +636,9 @@
     "feedback2SuccessTitle": "Terima kasih atas maklumbalas anda",
     "feedback2SuccessButton": "OK",
     "viewAccountStatement": "Semak Penyata Akaun",
-    "updateNow": "Kemaskini Sekarang"
+    "updateNow": "Kemaskini Sekarang",
+    "notification": "Notifikasi",
+    "serviceDistruption": "Gangguan Perkhidmatan"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",

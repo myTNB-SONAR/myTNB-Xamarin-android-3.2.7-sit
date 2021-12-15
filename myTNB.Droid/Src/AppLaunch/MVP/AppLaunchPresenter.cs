@@ -470,7 +470,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 string dt = JsonConvert.SerializeObject(baseRequest);
                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
                 //CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
-                if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null)
+                if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null && customerAccountListResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     if (customerAccountListResponse.customerAccountData.Count > 0)
                     {

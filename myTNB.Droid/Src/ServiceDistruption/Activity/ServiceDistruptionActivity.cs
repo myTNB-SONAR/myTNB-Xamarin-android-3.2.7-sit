@@ -61,8 +61,8 @@ namespace myTNB_Android.Src.ServiceDistruption.Activity
 
                 TextViewUtils.SetTextSize16(txtTitleSD);
                 TextViewUtils.SetTextSize16(btnOkay);
-                TextViewUtils.SetTextSize12(txtParaOne, txtParaTwo);
-                TextViewUtils.SetTextSize10(txtTnC);
+                TextViewUtils.SetTextSize13(txtParaOne, txtParaTwo);
+                TextViewUtils.SetTextSize11(txtTnC);
 
                 txtTitleSD.Text = Utility.GetLocalizedLabel("ServiceDistruptionComm", "title");
                 txtParaOne.Text = Utility.GetLocalizedLabel("ServiceDistruptionComm", "subTitle1");
