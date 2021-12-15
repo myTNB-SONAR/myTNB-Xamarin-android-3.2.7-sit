@@ -876,6 +876,13 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetString("NC_ACCOUNT_LIST", null);
         }
 
+        internal static void UpdateNCList(ISharedPreferences mSharedPref)
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("NC_ACCOUNT_LIST");
+            editor.Apply();
+        }
+
         public static void SetSMRAccountList(List<SMRAccount> sMRAccounts)
         {
             ISharedPreferencesEditor editor = mPreferences.Edit();

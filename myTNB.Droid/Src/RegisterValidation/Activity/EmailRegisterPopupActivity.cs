@@ -96,7 +96,7 @@ namespace myTNB_Android.Src.RegisterValidation.Activity
                 //txtVerifyNotification.Text = string.Format(Utility.GetLocalizedLabel("Register", "emailVerifiedLinkSent"), email);
                 string temp = string.Format(data, email);
                 txtVerifyNotification.TextFormatted = GetFormattedText(temp);
-                btnContinue.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backLogin");
+                btnContinue.Text = Utility.GetLocalizedLabel("RegisterSuccess", "backLogin");
                 //btnContinue.Text = GetLabelCommonByLanguage("continue");
 
                 btnContinue.Click += OnClickAddAccount;

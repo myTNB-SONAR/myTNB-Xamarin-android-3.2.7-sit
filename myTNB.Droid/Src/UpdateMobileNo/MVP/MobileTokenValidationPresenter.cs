@@ -560,7 +560,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             UserSessions.SetNCList(mSharedPref, listNC[0].CreatedDate); //save date kalau kosong
 
                             UserSessions.UpdateNCFlag(mSharedPref);
-                            UserSessions.SaveNCFlag(mSharedPref, 0);
+                            UserSessions.SaveNCFlag(mSharedPref, listNC.Count);
 
                             //pannggil overlay
                             UserSessions.UpdateNCTutorialShown(mSharedPref);

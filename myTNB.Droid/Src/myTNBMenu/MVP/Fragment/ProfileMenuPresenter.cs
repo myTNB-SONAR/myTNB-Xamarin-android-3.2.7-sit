@@ -253,6 +253,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     if (logoutResponse.IsSuccessResponse())
                     {
                         UserSessions.UpdateLoginflag(mPref);
+                        UserSessions.UpdateNCList(mPref);
                         UserSessions.RemoveEligibleData(mPref);
                         EligibilitySessionCache.Instance.Clear();
                         FeatureInfoManager.Instance.Clear();
