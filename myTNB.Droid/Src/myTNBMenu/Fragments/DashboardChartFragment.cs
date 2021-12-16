@@ -862,10 +862,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtBtnRefreshTitle = Utility.GetLocalizedCommonLabel("refreshNow");
             }
 
-            if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
-            {
-                isEBUser = true;
-            }
+            //if (EBUtility.Instance.IsAccountEligible)
+            //{
+            //    isEBUser = true;
+            //}
 
             errorMSG = "";
 
@@ -1086,6 +1086,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 //checking energy budget empty
                 SMEnergybudgetCheck = CustomerBillingAccount.EnergyBudgetRM(selectedAccount.AccountNum);
                 selectedCusBillAcc = SMEnergybudgetCheck[0];
+
+                List<string> ebCAs = EBUtility.Instance.GetCAList();
+                if (ebCAs != null)
+                {
+                    foreach (var ca in ebCAs)
+                    {
+                        if (ca.Equals(selectedAccount.AccountNum))
+                        {
+                            if (EBUtility.Instance.IsAccountEligible)
+                            {
+                                isEBUser = true;
+                            }
+                            else
+                            {
+                                isEBUser = false;
+                            }
+                        }
+                    }
+                }
 
                 if (selectedAccount != null)
                 {
@@ -1496,7 +1515,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                if (isEBUser)
                 {
                     CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_tooltip);
                     FirebaseAnalyticsUtils.SetFragmentScreenName(this, Constants.EB_tooltip);
@@ -9505,7 +9524,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         installationType = selectedCusBillAcc.InstallationType;
                     }
 
-                    if (MyTNBAccountManagement.GetInstance().IsEBUserVerify() && acctypeID.Equals("1") && !installationType.Equals("25"))
+                    if (isEBUser && acctypeID.Equals("1") && !installationType.Equals("25"))
                     {
 
                         if (ChartDataType == ChartDataType.RM)

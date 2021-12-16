@@ -370,8 +370,11 @@ namespace myTNB_Android.Src.Login.MVP
 
                                 _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
 
+                                UserInfo usrinf = new UserInfo();
+                                usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
+
                                 _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(),
-                                    FeatureInfoManager.QueueTopicEnum.getca, new UserInfo(), new DeviceInfoRequest()));
+                                    FeatureInfoManager.QueueTopicEnum.getca, usrinf, new DeviceInfoRequest()));
 
                                 this.mView.ShowDashboard();
                             }
@@ -523,6 +526,7 @@ namespace myTNB_Android.Src.Login.MVP
                             OwnerName = acc.OwnerName,
                             AccountCategoryId = acc.AccountCategoryId,
                             SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
+                            InstallationType = acc.InstallationType == null ? "0" : acc.InstallationType,
                             IsSelected = false,
                             BudgetAmount = acc.BudgetAmount,
                             IsApplyEBilling = acc.IsApplyEBilling,
@@ -568,6 +572,7 @@ namespace myTNB_Android.Src.Login.MVP
                                 OwnerName = newAcc.OwnerName,
                                 AccountCategoryId = newAcc.AccountCategoryId,
                                 SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
+                                InstallationType = newAcc.InstallationType == null ? "0" : newAcc.InstallationType,
                                 IsSelected = false,
                                 BudgetAmount = newAcc.BudgetAmount,
                                 IsApplyEBilling = newAcc.IsApplyEBilling,

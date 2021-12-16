@@ -915,8 +915,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     newCAList.Add(acct.accountNumber);
                 });
 
+                UserInfo usrinf = new UserInfo();
+                usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
+
                 _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(newCAList),
-                    FeatureInfoManager.QueueTopicEnum.getca, new UserInfo(), new DeviceInfoRequest()));
+                    FeatureInfoManager.QueueTopicEnum.addca, usrinf, new DeviceInfoRequest()));
 
                 if (IsActive())
                 {

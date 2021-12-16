@@ -495,6 +495,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 IsAccountDBREligible = DBRUtility.Instance.IsAccountEligible;
+                MyTNBAccountManagement.GetInstance().SetIsEBUser(EBUtility.Instance.IsAccountEligible);
+                MyTNBAccountManagement.GetInstance().SetIsSDUser(SDUtility.Instance.IsAccountEligible);
                 summaryNestScrollView.SmoothScrollingEnabled = true;
                 isSearchClose = true;
                 isFirstInitiate = true;
@@ -2433,14 +2435,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     foreach (CustomerBillingAccount billingAccount in smartmeterAccounts)
                     {
-                        SMRAccount smrAccount = new SMRAccount();
-                        smrAccount.accountNumber = billingAccount.AccNum;
-                        smrAccount.accountName = billingAccount.AccDesc;
-                        smrAccount.accountAddress = billingAccount.AccountStAddress;
-                        smrAccount.accountSelected = false;
-                        smrAccount.BudgetAmount = billingAccount.BudgetAmount;
-                        smrAccount.InstallationType = billingAccount.InstallationType;
-                        SMeterAccountList.Add(smrAccount);
+                        List<string> ebCAs = EBUtility.Instance.GetCAList();
+                        if (ebCAs != null)
+                        {
+                            foreach (var ca in ebCAs)
+                            {
+                                if (ca.Equals(billingAccount.AccNum))
+                                {
+                                    SMRAccount smrAccount = new SMRAccount();
+                                    smrAccount.accountNumber = billingAccount.AccNum;
+                                    smrAccount.accountName = billingAccount.AccDesc;
+                                    smrAccount.accountAddress = billingAccount.AccountStAddress;
+                                    smrAccount.accountSelected = false;
+                                    smrAccount.BudgetAmount = billingAccount.BudgetAmount;
+                                    smrAccount.InstallationType = billingAccount.InstallationType;
+                                    SMeterAccountList.Add(smrAccount);
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -2532,14 +2544,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     foreach (CustomerBillingAccount billingAccount in smartmeterAccounts)
                     {
-                        SMRAccount smrAccount = new SMRAccount();
-                        smrAccount.accountNumber = billingAccount.AccNum;
-                        smrAccount.accountName = billingAccount.AccDesc;
-                        smrAccount.accountAddress = billingAccount.AccountStAddress;
-                        smrAccount.accountSelected = false;
-                        smrAccount.BudgetAmount = billingAccount.BudgetAmount;
-                        smrAccount.InstallationType = billingAccount.InstallationType;
-                        SMeterAccountList.Add(smrAccount);
+                        List<string> ebCAs = EBUtility.Instance.GetCAList();
+                        if (ebCAs != null)
+                        {
+                            foreach (var ca in ebCAs)
+                            {
+                                if (ca.Equals(billingAccount.AccNum))
+                                {
+                                    SMRAccount smrAccount = new SMRAccount();
+                                    smrAccount.accountNumber = billingAccount.AccNum;
+                                    smrAccount.accountName = billingAccount.AccDesc;
+                                    smrAccount.accountAddress = billingAccount.AccountStAddress;
+                                    smrAccount.accountSelected = false;
+                                    smrAccount.BudgetAmount = billingAccount.BudgetAmount;
+                                    smrAccount.InstallationType = billingAccount.InstallationType;
+                                    SMeterAccountList.Add(smrAccount);
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -2727,14 +2749,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 foreach (CustomerBillingAccount billingAccount in smartmeterAccounts)
                 {
-                    SMRAccount smrAccount = new SMRAccount();
-                    smrAccount.accountNumber = billingAccount.AccNum;
-                    smrAccount.accountName = billingAccount.AccDesc;
-                    smrAccount.accountAddress = billingAccount.AccountStAddress;
-                    smrAccount.accountSelected = false;
-                    smrAccount.BudgetAmount = billingAccount.BudgetAmount;
-                    smrAccount.InstallationType = billingAccount.InstallationType;
-                    SMeterAccountList.Add(smrAccount);
+                    List<string> ebCAs = EBUtility.Instance.GetCAList();
+                    if (ebCAs != null)
+                    {
+                        foreach (var ca in ebCAs)
+                        {
+                            if (ca.Equals(billingAccount.AccNum))
+                            {
+                                SMRAccount smrAccount = new SMRAccount();
+                                smrAccount.accountNumber = billingAccount.AccNum;
+                                smrAccount.accountName = billingAccount.AccDesc;
+                                smrAccount.accountAddress = billingAccount.AccountStAddress;
+                                smrAccount.accountSelected = false;
+                                smrAccount.BudgetAmount = billingAccount.BudgetAmount;
+                                smrAccount.InstallationType = billingAccount.InstallationType;
+                                SMeterAccountList.Add(smrAccount);
+                            }
+                        }
+                    }
                 }
             }
 

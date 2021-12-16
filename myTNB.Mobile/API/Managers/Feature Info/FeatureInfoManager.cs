@@ -66,11 +66,11 @@ namespace myTNB.Mobile
 
                 if (EBUtility.Instance.IsAccountEligible)
                 {
+
                     List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
 
                     //Get AWS EB ca
                     List <string> ebCAs= EBUtility.Instance.GetCAList();
-
                     if (ebCAs != null )
                     {
                         foreach (var ca in ebCAs)
@@ -99,40 +99,45 @@ namespace myTNB.Mobile
                         ContractAccount = eligibleCA
                     });
                 }
-                else if (response != null
-                    && response.StatusDetail != null
-                    && response.StatusDetail.IsSuccess
-                    && response.Content != null)
-                {
-                    Type content = response.Content.GetType();
-                    TypeOfFeature.ToList().ForEach(features =>
+
+                if (SDUtility.Instance.IsAccountEligible) {
+
+                    List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
+
+                    //Get AWS EB ca
+                    List<string> sdCAs = SDUtility.Instance.GetCAList();
+
+
+                    if (sdCAs != null)
                     {
-                        //List of CA that are eligible
-                        List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
-                        if (content != null && content.GetProperty(features.ToString()) is PropertyInfo props && props != null)
+                        foreach (var ca in sdCAs)
                         {
-                            object obj = props.GetValue(response.Content, null);
-                            if (obj != null)
+                            eligibleCA.Add(new FeaturesContractAccount
                             {
-                                BaseCAListModel tempData = JsonConvert.DeserializeObject<BaseCAListModel>(JsonConvert.SerializeObject(obj));
-                                foreach (ContractAccountsModel i in tempData.ContractAccounts)
-                                {
-                                    eligibleCA.Add(new FeaturesContractAccount
-                                    {
-                                        contractAccount = i.ContractAccount,
-                                        acted = i.Acted,
-                                        modifiedDate = i.ModifiedDate.ToString()
-                                    });
-                                }
-                                ListOfFeature.Add(new FeatureInfo
-                                {
-                                    FeatureName = features.ToString(),
-                                    ContractAccount = eligibleCA
-                                });
-                            }
+                                contractAccount = ca,
+                                acted = true,
+                                modifiedDate = ""
+                            });
                         }
+                    }
+                    else
+                    {   // Add dummy CA if target group false
+                        eligibleCA.Add(new FeaturesContractAccount
+                        {
+                            contractAccount = "1010101001010101",
+                            acted = true,
+                            modifiedDate = ""
+                        });
+                    }
+
+                    ListOfFeature.Add(new FeatureInfo
+                    {
+                        FeatureName = Features.SD.ToString(),
+                        ContractAccount = eligibleCA
                     });
                 }
+
+
                 Data = ListOfFeature;
             }
             catch (Exception e)

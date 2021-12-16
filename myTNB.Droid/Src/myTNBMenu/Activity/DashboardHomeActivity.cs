@@ -2493,7 +2493,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Utility.LoggingNonFatalError(e);
                 MyTNBAccountManagement.GetInstance().SetIsSDUser(false);
             }
-            MyTNBAccountManagement.GetInstance().SetIsSDUser(true); //add for sit test alway true
+            //MyTNBAccountManagement.GetInstance().SetIsSDUser(true); //add for sit test alway true
         }
 
         public void OnCheckEnergyBudgetUser()
