@@ -94,11 +94,11 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         //Task<T> SaveUserNotificationTypePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/SaveUserNotificationTypePreferenceV2")]
+        [Post("/v6/mytnbappws.asmx/SaveUserNotificationTypePreferenceV3")]
         Task<T> SaveUserNotificationTypePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //cep new api //wan
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/SaveUserNotificationChannelPreferenceV2")]
+        [Post("/v6/mytnbappws.asmx/SaveUserNotificationChannelPreferenceV3")]
         Task<T> SaveUserNotificationChannelPreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
