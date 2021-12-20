@@ -208,6 +208,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 mPresenter = new UserNotificationDetailPresenter(this);
                 base.OnCreate(savedInstanceState);
                 SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+                SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));\
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
@@ -246,21 +247,17 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_TC
                     || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_RC)
                 {
-                    SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "EnergyBudgetTitle"));
+                    SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_ENERGY_BUDGET));
                 }
                 else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE
                     || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS
                     || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION)
                 {
-                    SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "serviceDistruption"));
+                    SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_SRVC_DISTRUPTION));
                 }
                 else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW)
                 {
-                    SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "notification"));
-                }
-                else if (userNotificationData == null)
-                {
-                    SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "notification"));
+                    SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
                 }
 
                 if (pushFromDashboard)
