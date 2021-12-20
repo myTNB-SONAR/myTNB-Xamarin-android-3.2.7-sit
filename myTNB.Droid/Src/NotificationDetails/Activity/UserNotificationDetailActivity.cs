@@ -208,7 +208,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 mPresenter = new UserNotificationDetailPresenter(this);
                 base.OnCreate(savedInstanceState);
                 SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
-                SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));\
+                SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
