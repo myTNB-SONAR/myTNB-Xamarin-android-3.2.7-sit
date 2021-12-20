@@ -215,7 +215,11 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM))
                     {
                         notificationDetails = DeSerialze<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
-                        SetToolBarTitle(notificationDetails.HeaderTitle);
+
+                        if (!string.IsNullOrEmpty(notificationDetails.HeaderTitle))
+                        {
+                            SetToolBarTitle(notificationDetails.HeaderTitle);
+                        }
                     }
 
                     if (extras.ContainsKey(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM))
