@@ -171,6 +171,9 @@
         internal struct PushNotificationDetails
         {
             internal static readonly string VIEW_ACCT_STMNT = "viewAccountStatement";
+            internal static readonly string NOTIF_TITLE_DEFAULT = "notification";
+            internal static readonly string NOTIF_TITLE_ENERGY_BUDGET = "EnergyBudgetTitle";
+            internal static readonly string NOTIF_TITLE_SRVC_DISTRUPTION = "serviceDistruption";
         }
 
         internal struct DBRWebview
