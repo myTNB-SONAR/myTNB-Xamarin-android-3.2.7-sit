@@ -224,55 +224,53 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             try
             {
-                Task.Run(() =>
+                RunOnUiThread(() =>
                 {
                     UserEntity user = UserEntity.GetActive();
                     string myTNBAccountName = user?.DisplayName ?? string.Empty;
                     string signature = SSOManager.Instance.GetSignature(myTNBAccountName
-                        , AccessTokenCache.Instance.GetAccessToken(this)
-                        , user.DeviceId ?? string.Empty
-                        , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
-                        , 16
-                        , (LanguageUtil.GetAppLanguage() == "MS"
-                            ? LanguageManager.Language.MS
-                            : LanguageManager.Language.EN).ToString()
-                        , TextViewUtils.FontInfo ?? "N"
-                        , BillRendering.Content.OriginURL
-                        , BillRendering.Content.RedirectURL
-                        , _accountNumber);
+                    , AccessTokenCache.Instance.GetAccessToken(this)
+                    , user.DeviceId ?? string.Empty
+                    , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
+                    , 16
+                    , (LanguageUtil.GetAppLanguage() == "MS"
+                    ? LanguageManager.Language.MS
+                    : LanguageManager.Language.EN).ToString()
+                    , TextViewUtils.FontInfo ?? "N"
+                    , BillRendering.Content.OriginURL
+                    , BillRendering.Content.RedirectURL
+                    , _accountNumber);
 
                     string ssoURL = string.Format(AWSConstants.Domains.SSO, signature);
-                    RunOnUiThread(() =>
+                    micrositeWebView.Settings.JavaScriptEnabled = true;
+
+                    if (BillRendering.Content.DBRType != MobileEnums.DBRTypeEnum.Paper)
                     {
                         micrositeWebView.ScrollBarStyle = ScrollbarStyles.InsideOverlay;
-                        micrositeWebView.Settings.JavaScriptEnabled = true;
                         micrositeWebView.Settings.SetRenderPriority(WebSettings.RenderPriority.High);
-                        micrositeWebView.Settings.CacheMode = CacheModes.CacheElseNetwork;
+                        micrositeWebView.Settings.CacheMode = CacheModes.Normal;
                         micrositeWebView.Settings.SetAppCacheEnabled(true);
                         micrositeWebView.Settings.DomStorageEnabled = true;
                         micrositeWebView.Settings.UseWideViewPort = true;
                         micrositeWebView.Settings.SetEnableSmoothTransition(true);
                         micrositeWebView.Settings.SetPluginState(WebSettings.PluginState.On);
-
-                        if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
-                        {
-                            micrositeWebView.Settings.MixedContentMode = 0;
-                            micrositeWebView.SetLayerType(LayerType.Hardware, null);
-                        }
-                        else if (Build.VERSION.SdkInt >= BuildVersionCodes.Kitkat)
-                        {
-                            micrositeWebView.SetLayerType(LayerType.Hardware, null);
-                        }
-                        else
-                        {
-                            micrositeWebView.SetLayerType(LayerType.Software, null);
-                        }
-
                         micrositeWebView.SetWebChromeClient(new WebChromeClient());
-                        micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
-
-                        micrositeWebView.LoadUrl(ssoURL);
-                    });
+                    }
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+                    {
+                        micrositeWebView.Settings.MixedContentMode = 0;
+                        micrositeWebView.SetLayerType(LayerType.Hardware, null);
+                    }
+                    else if (Build.VERSION.SdkInt >= BuildVersionCodes.Kitkat)
+                    {
+                        micrositeWebView.SetLayerType(LayerType.Hardware, null);
+                    }
+                    else
+                    {
+                        micrositeWebView.SetLayerType(LayerType.Software, null);
+                    }
+                    micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
+                    micrositeWebView.LoadUrl(ssoURL);
                 });
             }
             catch (System.Exception e)
