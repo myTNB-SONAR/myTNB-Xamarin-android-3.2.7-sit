@@ -242,34 +242,11 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     , _accountNumber);
 
                     string ssoURL = string.Format(AWSConstants.Domains.SSO, signature);
+
+                    micrositeWebView.SetWebChromeClient(new WebChromeClient());
+                    micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
                     micrositeWebView.Settings.JavaScriptEnabled = true;
 
-                    if (BillRendering.Content.DBRType != MobileEnums.DBRTypeEnum.Paper)
-                    {
-                        micrositeWebView.ScrollBarStyle = ScrollbarStyles.InsideOverlay;
-                        micrositeWebView.Settings.SetRenderPriority(WebSettings.RenderPriority.High);
-                        micrositeWebView.Settings.CacheMode = CacheModes.Normal;
-                        micrositeWebView.Settings.SetAppCacheEnabled(true);
-                        micrositeWebView.Settings.DomStorageEnabled = true;
-                        micrositeWebView.Settings.UseWideViewPort = true;
-                        micrositeWebView.Settings.SetEnableSmoothTransition(true);
-                        micrositeWebView.Settings.SetPluginState(WebSettings.PluginState.On);
-                        micrositeWebView.SetWebChromeClient(new WebChromeClient());
-                    }
-                    if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
-                    {
-                        micrositeWebView.Settings.MixedContentMode = 0;
-                        micrositeWebView.SetLayerType(LayerType.Hardware, null);
-                    }
-                    else if (Build.VERSION.SdkInt >= BuildVersionCodes.Kitkat)
-                    {
-                        micrositeWebView.SetLayerType(LayerType.Hardware, null);
-                    }
-                    else
-                    {
-                        micrositeWebView.SetLayerType(LayerType.Software, null);
-                    }
-                    micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
                     micrositeWebView.LoadUrl(ssoURL);
                 });
             }
