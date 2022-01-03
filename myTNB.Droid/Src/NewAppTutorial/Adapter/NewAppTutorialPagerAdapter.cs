@@ -858,7 +858,17 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     {
                         if (position == 0)
                         {
-                            int topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(35f);
+                            int topHeight;
+                            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify()
+                                 && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
+                            {
+                                topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight();
+                            }
+                            else
+                            {
+                                topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(35f);
+                            }
+                            //int topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(35f);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(120f);
 
                             LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;

@@ -2653,7 +2653,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
             {
                 EBUser = true;
-                UserSessions.DoHomeTutorialShown(this.mPref);
+                //UserSessions.DoHomeTutorialShown(this.mPref);
                 if (isAllDone())
                 {
                     HomeMenuUtils.SetIsLoadedHomeMenu(true);

@@ -234,6 +234,7 @@
     //addby wan
     "later": "Tangguhkan",
     "update": "Kemas kini",
+    "proceed": "Teruskan",
     "btnIcUpdate": "Kemas Kini",
     "chkBoxTitle": "Jangan tunjuk ini lagi",
     "titleIcUpdate": "Kemas kini profil anda sekarang untuk terus menikmati myTNB!!",
@@ -982,7 +983,6 @@
     "manageAutopay": "BM_Manage Autopay",
     "btnStay": "Tidak",
     "btnLeave": "Ya"
-
   },
   "Onboarding": {
     "letsStart": "Jom mulakan!",
@@ -1581,7 +1581,7 @@
     "apply": "Guna Pilihan"
   },
   "UpdateID": {
-    "title": "Lengkapkan Profil Anda",
+    "title": "Kemas kini Nombor Pengenalan",
     "updateIdLabelTitle": "Sediakan kami nombor pengenalan anda untuk pengalaman yang lebih baik!",
     "updateIdLabelDetails": "Dapatkan akses dan kawalan yang lebih menyeluruh atas akaun elektrik anda di myTNB dengan membantu kami mengesahkan pengenalan diri anda",
     "confrimButton": "Sahkan"
@@ -1660,7 +1660,7 @@
     "hint_email": "Alamat e-mel pengguna",
     "removeAccountUserAccesssLog": "<strong>Anda</strong> mengeluarkan <strong>{0}</strong> dari akaun elektrik ini.",
     "removeAccountLog": "<strong>{0}</strong> mengeluarkan akaun elektrik ini daripada pemerhatian beliau.",
-    "addAccountUserAccesssLog": "<strong>Anda</strong> menambah <strong>{0}</strong> di dalam akaun elektrik untuk pemerhatian beliau.",
+    "addAccountUserAccesssLog": "<strong>{0}</strong> telah menambah akaun elektrik ini untuk pemerhatian beliau.",
     "addAccountUserLog": "<strong>{0}</strong> menambah akaun elektrik ini di dalam pemerhatian beliau.",
     "addAccesssLogfullBill": "<strong>Anda</strong> telah memberikan akses kepada <strong>{0}</strong> untuk melihat bill penuh.",
     "addAccesssLogeBilling": "<strong>Anda</strong> telah memberikan akses kepada <strong>{0}</strong> telah menolak akses untuk melihat bill elektrik penuh.",
@@ -2311,7 +2311,9 @@
     "updateIdTitle": "Sahkan Nombor Pengenalan Anda:",
     "confrimButton": "Sahkan",
     "re_enter": "Masukkan semula",
-    "updateIdMessage": "Pastikan nombor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja."
+    "updateIdMessage": "Pastikan nombor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja.",
+    "IdHeaderError": "Nombor kad pengenalan ini telah digunakan untuk akaun yang sedia ada.",
+    "IdBodyError": "Sila pastikan bahawa anda telah memasukkan nombor kad pengenalan yang betul, atau hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> untuk bertanya mengenai perkara ini."
   },
   "SearchByNumber": {
     "title": "Cari Dengan",

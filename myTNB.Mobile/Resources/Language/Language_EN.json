@@ -1,4 +1,4 @@
-﻿{
+{
   "Common": {
     "eppToolTipTitle": "What about Easy Payment Plan (EPP)?",
     "account": "Account",
@@ -235,6 +235,7 @@
     //addby wan
     "later": "Later",
     "update": "Update",
+    "proceed": "Proceed",
     "btnIcUpdate": "Update",
     "chkBoxTitle": "Don’t show this again",
     "titleIcUpdate": "Update your profile now to continue enjoying myTNB!",
@@ -891,10 +892,7 @@
     "resend": "Resend Link",
     "verifyEmailPopupTitle": "Pending Email Verification ",
     "verifyEmailPopupBody": "Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
-    "toast_email_send": "An email verification link has been sent to {0}",
-    "toast_email_activated": "You've successfully activated your myTNB account. Log in now to discover myTNB",
-    "toast_email_deactivated": "You've successfully removed your email and deactivated your myTNB account."
-
+    "toast_email_send": "An email verification link has been sent to {0}"
   },
   "ForgotPassword": {
     "title": "Reset Password",
@@ -1663,11 +1661,11 @@
     "AddTNBUserSuccess": "{0} now has access to {1} on myTNB.",
     "AddNonTNBUserSuccess": "{0} is invited to join myTNB and will have access to {1}.",
     "hint_email": "User Email Address",
-    "removeAccountUserAccesssLog": "<strong>You</strong> removed <strong>{0}</strong>'s access from this electricity account.",
+    "removeAccountUserAccesssLog": "<strong>You</strong> removed <strong>{0}</strong> from this electricity account.",
     "removeAccountLog": "<strong>{0}</strong> removed this electricity account from their view.",
-    "addAccountUserAccesssLog": "<strong>You</strong> added <strong>{0}</strong> to this electricity account for their view.",
+    "addAccountUserAccesssLog": "<strong>{0}</strong> have added to this electricity account for their view.",
     "addAccountUserLog": "<strong>{0}</strong> added this electricity account to their view.",
-    "addAccesssLogfullBill": "<strong>You</strong> have granted <strong>{0}</strong>’s access to view full electricity bill",
+    "addAccesssLogfullBill": "<strong>You</strong> have granted <strong>{0}</strong> access to full bill view",
     "addAccesssLogeBilling": "<strong>You</strong> have granted <strong>{0}</strong>’s access to denied to view full electricity bill.",
     "addAccesssLogBoth": "<strong>You</strong> have granted <strong>{0}</strong> access to full bill view.",
     "removeAccesssLogfullBill": "<strong>You</strong> removed <strong>{0}</strong>’s access to view full electricity bill.",
@@ -2316,7 +2314,9 @@
     "updateIdTitle": "Confirm your identification Number:",
     "confrimButton": "Confirm",
     "re_enter": "Re-enter",
-    "updateIdMessage": "Please make sure your identification number is correct as you can only update this once."
+    "updateIdMessage": "Please make sure your identification number is correct as you can only update this once.",
+    "IdHeaderError": "This identification number has been used for an existing account.",
+    "IdBodyError": "Please ensure that you’ve entered the correct identification number, or contact <b><a href=\"tel: 1300885454\">TNB Careline</a></b> to enquire further about this matter."
   },
   "SearchByNumber": {
     "title": "Search By",

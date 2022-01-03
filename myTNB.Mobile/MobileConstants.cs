@@ -86,7 +86,7 @@ namespace myTNB.Mobile
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlDEV;
 
 #elif MASTER || SIT || DEBUG
-        public static string ApiDomain = AWS_SIT;
+        public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;

@@ -2880,7 +2880,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
                     isWhatNewDialogOnHold = false;
-                    mPresenter.DisableWalkthrough();
+                    //mPresenter.DisableWalkthrough();
                     if (currentFragment.GetType() == typeof(HomeMenuFragment))
                     {
                         HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
