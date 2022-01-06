@@ -33,6 +33,9 @@ namespace myTNB_Android.Src.LogUserAccess.Models
         [JsonProperty("UserName")]
         public string UserName { get; set; }
 
+        [JsonProperty("IsPreRegister")]
+        public bool IsPreRegister { get; set; }
+
 
         public static LogUserAccessData Get(LogUserAccessEntity entity)
         {

@@ -40,6 +40,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty("UserName")]
             public string UserName { get; set; }
 
+            [JsonProperty("IsPreRegister")]
+            public bool IsPreRegister { get; set; }
+
         }
     }
 }

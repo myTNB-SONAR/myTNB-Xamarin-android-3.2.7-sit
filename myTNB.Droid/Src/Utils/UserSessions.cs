@@ -864,22 +864,22 @@ namespace myTNB_Android.Src.Utils
             return selectCommercialAccountList;
         }
 
-        public static void SetNCList(ISharedPreferences prefs, string date)                  //for NC Add account| yana
+        public static void SetNCDate(ISharedPreferences prefs, string date)                  //for NC Add account| yana
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutString("NC_ACCOUNT_LIST", date);
+            editor.PutString("NC_CREATED_DATE", date);
             editor.Apply();
         }
 
-        public static string GetNCList(ISharedPreferences prefs)
+        public static string GetNCDate(ISharedPreferences prefs)
         {
-            return prefs.GetString("NC_ACCOUNT_LIST", null);
+            return prefs.GetString("NC_CREATED_DATE", null);
         }
 
-        internal static void UpdateNCList(ISharedPreferences mSharedPref)
+        internal static void UpdateNCDate(ISharedPreferences mSharedPref)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();
-            editor.Remove("NC_ACCOUNT_LIST");
+            editor.Remove("NC_CREATED_DATE");
             editor.Apply();
         }
 

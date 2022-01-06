@@ -37,6 +37,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("UserName")]
         public string UserName { get; set; }
 
+        [Column("IsPreRegister")]
+        public bool IsPreRegister { get; set; }
+
         public static int CreateTable()
         {
             using (var db = new SQLiteConnection(Constants.DB_PATH))
@@ -64,7 +67,8 @@ namespace myTNB_Android.Src.Database.Model
                     IsApplyEBilling = logUserAcessData.IsApplyEBilling,
                     IsHaveAccess = logUserAcessData.IsHaveAccess,
                     UserID = logUserAcessData.UserID,
-                    UserName = logUserAcessData.UserName
+                    UserName = logUserAcessData.UserName,
+                    IsPreRegister = logUserAcessData.IsPreRegister
                 };
 
                 int newRecordRow = db.InsertOrReplace(newRecord);

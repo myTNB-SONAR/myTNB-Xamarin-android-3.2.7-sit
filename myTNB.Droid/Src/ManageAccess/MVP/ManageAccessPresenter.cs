@@ -397,6 +397,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                             CreatedDate = acc.CreatedDate,
                             UserID = acc.UserID,
                             UserName = acc.UserName,
+                            IsPreRegister = acc.IsPreRegister
                         };
                         newAccountList.Add(newRecord);
                     }

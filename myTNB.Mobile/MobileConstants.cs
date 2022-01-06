@@ -77,7 +77,7 @@ namespace myTNB.Mobile
         public static string OvisWebviewBaseUrlPROD = "https://mytnbappwv.ovis.tnb.com.my";
 
 #if DEBUG
-        public static string ApiDomain = AWS_SIT;
+        public static string ApiDomain = DEV3;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;

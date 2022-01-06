@@ -748,7 +748,7 @@ namespace myTNB_Android.Src.Login.MVP
             try
             {
                 //bool ncAccounts = UserSessions.GetNCList(mSharedPref);
-                string ncAccounts = UserSessions.GetNCList(mSharedPref);
+                string ncAccounts = UserSessions.GetNCDate(mSharedPref);
                 List<CustomerBillingAccount> listNC = CustomerBillingAccount.NCAccountList();
 
                 if (listNC != null)
@@ -781,7 +781,7 @@ namespace myTNB_Android.Src.Login.MVP
                             if (countNewNCAdded > 0)
                             {
                                 UserSessions.UpdateNCFlag(mSharedPref);
-                                UserSessions.SetNCList(mSharedPref, listNC[0].CreatedDate);
+                                UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate);
                                 UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //overlay highlight flag
                                 //trigger home ovelay tutorial
                                 UserSessions.UpdateNCTutorialShown(mSharedPref);
@@ -791,12 +791,11 @@ namespace myTNB_Android.Src.Login.MVP
                         }
                         else
                         {
-                            UserSessions.SetNCList(mSharedPref, listNC[0].CreatedDate); //save date kalau kosong
-
+                            UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save date if null
                             UserSessions.UpdateNCFlag(mSharedPref);
                             UserSessions.SaveNCFlag(mSharedPref, 0);
 
-                            //pannggil overlay
+                            //trigger overlay
                             UserSessions.UpdateNCTutorialShown(mSharedPref);
 
                         }
