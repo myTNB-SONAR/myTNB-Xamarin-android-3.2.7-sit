@@ -260,6 +260,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         {
                                             if (!UserSessions.HasUpdateSkipped(this.mSharedPref))
                                             {
+                                                MarketingPopUpEntity.RemoveAll();
                                                 UserSessions.SaveDBRPopUpFlag(this.mSharedPref, false);
                                                 _ = UserLoginCountEntity.UpdateLoginCountWithEmail(UserEntity.GetActive().Email, 1);
                                             }

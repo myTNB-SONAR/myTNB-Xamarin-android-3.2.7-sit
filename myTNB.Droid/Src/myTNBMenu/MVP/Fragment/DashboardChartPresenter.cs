@@ -40,6 +40,8 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB.Mobile;
+using myTNB_Android.Src.DeviceCache;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -121,6 +123,17 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             SetEnergyBudget(accnum, AmmSaveBudget);
         }
 
+        private void ValidateMarketingPopUp()
+        {
+            var ca = this.mView.GetSelectedAccount().AccountNum;
+            bool dbrHasShown = MarketingPopUpEntity.GetDBRPopUpFlag(ca);
+
+            if (!dbrHasShown && DBRUtility.Instance.IsCAEligible(ca))
+            {
+                this.mView.CheckOnPaperFromBillRendering();
+            }
+        }
+
         private async Task GetAccountStatus()
         {
             try
@@ -130,12 +143,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 cts = new CancellationTokenSource();
 
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
+#if DEBUG || SIT
                 var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
                 var installDetailsApi = RestService.For<IGetInstallationDetailsApi>(httpClient);
 
 #else
-            var installDetailsApi = RestService.For<IGetInstallationDetailsApi>(Constants.SERVER_URL.END_POINT);
+                var installDetailsApi = RestService.For<IGetInstallationDetailsApi>(Constants.SERVER_URL.END_POINT);
 
 #endif
 
@@ -268,7 +281,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     ses_param2 = ""
                 };
 
-#if DEBUG
+#if DEBUG || SIT
                 var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
                 var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(httpClient);
 
@@ -318,6 +331,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public async Task LoadUsageHistory()
         {
+            ValidateMarketingPopUp();
+
             await GetAccountStatus();
 
             isBillAvailable = false;
@@ -379,7 +394,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 cts = new CancellationTokenSource();
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
+#if DEBUG || SIT
                 var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
                 var amountDueApi = RestService.For<IAmountDueApi>(httpClient);
                 var paymentStatusApi = RestService.For<IPaymentStatusApi>(httpClient);
@@ -513,7 +528,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 cts = new CancellationTokenSource();
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
+#if DEBUG || SIT
                 var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
                 var api = RestService.For<IUsageHistoryApi>(httpClient);
 #else
@@ -629,7 +644,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 cts = new CancellationTokenSource();
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
+#if DEBUG || SIT
                 var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
                 var api = RestService.For<IUsageHistoryApi>(httpClient);
 #else
@@ -667,7 +682,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.SetISMDMSDown(true);
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
-                    this.mView.SetMDMSDownRefreshMessage(usageHistoryResponse); 
+                    this.mView.SetMDMSDownRefreshMessage(usageHistoryResponse);
                     OnByRM();
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "8304")
@@ -677,7 +692,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.SetMDMSDownMessage(usageHistoryResponse);
                     OnByRM();
                 }
-                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7200" )
+                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7200")
                 {
                     if (IsCheckHaveByMonthData(usageHistoryResponse.Data.SMUsageHistoryData))
                     {
@@ -771,9 +786,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         }
 
         public void OnViewBillDetails(AccountData selectedAccount)
-		{
-			ShowBillDetails(selectedAccount);
-		}
+        {
+            ShowBillDetails(selectedAccount);
+        }
 
         private async void ShowBillDetails(AccountData selectedAccount)
         {
@@ -928,12 +943,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 //}
                 //else
                 //{
-                    if (!this.mView.IsLoadUsageNeeded())
-                    {
-                        OnByRM();
-                    }
+                if (!this.mView.IsLoadUsageNeeded())
+                {
+                    OnByRM();
+                }
 
-                    _ = LoadUsageHistory();
+                _ = LoadUsageHistory();
                 //}
             }
             catch (Exception e)
@@ -963,7 +978,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         if (account.AccNum == accountNumber)
                         {
-#if DEBUG || STUB
+#if DEBUG || SIT || STUB
                             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new System.Uri(Constants.SERVER_URL.END_POINT) };
                             var api = RestService.For<IAccountsSMRStatusApi>(httpClient);
 #else
@@ -1282,7 +1297,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             List<EnergySavingTipsModel> energyList = new List<EnergySavingTipsModel>();
 
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 energyList.Add(new EnergySavingTipsModel()
                 {
@@ -1448,7 +1463,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 if (!questionRespone.IsSuccessResponse())
                 {
-                   this.mView.ShowErrorMessageResponse(questionRespone.Response.DisplayMessage);
+                    this.mView.ShowErrorMessageResponse(questionRespone.Response.DisplayMessage);
                 }
                 else
                 {

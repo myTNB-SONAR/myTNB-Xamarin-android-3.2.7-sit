@@ -223,6 +223,7 @@
     "dbrReminderPopupTitle": "Jom Paperless dengan bil anda",
     "dbrReminderPopupMessage": "Jadilah orang pertama yang memberi impak dengan memilih kaedah paperless untuk bil anda yang seterusnya! Dengan myTNB, anda mempunyai cara yang lebih baik dan mesra alam untuk menerima bil secara digital melalui Aplikasi & Portal myTNB.",
     "dbrReminderPopupStartNow": "Ketahui Lanjut",
+    "dbrReminderPopupGotIt": "Ok!",
     //EnergyBudget
     "energyBudget": "Energy <br> Budget Saya",
     "tutorialEnergyBudgetTitle": "Mulakan langkah untuk menguruskan tenaga anda",
@@ -467,7 +468,11 @@
     "feedback1Title": "Tahniah! Bagaimanakah pengalaman penetapan Energy Budget anda?",
     "feedbackDontAskAgain": "Tidak Berminat",
     "feedbackSuccessTitle": "Terima kasih atas maklumbalas anda",
-    "feedbackSuccessButton": "OK"
+    "feedbackSuccessButton": "OK",
+    "dbrReminderPopupTitle": "Jom Paperless dengan bil anda",
+    "dbrReminderPopupMessage": "Jadilah orang pertama yang memberi impak dengan memilih kaedah paperless untuk bil anda yang seterusnya! Dengan myTNB, anda mempunyai cara yang lebih baik dan mesra alam untuk menerima bil secara digital melalui Aplikasi & Portal myTNB.",
+    "dbrReminderPopupViewMore": "Ketahui Lanjut",
+    "dbrReminderPopupGotIt": "Ok!"
   },
   "Bills": {
     "title": "Bil",
@@ -2694,8 +2699,8 @@
     "IsUpdatePersonalDetailsEnquiryEnabled": true,
     "IsGSLRebateEnabled": true,
     "AccountStatementTimeout": 5000,
-    "ShouldShowAccountStatementToNonOwner": false,
-    "MaxAccountList": 30
+    "ShouldShowAccountStatementToNonOwner": true,
+    "MaxAccountList": 100000
   },
   "StatementPeriod": {
     "title": "Penyata Akaun",

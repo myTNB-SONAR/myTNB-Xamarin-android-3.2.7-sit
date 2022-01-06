@@ -71,6 +71,7 @@ using myTNB.Mobile;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using System.Linq;
 using myTNB_Android.Src.SessionCache;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -708,6 +709,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         ScaleGestureDetector mScaleDetector;
+
+        GetBillRenderingResponse _billRenderingResponse;
 
         public override int ResourceId()
         {
@@ -11342,6 +11345,81 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     .SetCTALabel(Utility.GetLocalizedLabel("Usage", "feedbackSuccessButton"))
                     .SetTitle(Utility.GetLocalizedLabel("Usage", "feedbackSuccessTitle"))
                     .Build().Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowMarketingTooltip()
+        {
+            this.Activity.RunOnUiThread(() =>
+            {
+                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
+                .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_POPUP_TITLE))
+                .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_POPUP_MSG))
+                .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_POPUP_VIEW_MORE))
+                .SetCTAaction(() => ShowManageBill())
+                .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                .SetSecondaryCTAaction(() =>
+                {
+                    this.SetIsClicked(false);
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_GotIt);
+                })
+                .Build();
+                marketingTooltip.Show();
+            });
+        }
+
+        public void ShowManageBill()
+        {
+            try
+            {
+                DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_Viewmore);
+                Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(_billRenderingResponse));
+                intent.PutExtra("accountNumber", GetSelectedAccount().AccountNum);
+                StartActivity(intent);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void CheckOnPaperFromBillRendering()
+        {
+            Task.Run(() =>
+            {
+                _ = CheckOnPaperAsync();
+            });
+        }
+
+        private async Task CheckOnPaperAsync()
+        {
+            try
+            {
+                string contractAccount = GetSelectedAccount().AccountNum;
+                if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                }
+                _billRenderingResponse = await DBRManager.Instance.GetBillRendering(contractAccount,
+                    AccessTokenCache.Instance.GetAccessToken(this.Activity));
+
+                if (_billRenderingResponse != null
+                   && _billRenderingResponse.StatusDetail != null
+                   && _billRenderingResponse.StatusDetail.IsSuccess
+                   && _billRenderingResponse.Content != null
+                   && _billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
+                   && _billRenderingResponse.Content.IsInProgress == false)
+                {
+                    ShowMarketingTooltip();
+                    MarketingPopUpEntity.InsertOrReplace(contractAccount, true);
+                }
             }
             catch (System.Exception e)
             {

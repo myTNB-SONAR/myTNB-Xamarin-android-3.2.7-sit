@@ -223,6 +223,7 @@
     "dbrReminderPopupTitle": "Go Paperless with your bills",
     "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill onwards! With myTNB, you have a better and more environmentally friendly way to receive your paperless bills digitally via myTNB App & Portal.",
     "dbrReminderPopupStartNow": "View More",
+    "dbrReminderPopupGotIt": "Got it!",
     //EnergyBudget
     "energyBudget": "My Energy<br>Budget",
     "tutorialEnergyBudgetTitle": "Begin your Energy Budget journey",
@@ -467,7 +468,11 @@
     "feedback1Title": "Congratulations! How was your Energy Budget set up?",
     "feedbackDontAskAgain": "Don't Ask Again",
     "feedbackSuccessTitle": "Thank you for your feedback!",
-    "feedbackSuccessButton": "Okay"
+    "feedbackSuccessButton": "Okay",
+    "dbrReminderPopupTitle": "Go Paperless with your bills",
+    "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill onwards! With myTNB, you have a better and more environmentally friendly way to receive your paperless bills digitally via myTNB App & Portal.",
+    "dbrReminderPopupViewMore": "View More",
+    "dbrReminderPopupGotIt": "Got it!"
   },
   "Bills": {
     "title": "Bills",
@@ -2694,8 +2699,8 @@
     "IsUpdatePersonalDetailsEnquiryEnabled": true,
     "IsGSLRebateEnabled": true,
     "AccountStatementTimeout": 5000,
-    "ShouldShowAccountStatementToNonOwner": false,
-    "MaxAccountList": 30
+    "ShouldShowAccountStatementToNonOwner": true,
+    "MaxAccountList": 100000
   },
   "StatementPeriod": {
     "title": "Account Statement",

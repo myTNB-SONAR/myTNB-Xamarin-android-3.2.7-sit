@@ -103,6 +103,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                     SummaryDashBoardAccountEntity.RemoveAll();
                     MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                     HomeMenuUtils.ResetAll();
+                    MarketingPopUpEntity.RemoveItemWithCA(accountData.AccountNum);
 
                     _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
 
