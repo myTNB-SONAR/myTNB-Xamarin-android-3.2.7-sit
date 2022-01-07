@@ -225,7 +225,7 @@ namespace myTNB
             return valuesDictionary;
         }
 
-        public JToken GetServiceConfig(string pageName, string propertyName)
+        internal JToken GetServiceConfig(string pageName, string propertyName)
         {
             try
             {
@@ -247,7 +247,7 @@ namespace myTNB
             }
         }
 
-        public bool GetConfigToggleValue(TogglePropertyEnum toggleProperty)
+        public bool GetConfigToggleValue(ConfigPropertyEnum toggleProperty)
         {
             try
             {
@@ -268,7 +268,7 @@ namespace myTNB
             return false;
         }
 
-        public int GetConfigTimeout(TogglePropertyEnum toggleProperty)
+        internal int GetConfigTimeout(ConfigPropertyEnum toggleProperty)
         {
             try
             {
@@ -289,7 +289,29 @@ namespace myTNB
             return 0;
         }
 
-        public enum TogglePropertyEnum
+        internal T GetConfigProperty<T>(ConfigPropertyEnum toggleProperty) where T : new()
+        {
+            T valuesDictionary = new T();
+            try
+            {
+                JObject jsonObj = JObject.Parse(JSONLang);
+                if (jsonObj != null
+                    && jsonObj["ServiceConfiguration"] is JToken pageJToken
+                    && pageJToken != null
+                    && pageJToken[toggleProperty.ToString()] is JToken serviceToken
+                    && serviceToken != null)
+                {
+                    return serviceToken.ToObject<T>();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] GetParsedJson Error: ", e.Message);
+            }
+            return valuesDictionary;
+        }
+
+        public enum ConfigPropertyEnum
         {
             ForceHideDBRBanner,
             IsAboutMyBillEnquiryEnabled,
@@ -297,7 +319,8 @@ namespace myTNB
             IsGSLRebateEnabled,
             AccountStatementTimeout,
             ShouldShowAccountStatementToNonOwner,
-            MaxAccountList
+            MaxAccountList,
+            ResidentialRateCategory
         }
 
         public Dictionary<string, List<T>> GetSelectorsByPage<T>(string pageName) where T : new()

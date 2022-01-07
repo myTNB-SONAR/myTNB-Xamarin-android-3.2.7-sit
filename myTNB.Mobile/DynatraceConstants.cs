@@ -65,8 +65,8 @@
                 public struct Home
                 {
                     public const string Home_Banner = "App_Action_Home_Banner_JomPaperless";
-                    public const string Reminder_Popup_Viewmore = "App_Action_FirstLogin_MarketingPopup_ViewMore";
-                    public const string Reminder_Popup_GotIt = "App_Action_FirstLogin_MarketingPopup_GotIt";
+                    public const string Reminder_Popup_Viewmore = "App_Action_MarketingPopup_HomePage_ViewMore";
+                    public const string Reminder_Popup_GotIt = "App_Action_MarketingPopup_HomePage_GotIt";
                 }
 
                 public struct Bills
@@ -113,6 +113,12 @@
                     public const string Start_Paperless_Share_Feedback = "App_Action_StartPaperlessSuccess_ShareFeedback";
                     public const string Submit_Rating = "App_Action_DBRRating_Submit";
                     public const string Submit_Rating_Close = "App_Action_DBRRatingClose_Confirm";
+                }
+
+                public struct Usage
+                {
+                    public const string Reminder_Popup_Viewmore = "App_Action_MarketingPopup_GraphUsage_ViewMore";
+                    public const string Reminder_Popup_GotIt = "App_Action_MarketingPopup_GraphUsage_GotIt";
                 }
             }
         }

@@ -50,7 +50,7 @@ namespace myTNB.Mobile
         {
             PostEligibilityResponse postResponse = new PostEligibilityResponse();
             GetEligibilityResponse response = new GetEligibilityResponse();
-            int maxAccountList = LanguageManager.Instance.GetConfigTimeout(LanguageManager.TogglePropertyEnum.MaxAccountList);
+            int maxAccountList = LanguageManager.Instance.GetConfigTimeout(LanguageManager.ConfigPropertyEnum.MaxAccountList);
             maxAccountList = maxAccountList == 0 ? MobileConstants.MaxAccountList : maxAccountList;
             if (caList != null
                 && caList.Count <= maxAccountList)
@@ -158,8 +158,8 @@ namespace myTNB.Mobile
                     List<FeatureCAModel> eb = postEligibilityResponse.Content.FeatureCAList.FindAll(
                         x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.EB.ToString().ToUpper()).ToList();
                     List<FeatureCAModel> sd = postEligibilityResponse.Content.FeatureCAList.FindAll(
-                       x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.SD.ToString().ToUpper()).ToList();
-                    
+                        x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.SD.ToString().ToUpper()).ToList();
+
                     if (dbr != null && dbr.Count > 0)
                     {
                         BaseCAListModel baseContent = new BaseCAListModel

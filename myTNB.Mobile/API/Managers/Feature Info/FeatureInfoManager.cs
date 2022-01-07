@@ -176,7 +176,6 @@ namespace myTNB.Mobile
                         , AppInfoManager.Instance.GetUserInfo()
                         , API.NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());
-
                     BaseASMXModel responseModel = await rawResponse.ParseAsync<BaseASMXModel>();
                     PostSaveFeatureInfoResponse response = new PostSaveFeatureInfoResponse
                     {
