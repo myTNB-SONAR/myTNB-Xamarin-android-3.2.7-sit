@@ -2644,6 +2644,7 @@
     "dbrInfoDescription1": "Reduce your paper waste and be the first to make your impact in our collective move towards a more sustainable future.",
     "dbrInfoDescription2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills conveniently on myTNB App & Portal, anytime, anywhere.",
     "dbrInfoDescription2V2": "Enjoy faster and on-the-dot delivery of your freshly improved TNB bills directly on myTNB App & Portal. Learn more about the new bill layout <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">here</a>.",
+    "dbrInfoDescription2V2NonResidential": "Enjoy faster and on-the-dot delivery of your freshly improved TNB bills directly on myTNB App & Portal. Learn more about the new bill layout <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/business/understand-your-bill/online-bill-layout\">here</a>.",
     "dbrInfoDescription3": "Get your bills directly and securely on myTNB. No more worries about others seeing your bills, risk getting stolen or lost in the mail.",
     "anotherDeliveryMethod": "What if I want another bill delivery method?",
     "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "What if I want another bill delivery method?",
@@ -2700,7 +2701,8 @@
     "IsGSLRebateEnabled": true,
     "AccountStatementTimeout": 5000,
     "ShouldShowAccountStatementToNonOwner": true,
-    "MaxAccountList": 100000
+    "MaxAccountList": 100000,
+    "ResidentialRateCategory": [ "A_LV", "A_LV_D", "A_MV" ]
   },
   "StatementPeriod": {
     "title": "Account Statement",

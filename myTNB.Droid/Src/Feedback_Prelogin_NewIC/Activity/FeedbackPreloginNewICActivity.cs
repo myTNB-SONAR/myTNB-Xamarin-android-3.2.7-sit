@@ -44,8 +44,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
 using System.Threading.Tasks;
 using static myTNB.LanguageManager;
 
@@ -226,7 +224,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 txtGSLRebateSubTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_DESC);
                 txtOverVoltageClaimContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimDescription");
 
-                gslRebateConstraint.Visibility = LanguageManager.Instance.GetConfigToggleValue(TogglePropertyEnum.IsGSLRebateEnabled) ? ViewStates.Visible : ViewStates.Gone;
+                gslRebateConstraint.Visibility = LanguageManager.Instance.GetConfigToggleValue(ConfigPropertyEnum.IsGSLRebateEnabled) ? ViewStates.Visible : ViewStates.Gone;
 
                 if (!UserEntity.IsCurrentlyActive())
                 {

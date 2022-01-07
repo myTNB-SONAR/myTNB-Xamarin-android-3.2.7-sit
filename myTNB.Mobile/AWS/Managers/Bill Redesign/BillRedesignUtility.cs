@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using myTNB.Mobile.AWS.Models;
 using Newtonsoft.Json.Linq;
@@ -114,7 +113,7 @@ namespace myTNB.Mobile
                 }
                 else
                 {
-                    bool isEligibleForNonOwner = LanguageManager.Instance.GetConfigToggleValue(LanguageManager.TogglePropertyEnum.ShouldShowAccountStatementToNonOwner);
+                    bool isEligibleForNonOwner = LanguageManager.Instance.GetConfigToggleValue(LanguageManager.ConfigPropertyEnum.ShouldShowAccountStatementToNonOwner);
                     if (isEligibleForNonOwner)
                     {
                         return isCAEligible;
@@ -133,7 +132,6 @@ namespace myTNB.Mobile
             }
             return false;
         }
-
 
         public bool ShouldShowHomeCard
         {
@@ -161,6 +159,23 @@ namespace myTNB.Mobile
                 }
                 return false;
             }
+        }
+
+        public bool IsResidential(string rateCategory)
+        {
+            List<string> residentialRateCategoryList = LanguageManager.Instance.GetConfigProperty<List<string>>(LanguageManager.ConfigPropertyEnum.ResidentialRateCategory);
+            if (residentialRateCategoryList != null)
+            {
+                for (int i = 0; i < residentialRateCategoryList.Count; i++)
+                {
+                    string item = residentialRateCategoryList[i].ToLower();
+                    if (item == rateCategory.ToLower())
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }
