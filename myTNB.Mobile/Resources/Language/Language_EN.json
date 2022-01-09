@@ -638,7 +638,12 @@
     "viewAccountStatement": "View Account Statement",
     "updateNow": "Update Now",
     "notification": "Notification",
-    "serviceDistruption": "Service Disruption"
+    "serviceDistruption": "Service Disruption",
+    "toastStopNotiUpdate": "You have stopped the notification updates for this particular service disruption!",
+    "toastResumeNotiUpdate": "You have resumed the notification updates for this particular service disruption!",
+    "notifyCheck": "Only notify me when my power is back",
+    "callUs": "Need help? <a href='tel: 15454'>Call us</a> for more information",
+    "shareFeedback": "Share Feedback"
   },
   "AddAccount": {
     "title": "Add Electricity Account",

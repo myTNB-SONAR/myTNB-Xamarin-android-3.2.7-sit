@@ -474,6 +474,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     if (customerAccountListResponse.customerAccountData.Count > 0)
                     {
+                        CustomerBillingAccount.RemoveActive();
                         ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
                     }
                     else

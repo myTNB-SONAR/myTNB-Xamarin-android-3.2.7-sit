@@ -158,7 +158,15 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 }
                 else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS)
                         || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE)
-                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION))
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3))
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_sd));
                 }

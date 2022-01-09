@@ -351,12 +351,22 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS = "SDIP";
         public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION = "SDOR";
         public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW = "SDRC";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI = "SDHBI";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1 = "SDHBU1";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2 = "SDHBU2";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3 = "SDHBU3";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4 = "SDHBU4";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK = "SDOR";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2 = "SDHBR";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3 = "SDFB";
+        public const string NOTIFICATION_TYPE_ID_SD = "1000028";
 
         public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
 
         public const string ACCOUNT_NICKNAME_PATTERN = "#accountNickname#";
         public const string ACCOUNT_PROFILENAME_PATTERN = "#profileName#";
         public const string ACCOUNT_ACCNO_PATTERN = "#accno#";
+        public const string ACCOUNT_ACCNO_PATTERNS = "#accnos#";
         public const string ACCOUNT_FULLNAME_PATTERN = "#accountFullname/accountEmailAddress#";
 
         public const string APP_TUTORIAL_PATTERN = "#dropdown#";

@@ -49,17 +49,47 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"/>
-                <TextView
-                    android:id="@+id/notificationDetailMessage"
+				<TextView
+					android:id="@+id/notificationDetailMessage"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="Your bill is RM 234.25. Got a minute? Make a quick and easy payment on the myTNB app now. Account: My House"
+					android:textSize="14dp"
+					android:lineHeight="20dp"
+					android:textColor="@color/tunaGrey"
+					android:textColorLink="@color/powerBlue"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"/>
+                <LinearLayout
+                    android:id="@+id/Lay_notify_check"
+                    android:visibility="gone"
+                    android:layout_marginTop="17dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Your bill is RM 234.25. Got a minute? Make a quick and easy payment on the myTNB app now. Account: My House"
-                    android:textSize="14dp"
-                    android:lineHeight="20dp"
-                    android:textColor="@color/tunaGrey"
-                    android:textColorLink="@color/powerBlue"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"/>
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:id="@+id/notify_check"
+                        android:layout_height="28dp"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:paddingStart="4dp"
+                        android:checked="false"
+                        android:text="Only notify me when my power is back"
+                        android:textColor="@color/black"
+                        android:textSize="12dp"
+                        android:button="@drawable/checkbox_selector" />
+                </LinearLayout>
+                <TextView
+                        android:text="Need help? Call us for more information"
+                        android:textSize="12dp"
+                        android:visibility="gone"
+                        android:textColor="@color/tunaGrey"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColorLink="@color/powerBlue"
+                        android:id="@+id/txtCallsBottom"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="17dp"
+                        android:layout_marginBottom="16dp" />
             </LinearLayout>
         </ScrollView>
         <include

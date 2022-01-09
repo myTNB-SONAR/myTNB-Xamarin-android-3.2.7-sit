@@ -6,8 +6,10 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Text;
 using CheeseBind;
 using DynatraceAndroid;
 using Google.Android.Material.Snackbar;
@@ -29,6 +31,7 @@ using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.NotificationDetails.MVP;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Rating.Model;
+using myTNB_Android.Src.ServiceDistruptionRating.Activity;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
@@ -56,6 +59,14 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         [BindView(Resource.Id.notificationMainLayout)]
         ScrollView notificationMainLayout;
 
+        [BindView(Resource.Id.notify_check)]
+        CheckBox notify_check;
+
+        [BindView(Resource.Id.txtCallsBottom)]
+        TextView txtCallsBottom;
+
+        [BindView(Resource.Id.Lay_notify_check)]
+        LinearLayout layNotifyCheck;
 
         Models.NotificationDetails notificationDetails;
         UserNotificationData userNotificationData;
@@ -237,10 +248,13 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 }
                 SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 TextViewUtils.SetMuseoSans500Typeface(notificationDetailTitle);
-                TextViewUtils.SetMuseoSans300Typeface(notificationDetailMessage);
+                TextViewUtils.SetMuseoSans300Typeface(notificationDetailMessage, txtCallsBottom);
+                TextViewUtils.SetMuseoSans300Typeface(notify_check);
+                TextViewUtils.SetTextSize12(notify_check);
+                TextViewUtils.SetTextSize12(txtCallsBottom);
                 TextViewUtils.SetTextSize14(notificationDetailMessage);
                 TextViewUtils.SetTextSize16(notificationDetailTitle);
-
+                
                 if (notificationDetails != null && notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID)
                 {
                     notificationMainLayout.SetBackgroundColor(Color.ParseColor("#ffffff"));
@@ -280,6 +294,25 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
+        private void Notify_check_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            try
+            {
+                if (notify_check.Checked)
+                {
+                    ShowStopNotiUpdate();
+                }
+                else
+                {
+                    ShowResumeNotiUpdate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
         public void RenderUI()
         {
             try
@@ -315,20 +348,52 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                             .Create(this, string.Empty)
                             .SetTextView(notificationDetailMessage)
                             .SetMessage(detailModel.message)
-                            .Build(dynatraceTag ?? string.Empty)
+                            .Build(string.Empty)
                             .GetProcessedTextView();
 
-                        if (this.Resources.DisplayMetrics.WidthPixels <= 1200)
+                        if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI ||
+                            notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1 ||
+                            notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2 ||
+                            notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3 ||
+                            notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4)
+                        {
+                            layNotifyCheck.Visibility = ViewStates.Visible;
+                            txtCallsBottom.Visibility = ViewStates.Visible;
+
+                            txtCallsBottom.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("PushNotificationDetails", "callUs"));
+                            notify_check.Text = Utility.GetLocalizedLabel("PushNotificationDetails", "notifyCheck");
+                            string txtcallsUs = Utility.GetLocalizedLabel("PushNotificationDetails", "callUs");
+                            txtCallsBottom = LinkRedirectionUtils
+                                .Create(this, string.Empty)
+                                .SetTextView(txtCallsBottom)
+                                .SetMessage(txtcallsUs)
+                                .Build(dynatraceTag ?? string.Empty)
+                                .GetProcessedTextView();
+
+                            notify_check.CheckedChange += Notify_check_CheckedChange;
+                        }
+
+                        if (this.Resources.DisplayMetrics.WidthPixels <= 1080)
                         {
                             TextView textView = FindViewById<TextView>(Resource.Id.notificationDetailMessage);
-                            int layWidth = this.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.07f) - GetDeviceHorizontalScaleInPixel(0.07f);
-                            LinearLayout.LayoutParams paramsss = new LinearLayout.LayoutParams(layWidth, ViewGroup.LayoutParams.MatchParent);
-                            textView.LayoutParameters = paramsss;
+                            int layWidth = this.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.048f) - GetDeviceHorizontalScaleInPixel(0.048f);
                             ViewGroup.MarginLayoutParams txtBody = (ViewGroup.MarginLayoutParams)notificationDetailMessage.LayoutParameters;
-                            txtBody.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
-                            txtBody.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
-                            notificationDetailMessage.LayoutParameters = txtBody;
-                            notificationDetailMessage.RequestLayout();
+                            txtBody.SetMargins(GetDeviceHorizontalScaleInPixel(0.048f), 0, GetDeviceHorizontalScaleInPixel(0.048f), 0);
+                            //txtBody.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+                            textView.SetMaxWidth(layWidth);
+                            textView.LayoutParameters = txtBody;
+                            textView.RequestLayout();
+                        }
+                        else if (this.Resources.DisplayMetrics.WidthPixels <= 1440)
+                        {
+                            TextView textView = FindViewById<TextView>(Resource.Id.notificationDetailMessage);
+                            int layWidth = this.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.05f) - GetDeviceHorizontalScaleInPixel(0.05f);
+                            ViewGroup.MarginLayoutParams txtBody = (ViewGroup.MarginLayoutParams)notificationDetailMessage.LayoutParameters;
+                            txtBody.SetMargins(GetDeviceHorizontalScaleInPixel(0.05f), 0, GetDeviceHorizontalScaleInPixel(0.05f), 0);
+                            //txtBody.RightMargin = GetDeviceHorizontalScaleInPixel(0.047f);
+                            textView.SetMaxWidth(layWidth);
+                            textView.LayoutParameters = txtBody;
+                            textView.RequestLayout();
                         }
                     }
 
@@ -464,6 +529,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShareFeedback()
+        {
+            Intent payment_activity = new Intent(this, typeof(ServiceDistruptionRatingActivity));
+            StartActivity(payment_activity);
         }
 
         public void PayNow(AccountData mSelectedAccountData)
@@ -629,6 +700,32 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 DashboardIntent.PutExtra("DATA", JsonConvert.SerializeObject(accountData));
                 DashboardIntent.AddFlags(ActivityFlags.ClearTop);
                 StartActivity(DashboardIntent);
+            }
+        }
+
+        private void ShowStopNotiUpdate()
+        {
+            try
+            {
+                ToastUtils.OnDisplayToast(this, string.Format(Utility.GetLocalizedLabel("PushNotificationDetails", "toastStopNotiUpdate"), TextViewUtils.FontSelected));
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ShowResumeNotiUpdate()
+        {
+            try
+            {
+                ToastUtils.OnDisplayToast(this, string.Format(Utility.GetLocalizedLabel("PushNotificationDetails", "toastResumeNotiUpdate"), TextViewUtils.FontSelected));
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
             }
         }
 

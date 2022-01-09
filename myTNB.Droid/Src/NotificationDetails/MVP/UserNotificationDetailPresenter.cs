@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -283,8 +284,14 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             imageResourceBanner = Resource.Drawable.sd_in_progress_notification;
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3:
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2:
                     case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION:
                         {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, "shareFeedback"),
+                                   delegate () { ShareFeedbackPage(); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
                             imageResourceBanner = Resource.Drawable.sd_restoration_notification;
                             break;
                         }
@@ -315,6 +322,43 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 if (notificationDetailMessage.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
                 {
                     notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + accountName + "\"");
+                }
+
+                // check if have have #accnos#
+                if (notificationDetailMessage.Contains(Constants.ACCOUNT_ACCNO_PATTERNS))
+                {
+                    try
+                    {
+                        string accData = notificationDetails.AccountNum;
+                        List<string> CAs = accData.Split(',').ToList();
+
+                        //only allow multiple ca can access this data
+                        if (CAs.Count > 1)
+                        {
+                            int num = 1;
+                            string stringFormat =  "{0}. {1}<br>";
+                            string preparedString = string.Empty;
+                            foreach (var ca in CAs)
+                            {
+                                List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+                                int caindex = accounts.FindIndex(x => x.AccNum == ca);
+                                if (caindex > -1)
+                                {
+                                    string accountNickname = accounts[caindex].AccDesc ?? string.Empty;
+                                    if (!string.IsNullOrEmpty(accountNickname) && !string.IsNullOrWhiteSpace(accountNickname))
+                                    {
+                                        preparedString = preparedString + String.Format(stringFormat, num++, accountNickname);
+                                    }
+                                }
+                            }
+                            notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERNS, preparedString); //accnos
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+
                 }
 
                 notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
@@ -479,6 +523,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         private void ViewTips()
         {
             this.mView.ViewTips();
+        }
+
+        private void ShareFeedbackPage()
+        {
+            this.mView.ShareFeedback();
         }
 
         private async void SubmitMeterReading(Models.NotificationDetails notificationDetails)

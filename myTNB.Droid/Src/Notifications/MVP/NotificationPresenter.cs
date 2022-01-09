@@ -502,22 +502,47 @@ namespace myTNB_Android.Src.Notifications.MVP
                     {
                         if (!TextUtils.IsEmpty(entity.NotificationTypeId))
                         {
-                            /*NotificationTypesEntity notificationTypesEntity = new NotificationTypesEntity();
-                            notificationTypesEntity = NotificationTypesEntity.GetById(entity.NotificationTypeId);*/
-                            //if (notificationTypesEntity != null)
-                            //{
-                                if (!TextUtils.IsEmpty(entity.NotificationTypeId))
+                           if (!TextUtils.IsEmpty(entity.NotificationTypeId))
+                           {
+                                UserNotificationData userNotificationData = UserNotificationData.Get(entity, entity.NotificationTypeId);
+                                if (!userNotificationData.IsDeleted)
                                 {
-                                    UserNotificationData userNotificationData = UserNotificationData.Get(entity, entity.NotificationTypeId);
-                                    if (!userNotificationData.IsDeleted)
+                                    if (userNotificationData.IsForceDisplay)
                                     {
-                                        if (userNotificationData.IsForceDisplay)
+                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                    }
+                                    else if (userNotificationData.NotificationType != "ODN")
+                                    {
+                                        if (userNotificationData.ODNBatchSubcategory == "ODNAsBATCH")
                                         {
-                                            listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                            if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
+                                            {
+                                                if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                                                {
+                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                }
+                                            }
+                                            else if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
+                                            {
+                                                if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
+                                                {
+                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                }
+                                            }
+                                            else
+                                            {
+                                                listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                            }
                                         }
-                                        else if (userNotificationData.NotificationType != "ODN")
+                                        else
                                         {
-                                            if (userNotificationData.ODNBatchSubcategory == "ODNAsBATCH")
+                                            if (UserEntity.GetActive().Email.Equals(userNotificationData.Email)
+                                                && MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
                                             {
                                                 if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
                                                 {
@@ -527,7 +552,11 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                     }
                                                 }
                                                 else if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS
-                                                        || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW)
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
                                                 {
                                                     if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
                                                     {
@@ -539,43 +568,28 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                     listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                 }
                                             }
-                                            else
+                                            else if (userNotificationData.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD)
                                             {
-                                                if (UserEntity.GetActive().Email.Equals(userNotificationData.Email)
-                                                    && MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
+                                                if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
                                                 {
-                                                    if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
-                                                    {
-                                                        if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
-                                                        {
-                                                            listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
-                                                        }
-                                                    }
-                                                    else if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS
-                                                        || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW)
-                                                    {
-                                                        if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
-                                                        {
-                                                            listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
-                                                        }
-                                                    }
-                                                    else
+                                                    string accData = userNotificationData.AccountNum;
+                                                    List<string> CAs = accData.Split(',').ToList();
+
+                                                    if (CAs.Count > 1)
                                                     {
                                                         listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                     }
                                                 }
                                             }
                                         }
-                                        else
-                                        {
-                                            listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
-                                        }
                                     }
-                               // }
-                            }
-                            
+                                    else
+                                    {
+                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                    }
+                                }
+                           }
                         }
-
                     }
                 }
 

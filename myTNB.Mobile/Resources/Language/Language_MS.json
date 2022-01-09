@@ -638,7 +638,12 @@
     "viewAccountStatement": "Semak Penyata Akaun",
     "updateNow": "Kemaskini Sekarang",
     "notification": "Notifikasi",
-    "serviceDistruption": "Gangguan Perkhidmatan"
+    "serviceDistruption": "Gangguan Perkhidmatan",
+    "toastStopNotiUpdate": "You have stopped the notification updates for this particular service disruption!",
+    "toastResumeNotiUpdate": "You have resumed the notification updates for this particular service disruption!",
+    "notifyCheck": "Only notify me when my power is back",
+    "callUs": "Need help? <a href='tel: 15454'>Call us</a> for more information",
+    "shareFeedback": "Share Feedback"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
