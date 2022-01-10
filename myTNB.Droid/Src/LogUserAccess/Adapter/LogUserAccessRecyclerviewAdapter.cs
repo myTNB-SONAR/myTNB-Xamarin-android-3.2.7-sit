@@ -68,25 +68,25 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                     {
                         if (UserEntity.GetActive().Email == data.CreateBy)
                         {
-                            //if (data.IsPreRegister)
-                            //{
-                            //    viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(mActicity, Resource.Drawable.icons_activity_log_joined));
+                            if (data.IsPreRegister)
+                            {
+                                viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(mActicity, Resource.Drawable.icons_activity_log_joined));
 
-                            //    string txtdata = Utility.GetLocalizedLabel("UserAccess", "AddNonTNBUserSuccess");
-                            //    string temp = string.Format(txtdata, data.UserName);
+                                string txtdata = Utility.GetLocalizedLabel("UserAccess", "AddNonTNBUserSuccess");
+                                string temp = string.Format(txtdata, data.UserName);
 
-                            //    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                            //    {
-                            //        viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
-                            //    }
-                            //    else
-                            //    {
-                            //        viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
-                            //    }
+                                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                                {
+                                    viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                                }
+                                else
+                                {
+                                    viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                                }
 
-                            //}
-                            //else
-                            //{
+                            }
+                            else
+                            {
                                 //viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(viewHolder, Resource.Drawable.icons_activity_log_joined));
                                 viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(mActicity, Resource.Drawable.icons_activity_log_joined));
 
@@ -101,7 +101,7 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                                 {
                                     viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
                                 }
-                            //}
+                            }
                             
                         }
                         else

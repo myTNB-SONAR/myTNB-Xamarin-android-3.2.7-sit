@@ -681,12 +681,33 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        internal static void UpdateNCFlag(ISharedPreferences mSharedPref)       
+        internal static void UpdateNCFlag(ISharedPreferences mSharedPref)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();
             editor.Remove("NCFlag");
             editor.Apply();
         }
+
+        public static void SaveNewNCFlag(ISharedPreferences prefs, bool flag)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("NewNCFlag", flag);
+            editor.Apply();
+        }
+
+        public static bool GetNewNCFlag(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("NewNCFlag", false);
+        }
+
+        internal static void UpdateNewNCFlag(ISharedPreferences mSharedPref)
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("NewNCFlag");
+            editor.Apply();
+        }
+
+
 
         public static void SaveDeviceId(ISharedPreferences prefs, string deviceID)
         {

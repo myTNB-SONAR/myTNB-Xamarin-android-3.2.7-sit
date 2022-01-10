@@ -452,7 +452,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             try
             {
                 string nickname = accountData.AccountNickName;
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("UserAccess", "AddNonTNBUserSuccess"), email, nickname)), Snackbar.LengthIndefinite)
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("UserAccess", "AddNonTNBUserSuccessToast"), email, nickname)), Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {

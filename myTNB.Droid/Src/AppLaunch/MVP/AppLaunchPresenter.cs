@@ -753,14 +753,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             try
             {
                 
-                string ncAccounts = UserSessions.GetNCDate(mSharedPref);
+                string currentDate = UserSessions.GetNCDate(mSharedPref);
                 List<CustomerBillingAccount> listNC = CustomerBillingAccount.NCAccountList();
 
                 if (listNC != null)
                 {
                     if (listNC.Count > 0)
                     {
-                        var OldNCAccDate = ncAccounts;
+                        var OldNCAccDate = currentDate;
 
                         if (OldNCAccDate != null)
                         {
@@ -786,24 +786,18 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             if (countNewNCAdded > 0)
                             {
                                 UserSessions.UpdateNCFlag(mSharedPref);
-                                UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate);
-                                UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //overlay highlight flag
-                                //trigger home ovelay tutorial
-                                UserSessions.UpdateNCTutorialShown(mSharedPref);
-                                
+                                UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save created date
+                                UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //count nc ca
+                                UserSessions.UpdateNCTutorialShown(mSharedPref); //trigger home ovelay tutorial
                             }
 
                         }
                         else
                         {
-                            UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save date kalau kosong
-
+                            UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save date if null
                             UserSessions.UpdateNCFlag(mSharedPref);
-                            UserSessions.SaveNCFlag(mSharedPref, listNC.Count);
-                            
-                            //pannggil overlay
-                            UserSessions.UpdateNCTutorialShown(mSharedPref);
-
+                            UserSessions.SaveNCFlag(mSharedPref, listNC.Count); //assign total count nc ca = 0
+                            UserSessions.UpdateNCTutorialShown(mSharedPref); //trigger home ovelay tutorial
                         }
 
                     }

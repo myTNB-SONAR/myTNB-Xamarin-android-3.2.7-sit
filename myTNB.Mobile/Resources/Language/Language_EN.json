@@ -1659,7 +1659,7 @@
     "cancelAddSuccess": "{0} is cancelled from being added as a viewer to this electricity account.",
     //add by wan
     "AddTNBUserSuccess": "{0} now has access to {1} on myTNB.",
-    "AddNonTNBUserSuccess": "You have invited {0} to join myTNB and view this electricity account.",
+    "AddNonTNBUserSuccess": "You have invited <strong>{0}</strong> to join myTNB and view this electricity account.",
     "hint_email": "User Email Address",
     "removeAccountUserAccesssLog": "<strong>You</strong> removed <strong>{0}</strong> from this electricity account.",
     "removeAccountLog": "<strong>{0}</strong> removed this electricity account from their view.",
@@ -1675,7 +1675,8 @@
     "headerTextAddNewUser": "We'll invite them to register for an account if they don't have any.",
     "thisWeekTitle": "This Week",
     "lastWeekTitle": "Last Week",
-    "lastMonthTitle": "Last Month"
+    "lastMonthTitle": "Last Month",
+    "AddNonTNBUserSuccessToast": "You have invited {0} to join myTNB and view this electricity account."
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Payment Details",
