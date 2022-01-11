@@ -83,10 +83,10 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         public double AmtCustBal { get; set; }
 
         [JsonProperty("ItemizedBillings")]
-        public List<ItemizedBillingDetails> ItemizedBilling { get; set; }   
+        public List<ItemizedBillingDetails> ItemizedBilling { get; set; }
 
         [JsonProperty("OpenChargesTotal")]
-        public double OpenChargesTotal { get; set; }   
+        public double OpenChargesTotal { get; set; }
 
         [JsonProperty("WhatIsThisLink")]
         public string WhatIsThisLink { get; set; }
@@ -98,7 +98,7 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         public string WhatIsThisMessage { get; set; }
 
         [JsonProperty("WhatIsThisButtonText")]
-        public string WhatIsThisButtonText { get; set; } 
+        public string WhatIsThisButtonText { get; set; }
 
         [JsonProperty("IsSelected")]
         public bool IsSelected { get; set; }
@@ -111,6 +111,9 @@ namespace myTNB_Android.Src.myTNBMenu.Models
 
         [JsonProperty("smartMeterCode")]
         public string SmartMeterCode { get; set; }
+
+        [JsonProperty("RateCategory")]
+        public string RateCategory { get; set; }
 
         internal static AccountData Copy(AccountDetails accountDetails, bool isSelected)
         {
@@ -234,8 +237,8 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 IsOwner = accountDetails.isOwned,
                 AccountCategoryId = accountDetails.AccountCategoryId,
                 SmartMeterCode = accountDetails.SmartMeterCode,
-                IsSelected = isSelected
-
+                IsSelected = isSelected,
+                RateCategory = accountDetails.RateCategory
             };
         }
 

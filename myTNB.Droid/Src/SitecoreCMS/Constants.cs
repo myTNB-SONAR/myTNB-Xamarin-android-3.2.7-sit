@@ -282,7 +282,7 @@
                 public const string HowDoesCopyOfIdentification = "/sitecore/content/myTNBapp/Contents/HowDoesCopyOfIdentificationToolTip";
                 public const string HowDoesProofOfConsent = "/sitecore/content/myTNBapp/Contents/ProofOwnerConsentToolTips";
 
-                public const string NewBillDesignDiscoverMore = "/sitecore/content/myTNBapp/Contents/New Bill Design";
+                public const string NewBillDesignDiscoverMore = "/sitecore/content/myTNBapp/Contents/New Bill Design Test";
             }
         }
     }

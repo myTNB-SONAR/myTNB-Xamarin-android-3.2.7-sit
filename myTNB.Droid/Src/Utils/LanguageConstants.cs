@@ -17,6 +17,7 @@
         internal static readonly string PUSH_NOTIF_DETAILS = "PushNotificationDetails";
         internal static readonly string DBR_WEBVIEW = "DBRWebview";
         internal static readonly string USAGE = "Usage";
+        internal static readonly string MANAGE_DIGITAL_BILL = "ManageDigitalBillLanding";
 
         internal struct Common
         {
@@ -194,6 +195,21 @@
             internal static readonly string DBR_REMINDER_POPUP_MSG = "dbrReminderPopupMessage";
             internal static readonly string DBR_REMINDER_POPUP_VIEW_MORE = "dbrReminderPopupViewMore";
             internal static readonly string DBBR_REMINDER_POPUP_GOT_IT = "dbrReminderPopupGotIt";
+        }
+
+        internal struct ManageDigitalBill
+        {
+            internal static readonly string DBR_INFO_TITLE_0 = "dbrInfoTitle0";
+            internal static readonly string DBR_INFO_TITLE_1 = "dbrInfoTitle1";
+            internal static readonly string DBR_INFO_TITLE_2 = "dbrInfoTitle2";
+            internal static readonly string DBR_INFO_TITLE_2_V2 = "dbrInfoTitle2V2";
+            internal static readonly string DBR_INFO_DESC_2_V2_NON_RES = "dbrInfoDescription2V2NonResidential";
+            internal static readonly string DBR_INFO_TITLE_3 = "dbrInfoTitle3";
+            internal static readonly string DBR_INFO_DESC_0 = "dbrInfoDescription0";
+            internal static readonly string DBR_INFO_DESC_1 = "dbrInfoDescription1";
+            internal static readonly string DBR_INFO_DESC_2 = "dbrInfoDescription2";
+            internal static readonly string DBR_INFO_DESC_2_V2 = "dbrInfoDescription2V2";
+            internal static readonly string DBR_INFO_DESC_3 = "dbrInfoDescription3";
         }
     }
 }

@@ -66,19 +66,6 @@ namespace myTNB_Android.Src.Database.Model
             return hasShown;
         }
 
-        public static void RemoveItemWithCA(string ca)
-        {
-            try
-            {
-                var db = DBHelper.GetSQLiteConnection();
-                db.Execute("DELETE FROM MarketingPopUpEntity WHERE ContractAccount = ?", ca);
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
-            }
-        }
-
         public static void RemoveAll()
         {
             try
