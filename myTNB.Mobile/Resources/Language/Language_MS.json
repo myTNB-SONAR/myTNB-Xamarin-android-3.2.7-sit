@@ -639,11 +639,11 @@
     "updateNow": "Kemaskini Sekarang",
     "notification": "Notifikasi",
     "serviceDistruption": "Gangguan Perkhidmatan",
-    "toastStopNotiUpdate": "You have stopped the notification updates for this particular service disruption!",
-    "toastResumeNotiUpdate": "You have resumed the notification updates for this particular service disruption!",
-    "notifyCheck": "Only notify me when my power is back",
-    "callUs": "Need help? <a href='tel: 15454'>Call us</a> for more information",
-    "shareFeedback": "Share Feedback"
+    "toastStopNotiUpdate": "BM_You have stopped the notification updates for this particular service disruption!",
+    "toastResumeNotiUpdate": "BM_You have resumed the notification updates for this particular service disruption!",
+    "notifyCheck": "BM_Only notify me when my power is back",
+    "callUs": "BM_Need help? <a href='tel: 15454'>Call us</a> for more information",
+    "shareFeedback": "BM_Share Feedback"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -2881,5 +2881,17 @@
     "subTitle2": "Notifikasi ini hanya tersedia untuk perkhidmatan elektrik TNB dan tidak termasuk mana-mana bekalan terputus yang terjadi di dalam premis.",
     "note": "*Ciri gangguan perkhidmatan hanya disediakan di kawasan yang terpilih dan akan dikembangkan ke kawasan yang lain tidak lama lagi!",
     "buttonCTA": "Baik, Faham!"
+  },
+  "FeedBackSD": {
+    "title": "BM_Send Us Your Feedback",
+    "helpfulTitle": "BM_Did you find the Service Disruption notifications helpful?",
+    "titleSelectApplies": "BM_Select all that applies:",
+    "titleLastly": "BM_Lastly, anything else to add?",
+    "tellusMore": "BM_Tell us more (Optional)",
+    "hinttellusMore": "BM_characters left",
+    "btnCancel": "BM_Cancel",
+    "btnSubmit": "BM_Submit",
+    "thumbUpYes": "BM_Yes, absolutely!",
+    "thumbDownNo": "BM_Not really"
   }
 }

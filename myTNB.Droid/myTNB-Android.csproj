@@ -7555,6 +7555,13 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\ServiceDistruptionRating\MVP\ServiceDistruptionRatingContract.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\MVP\ServiceDistruptionRatingPresenter.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Request\UserServicedistruptionSub.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserServicedistruptionSubResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserServiceDistruptionSetSubResponse.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Request\UserServiceDistruptionSetSubRequest.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Model\ServiceDisruptionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -9244,6 +9251,9 @@
     <Folder Include="Src\ServiceDistruptionRating\Activity\" />
     <Folder Include="Src\ServiceDistruptionRating\Adapter\" />
     <Folder Include="Src\ServiceDistruptionRating\Model\" />
+    <Folder Include="Src\ServiceDistruptionRating\MVP\" />
+    <Folder Include="Src\ServiceDistruptionRating\Request\" />
+    <Folder Include="Src\ServiceDistruptionRating\Response\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

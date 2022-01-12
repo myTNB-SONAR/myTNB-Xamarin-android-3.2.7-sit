@@ -20,6 +20,8 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.NotificationDetails.Models;
+using myTNB_Android.Src.ServiceDistruptionRating.Model;
+using myTNB_Android.Src.ServiceDistruptionRating.Request;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
@@ -873,6 +875,104 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        public async void OnCheckSubscription(string SdEventId, string email)
+        {
+            try
+            {
+                this.mView.ShowLoadingScreen();
+                UserServicedistruptionSub request = new UserServicedistruptionSub(email, SdEventId);
+                string ts = JsonConvert.SerializeObject(request);
+                UserServicedistruptionSubResponse response = await ServiceApiImpl.Instance.GetUserServiceDistruptionSub(request);
+                if (response.IsSuccessResponse())
+                {
+                    this.mView.UpateCheckBox((bool)response.Response.Data.subscriptionStatus);
+                }
+                else
+                {
+                    this.mView.UpateCheckBox(true);
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+                this.mView.HideLoadingScreen();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public async void OnSetSubscription(string SdEventId, string Email, bool checkStatus)
+        {
+            try
+            {
+                this.mView.ShowLoadingScreen();
+                bool status = checkStatus == true ? false : true;
+                var SDInfo = new ServiceDisruptionInfo
+                {
+                    sdEventId = SdEventId,
+                    email = Email,
+                    subscriptionStatus = status
+                };
+                UserServiceDistruptionSetSubRequest request = new UserServiceDistruptionSetSubRequest("heartbeatsubscription",SDInfo);
+                string ts = JsonConvert.SerializeObject(request);
+                UserServiceDistruptionSetSubResponse response = await ServiceApiImpl.Instance.ServiceDisruptionInfo(request);
+                if (response.Response.ErrorCode  == Constants.SERVICE_CODE_SUCCESS)
+                {
+                    if (checkStatus)
+                    {
+                        this.mView.ShowStopNotiUpdate();
+                    }
+                    else
+                    {
+                        this.mView.ShowResumeNotiUpdate();
+                    }
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+                this.mView.HideLoadingScreen();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         //checking count feedback EnergyBudget
         public async void OnCheckFeedbackCount()

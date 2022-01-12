@@ -63,6 +63,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void ShowUpateApp();
             
             void ShareFeedback();
+
+            void ShowStopNotiUpdate();
+
+            void ShowResumeNotiUpdate();
+
+            void UpateCheckBox(bool ishaveValue);
         }
     }
 }

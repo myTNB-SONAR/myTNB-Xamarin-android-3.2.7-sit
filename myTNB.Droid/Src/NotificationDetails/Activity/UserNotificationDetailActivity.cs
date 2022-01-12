@@ -68,6 +68,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         [BindView(Resource.Id.Lay_notify_check)]
         LinearLayout layNotifyCheck;
 
+        string timeStamp;
         Models.NotificationDetails notificationDetails;
         UserNotificationData userNotificationData;
         internal static myTNB.Mobile.NotificationOpenDirectDetails Notification;
@@ -287,6 +288,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     mPresenter.EvaluateDetail(notificationDetails);
                     RenderUI();
                 }
+
+                checkStatus();
             }
             catch (Exception e)
             {
@@ -294,17 +297,41 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
+        public void checkStatus()
+        {
+            if (notificationDetails != null)
+            {
+                if (notificationDetails.SDStatusDetails.ServiceDisruptionID != null)
+                {
+                    this.RunOnUiThread(() =>
+                    {
+                        try
+                        {
+                            string sdEventId = notificationDetails.SDStatusDetails.ServiceDisruptionID;
+                            mPresenter.OnCheckSubscription(sdEventId, notificationDetails.Email);
+                        }
+                        catch (Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+                    });
+                }
+
+                if (notificationDetails.SDStatusDetails.NotificationTimestamp != null)
+                {
+                    timeStamp = notificationDetails.SDStatusDetails.NotificationTimestamp;
+                }
+            }
+        }
+
         private void Notify_check_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
             try
             {
-                if (notify_check.Checked)
+                if (!string.IsNullOrEmpty(notificationDetails.SDStatusDetails.ServiceDisruptionID) && !string.IsNullOrEmpty(notificationDetails.Email))
                 {
-                    ShowStopNotiUpdate();
-                }
-                else
-                {
-                    ShowResumeNotiUpdate();
+                    string sdIdEvent = notificationDetails.SDStatusDetails.ServiceDisruptionID;
+                    mPresenter.OnSetSubscription(sdIdEvent, notificationDetails.Email, notify_check.Checked);
                 }
             }
             catch (Exception ex)
@@ -369,8 +396,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                                 .SetMessage(txtcallsUs)
                                 .Build(dynatraceTag ?? string.Empty)
                                 .GetProcessedTextView();
-
-                            notify_check.CheckedChange += Notify_check_CheckedChange;
                         }
 
                         if (this.Resources.DisplayMetrics.WidthPixels <= 1080)
@@ -703,7 +728,23 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
-        private void ShowStopNotiUpdate()
+        public void UpateCheckBox(bool status)
+        {
+            this.RunOnUiThread(() =>
+            {
+                try
+                {
+                    notify_check.Checked = status == true ? false : true;
+                    notify_check.CheckedChange += Notify_check_CheckedChange;
+                }
+                catch (Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
+            });
+        }
+
+        public void ShowStopNotiUpdate()
         {
             try
             {
@@ -716,7 +757,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
-        private void ShowResumeNotiUpdate()
+        public void ShowResumeNotiUpdate()
         {
             try
             {
