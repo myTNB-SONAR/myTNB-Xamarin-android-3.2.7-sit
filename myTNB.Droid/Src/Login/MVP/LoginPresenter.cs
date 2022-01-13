@@ -789,15 +789,20 @@ namespace myTNB_Android.Src.Login.MVP
                         }
                         else
                         {
+                            UserSessions.SaveNewNCFlag(mSharedPref, true);
                             UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save date if null
                             UserSessions.UpdateNCFlag(mSharedPref);
-                            UserSessions.SaveNCFlag(mSharedPref, 0); //assign total count nc ca = 0
+                            UserSessions.SaveNCFlag(mSharedPref, listNC.Count); //assign total count nc ca = 0
                             UserSessions.UpdateNCTutorialShown(mSharedPref); //trigger home ovelay tutorial
+                            //UserSessions.UpdateNewNCFlag(mSharedPref);
                         }
 
                     }
-
-
+                    else
+                    {
+                        DateTime current = Convert.ToDateTime(DateTime.Now);
+                        UserSessions.SetNCDate(mSharedPref, current.ToString()); //save date if null
+                    }
                 }
 
             }

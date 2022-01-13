@@ -2473,8 +2473,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
                 List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
                 List<SMRAccount> SMeterAccountList = new List<SMRAccount>();
-                //List<CustomerBillingAccount> ncList = CustomerBillingAccount.NCAccountList();
-                //UserSessions.SetNCList(ncList);
                 if (eligibleSMRBillingAccounts.Count > 0)
                 {
                     foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)

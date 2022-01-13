@@ -23,6 +23,7 @@ using myTNB_Android.Src.NewAppTutorial.MVP;
 using Android.Content;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB.Mobile;
+using myTNB_Android.Src.myTNBMenu.Models;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
@@ -647,7 +648,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             return mainBillingHistoryList != null && mainAccountChargeModelList != null;
         }
 
-        public List<NewAppModel> OnGeneraNewAppTutorialList(bool _isOwner,bool _isCADBREligible, bool _isBillStatement)
+        public List<NewAppModel> OnGeneraNewAppTutorialList(bool _isOwner,bool _isCADBREligible, bool _isBillStatement, AccountData accountData)
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
@@ -809,15 +810,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                         IsButtonShow = false
                     });
                 }
-                newList.Add(new NewAppModel()
+                if (accountData.IsOwner)
                 {
-                    ContentShowPosition = ContentType.TopLeft,
-                    ContentTitle = Utility.GetLocalizedLabel("Bills", "tutorialHistoryTitle"),//"Keep track of your charges.",
-                    ContentMessage = Utility.GetLocalizedLabel("Bills", "tutorialHistoryNormalAcctDesc"),//"View and access your bills and<br/>payment receipts from the<br/>previous six months. Use the<br/>filter to see only bills or receipts.",
-                    ItemCount = ItemCount,
-                    DisplayMode = DisplayMode,
-                    IsButtonShow = false
-                });
+                    newList.Add(new NewAppModel()
+                    {
+                        ContentShowPosition = ContentType.TopLeft,
+                        ContentTitle = Utility.GetLocalizedLabel("Bills", "tutorialHistoryTitle"),//"Keep track of your charges.",
+                        ContentMessage = Utility.GetLocalizedLabel("Bills", "tutorialHistoryNormalAcctDesc"),//"View and access your bills and<br/>payment receipts from the<br/>previous six months. Use the<br/>filter to see only bills or receipts.",
+                        ItemCount = ItemCount,
+                        DisplayMode = DisplayMode,
+                        IsButtonShow = false
+                    });
+
+                }
+                else
+                {
+                    newList.Add(new NewAppModel()
+                    {
+                        ContentShowPosition = ContentType.TopLeft,
+                        ContentTitle = Utility.GetLocalizedLabel("Bills", "tutorialHistoryTitleNonOwner"),
+                        ContentMessage = Utility.GetLocalizedLabel("Bills", "tutorialHistoryDescNonOwner"),
+                        ItemCount = ItemCount,
+                        DisplayMode = DisplayMode,
+                        IsButtonShow = false
+                    });
+
+                }
+                
             }
 
             return newList;

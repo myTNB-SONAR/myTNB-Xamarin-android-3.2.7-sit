@@ -540,7 +540,9 @@
     "emptyPaymentHistoryRE": "Kami belum lagi buat bayaran. Setelah dibuat, sejarah pembayaran anda akan dipaparkan di sini.",
     "emptyBillHistoryRE": "Anda belum lagi ada makluman. Setelah ada, sejarah makluman anda akan dipaparkan di sini.",
     "accountStatementTenantTitle": "Akaun anda tidak layak untuk menyemak penyata akaun.",
-    "accountStatementTenantMessage": "Akaun ini adalah akaun penyewa yang tidak membenarkan anda untuk menyemak bil terdahulu & transaksi yang lain di dalam penyata akaun. Hanya pemilik akaun TNB sahaja yang boleh menyemak maklumat ini.<br><br>Sekiranya anda ingin menyemak penyata akaun, sila hubungi pemilik premis anda."
+    "accountStatementTenantMessage": "Akaun ini adalah akaun penyewa yang tidak membenarkan anda untuk menyemak bil terdahulu & transaksi yang lain di dalam penyata akaun. Hanya pemilik akaun TNB sahaja yang boleh menyemak maklumat ini.<br><br>Sekiranya anda ingin menyemak penyata akaun, sila hubungi pemilik premis anda.",
+    "tutorialHistoryTitleNonOwner": "Bil elektrik dulu sebagai rujukan.",
+    "tutorialHistoryDescNonOwner": "Sekarang anda boleh bil-bil terdahulu sehingga 6 bulan lepas."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
@@ -1667,13 +1669,13 @@
     "addAccesssLogBoth": "<strong>Anda</strong> telah memberikan akses kepada <strong>{0}</strong> untuk melihat bil penuh.",
     "removeAccesssLogfullBill": "<strong>Anda</strong> telah mengalih keluar akses <strong>{0}</strong> untuk melihat bill elektrik penuh.",
     "removeAccesssLogeBilling": "<strong>Anda</strong> telah mengalih keluar akses <strong>{0}</strong> untuk memohon e-billing.",
-    "removeAccesssLogBoth": "<strong>Anda</strong> telah mengalih keluar akses <strong>{0}</strong> untuk melihat bil penuh.",
+    "removeAccesssLogBoth": "<strong>Anda</strong> telah mengeluarkan <strong>{0}</strong> daripada akses untuk melihat bil penuh.",
     "title_activityLog": "Log Aktiviti",
     "headerTextAddNewUser": "Kami akan menjemput untuk mendaftar jika mereka tidak mempunyai sebarang akaun.",
     "thisWeekTitle": "Minggu Ini",
     "lastWeekTitle": "Minggu lepas",
     "lastMonthTitle": "Bulan lepas",
-    "AddNonTNBUserSuccessToast": "Anda telah jemput {0} untuk menyertai myTNB dan melihat akaun elektrik ini."
+    "AddNonTNBUserSuccessToast": "Anda telah menjemput {0} untuk menyertai myTNB dan melihat akaun elektrik ini."
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Maklumat pembayaran",
