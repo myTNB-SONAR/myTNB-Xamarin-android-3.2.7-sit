@@ -195,5 +195,20 @@
                 }
             }
         }
+
+        public struct Enquiry
+        {
+            public struct Screens { }
+            public struct CTAs
+            {
+                public struct Submit
+                {
+                    public const string Bill_Calculation = "App_Action_AboutMyBillEnquiry_SubmitBillCalculation";
+                    public const string Delivery_Method = "App_Action_AboutMyBillEnquiry_SubmitBillDeliveryMethod";
+                    public const string Payment_History = "App_Action_AboutMyBillEnquiry_SubmitPaymentHistory";
+                    public const string Others = "App_Action_AboutMyBillEnquiry_SubmitOthers";
+                }
+            }
+        }
     }
 }
