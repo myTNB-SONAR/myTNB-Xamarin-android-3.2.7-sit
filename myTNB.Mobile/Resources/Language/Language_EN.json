@@ -221,7 +221,7 @@
     "receivedExtra": "received extra",
     "applicationStatus": "Application<br>Status",
     "dbrReminderPopupTitle": "Go Paperless with your bills",
-    "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill onwards! With myTNB, you have a better and more environmentally friendly way to receive your paperless bills digitally via myTNB App & Portal.",
+    "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill! Join us in our mission to be more environmentally friendly by receiving your bills exclusively via myTNB App & Portal.",
     "dbrReminderPopupStartNow": "View More",
     "dbrReminderPopupGotIt": "Got it!",
     //EnergyBudget
@@ -470,7 +470,7 @@
     "feedbackSuccessTitle": "Thank you for your feedback!",
     "feedbackSuccessButton": "Okay",
     "dbrReminderPopupTitle": "Go Paperless with your bills",
-    "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill onwards! With myTNB, you have a better and more environmentally friendly way to receive your paperless bills digitally via myTNB App & Portal.",
+    "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill! Join us in our mission to be more environmentally friendly by receiving your bills exclusively via myTNB App & Portal.",
     "dbrReminderPopupViewMore": "View More",
     "dbrReminderPopupGotIt": "Got it!"
   },
@@ -2782,7 +2782,7 @@
       },
       {
         "Title": "",
-        "Description": "Go to the bill page to view your bills or learn more about the new bill <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">here</a>.",
+        "Description": "Go to the bill page to view your bills or learn more about the new bill for residential <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">here</a> and for your business <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/business/understand-your-bill/online-bill-layout\">here</a>.",
         "Image1": "",
         "Image2": "",
         "IsZoomable": false,

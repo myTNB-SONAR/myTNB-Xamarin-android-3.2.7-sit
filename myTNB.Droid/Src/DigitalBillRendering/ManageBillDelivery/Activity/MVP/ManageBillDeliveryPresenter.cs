@@ -40,23 +40,26 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
             ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
             {
-                Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle0"),
-                Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription0"),
+                Title = Utility.GetLocalizedLabel(LanguageConstants.MANAGE_DIGITAL_BILL, LanguageConstants.ManageDigitalBill.DBR_INFO_TITLE_0),
+                Description = Utility.GetLocalizedLabel(LanguageConstants.MANAGE_DIGITAL_BILL, LanguageConstants.ManageDigitalBill.DBR_INFO_DESC_0),
                 Image = "manage_bill_delivery_3"
             });
             ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
             {
-                Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle1"),
-                Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription1"),
+                Title = Utility.GetLocalizedLabel(LanguageConstants.MANAGE_DIGITAL_BILL, LanguageConstants.ManageDigitalBill.DBR_INFO_TITLE_1),
+                Description = Utility.GetLocalizedLabel(LanguageConstants.MANAGE_DIGITAL_BILL, LanguageConstants.ManageDigitalBill.DBR_INFO_DESC_1),
                 Image = "manage_bill_delivery_0"
             });
 
             if (selectedAccountData != null && BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum))
             {
+                var isResidential = BillRedesignUtility.Instance.IsResidential(selectedAccountData.RateCategory);
+                System.Console.WriteLine("isResidential: " + isResidential);
                 ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
                 {
-                    Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle2V2"),
-                    Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription2V2"),
+                    Title = Utility.GetLocalizedLabel(LanguageConstants.MANAGE_DIGITAL_BILL, LanguageConstants.ManageDigitalBill.DBR_INFO_TITLE_2_V2),
+                    Description = Utility.GetLocalizedLabel(LanguageConstants.MANAGE_DIGITAL_BILL, isResidential ? LanguageConstants.ManageDigitalBill.DBR_INFO_DESC_2_V2
+                    : LanguageConstants.ManageDigitalBill.DBR_INFO_DESC_2_V2_NON_RES),
                     Image = "dbr_paper_e_bill"
                 });
             }
@@ -64,16 +67,16 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             {
                 ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
                 {
-                    Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle2"),
-                    Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription2"),
+                    Title = Utility.GetLocalizedLabel(LanguageConstants.MANAGE_DIGITAL_BILL, LanguageConstants.ManageDigitalBill.DBR_INFO_TITLE_2),
+                    Description = Utility.GetLocalizedLabel(LanguageConstants.MANAGE_DIGITAL_BILL, LanguageConstants.ManageDigitalBill.DBR_INFO_DESC_2),
                     Image = "manage_bill_delivery_1"
                 });
             }
 
             ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
             {
-                Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle3"),
-                Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription3"),
+                Title = Utility.GetLocalizedLabel(LanguageConstants.MANAGE_DIGITAL_BILL, LanguageConstants.ManageDigitalBill.DBR_INFO_TITLE_3),
+                Description = Utility.GetLocalizedLabel(LanguageConstants.MANAGE_DIGITAL_BILL, LanguageConstants.ManageDigitalBill.DBR_INFO_DESC_3),
                 Image = "manage_bill_delivery_2"
             });
             return ManageBillDeliveryList;

@@ -34,9 +34,6 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
             void ClearInvalidEmailError();
 
             void EnableRegisterButton();
-            void UpdateMobileNumber(string mobile_no);
-
-            void ClearInvalidMobileError();
 
             void ShowInvalidMobileNoError();
 
@@ -51,10 +48,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
             void ShowSuccess(string date, string feedbackId, int imageCount);
 
             void ShowProgressDialog();
-
-
-            
-            }
+        }
 
         public interface IUserActionsListener : IBasePresenter
         {
@@ -62,7 +56,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
             void NavigateToTermsAndConditions();
 
             void CheckRequiredFields(string fullname, bool mobile_no, string email, bool tnc, bool isNeedTNC);
-            void OnSubmitEnquiryWithType(string acc, string feedback, string fullname, string mobile_no, string email, List<AttachedImage> attachedImages, List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsModelList, bool isowner, int ownerRelationship, string relationshipDescription,string EnquiryId,string EnquiryName);
+            void OnSubmitEnquiryWithType(string acc, string feedback, string fullname, string mobile_no, string email, List<AttachedImage> attachedImages, List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsModelList, bool isowner, int ownerRelationship, string relationshipDescription, string EnquiryId, string EnquiryName);
         }
     }
 }

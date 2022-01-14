@@ -1238,7 +1238,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
                             bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
 
-                            if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && GetHomeTutorialCallState())
+                            if (!dbrPopUpHasShown && loginCount == 1 && GetHomeTutorialCallState())
                             {
                                 ShowMarketingTooltip();
                                 UserSessions.SaveDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity), true);
@@ -1275,7 +1275,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_MESSAGE))
                     .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_START_NOW))
                     .SetCTAaction(() => ShowManageBill())
-                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.GOT_IT))
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_GOT_IT))
                     .SetSecondaryCTAaction(() =>
                     {
                         this.SetIsClicked(false);
@@ -3800,7 +3800,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 SetupEBDiscoverView();
                 discoverMoreContainer.Visibility = ViewStates.Visible;
-                discoverMoreSectionTitle.Visibility = ViewStates.Visible;               
+                discoverMoreSectionTitle.Visibility = ViewStates.Visible;
             }
             else
             {

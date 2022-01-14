@@ -221,7 +221,7 @@
     "receivedExtra": "terima lebih",
     "applicationStatus": "Status<br>Permohonan",
     "dbrReminderPopupTitle": "Jom Paperless dengan bil anda",
-    "dbrReminderPopupMessage": "Jadilah orang pertama yang memberi impak dengan memilih kaedah paperless untuk bil anda yang seterusnya! Dengan myTNB, anda mempunyai cara yang lebih baik dan mesra alam untuk menerima bil secara digital melalui Aplikasi & Portal myTNB.",
+    "dbrReminderPopupMessage": "Jadilah orang terawal yang memberi impak dengan memilih kaedah paperless untuk bil anda! Sertai misi kami agar lebih mesra alam dengan menerima bil hanya melalui Aplikasi & Portal myTNB.",
     "dbrReminderPopupStartNow": "Ketahui Lanjut",
     "dbrReminderPopupGotIt": "Ok!",
     //EnergyBudget
@@ -470,7 +470,7 @@
     "feedbackSuccessTitle": "Terima kasih atas maklumbalas anda",
     "feedbackSuccessButton": "OK",
     "dbrReminderPopupTitle": "Jom Paperless dengan bil anda",
-    "dbrReminderPopupMessage": "Jadilah orang pertama yang memberi impak dengan memilih kaedah paperless untuk bil anda yang seterusnya! Dengan myTNB, anda mempunyai cara yang lebih baik dan mesra alam untuk menerima bil secara digital melalui Aplikasi & Portal myTNB.",
+    "dbrReminderPopupMessage": "Jadilah orang terawal yang memberi impak dengan memilih kaedah paperless untuk bil anda! Sertai misi kami agar lebih mesra alam dengan menerima bil hanya melalui Aplikasi & Portal myTNB.",
     "dbrReminderPopupViewMore": "Ketahui Lanjut",
     "dbrReminderPopupGotIt": "Ok!"
   },
@@ -2782,7 +2782,7 @@
       },
       {
         "Title": "",
-        "Description": "Semak bil anda di halaman bil atau ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">sini</a>.",
+        "Description": "Semak bil anda di halaman bil atau ketahui lebih lanjut mengenai bil baharu untuk kediaman di <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">sini</a> dan untuk bisnes anda di <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/business/understand-your-bill/online-bill-layout\">sini</a>.",
         "Image1": "",
         "Image2": "",
         "IsZoomable": false,

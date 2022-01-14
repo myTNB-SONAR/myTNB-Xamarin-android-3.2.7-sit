@@ -52,10 +52,25 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.MVP
                         if (SitecoreCmsEntity.IsNeedUpdates(SitecoreCmsEntity.SITE_CORE_ID.NEW_BILL_DESIGN, timestampModel.Data[0].Timestamp))
                         {
                             NewBillDesignResponseModel responseModel = getItemsService.GetNewBillDesignItem();
-                            SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.NEW_BILL_DESIGN, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
+                            if (responseModel.Status.Equals("Success"))
+                            {
+                                SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.NEW_BILL_DESIGN, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
+                                PrepareData();
+                            }
+                            else
+                            {
+                                PrepareData();
+                            }
+                        }
+                        else
+                        {
+                            PrepareData();
                         }
                     }
-                    PrepareData();
+                    else
+                    {
+                        PrepareData();
+                    }
                 }
                 catch (Exception e)
                 {
