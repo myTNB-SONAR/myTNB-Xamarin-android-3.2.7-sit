@@ -1658,7 +1658,7 @@
     "cancelAddSuccess": "{0} telah dikeluarkan dari senarai pengguna yang mempunyai akses kepada akaun elektrik ini.",
     //add by wan
     "AddTNBUserSuccess": "{0} kini mempunyai akses ke {1} di myTNB.",
-    "AddNonTNBUserSuccess": "Anda telah jemput <strong>{0}</strong> untuk menyertai myTNB dan melihat akaun elektrik ini.",
+    "AddNonTNBUserSuccess": "Anda telah menjemput <strong>{0}</strong> untuk menyertai myTNB dan melihat akaun elektrik ini.",
     "hint_email": "Alamat e-mel pengguna",
     "removeAccountUserAccesssLog": "<strong>Anda</strong> mengeluarkan <strong>{0}</strong> daripada akaun elektrik ini.",
     "removeAccountLog": "<strong>{0}</strong> mengeluarkan akaun elektrik ini daripada pemerhatian beliau.",

@@ -79,9 +79,13 @@ namespace myTNB_Android.Src.LogUserAccess.MVP
 
             ThisweekStartDate = ThisweekStartDate.AddDays(-1d);
 
-            if (ThisweekStartDate.Day == endDateOfWeek.Day)
+            if (ThisweekStartDate.Day == endDateOfWeek.Day && ThisweekStartDate.Month == endDateOfWeek.Month)
             {
                 return date1 >= startDateOfWeek && date1 <= endDateOfWeek;
+            }
+            else if (date1.Month == referenceDate.Month && date1.Year == referenceDate.Year)
+            {
+                return true;
             }
             else
             {
@@ -98,7 +102,7 @@ namespace myTNB_Android.Src.LogUserAccess.MVP
 
             datadate = referenceDate.AddMonths(-1);
 
-            if (datadate.Month == date1.Month)
+            if (datadate.Month != date1.Month)
             {
                 return true;
             }
