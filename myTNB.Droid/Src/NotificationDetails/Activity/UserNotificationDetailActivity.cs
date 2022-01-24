@@ -6,10 +6,8 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
-using Android.Text;
 using Android.Views;
 using Android.Widget;
-using AndroidX.Core.Text;
 using CheeseBind;
 using DynatraceAndroid;
 using Google.Android.Material.Snackbar;
@@ -288,8 +286,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     mPresenter.EvaluateDetail(notificationDetails);
                     RenderUI();
                 }
-
-                checkStatus();
             }
             catch (Exception e)
             {
@@ -301,26 +297,98 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             if (notificationDetails != null)
             {
-                if (notificationDetails.SDStatusDetails.ServiceDisruptionID != null)
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI ||
+                    notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1 ||
+                    notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2 ||
+                    notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3 ||
+                    notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4)
                 {
-                    this.RunOnUiThread(() =>
+                    layNotifyCheck.Visibility = ViewStates.Visible;
+                    txtCallsBottom.Visibility = ViewStates.Visible;
+                    string dynatraceTag = string.Empty;
+
+                    txtCallsBottom.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("PushNotificationDetails", "callUs"));
+                    notify_check.Text = Utility.GetLocalizedLabel("PushNotificationDetails", "notifyCheck");
+                    string txtcallsUs = Utility.GetLocalizedLabel("PushNotificationDetails", "callUs");
+                    txtCallsBottom = LinkRedirectionUtils
+                        .Create(this, string.Empty)
+                        .SetTextView(txtCallsBottom)
+                        .SetMessage(txtcallsUs)
+                        .Build(dynatraceTag ?? string.Empty)
+                        .GetProcessedTextView();
+
+                    if (notificationDetails.SDStatusDetails.ServiceDisruptionID != null)
                     {
-                        try
+                        this.RunOnUiThread(() =>
                         {
-                            string sdEventId = notificationDetails.SDStatusDetails.ServiceDisruptionID;
-                            mPresenter.OnCheckSubscription(sdEventId, notificationDetails.Email);
-                        }
-                        catch (Exception ex)
-                        {
-                            Utility.LoggingNonFatalError(ex);
-                        }
-                    });
+                            try
+                            {
+                                string sdEventId = notificationDetails.SDStatusDetails.ServiceDisruptionID;
+                                mPresenter.OnCheckSubscription(sdEventId, notificationDetails.Email);
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+                        });
+                    }
                 }
 
-                if (notificationDetails.SDStatusDetails.NotificationTimestamp != null)
+                try
                 {
-                    timeStamp = notificationDetails.SDStatusDetails.NotificationTimestamp;
+                    if (notificationDetails.SDStatusDetails.NotificationTimestamp != null)
+                    {                        
+                        if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK
+                           || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2
+                           || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
+                        {
+                            this.RunOnUiThread(() =>
+                            {
+                                try
+                                {
+                                    mPresenter.OnCheckFeedbackSDCount(notificationDetails.SDStatusDetails.ServiceDisruptionID);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Utility.LoggingNonFatalError(ex);
+                                }
+                            });
+                        }
+                    }
                 }
+                catch (Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
+            }
+        }
+
+        public void showFeedbackSDStatus(bool status)
+        {
+            try
+            {
+                NotificationDetailCTAComponent ctaComponent = FindViewById<NotificationDetailCTAComponent>(Resource.Id.notificationCTAComponent);
+                timeStamp = notificationDetails.SDStatusDetails.NotificationTimestamp;
+                DateTime datetime = DateTime.UtcNow;
+                DateTime datetime2 = DateTime.Now;
+                DateTime datetime48Hours;
+                DateTime date = Convert.ToDateTime(timeStamp);
+                datetime48Hours = date.AddDays(2);
+                if (status)
+                {
+                    if (datetime48Hours <= datetime)
+                    {
+                        ctaComponent.Visibility = ViewStates.Gone;
+                    }
+                }
+                else
+                {
+                    ctaComponent.Visibility = ViewStates.Gone;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
             }
         }
 
@@ -378,26 +446,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                             .Build(string.Empty)
                             .GetProcessedTextView();
 
-                        if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI ||
-                            notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1 ||
-                            notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2 ||
-                            notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3 ||
-                            notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4)
-                        {
-                            layNotifyCheck.Visibility = ViewStates.Visible;
-                            txtCallsBottom.Visibility = ViewStates.Visible;
-
-                            txtCallsBottom.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("PushNotificationDetails", "callUs"));
-                            notify_check.Text = Utility.GetLocalizedLabel("PushNotificationDetails", "notifyCheck");
-                            string txtcallsUs = Utility.GetLocalizedLabel("PushNotificationDetails", "callUs");
-                            txtCallsBottom = LinkRedirectionUtils
-                                .Create(this, string.Empty)
-                                .SetTextView(txtCallsBottom)
-                                .SetMessage(txtcallsUs)
-                                .Build(dynatraceTag ?? string.Empty)
-                                .GetProcessedTextView();
-                        }
-
                         if (this.Resources.DisplayMetrics.WidthPixels <= 1080)
                         {
                             TextView textView = FindViewById<TextView>(Resource.Id.notificationDetailMessage);
@@ -433,13 +481,14 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                             {
                                 ctaComponent.Visibility = ViewStates.Visible;
                                 ctaComponent.SetCustomCTAButton(detailModel.ctaList);
-                            }
+                            }                           
                         }
                     }
                     else
                     {
                         ctaComponent.Visibility = ViewStates.Gone;
                     }
+                    checkStatus();
                 }
                 else
                 {
@@ -558,8 +607,26 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         public void ShareFeedback()
         {
-            Intent payment_activity = new Intent(this, typeof(ServiceDistruptionRatingActivity));
-            StartActivity(payment_activity);
+            try
+            {
+                mPresenter.GetRateUsQuestions("8");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void FeedbackQuestionCall()
+        {
+            if (activeQuestionListNo != null && activeQuestionListYes != null)
+            {
+                Intent feedbackActivity = new Intent(this, typeof(ServiceDistruptionRatingActivity));
+                feedbackActivity.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(notificationDetails));
+                feedbackActivity.PutExtra("RateUsQuestionNo", JsonConvert.SerializeObject(activeQuestionListNo));
+                feedbackActivity.PutExtra("RateUsQuestionYes", JsonConvert.SerializeObject(activeQuestionListYes));
+                StartActivity(feedbackActivity);
+            }
         }
 
         public void PayNow(AccountData mSelectedAccountData)
@@ -823,6 +890,13 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
                 if (MyTNBAccountManagement.GetInstance().IsFinishFeedback())
                 {
+                    if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK
+                       || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2
+                       || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
+                    {
+                        NotificationDetailCTAComponent ctaComponent = FindViewById<NotificationDetailCTAComponent>(Resource.Id.notificationCTAComponent);
+                        ctaComponent.Visibility = ViewStates.Gone;
+                    }
                     MyTNBAccountManagement.GetInstance().SetIsFinishFeedback(false);
                     ShowThankYouFeedbackTooltips();
                 }

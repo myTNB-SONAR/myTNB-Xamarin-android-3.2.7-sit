@@ -7,6 +7,8 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
+using CheeseBind;
+using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Common;
@@ -17,8 +19,10 @@ using myTNB_Android.Src.ServiceDistruptionRating.Model;
 using myTNB_Android.Src.ServiceDistruptionRating.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using Refit;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime;
 using static myTNB_Android.Src.ServiceDistruptionRating.Model.RateUsStar;
 
@@ -66,6 +70,9 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
 
         private ImageView img_displayNo;
 
+        [BindView(Resource.Id.rootView)]
+        ViewGroup rootView;
+
         private List<ImproveSelectModel> activeQuestionList = new List<ImproveSelectModel>();
 
         private List<QuestionModel> improveSelectModels = new List<QuestionModel>();
@@ -78,6 +85,8 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
 
         int initialnumber = 250;
 
+        NotificationDetails.Models.NotificationDetails notificationDetails;
+        string QuestionCategoryId;
         private List<Item> YesOrNoItem = new List<Item>();
         private bool selectedItem;
         private bool btnYesClick = false;
@@ -96,19 +105,22 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
             try
             {
                 mPresenter = new ServiceDistruptionRatingPresenter(this);
-
-                //if (Arguments.ContainsKey("StarFromNotificationDetailPage"))
-                //{
-                //    YesOrNoSelect = Arguments.GetString("StarFromNotificationDetailPage");
-                //}
-                //if (Arguments.ContainsKey("StarFromNotificationDetailPageQuestionNo"))
-                //{
-                //    activeQuestionListNo = JsonConvert.DeserializeObject<List<RateUsStar>>(Arguments.GetString("StarFromNotificationDetailPageQuestionNo"));
-                //}
-                //if (Arguments.ContainsKey("StarFromNotificationDetailPageQuestionYes"))
-                //{
-                //    activeQuestionListYes = JsonConvert.DeserializeObject<List<RateUsStar>>(Arguments.GetString("StarFromNotificationDetailPageQuestionYes"));
-                //}
+                Bundle extras = Intent.Extras;
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM))
+                    {
+                        notificationDetails = DeSerialze<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
+                    }
+                    if (extras.ContainsKey("RateUsQuestionNo"))
+                    {
+                        activeQuestionListNo = JsonConvert.DeserializeObject<List<RateUsStar>>(extras.GetString("RateUsQuestionNo"));
+                    }
+                    if (extras.ContainsKey("RateUsQuestionYes"))
+                    {
+                        activeQuestionListYes = JsonConvert.DeserializeObject<List<RateUsStar>>(extras.GetString("RateUsQuestionYes"));
+                    }
+                }
 
                 recyclerView = FindViewById<RecyclerView>(Resource.Id.question_recycler_view);
                 recyclerViewGrid = FindViewById<RecyclerView>(Resource.Id.question_recycler_view_grid);
@@ -146,11 +158,7 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
                 titleselectApply.Text = Utility.GetLocalizedLabel("FeedBackSD", "titleSelectApplies");
 
                 txtTellUsMoreHintCount.Text = (initialnumber.ToString() + " " + Utility.GetLocalizedLabel("FeedBackSD", "hinttellusMore"));
-
-                ModelSelectYesNo();
-                enableBtnYes();
-                disableBtnNo();
-                DummyDataYes();
+               
                 layoutManager = new GridLayoutManager(this.ApplicationContext, 2);
                 adapterGrid = new ImproveSelectAdapter(this.ApplicationContext, improveSelectModels);
                 recyclerViewGrid.SetLayoutManager(layoutManager);
@@ -161,6 +169,10 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
                 btnYesAbsolutely.Click += BtnYesAbsolutely_Click;
                 btnNotReally.Click += BtnNotReally_Click;
 
+                ModelSelectYesNo();
+                enableBtnYes();
+                disableBtnNo();
+                SelectDataYes();
                 DisableShareButton();
 
                 btnCancel.Click += delegate
@@ -170,11 +182,23 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
 
                 btnSubmit.Click += delegate
                 {
-                    MyTNBAccountManagement.GetInstance().SetIsFinishFeedback(true);
-                    OnBackPressed();
                     prepareDataSubmit();
                 };
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
+        public void OnCallService()
+        {
+            try
+            {
+                if (notificationDetails.SDStatusDetails.ServiceDisruptionID != null)
+                {
+                    mPresenter.OnSetFeedback(notificationDetails.SDStatusDetails.ServiceDisruptionID, notificationDetails.Email);
+                }
             }
             catch (Exception e)
             {
@@ -232,14 +256,6 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
                         MultilineInput = txtTellUsMore.Text.Trim()
                     };
                     inputAnswerDetails.Add(multiline);
-
-                    var rating = new SubmitDataModel.InputAnswerDetails()
-                    {
-                        WLTYQuestionId = activeQuestionListYes[6].WLTYQuestionId,
-                        RatingInput = (MyTNBAccountManagement.GetInstance().IsFromClickAdapter() + 1).ToString(),
-                        MultilineInput = string.Empty,
-                    };
-                    inputAnswerDetails.Add(rating);
                 }
                 else
                 {
@@ -250,17 +266,18 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
                         MultilineInput = txtTellUsMore.Text.Trim()
                     };
                     inputAnswerDetails.Add(multiline);
-
-                    var rating = new SubmitDataModel.InputAnswerDetails()
-                    {
-                        WLTYQuestionId = activeQuestionListNo[6].WLTYQuestionId,
-                        RatingInput = (MyTNBAccountManagement.GetInstance().IsFromClickAdapter() + 1).ToString(),
-                        MultilineInput = string.Empty,
-                    };
-                    inputAnswerDetails.Add(rating);
                 }
-                string questiontypeId = "6";
-                mPresenter.SubmitRateUs(inputAnswerDetails, questiontypeId);
+
+                if (btnYesClick)
+                {
+                    QuestionCategoryId = "8";
+                }
+                else
+                {
+                    QuestionCategoryId = "9";
+                }
+
+                mPresenter.SubmitRateUs(inputAnswerDetails, QuestionCategoryId, notificationDetails.SDStatusDetails.ServiceDisruptionID, notificationDetails.AccountNum);
             }
             catch (Exception e)
             {
@@ -281,92 +298,60 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
             }
         }
 
-        public void DummyDataNo()
+        public void SelectDataYes()
         {
-            var selectdata = new QuestionModel
+            try
             {
-                WLTYQuestionId = "1",
-                ModelCategories = "FeedbackNo",
-                IconCategories = "Not notified promptly on outage/restoration",
-                IconPosition = 1,
-                IsSelected = false,
-            };
-            improveSelectModels.Add(selectdata);
-
-            var selectdata2 = new QuestionModel
+                int IconPosition = 1;
+                improveSelectModels.Clear();
+                List<RateUsStar> activeQuestionListYesListNew = new List<RateUsStar>();
+                activeQuestionListYesListNew = activeQuestionListYes.GetRange(1, 4);
+                foreach (RateUsStar data in activeQuestionListYesListNew)
+                {
+                    var selectdata = new QuestionModel
+                    {
+                        WLTYQuestionId = data.WLTYQuestionId,
+                        ModelCategories = "FeedbackYes",
+                        IconCategories = data.Question,
+                        IconPosition = IconPosition++,
+                        IsSelected = false,
+                    };
+                    improveSelectModels.Add(selectdata);
+                }
+            }
+            catch (Exception e)
             {
-                WLTYQuestionId = "1",
-                ModelCategories = "FeedbackNo",
-                IconCategories = "Inaccurate information",
-                IconPosition = 2,
-                IsSelected = false,
-            };
-            improveSelectModels.Add(selectdata2);
-
-            var selectdata3 = new QuestionModel
-            {
-                WLTYQuestionId = "1",
-                ModelCategories = "FeedbackNo",
-                IconCategories = "Inconsistent updates",
-                IconPosition = 3,
-                IsSelected = false,
-            };
-            improveSelectModels.Add(selectdata3);
-
-            var selectdata4 = new QuestionModel
-            {
-                WLTYQuestionId = "1",
-                ModelCategories = "FeedbackNo",
-                IconCategories = "Hard to access to customer careline",
-                IconPosition = 4,
-                IsSelected = false,
-            };
-            improveSelectModels.Add(selectdata4);
-            //adapterGrid.NotifyDataSetChanged();
+                Utility.LoggingNonFatalError(e);
+            }
+            adapterGrid.NotifyDataSetChanged();
         }
 
-        public void DummyDataYes()
+        public void SelectDataNo()
         {
-            var selectdata = new QuestionModel
+            try
             {
-                WLTYQuestionId = "1",
-                ModelCategories = "FeedbackYes",
-                IconCategories = "Notified promptly on outage/restoration",
-                IconPosition = 1,
-                IsSelected = false,
-            };
-            improveSelectModels.Add(selectdata);
-
-            var selectdata2 = new QuestionModel
+                int IconPosition = 1;
+                improveSelectModels.Clear();
+                List<RateUsStar> activeQuestionListNoListNew = new List<RateUsStar>();
+                activeQuestionListNoListNew = activeQuestionListNo.GetRange(1, 4);
+                foreach (RateUsStar data in activeQuestionListNoListNew)
+                {
+                    var selectdata = new QuestionModel
+                    {
+                        WLTYQuestionId = data.WLTYQuestionId,
+                        ModelCategories = "FeedbackNo",
+                        IconCategories = data.Question,
+                        IconPosition = IconPosition++,
+                        IsSelected = false,
+                    };
+                    improveSelectModels.Add(selectdata);
+                }
+            }
+            catch (Exception e)
             {
-                WLTYQuestionId = "1",
-                ModelCategories = "FeedbackYes",
-                IconCategories = "Accurate information",
-                IconPosition = 2,
-                IsSelected = false,
-            };
-            improveSelectModels.Add(selectdata2);
-
-            var selectdata3 = new QuestionModel
-            {
-                WLTYQuestionId = "1",
-                ModelCategories = "FeedbackYes",
-                IconCategories = "Consistent updates",
-                IconPosition = 3,
-                IsSelected = false,
-            };
-            improveSelectModels.Add(selectdata3);
-
-            var selectdata4 = new QuestionModel
-            {
-                WLTYQuestionId = "1",
-                ModelCategories = "FeedbackYes",
-                IconCategories = "Quick access to customer careline",
-                IconPosition = 4,
-                IsSelected = false,
-            };
-            improveSelectModels.Add(selectdata4);
-            //adapterGrid.NotifyDataSetChanged();
+                Utility.LoggingNonFatalError(e);
+            }
+            adapterGrid.NotifyDataSetChanged();
         }
 
         private void ModelSelectYesNo()
@@ -408,9 +393,7 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
                     enableBtnYes();
                     disableBtnNo();
                     improveSelectModels.Clear();
-                    DummyDataYes();
-                    adapterGrid.NotifyDataSetChanged();
-                    //injectSelectDataYes();
+                    SelectDataYes();
                     DisableShareButton();
                 }
             }
@@ -441,10 +424,7 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
                     btnNoClick = true;
                     enableBtnNo();
                     disableBtnYes();
-                    improveSelectModels.Clear();
-                    DummyDataNo();
-                    adapterGrid.NotifyDataSetChanged();
-                    //injectSelectDataNo();
+                    SelectDataNo();
                     DisableShareButton();
                 }
             }
@@ -452,62 +432,6 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
             {
                 Utility.LoggingNonFatalError(ex);
             }
-        }
-
-        public void injectSelectDataNo()
-        {
-            try
-            {
-                int IconPosition = 1;
-                improveSelectModels.Clear();
-                List<RateUsStar> activeQuestionListNoListNew = new List<RateUsStar>();
-                activeQuestionListNoListNew = activeQuestionListNo.GetRange(1, 4);
-                foreach (RateUsStar data in activeQuestionListNoListNew)
-                {
-                    var selectdata = new QuestionModel
-                    {
-                        WLTYQuestionId = data.WLTYQuestionId,
-                        ModelCategories = "FeedbackNo",
-                        IconCategories = data.Question,
-                        IconPosition = IconPosition++,
-                        IsSelected = false,
-                    };
-                    improveSelectModels.Add(selectdata);
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-            adapterGrid.NotifyDataSetChanged();
-        }
-
-        public void injectSelectDataYes()
-        {
-            try
-            {
-                int IconPosition = 1;
-                improveSelectModels.Clear();
-                List<RateUsStar> activeQuestionListYesListNew = new List<RateUsStar>();
-                activeQuestionListYesListNew = activeQuestionListYes.GetRange(1, 4);
-                foreach (RateUsStar data in activeQuestionListYesListNew)
-                {
-                    var selectdata = new QuestionModel
-                    {
-                        WLTYQuestionId = data.WLTYQuestionId,
-                        ModelCategories = "FeedbackYes",
-                        IconCategories = data.Question,
-                        IconPosition = IconPosition++,
-                        IsSelected = false,
-                    };
-                    improveSelectModels.Add(selectdata);
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-            adapterGrid.NotifyDataSetChanged();
         }
 
         void OnSelectUpdate(object sender, int position)
@@ -686,6 +610,29 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
         public void ShowGetQuestionSuccess(GetRateUsQuestionResponse response)
         {
             throw new NotImplementedException();
+        }
+
+        private Snackbar mApiExcecptionSnackBar;
+        public void ShowRetryOptionsApiException(ApiException apiException)
+        {
+            if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+            {
+                mApiExcecptionSnackBar.Dismiss();
+            }
+
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mApiExcecptionSnackBar.Dismiss();
+
+            }
+            );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mApiExcecptionSnackBar.Show();
+
         }
     }
 }

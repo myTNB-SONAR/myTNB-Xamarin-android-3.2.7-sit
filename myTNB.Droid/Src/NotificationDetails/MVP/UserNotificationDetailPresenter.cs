@@ -973,7 +973,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             }
         }
 
-
         //checking count feedback EnergyBudget
         public async void OnCheckFeedbackCount()
         {
@@ -1091,5 +1090,72 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
+
+        //feedback API QuestionCategoryId
+        public async void GetRateUsQuestions(string questionCategoryID)
+        {
+            try
+            {
+                this.mView.ShowLoadingScreen();
+                var questionRespone = await ServiceApiImpl.Instance.GetRateUsQuestions(new GetRateUsQuestionRequest(questionCategoryID));
+                if (!questionRespone.IsSuccessResponse())
+                {
+                    //isSixHaveQuestion = false;
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+                else
+                {
+                    if (questionCategoryID.Equals("9"))
+                    {
+                        this.mView.GetFeedbackTwoQuestionsNo(questionRespone);
+                        this.mView.FeedbackQuestionCall();
+                    }
+                    else
+                    {
+                        this.mView.GetFeedbackTwoQuestionsYes(questionRespone);
+                        GetRateUsQuestions("9");
+                    }
+                    this.mView.HideLoadingScreen();
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                this.mView.HideLoadingScreen();
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideLoadingScreen();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                this.mView.HideLoadingScreen();
+                Utility.LoggingNonFatalError(unknownException);
+            }
+        }
+
+        //checking count feedback Service Disruption
+        public async void OnCheckFeedbackSDCount(string SDEventID)
+        {
+            try
+            {
+                var questionRespone = await ServiceApiImpl.Instance.ShowSDRatingPage(new GetFeedbackCountRequest(SDEventID));
+                if (questionRespone.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                {
+                    this.mView.showFeedbackSDStatus(questionRespone.Response.ShowWLTYPage);
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
     }
 }

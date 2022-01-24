@@ -2,6 +2,7 @@
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Rating.Request;
 using myTNB_Android.Src.Rating.Response;
+using Refit;
 using System;
 using System.Collections.Generic;
 using static myTNB_Android.Src.Rating.Request.SubmitRateUsRequest;
@@ -48,6 +49,12 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.MVP
             /// Disable register button
             /// </summary>
             void DisableShareButton();
+
+            void ShowRetryOptionsApiException(ApiException apiException);
+
+            void OnCallService();
+
+            void OnBackPressed();
         }
 
         public interface IUserActionsListener : IBasePresenter

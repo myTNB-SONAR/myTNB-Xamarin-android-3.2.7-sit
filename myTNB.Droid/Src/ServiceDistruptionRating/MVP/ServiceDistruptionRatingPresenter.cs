@@ -9,6 +9,9 @@ using Refit;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using myTNB_Android.Src.ServiceDistruptionRating.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.ServiceDistruptionRating.MVP
 {
@@ -28,63 +31,47 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.MVP
             this.mView.SetPresenter(this);
         }
 
-        public void GetQuestions(string questionCatId)
+        public async void OnSetFeedback(string SdEventId, string Email)
         {
-            GetRateUsQuestions(questionCatId);
-        }
-
-        public async void GetRateUsQuestions(string questionCategoryID)
-        {
-            if (mView.IsActive())
-            {
-                this.mView.ShowProgressDialog();
-            }
             try
             {
-                var questionRespone = await ServiceApiImpl.Instance.GetRateUsQuestions(new GetRateUsQuestionRequest(questionCategoryID));
-
-                if (mView.IsActive())
+                var SDInfo = new ServiceDisruptionInfo
                 {
-                    this.mView.HideProgressDialog();
-                }
-
-                if (!questionRespone.IsSuccessResponse())
+                    sdEventId = SdEventId,
+                    email = Email,
+                };
+                UserServiceDistruptionSetSubRequest request = new UserServiceDistruptionSetSubRequest("sdfeedbackstatus", SDInfo);
+                string ts = JsonConvert.SerializeObject(request);
+                UserServiceDistruptionSetSubResponse response = await ServiceApiImpl.Instance.ServiceDisruptionInfo(request);
+                if (response.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
-                    this.mView.ShowError(questionRespone.Response.DisplayMessage);
+                    MyTNBAccountManagement.GetInstance().SetIsFinishFeedback(true);
+                    this.mView.OnBackPressed();
                 }
                 else
                 {
-                    this.mView.ShowGetQuestionSuccess(questionRespone);
+                    this.mView.ShowRetryOptionsApiException(null);
+                    //this.mView.OnBackPressed();
                 }
             }
             catch (System.OperationCanceledException e)
             {
-                Log.Debug(TAG, "Cancelled Exception");
+                //this.mView.HideLoadingScreen();
                 // ADD OPERATION CANCELLED HERE
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
+                //this.mView.ShowRetryOptionsCancelledException(e);
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
+                //this.mView.HideLoadingScreen();
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                Log.Debug(TAG, "Api Exception" + apiException.Message);
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
+                this.mView.ShowRetryOptionsApiException(apiException);
                 Utility.LoggingNonFatalError(apiException);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
+                //this.mView.HideLoadingScreen();
                 // ADD UNKNOWN EXCEPTION HERE
-                Log.Debug(TAG, "Stack " + e.StackTrace);
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
@@ -92,69 +79,46 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.MVP
 
         public void Start()
         {
-
+            throw new NotImplementedException();
         }
 
-        public async void SubmitRateUs(List<SubmitDataModel.InputAnswerDetails> inputAnswerDetails, string questionCategoryId)
+        public async void SubmitRateUs(List<SubmitDataModel.InputAnswerDetails> inputAnswerDetails, string questionCategoryId, string eventId, string caNumList)
         {
-            if (mView.IsActive())
-            {
-                this.mView.ShowProgressDialog();
-            }
-
             try
             {
                 if (UserEntity.IsCurrentlyActive())
                 {
                     UserEntity entity = UserEntity.GetActive();
 
-                    //EnergyBudgetRating.Request.SubmitRateUsRequest rateUsRequest = new EnergyBudgetRating.Request.SubmitRateUsRequest(string.Empty,
-                    //entity.Email, entity.DeviceId, inputAnswerDetails, questionCategoryId);
-                    //string dt = JsonConvert.SerializeObject(rateUsRequest);
-                    //var submitRateUsResponse = await ServiceApiImpl.Instance.SubmitRateUsV2(rateUsRequest);
-                    //if (mView.IsActive())
-                    //{
-                    //    this.mView.HideProgressDialog();
-                    //}
-
-                    //if (!submitRateUsResponse.IsSuccessResponse())
-                    //{
-                    //    this.mView.ShowError(submitRateUsResponse.Response.DisplayMessage);
-                    //}
-                    //else
-                    //{
-                    //    this.mView.ShowSumitRateUsSuccess();
-                    //}
+                    Request.SubmitRateUsRequest rateUsRequest = new Request.SubmitRateUsRequest(string.Empty,
+                    entity.Email, entity.DeviceId, inputAnswerDetails, questionCategoryId, eventId, caNumList);
+                    string dt = JsonConvert.SerializeObject(rateUsRequest);
+                    var submitRateUsResponse = await ServiceApiImpl.Instance.SDSubmitRateUs(rateUsRequest);
+                    if (!submitRateUsResponse.IsSuccessResponse())
+                    {
+                        this.mView.ShowError(submitRateUsResponse.Response.DisplayMessage);
+                    }
+                    else
+                    {
+                        this.mView.OnCallService();
+                    }
                 }
             }
             catch (System.OperationCanceledException e)
             {
                 Log.Debug(TAG, "Cancelled Exception");
-                // ADD OPERATION CANCELLED HERE
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 Log.Debug(TAG, "Api Exception" + apiException.Message);
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (System.Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 Log.Debug(TAG, "Stack " + e.StackTrace);
-                if (mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
