@@ -207,7 +207,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 TextViewUtils.SetTextSize12(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, infoLabeltxtWhereIsMyAcc, txtAboutBillEnquiry_subContent, txtGSLRebateSubTitle, txtOverVoltageClaimContent, InfoLabel);
                 TextViewUtils.SetTextSize14(txtGeneralEnquiry, txtUpdatePersonal, txtAboutBillEnquiry, txtGSLRebateTitle, txtOverVoltageClaim);
                 TextViewUtils.SetTextSize16(txtAccountNo, howCanWeHelpYou);
-                
+
                 //set translation of string 
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberHint");
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");
@@ -219,9 +219,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 txtUpdatePersonal.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
                 txtOverVoltageClaim.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle");
                 txtUpdatePersonalContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "personalDetailsDescription");
-                txtOverVoltageClaimContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimDescription");
                 txtGSLRebateTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_TITLE);
                 txtGSLRebateSubTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.GSL_DESC);
+                txtOverVoltageClaimContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimDescription");
 
                 gslRebateConstraint.Visibility = LanguageManager.Instance.GetConfigToggleValue(TogglePropertyEnum.IsGSLRebateEnabled) ? ViewStates.Visible : ViewStates.Gone;
 
@@ -238,7 +238,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 txtAccountNo.SetOnTouchListener(this);  //set listener on dropdown arrow at TextLayout
                 txtAccountNo.TextChanged += TextChange;  //adding listener on text change
                 txtAccountNo.FocusChange += TxtAccountNo_FocusChange;
-                
+
                 //Keyboard done button click
                 txtAccountNo.EditorAction += delegate (object sender, TextView.EditorActionEventArgs e)
                 {
@@ -1105,27 +1105,28 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 //Overvoltage clickable with blue color
                 if (IsWhiteListedArea)
                 {
-                if (DownTimeEntity.IsBCRMDown())
-                {
-                    OnBCRMDownTimeErrorMessage();
-                    this.SetIsClicked(false);
-                }
-                else
-                {
-                    string accno = txtAccountNo.Text.ToString().Trim();
-                    bool isAllowed = this.userActionsListener.CheckRequiredFields(accno);
-
-                    if (isAllowed)
+                    if (DownTimeEntity.IsBCRMDown())
                     {
-                        this.SetIsClicked(true);
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), EnquiryTypeEnum.OvervoltageClaim);
+                        OnBCRMDownTimeErrorMessage();
+                        this.SetIsClicked(false);
                     }
                     else
                     {
-                        this.SetIsClicked(false);
+                        string accno = txtAccountNo.Text.ToString().Trim();
+                        bool isAllowed = this.userActionsListener.CheckRequiredFields(accno);
+
+                        if (isAllowed)
+                        {
+                            this.SetIsClicked(true);
+                            this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), EnquiryTypeEnum.OvervoltageClaim);
+                        }
+                        else
+                        {
+                            this.SetIsClicked(false);
+                        }
+
                     }
                 }
-            }
                 //Overvoltage clickable with gray color
                 else
                 {
@@ -1268,23 +1269,36 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
         public void ShowWhereIsMyAcc()
         {
-            string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
-            if (!base64Image.IsNullOrEmpty())
+            if (BillRedesignUtility.Instance.IsAccountEligible)
             {
-                var imageCache = Base64ToBitmap(base64Image);
-
                 MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-               .SetHeaderImageBitmap(imageCache)
-               .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo"))
-               .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberDetails"))
-               .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-               .SetCTAaction(() => { this.SetIsClicked(false); })
-               .Build();
+                   .SetHeaderImage(Resource.Drawable.img_register_acct_noV2)
+                   .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo"))
+                   .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberDetailsV2"))
+                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                   .SetCTAaction(() => { this.SetIsClicked(false); })
+                   .Build();
                 whereisMyacc.Show();
             }
             else
             {
-                this.SetIsClicked(false);
+                string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
+                if (!base64Image.IsNullOrEmpty())
+                {
+                    var imageCache = Base64ToBitmap(base64Image);
+                    MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                   .SetHeaderImageBitmap(imageCache)
+                   .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo"))
+                   .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberDetails"))
+                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                   .SetCTAaction(() => { this.SetIsClicked(false); })
+                   .Build();
+                    whereisMyacc.Show();
+                }
+                else
+                {
+                    this.SetIsClicked(false);
+                }
             }
         }
 
@@ -1494,6 +1508,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         }
 
         Snackbar newErrorMessageSnackBar;
+
+        public bool IsOverVoltageClick { get; private set; }
 
         public void OnSubmitError(string message = null)
         {

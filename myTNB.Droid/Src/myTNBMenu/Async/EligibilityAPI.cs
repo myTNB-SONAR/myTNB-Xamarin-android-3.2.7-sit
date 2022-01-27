@@ -5,11 +5,13 @@ using Android.Content;
 using Android.Preferences;
 using Android.Util;
 using myTNB.Mobile;
+using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.SessionCache;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Async
@@ -28,7 +30,74 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 
         public CustomEligibility() { }
 
-        public async Task<bool> EvaluateEligibility(Context mView)
+        public List<ContractAccountModel> GetContractAccountList(List<string> accNumList = null)
+        {
+            List<CustomerBillingAccount> accountList;
+            List<ContractAccountModel> contractAccountList = new List<ContractAccountModel>();
+
+            if (accNumList != null && accNumList.Count > 0)
+            {
+                accountList = CustomerBillingAccount.List();
+                accNumList.ForEach(accNum =>
+                {
+                    var account = CustomerBillingAccount.FindByAccNum(accNum);
+                    if (account != null)
+                    {
+                        contractAccountList.Add(GetAccountModel(account));
+                    }
+                });
+            }
+            else
+            {
+                accountList = CustomerBillingAccount.List();
+                accountList.ForEach(account =>
+                {
+                    contractAccountList.Add(GetAccountModel(account));
+                });
+            }
+
+            return contractAccountList;
+        }
+
+        private ContractAccountModel GetAccountModel(CustomerBillingAccount account)
+        {
+            try
+            {
+                ContractAccountModel accountModel = new ContractAccountModel
+                {
+                    accNum = account.AccNum,
+                    userAccountID = account.UserAccountId,
+                    accDesc = account.AccDesc,
+                    icNum = account.ICNum,
+                    amCurrentChg = account.AmtCurrentChg.IsValid() ? double.Parse(account.AmtCurrentChg) : 0,
+                    isRegistered = account.IsRegistered.ToString(),
+                    isOwned = account.isOwned.ToString(),
+                    isPaid = account.IsPaid.ToString(),
+                    isError = account.IsError.ToString(),
+                    message = null,
+                    accountTypeId = account.AccountTypeId,
+                    accountStAddress = account.AccountStAddress,
+                    ownerName = account.OwnerName,
+                    accountCategoryId = account.AccountCategoryId,
+                    SmartMeterCode = account.SmartMeterCode,
+                    isTaggedSMR = account.IsTaggedSMR.ToString(),
+                    BudgetAmount = account.BudgetAmount.IsValid() ? Int32.Parse(account.BudgetAmount) : 0,
+                    InstallationType = account.InstallationType,
+                    IsApplyEBilling = account.IsApplyEBilling,
+                    IsHaveAccess = account.IsHaveAccess,
+                    BusinessArea = account.BusinessArea,
+                    RateCategory = account.RateCategory
+                };
+                return accountModel;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                return new ContractAccountModel();
+            }
+        }
+
+        public async Task<bool> EvaluateEligibility(Context mView, bool isForceCall)
         {
             try
             {
@@ -38,7 +107,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                 string eligibilityTimeStamp = preferences.GetString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, string.Empty);
 
                 if (EligibilityManager.Instance.ShouldCallApi(AWSConstants.Services.GetEligibility
-                   , eligibilityTimeStamp))
+                   , eligibilityTimeStamp) || isForceCall)
                 {
                     if (!AccessTokenCache.Instance.HasTokenSaved(mView))
                     {
@@ -46,8 +115,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                         AccessTokenCache.Instance.SaveAccessToken(mView, accessToken);
                     }
 
-                    GetEligibilityResponse response = await EligibilityManager.Instance.GetEligibility(UserEntity.GetActive().UserID ?? string.Empty
-                        , AccessTokenCache.Instance.GetAccessToken(mView));
+                    GetEligibilityResponse response = await EligibilityManager.Instance.PostEligibility(UserEntity.GetActive().UserID ?? string.Empty,
+                        GetContractAccountList(), AccessTokenCache.Instance.GetAccessToken(mView));
 
                     //Nullity Check
                     if (response != null
@@ -81,52 +150,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     FeatureInfoManager.Instance.SetData(data);
                     MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
                     //Use data or any EligibilitySessionCache functionality
-                }
-
-                if (DBRUtility.Instance.IsAccountEligible
-                    && !EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                        , EligibilitySessionCache.FeatureProperty.TargetGroup))
-                {
-                    List<string> dbrCAList = AccountTypeCache.Instance.GetDBRAccountList();
-                    List<string> residentialList = new List<string>();
-                    if (dbrCAList != null && dbrCAList.Count > 0)
-                    {
-                        PostMultiInstallationDetailsResponse installationdetailsResponse = await DBRManager.Instance.PostMultiInstallationDetails(dbrCAList
-                            , AccessTokenCache.Instance.GetAccessToken(mView));
-                        if (installationdetailsResponse != null
-                            && installationdetailsResponse.StatusDetail != null
-                            && installationdetailsResponse.StatusDetail.IsSuccess
-                            && installationdetailsResponse.Content != null
-                            && installationdetailsResponse.Content.Count > 0)
-                        {
-                            for (int i = 0; i < dbrCAList.Count; i++)
-                            {
-                                if (installationdetailsResponse.Content.ContainsKey(dbrCAList[i])
-                                    && installationdetailsResponse.Content[dbrCAList[i]] is List<PostInstallationDetailsResponseModel> installationDetail
-                                    && installationDetail != null
-                                    && installationDetail.Count > 0
-                                    && installationDetail[0] != null
-                                    && installationDetail[0].IsResidential)
-                                {
-                                    residentialList.Add(dbrCAList[i]);
-                                }
-                            }
-                            AccountTypeCache.Instance.UpdateCATariffType(residentialList);
-
-                            PostMultiBillRenderingResponse multiBillRenderingResponse = await DBRManager.Instance.PostMultiBillRendering(residentialList
-                                , AccessTokenCache.Instance.GetAccessToken(mView));
-                            if (multiBillRenderingResponse != null
-                                && multiBillRenderingResponse.StatusDetail != null
-                                && multiBillRenderingResponse.StatusDetail.IsSuccess
-                                && multiBillRenderingResponse.Content != null
-                                && multiBillRenderingResponse.Content.Count > 0)
-                            {
-                                AccountTypeCache.Instance.UpdateCARendering(multiBillRenderingResponse.Content, residentialList);
-                                Log.Debug("[DEBUG]", "residentialList: " + JsonConvert.SerializeObject(residentialList));
-                                Log.Debug("[DEBUG]", "DBREligibleCAs: " + JsonConvert.SerializeObject(AccountTypeCache.Instance.DBREligibleCAs));
-                            }
-                        }
-                    }
                 }
 
                 return true;

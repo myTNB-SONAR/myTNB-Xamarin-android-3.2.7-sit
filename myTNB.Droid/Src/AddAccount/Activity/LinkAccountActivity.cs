@@ -14,6 +14,7 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
+using myTNB.Mobile;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.MVP;
 using myTNB_Android.Src.AddAccountDisclaimer.Activity;
@@ -22,6 +23,8 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.TermsAndConditions.Activity;
+using myTNB_Android.Src.myTNBMenu.Async;
+using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
@@ -29,6 +32,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.AddAccount.Activity
 {
@@ -1088,7 +1092,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             }
         }
 
-        public void ShowAddAccountSuccess(List<Models.AddAccount> responseData)
+        public async void ShowAddAccountSuccess(List<Models.AddAccount> responseData)
         {
 
             try
@@ -1104,22 +1108,18 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         {
                             newAccount.accountTypeId = item.accountTypeId == null ? "0" : item.accountTypeId;
                             newAccount.accountAddress = item.accountStAddress;
-                            newAccount.houseNo = item.houseNo;
-                            newAccount.unitNo = item.unitNo;
-                            newAccount.building = item.building;
-                            newAccount.houseNo = item.houseNo;
-                            newAccount.street = item.street;
-                            newAccount.area = item.area;
-                            newAccount.city = item.city;
-                            newAccount.postCode = item.postCode;
-                            newAccount.state = item.state;
                             newAccount.ownerName = item.accountOwnerName;
                             newAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
                             newAccount.isOwned = item.isOwned;
+                            newAccount.IsError = item.IsError;
                             newAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             newAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                             newAccount.InstallationType = item.InstallationType == null ? "0" : item.InstallationType;
                             newAccount.CreatedDate = item.CreatedDate;
+                            newAccount.IsApplyEBilling = item.IsApplyEBilling;
+                            newAccount.IsHaveAccess = item.IsHaveAccess;
+                            newAccount.BusinessArea = item.BusinessArea;
+                            newAccount.RateCategory = item.RateCategory;
                             finalAccountList.Add(newAccount);
 
                             //UserSessions.SaveAddress(mSharedPref, false);
@@ -1139,10 +1139,15 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.ownerName = item.accountOwnerName;
                             extraAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
                             extraAccount.isOwned = item.isOwned;
+                            extraAccount.IsError = item.IsError;
                             extraAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             extraAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                             extraAccount.InstallationType = item.InstallationType == null ? "0" : item.InstallationType;
                             extraAccount.CreatedDate = item.CreatedDate;
+                            extraAccount.IsApplyEBilling = item.IsApplyEBilling;
+                            extraAccount.IsHaveAccess = item.IsHaveAccess;
+                            extraAccount.BusinessArea = item.BusinessArea;
+                            extraAccount.RateCategory = item.RateCategory;
                             finalAccountList.Add(extraAccount);
                         }
                     }
@@ -1158,7 +1163,27 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 CustomerBillingAccount.SetCAListForEligibility();
 
                 SummaryDashBoardAccountEntity.RemoveAll();
-                HideAddingAccountProgressDialog();
+
+                _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this, true);
+
+                List<string> newCAList = new List<string>();
+
+                finalAccountList.ForEach(acct =>
+                {
+                    newCAList.Add(acct.accountNumber);
+                });
+
+                UserInfo usrinf = new UserInfo();
+                usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
+
+                _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(newCAList),
+                    FeatureInfoManager.QueueTopicEnum.addca, usrinf, new DeviceInfoRequest()));
+
+                if (IsActive())
+                {
+                    HideAddingAccountProgressDialog();
+                }
+
                 Intent sucessIntent = new Intent(this, typeof(AddAccountSuccessActivity));
                 sucessIntent.PutExtra("Accounts", JsonConvert.SerializeObject(finalAccountList));
                 StartActivity(sucessIntent);

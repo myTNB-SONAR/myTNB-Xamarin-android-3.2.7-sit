@@ -111,16 +111,6 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                         int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                         if (Id > 0)
                         {
-                            //string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
-
-                            // GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest();
-                            // CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
-                            bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
-
-                            //GetCustomerAccountListRequest baseRequest = new GetCustomerAccountListRequest();
-                            //baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
-                            //baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                            //CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
                             GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                             baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                             baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
@@ -337,7 +327,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                     {
                         newExisitingListArray.Sort();
 
-                        foreach(int index in newExisitingListArray)
+                        foreach (int index in newExisitingListArray)
                         {
                             CustomerBillingAccount oldAcc = existingSortedList[index];
 

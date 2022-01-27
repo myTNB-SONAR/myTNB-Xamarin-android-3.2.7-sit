@@ -15,7 +15,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginLeft="19dp"
-		android:layout_marginTop="17dp"
+		android:layout_marginTop="20dp"
 		android:src="@drawable/notification_new_bill"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent" />
@@ -38,6 +38,7 @@
 		android:id="@+id/txtNotificationContent"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
+		android:layout_marginTop="4dp"
 		android:layout_marginLeft="8dp"
 		android:text="Power disruption reported at your nearest "
 		android:textSize="10dp"

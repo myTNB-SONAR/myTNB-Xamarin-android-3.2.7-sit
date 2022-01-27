@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/rootView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true"
+	android:orientation="vertical">
+	<LinearLayout
+		android:id="@+id/mainView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:isScrollContainer="false"
+		android:orientation="vertical">
+		<include
+			android:id="@+id/toolbar"
+			layout="@layout/toolbar" />
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_weight="1"
+			android:overScrollMode="never"
+			android:scrollbars="none"
+			android:fillViewport="true"
+			android:id="@+id/acctStmntTimeOutScrollview"
+			android:layout_height="wrap_content"
+			android:background="@color/background_pale_grey">
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/acctStmntTimeOutScrollviewContainer">
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/acctStmntTimeOutLayout">
+					<ImageView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:scaleType="fitXY"
+						android:adjustViewBounds="true"
+						android:layout_marginTop="62dp"
+						android:layout_marginLeft="62dp"
+						android:layout_marginRight="62dp"
+						android:id="@+id/acctStmntTimeOutBanner"
+						android:src="@drawable/Banner_Acct_Stmnt_TimeOut"/>
+					<TextView
+						tools:text="Sorry, it took longer than expected!"
+						android:layout_marginTop="24dp"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textColor="@color/tunagrey"
+						android:gravity="center"
+						android:textSize="16dp"
+						android:id="@+id/txtAcctStmntTimeOutTitle" />
+					<TextView
+						tools:text="We will notify you once your account statement is ready. A copy will also be emailed to emailaddress@mail.com."
+						android:layout_marginLeft="16dp"
+						android:layout_marginTop="16dp"
+						android:layout_marginRight="16dp"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textColor="@color/tunagrey"
+						android:gravity="center"
+						android:textSize="14dp"
+						android:lineSpacingExtra="3dp"
+						android:id="@+id/txtAcctStmntTimeOutMsg" />
+				</LinearLayout>
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="@color/white"
+					android:visibility="gone"
+					android:id="@+id/acctStmntEmptyLayout">
+					<ImageView
+						android:id="@+id/acctStmntEmptyIcon"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:scaleType="fitXY"
+						android:adjustViewBounds="true"
+						android:layout_gravity="center"
+						android:layout_marginTop="32dp"
+						android:src="@drawable/icon_acct_stmnt_empty"/>
+					<TextView
+						tools:text="Seems like you have no transaction history to request for an account statement, try again next time!"
+						android:text="Seems like you have no transaction history to request for an account statement, try again next time!"
+						android:layout_marginTop="@dimen/default_padding"
+						android:layout_marginLeft="@dimen/default_padding"
+						android:layout_marginBottom="24dp"
+						android:layout_marginRight="@dimen/default_padding"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textColor="@color/receipt_note_text"
+						android:gravity="center"
+						android:textSize="14dp"
+						android:lineSpacingExtra="3dp"
+						android:id="@+id/txtAcctStmntEmptyMsg" />
+				</LinearLayout>
+			</LinearLayout>
+		</ScrollView>
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="16dp"
+			android:paddingLeft="16dp"
+			android:paddingBottom="16dp"
+			android:paddingRight="16dp"
+			android:gravity="center|bottom"
+			android:background="@color/white"
+			android:id="@+id/buttonLayout">
+			<Button
+				android:id="@+id/acctStmntTimeOutBtnBack"
+				tools:text="Back to Bills"
+				android:layout_width="match_parent"
+				android:layout_height="48dp"
+				style="@style/DarkButton"
+				android:textAllCaps="false" />
+		</LinearLayout>
+	</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

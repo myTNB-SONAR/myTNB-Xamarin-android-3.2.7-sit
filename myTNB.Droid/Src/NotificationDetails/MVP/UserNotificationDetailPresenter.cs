@@ -11,7 +11,6 @@ using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.EnergyBudgetRating.Request;
@@ -23,9 +22,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.NotificationDetails.Models;
-using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
-using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -287,15 +284,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             imageResourceBanner = Resource.Drawable.notification_dbr_banner_ebill;
                             break;
                         }
-                    //case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET:
-                    //    {
-                    //        imageResourceBanner = Resource.Drawable.SMRillustration;
-                    //        //pageTitle = "EnergyBudget";
-                    //        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
-                    //            delegate () { ViewMyUsage(notificationDetails); });
-                    //        ctaList.Add(primaryCTA);
-                    //        break;
-                    //    }
                     case Constants.BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS:
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_check_banner;
@@ -307,7 +295,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
                                 delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
-                            
+
                             secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewTips"),
                             delegate () { ViewTips(); });
                             ctaList.Add(secondaryCTA);
@@ -323,6 +311,44 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewTips"),
                             delegate () { ViewTips(); });
                             ctaList.Add(secondaryCTA);
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_ACCT_STATEMENT_READY:
+                        {
+                            imageResourceBanner = Resource.Drawable.Banner_Acct_Stmnt_Notification_Detail;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.VIEW_ACCT_STMNT),
+                                delegate () { ViewAccountStatement(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE:
+                        {
+                            imageResourceBanner = Resource.Drawable.sd_outage_notification;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS:
+                        {
+                            imageResourceBanner = Resource.Drawable.sd_in_progress_notification;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION:
+                        {
+                            imageResourceBanner = Resource.Drawable.sd_restoration_notification;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW:
+                        {
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "updateNow"),
+                                   delegate () { UpdateNow(); });
+                            ctaList.Add(secondaryCTA);
+                            imageResourceBanner = Resource.Drawable.notification_generic_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_APP_UPDATE:
+                    case Constants.BCRM_NOTIFICATION_APP_UPDATE_2:
+                        {
+                            imageResourceBanner = Resource.Drawable.Banner_Notification_App_Update;
                             break;
                         }
                     default:
@@ -479,6 +505,50 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 accountData.AddStreet = account.AccountStAddress;
                 accountData.AccountCategoryId = account.AccountCategoryId;
                 this.mView.ViewUsage(accountData);
+            }
+            else
+            {
+                this.mView.ShowRetryOptionsApiException(null);
+            }
+        }
+
+        private void UpdateNow()
+        {
+            try
+            {
+                this.mView.ShowUpateApp();
+            }
+            catch (Exception e)
+            {
+                this.mView.ShowRetryOptionsApiException(null);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ViewAccountStatement(Models.NotificationDetails notificationDetails)
+        {
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.SetSelected(notificationDetails.AccountNum);
+            AccountData accountData = new AccountData();
+            CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+
+            if (account != null)
+            {
+                accountData.AccountNickName = account.AccDesc;
+                accountData.AccountName = account.OwnerName;
+                accountData.AddStreet = account.AccountStAddress;
+                accountData.IsOwner = account.isOwned;
+                accountData.AccountNum = account.AccNum;
+                accountData.AccountCategoryId = account.AccountCategoryId;
+
+                if (notificationDetails.AccountStatementDetail != null && notificationDetails.AccountStatementDetail.StatementPeriod.IsValid())
+                {
+                    this.mView.ViewAccountStatement(accountData, notificationDetails.AccountStatementDetail.StatementPeriod);
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
             }
             else
             {
@@ -860,7 +930,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         {
             try
             {
-                int[] myIntArray = {6,7};
+                int[] myIntArray = { 6, 7 };
                 var questionRespone = await ServiceApiImpl.Instance.ShowEnergyBudgetRatingPage(new GetFeedbackTwoQuestionRequest(myIntArray));
 
                 if (questionRespone.IsSuccessResponse())
@@ -907,7 +977,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         public async void GetRateUsQuestionsNo()
         {
             try
-            {            
+            {
                 string questionCategoryID = "6";
                 var questionRespone = await ServiceApiImpl.Instance.GetRateUsQuestions(new GetRateUsQuestionRequest(questionCategoryID));
                 if (!questionRespone.IsSuccessResponse())

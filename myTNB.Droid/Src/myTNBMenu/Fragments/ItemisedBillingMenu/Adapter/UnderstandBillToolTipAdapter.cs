@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Android.Content;
+
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using CheeseBind;
+using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.Utils;
 
@@ -11,9 +16,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
     {
         List<UnderstandTooltipModel> mTooltipModelList;
         ViewGroup mParent;
-        public UnderstandBillToolTipAdapter(List<UnderstandTooltipModel> tooltipModelList)
+        bool mIsCAEligibleToBR;
+        public UnderstandBillToolTipAdapter(List<UnderstandTooltipModel> tooltipModelList, bool isCAEligibleToBR)
         {
             mTooltipModelList = tooltipModelList;
+            mIsCAEligibleToBR = isCAEligibleToBR;
         }
 
         public override int ItemCount => mTooltipModelList.Count;
@@ -26,11 +33,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
             {
                 if (position == 0)
                 {
-                    vh.imageToolTip.SetImageResource(Resource.Drawable.understand_bill_tooltip_1);
+                    vh.imageToolTip.SetImageResource(mIsCAEligibleToBR ? Resource.Drawable.Banner_Bill_Redesign_Tooltip_1 : Resource.Drawable.understand_bill_tooltip_1);
                 }
                 else
                 {
-                    vh.imageToolTip.SetImageResource(Resource.Drawable.understand_bill_tooltip_2);
+                    vh.imageToolTip.SetImageResource(mIsCAEligibleToBR ? Resource.Drawable.Banner_Bill_Redesign_Tooltip_2 : Resource.Drawable.understand_bill_tooltip_2);
                 }
             }
             else

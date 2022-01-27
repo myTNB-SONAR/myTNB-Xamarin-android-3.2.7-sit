@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical"
+	android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:overScrollMode="never"
+			android:scrollbars="none"
+			android:fillViewport="true"
+			android:background="@color/white">
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="@drawable/sd_feature_discovery_screen"/>
+					<TextView
+						android:layout_height="wrap_content"
+						android:layout_width="match_parent"
+						android:layout_marginTop="10dp"
+						android:layout_marginBottom="8dp"
+						android:paddingRight="16dp"
+						android:paddingLeft="16dp"
+						android:lineSpacingExtra="4dp"
+						android:textSize="16dp"
+						android:textColor="@color/water_blue"
+						android:gravity="center"
+						android:text="Stay Informed with Service Disruption Notifications!"
+						android:id="@+id/txtTitleSD" />
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingRight="16dp"
+					android:paddingLeft="16dp"
+					android:paddingBottom="15dp"
+					android:orientation="horizontal">
+					<TextView
+						android:layout_height="wrap_content"
+						android:layout_width="match_parent"
+						android:textSize="13dp"
+						android:lineSpacingExtra="2dp"
+						android:textColor="@color/darkergrey"
+						android:gravity="center"
+						android:layout_marginTop="6dp"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:text="Starting now, you'll be able to receive Service Disruption notifications which allow you to stay up-to-date when you encounter a power outage."
+						android:id="@+id/txtParaOne" />
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingRight="16dp"
+					android:paddingLeft="16dp"
+					android:paddingBottom="16dp"
+					android:orientation="horizontal">
+					<TextView
+						android:layout_height="wrap_content"
+						android:layout_width="match_parent"
+						android:textSize="13dp"
+						android:lineSpacingExtra="2dp"
+						android:textColor="@color/darkergrey"
+						android:gravity="center"
+						android:layout_marginTop="6dp"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:text="These notifications are only applicable to TNB electricity services and not any power-trips that may be happening within your premises."
+						android:id="@+id/txtParaTwo" />
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingRight="16dp"
+					android:paddingLeft="16dp"
+					android:paddingBottom="16dp"
+					android:orientation="horizontal">
+					<TextView
+						android:layout_height="wrap_content"
+						android:layout_width="match_parent"
+						android:textSize="11dp"
+						android:lineSpacingExtra="2dp"
+						android:textColor="@color/tunaGrey"
+						android:gravity="center"
+						android:layout_marginTop="6dp"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:text="*Service disruption feature is currently only available in selected areas but we will be expanding to more areas soon!"
+						android:id="@+id/txtTnC" />
+				</LinearLayout>
+			</LinearLayout>
+		</ScrollView>
+		<LinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:padding="16dp"
+			android:background="@color/white"
+			android:weightSum="1">
+			<Button
+				android:id="@+id/btnOkay"
+				android:text="Okay, Got It!"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				style="@style/DarkButton"
+				android:textAllCaps="false" />			
+		</LinearLayout>
+	</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

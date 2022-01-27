@@ -33,7 +33,7 @@ namespace myTNB.Mobile
             List<string> caList = new List<string>();
             try
             {
-                DBRModel dbrContent = EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.DBR);
+                BaseCAListModel dbrContent = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.DBR);
                 if (dbrContent != null
                     && dbrContent.ContractAccounts != null
                     && dbrContent.ContractAccounts.Count > 0)
@@ -57,7 +57,7 @@ namespace myTNB.Mobile
         {
             try
             {
-                DBRModel dbrContent = EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.DBR);
+                BaseCAListModel dbrContent = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.DBR);
                 if (dbrContent != null
                     && dbrContent.ContractAccounts != null
                     && dbrContent.ContractAccounts.Count > 0)
@@ -83,19 +83,9 @@ namespace myTNB.Mobile
                     {
                         if (GetCAList() is List<string> caList
                             && caList != null
-                            && caList.Count > 0
-                            && EligibilitySessionCache.Instance.CAList != null
-                            && EligibilitySessionCache.Instance.CAList.Count > 0)
+                            && caList.Count > 0)
                         {
-                            for (int i = 0; i < caList.Count; i++)
-                            {
-                                int index = EligibilitySessionCache.Instance.CAList.FindIndex(x => x.CA == caList[i]);
-                                if (index > -1)
-                                {
-                                    return true;
-                                }
-                            }
-                            return false;
+                            return true;
                         }
                         else
                         {
@@ -158,7 +148,7 @@ namespace myTNB.Mobile
                 return false;
             }
             bool ismyTNBAccountEligible = IsAccountEligible;
-            if (EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.DBR) is DBRModel dbrList
+            if (EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.DBR) is BaseCAListModel dbrList
                 && dbrList != null
                 && dbrList.ContractAccounts != null
                 && dbrList.ContractAccounts.Count > 0)
@@ -195,25 +185,6 @@ namespace myTNB.Mobile
         public bool ShouldShowCard(string ca)
         {
             return ShouldShowCard(new List<string> { ca });
-        }
-
-        /// <summary>
-        /// Determines if the Owner/Tenant tag should be from Eligibility or from device cache.
-        /// </summary>
-        public bool IsDBROTTagFromCache
-        {
-            get
-            {
-                try
-                {
-                    return !EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("[DEBUG]IsDBROTTagFromCache Exception: " + e.Message);
-                }
-                return false;
-            }
         }
     }
 }

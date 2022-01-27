@@ -61,7 +61,7 @@ namespace myTNB_Android.Src.Enquiry.Common
 
                 SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.TNC));
 
-                txtGSLRebateDisclaimer.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.PERSONAL_DISCLAIMER);//stub
+                txtGSLRebateDisclaimer.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.PERSONAL_DISCLAIMER);
                 txtTNBTermOfUse.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.TERMS_OF_USE);
                 txtPrivacyPolicy.Text = Utility.GetLocalizedLabel(LanguageConstants.SUBMIT_ENQUIRY, LanguageConstants.SubmitEnquiry.PRIVACY_POLICY_TITLE);
 

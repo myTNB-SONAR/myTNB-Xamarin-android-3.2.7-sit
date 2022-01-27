@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace myTNB.Mobile
 {
@@ -26,13 +27,12 @@ namespace myTNB.Mobile
         public const string SitecoreUsername = "api_user";
         public const string SitecorePassword = "mytnbapiuser!3$@2";
         internal const string ApiUrlPath = "v6/mytnbappws.asmx";
+        internal const int MaxAccountList = 30;
 
-        //AWS ENV POINT
         private const string AWS_DEV1 = "https://stagingapi.mytnb.com.my/asmx-97";
         private const string AWS_DEV2 = "https://stagingapi.mytnb.com.my/asmx-98";
         private const string AWS_SIT = "https://stagingapi.mytnb.com.my/asmx";
 
-        //ON PREM POINT
         private const string DEV1 = "http://10.215.128.191:88";
         private const string DEV2 = "http://10.215.128.191:89";
         private const string DEV3 = "http://10.215.128.191:99";
@@ -65,7 +65,7 @@ namespace myTNB.Mobile
         //AWS GetAccount
         public static string AWSApiDomainSIT = "https://stagingapi.mytnb.com.my/core/api"; //"https://core.stg-mytnb.com/api";
         public static string AWSApiDomainDEV = "https://mytnb-core-staging-362772745.ap-southeast-1.elb.amazonaws.com/api";
-        public static string AWSApiDomainPROD = "https://core.prod-mytnb.com/api";
+        public static string AWSApiDomainPROD = "https://api.mytnb.com.my/core/api";
 
         //OVIS Webview
         //public static string OvisWebviewBaseUrlDEV = "http://192.168.1.157:3000";
@@ -118,6 +118,7 @@ namespace myTNB.Mobile
         internal const string Service_GetAvailableAppointment = "AvailableAppointment";
         internal const string Service_PostSetAppointment = "SetAppointment";
         internal const string Service_SyncSRApplication = "SyncSRApplication";
+        internal const string Service_SaveFeatureInfo = "SaveFeatureInfo";
 
         //Language File Constants
         internal const string LanguageFile_ServiceDetails = "ServiceDetails";
@@ -150,6 +151,9 @@ namespace myTNB.Mobile
             public const string DBR_Owner = "DBROWNER";
             public const string DBR_NonOwner = "DBRNONOWNER";
             public const string APPLICATIONSTATUS = "APPLICATIONSTATUS";
+            public const string APP_UPDATE = "APPUPDATE";
+            public const string ACCOUNT_STATEMENT = "ACCOUNTSTATEMENT";
+            public const string NEW_BILL_DESIGN = "NEWBILLDESIGN";
         }
 
         public struct OSType

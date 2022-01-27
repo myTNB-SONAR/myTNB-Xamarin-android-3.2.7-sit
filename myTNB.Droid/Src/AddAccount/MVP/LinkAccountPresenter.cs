@@ -184,10 +184,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
                 if (result.IsSuccessResponse())
                 {
-                    /*if (mView.IsActive())
-                    {
-                        mView.HideAddingAccountProgressDialog();
-                    }*/
                     mView.ShowAddAccountSuccess(result.GetData());
                     MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                     HomeMenuUtils.ResetAll();

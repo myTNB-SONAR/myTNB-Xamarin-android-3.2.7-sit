@@ -82,7 +82,6 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                         }
                         else
                         {
-                            UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
                             this.mView.ShowFeedbackDetailsOthers(detailsResponse.GetData());
                         }
                     }

@@ -58,10 +58,10 @@ namespace myTNB_Android.Src.Common
             {
                 try
                 {
-                    TextViewUtils.SetTextSize16(txtItemTitle);
+                    TextViewUtils.SetTextSize14(txtItemTitle);
                     if (mContext is AppLanguageActivity)
                     {
-                        TextViewUtils.SetMuseoSans500Typeface(txtItemTitle);
+                        TextViewUtils.SetMuseoSans300Typeface(txtItemTitle);
                     }
                     else
                     {

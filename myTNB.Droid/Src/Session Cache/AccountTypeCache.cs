@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using myTNB.Mobile;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 
 namespace myTNB_Android.Src.SessionCache
@@ -22,80 +20,6 @@ namespace myTNB_Android.Src.SessionCache
         {
         }
 
-        internal List<string> DBREligibleCAs { private set; get; }
-        internal List<GetBillRenderingModel> MultiBillRenderingContent { private set; get; }
-
-        internal List<string> GetDBRAccountList()
-        {
-            try
-            {
-                List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
-                List<string> caList = allAccountList.Where(x =>
-                    x.isOwned
-                    && x.SmartMeterCode != "0")
-                    .Select(y => y.AccNum).ToList();
-                return caList;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("[Console] GetDBRAccountList Error: " + e.Message);
-            }
-            return new List<string>();
-        }
-
-        internal void UpdateCATariffType(List<string> caList)
-        {
-            if (caList == null || caList.Count == 0)
-            {
-                return;
-            }
-            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
-            for (int i = 0; i < caList.Count; i++)
-            {
-                int index = allAccountList.FindIndex(x => x.AccNum == caList[i]);
-                if (index > -1)
-                {
-                    //Todo: Add to db?
-                }
-            }
-        }
-
-        internal void UpdateCARendering(List<GetBillRenderingModel> multiBillRenderingContent
-            , List<string> caList)
-        {
-            DBREligibleCAs = new List<string>();
-            for (int i = 0; i < caList.Count; i++)
-            {
-                int index = multiBillRenderingContent.FindIndex(x => x.ContractAccountNumber == caList[i]);
-                if (index > -1 && multiBillRenderingContent[index].DBRType != myTNB.Mobile.MobileEnums.DBRTypeEnum.None)
-                {
-                    DBREligibleCAs.Add(caList[i]);
-                }
-            }
-            SetMultiBillRenderingContent(multiBillRenderingContent);
-        }
-
-        internal void SetMultiBillRenderingContent(List<GetBillRenderingModel> multiBillRenderingContent)
-        {
-            if (multiBillRenderingContent != null && multiBillRenderingContent.Count > 0)
-            {
-                this.MultiBillRenderingContent = multiBillRenderingContent;
-            }
-        }
-
-        internal GetBillRenderingModel GetFirstRenderingResponse()
-        {
-            if (MultiBillRenderingContent != null && MultiBillRenderingContent.Count > 0)
-            {
-                int index = MultiBillRenderingContent.FindIndex(x => x.ContractAccountNumber == DBREligibleCAs[0]);
-                if (index > -1)
-                {
-                    return MultiBillRenderingContent[index];
-                }
-            }
-            return null;
-        }
-
         internal async Task<ApplicationPaymentDetail> UpdateApplicationPayment(ApplicationPaymentDetail applicationPaymentDetail
             , BaseAppCompatActivity activity)
         {
@@ -106,10 +30,7 @@ namespace myTNB_Android.Src.SessionCache
             {
                 string caNumber = applicationPaymentDetail.caNo;
 
-                List<string> caList = EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                        , EligibilitySessionCache.FeatureProperty.TargetGroup)
-                    ? DBRUtility.Instance.GetCAList()
-                    : DBREligibleCAs;
+                List<string> caList = DBRUtility.Instance.GetCAList();
                 int index = caList.FindIndex(x => x == caNumber);
                 if (index > -1)
                 {
@@ -125,29 +46,6 @@ namespace myTNB_Android.Src.SessionCache
                 }
             }
             return applicationPaymentDetail;
-        }
-
-        internal bool IsAccountEligible(string ca)
-        {
-            try
-            {
-                List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
-                List<string> caList = allAccountList.Where(x => x.SmartMeterCode != "0")
-                    .Select(y => y.AccNum)
-                    .ToList();
-                return caList.FindIndex(x => x == ca) > -1;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("[DEBUG] IsAccountEligible Error: " + e.Message);
-            }
-            return false;
-        }
-
-        internal void Clear()
-        {
-            DBREligibleCAs = new List<string>();
-            MultiBillRenderingContent = new List<GetBillRenderingModel>();
         }
     }
 }

@@ -10,8 +10,6 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly string DEVICE_PLATFORM = "1"; // 1 for Android (for iOS its 2)
 
-        internal static readonly string FROM_ACTIVITY = ".fromActivity";
-
         internal static readonly int INACTIVE = 0;
         internal static readonly int ACTIVE = 1;
 
@@ -88,7 +86,10 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string ZERO_INDEX_TITLE = "All Notifications";
 
         internal static readonly string NO_SM_DATA_FOUND = ".noDataFound";
-        internal static readonly string SELECTED_BILL_STATEMENT = ".selectedBillMonths";
+
+        internal static readonly string ACCT_STMNT_EMPTY = ".accountStatementEmpty";
+        internal static readonly string ACCT_STMNT_PDF_FILE_PATH = ".accountStatementFilePath";
+        internal static readonly string BILL_HISTORY_IS_EMPTY = ".billHistoryIsEmpty";
 
         /// <summary>
         /// BARCODE REQUEST TYPE
@@ -96,6 +97,8 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int BARCODE_REQUEST_CODE = 0x01;
 
         internal static readonly int SELECT_ACCOUNT_REQUEST_CODE = 0x02;
+        internal static readonly int NEW_BILL_REDESIGN_REQUEST_CODE = 0x12;
+        internal static readonly int ACCTSTMNT_PDFVIEW_REQUEST_CODE = 0x14;
         internal static readonly int SELECT_FEEDBACK_STATE = 0x02;
         internal static readonly int SELECT_FEEDBACK_TYPE = 0x02;
 
@@ -113,7 +116,7 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly int UPDATE_NAME_REQUEST = 0x011;
 
-        internal static readonly int UPDATE_IC_REQUEST = 0x012;
+        internal static readonly int UPDATE_IC_REQUEST = 0x15;
 
         internal static readonly int MANAGE_SUPPLY_ACCOUNT_REQUEST = 0x08;
 
@@ -297,7 +300,6 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly int SELECT_ACCOUNT_PDF_REQUEST_CODE = 9078;
         internal static readonly int SELECT_ACCOUNT_DBR_REQUEST_CODE = 9079;
-        internal static readonly int SELECT_ACCOUNT_STATEMENT_PDF_REQUEST_CODE = 9080;
 
         internal static readonly string CODE_KEY = "CODE_KEY";
         internal static readonly string DBR_KEY = "DBR_KEY";
@@ -355,11 +357,22 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_RC = "CEP RC";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_NEWS = "98";
 
+        //Account Statement
+        public const string BCRM_NOTIFICATION_ACCT_STATEMENT_READY = "20008";
+
         //App Update
         public const string BCRM_NOTIFICATION_APP_UPDATE = "20006";
-        
+        public const string BCRM_NOTIFICATION_APP_UPDATE_2 = "20007";
+
         //Bill Estimation
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";
+
+        //Service Disruption
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_NEWS = "98";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE = "SDOUT";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS = "SDIP";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION = "SDOR";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW = "SDRC";
 
         public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
 
@@ -462,33 +475,21 @@ namespace myTNB_Android.Src.Utils
 
 
 #if MASTER || SIT || DEBUG
-        internal static readonly string EB_in_app_notification = "EB_in_app_notification_SIT";
-        internal static readonly string EB_initiate_Later = "EB_initiate_Later_SIT";
-        internal static readonly string EB_initiate_Start = "EB_initiate_Start_SIT";
-        internal static readonly string EB_start = "EB_start_SIT";
-        internal static readonly string EB_setup_success = "EB_setup_success_SIT";
-        internal static readonly string EB_edit_budget = "EB_edit_budget_SIT";
-        internal static readonly string EB_tooltip = "EB_tooltip_SIT";
-        internal static readonly string EB_view_tips = "EB_view_tips_SIT";
-
-        //internal static readonly string DYNA_SITECORE_REFFER_LOCAL = "sitecore_refer_local";
-        //internal static readonly string DYNA_SITECORE_REFFER_ONLINE = "sitecore_refer_online";
-        //internal static readonly string DYNA_WHATS_NEW_DEFAULT = "WhatsNewClicked";
-        //internal static readonly string EB_in_app_notification = "EB_in_app_notification";
+        internal static readonly string EB_in_app_notification = "EB_in_app_notification";
         internal static readonly string EB_view_tips_reached = "EB_view_tips_reached";
         internal static readonly string EB_view_tips_reaching = "EB_view_tips_reaching";
         internal static readonly string EB_view_budget_reached = "EB_view_budget_reached";
         internal static readonly string EB_view_budget_reaching = "EB_view_budget_reaching";
         internal static readonly string EB_view_notification_duration_reaching = "EB_view_notification_duration_reaching";
         internal static readonly string EB_view_notification_duration_reached = "EB_view_notification_duration_reached";
-        //internal static readonly string EB_initiate_Later = "EB_initiate_Later";
-        //internal static readonly string EB_initiate_Start = "EB_initiate_Start";
-        //internal static readonly string EB_start = "EB_start";
-        //internal static readonly string EB_setup_success = "EB_setup_success";
-        //internal static readonly string EB_edit_budget = "EB_edit_budget";
-        //internal static readonly string EB_tooltip = "EB_tooltip";
+        internal static readonly string EB_initiate_Later = "EB_initiate_Later";
+        internal static readonly string EB_initiate_Start = "EB_initiate_Start";
+        internal static readonly string EB_start = "EB_start";
+        internal static readonly string EB_setup_success = "EB_setup_success";
+        internal static readonly string EB_edit_budget = "EB_edit_budget";
+        internal static readonly string EB_tooltip = "EB_tooltip";
         internal static readonly string EB_view_budget_duration = "EB_view_budget_duration";
-        //internal static readonly string EB_view_tips = "EB_view_tips";
+        internal static readonly string EB_view_tips = "EB_view_tips";
         internal static readonly string EB_initiate_Duration = "EB_initiate_Duration";
 #else
         internal static readonly string EB_in_app_notification = "EB_in_app_notification";

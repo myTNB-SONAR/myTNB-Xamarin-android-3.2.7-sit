@@ -32,7 +32,7 @@ namespace myTNB.Mobile
             List<string> caList = new List<string>();
             try
             {
-                DBRModel billRedesignContent = EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.BR);
+                BaseCAListModel billRedesignContent = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.BR);
                 if (billRedesignContent != null
                     && billRedesignContent.ContractAccounts != null
                     && billRedesignContent.ContractAccounts.Count > 0)
@@ -53,26 +53,15 @@ namespace myTNB.Mobile
         {
             get
             {
-                return false;
-                /*if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.Enabled))
+                if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.BR, FeatureProperty.Enabled))
                 {
-                    if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup))
+                    if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.BR, FeatureProperty.TargetGroup))
                     {
                         if (GetCAList() is List<string> caList
                             && caList != null
-                            && caList.Count > 0
-                            && EligibilitySessionCache.Instance.CAList != null
-                            && EligibilitySessionCache.Instance.CAList.Count > 0)
+                            && caList.Count > 0)
                         {
-                            for (int i = 0; i < caList.Count; i++)
-                            {
-                                int index = EligibilitySessionCache.Instance.CAList.FindIndex(x => x.CA == caList[i]);
-                                if (index > -1)
-                                {
-                                    return true;
-                                }
-                            }
-                            return false;
+                            return true;
                         }
                         else
                         {
@@ -87,16 +76,15 @@ namespace myTNB.Mobile
                 else
                 {
                     return false;
-                }*/
+                }
             }
         }
 
         public bool IsCAEligible(string ca)
         {
-            return false;
-            /*try
+            try
             {
-                DBRModel brContent = EligibilitySessionCache.Instance.GetFeatureContent<DBRModel>(Features.BR);
+                BaseCAListModel brContent = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.BR);
                 if (brContent != null
                     && brContent.ContractAccounts != null
                     && brContent.ContractAccounts.Count > 0)
@@ -111,14 +99,13 @@ namespace myTNB.Mobile
                 Debug.WriteLine("[DEBUG]IsCAEligible Exception: " + e.Message);
 #endif
             }
-            return false;*/
+            return false;
         }
 
         public bool IsAccountStatementEligible(string ca
             , bool isOwner)
         {
-            return false;
-            /*try
+            try
             {
                 bool isCAEligible = IsCAEligible(ca);
                 if (isOwner)
@@ -144,7 +131,7 @@ namespace myTNB.Mobile
                 Debug.WriteLine("[DEBUG]IsAccountStatementEligible Exception: " + e.Message);
 #endif
             }
-            return false;*/
+            return false;
         }
 
 
@@ -152,8 +139,7 @@ namespace myTNB.Mobile
         {
             get
             {
-                return false;
-                /*try
+                try
                 {
                     if (LanguageManager.Instance.GetServiceConfig("ServiceConfiguration", "ForceHideBillRedesignBanner") is JToken config
                         && config != null
@@ -173,7 +159,7 @@ namespace myTNB.Mobile
                     Debug.WriteLine("[DEBUG] ShouldShowHomeCard Exception: " + e.Message);
 #endif
                 }
-                return false;*/
+                return false;
             }
         }
     }

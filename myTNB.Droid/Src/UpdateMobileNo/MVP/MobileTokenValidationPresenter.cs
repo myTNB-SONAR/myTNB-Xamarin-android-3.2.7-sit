@@ -2,6 +2,8 @@
 using Android.Content.PM;
 using Android.Text;
 using Android.Util;
+using myTNB;
+using myTNB.Mobile;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
@@ -11,6 +13,7 @@ using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
+using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
@@ -23,6 +26,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.RegisterValidation.MVP
 {
@@ -352,6 +356,17 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
                     try
                     {
+                        SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP);
+                        SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP);
+                        SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIPV2);
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+
+                    try
+                    {
                         RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
                         mRewardParentEntity.DeleteTable();
                         mRewardParentEntity.CreateTable();
@@ -368,16 +383,21 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     }
 
                     int Id = UserEntity.InsertOrReplace(userResponse.GetData());
+                    try
+                    {
+                        int loginCount = UserLoginCountEntity.GetLoginCount(userResponse.GetData().Email);
+                        if (loginCount < 2)
+                        {
+                            _ = UserLoginCountEntity.InsertOrReplace(userResponse.GetData(), loginCount + 1);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
                     if (Id > 0)
                     {
-                        //string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
-
-                        //GetCustomerAccountListRequest customerAccountListRequest = new GetCustomerAccountListRequest();
-                        //customerAccountListRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
-                        //customerAccountListRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                        //CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(customerAccountListRequest);
-                        //if (customerAccountListResponse.IsSuccessResponse())
-                        //{
+                       
                         GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                         baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                         baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
@@ -385,10 +405,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
                         if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null)
                         {
-                            //if (customerAccountListResponse.GetData().Count > 0)
                             if (customerAccountListResponse.customerAccountData.Count > 0)
                             {
-                                //ProcessCustomerAccount(customerAccountListResponse.GetData());
                                 ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
                             }
                             else
@@ -412,7 +430,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
                         UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new MyTNBService.Request.BaseRequest());
-                        if(response.IsSuccessResponse())
+                        if (response.IsSuccessResponse())
                         {
                             if (response.GetData() != null)
                             {
@@ -438,7 +456,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                             }
                         }
-                        else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                        else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
                         {
                             MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                         }
@@ -453,9 +471,24 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                         }
 
-                        if (mView.IsActive())
+                        await LanguageUtil.SaveUpdatedLanguagePreference();
+                        AppInfoManager.Instance.SetUserInfo("16"
+                            , UserEntity.GetActive().UserID
+                            , UserEntity.GetActive().UserName
+                            , UserSessions.GetDeviceId()
+                            , DeviceIdUtils.GetAppVersionName()
+                            , myTNB.Mobile.MobileConstants.OSType.Android
+                            , TextViewUtils.FontInfo
+                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+                        AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
+
+                        if (LanguageUtil.GetAppLanguage() == "MS")
                         {
-                            this.mView.HideRegistrationProgress();
+                            AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
+                        }
+                        else
+                        {
+                            AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
                         }
 
                         if (UserEntity.IsCurrentlyActive())
@@ -463,6 +496,21 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             UserEntity.UpdatePhoneNumber(newPhone);
                         }
                         UserSessions.SavePhoneVerified(mSharedPref, true);
+                       
+
+                        _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
+
+                        UserInfo usrinf = new UserInfo();
+                        usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
+
+                        _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(),
+                                    FeatureInfoManager.QueueTopicEnum.getca, usrinf, new DeviceInfoRequest()));
+
+                        if (mView.IsActive())
+                        {
+                            this.mView.HideRegistrationProgress();
+                        }
+                        
                         GetNCAccountList();
                         this.mView.ShowDashboardMyAccount();
                     }
@@ -711,12 +759,18 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             IsRegistered = acc.IsRegistered,
                             IsPaid = acc.IsPaid,
                             isOwned = acc.IsOwned,
+                            IsError = acc.IsError,
                             AccountTypeId = acc.AccountTypeId,
                             AccountStAddress = acc.AccountStAddress,
                             OwnerName = acc.OwnerName,
                             AccountCategoryId = acc.AccountCategoryId,
                             SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
-                            IsSelected = false
+                            IsSelected = false,
+                            BudgetAmount = acc.BudgetAmount,
+                            IsApplyEBilling = acc.IsApplyEBilling,
+                            IsHaveAccess = acc.IsHaveAccess,
+                            BusinessArea = acc.BusinessArea,
+                            RateCategory = acc.RateCategory
                         };
 
                         if (index != -1)
@@ -733,7 +787,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     {
                         newExisitingListArray.Sort();
 
-                        foreach(int index in newExisitingListArray)
+                        foreach (int index in newExisitingListArray)
                         {
                             CustomerBillingAccount oldAcc = existingSortedList[index];
 
@@ -750,12 +804,18 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                 IsRegistered = newAcc.IsRegistered,
                                 IsPaid = newAcc.IsPaid,
                                 isOwned = newAcc.IsOwned,
+                                IsError = newAcc.IsError,
                                 AccountTypeId = newAcc.AccountTypeId,
                                 AccountStAddress = newAcc.AccountStAddress,
                                 OwnerName = newAcc.OwnerName,
                                 AccountCategoryId = newAcc.AccountCategoryId,
                                 SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
-                                IsSelected = false
+                                IsSelected = false,
+                                BudgetAmount = newAcc.BudgetAmount,
+                                IsApplyEBilling = newAcc.IsApplyEBilling,
+                                IsHaveAccess = newAcc.IsHaveAccess,
+                                BusinessArea = newAcc.BusinessArea,
+                                RateCategory = newAcc.RateCategory
                             };
 
                             newExistingList.Add(newRecord);

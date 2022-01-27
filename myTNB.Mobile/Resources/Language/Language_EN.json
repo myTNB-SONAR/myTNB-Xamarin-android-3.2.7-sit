@@ -107,7 +107,7 @@
     "tutorialSwipeTextNew": "Swipe to see more, double tap to dismiss.",
     "tutorialSwipeTextlastNew": "Double tap to dismiss.",
 
-    "dbrPaperBill": "You’re receiving <b>Paper Bill</b> for this account. <b>Jom paperless today!</b>",
+    "dbrPaperBill": "You’re receiving <b>Paper Bill</b> for this account. <b>Go Paperless today!</b>",
     "dbrPaperBillNonOwner": "You’re receiving Paper Bill for this account.",
     "dbrEmail": "You’re receiving <b>myTNB & Email Bills</b> for this account.",
     "dbrWhatsApp": "You’re receiving <b>myTNB & Whatsapp Bills</b> for this account.",
@@ -249,7 +249,7 @@
     "tutorialMoreAcctsDescNew": "An account under your name has been added into your myTNB! Give your account a nickname for your easy reference.",
     "tutorialAccountTitleNewSec": "View and add your accounts all in one place.",
     "tutorialNoAcctDescNew": "View and add your accounts all in one place. Add an electricity account to myTNB now and you’ll have access to your usage, bills and manage your account.",
-    "dbrReminderPopupTitle": "Jom paperless with myTNB Bill today!",
+    "dbrReminderPopupTitle": "Go Paperless with your bills",
     "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill onwards! With myTNB, you have a better and more environmentally friendly way to receive your paperless bills digitally via myTNB App & Portal.",
     "dbrReminderPopupStartNow": "View More",
     //EnergyBudget
@@ -679,7 +679,10 @@
     "dontAskAgain": "Don't Ask Again",
     "feedback2SuccessTitle": "Thank you for your feedback!",
     "feedback2SuccessButton": "Okay",
-    "viewAccountStatement": "View Account Statement"
+    "viewAccountStatement": "View Account Statement",
+    "updateNow": "Update Now",
+    "notification": "Notification",
+    "serviceDistruption": "Service Disruption"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -1432,7 +1435,7 @@
     "stepTitle": "Step {0} of {1}",
     "rebateClaimTitle": "What type of rebates are you claiming?",
     "rebateTypeTitle": "Type of Rebates",
-    "tenantInfoTitle": "Your Tenancy Information",
+    "tenantInfoTitle": "Your Information",
     "addIncidentCTA": "Add New Incident",
     "incidentInformationTitle": "Incident Information",
     "incidentTitle": "Incident {0}",
@@ -2925,6 +2928,17 @@
             "type": "none",
             "isTimeout": true
           }
+        ],
+        "AccountStatementNotification": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -2985,12 +2999,12 @@
     "dbrInfoDescription0": "Swipe left to learn how you can benefit from going paperless today!",
     "dbrInfoDescription1": "Reduce your paper waste and be the first to make your impact in our collective move towards a more sustainable future.",
     "dbrInfoDescription2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills conveniently on myTNB App & Portal, anytime, anywhere.",
-    "dbrInfoDescription2V2": "Enjoy faster and on-the-dot delivery of your freshly improved TNB bills directly on myTNB App & Portal. Learn more about the new bill layout <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/bill-layout\">here</a>.",
+    "dbrInfoDescription2V2": "Enjoy faster and on-the-dot delivery of your freshly improved TNB bills directly on myTNB App & Portal. Learn more about the new bill layout <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">here</a>.",
     "dbrInfoDescription3": "Get your bills directly and securely on myTNB. No more worries about others seeing your bills, risk getting stolen or lost in the mail.",
     "anotherDeliveryMethod": "What if I want another bill delivery method?",
     "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "What if I want another bill delivery method?",
     "nonOwnerPreLaunchAnotherDeliveryMethodDetails": "Your bills will always be available on myTNB App & Portal. However, if you prefer another method you may call TNB Careline at <a href=\"tel: 1300885454\">1-300-88-5454</a> or visit any Kedai Tenaga so we can assist you.",
-    "goPaperlessCTA": "Jom Paperless Now",
+    "goPaperlessCTA": "Go Paperless Now",
     "updateBillDeliveryMethodCTA": "Update Bill Delivery Method",
     "deliveringToTitle": "Delivering to",
     "you": "(You)",
@@ -3013,22 +3027,24 @@
     "nonOwnerEmailBillDescription": "Your bills are being delivered on myTNB App & Portal and email for this account."
   },
   "DBRWebview": {
-    "goPaperless": "Jom Paperless!",
+    "goPaperless": "Go Paperless!",
     "updateBillDelivery": "Update Bill Delivery Method",
     "confirmPopupTitle": "Leave this page?",
     "confirmPopupMessage": "You are about to close this page and end your session.",
     "nevermind": "Nevermind",
     "confirm": "Confirm",
-    "shareFeedbackTitle": "Share Feedback"
+    "shareFeedbackTitle": "Share Feedback",
+    "yes": "Leave",
+    "no": "Stay"
   },
   "ServiceConfiguration": {
     "Eligibility": {
       "enabled": true,
-      "callInterval": 480
+      "callInterval": 0
     },
     "GetEligibility": {
       "enabled": true,
-      "callInterval": 480
+      "callInterval": 0
     },
     "ForceHideDBRBanner": false,
     "ForceHideBillRedesignBanner": false,
@@ -3039,7 +3055,8 @@
     "IsUpdatePersonalDetailsEnquiryEnabled": true,
     "IsGSLRebateEnabled": true,
     "AccountStatementTimeout": 5000,
-    "ShouldShowAccountStatementToNonOwner": false
+    "ShouldShowAccountStatementToNonOwner": false,
+    "MaxAccountList": 100
   },
   "StatementPeriod": {
     "title": "Account Statement",
@@ -3119,7 +3136,7 @@
       },
       {
         "Title": "",
-        "Description": "Go to the bill page to view your bills or learn more about the new bill <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/bill-layout\">here</a>.",
+        "Description": "Go to the bill page to view your bills or learn more about the new bill <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">here</a>.",
         "Image1": "",
         "Image2": "",
         "IsZoomable": false,
@@ -3213,5 +3230,12 @@
         ]
       }
     ]
+  },
+  "ServiceDistruptionComm": {
+    "title": "Stay Informed with Service Disruption Notifications!",
+    "subTitle1": "Starting now, you'll be able to receive Service Disruption notifications and restoration updates which allow you to stay up-to-date when you encounter a power outage.",
+    "subTitle2": "These notifications are only applicable to TNB electricity services and not any power-trips that may be happening within your premises.",
+    "note": "*Service disruption feature is currently only available in selected areas but we will be expanding to more areas soon!",
+    "buttonCTA": "Okay, Got It!"
   }
 }

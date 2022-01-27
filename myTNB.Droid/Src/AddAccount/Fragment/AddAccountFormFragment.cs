@@ -970,14 +970,16 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         {
             throw new NotImplementedException();
         }
-        
+
         private void ShowWhereIsMyAccountNoTooltip()
         {
-            var title = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
-            var message = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
+            var title = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitleV2") :
+                            Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
+            var message = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetailsV2") :
+            Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
 
             MyTNBAppToolTipBuilder whereIsMyAccountNo = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-               .SetHeaderImage(Resource.Drawable.img_register_acct_no)
+               .SetHeaderImage(BillRedesignUtility.Instance.IsAccountEligible ? Resource.Drawable.img_register_acct_noV2 : Resource.Drawable.img_register_acct_no)
                .SetTitle(title)
                .SetMessage(message)
                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))

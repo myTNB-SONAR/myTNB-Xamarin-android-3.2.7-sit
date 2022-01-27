@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using System.Threading.Tasks;
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Content.Res;
@@ -64,17 +65,14 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             try
             {
-                RunOnUiThread(() =>
+                try
                 {
-                    try
-                    {
-                        SetDefaultData();
-                    }
-                    catch (System.Exception er)
-                    {
-                        Utility.LoggingNonFatalError(er);
-                    }
-                });
+                    SetDefaultData();
+                }
+                catch (System.Exception er)
+                {
+                    Utility.LoggingNonFatalError(er);
+                }
             }
             catch (System.Exception e)
             {
@@ -100,15 +98,13 @@ namespace myTNB_Android.Src.DigitalBill.Activity
 
                 mPresenter = new DigitalBillPresenter(this);
 
-                micrositeWebView = FindViewById<WebView>(Resource.Id.tncWebView);
-                micrositeWebView.Settings.JavaScriptEnabled = true;
-                micrositeWebView.Settings.CacheMode = CacheModes.CacheElseNetwork;
-                micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
                 SetToolBarTitle(GetLabelByLanguage(BillRendering.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
-                    ? "goPaperless"
-                    : "updateBillDelivery"));
+                    ? LanguageConstants.DBRWebview.GO_PAPERLESS
+                    : LanguageConstants.DBRWebview.UPDATE_BILL_DELIVERY));
                 OnTag();
-                ShowDigitalBill(true);
+
+                micrositeWebView = FindViewById<WebView>(Resource.Id.tncWebView);
+                this.mPresenter.Start();
             }
             catch (System.Exception e)
             {
@@ -182,14 +178,13 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             MyTNBAppToolTipBuilder exitTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
                 .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
-                .SetTitle(Utility.GetLocalizedLabel("DBRWebview", "confirmPopupTitle"))
-                .SetMessage(Utility.GetLocalizedLabel("DBRWebview", "confirmPopupMessage"))
-                .SetCTALabel(Utility.GetLocalizedLabel("DBRWebview", "nevermind"))
-                .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DBRWebview", "confirm"))
+                .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DBR_WEBVIEW, LanguageConstants.DBRWebview.CONFIRM_TITLE))
+                .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DBR_WEBVIEW, LanguageConstants.DBRWebview.CONFIRM_MSG))
+                .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DBR_WEBVIEW, LanguageConstants.DBRWebview.NO))
+                .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DBR_WEBVIEW, LanguageConstants.DBRWebview.YES))
                 .SetSecondaryCTAaction(() =>
                 {
                     OnTagCloseDynatrace();
-                    Log.Debug("[DEBUG]", "ShouldBackToHome: " + ShouldBackToHome);
                     if (ShouldBackToHome)
                     {
                         OnShowDashboard();
@@ -229,23 +224,31 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             try
             {
-                UserEntity user = UserEntity.GetActive();
-                string myTNBAccountName = user?.DisplayName ?? string.Empty;
-                string signature = SSOManager.Instance.GetSignature(myTNBAccountName
+                RunOnUiThread(() =>
+                {
+                    UserEntity user = UserEntity.GetActive();
+                    string myTNBAccountName = user?.DisplayName ?? string.Empty;
+                    string signature = SSOManager.Instance.GetSignature(myTNBAccountName
                     , AccessTokenCache.Instance.GetAccessToken(this)
                     , user.DeviceId ?? string.Empty
                     , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
                     , 16
                     , (LanguageUtil.GetAppLanguage() == "MS"
-                        ? LanguageManager.Language.MS
-                        : LanguageManager.Language.EN).ToString()
+                    ? LanguageManager.Language.MS
+                    : LanguageManager.Language.EN).ToString()
                     , TextViewUtils.FontInfo ?? "N"
                     , BillRendering.Content.OriginURL
                     , BillRendering.Content.RedirectURL
                     , _accountNumber);
 
-                string ssoURL = string.Format(AWSConstants.Domains.SSO, signature);
-                micrositeWebView.LoadUrl(ssoURL);
+                    string ssoURL = string.Format(AWSConstants.Domains.SSO, signature);
+
+                    micrositeWebView.SetWebChromeClient(new WebChromeClient());
+                    micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
+                    micrositeWebView.Settings.JavaScriptEnabled = true;
+
+                    micrositeWebView.LoadUrl(ssoURL);
+                });
             }
             catch (System.Exception e)
             {

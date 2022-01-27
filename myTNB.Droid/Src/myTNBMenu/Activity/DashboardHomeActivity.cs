@@ -56,6 +56,10 @@ using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Utils.Deeplink;
 using Android.Content.Res;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
+using myTNB_Android.Src.Bills.AccountStatement;
+using myTNB_Android.Src.Utils.Notification;
+
+using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -267,6 +271,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
             }
             CheckStatusEligibleEB();
+            CheckStatusEligibleSD();
             IsRootTutorialShown = false;
             SetBottomNavigationLabels();
             bottomNavigationView.SetShiftMode(false, false);
@@ -281,7 +286,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             Bundle extras = Intent?.Extras;
 
-            if (extras != null && (extras.ContainsKey("FROM_NOTIFICATION") || extras.ContainsKey("FROM_MANAGE_BILL_DELIVERY")))
+            if (extras != null && (extras.ContainsKey("FROM_NOTIFICATION") ||
+                extras.ContainsKey("FROM_MANAGE_BILL_DELIVERY") ||
+                extras.ContainsKey(AccountStatementConstants.FROM_ACCOUNT_STATEMENT)))
             {
                 if (extras.ContainsKey("MENU"))
                 {
@@ -686,7 +693,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             StartActivityForResult(updateICNo, Constants.UPDATE_IC_REQUEST);
         }
 
-        public void ShowBillMenu(AccountData selectedAccount)
+        
+        public void ShowBillMenu(AccountData selectedAccount, bool isIneligiblePopUpActive = false)
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             txtAccountName.Visibility = ViewStates.Gone;
@@ -695,7 +703,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 SupportFragmentManager.PopBackStack();
                 currentFragment = null;
             }
-            currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount);
+            currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount, isIneligiblePopUpActive);
             SupportFragmentManager.BeginTransaction()
                 .Replace(Resource.Id.content_layout, currentFragment)
                 .CommitAllowingStateLoss();
@@ -823,6 +831,24 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 this.DeeplinkValidation();
             }
+        }
+
+        public void OnCheckNotification()
+        {
+            bool hasNotification = UserSessions.HasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+            string loggedInEmail = UserEntity.GetActive() != null ? UserEntity.GetActive().Email : string.Empty;
+            bool isLoggedInEmail = loggedInEmail.Equals(UserSessions.GetUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this)));
+            if (hasNotification &&
+                isLoggedInEmail &&
+                NotificationUtil.Instance.Type != NotificationType.None)
+            {
+                this.NotificationValidation();
+            }
+            else
+            {
+                NotificationUtil.Instance.ClearData();
+            }
+            UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(this));
         }
 
         public void ShowFeedbackMenu()
@@ -2839,11 +2865,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             if (MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
             {
-                EBModel isEbfeature = new EBModel();
-                isEbfeature = EligibilitySessionCache.Instance.GetFeatureContent<EBModel>(EligibilitySessionCache.Features.EB);
+                BaseCAListModel isEbfeature = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(EligibilitySessionCache.Features.EB);
                 if (isEbfeature != null)
                 {
-                    if (isEbfeature.ContractAccounts != null)
+                    if (EBUtility.Instance.IsAccountEligible)
                     {
                         MyTNBAccountManagement.GetInstance().SetIsEBUser(true);
                     }
@@ -2852,15 +2877,40 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         MyTNBAccountManagement.GetInstance().SetIsEBUser(false);
                     }
                 }
-                else if (EBUtility.Instance.IsPublicRelease)
-                {
-                    MyTNBAccountManagement.GetInstance().SetIsEBUser(true);
-                }
                 else
                 {
                     MyTNBAccountManagement.GetInstance().SetIsEBUser(false);
                 }
             }
+        }
+
+        public void CheckStatusEligibleSD()
+        {
+            try
+            {
+                BaseCAListModel isSDfeature = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(EligibilitySessionCache.Features.SD);
+                if (isSDfeature != null)
+                {
+                    if (SDUtility.Instance.IsAccountEligible)
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsSDUser(true);
+                    }
+                    else
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsSDUser(false);
+                    }
+                }
+                else
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsSDUser(false);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                MyTNBAccountManagement.GetInstance().SetIsSDUser(false);
+            }
+            //MyTNBAccountManagement.GetInstance().SetIsSDUser(true); //add for sit test alway true
         }
 
         public void OnCheckEnergyBudgetUser()
@@ -2897,6 +2947,23 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void NavigateToAddAccount()
         {
             this.ShowAddAccount();
+        }
+
+        public void NavigateToViewAccountStatement(CustomerBillingAccount account)
+        {
+            userActionsListener.ShowBillMenuWithAccount(account);
+            this.ShowViewAccountStatement(account);
+        }
+
+        public void TriggerIneligiblePopUp()
+        {
+            userActionsListener.OnMenuSelect(Resource.Id.menu_bill, true);
+            this.ShowIneligiblePopUp();
+        }
+
+        public void NavigateToNBR()
+        {
+            this.ShowNewBillRedesign();
         }
 
         public void NavigateToGSL()

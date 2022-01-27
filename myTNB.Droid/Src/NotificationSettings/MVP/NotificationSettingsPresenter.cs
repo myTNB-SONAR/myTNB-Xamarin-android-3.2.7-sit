@@ -191,7 +191,24 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                         {
                             if (type.ShowInPreference)
                             {
-                                typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                                if (type.MasterId == "1000020")
+                                {
+                                    if (MyTNBAccountManagement.GetInstance().IsEBUserVerify() && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
+                                    {
+                                        typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                                    }
+                                }
+                                else if (type.MasterId == "1000028")
+                                {
+                                    if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
+                                    {
+                                        typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                                    }
+                                }
+                                else
+                                {
+                                    typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                                }
                             }
                         }
 
@@ -278,6 +295,13 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                         if (type.MasterId == "1000020")
                         {
                             if (MyTNBAccountManagement.GetInstance().IsEBUserVerify() && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
+                            {
+                                typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                            }
+                        }
+                        else if (type.MasterId == "1000028")
+                        {
+                            if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
                             {
                                 typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
                             }

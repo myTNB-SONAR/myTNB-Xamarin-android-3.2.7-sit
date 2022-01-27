@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.MyTNBService.Response
             public bool IsOwned { get; set; }
 
             [JsonProperty(PropertyName = "isError")]
-            public string IsError { get; set; }
+            public bool IsError { get; set; }
 
             [JsonProperty(PropertyName = "message")]
             public string Message { get; set; }
@@ -113,10 +113,19 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "InstallationType")]
             public string InstallationType { get; set; }
 
-            [JsonProperty("CreatedDate")]
+            [JsonProperty(PropertyName = "CreatedDate")]
             public string CreatedDate { set; get; }
+
+            [JsonProperty(PropertyName = "BusinessArea")]
+            public string BusinessArea { get; set; }
+
+            [JsonProperty(PropertyName = "RateCategory")]
+            public string RateCategory { get; set; }
         }
 
 
     }
 }
+
+
+

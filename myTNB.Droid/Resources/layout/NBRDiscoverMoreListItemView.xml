@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	android:paddingTop="17dp"
+	android:background="@android:color/transparent">
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="22dp"
+		android:id="@+id/dicoverMoreItemView">
+		<TextView
+			android:layout_width="20dp"
+			android:layout_height="20dp"
+			android:background="@drawable/yellow_circle_active"
+			android:textSize="12dp"
+			android:textColor="@color/charcoalGrey"
+			android:gravity="center"
+			android:text="1"
+			android:id="@+id/nbrDiscoverMoreNumber" />
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="8dp"
+			android:textColor="@color/charcoalGrey"
+			android:text="Your account’s bill summary"
+			android:id="@+id/nbrDiscoverMoreTitle" />
+	</LinearLayout>
+	<LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+		android:layout_marginTop="17dp"
+        android:id="@+id/bannerImageLayout">
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/bannerShimmerContainer">
+			<com.facebook.shimmer.ShimmerFrameLayout
+				android:id="@+id/bannerShimmer"
+				android:layout_height="match_parent"
+				android:layout_width="match_parent">
+				<View
+					android:background="@color/shimmer_color_second"
+					android:layout_width="match_parent"
+					android:layout_height="94dp"/>
+			</com.facebook.shimmer.ShimmerFrameLayout>
+		</LinearLayout>
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			<ImageView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:scaleType="fitXY"
+				android:adjustViewBounds="true"
+				android:visibility="gone"
+				android:id="@+id/nbrDiscoverMoreBanner" />
+		</LinearLayout>
+	</LinearLayout>
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="17dp"
+		android:textColor="@color/charcoalGrey"
+		android:id="@+id/nbrDiscoverMoreContent" />
+</LinearLayout>

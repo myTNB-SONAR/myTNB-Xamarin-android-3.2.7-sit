@@ -174,11 +174,6 @@ namespace myTNB_Android.Src.Login.MVP
             void LoginAsync(string username, string password, string deviceId, bool rememberMe);
 
             /// <summary>
-            /// Navigates to dashboard once login credentials has been saved successfully.
-            /// </summary>
-            void NavigateToDashboard();
-
-            /// <summary>
             /// Navigates to Forget Password Screen
             /// </summary>
             void NavigateToForgetPassword();

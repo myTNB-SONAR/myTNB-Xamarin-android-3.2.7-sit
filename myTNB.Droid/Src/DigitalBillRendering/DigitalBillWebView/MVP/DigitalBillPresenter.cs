@@ -26,12 +26,13 @@ namespace myTNB_Android.Src.DigitalBill.MVP
             this.mView.SetPresenter(this);
         }
 
-       
+
 
         public void Start()
         {
             //No Impl
             //GetDigitalBillData();
+            this.mView.ShowDigitalBill(true);
         }
     }
 }

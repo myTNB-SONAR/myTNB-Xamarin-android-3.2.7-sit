@@ -51,12 +51,24 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 Image = "manage_bill_delivery_0"
             });
 
-            ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
+            if (selectedAccountData != null && BillRedesignUtility.Instance.IsCAEligible(selectedAccountData.AccountNum))
             {
-                Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle2"),
-                Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription2"),
-                Image = "manage_bill_delivery_1"
-            });
+                ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
+                {
+                    Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle2V2"),
+                    Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription2V2"),
+                    Image = "dbr_paper_e_bill"
+                });
+            }
+            else
+            {
+                ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
+                {
+                    Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle2"),
+                    Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription2"),
+                    Image = "manage_bill_delivery_1"
+                });
+            }
 
             ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
             {

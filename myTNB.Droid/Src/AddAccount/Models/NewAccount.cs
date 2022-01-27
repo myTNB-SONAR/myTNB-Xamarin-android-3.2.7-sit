@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.AddAccount.Models
         public string accountTypeId { get; set; }
 
         public string smartMeterCode { get; set; }
-        
+
         public bool IsTaggedSMR { get; set; }
 
         public bool isOwned { get; set; }
@@ -50,26 +50,20 @@ namespace myTNB_Android.Src.AddAccount.Models
 
         public bool CountryCheckNoPhone { get; set; }
         
-        public string unitNo { get; set; }
-
-        public string building { get; set; }
-
-        public string houseNo { get; set; }
-
-        public string street { get; set; }
-
-        public string area { get; set; }
-
-        public string city { get; set; }
-
-        public string postCode { get; set; }
-
-        public string state { get; set; }
+        public bool IsError { get; set; }
 
         public string BudgetAmount { get; set; }
 
         public string InstallationType { get; set; }
 
         public string CreatedDate { get; set; }
+
+        public bool IsApplyEBilling { get; set; }
+
+        public bool IsHaveAccess { get; set; }
+
+        public string BusinessArea { get; set; }
+
+        public string RateCategory { get; set; }
     }
 }

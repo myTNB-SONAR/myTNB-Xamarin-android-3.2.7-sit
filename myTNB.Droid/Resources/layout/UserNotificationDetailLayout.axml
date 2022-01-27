@@ -35,6 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="fitXY"
+				    android:adjustViewBounds="true"
                     android:src="@drawable/notification_new_bill_banner"/>
                 <TextView
                     android:id="@+id/notificationDetailTitle"
@@ -44,6 +45,7 @@
                     android:textSize="16dp"
                     android:gravity="left|center"
                     android:textColor="@color/powerBlue"
+                    android:layout_marginBottom="16dp"
                     android:layout_marginTop="24dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"/>
@@ -56,7 +58,6 @@
                     android:lineHeight="20dp"
                     android:textColor="@color/tunaGrey"
                     android:textColorLink="@color/powerBlue"
-                    android:layout_marginTop="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"/>
             </LinearLayout>

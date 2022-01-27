@@ -389,10 +389,15 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0] : searchByModel;
                     if (searchType != null && searchType.Type == ApplicationStatusSearchType.CA)
                     {
+                        var title = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitleCAV2") :
+                            Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitleCA");
+                        var message = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessageCAV2") :
+                            Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessageCA");
+
                         MyTNBAppToolTipBuilder whereAreTheseNumbers = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                           .SetHeaderImage(Resource.Drawable.img_register_acct_no)
-                           .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitleCA"))
-                           .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessageCA"))
+                           .SetHeaderImage(BillRedesignUtility.Instance.IsAccountEligible ? Resource.Drawable.img_register_acct_noV2 : Resource.Drawable.img_register_acct_no)
+                           .SetTitle(title)
+                           .SetMessage(message)
                            .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                            .Build();
                         whereAreTheseNumbers.Show();

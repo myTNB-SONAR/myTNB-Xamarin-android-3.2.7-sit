@@ -12,7 +12,7 @@ using Refit;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
     public class AppLaunchContract
@@ -23,11 +23,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// Navigates/Show the Walkthrough sitecore
             /// </summary>
             void ShowWalkThrough();
-
-            /// <summary>
-            /// Navigates/Show the ResetPassword
-            /// </summary>
-            void ShowResetPassword();
 
             /// <summary>
             /// Navigates/Show the PreLogin
@@ -107,7 +102,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// <param name="notificationData">UserNotificationData</param>
             /// <param name="position">integer</param>
             void ShowDetails(NotificationDetails.Models.NotificationDetails details);
-            
 
             /// <summary>
             /// Show notification details

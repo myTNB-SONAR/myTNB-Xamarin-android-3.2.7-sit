@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime;
+using System.Threading.Tasks;
 using static myTNB_Android.Src.MyTNBService.Response.AccountReceiptResponse;
 
 namespace myTNB_Android.Src.ViewReceipt.Activity
@@ -129,7 +130,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             {
                 SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
 
-
                 mPresenter = new ViewReceiptMultiAccountNewDesignPresenter(this);
 
                 mProgressBar.Visibility = ViewStates.Gone;
@@ -208,7 +208,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.ViewBillReceiptMenu, menu);
+            MenuInflater.Inflate(Resource.Menu.ViewBillStatementMenu, menu);
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -216,14 +216,13 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         {
             switch (item.ItemId)
             {
-                case Resource.Id.action_download:
+                case Resource.Id.action_share:
                     if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
                     {
                         RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
                     }
                     else
                     {
-                        downloadClicked = true;
                         CreatePDF(response);
                     }
                     return true;
@@ -797,11 +796,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             mErrorMessageSnackBar.Show();
         }
 
-        public void OnDownloadPDF()
-        {
-            CreatePDF(response);
-        }
-
         public void SetPresenter(ViewReceiptMultiAccountNewDesignContract.IUserActionsListener userActionListener)
         {
             this.iPresenter = userActionListener;
@@ -895,7 +889,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                     {
                         RunOnUiThread(() =>
                         {
-                            downloadClicked = true;
                             CreatePDF(response);
                         });
                     }
@@ -948,6 +941,28 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 .SetCTAaction(Finish)
                 .Build()
                 .Show();
+        }
+
+        private void OnSharePDF(string savedPDFPath)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(savedPDFPath))
+                {
+                    Java.IO.File file = new Java.IO.File(savedPDFPath);
+                    Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
+                                                ApplicationContext.PackageName + ".fileprovider", file);
+
+                    Intent shareIntent = new Intent(Intent.ActionSend);
+                    shareIntent.SetType("application/pdf");
+                    shareIntent.PutExtra(Intent.ExtraStream, fileUri);
+                    StartActivity(Intent.CreateChooser(shareIntent, Utility.GetLocalizedLabel("Profile", "share")));
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

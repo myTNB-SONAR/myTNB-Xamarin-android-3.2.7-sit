@@ -91,8 +91,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void HideDiscoverViewView();
 
-            void ShowDiscoverView(bool IsAccountDBREligible);
-
             bool CheckNeedHelpHide();
 
             void SetMyServiceRefreshView(string contentTxt, string buttonTxt);
@@ -106,13 +104,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowFAQFromHide();
 
             bool GetHomeTutorialCallState();
-            
+
             void EBPopupActivity();
-            
+
             void ShowDiscoverMoreLayout();
-            
+
             void OnSetNotificationNewLabel(bool hasNoti, int noticount);
-            
+
             void FilterCOMCLandNEM();
         }
 
@@ -132,7 +130,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ReadNewFAQFromCache();
             Task OnGetFAQs();
             void LoadLocalAccounts();
-			void LoadSummaryDetailsInBatch(List<string> accountNumbers);
+            void LoadSummaryDetailsInBatch(List<string> accountNumbers);
 
             void GetEnergySavingTipsTimeStamp();
 
@@ -181,7 +179,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             bool GetIsLoadedHomeDone();
 
             void OnCheckNewFAQState();
-            
+
 
             //void UserNotificationsCount();
         }

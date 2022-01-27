@@ -255,6 +255,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     //    //DoLoadHomeDashBoardFragment();
                     //}
                 }
+                else if (requestCode == Constants.NEW_BILL_REDESIGN_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        OnMenuSelect(Resource.Id.menu_bill);
+                    }
+                }
             }
             catch (System.Exception e)
             {
@@ -262,7 +269,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
-        public void OnMenuSelect(int resourceId)
+        public void OnMenuSelect(int resourceId, bool isIneligiblePopUpActive = false)
         {
             if (!this.mView.GetAlreadyStarted())
             {
@@ -352,7 +359,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         accountData.IsOwner = customerBillingAccount.isOwned;
                         accountData.AccountNum = selected.AccNum;
                         accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
-                        this.mView.ShowBillMenu(accountData);
+                        this.mView.ShowBillMenu(accountData, isIneligiblePopUpActive);
                     }
                     else
                     {
@@ -546,6 +553,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
 
             this.mView.OnCheckDeeplink();
+            this.mView.OnCheckNotification();
         }
 
         private void LoadUsageHistory(CustomerBillingAccount accountSelected)
@@ -1744,6 +1752,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         public void DisableWalkthrough()
         {
             UserSessions.DoHomeTutorialShown(this.mSharedPref);
+        }
+        
+        public void OnGetBillEligibilityCheck(string accountNumber)
+        {
+            this.GetBillEligibilityCheck(accountNumber);
         }
     }
 

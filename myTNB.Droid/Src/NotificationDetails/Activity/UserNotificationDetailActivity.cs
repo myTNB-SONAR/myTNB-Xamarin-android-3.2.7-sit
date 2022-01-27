@@ -17,6 +17,8 @@ using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Billing.MVP;
+using myTNB_Android.Src.Bills.AccountStatement;
+using myTNB_Android.Src.Bills.AccountStatement.Activity;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.EnergyBudgetRating.Activity;
@@ -132,6 +134,40 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             Finish();
         }
 
+        public void ShowUpateApp()
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                if (WeblinkEntity.HasRecord("DROID"))
+                {
+                    WeblinkEntity entity = WeblinkEntity.GetByCode("DROID");
+                    try
+                    {
+                        string[] array = entity.Url.Split(new[] { "?id=" }, StringSplitOptions.None);
+
+                        if (array.Length > 1)
+                        {
+                            string id = array[1];
+                            var intent = new Intent(Intent.ActionView, Android.Net.Uri.Parse("market://details?id=" + id));
+                            // we need to add this, because the activity is in a new context.
+                            // Otherwise the runtime will block the execution and throw an exception
+                            intent.AddFlags(ActivityFlags.NewTask);
+
+                            Application.Context.StartActivity(intent);
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                        var uri = Android.Net.Uri.Parse(entity.Url);
+                        var intent = new Intent(Intent.ActionView, uri);
+                        StartActivity(intent);
+                    }
+                }
+            }
+        }
+
         public void OnClickSpan(string textMessage)
         {
             if (textMessage != null && textMessage.Contains("http"))
@@ -177,12 +213,18 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 mPresenter = new UserNotificationDetailPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
                 base.OnCreate(savedInstanceState);
                 SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+                SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
                     if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM))
                     {
                         notificationDetails = DeSerialze<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
+
+                        if (!string.IsNullOrEmpty(notificationDetails.HeaderTitle))
+                        {
+                            SetToolBarTitle(notificationDetails.HeaderTitle);
+                        }
                     }
 
                     if (extras.ContainsKey(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM))
@@ -194,7 +236,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_LIST_ITEM))
                     {
                         userNotificationData = DeSerialze<UserNotificationData>(extras.GetString(Constants.SELECTED_NOTIFICATION_LIST_ITEM));
-                        SetToolBarTitle(userNotificationData.Title);
                     }
 
                     position = extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION);
@@ -215,7 +256,17 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_TC
                     || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_RC)
                 {
-                    SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationDetails", "EnergyBudgetTitle"));
+                    SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_ENERGY_BUDGET));
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE
+                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS
+                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION)
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_SRVC_DISTRUPTION));
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW)
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
                 }
 
                 if (pushFromDashboard)
@@ -252,7 +303,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     notificationDetailMessage.TextFormatted = GetFormattedText(detailModel.message);
 
                     string dynatraceTag = string.Empty;
-                    if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_APP_UPDATE)
+                    if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_APP_UPDATE ||
+                        notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_APP_UPDATE_2)
                     {
                         dynatraceTag = myTNB.Mobile.DynatraceConstants.BR.CTAs.Notifications.Update;
                     }
@@ -270,12 +322,34 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                             .SetMessage(detailModel.message)
                             .Build(dynatraceTag ?? string.Empty)
                             .GetProcessedTextView();
+
+                        if (this.Resources.DisplayMetrics.WidthPixels <= 1200)
+                        {
+                            TextView textView = FindViewById<TextView>(Resource.Id.notificationDetailMessage);
+                            int layWidth = this.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.07f) - GetDeviceHorizontalScaleInPixel(0.07f);
+                            LinearLayout.LayoutParams paramsss = new LinearLayout.LayoutParams(layWidth, ViewGroup.LayoutParams.MatchParent);
+                            textView.LayoutParameters = paramsss;
+                            ViewGroup.MarginLayoutParams txtBody = (ViewGroup.MarginLayoutParams)notificationDetailMessage.LayoutParameters;
+                            txtBody.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+                            txtBody.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+                            notificationDetailMessage.LayoutParameters = txtBody;
+                            notificationDetailMessage.RequestLayout();
+                        }
                     }
 
                     if (detailModel.ctaList.Count > 0)
                     {
                         ctaComponent.Visibility = ViewStates.Visible;
                         ctaComponent.SetCTAButton(detailModel.ctaList);
+
+                        if (notificationDetails != null)
+                        {
+                            if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW)
+                            {
+                                ctaComponent.Visibility = ViewStates.Visible;
+                                ctaComponent.SetCustomCTAButton(detailModel.ctaList);
+                            }
+                        }
                     }
                     else
                     {
@@ -512,6 +586,14 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
             payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
             StartActivity(payment_activity);
+        }
+
+        public void ViewAccountStatement(AccountData mSelectedAccountData, string statementPeriod)
+        {
+            Intent acctStmntLoadingIntent = new Intent(this, typeof(AccountStatementLoadingActivity));
+            acctStmntLoadingIntent.PutExtra(AccountStatementConstants.STATEMENT_PERIOD, statementPeriod);
+            acctStmntLoadingIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+            StartActivity(acctStmntLoadingIntent);
         }
 
         public void ShowPaymentReceiptError()

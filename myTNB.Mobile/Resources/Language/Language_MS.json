@@ -248,7 +248,7 @@
     "tutorialMoreAcctsDescNew": "Akaun di bawah nama anda telah ditambah ke myTNB anda! Berikan akaun tersebut nama gelaran untuk rujukan mudah.",
     "tutorialAccountTitleNewSec": "Lihat dan tambah semua akaun anda di suatu tempat.",
     "tutorialNoAcctDescNew": "Lihat dan tambah akaun anda di suatu tempat. Tambah akaun elektrik anda ke myTNB sekarang untuk mengakses penggunaan, bil dan mengurus akaun anda.",
-    "dbrReminderPopupTitle": "Jom paperless dengan Bil myTNB hari ini!",
+    "dbrReminderPopupTitle": "Jom Paperless dengan bil anda",
     "dbrReminderPopupMessage": "Jadilah orang pertama yang memberi impak dengan memilih kaedah paperless untuk bil anda yang seterusnya! Dengan myTNB, anda mempunyai cara yang lebih baik dan mesra alam untuk menerima bil secara digital melalui Aplikasi & Portal myTNB.",
     "dbrReminderPopupStartNow": "Ketahui Lanjut",
     //EnergyBudget
@@ -677,7 +677,10 @@
     "dontAskAgain": "Tidak Berminat",
     "feedback2SuccessTitle": "Terima kasih atas maklumbalas anda",
     "feedback2SuccessButton": "OK",
-    "viewAccountStatement": "Semak Penyata Akaun"
+    "viewAccountStatement": "Semak Penyata Akaun",
+    "updateNow": "Kemaskini Sekarang",
+    "notification": "Notifikasi",
+    "serviceDistruption": "Gangguan Perkhidmatan"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -2930,6 +2933,17 @@
             "type": "none",
             "isTimeout": true
           }
+        ],
+        "AccountStatementNotification": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -2990,7 +3004,7 @@
     "dbrInfoDescription0": "Leret ke kiri untuk mengetahui kelebihan dengan memilih kaedah 'paperless' hari ini!",
     "dbrInfoDescription1": "Kurangkan pembaziran kertas anda dan jadilah yang pertama memberi impak di dalam usaha kolektif kita semua ke arah masa depan yang lebih mesra alam.",
     "dbrInfoDescription2": "Alami penghantaran bil elektrik bulanan anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB, bila-bila masa dan di mana sahaja.",
-    "dbrInfoDescription2V2": "Alami penghantaran bil terbaharu anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB. Ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/bill-layout\">sini</a>.",
+    "dbrInfoDescription2V2": "Alami penghantaran bil terbaharu anda yang tepat pada masanya dan mudah dicapai di Aplikasi & Portal myTNB. Ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">sini</a>.",
     "dbrInfoDescription3": "Dapatkan bil anda dengan terjamin di myTNB. Tidak perlu risau lagi bil anda terdedah, dicuri atau tercicir.",
     "anotherDeliveryMethod": "Bagaimana jika saya mahu cara penerimaan bil lain?",
     "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "Bagaimana jika saya mahu cara penerimaan bil lain?",
@@ -3024,16 +3038,18 @@
     "confirmPopupMessage": "Anda akan menutup halaman ini dan menamatkan sesi anda.",
     "nevermind": "Tidak Mengapa",
     "confirm": "Sahkan",
-    "shareFeedbackTitle": "Nilaikan Perkhidmatan"
+    "shareFeedbackTitle": "Nilaikan Perkhidmatan",
+    "yes": "Ya",
+    "no": "Tidak"
   },
   "ServiceConfiguration": {
     "Eligibility": {
       "enabled": true,
-      "callInterval": 480
+      "callInterval": 0
     },
     "GetEligibility": {
       "enabled": true,
-      "callInterval": 480
+      "callInterval": 0
     },
     "ForceHideDBRBanner": false,
     "ForceHideBillRedesignBanner": false,
@@ -3044,7 +3060,8 @@
     "IsUpdatePersonalDetailsEnquiryEnabled": true,
     "IsGSLRebateEnabled": true,
     "AccountStatementTimeout": 5000,
-    "ShouldShowAccountStatementToNonOwner": false
+    "ShouldShowAccountStatementToNonOwner": false,
+    "MaxAccountList": 100
   },
   "StatementPeriod": {
     "title": "Penyata Akaun",
@@ -3124,7 +3141,7 @@
       },
       {
         "Title": "",
-        "Description": "Semak bil anda di halaman bil atau ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/bill-layout\">sini</a>.",
+        "Description": "Semak bil anda di halaman bil atau ketahui lebih lanjut mengenai bil baharu di <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.mytnb.com.my/residential/understand-your-bill/online-bill-layout\">sini</a>.",
         "Image1": "",
         "Image2": "",
         "IsZoomable": false,
@@ -3218,5 +3235,12 @@
         ]
       }
     ]
+  },
+  "ServiceDistruptionComm": {
+    "title": "Dapatkan  Notifikasi Terkini dengan Ciri Gangguan Perkhidmatan!",
+    "subTitle1": "Anda kini boleh menerima notifikasi terkini sekiranya terdapat gangguan bekalan dan status pemulihan menerusi Ciri Gangguan Perkhidmatan.",
+    "subTitle2": "Notifikasi ini hanya tersedia untuk perkhidmatan elektrik TNB dan tidak termasuk mana-mana bekalan terputus yang terjadi di dalam premis.",
+    "note": "*Ciri gangguan perkhidmatan hanya disediakan di kawasan yang terpilih dan akan dikembangkan ke kawasan yang lain tidak lama lagi!",
+    "buttonCTA": "Baik, Faham!"
   }
 }

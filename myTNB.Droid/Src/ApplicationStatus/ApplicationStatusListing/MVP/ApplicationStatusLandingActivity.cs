@@ -776,7 +776,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             }
             else
             {
-                applicationFilterMenuItem.SetIcon(Resource.Drawable.filter_white);
+                applicationFilterMenuItem.SetIcon(Resource.Drawable.Icon_Bills_Filter_White);
             }
         }
 

@@ -35,6 +35,7 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Database.Model;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.SessionCache;
+using myTNB_Android.Src.Bills.AccountStatement.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
@@ -60,6 +61,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         [BindView(Resource.Id.bill_filter_icon)]
         ImageView billFilterIcon;
+
+        [BindView(Resource.Id.download_bill_icon)]
+        ImageView download_bill_icon;
 
         [BindView(Resource.Id.itemisedBillingInfoNote)]
         TextView itemisedBillingInfoNote;
@@ -179,15 +183,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         private DecimalFormat mDecimalFormat = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         IMenuItem billFilterMenuItem;
+        IMenuItem billDownloadMenuItem;
 
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
+        const string INELIGIBLE_POP_UP_ACTIVE_KEY = "isIneligiblePopUpActive";
         const string PAGE_ID = "Bills";
         private bool isFiltered = false;
         private string myHistoryTitle = "";
         private string billTitle = "";
         private bool isViewBillDisable = false;
-
+        private bool isDigitalContainerVisible = false;
         private bool isPendingPayment = false;
+        private bool isIneligiblePopUpActive = false;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -200,6 +207,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
                 GetBillRenderingAsync(mSelectedAccountData);
             }
+            if (extras.ContainsKey(INELIGIBLE_POP_UP_ACTIVE_KEY))
+            {
+                isIneligiblePopUpActive = extras.GetBoolean(INELIGIBLE_POP_UP_ACTIVE_KEY);
+            }
         }
 
         public override int ResourceId()
@@ -211,9 +222,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             switch (item.ItemId)
             {
-                case Resource.Id.action_notification:
+                case Resource.Id.action_bills_filter:
                     ShowSelectFilter();
                     return true;
+                case Resource.Id.action_bills_download:
+                    if (_isBillStatement)
+                    {
+                        DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Bill.View_Account_Statement);
+                        ShowDownloadBill();
+                        return true;
+                    }
+                    return false;
             }
             return base.OnOptionsItemSelected(item);
         }
@@ -224,12 +243,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 ((DashboardHomeActivity)this.Activity).SetToolBarTitle(myHistoryTitle);
                 billFilterMenuItem.SetVisible(true);
+                billDownloadMenuItem.SetVisible(_isBillStatement);
                 UpdateFilterIcon();
             }
             else
             {
                 ((DashboardHomeActivity)this.Activity).SetToolBarTitle(billTitle);
                 billFilterMenuItem.SetVisible(false);
+                billDownloadMenuItem.SetVisible(false);
             }
         }
 
@@ -284,7 +305,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
                 intent.PutExtra("accountNumber", mSelectedAccountData.AccountNum);
-                intent.PutExtra("isOwner", _isOwner);
                 StartActivity(intent);
             }
         }
@@ -301,7 +321,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 intent.PutExtra("PENDING_PAYMENT", isPendingPayment);
                 intent.PutExtra("IS_VIEW_BILL_DISABLE", isViewBillDisable);
                 intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billRenderingResponse));
-                intent.PutExtra("_isOwner", JsonConvert.SerializeObject(_isOwner));
 
                 StartActivity(intent);
             }
@@ -372,10 +391,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
+        private void ShowDownloadBill()
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent newIntent = new Intent(this.Activity, typeof(AccountStatementSelectionActivity));
+                    newIntent.PutExtra(Constants.BILL_HISTORY_IS_EMPTY, selectedBillingHistoryModelList != null ? selectedBillingHistoryModelList.Count == 0 : true);
+                    newIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+                    StartActivity(newIntent);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         [OnClick(Resource.Id.bill_filter_icon)]
         void OnFilterBillHistory(object sender, EventArgs eventArgs)
         {
             ShowSelectFilter();
+        }
+
+        [OnClick(Resource.Id.download_bill_icon)]
+        void OnDownloadBillHistory(object sender, EventArgs eventArgs)
+        {
+            DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Bill.View_Account_Statement);
+            ShowDownloadBill();
         }
 
         [OnClick(Resource.Id.btnRefresh)]
@@ -472,17 +517,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         }
 
         internal static ItemisedBillingMenuFragment NewInstance(AccountData selectedAccount
-            , GetBillRenderingResponse billRenderingModel = null
-            , bool _isOwner = false)
+            , bool isIneligiblePopUpActive = false)
         {
             ItemisedBillingMenuFragment billsMenuFragment = new ItemisedBillingMenuFragment();
             Bundle args = new Bundle();
             args.PutString(SELECTED_ACCOUNT_KEY, JsonConvert.SerializeObject(selectedAccount));
-            if (billRenderingModel != null)
-            {
-                args.PutString("billrenderingresponse", JsonConvert.SerializeObject(billRenderingModel));
-                args.PutString("_isOwner", JsonConvert.SerializeObject(_isOwner));
-            }
+            args.PutBoolean(INELIGIBLE_POP_UP_ACTIVE_KEY, isIneligiblePopUpActive);
             billsMenuFragment.Arguments = args;
             return billsMenuFragment;
         }
@@ -496,6 +536,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
             itemisedBillingInfoShimmer.StartShimmer();
             billFilterIcon.Enabled = false;
+            download_bill_icon.Enabled = false;
             this.HasOptionsMenu = true;
             BillOnScrollChangeListener billOnScrollChangeListener = new BillOnScrollChangeListener(ShowBillFilterToolbar, bills_list_title_container);
             itemisedBillingScrollView.SetOnScrollChangeListener(billOnScrollChangeListener);
@@ -512,10 +553,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             TextViewUtils.SetTextSize36(itemisedBillingInfoAmount);
             RenderUI();
 
+            SetShowAccountStatementIcon();
+
             mPresenter.GetBillingHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
             digital_container.Visibility = ViewStates.Gone;
-
-
 
             try
             {
@@ -564,34 +605,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     {
                         GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                         AccountData dbrAccount = selectedAccount;
-                        bool isEligible = DBRUtility.Instance.IsAccountEligible;
-                        if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                            , EligibilitySessionCache.FeatureProperty.TargetGroup))
-                        {
-                            isEligible = isEligible
-                                && AccountTypeCache.Instance.IsAccountEligible(dbrAccount.AccountNum);
-                            Console.WriteLine("[DEBUG] Bills IsDBREnabled 0: " + isEligible);
-                            if (isEligible)
-                            {
-                                PostInstallationDetailsResponse installationDetailsResponse = await DBRManager.Instance.PostInstallationDetails(dbrAccount.AccountNum
-                                    , AccessTokenCache.Instance.GetAccessToken(this.Activity));
-                                Console.WriteLine("[DEBUG] Bills RateCategory: " + installationDetailsResponse.RateCategory);
-                                Console.WriteLine("[DEBUG] Bills IsResidential: " + installationDetailsResponse.IsResidential);
-                                if (installationDetailsResponse != null
-                                    && installationDetailsResponse.StatusDetail != null
-                                    && installationDetailsResponse.StatusDetail.IsSuccess
-                                    && installationDetailsResponse.IsResidential)
-                                {
-                                    isEligible = true;
-                                }
-                                else
-                                {
-                                    isEligible = false;
-                                }
-                            }
-                        }
 
-                        if (isEligible)
+                        if (DBRUtility.Instance.IsAccountEligible && DBRUtility.Instance.IsCAEligible(dbrAccount.AccountNum))
                         {
                             if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
                             {
@@ -600,9 +615,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             }
                             billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum
                                 , AccessTokenCache.Instance.GetAccessToken(this.Activity));
-                            _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
-                                ? selectedAccount.IsOwner
-                                : DBRUtility.Instance.IsCAEligible(dbrAccount.AccountNum);
+                            _isOwner = selectedAccount.IsOwner && DBRUtility.Instance.IsCAEligible(dbrAccount.AccountNum);
 
                             if (billRenderingResponse != null
                                 && billRenderingResponse.StatusDetail != null
@@ -611,10 +624,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             {
                                 if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
                                 {
+                                    isDigitalContainerVisible = false;
                                     digital_container.Visibility = ViewStates.Gone;
                                 }
                                 else
                                 {
+                                    isDigitalContainerVisible = true;
                                     digital_container.Visibility = ViewStates.Visible;
                                     if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBill
                                         || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
@@ -673,11 +688,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             return chargeAvailableNoCTAContainer.Height;
         }
+
         public bool IsCADBREligible()
         {
             return DBRUtility.Instance.IsCAEligible(mSelectedAccountData.AccountNum);
         }
 
+        public bool IsDigitalContainerVisible()
+        {
+            return isDigitalContainerVisible;
+        }
 
         private void SetDynatraceScreenTags()
         {
@@ -963,7 +983,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         private void EnableActionButtons(bool isEnable)
         {
-            billFilterIcon.Clickable = isEnable;
             btnViewDetails.Enabled = isEnable;
 
             if (isEnable)
@@ -1001,7 +1020,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             });
             itemFilterList[0].selected = true;
         }
-
+        private void SetShowAccountStatementIcon()
+        {
+            _isBillStatement = BillRedesignUtility.Instance.IsAccountStatementEligible(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner);
+            download_bill_icon.Visibility = _isBillStatement ? ViewStates.Visible : ViewStates.Gone;
+            download_bill_icon.Enabled = false;
+        }
         public void PopulateBillingHistoryList(List<AccountBillPayHistoryModel> billingHistoryModelList, List<AccountBillPayFilter> billPayFilters)
         {
             itemisedBillingListShimmer.Visibility = ViewStates.Gone;
@@ -1011,14 +1035,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 UpdateFilterItems(billPayFilters);
             }
 
+            billFilterIcon.Visibility = ViewStates.Visible;
+            billFilterIcon.Enabled = true;
+            download_bill_icon.Enabled = true;
+
             if (billingHistoryModelList.Count > 0)
             {
                 selectedBillingHistoryModelList = new List<AccountBillPayHistoryModel>();
                 selectedBillingHistoryModelList = billingHistoryModelList;
                 emptyItemisedBillingList.Visibility = ViewStates.Gone;
                 itemisedBillingList.Visibility = ViewStates.Visible;
-                billFilterIcon.Visibility = ViewStates.Visible;
-                billFilterIcon.Enabled = true;
                 EnableActionButtons(true);
                 RenderBillingHistoryList(null);
 
@@ -1051,8 +1077,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             else
             {
-                billFilterIcon.Visibility = ViewStates.Gone;
-                billFilterIcon.Enabled = true;
                 bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
                 if (isREAccount)
                 {
@@ -1443,10 +1467,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
         {
-            inflater.Inflate(Resource.Menu.DashboardToolbarMenu, menu);
-            billFilterMenuItem = menu.FindItem(Resource.Id.action_notification);
+            inflater.Inflate(Resource.Menu.BillsToolbarMenu, menu);
+
+            billFilterMenuItem = menu.FindItem(Resource.Id.action_bills_filter);
             billFilterMenuItem.SetIcon(ContextCompat.GetDrawable(this.Activity, Resource.Drawable.bill_screen_filter_icon));
             billFilterMenuItem.SetVisible(false);
+            billDownloadMenuItem = menu.FindItem(Resource.Id.action_bills_download);
+            billDownloadMenuItem.SetIcon(ContextCompat.GetDrawable(this.Activity, Resource.Drawable.Icon_Acct_Stmnt_Download_White));
+            billDownloadMenuItem.SetVisible(false);
             base.OnCreateOptionsMenu(menu, inflater);
         }
 
@@ -1470,7 +1498,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         Utility.LoggingNonFatalError(e);
                     }
                 });
-                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(_isOwner, IsCADBREligible(), _isBillStatement, mSelectedAccountData));
+                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(_isOwner, isDigitalContainerVisible, _isBillStatement, mSelectedAccountData));
 
             }
             catch (System.Exception ex)
@@ -1553,7 +1581,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             else
             {
-                billFilterMenuItem.SetIcon(Resource.Drawable.filter_white);
+                billFilterMenuItem.SetIcon(Resource.Drawable.Icon_Bills_Filter_White);
                 billFilterIcon.SetImageResource(Resource.Drawable.bill_screen_filter_icon);
             }
         }
@@ -1561,6 +1589,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public bool GetIsPendingPayment()
         {
             return isPendingPayment;
+        }
+
+        public bool GetIsIneligiblePopUpActive()
+        {
+            return isIneligiblePopUpActive;
         }
     }
 }

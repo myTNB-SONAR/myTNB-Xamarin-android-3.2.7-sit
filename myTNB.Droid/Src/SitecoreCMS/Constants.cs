@@ -257,7 +257,6 @@
                 public const string AppLaunch = "/sitecore/content/myTNBapp/Contents/App Launch Image";
 
                 public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
-                //public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help Test";
 
                 public const string ApplySSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR Apply";
 
@@ -274,7 +273,6 @@
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
-                //public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json Test";
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNewV2";
 
                 public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";

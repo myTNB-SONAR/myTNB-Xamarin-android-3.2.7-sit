@@ -11,21 +11,21 @@ using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP
 {
-	public class DashboardHomeContract
-	{
-		public interface IView : IBaseView<IUserActionsListener>
-		{
-			void OnCheckProfileTab(bool key, bool isFromHome);
+    public class DashboardHomeContract
+    {
+        public interface IView : IBaseView<IUserActionsListener>
+        {
+            void OnCheckProfileTab(bool key, bool isFromHome);
+
+            /// <summary>
+            /// Shows the bill menu
+            /// </summary>
+            /// <param name="selectedAccount">AccountData</param>
+            void ShowBillMenu(AccountData selectedAccount, bool isIneligiblePopUpActive = false);
 
 			void HideUnverifiedProfile(bool key, bool isFromHome);
 
 			void ShowUnverifiedProfile(bool key, bool isFromHome);
-
-			/// <summary>
-			/// Shows the bill menu
-			/// </summary>
-			/// <param name="selectedAccount">AccountData</param>
-			void ShowBillMenu(AccountData selectedAccount);
 
 			/// <summary>
 			/// Enable bill menu
@@ -157,6 +157,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void OnCheckDeeplink();
 
+            void OnCheckNotification();
+
             void OnCheckUserReward(bool isSitecoreApiFailed);
 
             void OnCheckUserRewardApiFailed();
@@ -194,6 +196,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void PopulateIdentificationDetails();
 
             void NavigateToAddAccount();
+
+            void NavigateToViewAccountStatement(CustomerBillingAccount account);
+
+            void TriggerIneligiblePopUp();
+
+            void NavigateToNBR();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -212,7 +220,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// Action to select menu
             /// </summary>
             /// <param name="resourceId">integer</param>
-            void OnMenuSelect(int resourceId);
+            void OnMenuSelect(int resourceId, bool isIneligiblePopUpActive = false);
 
             /// <summary>
             /// The returned result from another activity
@@ -282,7 +290,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             Task OnGetEPPTooltipContentDetail();
 
             Task OnWhereIsMyAccNumberContentDetail();
+
             Task OnGetBillTooltipContent();
+
+            void OnGetBillEligibilityCheck(string accountNumber);
 
             void ShowBillMenuWithAccount(CustomerBillingAccount account);
         }

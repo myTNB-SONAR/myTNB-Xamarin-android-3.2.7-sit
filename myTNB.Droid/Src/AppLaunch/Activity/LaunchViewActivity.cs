@@ -43,7 +43,6 @@ using Newtonsoft.Json;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile.AWS.Models;
-using Firebase.Iid;
 using myTNB_Android.Src.NotificationDetails.Activity;
 using myTNB_Android.Src.Utils.Deeplink;
 using myTNB_Android.Src.Base;
@@ -55,6 +54,9 @@ using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.Notifications.Adapter;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
+using myTNB_Android.Src.Utils.Notification;
+using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
+using Firebase.Iid;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -152,6 +154,16 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             string accountNumber = Intent.Extras.GetString("AccountNumber");
                             UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
+                        }
+                        else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN)
+                        {
+                            if (UserEntity.IsCurrentlyActive())
+                            {
+                                NotificationUtil.Instance.SaveData(Intent.Extras);
+                                UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                            }
                         }
                         else
                         {
@@ -431,7 +443,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                         intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
                         intent.PutExtra("accountNumber", UserSessions.DBROwnerNotificationAccountNumber);
-                        intent.PutExtra("isOwner", true);
                         StartActivity(intent);
                     }
                     else
@@ -505,18 +516,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.PreLogin.ToString());
                     StartActivity(WalkthroughIntent);
                 }
-            }
-        }
-
-        public void ShowResetPassword()
-        {
-            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
-            {
-                isAppLaunchDone = true;
-                Intent ResetPasswordIntent = new Intent(this, typeof(ResetPasswordActivity));
-                ResetPasswordIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                ResetPasswordIntent.PutExtra(Constants.FROM_ACTIVITY, LaunchViewActivity.TAG);
-                StartActivity(ResetPasswordIntent);
             }
         }
 

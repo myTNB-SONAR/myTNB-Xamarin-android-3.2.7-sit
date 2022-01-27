@@ -541,6 +541,14 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                         listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                     }
                                                 }
+                                                else if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS
+                                                        || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW)
+                                                {
+                                                    if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
+                                                    {
+                                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                    }
+                                                }
                                                 else
                                                 {
                                                     listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));

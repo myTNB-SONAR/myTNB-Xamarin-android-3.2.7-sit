@@ -21,7 +21,7 @@
             android:layout_alignParentStart="true"
             android:text="Test Account"
             android:textColor="@color/tunaGrey"
-            android:textSize="16dp"
+            android:textSize="14dp"
             android:lineSpacingExtra="4dp"/>
         <ImageView
             android:id="@+id/imageActionIcon"

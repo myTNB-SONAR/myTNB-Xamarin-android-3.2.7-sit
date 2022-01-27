@@ -11,6 +11,7 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
+using myTNB.Mobile;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.MVP;
@@ -149,7 +150,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 TextViewUtils.SetMuseoSans300Typeface(txtNonOwnerTitle);
 
-
                 addAccount = rootView.FindViewById<Button>(Resource.Id.btnAddAccount);
                 TextViewUtils.SetMuseoSans500Typeface(addAccount);
                 addAccount.Text = Utility.GetLocalizedLabel("Common", "next");
@@ -160,37 +160,15 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 btnWhereIsMyAccountNo = rootView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
                 btnWhereIsMyAccountNo.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
-                TextViewUtils.SetMuseoSans500Typeface(btnWhereIsMyAccountNo);
+                TextViewUtils.SetMuseoSans300Typeface(btnWhereIsMyAccountNo);
                 btnWhereIsMyAccountNo.Click += async delegate
                 {
-
-
-                    dialogWhereMyAccountNo = new MaterialDialog.Builder(Activity)
-                    .CustomView(Resource.Layout.WhereIsMyAccountView, false)
-                    .Cancelable(true)
-                    .PositiveText(Utility.GetLocalizedLabel("DashboardHome", "gotIt"))
-                    .PositiveColor(Resource.Color.blue)
-                    .Build();
-
-                    View view = dialogWhereMyAccountNo.View;
-                    if (view != null)
-                    {
-                        TextView titleText = view.FindViewById<TextView>(Resource.Id.textDialogTitle);
-                        TextView infoText = view.FindViewById<TextView>(Resource.Id.textDialogInfo);
-                        if (titleText != null && infoText != null)
-                        {
-                            TextViewUtils.SetMuseoSans500Typeface(titleText);
-                            TextViewUtils.SetMuseoSans300Typeface(infoText);
-
-                            titleText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
-                            infoText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
-                        }
-                    }
-                    dialogWhereMyAccountNo.Show();
+                    ShowWhereIsMyAccountNoTooltip();
                 };
 
-                TextViewUtils.SetTextSize18(edtAccountLabel, edtAccountNo, edtOwnerMotherName, btnWhereIsMyAccountNo, txtNonOwnerTitle);
+                TextViewUtils.SetTextSize18(edtAccountLabel, edtAccountNo, edtOwnerMotherName, txtNonOwnerTitle);
                 TextViewUtils.SetTextSize16(addAccount);
+                TextViewUtils.SetTextSize14(btnWhereIsMyAccountNo);
 
                 AccountType Individual = new AccountType();
                 Individual.Id = "1";
@@ -740,6 +718,22 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 }
             }
             return false;
+        }
+
+        private void ShowWhereIsMyAccountNoTooltip()
+        {
+            var title = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitleV2") :
+                            Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
+            var message = BillRedesignUtility.Instance.IsAccountEligible ? Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetailsV2") :
+            Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
+
+            MyTNBAppToolTipBuilder whereIsMyAccountNo = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+               .SetHeaderImage(BillRedesignUtility.Instance.IsAccountEligible ? Resource.Drawable.img_register_acct_noV2 : Resource.Drawable.img_register_acct_no)
+               .SetTitle(title)
+               .SetMessage(message)
+               .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+               .Build();
+            whereIsMyAccountNo.Show();
         }
     }
 }

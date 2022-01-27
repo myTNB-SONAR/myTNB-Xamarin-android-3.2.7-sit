@@ -1,5 +1,4 @@
 ﻿using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.SummaryDashBoard.Models;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +41,9 @@ namespace myTNB_Android.Src.Database.Model
 
         [Column("isOwned")]
         public bool isOwned { get; set; }
+
+        [Column("isError")]
+        public bool IsError { get; set; }
 
         [Column("accountTypeId")]
         public string AccountTypeId { get; set; }
@@ -107,6 +109,12 @@ namespace myTNB_Android.Src.Database.Model
 
         [JsonProperty("createdDate")]
         public string CreatedDate { set; get; }
+
+        [Column("BusinessArea")]
+        public string BusinessArea { get; set; }
+
+        [Column("RateCategory")]
+        public string RateCategory { get; set; }
 
         [JsonIgnore]
         public bool IsNormalMeter
@@ -175,6 +183,7 @@ namespace myTNB_Android.Src.Database.Model
                 IsRegistered = accountResponse.isRegistered,
                 IsPaid = accountResponse.isPaid,
                 isOwned = accountResponse.isOwner,
+                IsError = accountResponse.IsError,
                 AccountTypeId = accountResponse.accountTypeId,
                 AccountStAddress = accountResponse.accountAddress,
                 OwnerName = accountResponse.ownerName,
@@ -246,13 +255,16 @@ namespace myTNB_Android.Src.Database.Model
                 SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
                 IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
                 isOwned = accountResponse.IsOwned,
+                IsError = accountResponse.IsError,
                 IsSMROnBoardingDontShowAgain = false,
                 IsPeriodOpen = false,
                 IsHaveAccess = accountResponse.IsHaveAccess,
                 IsApplyEBilling = accountResponse.IsApplyEBilling,
                 BudgetAmount = accountResponse.BudgetAmount,
                 InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
-                CreatedDate = accountResponse.CreatedDate
+                CreatedDate = accountResponse.CreatedDate,
+                BusinessArea = accountResponse.BusinessArea,
+                RateCategory = accountResponse.RateCategory
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -282,13 +294,16 @@ namespace myTNB_Android.Src.Database.Model
                 SmartMeterCode = accountResponse.SmartMeterCode == null ? "0" : accountResponse.SmartMeterCode,
                 IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
                 isOwned = accountResponse.IsOwned,
+                IsError = accountResponse.IsError,
                 IsSMROnBoardingDontShowAgain = false,
                 IsPeriodOpen = false,
                 IsHaveAccess = accountResponse.IsHaveAccess,
                 IsApplyEBilling = accountResponse.IsApplyEBilling,
                 BudgetAmount = accountResponse.BudgetAmount,
                 InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
-                CreatedDate = accountResponse.CreatedDate
+                CreatedDate = accountResponse.CreatedDate,
+                BusinessArea = accountResponse.BusinessArea,
+                RateCategory = accountResponse.RateCategory
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -1400,9 +1415,6 @@ namespace myTNB_Android.Src.Database.Model
                 criteriaModel.IsSMR = account.IsSSMR;
                 criteriaModelList.Add(criteriaModel);
             });
-
-            EligibilitySessionCache.Instance.SetCAList(criteriaModelList);
         }
-
     }
 }

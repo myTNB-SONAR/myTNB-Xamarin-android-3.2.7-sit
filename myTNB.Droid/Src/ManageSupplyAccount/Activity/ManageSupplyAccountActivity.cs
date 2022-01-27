@@ -105,9 +105,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                     }
                     position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
-                    _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
-                        ? accountData.IsOwner
-                        : DBRUtility.Instance.IsCAEligible(accountData.AccountNum);
+                    _isOwner = accountData.IsOwner && DBRUtility.Instance.IsCAEligible(accountData.AccountNum);
                 }
 
                 progress = new MaterialDialog.Builder(this)
@@ -158,7 +156,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         {
             DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.ManageElectricityAccount.Manage);
             Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
-            intent.PutExtra("isOwner", _isOwner);
             intent.PutExtra("accountNumber", accountData.AccountNum);
             intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(_billRenderingResponse));
             StartActivity(intent);
@@ -173,7 +170,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 this.userActionsListener.OnUpdateNickname();
             }
         }
-        
+
         [OnClick(Resource.Id.btnRemoveAccount)]
         void OnClickRemoveAccount(object sender, EventArgs eventArgs)
         {
@@ -459,33 +456,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             try
             {
                 ShowProgressDialog();
-                bool isEligible = DBRUtility.Instance.IsAccountEligible;
-                if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                            , EligibilitySessionCache.FeatureProperty.TargetGroup))
-                {
-                    isEligible = isEligible
-                        && AccountTypeCache.Instance.IsAccountEligible(selectedAccount.AccountNum);
-                    Console.WriteLine("[DEBUG] Profile IsDBREnabled 0: " + isEligible);
-                    if (isEligible)
-                    {
-                        PostInstallationDetailsResponse installationDetailsResponse = await DBRManager.Instance.PostInstallationDetails(selectedAccount.AccountNum
-                            , AccessTokenCache.Instance.GetAccessToken(this));
-                        Console.WriteLine("[DEBUG] Profile RateCategory: " + installationDetailsResponse.RateCategory);
-                        Console.WriteLine("[DEBUG] Profile IsResidential: " + installationDetailsResponse.IsResidential);
-                        if (installationDetailsResponse != null
-                            && installationDetailsResponse.StatusDetail != null
-                            && installationDetailsResponse.StatusDetail.IsSuccess
-                            && installationDetailsResponse.IsResidential)
-                        {
-                            isEligible = true;
-                        }
-                        else
-                        {
-                            isEligible = false;
-                        }
-                    }
-                }
-                if (isEligible)
+                if (DBRUtility.Instance.IsAccountEligible && DBRUtility.Instance.IsCAEligible(selectedAccount.AccountNum))
                 {
                     GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                     AccountData dbrAccount = selectedAccount;

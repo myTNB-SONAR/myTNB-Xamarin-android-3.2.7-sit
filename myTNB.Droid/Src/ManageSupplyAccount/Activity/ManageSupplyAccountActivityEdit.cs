@@ -124,9 +124,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
 
                         position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
-                        _isOwner = DBRUtility.Instance.IsDBROTTagFromCache
-                            ? accountData.IsOwner
-                            : DBRUtility.Instance.IsCAEligible(accountData.AccountNum);
+                        _isOwner = accountData.IsOwner && DBRUtility.Instance.IsCAEligible(accountData.AccountNum);
                     }
                     //position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
                 }
@@ -412,33 +410,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             try
             {
                 ShowProgressDialog();
-                bool isEligible = DBRUtility.Instance.IsAccountEligible;
-                if (!EligibilitySessionCache.Instance.IsFeatureEligible(EligibilitySessionCache.Features.DBR
-                            , EligibilitySessionCache.FeatureProperty.TargetGroup))
-                {
-                    isEligible = isEligible
-                        && AccountTypeCache.Instance.IsAccountEligible(selectedAccount.AccountNum);
-                    Console.WriteLine("[DEBUG] Profile IsDBREnabled 0: " + isEligible);
-                    if (isEligible)
-                    {
-                        PostInstallationDetailsResponse installationDetailsResponse = await DBRManager.Instance.PostInstallationDetails(selectedAccount.AccountNum
-                            , AccessTokenCache.Instance.GetAccessToken(this));
-                        Console.WriteLine("[DEBUG] Profile RateCategory: " + installationDetailsResponse.RateCategory);
-                        Console.WriteLine("[DEBUG] Profile IsResidential: " + installationDetailsResponse.IsResidential);
-                        if (installationDetailsResponse != null
-                            && installationDetailsResponse.StatusDetail != null
-                            && installationDetailsResponse.StatusDetail.IsSuccess
-                            && installationDetailsResponse.IsResidential)
-                        {
-                            isEligible = true;
-                        }
-                        else
-                        {
-                            isEligible = false;
-                        }
-                    }
-                }
-                if (isEligible)
+                if (DBRUtility.Instance.IsAccountEligible && DBRUtility.Instance.IsCAEligible(selectedAccount.AccountNum))
                 {
                     GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                     AccountData dbrAccount = selectedAccount;
@@ -461,7 +433,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                             ? "dbrManageDeliveryMethod"
                             : "dbrViewBillDelivery");
                         ManageBill_container.Visibility = ViewStates.Visible;
-                        view3.Visibility = ViewStates.Gone;
 
 
                         Handler handler = new Handler();

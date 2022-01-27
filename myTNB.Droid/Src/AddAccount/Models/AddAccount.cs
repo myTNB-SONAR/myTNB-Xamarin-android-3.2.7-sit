@@ -30,6 +30,10 @@ namespace myTNB_Android.Src.AddAccount.Models
         [AliasAs("isOwned")]
         public bool isOwned { get; set; }
 
+        [JsonProperty(PropertyName = "isError")]
+        [AliasAs("isError")]
+        public bool IsError { get; set; }
+
         [JsonProperty(PropertyName = "accountCategoryId")]
         [AliasAs("accountCategoryId")]
         public string accountCategoryId { get; set; }
@@ -54,38 +58,6 @@ namespace myTNB_Android.Src.AddAccount.Models
         [AliasAs("OwnerMobileNum")]
         public string mobileNoOwner { get; set; }
 
-        [JsonProperty(PropertyName = "unitNo")]
-        [AliasAs("unitNo")]
-        public string unitNo { get; set; }
-
-        [JsonProperty(PropertyName = "building")]
-        [AliasAs("building")]
-        public string building { get; set; }
-
-        [JsonProperty(PropertyName = "houseNo")]
-        [AliasAs("houseNo")]
-        public string houseNo { get; set; }
-
-        [JsonProperty(PropertyName = "street")]
-        [AliasAs("street")]
-        public string street { get; set; }
-
-        [JsonProperty(PropertyName = "area")]
-        [AliasAs("area")]
-        public string area { get; set; }
-
-        [JsonProperty(PropertyName = "city")]
-        [AliasAs("city")]
-        public string city { get; set; }
-
-        [JsonProperty(PropertyName = "postCode")]
-        [AliasAs("postCode")]
-        public string postCode { get; set; }
-
-        [JsonProperty(PropertyName = "state")]
-        [AliasAs("state")]
-        public string state { get; set; }
-
         [JsonProperty(PropertyName = "BudgetAmount")]
         [AliasAs("BudgetAmount")]
         public string BudgetAmount { get; set; }
@@ -94,8 +66,24 @@ namespace myTNB_Android.Src.AddAccount.Models
         [AliasAs("InstallationType")]
         public string  InstallationType { get; set; }
 
-        [JsonProperty("CreatedDate")]
+        [JsonProperty(PropertyName ="CreatedDate")]
         [AliasAs("CreatedDate")]
         public string CreatedDate { set; get; }
+
+        [JsonProperty(PropertyName = "IsApplyEBilling")]
+        [AliasAs("IsApplyEBilling")]
+        public bool IsApplyEBilling { get; set; } = false;
+
+        [JsonProperty(PropertyName = "IsHaveAccess")]
+        [AliasAs("IsHaveAccess")]
+        public bool IsHaveAccess { get; set; } = false;
+
+        [JsonProperty(PropertyName = "BusinessArea")]
+        [AliasAs("BusinessArea")]
+        public string BusinessArea { get; set; }
+
+        [JsonProperty(PropertyName = "RateCategory")]
+        [AliasAs("RateCategory")]
+        public string RateCategory { get; set; }
     }
 }

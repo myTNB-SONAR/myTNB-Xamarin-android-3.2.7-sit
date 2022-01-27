@@ -6,17 +6,17 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
-    <IntermediateOutputPath>obj\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</IntermediateOutputPath>
+    <IntermediateOutputPath>obj\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</IntermediateOutputPath>
     <Optimize>true</Optimize>
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
-    <DebugType>PdbOnly</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
-    <DefineConstants>TRACE;SIT</DefineConstants>
+    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <DefineConstants>TRACE;SIT;NETSTANDARD;NETSTANDARD2_0;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
@@ -30,7 +30,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -42,7 +42,7 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />
@@ -119,9 +119,8 @@
     <Folder Include="AWS\Services\DBR\" />
     <Folder Include="AWS\Managers\Eligibility\" />
     <Folder Include="AWS\Models\DBR\Post Multi Bill Rendering\" />
-    <Folder Include="AWS\Models\DBR\Post Installation Details\" />
     <Folder Include="AWS\Models\DBR\Post Multi Installation Details\" />
-    <Folder Include="API\Managers\FeatureInfo\" />
+    <Folder Include="API\Managers\Feature Info\" />
     <Folder Include="API\Models\Feature Info\" />
     <Folder Include="AWS\Managers\EB\" />
     <Folder Include="AWS\Managers\Bill Redesign\" />
@@ -130,6 +129,11 @@
     <Folder Include="AWS\Managers\Account Statement\" />
     <Folder Include="AWS\Models\Account Statement\" />
     <Folder Include="AWS\Services\Account Statement\" />
+    <Folder Include="AWS\Models\Account Statement\Statement\" />
+    <Folder Include="AWS\Models\Account Statement\Notification\" />
+    <Folder Include="AWS\Models\Eligibility\Post Eligibility\" />
+    <Folder Include="API\Services\Feature Info\" />
+    <Folder Include="API\Models\Base Model\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -181,7 +185,6 @@
     <None Remove="Resources\Notification\NotificationInfo_10071.json" />
     <None Remove="Resources\Notification\NotificationInfo_10072.json" />
     <None Remove="AWS\Models\DBR\Get Multi Bill Rendering\" />
-    <None Remove="AWS\Models\DBR\Post Installation Details\" />
     <None Remove="AWS\Models\DBR\Post Multi Installation Details\" />
     <None Remove="API\Models\Notification\Notification Details\" />
     <None Remove="API\Managers\FeatureInfo\" />
@@ -194,6 +197,11 @@
     <None Remove="AWS\Models\Account Statement\" />
     <None Remove="AWS\Services\Account Statement\" />
     <None Remove="Xamarin.Essentials" />
+    <None Remove="AWS\Models\Account Statement\Statement\" />
+    <None Remove="AWS\Models\Account Statement\Notification\" />
+    <None Remove="AWS\Models\Eligibility\Post Eligibility\" />
+    <None Remove="API\Services\Feature Info\" />
+    <None Remove="API\Models\Base Model\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />
@@ -201,3 +209,4 @@
     <Compile Remove="Business\Managers\AccountUsageManager.cs" />
   </ItemGroup>
 </Project>
+

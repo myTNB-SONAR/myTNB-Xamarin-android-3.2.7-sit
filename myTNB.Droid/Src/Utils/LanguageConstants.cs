@@ -13,6 +13,9 @@
         internal static readonly string FEEDBACK_FORM = "FeedbackForm";
         internal static readonly string APPLICATION_STATUS_DETAILS = "ApplicationStatusDetails";
         internal static readonly string GSL = "GSL";
+        internal static readonly string STATEMENT_PERIOD = "StatementPeriod";
+        internal static readonly string PUSH_NOTIF_DETAILS = "PushNotificationDetails";
+        internal static readonly string DBR_WEBVIEW = "DBRWebview";
 
         internal struct Common
         {
@@ -20,6 +23,8 @@
             internal static readonly string NEXT = "next";
             internal static readonly string MOBILE_NO = "mobileNo";
             internal static readonly string CANCEL = "cancel";
+            internal static readonly string REFRESH_MSG = "refreshDescription";
+            internal static readonly string REFRESH_NOW = "refreshNow";
             internal static readonly string OK = "ok";
             internal static readonly string SUBMIT = "submit";
         }
@@ -30,6 +35,8 @@
             internal static readonly string RWDS_UNAVAILABLE_MSG = "rewardsUnavailableMsg";
             internal static readonly string INVALID_FULLNAME = "invalid_fullname";
             internal static readonly string INVALID_EMAIL = "invalid_email";
+            internal static readonly string DEFAULT_ERROR_TITLE = "defaultErrorTitle";
+            internal static readonly string DEFAULT_ERROR_MSG = "defaultErrorMessage";
         }
 
         internal struct DashboardHome
@@ -142,6 +149,41 @@
             internal static readonly string TITLE = "title";
             internal static readonly string BACK_BTN_TITLE = "primaryCTA";
             internal static readonly string PROCEED_BTN_TITLE = "secondaryCTA";
+        }
+
+        internal struct StatementPeriod
+        {
+            internal static readonly string TITLE = "title";
+            internal static readonly string PROCESSING_TITLE = "processingRequestTitle";
+            internal static readonly string PROCESSING_MSG = "processingRequestMessage";
+            internal static readonly string TIMEOUT_TITLE = "timeoutTitle";
+            internal static readonly string TIMEOUT_MSG = "timeoutMessage";
+            internal static readonly string BACK_TO_BILLS = "backToBills";
+            internal static readonly string DISCLAIMER = "disclaimer";
+            internal static readonly string REQUEST_TITLE = "iWantToRequestForTitle";
+            internal static readonly string STATEMENT_PERIOD_TITLE = "preferredStatementPeriodTitle";
+            internal static readonly string PAST_3_MONTHS = "past3Months";
+            internal static readonly string PAST_6_MONTHS = "past6Months";
+            internal static readonly string CONFIRM = "confirm";
+            internal static readonly string NO_TRANSACTION_MSG = "noTransactionMessage";
+        }
+
+        internal struct PushNotificationDetails
+        {
+            internal static readonly string VIEW_ACCT_STMNT = "viewAccountStatement";
+            internal static readonly string NOTIF_TITLE_DEFAULT = "notification";
+            internal static readonly string NOTIF_TITLE_ENERGY_BUDGET = "EnergyBudgetTitle";
+            internal static readonly string NOTIF_TITLE_SRVC_DISTRUPTION = "serviceDistruption";
+        }
+
+        internal struct DBRWebview
+        {
+            internal static readonly string GO_PAPERLESS = "goPaperless";
+            internal static readonly string UPDATE_BILL_DELIVERY = "updateBillDelivery";
+            internal static readonly string CONFIRM_TITLE = "confirmPopupTitle";
+            internal static readonly string CONFIRM_MSG = "confirmPopupMessage";
+            internal static readonly string YES = "yes";
+            internal static readonly string NO = "no";
         }
     }
 }
