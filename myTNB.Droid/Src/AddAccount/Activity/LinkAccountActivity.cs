@@ -1173,7 +1173,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     newCAList.Add(acct.accountNumber);
                 });
 
-                UserInfo usrinf = new UserInfo();
+                UserInfoV4 usrinf = new UserInfoV4();
                 usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
 
                 _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(newCAList),

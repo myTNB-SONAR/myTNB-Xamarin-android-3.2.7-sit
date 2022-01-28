@@ -500,7 +500,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
                         _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
 
-                        UserInfo usrinf = new UserInfo();
+                        UserInfoV4 usrinf = new UserInfoV4();
                         usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
 
                         _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(),
