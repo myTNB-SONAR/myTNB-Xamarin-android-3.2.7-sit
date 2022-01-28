@@ -13,7 +13,7 @@ namespace myTNB_Android.Src.MyTNBService.Request
         public GetAcccountsV4Request()
         {
             deviceInf = new DeviceInfoRequest();
-            //this.featureInfo = FeatureInfoManager.Instance.GetFeatureInfo();
+            this.featureInfo = FeatureInfoManager.Instance.GetFeatureInfo();
         }
     }
 }

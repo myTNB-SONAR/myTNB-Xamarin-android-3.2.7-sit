@@ -1434,61 +1434,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        //public void GovermentCommercial()
-        //{
-
-        //    List<AccountData> selectedAccountList = new List<AccountData>();
-        //    List<AccountData> selectedAccountList2 = new List<AccountData>();
-        //    List<AccountData> selectedAccountList3 = UserSessions.GetCommercialList();
-
-        //    if (selectedAccountList3.Count == 0)
-        //    {
-        //        selectedAccountList.Add(selectedAccount);
-        //        UserSessions.SetCommercialList(selectedAccountList);
-        //        GovermentCommercialDialog();
-        //    }
-        //    else
-        //    {
-        //        selectedAccountList2 = UserSessions.GetCommercialList();
-        //        bool acc = false;
-        //        foreach (AccountData accountData in selectedAccountList2)
-        //        {
-        //            selectedAccountList.Add(accountData);
-        //            if (accountData.AccountNum == selectedAccount.AccountNum)
-        //            {
-        //                acc = true;
-        //            }
-
-        //        }
-
-        //        if ((selectedAccount.AccountTypeId.Equals("2") || selectedAccount.AccountTypeId.Equals("3")) && !acc)
-        //        {
-        //            selectedAccountList.Add(selectedAccount);
-        //            UserSessions.SetCommercialList(selectedAccountList);
-        //            GovermentCommercialDialog();
-        //        }
-        //    }
-
-        //}
-
-        //popup commercial
-        //public void GovermentCommercialDialog()
-        //{
-        //    if (selectedAccount.AccountTypeId.Equals("2") || selectedAccount.AccountTypeId.Equals("3"))
-        //    {
-        //        string data = Utility.GetLocalizedLabel("Usage", "accountTypeDialogMessage");
-        //        string temp = string.Format(data);
-        //        MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-        //                   .SetTitle((string.Format(Utility.GetLocalizedLabel("Usage", "accountTypeDialogTitle"))))
-        //                   .SetMessage(temp)
-        //                   .SetContentGravity(GravityFlags.Left)
-        //                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-        //                   .Build().Show();
-
-        //    }
-
-        //}
-
         private void EnergyBudgetRMinput_TextChanged(object sender, TextChangedEventArgs e)
         {
             try

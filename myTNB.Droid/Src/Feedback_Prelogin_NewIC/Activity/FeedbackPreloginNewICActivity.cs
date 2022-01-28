@@ -251,30 +251,6 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     }
                 };
 
-                //Keyboard done button click
-                txtAccountNo.EditorAction += delegate (object sender, TextView.EditorActionEventArgs e)
-                {
-                    if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
-                    {
-                        txtAccountNo.ClearFocus();
-                        // Hide keyboard
-                        var inputManager = (InputMethodManager)GetSystemService(InputMethodService);
-                        inputManager.HideSoftInputFromWindow(txtAccountNo.WindowToken, HideSoftInputFlags.None);
-                    }
-                };
-
-                //Keyboard done button click
-                txtAccountNo.EditorAction += delegate (object sender, TextView.EditorActionEventArgs e)
-                {
-                    if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
-                    {
-                        txtAccountNo.ClearFocus();
-                        // Hide keyboard
-                        var inputManager = (InputMethodManager)GetSystemService(InputMethodService);
-                        inputManager.HideSoftInputFromWindow(txtAccountNo.WindowToken, HideSoftInputFlags.None);
-                    }
-                };
-
                 txtAccountNo.AddTextChangedListener(new InputFilterFormField(txtAccountNo, txtInputLayoutAccountNo));  //adding listener on text change
 
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");  // inject translation to text

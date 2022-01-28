@@ -506,11 +506,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(),
                                     FeatureInfoManager.QueueTopicEnum.getca, usrinf, new DeviceInfoRequest()));
 
-                        if (mView.IsActive())
-                        {
-                            this.mView.HideRegistrationProgress();
-                        }
-                        
                         GetNCAccountList();
                         this.mView.ShowDashboardMyAccount();
                     }
