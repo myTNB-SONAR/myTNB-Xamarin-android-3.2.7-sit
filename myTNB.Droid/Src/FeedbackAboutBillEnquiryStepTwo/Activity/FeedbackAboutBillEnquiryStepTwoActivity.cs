@@ -22,6 +22,7 @@ using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
+using myTNB.Mobile;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
@@ -178,7 +179,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
                         EnquiryId = extras.GetString(Constants.ENQUIRYID);
                         EnquiryName = extras.GetString(Constants.ENQUIRYNAME);
                     }
-                    
+
                     ///update personal info
 
                     if (extras.ContainsKey(Constants.SELECT_REGISTERED_OWNER))
@@ -540,36 +541,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
             }
         }
 
-
         //todo review this logic
-        public void UpdateMobileNumber(string mobile_no)
-        {
-            try
-            {
-                //if (txtPhoneNumber.Text != mobile_no)
-                //{
-                //  //  txtPhoneNumber.Text = mobile_no;  
-                //}
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-
-        public void ClearInvalidMobileError()
-        {
-            try
-            {
-                //  txtInputLayoutPhoneNumber.Error = null;
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
         public void ShowInvalidMobileNoError()
         {
             try
@@ -627,9 +599,6 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
                 {
                     ShowFullNameError();
                 }
-
-
-
             }
         }
 
@@ -650,14 +619,12 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
                 ? Resource.Style.TextInputLayoutBottomErrorHintLarge
                 : Resource.Style.TextInputLayoutBottomErrorHint);
 
-
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
             txtInputLayoutName.Error = Utility.GetLocalizedErrorLabel("invalid_fullname");
             var handleBounceError = txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error);
             handleBounceError.SetPadding(top: 4, left: 0, right: 0, bottom: 0);
-
-
         }
+
         public void DisableRegisterButton()
         {
             btnSubmit.Enabled = false;
@@ -681,7 +648,6 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
             {
                 txtInputLayoutName.Error = null;
             }
-
         }
 
         public void ShowInvalidEmailError()
@@ -695,7 +661,6 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
             txtInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
             var handleBounceError = txtInputLayoutEmail.FindViewById<TextView>(Resource.Id.textinput_error);
             handleBounceError.SetPadding(top: 4, left: 0, right: 0, bottom: 0);
-
         }
 
         public void ClearInvalidEmailError()
@@ -703,23 +668,17 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
             txtInputLayoutEmail.Error = null;
         }
 
-
-
         public void EnableRegisterButton()
         {
             btnSubmit.Enabled = true;
             btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
         }
 
-
         [OnClick(Resource.Id.agreementCheckbox)]
         void OnTnc(object sender, EventArgs eventArgs)
         {
             toggleTNC();
         }
-
-
-
 
         [OnClick(Resource.Id.btnSubmit)]
         void OnSubmitEnquiry(object sender, EventArgs eventArgs)
@@ -766,7 +725,6 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
                         {
                             ownerRelationshipID = 6;
                         }
-
                     }
 
                     // to ensure feedback is emty if null
@@ -775,14 +733,11 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
                         feedback = "";
                     }
 
+                    DynatraceTagging(EnquiryId);
 
                     string txtPhoneNumber = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
 
                     this.userActionsListener.OnSubmitEnquiryWithType(acc, feedback, txtName.Text.ToString().Trim(), txtPhoneNumber.ToString().Trim(), txtEmail.Text.Trim(), attachedImages, updateFeedbackList, isOwner, ownerRelationshipID, ownerRelationship, EnquiryId, EnquiryName);
-
-
-
-
                 }
             }
             catch (Exception e)
@@ -792,6 +747,26 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
             }
         }
 
+        private void DynatraceTagging(string enquiryId)
+        {
+            switch (enquiryId)
+            {
+                case "01":
+                    DynatraceHelper.OnTrack(DynatraceConstants.Enquiry.CTAs.Submit.Bill_Calculation);
+                    break;
+                case "02":
+                    DynatraceHelper.OnTrack(DynatraceConstants.Enquiry.CTAs.Submit.Delivery_Method);
+                    break;
+                case "03":
+                    DynatraceHelper.OnTrack(DynatraceConstants.Enquiry.CTAs.Submit.Payment_History);
+                    break;
+                case "04":
+                    DynatraceHelper.OnTrack(DynatraceConstants.Enquiry.CTAs.Submit.Others);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         public void toggleTNC()
         {
@@ -821,10 +796,7 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
             bool varNeedTNC = isNeedTNC;
 
             this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, tnc, varNeedTNC);
-
         }
-
-
 
         public void ShowProgressDialog()
         {
@@ -960,26 +932,11 @@ namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
             int currentCount = UserSessions.GetCurrentImageCount(sharedPref);
             UserSessions.SetCurrentImageCount(sharedPref, currentCount + imageCount);
 
-
-            //public void showSuccess(string feedbackId)
-            //{
-            //    var successIntent = new Intent(this, typeof(SubmitEnquirySuccessActivity));
-            //    successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_ID, feedbackId);
-            //    StartActivityForResult(successIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
-
-            //}
-
             var successIntent = new Intent(this, typeof(SubmitEnquirySuccessActivity));
             successIntent.PutExtra("ABOUTMYBILL", "true");
             successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_DATE, date);
             successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_ID, feedbackId);
             StartActivity(successIntent);
-
-            //StartActivityForResult(successIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
         }
-
-
-
-
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace myTNB.Mobile
 {
@@ -27,8 +26,9 @@ namespace myTNB.Mobile
         public const string SitecoreUsername = "api_user";
         public const string SitecorePassword = "mytnbapiuser!3$@2";
         internal const string ApiUrlPath = "v6/mytnbappws.asmx";
-        internal const int MaxAccountList = 30;
+        internal const int MaxAccountList = 100000;
 
+        //AWS ASMX Copy
         private const string AWS_DEV1 = "https://stagingapi.mytnb.com.my/asmx-97";
         private const string AWS_DEV2 = "https://stagingapi.mytnb.com.my/asmx-98";
         private const string AWS_SIT = "https://stagingapi.mytnb.com.my/asmx";
@@ -36,12 +36,11 @@ namespace myTNB.Mobile
         private const string DEV1 = "http://10.215.128.191:88";
         private const string DEV2 = "http://10.215.128.191:89";
         private const string DEV3 = "http://10.215.128.191:99";
-        private const string SIT = "https://mobiletestingws.tnb.com.my";
         //private const string SIT = "http://10.215.128.191:99";
         //private const string DEV3 = "http://10.215.128.191:97";
 
         //ASMX
-        //private const string SIT = "https://mobiletestingws.tnb.com.my";
+        private const string SIT = "https://mobiletestingws.tnb.com.my";
         //AWS ASMX Copy
         //private const string SIT = "https://stagingapi.mytnb.com.my/asmx-97";
         //AWS OVIS

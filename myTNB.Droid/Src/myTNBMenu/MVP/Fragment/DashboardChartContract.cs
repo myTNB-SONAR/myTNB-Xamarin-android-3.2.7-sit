@@ -159,16 +159,18 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void SetMDMSDownRefreshMessage(SMUsageHistoryResponse response);
 
             void OnShowPlannedDowntimeScreen(string contentTxt);
-            
+
             void ShowEnergyBudgetSuccess();
-            
+
             void ShowErrorMessageResponse(string displayMessage);
-            
+
             void UpdateEnergyBudgetLocal(string v, string accnum);
 
             void GetFeedbackTwoQuestions(GetRateUsQuestionResponse questionRespone);
-            
+
             void ShowFeedBackPageRating();
+
+            void CheckOnPaperFromBillRendering();
         }
 
         public interface IUserActionsListener : IBasePresenter

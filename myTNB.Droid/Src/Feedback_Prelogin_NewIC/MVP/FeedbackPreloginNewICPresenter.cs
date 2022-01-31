@@ -1,27 +1,14 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Telephony;
+﻿using Android.Content;
 using Android.Text;
 using Castle.Core.Internal;
-using Java.Text;
 using myTNB;
-using myTNB_Android.Src.Base.Api;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
 using static myTNB.LanguageManager;
 using static myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity.FeedbackPreloginNewICActivity;
 
@@ -61,7 +48,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 
         private void OnGSLRebate(bool isOwner)
         {
-            if (LanguageManager.Instance.GetConfigToggleValue(TogglePropertyEnum.IsGSLRebateEnabled))
+            if (LanguageManager.Instance.GetConfigToggleValue(ConfigPropertyEnum.IsGSLRebateEnabled))
             {
                 this.mView.ShowGSLRebate(isOwner);
             }

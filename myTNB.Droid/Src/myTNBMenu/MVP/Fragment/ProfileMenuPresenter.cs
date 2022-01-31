@@ -277,6 +277,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         LanguageUtil.SetIsLanguageChanged(false);
                         UserLoginCountEntity.RemoveAll();
                         UserSessions.SaveDBRPopUpFlag(mPref, false);
+                        MarketingPopUpEntity.RemoveAll();
                         this.mView.ShowLogout();
                     }
                     else

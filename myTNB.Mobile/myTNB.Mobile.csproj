@@ -134,6 +134,7 @@
     <Folder Include="AWS\Models\Eligibility\Post Eligibility\" />
     <Folder Include="API\Services\Feature Info\" />
     <Folder Include="API\Models\Base Model\" />
+    <Folder Include="AWS\Managers\ServiceDistruption\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -202,6 +203,7 @@
     <None Remove="AWS\Models\Eligibility\Post Eligibility\" />
     <None Remove="API\Services\Feature Info\" />
     <None Remove="API\Models\Base Model\" />
+    <None Remove="AWS\Managers\ServiceDistruption\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />

@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using myTNB;
 using myTNB.Mobile;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP
 {
@@ -12,13 +15,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 if (CAIsInTheList(accountNumber, out CustomerBillingAccount account))
                 {
-                    if (account.isOwned)
+                    bool isEligibleForNonOwner = LanguageManager.Instance.GetConfigToggleValue(LanguageManager.ConfigPropertyEnum.ShouldShowAccountStatementToNonOwner);
+                    if (isEligibleForNonOwner)
                     {
                         presenter.mView.NavigateToViewAccountStatement(account);
                     }
                     else
                     {
-                        presenter.mView.TriggerIneligiblePopUp();
+                        ValidateRealOwnerAsync(presenter, account);
                     }
                 }
                 else
@@ -43,6 +47,40 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 return customerBillingAccount != null;
             }
             return false;
+        }
+
+        private static async void ValidateRealOwnerAsync(this DashboardHomePresenter presenter, CustomerBillingAccount account)
+        {
+            presenter.mView.ShowProgressDialog();
+            GetSearchForAccountRequest request = new GetSearchForAccountRequest(account.AccNum);
+
+            var result = await ServiceApiImpl.Instance.ValidateAccIsExist(request);
+
+            if (result != null &&
+                result.GetSearchForAccount != null &&
+                result.GetSearchForAccount.Count > 0)
+            {
+                presenter.mView.HideProgressDialog();
+                var data = result.GetSearchForAccount[0];
+                var ic = data.IC.Trim();
+                var icAcct = UserEntity.GetActive().IdentificationNo.Trim();
+                if (ic.Equals(icAcct))
+                {
+                    presenter.mView.NavigateToViewAccountStatement(account);
+                }
+                else
+                {
+                    presenter.mView.TriggerIneligiblePopUp();
+                }
+            }
+            else if (account.isOwned)
+            {
+                presenter.mView.NavigateToViewAccountStatement(account);
+            }
+            else
+            {
+                presenter.mView.TriggerIneligiblePopUp();
+            }
         }
     }
 }

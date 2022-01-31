@@ -43,7 +43,7 @@ namespace myTNB.Mobile
             }
             catch (Exception e)
             {
-                Debug.WriteLine("[DEBUG]GetDBRCAs Exception: " + e.Message);
+                Debug.WriteLine("[DEBUG]GetSDCAs Exception: " + e.Message);
             }
             return caList;
         }
@@ -68,7 +68,7 @@ namespace myTNB.Mobile
             }
             catch (Exception e)
             {
-                Debug.WriteLine("[DEBUG]IsCADBREligible Exception: " + e.Message);
+                Debug.WriteLine("[DEBUG]IsCASDEligible Exception: " + e.Message);
             }
             return false;
         }
