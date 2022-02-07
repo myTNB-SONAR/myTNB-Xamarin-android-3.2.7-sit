@@ -89,8 +89,8 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
         string QuestionCategoryId;
         private List<Item> YesOrNoItem = new List<Item>();
         private bool selectedItem;
-        private bool btnYesClick = false;
-        private bool btnNoClick = false;
+        private bool btnYesClick = true;
+        private bool btnNoClick;
         private bool selectIconComplete = false;
         List<InputOptionValue> InputOptionValueList = new List<InputOptionValue>();
 
@@ -235,38 +235,22 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
 
                 foreach (QuestionModel item in improveSelectModels)
                 {
-                    if (item.IsSelected)
+                    var data = new SubmitDataModel.InputAnswerDetails()
                     {
-                        var data = new SubmitDataModel.InputAnswerDetails()
-                        {
-                            WLTYQuestionId = item.WLTYQuestionId,
-                            RatingInput = string.Empty,
-                            MultilineInput = item.IsSelected ? "YES" : "NO",
-                        };
-                        inputAnswerDetails.Add(data);
-                    }
+                        WLTYQuestionId = item.WLTYQuestionId,
+                        RatingInput = string.Empty,
+                        MultilineInput = item.IsSelected ? "YES" : "NO",
+                    };
+                    inputAnswerDetails.Add(data);
                 }
 
-                if (btnYesClick)
+                var multiline = new SubmitDataModel.InputAnswerDetails()
                 {
-                    var multiline = new SubmitDataModel.InputAnswerDetails()
-                    {
-                        WLTYQuestionId = activeQuestionListYes[5].WLTYQuestionId,
-                        RatingInput = string.Empty,
-                        MultilineInput = txtTellUsMore.Text.Trim()
-                    };
-                    inputAnswerDetails.Add(multiline);
-                }
-                else
-                {
-                    var multiline = new SubmitDataModel.InputAnswerDetails()
-                    {
-                        WLTYQuestionId = activeQuestionListNo[5].WLTYQuestionId,
-                        RatingInput = string.Empty,
-                        MultilineInput = txtTellUsMore.Text.Trim()
-                    };
-                    inputAnswerDetails.Add(multiline);
-                }
+                    WLTYQuestionId = activeQuestionListNo[5].WLTYQuestionId,
+                    RatingInput = string.Empty,
+                    MultilineInput = txtTellUsMore.Text.Trim()
+                };
+                inputAnswerDetails.Add(multiline);
 
                 if (btnYesClick)
                 {
@@ -277,7 +261,17 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
                     QuestionCategoryId = "9";
                 }
 
-                mPresenter.SubmitRateUs(inputAnswerDetails, QuestionCategoryId, notificationDetails.SDStatusDetails.ServiceDisruptionID, notificationDetails.AccountNum);
+                string caNum;
+                if (string.IsNullOrEmpty(notificationDetails.AccountNum))
+                {
+                    caNum = "";
+                }
+                else
+                {
+                    caNum = notificationDetails.AccountNum;
+                }
+
+                mPresenter.SubmitRateUs(inputAnswerDetails, QuestionCategoryId, notificationDetails.SDStatusDetails.ServiceDisruptionID, caNum);
             }
             catch (Exception e)
             {

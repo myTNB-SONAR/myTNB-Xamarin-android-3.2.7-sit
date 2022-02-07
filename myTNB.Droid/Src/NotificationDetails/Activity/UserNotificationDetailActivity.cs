@@ -376,14 +376,14 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 datetime48Hours = date.AddDays(2);
                 if (status)
                 {
-                    if (datetime48Hours <= datetime)
+                    if (datetime48Hours <= datetime2)
                     {
                         ctaComponent.Visibility = ViewStates.Gone;
                     }
-                }
-                else
-                {
-                    ctaComponent.Visibility = ViewStates.Gone;
+                    else
+                    {
+                        ctaComponent.Visibility = ViewStates.Visible;
+                    }
                 }
             }
             catch (Exception ex)
@@ -452,7 +452,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                             int layWidth = this.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.048f) - GetDeviceHorizontalScaleInPixel(0.048f);
                             ViewGroup.MarginLayoutParams txtBody = (ViewGroup.MarginLayoutParams)notificationDetailMessage.LayoutParameters;
                             txtBody.SetMargins(GetDeviceHorizontalScaleInPixel(0.048f), 0, GetDeviceHorizontalScaleInPixel(0.048f), 0);
-                            //txtBody.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+                            txtBody.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
                             textView.SetMaxWidth(layWidth);
                             textView.LayoutParameters = txtBody;
                             textView.RequestLayout();
@@ -462,7 +462,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                             TextView textView = FindViewById<TextView>(Resource.Id.notificationDetailMessage);
                             int layWidth = this.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.05f) - GetDeviceHorizontalScaleInPixel(0.05f);
                             ViewGroup.MarginLayoutParams txtBody = (ViewGroup.MarginLayoutParams)notificationDetailMessage.LayoutParameters;
-                            txtBody.SetMargins(GetDeviceHorizontalScaleInPixel(0.05f), 0, GetDeviceHorizontalScaleInPixel(0.05f), 0);
+                            txtBody.SetMargins(GetDeviceHorizontalScaleInPixel(0.048f), 0, GetDeviceHorizontalScaleInPixel(0.05f), 0);
                             //txtBody.RightMargin = GetDeviceHorizontalScaleInPixel(0.047f);
                             textView.SetMaxWidth(layWidth);
                             textView.LayoutParameters = txtBody;
@@ -481,7 +481,13 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                             {
                                 ctaComponent.Visibility = ViewStates.Visible;
                                 ctaComponent.SetCustomCTAButton(detailModel.ctaList);
-                            }                           
+                            }
+                            else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK
+                                     || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2
+                                     || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
+                            {
+                                ctaComponent.Visibility = ViewStates.Gone;
+                            }
                         }
                     }
                     else

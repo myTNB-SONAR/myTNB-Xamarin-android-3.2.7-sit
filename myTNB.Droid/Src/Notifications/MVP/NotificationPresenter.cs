@@ -534,6 +534,13 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                     listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                 }
                                             }
+                                            else if (userNotificationData.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD)
+                                            {
+                                                if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
+                                                {
+                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                }
+                                            }
                                             else
                                             {
                                                 listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
@@ -572,13 +579,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                             {
                                                 if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
                                                 {
-                                                    string accData = userNotificationData.AccountNum;
-                                                    List<string> CAs = accData.Split(',').ToList();
-
-                                                    if (CAs.Count > 1)
-                                                    {
-                                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
-                                                    }
+                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                 }
                                             }
                                         }

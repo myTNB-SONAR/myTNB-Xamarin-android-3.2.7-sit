@@ -50,7 +50,8 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.MVP
                 }
                 else
                 {
-                    this.mView.ShowRetryOptionsApiException(null);
+                    this.mView.ShowError(response.Response.DisplayMessage);
+                    //this.mView.ShowRetryOptionsApiException(null);
                     //this.mView.OnBackPressed();
                 }
             }

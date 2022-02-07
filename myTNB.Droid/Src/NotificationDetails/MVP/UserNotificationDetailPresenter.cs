@@ -898,6 +898,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             catch (System.OperationCanceledException e)
             {
                 this.mView.HideLoadingScreen();
+                this.mView.UpateCheckBox(true);
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
                 Utility.LoggingNonFatalError(e);
@@ -905,6 +906,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             catch (ApiException apiException)
             {
                 this.mView.HideLoadingScreen();
+                this.mView.UpateCheckBox(true);
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
                 Utility.LoggingNonFatalError(apiException);
@@ -912,6 +914,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             catch (Exception e)
             {
                 this.mView.HideLoadingScreen();
+                this.mView.UpateCheckBox(true);
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);

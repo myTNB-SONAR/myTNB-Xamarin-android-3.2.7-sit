@@ -639,11 +639,11 @@
     "updateNow": "Kemaskini Sekarang",
     "notification": "Notifikasi",
     "serviceDistruption": "Gangguan Perkhidmatan",
-    "toastStopNotiUpdate": "BM_You have stopped the notification updates for this particular service disruption!",
-    "toastResumeNotiUpdate": "BM_You have resumed the notification updates for this particular service disruption!",
-    "notifyCheck": "BM_Only notify me when my power is back",
-    "callUs": "BM_Need help? <a href='tel: 15454'>Call us</a> for more information",
-    "shareFeedback": "BM_Share Feedback"
+    "toastStopNotiUpdate": "Anda telah menghentikan notifikasi bagi gangguan perkhidmatan kali ini!",
+    "toastResumeNotiUpdate": "Anda telah meneruskan notifikasi bagi gangguan perkhidmatan bekalan kali ini!",
+    "notifyCheck": "Hanya maklumkan saya apabila elektrik kembali",
+    "callUs": "Perlu bantuan lanjut? <a href='tel: 15454'>Hubungi kami</a>",
+    "shareFeedback": "Kongsi Maklum Balas"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -2876,22 +2876,22 @@
     ]
   },
   "ServiceDistruptionComm": {
-    "title": "Dapatkan  Notifikasi Terkini dengan Ciri Gangguan Perkhidmatan!",
-    "subTitle1": "Anda kini boleh menerima notifikasi terkini sekiranya terdapat gangguan bekalan dan status pemulihan menerusi Ciri Gangguan Perkhidmatan.",
+    "title": "Dapatkan Notifikasi dengan Pemakluman Gangguan Perkhidmatan!",
+    "subTitle1": "Anda kini boleh menerima notifikasi terkini sekiranya terdapat gangguan bekalan dan status pemulihan menerusi Pemakluman Gangguan Perkhidmatan.",
     "subTitle2": "Notifikasi ini hanya tersedia untuk perkhidmatan elektrik TNB dan tidak termasuk mana-mana bekalan terputus yang terjadi di dalam premis.",
-    "note": "*Ciri gangguan perkhidmatan hanya disediakan di kawasan yang terpilih dan akan dikembangkan ke kawasan yang lain tidak lama lagi!",
+    "note": "*Pemakluman Gangguan Perkhidmatan hanya disediakan di Melaka Barat dan akan dikembangkan ke kawasan yang lain tidak lama lagi!",
     "buttonCTA": "Baik, Faham!"
   },
   "FeedBackSD": {
-    "title": "BM_Send Us Your Feedback",
-    "helpfulTitle": "BM_Did you find the Service Disruption notifications helpful?",
-    "titleSelectApplies": "BM_Select all that applies:",
-    "titleLastly": "BM_Lastly, anything else to add?",
-    "tellusMore": "BM_Tell us more (Optional)",
-    "hinttellusMore": "BM_characters left",
-    "btnCancel": "BM_Cancel",
-    "btnSubmit": "BM_Submit",
-    "thumbUpYes": "BM_Yes, absolutely!",
-    "thumbDownNo": "BM_Not really"
+    "title": "Kongsi Maklum Balas Anda",
+    "helpfulTitle": "Adakah notifikasi Gangguan Perkhidmatan membantu anda?",
+    "titleSelectApplies": "Pilih semua yang berkenaan:",
+    "titleLastly": "Maklum balas tambahan?",
+    "tellusMore": "Nyatakan kepada kami (Pilihan)",
+    "hinttellusMore": "huruf",
+    "btnCancel": "Batal",
+    "btnSubmit": "Hantar",
+    "thumbUpYes": "Ya, sangat membantu!",
+    "thumbDownNo": "Kurang membantu"
   }
 }
