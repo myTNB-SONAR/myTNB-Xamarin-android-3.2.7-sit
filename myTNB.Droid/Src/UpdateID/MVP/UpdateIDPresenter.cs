@@ -17,6 +17,7 @@ using System.Threading;
 using Firebase.Iid;
 using myTNB_Android.Src.Base;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.UpdateID.MVP
 {
@@ -57,6 +58,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
                     no_ic = no_ic.Replace("-", string.Empty);
                     string email = userEntity.Email;
                     UpdateIdentificationNo userAuthRequest = new UpdateIdentificationNo(idtype, no_ic);
+                    string s = JsonConvert.SerializeObject(userAuthRequest);
                     var userResponse = await ServiceApiImpl.Instance.UserAuthenticateUpdateID(userAuthRequest);
                     
                     if (mView.IsActive())

@@ -565,7 +565,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         string totalacc = total_count.ToString();
                         //textNoOfAcoount.Text = response.Count + " " + Utility.GetLocalizedLabel("Common", "titleNonOwnerAddAcc");
                         textNoOfAcoount.Text = string.Format(Utility.GetLocalizedLabel("AddAccount", "OwnerDetectTitle"), totalacc);
-                        labelAccountLabel.Text = GetLabelByLanguage("AcctFoundMsg");
+                        labelAccountLabel.Text = GetLabelByLanguage("noAcctFoundMsg");
                         labelAccountLabel.Visibility = ViewStates.Visible;
                         for (int i = 0; i < response.Count; i++)
                         {

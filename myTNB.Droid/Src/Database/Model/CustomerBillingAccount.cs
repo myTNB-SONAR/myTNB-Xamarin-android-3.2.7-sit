@@ -116,6 +116,12 @@ namespace myTNB_Android.Src.Database.Model
         [Column("RateCategory")]
         public string RateCategory { get; set; }
 
+        [Column("IsInManageAccessList")]
+        public bool IsInManageAccessList { get; set; }
+
+        [Column("CreatedBy")]
+        public string CreatedBy { get; set; }
+
         [JsonIgnore]
         public bool IsNormalMeter
         {
@@ -193,7 +199,9 @@ namespace myTNB_Android.Src.Database.Model
                 IsTaggedSMR = accountResponse.IsTaggedSMR,
                 BudgetAmount = accountResponse.BudgetAmount == null ? "0" : accountResponse.BudgetAmount,
                 InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
-                CreatedDate = accountResponse.CreatedDate
+                CreatedDate = accountResponse.CreatedDate,
+                IsInManageAccessList = accountResponse.IsInManageAccessList,
+                CreatedBy = accountResponse.CreatedBy
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -264,7 +272,9 @@ namespace myTNB_Android.Src.Database.Model
                 InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
                 CreatedDate = accountResponse.CreatedDate,
                 BusinessArea = accountResponse.BusinessArea,
-                RateCategory = accountResponse.RateCategory
+                RateCategory = accountResponse.RateCategory,
+                IsInManageAccessList = accountResponse.IsInManageAccessList,
+                CreatedBy = accountResponse.CreatedBy
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -303,7 +313,9 @@ namespace myTNB_Android.Src.Database.Model
                 InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
                 CreatedDate = accountResponse.CreatedDate,
                 BusinessArea = accountResponse.BusinessArea,
-                RateCategory = accountResponse.RateCategory
+                RateCategory = accountResponse.RateCategory,
+                IsInManageAccessList = accountResponse.IsInManageAccessList,
+                CreatedBy = accountResponse.CreatedBy
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);

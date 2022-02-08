@@ -101,7 +101,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
         public interface IUserActionsListener : IBasePresenter
         {
 
-            void OnRemoveAccount(string numacc);
+            void OnRemoveAccount(string numacc, bool isOwner, bool IsInManageAccessList);
 
             /// <summary>
             /// Action to add accounts

@@ -65,5 +65,9 @@ namespace myTNB_Android.Src.AddAccount.Models
         public string BusinessArea { get; set; }
 
         public string RateCategory { get; set; }
+
+        public bool IsInManageAccessList { get; set; }
+
+        public string CreatedBy { get; set; }
     }
 }

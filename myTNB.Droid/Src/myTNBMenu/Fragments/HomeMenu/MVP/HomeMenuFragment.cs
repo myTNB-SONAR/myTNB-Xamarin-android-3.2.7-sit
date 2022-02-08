@@ -3869,7 +3869,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-
+        
         public void FilterCOMCLandNEM()
         {
             try

@@ -1681,7 +1681,8 @@
     "thisWeekTitle": "Minggu Ini",
     "lastWeekTitle": "Minggu lepas",
     "lastMonthTitle": "Bulan lepas",
-    "AddNonTNBUserSuccessToast": "Anda telah menjemput {0} untuk menyertai myTNB dan melihat akaun elektrik ini."
+    "AddNonTNBUserSuccessToast": "Anda telah menjemput {0} untuk menyertai myTNB dan melihat akaun elektrik ini.",
+    "emptyLogText": "Nampaknya anda belum mempunyai sebarang aktiviti."
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Maklumat pembayaran",

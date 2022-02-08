@@ -326,9 +326,16 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                 if (logUserAccessResponse.IsSuccessResponse())
                 {
                     if (logUserAccessResponse.GetData().Count > 0)
+                    //if (logUserAccessResponse.GetData() != null)
                     {
                         ProcessManageAccessAccountLog(logUserAccessResponse.GetData());
                     }
+                    else
+                    {
+                        List<LogUserAccessNewData> newAccountList = new List<LogUserAccessNewData>();
+                        this.mView.NavigateLogUserAccess(newAccountList);
+                    }
+
                 }
                 else
                 {

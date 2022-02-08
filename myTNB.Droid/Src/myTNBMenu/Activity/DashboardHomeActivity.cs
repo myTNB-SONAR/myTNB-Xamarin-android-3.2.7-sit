@@ -653,36 +653,46 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void PopulateIdentificationDetails()
         {
             UserEntity user = UserEntity.GetActive();
-
-            try
+            //isWhatNewDialogOnHold = false;
+            if (UserSessions.HasHomeTutorialShown(this.mPref))
             {
-                if(user.IdentificationNo.Equals("") && !UserSessions.IsIdDialogUpdated(this.mPref))
+                try
                 {
-                    //with check box
-                    //Utility.ShowIdentificationUpdateProfileDialog(this, () =>
-                    //{
-                    //    ShowIdentificationUpdate();
-                    //},
-                    //() =>
-                    //{
-                    //    UserSessions.UpdateIdDialog(this.mPref);
-                    //},
-                    //() =>
-                    //{
-                    //    this.mPref.Edit().Remove("DialogIDUpdated").Apply();
-                    //}
-                    //);
-
-                    Utility.ShowIdentificationUpdateProfileDialog(this, () =>
+                    if (user.IdentificationNo.Equals(""))
                     {
-                        ShowIdentificationUpdate();
+                        //with check box
+                        //Utility.ShowIdentificationUpdateProfileDialog(this, () =>
+                        //{
+                        //    ShowIdentificationUpdate();
+                        //},
+                        //() =>
+                        //{
+                        //    UserSessions.UpdateIdDialog(this.mPref);
+                        //},
+                        //() =>
+                        //{
+                        //    this.mPref.Edit().Remove("DialogIDUpdated").Apply();
+                        //}
+                        //);
+
+                        Utility.ShowIdentificationUpdateProfileDialog(this, () =>
+                        {
+                            ShowIdentificationUpdate();
+
+                        }
+                       );
                     }
-                   );
                 }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
             }
-            catch (System.Exception e)
+            else
             {
-                Utility.LoggingNonFatalError(e);
+                MyTNBAccountManagement.GetInstance().OnHoldWhatNew(true);
+                UserSessions.SetUpdateIdDialog(this.mPref);
             }
         }
 
@@ -2523,7 +2533,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         }
                         else
                         {
-                            PopulateIdentificationDetails();
+                            if (!UserSessions.GetUpdateIdDialog(this.mPref))
+                            {
+                                PopulateIdentificationDetails();
+
+                            }
                         }
                     }
                     else if (SetEligibleEBUser())
@@ -2542,6 +2556,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
+                        if (UserSessions.GetUpdateIdDialog(this.mPref))
+                        {
+                            PopulateIdentificationDetails();
+
+                        }
                         isWhatNewDialogOnHold = true;
                     }
                 }
@@ -2561,6 +2580,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         h.PostDelayed(myAction, 5);
                     }
                     MyTNBAccountManagement.GetInstance().OnHoldWhatNew(false);
+                }
+                //else
+                if(UserSessions.HasHomeTutorialShown(this.mPref) && UserSessions.GetUpdateIdDialog(this.mPref))
+                {
+                    PopulateIdentificationDetails();
+                    UserSessions.UpdateUpdateIdDialog(this.mPref);
                 }
             }
             catch (Exception e)

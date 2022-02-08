@@ -121,6 +121,12 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [JsonProperty(PropertyName = "IsApplyEBilling")]
         public bool IsApplyEBilling { get; set; }
 
+        [JsonProperty(PropertyName = "IsInManageAccessList")]
+        public bool IsInManageAccessList { get; set; }
+
+        [JsonProperty(PropertyName = "CreatedBy")]
+        public string CreatedBy { get; set; }
+
         internal static AccountData Copy(AccountDetails accountDetails, bool isSelected)
         {
             return new AccountData()
@@ -202,7 +208,9 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 AccountTypeId = customerBilling.AccountTypeId,
                 IsOwner = customerBilling.isOwned,
                 SmartMeterCode = customerBilling.SmartMeterCode,
-                IsSelected = isSelected
+                IsSelected = isSelected,
+                IsInManageAccessList = customerBilling.IsInManageAccessList,
+                CreatedBy = customerBilling.CreatedBy
 
             };
         }
@@ -248,7 +256,10 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 SmartMeterCode = accountDetails.SmartMeterCode,
                 IsSelected = isSelected,
                 IsHaveAccess = accountDetails.IsHaveAccess,
-                IsApplyEBilling = accountDetails.IsApplyEBilling
+                IsApplyEBilling = accountDetails.IsApplyEBilling,
+                IsInManageAccessList = accountDetails.IsInManageAccessList,
+                CreatedBy = accountDetails.CreatedBy
+
 
             };
         }

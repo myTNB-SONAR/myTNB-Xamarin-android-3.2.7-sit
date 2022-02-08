@@ -73,7 +73,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType></DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\SIT\</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
@@ -195,9 +195,6 @@
     </Reference>
     <Reference Include="Sitecore.MobileSDK, Version=1.0.6116.30256, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.MobileSDK.Xamarin.1.3.0\lib\portable-net45+win8+wpa81\Sitecore.MobileSDK.dll</HintPath>
-    </Reference>
-    <Reference Include="Sitecore.MobileSDK.PasswordProvider.Android, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sitecore.MobileSDK.PasswordProvider.1.3.0\lib\MonoAndroid\Sitecore.MobileSDK.PasswordProvider.Android.dll</HintPath>
     </Reference>
     <Reference Include="Sitecore.MobileSDK.PasswordProvider.Interface, Version=1.0.6116.30255, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.MobileSDK.Xamarin.1.3.0\lib\portable-net45+win8+wpa81\Sitecore.MobileSDK.PasswordProvider.Interface.dll</HintPath>
@@ -780,6 +777,9 @@
     </Reference>
     <Reference Include="ZXing.Net.Mobile.Core, Version=2.2.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ZXing.Net.Mobile.2.2.9\lib\MonoAndroid403\ZXing.Net.Mobile.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.MobileSDK.PasswordProvider.Android, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sitecore.MobileSDK.PasswordProvider.1.3.0\lib\MonoAndroid\Sitecore.MobileSDK.PasswordProvider.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -7121,6 +7121,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\MyTNBService\Request\NCAutoAddAccountsRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\NCAutoAddAccountsResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

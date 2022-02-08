@@ -396,5 +396,8 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Post("/v6/mytnbappws.asmx/UpdateUserStatusDeactivate")]
         Task<T> UpdateUserStatusDeactivate<T>([Body] MyTNBService.Request.UpdateUserStatusActivateRequest request, CancellationToken token);   //dynamic link removed account
 
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/NCAutoAddAccounts")]
+        Task<T> NCAutoAddAccounts<T>([Body] MyTNBService.Request.NCAutoAddAccountsRequest request, CancellationToken token);   //NC account
     }
 }
