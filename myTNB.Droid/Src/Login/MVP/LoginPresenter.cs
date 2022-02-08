@@ -825,7 +825,7 @@ namespace myTNB_Android.Src.Login.MVP
                             UserSessions.SaveNewNCFlag(mSharedPref, true);
                             UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save date if null
                             UserSessions.UpdateNCFlag(mSharedPref);
-                            UserSessions.SaveNCFlag(mSharedPref, 1); //assign total count nc ca = 0
+                            UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //assign total count nc ca = 0
                             UserSessions.UpdateNCTutorialShown(mSharedPref); //trigger home ovelay tutorial
                             //UserSessions.UpdateNewNCFlag(mSharedPref);
 
