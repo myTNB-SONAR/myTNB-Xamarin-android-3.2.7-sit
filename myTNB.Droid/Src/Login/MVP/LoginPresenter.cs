@@ -815,11 +815,10 @@ namespace myTNB_Android.Src.Login.MVP
                                 {
                                     countNewNCAdded++;
                                 }
-                                else
-                                {
-                                    countNewNCAdded = 0;
-                                }
-
+                                //else
+                                //{
+                                //    countNewNCAdded = 0;
+                                //}
                             }
 
                             UserSessions.SaveNewNCFlag(mSharedPref, true);
