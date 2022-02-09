@@ -1635,12 +1635,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             UserEntity user = UserEntity.GetActive();
 
-            if (UserSessions.HasHomeTutorialShown(this.mPref) && UserSessions.GetUpdateIdDialog(this.mPref))
+            if (UserSessions.HasHomeTutorialShown(this.mPref) && UserSessions.GetUpdateIdPopUp(this.mPref))
             {
                 int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
                 bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
-
-                if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard)
+                bool popupID = UserSessions.GetUpdateIdPopUp(this.mPref);
+                if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && popupID)
                 {
                     ShowMarketingTooltip();
                     UserSessions.SaveDBRPopUpFlag(this.mPref, true);
