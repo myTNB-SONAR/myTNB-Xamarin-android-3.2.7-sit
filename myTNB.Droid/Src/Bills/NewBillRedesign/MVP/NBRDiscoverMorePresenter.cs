@@ -75,6 +75,7 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign.MVP
                 catch (Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
+                    PrepareData();
                 }
             });
         }

@@ -132,9 +132,7 @@ namespace myTNB_Android.Src.Base.Activity
 
             public BaseWebviewActivity mActivity;
             public ProgressBar progressBar;
-            private bool isRedirected = false;
             private string webLink;
-            private string baseUrl;
             private string HeaderTitle;
 
             public MyTNBWebViewClient(BaseWebviewActivity mActivity, ProgressBar progress, string mWebLink, string mHeaderTitle)
@@ -142,16 +140,6 @@ namespace myTNB_Android.Src.Base.Activity
                 this.mActivity = mActivity;
                 this.progressBar = progress;
                 this.webLink = mWebLink;
-                string[] countStr = mWebLink.Split("/");
-                if (countStr != null && countStr.Length > 3)
-                {
-                    baseUrl = countStr[0] + "/" + countStr[1] + "/" + countStr[2];
-                }
-                else
-                {
-                    this.baseUrl = mWebLink;
-                }
-
                 HeaderTitle = mHeaderTitle;
             }
 
@@ -165,14 +153,7 @@ namespace myTNB_Android.Src.Base.Activity
                         mActivity.SetResult(Result.Ok);
                         mActivity.Finish();
                     }
-                    if (url.Contains(baseUrl))
-                    {
-                        view.LoadUrl(url);
-                    }
-                    else
-                    {
-                        view.LoadUrl(webLink);
-                    }
+                    view.LoadUrl(url);
                 }
                 else
                 {
