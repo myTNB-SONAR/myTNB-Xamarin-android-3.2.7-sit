@@ -31,7 +31,7 @@ namespace myTNB.Mobile
             , string accessToken)
         {
             PostAccountStatementResponse response = new PostAccountStatementResponse();
-            int timeout = LanguageManager.Instance.GetConfigTimeout(LanguageManager.TogglePropertyEnum.AccountStatementTimeout);
+            int timeout = LanguageManager.Instance.GetConfigTimeout(LanguageManager.ConfigPropertyEnum.AccountStatementTimeout);
             IAccountStatementService service = RestService.For<IAccountStatementService>(AWSConstants.Domains.Domain);
             Guid referenceNumber = Guid.NewGuid();
             try
