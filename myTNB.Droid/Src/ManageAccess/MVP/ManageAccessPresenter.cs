@@ -170,26 +170,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
         {
             List<LogUserAccessNewData> newAccountList = new List<LogUserAccessNewData>();
             List<DeleteAccessAccount> AccountList = new List<DeleteAccessAccount>();
-
-            //ArrayList nameList2 = new ArrayList();
-            //int i = 0;
-
-
-            //ArrayList nameList3 = new ArrayList();
-            //int m = 0;
-            //String[] accountemailList = new String[DeletedSelectedUser.Count];
-
-            //foreach (var accUser in accountList)
-            //{
-            //    AccountList.Add(new UserManageAccessAccount
-            //    {
-            //        UserAccountId = accUser.UserAccountId,
-            //        IsApplyEBilling = accUser.IsApplyEBilling,
-            //        IsHaveAccess = accUser.IsHaveAccess,
-            //        userId = accUser.userId,
-            //        email = accUser.email
-            //    });
-            //}
+            DeleteAccessAccount deletedUser = new DeleteAccessAccount();
 
 
             foreach (UserManageAccessAccount accUser in DeletedSelectedUser)
@@ -207,24 +188,18 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                         tenantNickname = accUser.AccDesc
                     };
                     AccountList.Add(newRecord);
+                    deletedUser = newRecord;
                 }
             }
 
-
-            //}
-            //String[] accountIdList = new String[DeletedSelectedUser.Count];
-
-            //foreach (UserManageAccessAccount accUser in DeletedSelectedUser)
-            //{
-            //    if (accUser.UserAccountId != null)
-            //    {
-            //        nameList2.Add(accUser.UserAccountId);
-            //        accountIdList[i] = accUser.UserAccountId;
-
-            //        ++i;
-            //    }
-            //}
-
+            if (AccountList.Count > 1)
+            {
+                MultipleDelete = true;
+            }
+            else
+            {
+                MultipleDelete = false;
+            }
 
             if (mView.IsActive())
             {
@@ -248,20 +223,38 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                 if (removeAccountResponse.IsSuccessResponse())
                 {
                     UserManageAccessAccount.DeleteSelected(accountData.AccountNum);
-                    if (this.mView.checkListUserEmpty() == 0)
+
+                    
+                    if (!MultipleDelete && DeletedSelectedUser.Count == 0)
                     {
+                        if (deletedUser.IsPreRegister == true)
+                        {
+                            this.mView.UserAccessNonUserRemoveSuccess(deletedUser.email);
+                            this.mView.ShowEmptyAccount();
+                        }
+                        else
+                        {
+                            this.mView.UserAccessRemoveSuccess();
+                            this.mView.ShowEmptyAccount();
+                        }
                         
+                    }
+                    else if (MultipleDelete && DeletedSelectedUser.Count >1)
+                    {
                         this.mView.UserAccessRemoveSuccess();
                         this.mView.ShowEmptyAccount();
-
-                    }
-                    else if (MultipleDelete && this.mView.checkListUserEmpty() > 0)
-                    {
-                        this.mView.UserAccessRemoveSuccess();
                     }
                     else
                     {
-                        this.mView.UserAccessRemoveSuccessSwipe();
+                        if(deletedUser.IsPreRegister == true)
+                        {
+                            this.mView.UserAccessRemoveNonUserSuccessSwipe(deletedUser.email);
+                        }
+                        else
+                        {
+                            this.mView.UserAccessRemoveSuccessSwipe();
+                        }
+                        
                     }
                 }
                 else

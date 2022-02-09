@@ -858,48 +858,6 @@ namespace myTNB_Android.Src.Login.MVP
 
                         }
 
-                        //var OldNCAccDate = currentDate;
-
-                        //if (OldNCAccDate != null)
-                        //{
-                        //    DateTime OldNCAccDateTime = Convert.ToDateTime(OldNCAccDate); //old datetime
-                        //    DateTime NewNCAccDateTime;
-
-                        //    int countNewNCAdded = 0;
-                        //    for (int x = 0; x < listNC.Count; x++)
-                        //    {
-                        //        NewNCAccDateTime = Convert.ToDateTime(listNC[x].CreatedDate);
-
-                        //        if (OldNCAccDateTime == NewNCAccDateTime)
-                        //        {
-                        //            //same date
-
-                        //        }
-                        //        if (OldNCAccDateTime < NewNCAccDateTime)
-                        //        {
-                        //            countNewNCAdded++;
-                        //        }
-                        //    }
-
-                        //    if (countNewNCAdded > 0)
-                        //    {
-                        //        UserSessions.UpdateNCFlag(mSharedPref);
-                        //        UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save created date
-                        //        UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //count nc ca
-                        //        UserSessions.UpdateNCTutorialShown(mSharedPref); //trigger home ovelay tutorial
-                        //    }
-
-                        //}
-                        //else
-                        //{
-                        //    UserSessions.SaveNewNCFlag(mSharedPref, true);
-                        //    UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save date if null
-                        //    UserSessions.UpdateNCFlag(mSharedPref);
-                        //    UserSessions.SaveNCFlag(mSharedPref, listNC.Count); //assign total count nc ca = 0
-                        //    UserSessions.UpdateNCTutorialShown(mSharedPref); //trigger home ovelay tutorial
-                        //    //UserSessions.UpdateNewNCFlag(mSharedPref);
-                        //}
-
                     }
                     else //BAU overlay
                     {

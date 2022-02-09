@@ -1164,7 +1164,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetDBRDiscoverView()
         {
-            SetDiscoverResult(IsAccountDBREligible);
+             SetDiscoverResult(IsAccountDBREligible);
+            
             //this.presenter.GetSavedNewFAQTimeStamp();
         }
 
@@ -1251,6 +1252,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 ShowMarketingTooltip();
                                 UserSessions.SaveDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity), true);
                             }
+                            
                         }
                         else
                         {

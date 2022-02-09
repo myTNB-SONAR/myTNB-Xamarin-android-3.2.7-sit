@@ -680,7 +680,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             ShowIdentificationUpdate();
 
                         }
-                       );
+                        );
+
+                       UserSessions.SetUpdateIdPopUp(this.mPref);
                     }
                 }
                 catch (System.Exception e)

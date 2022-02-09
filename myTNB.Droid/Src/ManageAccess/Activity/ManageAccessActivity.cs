@@ -406,11 +406,35 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             ShowRemoveMessageResponse();
         }
 
+        public void UserAccessNonUserRemoveSuccess(string email)
+        {
+            AdapterDeleteClean();
+
+            List<UserManageAccessAccount> customerAccountLatest = UserManageAccessAccount.List(accountData?.AccountNum);
+
+            if (customerAccountLatest.Count > 0)
+            {
+                ShowAccountDeleteList(customerAccountLatest);
+            }
+
+            listViewRemoveAcc.Visibility = ViewStates.Visible;
+            bottomLayoutDeleteMultiple.Visibility = ViewStates.Visible;
+            bottomLayout.Visibility = ViewStates.Gone;
+            ShowRemoveNonUserMessageResponse(email);
+        }
+
         public void UserAccessRemoveSuccessSwipe()
         {
             AdapterClean();
             this.userActionsListener.Start();
             ShowRemoveMessageResponse();
+        }
+
+        public void UserAccessRemoveNonUserSuccessSwipe(string email)
+        {
+            AdapterClean();
+            this.userActionsListener.Start();
+            ShowRemoveNonUserMessageResponse(email);
         }
 
         public void NavigateLogUserAccess(List<LogUserAccessNewData> loglistdata)
@@ -627,6 +651,23 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         {
             Snackbar errorMessageSnackbar =
             Snackbar.Make(rootView, Utility.GetLocalizedLabel("UserAccess", "deleteSuccessMessage"), Snackbar.LengthIndefinite)
+                        .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                         (view) =>
+                         {
+                             // EMPTY WILL CLOSE SNACKBAR
+                         }
+                        );//.Show();
+            View snackbarView = errorMessageSnackbar.View;
+            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            textView.SetMaxLines(4);
+            TextViewUtils.SetTextSize14(textView);
+            errorMessageSnackbar.Show();
+        }
+
+        public void ShowRemoveNonUserMessageResponse(string email)
+        {
+            Snackbar errorMessageSnackbar =
+            Snackbar.Make(rootView, string.Format(Utility.GetLocalizedLabel("UserAccess", "cancelAddSuccess"),email), Snackbar.LengthIndefinite)
                         .SetAction(Utility.GetLocalizedCommonLabel("close"),
                          (view) =>
                          {

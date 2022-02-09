@@ -114,7 +114,9 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             void ShowAccountRemovedSuccess();
             void NavigateLogUserAccess(List<LogUserAccessNewData> newAccountList);
             void UserAccessRemoveSuccess();
+            void UserAccessNonUserRemoveSuccess(string email);
             void UserAccessRemoveSuccessSwipe();
+            void UserAccessRemoveNonUserSuccessSwipe(string email);
             int checkListUserEmpty();
         }
 

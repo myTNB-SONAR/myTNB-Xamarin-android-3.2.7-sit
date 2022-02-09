@@ -490,11 +490,11 @@ namespace myTNB_Android.Src.ManageUser.Activity
         {
             string nickname = txtNickName.Text.ToString().Trim();
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                        .SetTitle(string.Format(Utility.GetLocalizedLabel("ManageAccount", "manageUserBackTitle"), nickname))
-                        .SetMessage(string.Format(Utility.GetLocalizedLabel("ManageAccount", "manageUserBackMessage"), nickname))
+                        .SetTitle(string.Format(Utility.GetLocalizedLabel("manageUser", "notSaveTitle"), nickname))
+                        .SetMessage(string.Format(Utility.GetLocalizedLabel("manageUser", "notSaveBody"), nickname))
                         .SetContentGravity(GravityFlags.Left)
-                        .SetCTALabel(Utility.GetLocalizedLabel("ManageAccount", "btnStay"))
-                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ManageAccount", "btnLeave"))
+                        .SetCTALabel(Utility.GetLocalizedLabel("manageUser", "btnStay"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("manageUser", "btnLeave"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();

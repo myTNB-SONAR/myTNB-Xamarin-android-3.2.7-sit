@@ -182,7 +182,7 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
 
                 this.mPresenter = new LogUserAccessPresenter(this);
 
-                if (LogListData != null || LogListData.Count == 0)
+                if (LogListData == null || LogListData.Count == 0)
                 {
                     log_activity_layout.Visibility = ViewStates.Gone;
                     empty_layout.Visibility = ViewStates.Visible;
