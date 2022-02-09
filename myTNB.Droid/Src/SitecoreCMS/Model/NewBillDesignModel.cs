@@ -17,6 +17,7 @@ namespace myTNB_Android.Src.SitecoreCMS.Model
 
     public class NewBillDesignResponseModel
     {
+        public string Status { set; get; }
         public List<NewBillDesignModelEntity> Data { set; get; }
     }
 
