@@ -1634,6 +1634,19 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             UserEntity user = UserEntity.GetActive();
+
+            if (UserSessions.HasHomeTutorialShown(this.mPref) && UserSessions.GetUpdateIdDialog(this.mPref))
+            {
+                int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
+                bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
+
+                if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard)
+                {
+                    ShowMarketingTooltip();
+                    UserSessions.SaveDBRPopUpFlag(this.mPref, true);
+                }
+            }
+
             //var sharedpref_data = UserSessions.GetCheckEmailVerified(this.mPref);
             //bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);  //get from shared pref
 
