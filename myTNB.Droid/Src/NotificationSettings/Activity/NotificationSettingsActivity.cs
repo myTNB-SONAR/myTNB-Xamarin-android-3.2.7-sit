@@ -116,7 +116,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private void SetSelectedLanguage(string languageTitle)
         {
-            if (languageTitle == null) //If lang param is null, use saved language as selected
+            if (string.IsNullOrEmpty(languageTitle)) //If lang param is null, use saved language as selected
             {
                 languageTitle = GetLanguageLabelByCode(savedLanguage);
             }
@@ -284,7 +284,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
                 UpdateSizeFontText();
                 UpdateLabels();
-                SetSelectedLanguage(null);
+                SetSelectedLanguage("");
 
                 //SetTextSize
                 TextViewUtils.SetTextSize16(txtNotificationTypeTitle, txtNotificationChannelTitle, textSizeMessage, appLanguageMessage);
@@ -322,7 +322,12 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                         // ShowProgressDialog();
                         HideShowProgressDialog();
                          _ = RunUpdateLanguage(selectedItem);
-                    });
+                    },
+                    () =>
+                    {
+                        SetSelectedLanguage("");
+                    })
+                    ;
                 }
 
             }
