@@ -202,7 +202,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             FontListView.Adapter = selectItemTextSizeAdapter;
             FontListView.SetNoScroll();
             FontListView.SetScrollContainer(false);
-            SetSelectedFont(null);
+            SetSelectedFont("");
         }
 
         public void ShowNotificationChannelList(List<NotificationChannelUserPreference> channelPreferenceList)
@@ -433,7 +433,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private void SetSelectedFont(string FontTitle)
         {
-            if (FontTitle == null) //If lang param is null, use saved Font as selected
+            if (string.IsNullOrEmpty(FontTitle)) //If lang param is null, use saved Font as selected
             {
                 foreach (var item in FontItemList)
                 {
@@ -472,6 +472,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 }).Build();
             tooltipBuilder.SetCTAaction(() =>
             {
+                SetSelectedFont("");
                 tooltipBuilder.DismissDialog();
             }).Show();
         }
