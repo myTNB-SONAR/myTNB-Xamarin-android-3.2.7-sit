@@ -129,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/ActivityLog_layout_empty"
-                android:visibility="gone">
+                android:visibility="visible">
                 <LinearLayout
                     android:id="@+id/layout_empty_ActivityLog"
                     android:layout_width="match_parent"
@@ -144,8 +144,8 @@
                         android:gravity="center"
                         android:layout_marginTop="40dp"
                         android:layout_marginBottom="8dp"
-                        android:id="@+id/imgEmptyCard"
-                        android:src="@drawable/ic_empty_creditcards" />
+                        android:id="@+id/imgEmptyLog"
+                        android:src="@drawable/empty_activity_log" />
                     <TextView
                         android:id="@+id/txtEmptyActivityLog"
                         android:layout_width="match_parent"
@@ -155,8 +155,7 @@
                         android:gravity="center"
                         android:textColor="#8b8b8b"
                         android:textSize="14dp"
-                        android:lineSpacingExtra="3dp"
-                        android:text="No Activity Log" />
+                        android:text="Seems like you don't have any activity yet."/>
                 </LinearLayout>
             </FrameLayout>
             </RelativeLayout>

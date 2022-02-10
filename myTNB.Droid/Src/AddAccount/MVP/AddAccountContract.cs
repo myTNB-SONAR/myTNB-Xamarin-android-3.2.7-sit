@@ -63,6 +63,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
             /// <summary>
             /// Show add account failed message
             /// </summary>
+            void ShowAddAccountInvalid(string errorMessage);
+            
+            /// <summary>
+            /// Show add account failed message
+            /// </summary>
             void ShowAddAccountROCFail(string errorMessage);
 
             /// <summary>

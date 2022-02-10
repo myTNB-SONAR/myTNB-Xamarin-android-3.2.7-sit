@@ -138,6 +138,14 @@
     <AndroidManagedSymbols>false</AndroidManagedSymbols>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidUseAapt2>true</AndroidUseAapt2>
+    <MandroidExtraArgs></MandroidExtraArgs>
+    <BundleAssemblies></BundleAssemblies>
+    <AndroidHttpClientHandlerType></AndroidHttpClientHandlerType>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <AndroidKeyStore></AndroidKeyStore>
+    <AndroidSigningKeyStore></AndroidSigningKeyStore>
+    <AndroidSigningStorePass></AndroidSigningStorePass>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AndroidEasingFunctions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -7123,6 +7131,26 @@
     </AndroidResource>
     <Compile Include="Src\MyTNBService\Request\NCAutoAddAccountsRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\NCAutoAddAccountsResponse.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\empty_activity_log.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\empty_activity_log.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\empty_activity_log.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\empty_activity_log.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\empty_activity_log.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

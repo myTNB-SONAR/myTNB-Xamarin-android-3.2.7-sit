@@ -218,6 +218,10 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 {
                     mView.ShowAddAccountROCFail(result.Response.DisplayMessage);
                 }
+                else if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS && result.Response.DisplayMessage.Contains(Utility.GetLocalizedErrorLabel("invalid_accountType")))
+                {
+                    mView.ShowAddAccountInvalid(result.Response.DisplayMessage);
+                }
                 else if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
                 {
                     mView.ShowAddAccountFail(result.Response.DisplayMessage);
