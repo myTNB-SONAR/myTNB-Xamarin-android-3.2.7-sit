@@ -190,6 +190,13 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       {
                           NoAccountLayout.Visibility = ViewStates.Gone;
                       }
+                      else if(accountList.Count() == 0 && additionalAccountList.Count() == 0)
+                      {
+                          txtboxcondition.Visibility = ViewStates.Gone;
+                          txtTermsConditions.Visibility = ViewStates.Gone;
+                          textNoOfAccount.Text = string.Format(Utility.GetLocalizedLabel("AddAccount", "noAccountsTitle"));
+                          labelAccountLabel.Text = GetLabelByLanguage("noAcctFoundMsg");
+                      }
 
                       mDeleteDialog.Dismiss();
                   })
@@ -1064,6 +1071,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     NoAccountLayout.Visibility = ViewStates.Gone;
                                     textNoOfAccount.Visibility = ViewStates.Gone;
                                     labelAccountLabel.Visibility = ViewStates.Gone;
+                                    txtboxcondition.Visibility = ViewStates.Visible;
+                                    txtTermsConditions.Visibility = ViewStates.Visible;
                                 }
 
                                 additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
