@@ -120,25 +120,29 @@ namespace myTNB_Android.Src.Utils.Deeplink
                 if (deepLinkUrlString.Contains(Screen.GetBill.ToString().ToLower()))
                 {
                     TargetScreen = Screen.GetBill;
-                    if (deeplink.Query.IsValid())
-                    {
-                        var deeplinkQuery = HttpUtility.ParseQueryString(deeplink.Query);
-                        ScreenKey = deeplinkQuery[Constant.GetBillIDKey];
-                    }
-                    else
-                    {
-                        ScreenKey = GetParamValueFromKey(Constant.GetBillIDKey, deeplink);
-                    }
+                    ScreenKey = GetParamValueFromKey(Constant.GetBillIDKey, deeplink, true);
                 }
             }
         }
 
-        private string GetParamValueFromKey(string key, Uri deeplink)
+        private string GetParamValueFromKey(string key, Uri deeplink, bool isQRCode = false)
         {
             string value = string.Empty;
-            string path = deeplink.Path;
+            string queryString = string.Empty;
 
-            var parameters = path?.Split(Constant.Slash);
+            if (isQRCode)
+            {
+                if (deeplink != null && deeplink.Query != null)
+                {
+                    queryString = deeplink.Query.ToString();
+                }
+            }
+            else
+            {
+                queryString = deeplink.Path;
+            }
+
+            var parameters = queryString?.Split(Constant.Slash);
             if (parameters.Length > 0)
             {
                 foreach (var item in parameters)
