@@ -66,6 +66,8 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
 
         private TextView titleselectApply;
 
+        private TextView titleLastly;
+
         private ImageView img_displayYes;
 
         private ImageView img_displayNo;
@@ -135,17 +137,18 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
                 titleYes = FindViewById<TextView>(Resource.Id.titleYes);
                 titleNo = FindViewById<TextView>(Resource.Id.titleNo);
                 titleselectApply = FindViewById<TextView>(Resource.Id.titleselectApply);
+                titleLastly = FindViewById<TextView>(Resource.Id.titleLastly);
                 img_displayYes = FindViewById<ImageView>(Resource.Id.img_displayYes);
                 img_displayNo = FindViewById<ImageView>(Resource.Id.img_displayNo);
 
                 TextViewUtils.SetMuseoSans500Typeface(btnCancel, btnSubmit);
-                TextViewUtils.SetMuseoSans500Typeface(titleSetUpFeedback, titleYes, titleNo, titleNumber, titleselectApply);
+                TextViewUtils.SetMuseoSans500Typeface(titleSetUpFeedback, titleYes, titleNo, titleNumber, titleselectApply, titleLastly);
                 TextViewUtils.SetMuseoSans500Typeface(txtTellUsMore);
                 TextViewUtils.SetMuseoSans300Typeface(txtTellUsMoreHintCount);
 
                 TextViewUtils.SetTextSize16(btnCancel, btnSubmit);
                 TextViewUtils.SetTextSize16(titleSetUpFeedback, titleNumber);
-                TextViewUtils.SetTextSize12(txtTellUsMore, titleselectApply);
+                TextViewUtils.SetTextSize12(txtTellUsMore, titleselectApply, titleLastly);
                 TextViewUtils.SetTextSize10(titleYes, titleNo, txtTellUsMoreHintCount);
 
                 titleNumber.Text = Utility.GetLocalizedLabel("FeedBackSD", "helpfulTitle");
@@ -156,6 +159,7 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
                 titleNo.Text = Utility.GetLocalizedLabel("FeedBackSD", "thumbDownNo");
                 titleSetUpFeedback.Text = Utility.GetLocalizedLabel("FeedBackSD", "title");
                 titleselectApply.Text = Utility.GetLocalizedLabel("FeedBackSD", "titleSelectApplies");
+                titleLastly.Text = Utility.GetLocalizedLabel("FeedBackSD", "titleLastly");
 
                 txtTellUsMoreHintCount.Text = (initialnumber.ToString() + " " + Utility.GetLocalizedLabel("FeedBackSD", "hinttellusMore"));
                
@@ -510,10 +514,9 @@ namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
         {
             try
             {
-                string tellusmore = txtTellUsMore.Text.Trim();
-                if (tellusmore.Length > 0)
+                if (txtTellUsMore.Length() > 0)
                 {
-                    int remainNumber = initialnumber - tellusmore.Length;
+                    int remainNumber = initialnumber - txtTellUsMore.Length();
                     txtTellUsMoreHintCount.Text = (remainNumber.ToString() + " " + Utility.GetLocalizedLabel("FeedBackSD", "hinttellusMore"));
                 }
                 else

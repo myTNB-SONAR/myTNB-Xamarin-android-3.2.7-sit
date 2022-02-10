@@ -281,6 +281,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             imageResourceBanner = Resource.Drawable.sd_outage_notification;
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1:
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2:
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3:
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4:
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI:
                     case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS:
                         {
                             imageResourceBanner = Resource.Drawable.sd_in_progress_notification;
@@ -323,7 +328,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 }
                 if (notificationDetailMessage.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
                 {
-                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + accountName + "\"");
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERN, "\'" + accountName + "\'");
                 }
 
                 // check if have have #accnos#
@@ -347,7 +352,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                                 if (caindex > -1)
                                 {
                                     string accountNickname = accounts[caindex].AccDesc ?? string.Empty;
-                                    if (!string.IsNullOrEmpty(accountNickname) && !string.IsNullOrWhiteSpace(accountNickname))
+                                    if (!string.IsNullOrEmpty(accountNickname))
                                     {
                                         preparedString = preparedString + String.Format(stringFormat, num++, accountNickname);
                                     }

@@ -538,7 +538,33 @@ namespace myTNB_Android.Src.Notifications.MVP
                                             {
                                                 if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
                                                 {
-                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                    if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
+                                                    {
+                                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                    }
+                                                    else
+                                                    {
+                                                        if (userNotificationData != null && !string.IsNullOrEmpty(userNotificationData.AccountNum))
+                                                        {
+                                                            List<string> CAs = userNotificationData.AccountNum.Split(',').ToList();
+                                                            if (CAs.Count > 1)
+                                                            {
+                                                                bool sameCa = false;
+                                                                foreach (var noCa in CAs)
+                                                                {
+                                                                    if (MyTNBAccountManagement.GetInstance().IsAccountNumberExist(noCa) && !sameCa)
+                                                                    {
+                                                                        sameCa = true;
+                                                                    }
+                                                                }
+
+                                                                if (sameCa)
+                                                                {
+                                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                             else
@@ -575,11 +601,37 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                     listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                 }
                                             }
-                                            else if (userNotificationData.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD)
+                                            else if (UserEntity.GetActive().Email.Equals(userNotificationData.Email) && userNotificationData.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD)
                                             {
                                                 if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
                                                 {
-                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                    if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
+                                                    {
+                                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                    }
+                                                    else
+                                                    {
+                                                        if (userNotificationData != null && !string.IsNullOrEmpty(userNotificationData.AccountNum))
+                                                        {
+                                                            List<string> CAs = userNotificationData.AccountNum.Split(',').ToList();
+                                                            if (CAs.Count > 1)
+                                                            {
+                                                                bool sameCa = false;
+                                                                foreach (var noCa in CAs)
+                                                                {
+                                                                    if (MyTNBAccountManagement.GetInstance().IsAccountNumberExist(noCa) && !sameCa)
+                                                                    {
+                                                                        sameCa = true;
+                                                                    }
+                                                                }
+
+                                                                if (sameCa)
+                                                                {
+                                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }

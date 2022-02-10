@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
 using myTNB_Android.Src.Database.Model;
+using System.Linq;
 
 namespace myTNB_Android.Src.Notifications.Adapter
 {
@@ -186,16 +187,33 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 }
                 if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
                 {
-                    viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + notificationAccountName + "\"");
+                    viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_ACCNO_PATTERN, "\'" + notificationAccountName + "\'");
                 }
-
-                if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_PROFILENAME_PATTERN))
+                if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_ACCNO_PATTERNS))
                 {
-                    viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
-                }
-                if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
-                {
-                    viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + notificationAccountName + "\"");
+                    if (!string.IsNullOrEmpty(notificationData.AccountNum))
+                    {
+                        List<string> CAs = notificationData.AccountNum.Split(',').ToList();
+                        if (CAs.Count > 1)
+                        {
+                            string stringFormat = "{0},";
+                            string preparedString = string.Empty;
+                            foreach (var ca in CAs)
+                            {
+                                List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+                                int caindex = accounts.FindIndex(x => x.AccNum == ca);
+                                if (caindex > -1)
+                                {
+                                    string accountNickname = accounts[caindex].AccDesc ?? string.Empty;
+                                    if (!string.IsNullOrEmpty(accountNickname))
+                                    {
+                                        preparedString = preparedString + String.Format(stringFormat, accountNickname);
+                                    }
+                                }
+                            }
+                            viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_ACCNO_PATTERNS, "\'" + preparedString + "\'");
+                        }
+                    }
                 }
 
                 if (notificationData.ShowSelectButton)
