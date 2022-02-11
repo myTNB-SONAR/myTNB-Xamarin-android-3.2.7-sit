@@ -129,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/ActivityLog_layout_empty"
-                android:visibility="visible">
+                android:visibility="gone">
                 <LinearLayout
                     android:id="@+id/layout_empty_ActivityLog"
                     android:layout_width="match_parent"

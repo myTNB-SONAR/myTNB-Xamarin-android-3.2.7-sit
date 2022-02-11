@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
         TextView texttitleLastMonth;
 
         [BindView(Resource.Id.txtEmptyActivityLog)]
-        TextView txtEmptyActivityLog;
+        TextView txtEmptyLog;
 
         [BindView(Resource.Id.month_list_recycler_view)]
         RecyclerView LastMonthlistview;
@@ -169,15 +169,16 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
                     }
                 }
 
-                TextViewUtils.SetMuseoSans300Typeface(txtEmptyActivityLog);
-                TextViewUtils.SetMuseoSans500Typeface(texttitleThisWeek, texttitleLastWeek, texttitleLastMonth);
-                TextViewUtils.SetTextSize14(txtEmptyActivityLog);
+                //TextViewUtils.SetMuseoSans300Typeface(txtEmptyLog);
+                TextViewUtils.SetMuseoSans500Typeface(txtEmptyLog,texttitleThisWeek, texttitleLastWeek, texttitleLastMonth);
+                TextViewUtils.SetTextSize14(txtEmptyLog);
                 TextViewUtils.SetTextSize16(texttitleThisWeek, texttitleLastWeek, texttitleLastMonth);
 
+                txtEmptyLog.Text = Utility.GetLocalizedLabel("UserAccess", "emptyLogText");
                 texttitleThisWeek.Text = Utility.GetLocalizedLabel("UserAccess", "thisWeekTitle");
                 texttitleLastWeek.Text = Utility.GetLocalizedLabel("UserAccess", "lastWeekTitle");
                 texttitleLastMonth.Text = Utility.GetLocalizedLabel("UserAccess", "lastMonthTitle");
-                txtEmptyActivityLog.Text = Utility.GetLocalizedLabel("UserAccess", "emptyLogText");
+               
 
                 SetToolBarTitle(Utility.GetLocalizedLabel("UserAccess", "title_activityLog"));
 
