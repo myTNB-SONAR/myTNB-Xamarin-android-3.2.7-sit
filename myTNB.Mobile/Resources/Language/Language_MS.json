@@ -823,7 +823,7 @@
     "typeDescription": "Pilih jenis pemberitahuan yang ingin diterima daripada TNB",
     "modeDescription": "Pilih cara anda mahu menerima pemberitahuan",
     "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
-    "selectApplang": "Pilih bahasa aplikasi pilihan anda:",
+    "selectApplang": "Pilih bahasa aplikasi pilihan anda",
     "setTextSize": "Tetapkan saiz tulisan anda",
     "displaySize": "Tetapkan saiz teks paparan"
   },
@@ -2346,7 +2346,9 @@
     "manageUserInviteAccessDialogMessage": "Kami telah menjemput {0} untuk menyertai myTNB dan melihat akaun elektrik anda. Anda boleh menghantar satu lagi jemputan jika mereka tidak menerimanya.",
     "manageUserCancelAddAccessDialogTitle": "Adakah anda pasti mahu membatalkan penambahan {0} sebagai seorang penonton?",
     "manageUserCancelAddAccessDialogMessage": "Setelah dibatalkan, jemputan tersebut tidak lagi sah dan pengguna tidak lagi mempunyai akses ke akaun anda. Anda boleh memasukan semula pengguna jika mahu.",
-    "inviteSuccess": "Kami telah menghantar satu lagi jemputan ke {0} untuk menyertai myTNB."
+    "inviteSuccess": "Kami telah menghantar satu lagi jemputan ke {0} untuk menyertai myTNB.",
+    "stay": "Tidak",
+    "leave": "Ya"
   },
   "SelectApplicationType": {
     "title": "Pilih Jenis Permohonan"
@@ -2484,7 +2486,7 @@
   },
   "SelectFontSize": {
     "title": "Tetapkan Saiz Teks Paparan",
-    "sectionTitle": "Pilih Saiz Teks Pilihan Anda",
+    "sectionTitle": "Pilih saiz teks pilihan anda",
     "ctaTitle": "Simpan",
     "popupTitleFormat": "Tukar saiz teks paparan anda?",
     "popupMessage": "Anda akan menukar saiz teks paparan Aplikasi myTNB anda kepada saiz {0}."

@@ -86,7 +86,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 case "manage_bill_delivery_3":
                     imageSource.SetImageResource(Resource.Drawable.manage_bill_delivery_3);
                     break;
-
+                case "dbr_paper_e_bill":
+                    imageSource.SetImageResource(Resource.Drawable.dbr_paper_e_bill);
+                    break;
                 default:
                     imageSource.SetImageResource(Resource.Drawable.manage_bill_delivery_0);
                     break;
