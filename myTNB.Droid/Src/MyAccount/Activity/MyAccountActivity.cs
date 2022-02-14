@@ -185,7 +185,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             ShowDeleteAccDialog(this, position, () =>
             {
                 CustomerBillingAccount account = adapter.GetItemObject(position);
-                this.mPresenter.OnRemoveAccount(account.AccNum);
+                this.mPresenter.OnRemoveAccount(account.AccNum, account.isOwned, account.IsInManageAccessList);
             });
         }
 

@@ -587,16 +587,35 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetBoolean("deviceIDUpdated", false);
         }
 
-        internal static void UpdateIdDialog(ISharedPreferences mSharedPref)                 //for Update ID dialog
+        internal static void SetUpdateIdPopUp(ISharedPreferences mSharedPref)                 //for save ID dialog
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.PutBoolean("PopUpIDUpdated", true);
+            editor.Apply();
+        }
+
+        public static bool GetUpdateIdPopUp(ISharedPreferences prefs)            //for get ID dialog
+        {
+            return prefs.GetBoolean("PopUpIDUpdated", false);
+        }
+
+        internal static void SetUpdateIdDialog(ISharedPreferences mSharedPref)                 //for save ID dialog
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();
             editor.PutBoolean("DialogIDUpdated", true);
             editor.Apply();
         }
 
-        public static System.Boolean IsIdDialogUpdated(ISharedPreferences prefs)            //for Update ID dialog
+        public static bool GetUpdateIdDialog(ISharedPreferences prefs)            //for get ID dialog
         {
             return prefs.GetBoolean("DialogIDUpdated", false);
+        }
+
+        internal static void UpdateUpdateIdDialog(ISharedPreferences mSharedPref)  //for Update ID dialog
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("DialogIDUpdated");
+            editor.Apply();
         }
 
         public static void SaveCheckEmailVerified(ISharedPreferences prefs, string data)    //for Check Email Verified

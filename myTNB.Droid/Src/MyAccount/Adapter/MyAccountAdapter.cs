@@ -115,7 +115,7 @@ namespace myTNB_Android.Src.MyAccount.Adapter
             throw new System.NotImplementedException();
         }
 
-        public void OnRemoveAccount(string numacc)
+        public void OnRemoveAccount(string numacc, bool isOwner, bool IsInManageAccessList)
         {
             throw new NotImplementedException();
         }

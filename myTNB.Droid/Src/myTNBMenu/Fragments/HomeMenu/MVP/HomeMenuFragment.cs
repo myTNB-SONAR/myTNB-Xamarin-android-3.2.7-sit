@@ -276,7 +276,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.whatsNewUnreadImg)]
         ImageView whatsNewUnreadImg;
-        
+
         [BindView(Resource.Id.discoverMoreNBRContainer)]
         LinearLayout discoverMoreNBRContainer;
 
@@ -480,7 +480,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                 }
             }
-           
+
         }
 
         public void SetNotificationIndicator()
@@ -1165,6 +1165,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void SetDBRDiscoverView()
         {
             SetDiscoverResult(IsAccountDBREligible);
+
             //this.presenter.GetSavedNewFAQTimeStamp();
         }
 
@@ -1242,15 +1243,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             img_discover_digital_bill.Visibility = ViewStates.Visible;
                             discoverMoreSectionTitle.Visibility = ViewStates.Visible;
 
-                            UserEntity user = UserEntity.GetActive();
-                            int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
-                            bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                            //UserEntity user = UserEntity.GetActive();
+                            //int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
+                            //bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
 
-                            if (!dbrPopUpHasShown && loginCount == 1 && GetHomeTutorialCallState())
-                            {
-                                ShowMarketingTooltip();
-                                UserSessions.SaveDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity), true);
-                            }
+                            //if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && GetHomeTutorialCallState())
+                            //{
+                            //    ShowMarketingTooltip();
+                            //    UserSessions.SaveDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity), true);
+                            //}
+
                         }
                         else
                         {
@@ -2407,7 +2409,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             if (!HomeMenuUtils.GetIsLoadedHomeMenu())
             {
-                
+
                 List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
                 List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
                 List<CustomerBillingAccount> smartmeterAccounts = CustomerBillingAccount.SMeterBudgetAccountList();        //smart meter ca
@@ -2415,7 +2417,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
                 List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
                 List<SMRAccount> SMeterAccountList = new List<SMRAccount>();
-                
+
                 if (eligibleSMRBillingAccounts.Count > 0)
                 {
                     foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
@@ -3288,7 +3290,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-               
+
                 Activity.RunOnUiThread(() =>
                 {
                     try
@@ -3315,7 +3317,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 Utility.LoggingNonFatalError(e);
                             }
                             NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                            
+
 
                             NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
                         };
@@ -3388,7 +3390,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             return newFAQTitle.Height;
         }
-        
+
         public int GetloadMoreContainerHeight()
         {
             return loadMoreContainer.Height;
@@ -3903,7 +3905,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        
+
         [OnClick(Resource.Id.newBillRedesignBanner)]
         void NewBillRedesignBannerOnClick(object sender, EventArgs eventArgs)
         {

@@ -985,12 +985,8 @@
     "dialogAddrressMessage": "Kami menyembunyikan maklumat yang sensitif untuk menjaga privasi pemilik akaun. Anda sedang melihat maklumat yang disembunyikan kerana anda bukan pemilik akaun elektrik ini.",
     "dialogManageUser": "Memberi lebih banyak akses kepada pengguna anda.",
     "dialogManageUserMessage": "Untuk melindungi maklumat anda, kami tidak memaparkan maklumat peribadi anda kepada bukan pemilik dan beberapa ciri aplikasi. Walaubagaimanapun, anda boleh memberikan mereka akses yang disenaraikan di sini jika sesuai dan mereka akan dimaklumkan mengenainya.",
-    "manageUserBackTitle": "Adakah anda pasti mahu meninggalkan halaman ini tanpa menyimpan perubahan yang telah anda lakukan terhadap akses {0}?",
-    "manageUserBackMessage": "Perubahan terhadap akses {0} tidak akan disimpan jika anda memilih untuk meninggalkan halaman ini dan akses pengguna akan kekal seperti biasa.",
     "manageUserAccess": "Menguruskan Akses Pengguna",
-    "manageAutopay": "BM_Manage Autopay",
-    "btnStay": "Tidak",
-    "btnLeave": "Ya"
+    "manageAutopay": "BM_Manage Autopay"
   },
   "Onboarding": {
     "letsStart": "Jom mulakan!",
@@ -1681,7 +1677,8 @@
     "thisWeekTitle": "Minggu Ini",
     "lastWeekTitle": "Minggu lepas",
     "lastMonthTitle": "Bulan lepas",
-    "AddNonTNBUserSuccessToast": "Anda telah menjemput {0} untuk menyertai myTNB dan melihat akaun elektrik ini."
+    "AddNonTNBUserSuccessToast": "Anda telah menjemput {0} untuk menyertai myTNB dan melihat akaun elektrik ini.",
+    "emptyLogText": "Nampaknya anda belum mempunyai sebarang aktiviti."
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Maklumat pembayaran",
@@ -2347,8 +2344,8 @@
     "manageUserCancelAddAccessDialogTitle": "Adakah anda pasti mahu membatalkan penambahan {0} sebagai seorang penonton?",
     "manageUserCancelAddAccessDialogMessage": "Setelah dibatalkan, jemputan tersebut tidak lagi sah dan pengguna tidak lagi mempunyai akses ke akaun anda. Anda boleh memasukan semula pengguna jika mahu.",
     "inviteSuccess": "Kami telah menghantar satu lagi jemputan ke {0} untuk menyertai myTNB.",
-    "stay": "Tidak",
-    "leave": "Ya"
+    "btnStay": "Tidak",
+    "btnLeave": "Ya"
   },
   "SelectApplicationType": {
     "title": "Pilih Jenis Permohonan"

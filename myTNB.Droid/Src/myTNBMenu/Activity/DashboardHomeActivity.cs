@@ -189,7 +189,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             currentFragment = fragment;
         }
-       
+
         private void SetBottomNavigationLabels()
         {
             try
@@ -483,45 +483,45 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             //if (DashboardHomeActivity.GO_TO_INNER_DASHBOARD)
             //{
-                
+
             //}
             //else
             //{
-                if (currentFragment.GetType() == typeof(HomeMenuFragment) ||
-                    currentFragment.GetType() == typeof(ProfileMainMenuFragment) ||
-                    currentFragment.GetType() == typeof(RewardMenuFragment) ||
-                    currentFragment.GetType() == typeof(ItemisedBillingMenuFragment) ||
-                    currentFragment.GetType() == typeof(FeedbackMenuFragment) ||
-                    currentFragment.GetType() == typeof(WhatsNewMenuFragment))
+            if (currentFragment.GetType() == typeof(HomeMenuFragment) ||
+                currentFragment.GetType() == typeof(ProfileMainMenuFragment) ||
+                currentFragment.GetType() == typeof(RewardMenuFragment) ||
+                currentFragment.GetType() == typeof(ItemisedBillingMenuFragment) ||
+                currentFragment.GetType() == typeof(FeedbackMenuFragment) ||
+                currentFragment.GetType() == typeof(WhatsNewMenuFragment))
+            {
+                //CustomerBillingAccount selected = new CustomerBillingAccount();
+                //selected = CustomerBillingAccount.GetSelected();
+                //DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
+                MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
+                ManageSupplyAccountMenu = menu;
+                ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.manage_account)).SetVisible(false);
+            }
+            else
+            {
+                CustomerBillingAccount selected = new CustomerBillingAccount();
+                selected = CustomerBillingAccount.GetSelected();
+                DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
+                MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
+                ManageSupplyAccountMenu = menu;
+                ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.manage_account)).SetVisible(true);
+                Handler h = new Handler();
+                Action myAction = () =>
                 {
-                    //CustomerBillingAccount selected = new CustomerBillingAccount();
-                    //selected = CustomerBillingAccount.GetSelected();
-                    //DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
-                    MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
-                    ManageSupplyAccountMenu = menu;
-                    ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.manage_account)).SetVisible(false);
-                }
-                else
-                {
-                    CustomerBillingAccount selected = new CustomerBillingAccount();
-                    selected = CustomerBillingAccount.GetSelected();
-                    DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
-                    MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
-                    ManageSupplyAccountMenu = menu;
-                    ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.manage_account)).SetVisible(true);
-                    Handler h = new Handler();
-                    Action myAction = () =>
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasManageAccessIconTutorialShown(this.mPref))
                     {
-                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                        if (!UserSessions.HasManageAccessIconTutorialShown(this.mPref))
-                        {
-                            OnManageAccessIconTutorialDialog(selected.isOwned, selected.AccountTypeId);
+                        OnManageAccessIconTutorialDialog(selected.isOwned, selected.AccountTypeId);
 
-                        }
-                    };
-                    h.PostDelayed(myAction, 50);
-                }
-                
+                    }
+                };
+                h.PostDelayed(myAction, 50);
+            }
+
             //}
 
             return base.OnCreateOptionsMenu(menu);
@@ -537,19 +537,19 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             h.PostDelayed(myAction, 100);
         }
 
-        
+
 
         public int GetViewBillButtonHeight()
         {
-            
+
             int height = ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).Icon.IntrinsicHeight;
             return height;
         }
 
         public int GetViewBillButtonWidth()
         {
-           
-           
+
+
             int width = ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).Icon.IntrinsicWidth;
             return width;
         }
@@ -567,7 +567,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                 rootView.OffsetDescendantRectToMyCoords(toolbar, offsetViewBounds);
 
-                i = offsetViewBounds.Top + (int) DPUtils.ConvertDPToPx(14f);
+                i = offsetViewBounds.Top + (int)DPUtils.ConvertDPToPx(14f);
 
             }
             catch (System.Exception e)
@@ -602,7 +602,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();
-               
+
             }
         }
 
@@ -653,32 +653,90 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void PopulateIdentificationDetails()
         {
             UserEntity user = UserEntity.GetActive();
+            //isWhatNewDialogOnHold = false;
+            if (UserSessions.HasHomeTutorialShown(this.mPref))
+            {
+                try
+                {
+                    if (user.IdentificationNo.Equals(""))
+                    {
+                        //with check box
+                        //Utility.ShowIdentificationUpdateProfileDialog(this, () =>
+                        //{
+                        //    ShowIdentificationUpdate();
+                        //},
+                        //() =>
+                        //{
+                        //    UserSessions.UpdateIdDialog(this.mPref);
+                        //},
+                        //() =>
+                        //{
+                        //    this.mPref.Edit().Remove("DialogIDUpdated").Apply();
+                        //}
+                        //);
 
+                        Utility.ShowIdentificationUpdateProfileDialog(this, () =>
+                        {
+                            ShowIdentificationUpdate();
+
+                        }
+                        );
+
+                        UserSessions.SetUpdateIdPopUp(this.mPref);
+                    }
+                    else
+                    {
+                        int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
+                        bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
+
+                        if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard)
+                        {
+                            ShowMarketingTooltip();
+                            UserSessions.SaveDBRPopUpFlag(this.mPref, true);
+                        }
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+            }
+            else
+            {
+                MyTNBAccountManagement.GetInstance().OnHoldWhatNew(true);
+                UserSessions.SetUpdateIdDialog(this.mPref);
+            }
+        }
+
+        public void ShowMarketingTooltip()
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                    .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
+                    .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_TITLE))
+                    .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_MESSAGE))
+                    .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_START_NOW))
+                    .SetCTAaction(() => ShowManageBill())
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.GOT_IT))
+                    .SetSecondaryCTAaction(() =>
+                    {
+                        this.SetIsClicked(false);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
+                    })
+                    .Build();
+                marketingTooltip.Show();
+            }
+        }
+
+        public void ShowManageBill()
+        {
             try
             {
-                if(user.IdentificationNo.Equals("") && !UserSessions.IsIdDialogUpdated(this.mPref))
-                {
-                    //with check box
-                    //Utility.ShowIdentificationUpdateProfileDialog(this, () =>
-                    //{
-                    //    ShowIdentificationUpdate();
-                    //},
-                    //() =>
-                    //{
-                    //    UserSessions.UpdateIdDialog(this.mPref);
-                    //},
-                    //() =>
-                    //{
-                    //    this.mPref.Edit().Remove("DialogIDUpdated").Apply();
-                    //}
-                    //);
-
-                    Utility.ShowIdentificationUpdateProfileDialog(this, () =>
-                    {
-                        ShowIdentificationUpdate();
-                    }
-                   );
-                }
+                DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_Viewmore);
+                this.GetBillRendering();
             }
             catch (System.Exception e)
             {
@@ -693,7 +751,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             StartActivityForResult(updateICNo, Constants.UPDATE_IC_REQUEST);
         }
 
-        
+
         public void ShowBillMenu(AccountData selectedAccount, bool isIneligiblePopUpActive = false)
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
@@ -1218,7 +1276,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        private void SetReadUnReadNewBottomView(bool flag, bool isGotRead, int count,IMenuItem promotionMenuItem)
+        private void SetReadUnReadNewBottomView(bool flag, bool isGotRead, int count, IMenuItem promotionMenuItem)
         {
             try
             {
@@ -1576,12 +1634,25 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             UserEntity user = UserEntity.GetActive();
+
+            if (UserSessions.HasHomeTutorialShown(this.mPref) && UserSessions.GetUpdateIdPopUp(this.mPref))
+            {
+                int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
+                bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
+                bool popupID = UserSessions.GetUpdateIdPopUp(this.mPref);
+                if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && popupID)
+                {
+                    ShowMarketingTooltip();
+                    UserSessions.SaveDBRPopUpFlag(this.mPref, true);
+                }
+            }
+
             //var sharedpref_data = UserSessions.GetCheckEmailVerified(this.mPref);
             //bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);  //get from shared pref
-            
+
             if (isFromLogin)
             {
-                isFromLogin = false; 
+                isFromLogin = false;
                 UserSessions.SaveCheckEmailVerified(this.mPref, user.IsActivated.ToString());  //save sharedpref check email  //wan
                 if (string.IsNullOrEmpty(user.IdentificationNo) || !user.IsActivated)
                 {
@@ -2523,7 +2594,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         }
                         else
                         {
-                            PopulateIdentificationDetails();
+                            if (!UserSessions.GetUpdateIdDialog(this.mPref))
+                            {
+                                PopulateIdentificationDetails();
+
+                            }
                         }
                     }
                     else if (SetEligibleEBUser())
@@ -2542,6 +2617,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
+                        if (UserSessions.GetUpdateIdDialog(this.mPref))
+                        {
+                            PopulateIdentificationDetails();
+
+                        }
                         isWhatNewDialogOnHold = true;
                     }
                 }
@@ -2561,6 +2641,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         h.PostDelayed(myAction, 5);
                     }
                     MyTNBAccountManagement.GetInstance().OnHoldWhatNew(false);
+                }
+                //else
+                if (UserSessions.HasHomeTutorialShown(this.mPref) && UserSessions.GetUpdateIdDialog(this.mPref))
+                {
+                    PopulateIdentificationDetails();
+                    UserSessions.UpdateUpdateIdDialog(this.mPref);
                 }
             }
             catch (Exception e)

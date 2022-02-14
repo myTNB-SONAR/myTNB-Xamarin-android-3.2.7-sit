@@ -415,6 +415,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
              mSnackBar.Show();*/
         }
 
+        public void ShowAddAccountInvalid(string errorMessage)
+        {
+
+            textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("invalid_accountType");
+
+        }
+
         public void ShowAddAccountROCFail(string errorMessage)
         {
             //throw implementation

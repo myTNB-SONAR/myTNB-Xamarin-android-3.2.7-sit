@@ -985,12 +985,8 @@
     "dialogAddrressMessage": "We mask sensitive information to safeguard owner's privacy. You are seeing masked information as you are not the owner of this electricity account.",
     "dialogManageUser": "Giving your users more access.",
     "dialogManageUserMessage": "To protect your information. we're not showing non-owner your personal information and some application features. However, you can grant them access listed here if you see fit and they will be noticed about it.",
-    "manageUserBackTitle": "Are you sure want to leave without saving changes you made to {0}'s access?",
-    "manageUserBackMessage": "The changes to {0}'success will not be saved if you choose to leave this page and their accesses will remain as before.",
     "manageUserAccess": "Manage User Access",
-    "manageAutopay": "Manage Autopay",
-    "btnStay": "Stay",
-    "btnLeave": "Leave"
+    "manageAutopay": "Manage Autopay"
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
@@ -1681,7 +1677,8 @@
     "thisWeekTitle": "This Week",
     "lastWeekTitle": "Last Week",
     "lastMonthTitle": "Last Month",
-    "AddNonTNBUserSuccessToast": "You have invited {0} to join myTNB and view this electricity account."
+    "AddNonTNBUserSuccessToast": "You have invited {0} to join myTNB and view this electricity account.",
+    "emptyLogText": "Seems like you don't have any activity yet."
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Payment Details",
@@ -2347,8 +2344,8 @@
     "manageUserCancelAddAccessDialogTitle": "Are you sure you want to cancel adding {0} as a viewer?",
     "manageUserCancelAddAccessDialogMessage": "Once cancelled, the invitation will be invalid and they will not have access to your account. You can add them again if you wish. ",
     "inviteSuccess": "We have resent an invitation to {0} to join myTNB.",
-    "stay": "Stay",
-    "leave": "Leave"
+    "btnStay": "Stay",
+    "btnLeave": "Leave"
   },
   "SelectApplicationType": {
     "title": "Select Application Type"

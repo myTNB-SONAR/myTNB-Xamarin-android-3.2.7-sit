@@ -388,7 +388,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             return account;
         }
 
-        internal static void GetBillRendering(DashboardHomeActivity mainActivity)
+        internal static void GetBillRendering(this DashboardHomeActivity mainActivity)
         {
             mainActivity.ShowProgressDialog();
             Task.Run(() =>

@@ -127,6 +127,7 @@
                     android:background="@color/lightGrey"
                     android:layout_below="@id/layout1">
                     <LinearLayout
+                        android:id="@+id/checkboxlayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"

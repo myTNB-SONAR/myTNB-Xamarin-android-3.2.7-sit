@@ -540,13 +540,11 @@ namespace myTNB_Android.Src.Login.MVP
 
                                          _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
 
-                                        UserInfoV4 usrinf = new UserInfoV4();
+                                        UserInfo usrinf = new UserInfo();
                                         usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
 
                                         _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(),
                                             FeatureInfoManager.QueueTopicEnum.getca, usrinf, new DeviceInfoRequest()));
-
-                                       
 
                                         GetNCAccountList();
                                         this.mView.ShowDashboard();
@@ -633,12 +631,11 @@ namespace myTNB_Android.Src.Login.MVP
 
                                          _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
 
-                                        UserInfoV4 usrinf = new UserInfoV4();
+                                        UserInfo usrinf = new UserInfo();
                                         usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
 
                                         _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(),
                                             FeatureInfoManager.QueueTopicEnum.getca, usrinf, new DeviceInfoRequest()));
-
 
                                         this.mView.ShowAddAccount();
                                     }
@@ -747,7 +744,7 @@ namespace myTNB_Android.Src.Login.MVP
             }
         }
 
-        public void GetNCAccountList()
+        public async void GetNCAccountList()
         {
             try
             {
@@ -763,46 +760,106 @@ namespace myTNB_Android.Src.Login.MVP
 
                         if (OldNCAccDate != null)
                         {
-                            DateTime OldNCAccDateTime = Convert.ToDateTime(OldNCAccDate); //old datetime
-                            DateTime NewNCAccDateTime;
-
                             int countNewNCAdded = 0;
                             for (int x = 0; x < listNC.Count; x++)
                             {
-                                NewNCAccDateTime = Convert.ToDateTime(listNC[x].CreatedDate);
-
-                                if (OldNCAccDateTime == NewNCAccDateTime)
-                                {
-                                    //same date
-
-                                }
-                                if (OldNCAccDateTime < NewNCAccDateTime)
+                                //if (listNC[x].CreatedBy != "NC Engine" && listNC[x].CreatedBy != UserEntity.GetActive().Email && listNC[x].CreatedBy != "system")
+                                if (listNC[x].CreatedBy == null)
                                 {
                                     countNewNCAdded++;
                                 }
                             }
 
-                            if (countNewNCAdded > 0)
+                            if (countNewNCAdded > 0) //nc overlay
                             {
+                                UserSessions.UpdateNewNCFlag(mSharedPref); 
                                 UserSessions.UpdateNCFlag(mSharedPref);
                                 UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save created date
                                 UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //count nc ca
                                 UserSessions.UpdateNCTutorialShown(mSharedPref); //trigger home ovelay tutorial
+
+                                try
+                                {
+                                    NCAutoAddAccountsRequest ncAccountRequest = new NCAutoAddAccountsRequest(UserEntity.GetActive().IdentificationNo);
+                                    string s = JsonConvert.SerializeObject(ncAccountRequest);
+                                    var ncAccountResponse = await ServiceApiImpl.Instance.NCAutoAddAccounts(ncAccountRequest);
+
+                                    if (mView.IsActive())
+                                    {
+                                        this.mView.HideProgressDialog();
+                                    }
+
+                                    if (ncAccountResponse.IsSuccessResponse())
+                                    {
+                                        this.mView.HideProgressDialog();
+                                    }
+                                    else
+                                    {
+                                        this.mView.HideProgressDialog();
+                                    }
+
+
+                                }
+                                catch (Exception e)
+                                {
+                                    Utility.LoggingNonFatalError(e);
+                                }
+                            }
+                        }
+                        else //nc overlay + BAU overlay
+                        {
+                            int countNewNCAdded = 0;
+                            for (int x = 0; x < listNC.Count; x++)
+                            {
+                                if (listNC[x].CreatedBy == null)
+                                {
+                                    countNewNCAdded++;
+                                }
+                                //else
+                                //{
+                                //    countNewNCAdded = 0;
+                                //}
                             }
 
-                        }
-                        else
-                        {
                             UserSessions.SaveNewNCFlag(mSharedPref, true);
                             UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save date if null
                             UserSessions.UpdateNCFlag(mSharedPref);
-                            UserSessions.SaveNCFlag(mSharedPref, listNC.Count); //assign total count nc ca = 0
+                            UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //assign total count nc ca = 0
                             UserSessions.UpdateNCTutorialShown(mSharedPref); //trigger home ovelay tutorial
                             //UserSessions.UpdateNewNCFlag(mSharedPref);
+
+
+                            try
+                            {
+                                NCAutoAddAccountsRequest ncAccountRequest = new NCAutoAddAccountsRequest(UserEntity.GetActive().IdentificationNo);
+                                string s = JsonConvert.SerializeObject(ncAccountRequest);
+                                var ncAccountResponse = await ServiceApiImpl.Instance.NCAutoAddAccounts(ncAccountRequest);
+
+                                if (mView.IsActive())
+                                {
+                                    this.mView.HideProgressDialog();
+                                }
+
+                                if (ncAccountResponse.IsSuccessResponse())
+                                {
+                                    this.mView.HideProgressDialog();
+                                }
+                                else
+                                {
+                                    this.mView.HideProgressDialog();
+                                }
+
+
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+
                         }
 
                     }
-                    else
+                    else //BAU overlay
                     {
                         DateTime current = Convert.ToDateTime(DateTime.Now);
                         UserSessions.SetNCDate(mSharedPref, current.ToString()); //save date if null
@@ -879,7 +936,9 @@ namespace myTNB_Android.Src.Login.MVP
                             BudgetAmount = acc.BudgetAmount,
                             CreatedDate = acc.CreatedDate,
                             BusinessArea = acc.BusinessArea,
-                            RateCategory = acc.RateCategory
+                            RateCategory = acc.RateCategory,
+                            IsInManageAccessList = acc.IsInManageAccessList,
+                            CreatedBy = acc.CreatedBy
                         };
 
                         if (index != -1)
@@ -926,7 +985,9 @@ namespace myTNB_Android.Src.Login.MVP
                                 BudgetAmount = newAcc.BudgetAmount,
                                 CreatedDate = newAcc.CreatedDate,
                                 BusinessArea = newAcc.BusinessArea,
-                                RateCategory = newAcc.RateCategory
+                                RateCategory = newAcc.RateCategory,
+                                IsInManageAccessList = newAcc.IsInManageAccessList,
+                                CreatedBy = newAcc.CreatedBy
                             };
 
                             newExistingList.Add(newRecord);

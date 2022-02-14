@@ -116,7 +116,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private void SetSelectedLanguage(string languageTitle)
         {
-            if (languageTitle == null) //If lang param is null, use saved language as selected
+            if (string.IsNullOrEmpty(languageTitle)) //If lang param is null, use saved language as selected
             {
                 languageTitle = GetLanguageLabelByCode(savedLanguage);
             }
@@ -161,18 +161,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             textSizeMessage.Text = Utility.GetLocalizedLabel("SelectFontSize", "sectionTitle");
         }
 
-        //private void UpdateLabelsTextSize()
-        //{
-        //    //SetToolBarTitle(GetLabelSelectFontSize("title"));
-
-        //}
-
-       
-
         private void UpdateTypesList()
         {
-            typeAdapter.ClearAll();
-            channelAdapter.ClearAll();
             mPresenter.OnNotification(this.DeviceId());
         }
 
@@ -181,7 +171,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             Item selectedItem = FontItemList.Find(item => { return item.selected; });
             savedFont = TextViewUtils.SelectedFontSize();
             TextViewUtils.SaveFontSize(selectedItem);
-            //UpdateLabelsTextSize();
             isSelectionFontCheck();
         }
 
@@ -213,31 +202,21 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             FontListView.Adapter = selectItemTextSizeAdapter;
             FontListView.SetNoScroll();
             FontListView.SetScrollContainer(false);
-            SetSelectedFont(null);
+            SetSelectedFont("");
         }
 
         public void ShowNotificationChannelList(List<NotificationChannelUserPreference> channelPreferenceList)
         {
+            
+            channelAdapter.ClearAll();
             channelAdapter.AddAll(channelPreferenceList);
-            //notificationChannelListView.SetNoScroll();
         }
 
         public void ShowNotificationTypesList(List<NotificationTypeUserPreference> typePreferenceList)
         {
+            typeAdapter.ClearAll();
             typeAdapter.AddAll(typePreferenceList);
-            //notificationTypeListView.SetNoScroll();
         }
-
-        //private void ShowAppLargeFontSetting()
-        //{
-        //    if (!this.GetIsClicked())
-        //    {
-        //        this.SetIsClicked(true);
-        //        Intent nextIntent = new Intent(this, typeof(AppLargeFontActivity));
-        //        //nextIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-        //        StartActivityForResult(nextIntent, APP_FONTCHANGE_REQUEST);
-        //    }
-        //}
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -303,41 +282,9 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 notificationChannelRecyclerView.SetAdapter(channelAdapter);
                 notificationTypeRecyclerView.NestedScrollingEnabled = (false);
 
-                //savedFont = TextViewUtils.SelectedFontSize();
-                //savedFont = (savedFont != null && savedFont != string.Empty) ? savedFont : "R";
-                //FontItemList = new List<Item>();
-                //isSelectionFontChange = false;
-
-                //Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("SelectFontSize");
-                //_mappingList = new List<SelectorModel>();
-                //if (selectors != null && selectors.ContainsKey("fonts"))
-                //{
-                //    _mappingList = selectors["fonts"];
-                //}
-
-                //foreach (SelectorModel selectorModel in _mappingList)
-                //{
-                //    Item item = new Item();
-                //    item.title = selectorModel.Value;
-                //    item.type = selectorModel.Key;
-                //    item.selected = false;
-                //    FontItemList.Add(item);
-                //}
-
-                //FontListView.ItemClick += OnItemClickFont;
-                //selectItemTextSizeAdapter = new SelectItemFontSizeAdapter(this, FontItemList);
-                //FontListView.Adapter = selectItemTextSizeAdapter;
-                //FontListView.SetNoScroll();
-                //FontListView.SetScrollContainer(false);
-                //SetSelectedFont(null);
-
                 UpdateSizeFontText();
-
-                //ProfileDetailItemComponent setTextItem = GetSetTextItems();
-                //textSizeListContainer.AddView(setTextItem);
-
                 UpdateLabels();
-                SetSelectedLanguage(null);
+                SetSelectedLanguage("");
 
                 //SetTextSize
                 TextViewUtils.SetTextSize16(txtNotificationTypeTitle, txtNotificationChannelTitle, textSizeMessage, appLanguageMessage);
@@ -372,9 +319,15 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                     string currentLanguage = LanguageUtil.GetAppLanguage();
                     Utility.ShowChangeLanguageDialog(this, currentLanguage, () =>
                     {
-                        ShowProgressDialog();
-                        _ = RunUpdateLanguage(selectedItem);
-                    });
+                        // ShowProgressDialog();
+                        HideShowProgressDialog();
+                         _ = RunUpdateLanguage(selectedItem);
+                    },
+                    () =>
+                    {
+                        SetSelectedLanguage("");
+                    })
+                    ;
                 }
 
             }
@@ -393,19 +346,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
             if (selectedItemfont.title != savedFont)
             {
-                //Item selectedItem = languageItemList.Find(item => { return item.selected; });
-                
                 ShowTooltipConfirm();
-                
-                //Item selectedItem = FontItemList.Find(item => { return item.selected; });
-                //_ = RunUpdateFont(selectedItem);
-                //SetSelectedFont(selectedItemfont.type);
             }
-
-            //OnSaveChanges();
-            //selectedItem = FontItemList.Find(item => { return item.selected; });
-            //_ = RunUpdateFont(selectedItem);
-
         }
 
         public void OnSaveChanges()
@@ -414,39 +356,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             //string currentFont = TextViewUtils.SelectedFontSize();
             _ = RunUpdateFont(selectedItem);
         }
-        
-        
-
-        //private ProfileDetailItemComponent GetSetTextItems()
-        //{
-        //    Context context = this.ApplicationContext;
-
-        //    ProfileDetailItemComponent setTextItem = new ProfileDetailItemComponent(context);
-
-        //    List<View> setTextItems = new List<View>();
-
-        //    if (MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
-        //    {
-
-        //        Item selectedItem = new Item();
-        //        selectedItem.type = "R";
-        //        selectedItem.title = "Normal";
-        //        selectedItem.selected = true;
-
-
-        //        TextViewUtils.SaveFontSize(selectedItem);
-        //    }
-        //    else
-        //    {
-        //        ProfileMenuItemSingleContentComponent largefont = new ProfileMenuItemSingleContentComponent(context);
-        //        largefont.SetTitle(Utility.GetLocalizedLabel("ApplicationSetting", "displaySize"));
-        //        largefont.SetItemActionCall(ShowAppLargeFontSetting);
-        //        setTextItems.Add(largefont);
-        //    }
-
-        //    setTextItem.AddComponentView(setTextItems);
-        //    return setTextItem;
-        //}
 
         private async void UpdateLanguage()
         {
@@ -454,8 +363,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             await LanguageUtil.SaveUpdatedLanguagePreference();
             UpdateLabels();
             isSelectionCheck();
-            
-
         }
 
        
@@ -526,7 +433,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private void SetSelectedFont(string FontTitle)
         {
-            if (FontTitle == null) //If lang param is null, use saved Font as selected
+            if (string.IsNullOrEmpty(FontTitle)) //If lang param is null, use saved Font as selected
             {
                 foreach (var item in FontItemList)
                 {
@@ -565,6 +472,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 }).Build();
             tooltipBuilder.SetCTAaction(() =>
             {
+                SetSelectedFont("");
                 tooltipBuilder.DismissDialog();
             }).Show();
         }
@@ -588,9 +496,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 UpdateFont();
                 MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
                 OnBackProceed();
-                //selectItemTextSizeAdapter = new SelectItemFontSizeAdapter(this, FontItemList);
-                //FontListView.Adapter = selectItemTextSizeAdapter;
-                //HideShowProgressDialog();
             });
         }
 
@@ -631,7 +536,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                                     UpdateLanguage();
                                     UpdateTypesList();
-                                    //UpdateFont();
                                     UpdateSizeFontText();
                                     MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
                                     MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
@@ -666,7 +570,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                                     MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(true);
                                     UpdateTypesList();
                                     UpdateLanguage();
-                                    //UpdateFont();
                                     UpdateSizeFontText();
                                     ShowLanguageUpdateSuccess();
                                     HideShowProgressDialog();

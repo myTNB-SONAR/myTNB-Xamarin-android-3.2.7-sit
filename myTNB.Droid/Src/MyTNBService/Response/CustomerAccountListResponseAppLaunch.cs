@@ -121,6 +121,12 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "RateCategory")]
             public string RateCategory { get; set; }
+
+            [JsonProperty(PropertyName = "IsInManageAccessList")]
+            public bool IsInManageAccessList { get; set; }
+
+            [JsonProperty(PropertyName = "CreatedBy")]
+            public string CreatedBy { set; get; }
         }
 
 

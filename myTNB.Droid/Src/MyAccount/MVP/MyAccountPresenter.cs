@@ -67,7 +67,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
 
         }
 
-        public async void OnRemoveAccount(string AccountNum)
+        public async void OnRemoveAccount(string AccountNum, bool isOwner, bool IsInManageAccessList)
         {
            
             bool isTaggedSmartMeter = false;
@@ -84,7 +84,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
             {
                 bool isHaveAccess = false;
                 bool isApplyBilling = false;
-                RemoveAccountRequest removeAccountRequest = new RemoveAccountRequest(AccountNum, isTaggedSmartMeter);
+                RemoveAccountRequest removeAccountRequest = new RemoveAccountRequest(AccountNum, isTaggedSmartMeter, isOwner, IsInManageAccessList);
                 removeAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(removeAccountRequest);
 

@@ -72,13 +72,13 @@ namespace myTNB_Android.Src.AddAccount.Activity
         LinearLayout rootView;
 
         [BindView(Resource.Id.text_no_of_account)]
-        TextView textNoOfAcoount;
+        TextView textNoOfAccount;
 
         [BindView(Resource.Id.label_your_account)]
         TextView labelAccountLabel;
 
         [BindView(Resource.Id.text_additional_accounts)]
-        TextView textAdditionalAcoount;
+        TextView textAdditionalAccount;
 
         [BindView(Resource.Id.label_additional_accounts)]
         TextView textlabelAdditionalAcount;
@@ -100,6 +100,10 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         [BindView(Resource.Id.btnConfirm)]
         Button btnConfirm;
+
+        [BindView(Resource.Id.checkboxlayout)]
+        LinearLayout checkboxlayout;
+        
 
         private LinkAccountPresenter mPresenter;
         private LinkAccountContract.IUserActionsListener userActionsListener;
@@ -175,25 +179,23 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       if (accountList.Count() > 0)
                       {
                           //textNoOfAcoount.Text = accountList.Count() + " " + GetLabelByLanguage("supplyAccountCount");
-                          textNoOfAcoount.Text = string.Format(Utility.GetLocalizedLabel("AddAccount", "OwnerDetectTitle"), accountList.Count());
+                          textNoOfAccount.Text = string.Format(Utility.GetLocalizedLabel("AddAccount", "OwnerDetectTitle"), accountList.Count());
 
                       }
-                      else
-                      {
-                          textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
-                      }
                       
-                      TextViewUtils.SetTextSize18(textNoOfAcoount);
+                      TextViewUtils.SetTextSize18(textNoOfAccount);
                       //mDeleteDialog.Dismiss();
 
                       if (accountList.Count() == 0 && additionalAccountList.Count() > 0)
                       {
                           NoAccountLayout.Visibility = ViewStates.Gone;
                       }
-
-                      if (accountList.Count() == 0 && additionalAccountList.Count() == 0)
+                      else if(accountList.Count() == 0 && additionalAccountList.Count() == 0)
                       {
-                          DisableConfirmButton();
+                          txtboxcondition.Visibility = ViewStates.Gone;
+                          txtTermsConditions.Visibility = ViewStates.Gone;
+                          textNoOfAccount.Text = string.Format(Utility.GetLocalizedLabel("AddAccount", "noAccountsTitle"));
+                          labelAccountLabel.Text = GetLabelByLanguage("noAcctFoundMsg");
                       }
 
                       mDeleteDialog.Dismiss();
@@ -240,9 +242,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       additionalAdapter.NotifyDataSetChanged();
                       if (additionalAccountList.Count == 0)
                       {
-                          textAdditionalAcoount.Visibility = ViewStates.Gone;
+                          textAdditionalAccount.Visibility = ViewStates.Gone;
                           textlabelAdditionalAcount.Visibility = ViewStates.Gone;
-                          textNoOfAcoount.Visibility = ViewStates.Visible;
+                          textNoOfAccount.Visibility = ViewStates.Visible;
                           labelAccountLabel.Visibility = ViewStates.Visible;
                           NoAccountLayout.Visibility = ViewStates.Visible;
                       }
@@ -254,6 +256,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       if (accountList.Count() == 0 && additionalAccountList.Count() == 0)
                       {
                           DisableConfirmButton();
+                          checkboxlayout.Visibility = ViewStates.Gone;
                       }
                       mDeleteDialog.Dismiss();
                   })
@@ -316,14 +319,14 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
-                TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount, btnAddAnotherAccount, btnConfirm, textAdditionalAcoount);
+                TextViewUtils.SetMuseoSans500Typeface(textNoOfAccount, btnAddAnotherAccount, btnConfirm, textAdditionalAccount);
                 TextViewUtils.SetMuseoSans300Typeface(labelAccountLabel, textlabelAdditionalAcount);
 
-                textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
+                textNoOfAccount.Text = GetLabelByLanguage("noAccountsTitle");
                 labelAccountLabel.Text = GetLabelByLanguage("noAcctFoundMsg");
                 btnAddAnotherAccount.Text = GetLabelByLanguage("addAnotherAcct");
                 btnConfirm.Text = GetLabelCommonByLanguage("confirm");
-                textAdditionalAcoount.Text = GetLabelByLanguage("additionalAddAccts");
+                textAdditionalAccount.Text = GetLabelByLanguage("additionalAddAccts");
                 textlabelAdditionalAcount.Text = GetLabelByLanguage("labeladditionalAccts");
                 txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
                 StripUnderlinesFromLinks(txtTermsConditions);
@@ -344,8 +347,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     ScaleY = 0.8f
                 };
 
-                TextViewUtils.SetTextSize18(textAdditionalAcoount);
-                TextViewUtils.SetTextSize16(labelAccountLabel, btnAddAnotherAccount, btnConfirm);
+                TextViewUtils.SetTextSize18(textAdditionalAccount);
+                TextViewUtils.SetTextSize16(textNoOfAccount, labelAccountLabel, btnAddAnotherAccount, btnConfirm);
                 TextViewUtils.SetTextSize14(textlabelAdditionalAcount);
                 TextViewUtils.SetTextSize12(txtTermsConditions);
 
@@ -411,6 +414,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 {
                     ShowNoInternetSnackbar();
                 }
+
+               
             }
             catch (Exception e)
             {
@@ -430,7 +435,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
                     additionalAdapter.AdditionalItemClick += OnAdditionalItemClick;
                     additionalAdapter.NotifyDataSetChanged();
-                    textAdditionalAcoount.Visibility = ViewStates.Visible;
+                    textAdditionalAccount.Visibility = ViewStates.Visible;
+                    checkboxlayout.Visibility = ViewStates.Visible;
                     textlabelAdditionalAcount.Visibility = ViewStates.Visible;
                 }
 
@@ -564,9 +570,10 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         int total_count = response.Count;
                         string totalacc = total_count.ToString();
                         //textNoOfAcoount.Text = response.Count + " " + Utility.GetLocalizedLabel("Common", "titleNonOwnerAddAcc");
-                        textNoOfAcoount.Text = string.Format(Utility.GetLocalizedLabel("AddAccount", "OwnerDetectTitle"), totalacc);
+                        textNoOfAccount.Text = string.Format(Utility.GetLocalizedLabel("AddAccount", "OwnerDetectTitle"), totalacc);
                         labelAccountLabel.Text = GetLabelByLanguage("AcctFoundMsg");
                         labelAccountLabel.Visibility = ViewStates.Visible;
+                        checkboxlayout.Visibility = ViewStates.Visible;
                         for (int i = 0; i < response.Count; i++)
                         {
                             BCRMAccount item = response[i];
@@ -600,13 +607,17 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     }
                     else
                     {
-                        textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
+                        textNoOfAccount.Text = GetLabelByLanguage("noAccountsTitle");
+                        labelAccountLabel.Text = GetLabelByLanguage("noAcctFoundMsg");
+                        checkboxlayout.Visibility = ViewStates.Gone;
                         ShowAddAnotherAccountScreen();
                     }
                 }
                 else
                 {
-                    textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
+                    textNoOfAccount.Text = GetLabelByLanguage("noAccountsTitle");
+                    labelAccountLabel.Text = GetLabelByLanguage("noAcctFoundMsg");
+                    checkboxlayout.Visibility = ViewStates.Gone;
                     ShowAddAnotherAccountScreen();
                 }
             }
@@ -1058,14 +1069,18 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 if (adapter.ItemCount == 0 && additionalAccountList.Count() > 0)
                                 {
                                     NoAccountLayout.Visibility = ViewStates.Gone;
-                                    textNoOfAcoount.Visibility = ViewStates.Gone;
+                                    textNoOfAccount.Visibility = ViewStates.Gone;
                                     labelAccountLabel.Visibility = ViewStates.Gone;
+                                    txtboxcondition.Visibility = ViewStates.Visible;
+                                    txtTermsConditions.Visibility = ViewStates.Visible;
                                 }
+
                                 additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
                                 additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
                                 additionalAdapter.AdditionalItemClick += OnAdditionalItemClick;
                                 additionalAdapter.NotifyDataSetChanged();
-                                textAdditionalAcoount.Visibility = ViewStates.Visible;
+                                textAdditionalAccount.Visibility = ViewStates.Visible;
+                               // checkboxlayout.Visibility = ViewStates.Visible;
                                 textlabelAdditionalAcount.Visibility = ViewStates.Visible;
 
                             }

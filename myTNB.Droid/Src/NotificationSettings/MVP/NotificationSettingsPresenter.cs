@@ -134,8 +134,6 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                 this.mView.ShowRetryOptionsUnknownException(e, item, position);
                 Utility.LoggingNonFatalError(e);
             }
-
-
         }
 
         public void OnNotification(string deviceId)
@@ -147,7 +145,7 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
         {
             if (mView.IsActive())
             {
-                this.mView.ShowProgressDialog();
+                this.mView.HideShowProgressDialog();
             }
             try
             {
@@ -157,7 +155,7 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                 if (notificationTypesApi.IsSuccessResponse())
                 {
                     var notificationChannelApi = await ServiceApiImpl.Instance.UserNotificationChannelPreferences(new MyTNBService.Request.BaseRequest());
-                    
+
                     if (mView.IsActive())
                     {
                         this.mView.HideShowProgressDialog();

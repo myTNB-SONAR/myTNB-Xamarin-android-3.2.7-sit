@@ -121,7 +121,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                                 //if (customerAccountListResponse.GetData().Count > 0)
                                 if (customerAccountListResponse.customerAccountData.Count > 0)
                                 {
-                                    //ProcessCustomerAccount(customerAccountListResponse.GetData());
+                                    
                                     ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
                                 }
                                 else
@@ -274,7 +274,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
             return isValid;
         }
 
-        //private void ProcessCustomerAccount(List<CustomerAccountListResponse.CustomerAccountData> list)
+       
         private void ProcessCustomerAccount(List<CustomerAccountListResponseAppLaunch.CustomerAccountData> list)
         {
             try
@@ -310,7 +310,9 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                             OwnerName = acc.OwnerName,
                             AccountCategoryId = acc.AccountCategoryId,
                             SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
-                            IsSelected = false
+                            IsSelected = false,
+                            IsInManageAccessList = acc.IsInManageAccessList,
+                            CreatedBy = acc.CreatedBy
                         };
 
                         if (index != -1)
@@ -349,7 +351,9 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                                 OwnerName = newAcc.OwnerName,
                                 AccountCategoryId = newAcc.AccountCategoryId,
                                 SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
-                                IsSelected = false
+                                IsSelected = false,
+                                IsInManageAccessList = newAcc.IsInManageAccessList,
+                                CreatedBy = newAcc.CreatedBy
                             };
 
                             newExistingList.Add(newRecord);

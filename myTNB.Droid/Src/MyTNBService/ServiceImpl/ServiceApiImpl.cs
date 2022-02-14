@@ -833,7 +833,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
-        /// Call GetPaymentTransactionId with default timeout
+        /// Call GetUserStatusActive with default timeout
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -843,13 +843,23 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
-        /// Call GetPaymentTransactionId with default timeout
+        /// Call GetUserStatusDeactive with default timeout
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         public Task<UpdateUserStatusActivateResponse> UpdateUserStatusDeactivate([Body] Request.UpdateUserStatusActivateRequest request)
         {
             return api.UpdateUserStatusDeactivate<UpdateUserStatusActivateResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetNCAccount with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<NCAutoAddAccountsResponse> NCAutoAddAccounts([Body] Request.NCAutoAddAccountsRequest request)
+        {
+            return api.NCAutoAddAccounts<NCAutoAddAccountsResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
     }
 }

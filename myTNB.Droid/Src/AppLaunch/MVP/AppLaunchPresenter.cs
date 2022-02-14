@@ -488,14 +488,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             try
             {
-                //string datetime = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss");
-                
-                //GetCustomerAccountListRequest baseRequest = new GetCustomerAccountListRequest();
-                //baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
-                //baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                //CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
-                //if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
-
                 GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                 baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                 baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
@@ -507,7 +499,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     if (customerAccountListResponse.customerAccountData.Count == 0 || customerAccountListResponse.customerAccountData.Count > 0)
                     {
                         CustomerBillingAccount.RemoveActive();
-                        //ProcessCustomerAccount(customerAccountListResponse.GetData());
 
                         ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
                     }
@@ -580,7 +571,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
                     }
 
-                    GetNCAccountList();
                     MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
                     this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
@@ -588,12 +578,13 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     bool isForceCall = !UserSessions.HasUpdateSkipped(this.mSharedPref);
                     _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, isForceCall);
 
-                    UserInfoV4 usrinf = new UserInfoV4();
+                    UserInfo usrinf = new UserInfo();
                     usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
 
                     _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(),
                         FeatureInfoManager.QueueTopicEnum.getca, usrinf, new DeviceInfoRequest()));
 
+                    GetNCAccountList();
                     this.mView.ShowDashboard();
                 }
                 else
@@ -756,11 +747,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
         }
 
-        public void GetNCAccountList()
+        public async void GetNCAccountList()
         {
             try
             {
-                
                 string currentDate = UserSessions.GetNCDate(mSharedPref);
                 List<CustomerBillingAccount> listNC = CustomerBillingAccount.NCAccountList();
 
@@ -772,20 +762,12 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                         if (OldNCAccDate != null)
                         {
-                            DateTime OldNCAccDateTime = Convert.ToDateTime(OldNCAccDate); //old datetime
-                            DateTime NewNCAccDateTime;
-
+                            //listNC[0].CreatedBy = "NC Engine"; //hardcode temp
                             int countNewNCAdded = 0;
                             for (int x = 0; x < listNC.Count; x++)
                             {
-                                NewNCAccDateTime = Convert.ToDateTime(listNC[x].CreatedDate);
-
-                                if (OldNCAccDateTime == NewNCAccDateTime)
-                                {
-                                    //same date
-
-                                }
-                                if (OldNCAccDateTime < NewNCAccDateTime)
+                                //if (listNC[x].CreatedBy != "NC Engine" && listNC[x].CreatedBy != UserEntity.GetActive().Email && listNC[x].CreatedBy != "system")
+                                if (listNC[x].CreatedBy == null)
                                 {
                                     countNewNCAdded++;
                                 }
@@ -797,16 +779,70 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save created date
                                 UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //count nc ca
                                 UserSessions.UpdateNCTutorialShown(mSharedPref); //trigger home ovelay tutorial
-                            }
 
+                                try
+                                {
+                                    NCAutoAddAccountsRequest ncAccountRequest = new NCAutoAddAccountsRequest(UserEntity.GetActive().IdentificationNo);
+                                    string s = JsonConvert.SerializeObject(ncAccountRequest);
+                                    var ncAccountResponse = await ServiceApiImpl.Instance.NCAutoAddAccounts(ncAccountRequest);
+
+                                    if (mView.IsActive())
+                                    {
+                                        this.mView.HideProgressDialog();
+                                    }
+
+                                    if (ncAccountResponse.IsSuccessResponse())
+                                    {
+                                        this.mView.HideProgressDialog();
+                                    }
+                                    else
+                                    {
+                                        this.mView.HideProgressDialog();
+                                    }
+
+                                }
+                                catch (Exception e)
+                                {
+                                    Utility.LoggingNonFatalError(e);
+                                }
+
+                            }
                         }
-                        else
+                        else //first time nc overlay for app launch
                         {
                             UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save date if null
                             UserSessions.UpdateNCFlag(mSharedPref);
                             UserSessions.SaveNCFlag(mSharedPref, listNC.Count); //assign total count nc ca = 0
                             UserSessions.UpdateNCTutorialShown(mSharedPref); //trigger home ovelay tutorial
+
+                            try
+                            {
+                                NCAutoAddAccountsRequest ncAccountRequest = new NCAutoAddAccountsRequest(UserEntity.GetActive().IdentificationNo);
+                                string s = JsonConvert.SerializeObject(ncAccountRequest);
+                                var ncAccountResponse = await ServiceApiImpl.Instance.NCAutoAddAccounts(ncAccountRequest);
+
+                                if (mView.IsActive())
+                                {
+                                    this.mView.HideProgressDialog();
+                                }
+
+                                if (ncAccountResponse.IsSuccessResponse())
+                                {
+                                    this.mView.HideProgressDialog();
+                                }
+                                else
+                                {
+                                    this.mView.HideProgressDialog();
+                                }
+
+
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
                         }
+
 
                     }
 

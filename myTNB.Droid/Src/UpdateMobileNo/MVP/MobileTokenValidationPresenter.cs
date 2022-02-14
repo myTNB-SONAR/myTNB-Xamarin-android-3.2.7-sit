@@ -500,7 +500,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
                         _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
 
-                        UserInfoV4 usrinf = new UserInfoV4();
+                        UserInfo usrinf = new UserInfo();
                         usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
 
                         _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(),
@@ -552,7 +552,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             }
         }
 
-        public void GetNCAccountList()
+        public async void GetNCAccountList()
         {
             try
             {
@@ -595,6 +595,18 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                 //trigger home ovelay tutorial
                                 UserSessions.UpdateNCTutorialShown(mSharedPref);
 
+                                try
+                                {
+                                    NCAutoAddAccountsRequest ncAccountRequest = new NCAutoAddAccountsRequest(listNC[0].ICNum);
+                                    string s = JsonConvert.SerializeObject(ncAccountRequest);
+                                    var ncAccountResponse = await ServiceApiImpl.Instance.NCAutoAddAccounts(ncAccountRequest);
+
+                                }
+                                catch (Exception e)
+                                {
+                                    Utility.LoggingNonFatalError(e);
+                                }
+
                             }
 
                         }
@@ -607,6 +619,18 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
                             //pannggil overlay
                             UserSessions.UpdateNCTutorialShown(mSharedPref);
+
+                            try
+                            {
+                                NCAutoAddAccountsRequest ncAccountRequest = new NCAutoAddAccountsRequest(listNC[0].ICNum);
+                                string s = JsonConvert.SerializeObject(ncAccountRequest);
+                                var ncAccountResponse = await ServiceApiImpl.Instance.NCAutoAddAccounts(ncAccountRequest);
+
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
 
                         }
 
@@ -765,7 +789,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             IsApplyEBilling = acc.IsApplyEBilling,
                             IsHaveAccess = acc.IsHaveAccess,
                             BusinessArea = acc.BusinessArea,
-                            RateCategory = acc.RateCategory
+                            RateCategory = acc.RateCategory,
+                            IsInManageAccessList = acc.IsInManageAccessList,
+                            CreatedBy = acc.CreatedBy
                         };
 
                         if (index != -1)
@@ -810,7 +836,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                 IsApplyEBilling = newAcc.IsApplyEBilling,
                                 IsHaveAccess = newAcc.IsHaveAccess,
                                 BusinessArea = newAcc.BusinessArea,
-                                RateCategory = newAcc.RateCategory
+                                RateCategory = newAcc.RateCategory,
+                                IsInManageAccessList = newAcc.IsInManageAccessList,
+                                CreatedBy = newAcc.CreatedBy
                             };
 
                             newExistingList.Add(newRecord);
