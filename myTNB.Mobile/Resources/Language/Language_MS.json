@@ -823,7 +823,7 @@
     "typeDescription": "Pilih jenis pemberitahuan yang ingin diterima daripada TNB",
     "modeDescription": "Pilih cara anda mahu menerima pemberitahuan",
     "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
-    "selectApplang": "Pilih bahasa aplikasi pilihan anda:",
+    "selectApplang": "Pilih bahasa aplikasi pilihan anda",
     "setTextSize": "Tetapkan saiz tulisan anda",
     "displaySize": "Tetapkan saiz teks paparan"
   },
@@ -2483,7 +2483,7 @@
   },
   "SelectFontSize": {
     "title": "Tetapkan Saiz Teks Paparan",
-    "sectionTitle": "Pilih Saiz Teks Pilihan Anda",
+    "sectionTitle": "Pilih saiz teks pilihan anda",
     "ctaTitle": "Simpan",
     "popupTitleFormat": "Tukar saiz teks paparan anda?",
     "popupMessage": "Anda akan menukar saiz teks paparan Aplikasi myTNB anda kepada saiz {0}."

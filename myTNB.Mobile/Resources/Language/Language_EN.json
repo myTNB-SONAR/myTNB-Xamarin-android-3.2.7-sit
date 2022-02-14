@@ -823,7 +823,7 @@
     "typeDescription": "Select the type of notifications you wish to receive from TNB",
     "modeDescription": "Select how you wish to receive your notifications",
     "changeLanguageSuccess": "Your language preference has been changed successfully.",
-    "selectApplang": "Select your preferred app language:",
+    "selectApplang": "Select your preferred app language",
     "setTextSize": "Set your text size",
     "displaySize": "Set Display Text Size"
   },
@@ -2483,7 +2483,7 @@
   },
   "SelectFontSize": {
     "title": "Set Display Text Size",
-    "sectionTitle": "Select Your Preferred Text Size",
+    "sectionTitle": "Select your preferred text size",
     "ctaTitle": "Save Changes",
     "popupTitleFormat": "Change your display text size?",
     "popupMessage": "You're about to change your myTNB App display text size to {0}."
