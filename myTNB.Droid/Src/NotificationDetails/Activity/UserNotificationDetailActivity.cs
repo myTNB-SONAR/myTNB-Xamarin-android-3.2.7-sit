@@ -6,6 +6,7 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -74,6 +75,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         UserNotificationDetailPresenter mPresenter;
         AlertDialog removeDialog;
         public bool pushFromDashboard = false;
+        public bool fromPushDirectNotification = false;
         IDTXAction dynaTrace;
         private List<RateUsQuestion> activeQuestionListNo = new List<RateUsQuestion>();
         private List<RateUsQuestion> activeQuestionListYes = new List<RateUsQuestion>();
@@ -127,11 +129,25 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         public override void OnBackPressed()
         {
-            Intent result = new Intent();
-            result.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
-            result.PutExtra(Constants.ACTION_IS_READ, true);
-            SetResult(Result.Ok, result);
-            base.OnBackPressed();
+            if (fromPushDirectNotification)
+            {
+                if (notificationDetails  != null && notificationDetails.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD)
+                {
+                    Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
+                    DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    StartActivity(DashboardIntent);
+                }
+            }
+            else
+            {
+                Intent result = new Intent();
+                result.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
+                result.PutExtra(Constants.ACTION_IS_READ, true);
+                SetResult(Result.Ok, result);
+                base.OnBackPressed();
+            }
         }
 
         public void ReturnToDashboard()
@@ -230,6 +246,11 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                         {
                             SetToolBarTitle(notificationDetails.HeaderTitle);
                         }
+                    }
+
+                    if (extras.ContainsKey(Constants.FROM_APP_LAUNCH))
+                    {
+                        fromPushDirectNotification = true;
                     }
 
                     if (extras.ContainsKey(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM))
@@ -449,28 +470,16 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                             .SetMessage(detailModel.message)
                             .Build(string.Empty)
                             .GetProcessedTextView();
-
-                        if (this.Resources.DisplayMetrics.WidthPixels <= 1080)
+ 
+                        if (this.Resources.DisplayMetrics.WidthPixels <= 1440 && notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_NEWS)
                         {
-                            TextView textView = FindViewById<TextView>(Resource.Id.notificationDetailMessage);
-                            int layWidth = this.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.048f) - GetDeviceHorizontalScaleInPixel(0.048f);
-                            ViewGroup.MarginLayoutParams txtBody = (ViewGroup.MarginLayoutParams)notificationDetailMessage.LayoutParameters;
-                            txtBody.SetMargins(GetDeviceHorizontalScaleInPixel(0.048f), 0, GetDeviceHorizontalScaleInPixel(0.048f), 0);
-                            txtBody.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
-                            textView.SetMaxWidth(layWidth);
-                            textView.LayoutParameters = txtBody;
-                            textView.RequestLayout();
-                        }
-                        else if (this.Resources.DisplayMetrics.WidthPixels <= 1440)
-                        {
-                            TextView textView = FindViewById<TextView>(Resource.Id.notificationDetailMessage);
-                            int layWidth = this.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.05f) - GetDeviceHorizontalScaleInPixel(0.05f);
-                            ViewGroup.MarginLayoutParams txtBody = (ViewGroup.MarginLayoutParams)notificationDetailMessage.LayoutParameters;
-                            txtBody.SetMargins(GetDeviceHorizontalScaleInPixel(0.048f), 0, GetDeviceHorizontalScaleInPixel(0.05f), 0);
-                            //txtBody.RightMargin = GetDeviceHorizontalScaleInPixel(0.047f);
-                            textView.SetMaxWidth(layWidth);
-                            textView.LayoutParameters = txtBody;
-                            textView.RequestLayout();
+                            if (detailModel.message.Contains(Utility.GetLocalizedLabel("PushNotificationDetails", "serviceDistruption")))
+                            {
+                                int margin = (int)(11 * Resources.DisplayMetrics.Density);
+                                TextView textView = FindViewById<TextView>(Resource.Id.notificationDetailMessage);
+                                textView.SetPadding(0, 0, margin, 0);
+                                textView.RequestLayout();
+                            }
                         }
                     }
 
