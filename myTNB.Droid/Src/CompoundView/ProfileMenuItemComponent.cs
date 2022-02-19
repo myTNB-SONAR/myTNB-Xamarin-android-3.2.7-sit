@@ -36,42 +36,23 @@ namespace myTNB_Android.Src.CompoundView
 
         public void InitializeViews(Context context)
         {
-            Inflate(context, Resource.Layout.ProfileMenuItemLayoutNew, this);
-            //itemHeaderTitle = FindViewById<TextView>(Resource.Id.profileItemHeader);
+            Inflate(context, Resource.Layout.ProfileMenuItemLayout, this);
+            itemHeaderTitle = FindViewById<TextView>(Resource.Id.profileItemHeader);
             profileItemContent = FindViewById<LinearLayout>(Resource.Id.profileItemContent);
 
-            /*TextViewUtils.SetMuseoSans500Typeface(itemHeaderTitle);
-            itemHeaderTitle.TextSize = TextViewUtils.GetFontSize(16f);*/
-
-            Android.Content.Res.Configuration configuration = Resources.Configuration;
-            configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
-            var metrics = Resources.DisplayMetrics;
-            metrics.ScaledDensity = configuration.FontScale * metrics.Density;
-
-
-            configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
-
-            context.Resources.UpdateConfiguration(configuration, metrics);
+            TextViewUtils.SetMuseoSans500Typeface(itemHeaderTitle);
+            TextViewUtils.SetTextSize16(itemHeaderTitle);
 
             try
             {
-                //Configuration configuration = Resources.Configuration;
-                configuration.FontScale = configuration.FontScale >= 1.3F ? 1.3f : configuration.FontScale;
+                Configuration configuration = Resources.Configuration;
+                DeviceSizeCache.FontScale = configuration.FontScale;
+                configuration.FontScale = DeviceSizeCache.FontScale;
 
-                //DisplayMetrics metrics = Resources.DisplayMetrics;
+                DisplayMetrics metrics = Resources.DisplayMetrics;
                 metrics.ScaledDensity = configuration.FontScale * metrics.Density;
 
                 Resources.UpdateConfiguration(configuration, metrics);
-
-
-                //Configuration configuration = Resources.Configuration;
-                //DeviceSizeCache.FontScale = configuration.FontScale;
-                //configuration.FontScale = DeviceSizeCache.FontScale;
-
-                //DisplayMetrics metrics = Resources.DisplayMetrics;
-                //metrics.ScaledDensity = configuration.FontScale * metrics.Density;
-
-                //Resources.UpdateConfiguration(configuration, metrics);
             }
             catch (Java.Lang.Exception javaEx)
             {
@@ -85,12 +66,12 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetHeaderTitle(string title)
         {
-            //itemHeaderTitle.Text = title;
+            itemHeaderTitle.Text = title;
         }
 
         public void HideHeaderTitle()
         {
-            //itemHeaderTitle.Visibility = ViewStates.Gone;
+            itemHeaderTitle.Visibility = ViewStates.Gone;
         }
 
         public void AddComponentView(View view)
@@ -115,6 +96,5 @@ namespace myTNB_Android.Src.CompoundView
             separatorView.SetBackgroundColor(Color.ParseColor("#e4e4e4"));
             profileItemContent.AddView(separatorView);
         }
-
     }
 }

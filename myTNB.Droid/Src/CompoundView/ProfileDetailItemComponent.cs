@@ -38,7 +38,7 @@ namespace myTNB_Android.Src.CompoundView
         {
             Inflate(context, Resource.Layout.ProfileDetailItemLayout, this);
             //itemHeaderTitle = FindViewById<TextView>(Resource.Id.profileItemHeader);
-            profileItemContent = FindViewById<LinearLayout>(Resource.Id.profileItemContent);
+            profileItemContent = FindViewById<LinearLayout>(Resource.Id.profileItemContentDetail);
 
             //TextViewUtils.SetMuseoSans500Typeface(itemHeaderTitle);
         }
