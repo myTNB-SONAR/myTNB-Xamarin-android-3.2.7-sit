@@ -72,7 +72,7 @@
                 android:textColor="@color/tunaGrey"
                 android:text="Account Address" />
             </LinearLayout>
-            <LinearLayout
+            <!--<LinearLayout
             android:id="@+id/layout_owner_no_contact"
             android:clickable="true"
             android:orientation="vertical"
@@ -161,5 +161,5 @@
                             android:layout_marginBottom="-10dp"
                             android:maxLines="1"/>
                 </com.google.android.material.textfield.TextInputLayout>
-          </LinearLayout>
+          </LinearLayout>-->
 </LinearLayout>
