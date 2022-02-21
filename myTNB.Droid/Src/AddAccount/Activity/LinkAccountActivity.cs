@@ -672,30 +672,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         account.accountTypeId = item.accountTypeId == null ? "1" : item.accountTypeId;
                         accounts.Add(account);
                     }
-                    //int i = 0;
-                    //TOTAL_NO_OF_ACCOUNTS_TO_ADD = accounts.Count;
-                    /*foreach (Models.AddAccount account in accounts)
-                    {
-                        if (!account.isOwned)
-                        {
-                            if (string.IsNullOrEmpty(account.mobileNoOwner) && string.IsNullOrEmpty(account.emailOwner) && account.accountTypeId.Equals("1"))
-                            { 
-                                i++;
-                            }
-                        }
-                    }
-
-                    if (i > 0)
-                    {
-                        ShowErrorEnterEmailOrNoPhone(Utility.GetLocalizedErrorLabel("error_emptyIcAndEmailOwner"));
-                    }
-                    else
-                    {
-                        this.userActionsListener.AddMultipleAccounts(apiKeyID, userID, email, accounts);
-                    }*/
-
                     this.userActionsListener.AddMultipleAccounts(apiKeyID, userID, email, name, accounts);
-
                 }
                 else
                 {
@@ -1470,41 +1447,15 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     }
                     int i = 0;
                     TOTAL_NO_OF_ACCOUNTS_TO_ADD = accounts.Count;
-                    //foreach (Models.AddAccount account in accounts)
-                    //{
-                    //    if (!account.isOwned)
-                    //    {
-                    //        if (string.IsNullOrEmpty(account.mobileNoOwner) && string.IsNullOrEmpty(account.emailOwner) && (!Patterns.EmailAddress.Matcher(account.emailOwner).Matches()) && account.accountTypeId.Equals("1"))
-                    //        {
-                    //            i++;
-                    //        }
-                    //    }
-                    //}
 
-                    //if (i > 0)
-                    //{
-                    //    DisableConfirmButton();
-                    //}
-                    //else
-                    //{
-                    //    bool flag = UserSessions.GetEmailflag(PreferenceManager.GetDefaultSharedPreferences(this));
                     if (txtboxcondition.Checked)
                     {
-                        //if (flag)
-                        //{
-                        //    DisableConfirmButton();
-                        //}
-                        //else
-                        //{
-                            EnableConfirmButton();
-                        //}
-                            
+                       EnableConfirmButton();
                     }
                     else
                     {
                         DisableConfirmButton();
                     }
-                    //}
                 }
             }
             catch (Exception e)
