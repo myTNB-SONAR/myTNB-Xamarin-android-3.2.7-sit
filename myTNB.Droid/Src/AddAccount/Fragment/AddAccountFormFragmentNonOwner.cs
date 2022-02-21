@@ -396,23 +396,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_NotExistsAccountMessage");
             
-
-            
-            //textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_NotExistsAccountMessage");
-            /* if (mSnackBar != null && mSnackBar.IsShown)
-             {
-                 mSnackBar.Dismiss();
-
-             }
-
-             mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-             .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
-             );
-             View v = mSnackBar.View;
-             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-             tv.SetMaxLines(5);
-
-             mSnackBar.Show();*/
         }
 
         public void ShowAddAccountInvalid(string errorMessage)

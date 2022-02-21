@@ -1146,7 +1146,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (profileMenuItem != null)
                 {
                     SetVerifiedMenuMoreBottomView(keypress, isfromHome, 0, profileMenuItem);
-                    bottomNavigationView.SetImageFontSize(this, 28, 5, 10f);
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
         }
@@ -1161,7 +1161,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (profileMenuItem != null)
                 {
                     SetUnverifiedMenuMoreBottomView(keypress, isfromHome, 0, profileMenuItem);
-                    bottomNavigationView.SetImageFontSize(this, 28, 5, 10f);
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
         }
@@ -1176,9 +1176,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayoutProfile, null, false);
                         ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                        RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
                         if (keypress)
                         {
-                            RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                           
                             if (isfromHome)
                             {
                                 bottomImg.SetImageResource(Resource.Drawable.profile_unverified);
@@ -1231,9 +1232,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayoutProfile, null, false);
                         ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                        RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
                         if (Indicator)
                         {
-                            RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                           
                             if (!flag)
                             {
                                 bottomImg.SetImageResource(Resource.Drawable.ic_menu_more);

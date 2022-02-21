@@ -55,26 +55,26 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetIcon(int code)
         {
-            itemAction.SetBackgroundResource(Resource.Drawable.expand_right_arrow);
+            itemAction.SetImageResource(Resource.Drawable.expand_right_arrow);
 
             if (code == 1)
             {
-                imgIcon.SetBackgroundResource(Resource.Drawable.payment_methods);
+                imgIcon.SetImageResource(Resource.Drawable.payment_methods);
 
             }
             else if (code == 2)
             {
-                imgIcon.SetBackgroundResource(Resource.Drawable.electricity_accounts);
+                imgIcon.SetImageResource(Resource.Drawable.electricity_accounts);
 
             }
             else if (code == 3)
             {
-                imgIcon.SetBackgroundResource(Resource.Drawable.app_settings);
+                imgIcon.SetImageResource(Resource.Drawable.app_settings);
 
             }
             else
             {
-                imgIcon.SetBackgroundResource(Resource.Drawable.learn_more_tnb);
+                imgIcon.SetImageResource(Resource.Drawable.learn_more_tnb);
             }
 
         }

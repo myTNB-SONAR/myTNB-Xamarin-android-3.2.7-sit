@@ -29,7 +29,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
 
         public LinkAccountPresenter(LinkAccountContract.IView mView, ISharedPreferences mSharedPref)
-        //public LinkAccountPresenter(LinkAccountContract.IView mView)
         {
             this.mView = mView;
             this.mSharedPref = mSharedPref;
