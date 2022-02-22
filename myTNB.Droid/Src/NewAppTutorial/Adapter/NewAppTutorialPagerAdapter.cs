@@ -547,7 +547,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             {
                                 int topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(25f);
                                 int middleHeight = (int)DPUtils.ConvertDPToPx(275f);
-                                
+
                                 if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                 {
                                     int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
@@ -640,12 +640,12 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(40f);
                                 innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
                                 innerUpperBottomLayout.RequestLayout();
-                               
+
                             }
                             else if (position == 3)
                             {
                                 int topHeight = ((HomeMenuFragment)this.mFragment).GettopRootViewHeight() + (int)DPUtils.ConvertDPToPx(10f);
-                                
+
                                 if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                 {
                                     int offsetHeight = (int)DPUtils.ConvertDPToPx(65f);
@@ -981,8 +981,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             }
                             else
                             {
-                               if (model.ItemCount == 3)
-                               {
+                                if (model.ItemCount == 3)
+                                {
                                     int middleHeight = 0;
                                     int topHeight = ((HomeMenuFragment)this.mFragment).GettopRootViewHeight() + ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight() + (int)DPUtils.ConvertDPToPx(35f);
                                     middleHeight = ((HomeMenuFragment)this.mFragment).GetnewFAQContainerHeight() + (TextViewUtils.IsLargeFonts ? 20 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
@@ -1032,7 +1032,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                                     innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                                     innerTopLayout.RequestLayout();
-                               }
+                                }
                                 else if (model.ItemCount == 2)
                                 {
                                     int middleHeight = 0;
@@ -2610,7 +2610,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     {
                                         float h2 = TextViewUtils.IsLargeFonts ? 2f : 20f;
                                         int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)) + (int)DPUtils.ConvertDPToPx(h2);
-                                        topHeight = (topHeight + +((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight()) - diff;
+                                        topHeight -= diff;
                                     }
                                 }
                             }
@@ -3180,7 +3180,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
                 else
                 {
-                    if(list.Count == 1)
+                    if (list.Count == 1)
                     {
                         int middleHeight = ((ManageAccessActivity)this.mContext).GetViewBillButtonHeight() + (int)DPUtils.ConvertDPToPx(15f);
                         int topHeight = ((ManageAccessActivity)this.mContext).GetTopHeight() - (int)DPUtils.ConvertDPToPx(7f);
