@@ -321,7 +321,15 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                     {
                         // ShowProgressDialog();
                         HideShowProgressDialog();
-                         _ = RunUpdateLanguage(selectedItem);
+                        if (selectedItem.type == "MS")
+                        {
+                            AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
+                        }
+                        else
+                        {
+                            AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
+                        }
+                        _ = RunUpdateLanguage(selectedItem);
                     },
                     () =>
                     {
@@ -509,6 +517,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private Task RunUpdateLanguage(Item selectedItem)
         {
+            SearchApplicationTypeCache.Instance.Clear();
             return Task.Run(() =>
             {
                 LanguageUtil.SaveAppLanguage(selectedItem.type);
