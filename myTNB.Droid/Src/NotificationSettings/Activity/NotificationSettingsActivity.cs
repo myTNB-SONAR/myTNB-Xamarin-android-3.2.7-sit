@@ -477,6 +477,14 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }).Show();
         }
 
+        //public void OnBack()
+        //{
+        //    MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
+        //    SetResult(Result.Ok);
+        //    Finish();
+        //    base.OnBackPressed();
+        //}
+
         public void OnBackProceed()
         {
             SetResult(Result.Ok);
@@ -484,7 +492,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             base.OnBackPressed();
         }
 
-        
+
 
         private Task RunUpdateFont(Item selectedItem)
         {
@@ -494,7 +502,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 ShowProgressDialog();
                 TextViewUtils.SaveFontSize(selectedItem);
                 UpdateFont();
-                MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
+                MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(true);
                 OnBackProceed();
             });
         }
@@ -567,7 +575,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                                     SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
                                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                                     MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(true);
-                                    MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(true);
                                     UpdateTypesList();
                                     UpdateLanguage();
                                     UpdateSizeFontText();
