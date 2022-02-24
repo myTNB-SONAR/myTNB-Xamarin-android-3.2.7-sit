@@ -1510,7 +1510,7 @@
     "lblID": "IC, Passport, Army / Police ID",
     "passwordchange": "Change My Password",
     "gotIt": "Got It",
-    "resend": "Resend",
+    "resend": "Resend Link",
     "verifyEmailPopupBody": "Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
     "verifyEmailPopupTitle": "Pending Email Verification",
     "toast_email_send": "An email verification link has been sent to {0}",
