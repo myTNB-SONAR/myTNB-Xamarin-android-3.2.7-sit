@@ -144,7 +144,7 @@
     "invalid_icNumber": "Nombor KP, Pasport atau ROC tidak sah",
     "invalid_rocNumber": "Nombor ROC tidak sah",
     "accountLength": "Sila masukkan nombor akaun 12 digit yang sah.",
-    "invalid_accountType": "Jenis Akaun tidak sah",
+    "invalid_accountType": "Jenis Akaun Tidak Sah",
     "noDataConnectionTitle": "Tiada sambungan internet",
     "noDataConnectionMessage": "Sila periksa sambungan internet anda dan cuba semula.",
     "defaultErrorTitle": "Ada sesuatu yang tidak kena.",
