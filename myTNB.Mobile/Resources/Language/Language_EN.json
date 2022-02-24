@@ -891,7 +891,7 @@
     "subTitle": "Please enter your email address.",
     "details": "A 4 digit verification code will be sent to this email address.",
     "gotIt": "Got It",
-    "resend": "Resend",
+    "resend": "Resend Link",
     "verifyEmailPopupTitle": "Pending Email Verification",
     "verifyEmailPopupBody": "Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
     "toast_email_send": "An email verification link has been sent to {0}"
@@ -1510,7 +1510,7 @@
     "lblID": "IC, Passport, Army / Police ID",
     "passwordchange": "Change My Password",
     "gotIt": "Got It",
-    "resend": "Resend Link",
+    "resend": "Resend",
     "verifyEmailPopupBody": "Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
     "verifyEmailPopupTitle": "Pending Email Verification",
     "toast_email_send": "An email verification link has been sent to {0}",
