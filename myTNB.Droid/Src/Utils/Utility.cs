@@ -465,6 +465,33 @@ namespace myTNB_Android.Src.Utils
             }).Show();
         }
 
+        public static void ShowEmailVerificationForgotPassDialog(Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("ForgotPassword", "verifyEmailPopupTitle"))
+                        .SetMessage(Utility.GetLocalizedLabel("ForgotPassword", "verifyEmailPopupBody"))
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedLabel("ForgotPassword", "gotIt"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ForgotPassword", "resend"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
         public static void ShowIdentificationErrorDialog(Activity context, Action confirmAction, Action cancelAction = null)
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)

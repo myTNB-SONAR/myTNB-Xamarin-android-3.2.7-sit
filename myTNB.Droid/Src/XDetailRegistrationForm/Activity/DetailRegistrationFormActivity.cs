@@ -176,7 +176,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 txtTitleRegister.Text = Utility.GetLocalizedLabel("OneLastThing", "dtitleRegister");
                 txtBodyRegister.Text = Utility.GetLocalizedLabel("OneLastThing", "dbodyRegister");
                 txtAccountType.Text = Utility.GetLocalizedLabel("OneLastThing", "idtypeTitle").ToUpper();
-                textInputLayoutFullName.Hint = Utility.GetLocalizedLabel("Common", "fullname");
+                textInputLayoutFullName.Hint = Utility.GetLocalizedLabel("Common", "name");
                 textInputLayoutICNo.Hint = Utility.GetLocalizedLabel("OneLastThing", "idNumberhint");
                 txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tnc"));
                 StripUnderlinesFromLinks(txtTermsConditions);

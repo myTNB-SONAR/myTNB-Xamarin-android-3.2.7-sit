@@ -566,10 +566,10 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             StartActivity(DashboardIntent);
         }
 
-        public void ViewManageAccess(AccountData accountData)
+        public void ViewManageAccess(AccountData mSelectedAccountData)
         {
             Intent manageAccount = new Intent(this, typeof(ManageSupplyAccountActivityEdit));
-            manageAccount.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            manageAccount.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
             //manageAccount.PutExtra(Constants.SELECTED_ACCOUNT_POSITION, position);
             StartActivityForResult(manageAccount, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
         }

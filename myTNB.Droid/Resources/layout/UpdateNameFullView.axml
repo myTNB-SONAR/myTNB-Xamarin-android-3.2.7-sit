@@ -29,7 +29,8 @@
                 android:drawablePadding="6dp"
                 android:digits="@string/name_validation_with_character"
                 android:hint="@string/registration_form_full_name_hint"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:textColor="@color/tunaGrey"/>
         </com.google.android.material.textfield.TextInputLayout>
         <Button
             android:id="@+id/btnSave"
