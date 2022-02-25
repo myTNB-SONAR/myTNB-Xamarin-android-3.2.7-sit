@@ -706,7 +706,9 @@
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
 												android:maxLines="1"
-												android:ellipsize="end"/>
+												android:ellipsize="end"
+												android:layout_toLeftOf="@+id/reTotalPayableCurrency"
+												android:layout_marginRight="5dp"/>
 											<TextView
 												android:id="@+id/reTotalPayable"
 												android:layout_width="wrap_content"
@@ -743,7 +745,9 @@
 												android:text="I will get by 22 Aug"
 												android:maxLines="1"
 												android:maxWidth="150dp"
-												android:ellipsize="end"/>
+												android:ellipsize="end"
+												android:layout_toLeftOf="@+id/reTotalPayableCurrency"
+												android:layout_marginRight="5dp"/>
 										</RelativeLayout>
 										<LinearLayout
 											android:layout_width="match_parent"
