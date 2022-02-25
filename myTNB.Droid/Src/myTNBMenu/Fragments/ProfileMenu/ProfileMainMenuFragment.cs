@@ -176,6 +176,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 mPresenter.Start();
                 bool hasUpdatedMobile = MyTNBAccountManagement.GetInstance().IsUpdatedMobile();
                 bool hasUpdatedPassword = MyTNBAccountManagement.GetInstance().IsPasswordUpdated();
+                bool hasUpdateLargeFont = MyTNBAccountManagement.GetInstance().IsUpdateLargeFont();
                 //bool hasUpdateLanguage = MyTNBAccountManagement.GetInstance().IsUpdateLanguage();
                 if (hasUpdatedMobile)
                 {
@@ -183,7 +184,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     ShowMobileUpdateSuccess(userEntity.MobileNo);
                     MyTNBAccountManagement.GetInstance().SetIsUpdatedMobile(false);
                 }
-
+                if (hasUpdateLargeFont)
+                {
+                    ShowLargeFontUpdateSuccess();
+                    MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
+                }
                 /*if (hasUpdateLanguage)
                 {
                     ShowLanguageUpdateSuccess();
@@ -722,6 +727,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void ShowLargeFontUpdateSuccess()
+        {
+            try
+            {
+                ToastUtils.OnDisplayToast(Activity, string.Format(GetLabelByLanguage("fontChangeSuccess"), TextViewUtils.FontSelected));
+               
+                /*if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
+                {
+                    mLanguageSnackbar.Dismiss();
+                }
+
+                mLanguageSnackbar = Snackbar.Make(rootView,
+                    string.Format(GetLabelByLanguage("fontChangeSuccess"), TextViewUtils.FontSelected),
+                    Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = mLanguageSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mLanguageSnackbar.Show();
+                this.SetIsClicked(false);*/
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+
         }
 
         private void ShowMobileUpdateSuccess(string newPhone)

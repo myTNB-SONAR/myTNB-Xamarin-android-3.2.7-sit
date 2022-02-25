@@ -6,6 +6,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,7 @@ namespace myTNB_Android.Src.UpdateNameFull.MVP
                 string usrId = userEntity.DeviceId;
 
                 UpdateUserInfo userAuthRequest = new UpdateUserInfo(mobile, newName);
+                string dt = JsonConvert.SerializeObject(userAuthRequest);
                 var userNameResponse = await ServiceApiImpl.Instance.UserAuthenticateUpdateName(userAuthRequest);
                 //var userNameResponse = await ServiceApiImpl.Instance.UserAuthenticateUpdateName(new UpdateUserInfo(usrId, mobile, newName));
                 

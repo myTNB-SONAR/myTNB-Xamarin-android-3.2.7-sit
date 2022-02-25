@@ -321,7 +321,15 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                     {
                         // ShowProgressDialog();
                         HideShowProgressDialog();
-                         _ = RunUpdateLanguage(selectedItem);
+                        if (selectedItem.type == "MS")
+                        {
+                            AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
+                        }
+                        else
+                        {
+                            AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
+                        }
+                        _ = RunUpdateLanguage(selectedItem);
                     },
                     () =>
                     {
@@ -477,6 +485,14 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }).Show();
         }
 
+        //public void OnBack()
+        //{
+        //    MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
+        //    SetResult(Result.Ok);
+        //    Finish();
+        //    base.OnBackPressed();
+        //}
+
         public void OnBackProceed()
         {
             SetResult(Result.Ok);
@@ -484,7 +500,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             base.OnBackPressed();
         }
 
-        
+
 
         private Task RunUpdateFont(Item selectedItem)
         {
@@ -494,13 +510,14 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 ShowProgressDialog();
                 TextViewUtils.SaveFontSize(selectedItem);
                 UpdateFont();
-                MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
+                MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(true);
                 OnBackProceed();
             });
         }
 
         private Task RunUpdateLanguage(Item selectedItem)
         {
+            SearchApplicationTypeCache.Instance.Clear();
             return Task.Run(() =>
             {
                 LanguageUtil.SaveAppLanguage(selectedItem.type);
@@ -567,7 +584,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                                     SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
                                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                                     MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(true);
-                                    MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(true);
                                     UpdateTypesList();
                                     UpdateLanguage();
                                     UpdateSizeFontText();

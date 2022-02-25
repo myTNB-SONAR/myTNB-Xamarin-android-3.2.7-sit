@@ -100,10 +100,7 @@
     "paymentPendingMsg": "Pembayaran sedang diproses",
     "processing": "sedang diproses",
     "dontShowThisAgain": "Jangan paparkan lagi",
-    //OT Add
     "verify": "Sahkan",
-
-    //Irul add
     "tutorialSwipeTextNew": "Leret untuk lihat lebih lagi, tekan dua kali untuk mengabaikannya.",
     "tutorialSwipeTextlastNew": "Tekan dua kali untuk mengabaikannya.",
     "dbrPaperBill": "Anda menerima <b>Bil Bercetak</b> untuk akaun ini. <b>Jom paperless hari ini!</b>",
@@ -147,7 +144,7 @@
     "invalid_icNumber": "Nombor KP, Pasport atau ROC tidak sah",
     "invalid_rocNumber": "Nombor ROC tidak sah",
     "accountLength": "Sila masukkan nombor akaun 12 digit yang sah.",
-    "invalid_accountType": "Jenis Akaun tidak sah",
+    "invalid_accountType": "Jenis Akaun Tidak Sah",
     "noDataConnectionTitle": "Tiada sambungan internet",
     "noDataConnectionMessage": "Sila periksa sambungan internet anda dan cuba semula.",
     "defaultErrorTitle": "Ada sesuatu yang tidak kena.",
@@ -177,7 +174,6 @@
     "noMeterAccessErrorTitle": "Maaf, anda mungkin tidak boleh mengakses perkhidmatan ini.",
     "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda.",
     "invalidReferenceNumber": "Sila masukkan {0} yang sah.",
-    //yana
     "accountLengthNew": "Sila masukkan nombor akaun elektrik 12 digit yang sah.",
     "error_duplicateAccountMessageNew": "Nombor akaun elektrik ini telah ditambah ke senarai.",
     "error_emptyIcAndEmailOwner": "Pemilik e-mel atau nombor telefon tidak boleh kosong.",
@@ -231,7 +227,6 @@
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
     "receivedExtra": "terima lebih",
     "applicationStatus": "Status<br>Permohonan",
-    //addby wan
     "later": "Tangguhkan",
     "update": "Kemas kini",
     "proceed": "Teruskan",
@@ -290,7 +285,6 @@
     "selectAnAccount": "Pilih Akaun",
     "tncSubscribeFAQ": "Dengan menghantar, anda bersetuju pada <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Soalan Lazim Self Meter Reading</strong></a>, ",
     "tncSubscribeTNC": "<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
-    //add new by irul
     "tncsmrNew": "Dengan melanggan/menghantar Self Meter Reading, saya faham dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat Self Meter Reading</strong></a>, <a href=\"\\\"><strong>Terma Penggunaan dan Polisi Perlindungan Data Peribadi TNB</strong></a>. Saya juga bersetuju untuk menghantar bacaan meter pada setiap bulan kecuali pada bulan bukan Self Meter Reading"
   },
   "SSMRApplicationTnc": {
@@ -481,7 +475,6 @@
     "prevReadingEmptyTitle": "Maaf, kami tidak dapat melakukan tindakan ini sekarang.",
     "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda.",
     "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
-    //added by yana
     "accountTypeDialogTitle": "Lihat akaun elektrik ini di Portal myTNB untuk pengalaman yang lebih baik!",
     "accountTypeDialogMessage": "Anda boleh log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> myTNB menggunakan maklumat log masuk yang sama dan nikmati akses penuh untuk akaun tersebut.",
     //EnergyBudget
@@ -497,7 +490,6 @@
     "refreshNowEnergyBudgetButton": "'Refresh' Sekarang",
     "youHaveNotSetBudget": "Anda belum menetapkan Energy Budget anda",
     "youHaveNotSetBudgetSubtitle": "Tetapkan Energy Budget anda, pantau penggunaan anda dan terima pemberitahuan apabila berdekatan dengan Energy Budget anda!",
-    //add by lop
     "tutorialUsageTitle": "Lihat butiran akaun anda di sini.",
     "tutorialUsageDesc": "Lihat butiran akaun anda dengan mudah dan urus pengguna lain yang mempunyai akses pada akaun anda di sini.",
     "tutorialUsageDescNonOwner": "Lihat butiran akaun anda dengan mudah di sini.",
@@ -724,7 +716,6 @@
     "paymentHistory": "Rekod bayaran",
     "currentBill": "Bil semasa",
     "pastBills": "Bil lepas",
-    //addby wan
     "AcctFoundMsg": "Namakan akaun anda sekarang untuk rujukan mudah.",
     "additionalAddAccts": "Semak maklumat akaun anda",
     "labeladditionalAccts": "Pemilik akaun elektrik akan mendapat notifikasi yang anda telah memasuki akaun ini.  ",
@@ -739,7 +730,6 @@
     "bodyContinue": "Anda masih boleh menambah masuk akaun secara manual dengan menggunakan nombor akaun, tetapi anda akan memiliki akses terhad ke atas akaun ini sebagai pemilik yang tidak sah.",
     "tnc": "Dengan mengesahkan, saya telah membaca dan bersetuju dengan <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
     "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
-    //new added 
     "AccHeaderText": "Mari masukkan akaun anda dengan memilih jenis akaun anda.",
     "PremisesHint": "Premis yang saya ingin tambah adalah",
     "AccHeaderBlueText": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
@@ -764,7 +754,6 @@
     "GovDialogDetails": "Anda masih boleh menambah dan melihat akaun Kerajaan anda melalui <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">myTNB Portal</a>.",
     "titleNonOwnerAddAcc": "Teruskan memasuki akaun anda dan berikan nama gelaran untuk rujukan mudah.",
     "titleOwnerDetailRegion": "Sila masukkan alamat e-mel atau nombor telefon pemilik akaun ini supaya kami boleh memberikan makluman kepadanya.",
-    //Add by lop
     "accountNickNameError": "Akaun anda harus mempunyai nama panggilan. Anda boleh menggunakan huruf, angka dan simbol untuk nama panggilan akaun tersebut.",
     "invalidROC": "Nombor KP yang anda masukkan tidak padan dengan nombor akaun ini. Sila semak dan cuba semula."
   },
@@ -793,7 +782,6 @@
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
     "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
     "fontChangeSuccess": "Anda berjaya mengemaskini saiz teks paparan anda kepada saiz {0}!",
-    //addby syahmi
     "titleProfile": "Profil myTNB",
     "paymentMethod": "Kaedah Pembayaran Saya",
     "myElecttricityAcc": "Akaun Elektrik Saya",
@@ -807,7 +795,6 @@
     "modeDescription": "Pilih cara anda mahu menerima pemberitahuan",
     "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah."
   },
-  //new added
   "NotificationAddAccount": {
     "title": "Notifikasi",
     "notificationTitle": "Akaun elektrik anda ditambah oleh orang lain.",
@@ -867,7 +854,6 @@
     "popupremoveAccountTitleSwipe": "Alih Keluar Akaun",
     "popupremoveAccountMessageSwipe": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda.",
     "emptyListDetails": "Tidak ada akaun elektrik yang ditambahkan. Tambahkan akaun sekarang dan anda akan mendapat akses ke penggunaan, bil dan mengurus akaun anda.",
-    //Add by lop
     "titleMyElectricityAccounts": "Akaun Elektrik Saya",
     "addAccount": "Tambah Akaun"
   },
@@ -893,7 +879,6 @@
     "login": "Log Masuk",
     "emailRequired": "Sila masukkan alamat email.",
     "passwordRequired": "Sila masukkan kata laluan.",
-    //add by lop
     "gotIt": "Ok",
     "resend": "Hantar semula",
     "verifyEmailPopupTitle": "Pengesahan E-mel Belum Selesai",
@@ -904,7 +889,6 @@
     "title": "Set Semula Kata Laluan",
     "subTitle": "Sila masukkan e-mel anda.",
     "details": "Kod pengesahan 4 digit akan dihantar ke alamat e-mel ini.",
-    //add by lop
     "gotIt": "Ok",
     "resend": "Hantar semula",
     "verifyEmailPopupTitle": "Pengesahan E-mel Belum Selesai",
@@ -970,7 +954,6 @@
     "popupremoveAccountMessage": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda.",
     "dbrManageDeliveryMethod": "Urus Cara Penerimaan Bil",
     "dbrViewBillDelivery": "Cara Penerimaan Bil",
-    //addby wan
     "detailSectionTitle": "Akaun myTNB",
     "accountSectionTitle": "Akaun Bekalan Elektrik",
     "logout": "Log keluar",
@@ -1012,7 +995,6 @@
     "description8": "Anda boleh jejaki semua status permohonan dengan mudah, pada bila-bila masa dan di mana-mana sahaja.",
     "description9": "Ubah suai myTNB anda dengan saiz teks paparan bersesuaian untuk pengendalian yang lebih selesa. Anda boleh memilih antara saiz normal atau besar dan boleh mengubah tetapan ini pada bila-bila masa di Profil anda.",
     "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai.",
-    //addby irul
     "title11": "Peningkatan kawalan akses untuk melindungi maklumat anda.",
     "description11": "Sebagai pemilik akaun elektrik, pastikan anda mempunyai kawalan terhadap maklumat dan permintaan akaun dengan menetapkan akses yang anda beri kepada pihak lain."
   },
@@ -1033,7 +1015,6 @@
     "removeCardMessage": "Anda akan mengalih keluar kad kredit / debit yang berakhir dengan {0}.",
     "removeCardTitle": "Alih Keluar Kad Kredit / Debit",
     "cardNotRemovedMessage": "Kad Kredit / Debit yang berakhir dengan {0} tidak berjaya dialih keluar. Sila cuba semula sebentar lagi.",
-    //addby wan
     "titleAutoPay": "BM_My Accounts with AutoPay",
     "titleNoAutoPay": "BM_You don't have AutoPay yet.",
     "bodyNoAutoPay": "BM_Let us take care your monthly bills automatically. We'll pause AutoPay when your bills are higher than usual",
@@ -1351,7 +1332,6 @@
     "viewYes": "Ya",
     "viewNo": "Tidak",
     "documentPdf": "Dokumen",
-    //update identification details | yana
     "pageStep1": "Langkah 1 dari 4",
     "pageStep2": "Langkah 2 dari 4",
     "pageStep3": "Langkah 3 dari 4",
@@ -1526,7 +1506,6 @@
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
     "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
     "IDUpdateSuccess": "Terima kasih kerana mengemaskini! Aktiviti anda telah dirakam seperti di bawah.",
-    //syahmi add
     "lblID": "IC, Pasport, Tentera / Polis ID ",
     "passwordchange": "Tukar Kata Laluan Saya",
     "gotIt": "Ok",
@@ -1549,7 +1528,6 @@
     "saveMessage": "Berjaya! Anda akan melihat kemas kini perkembangan status permohonan tersebut."
   },
   "UpdateName": {
-    //syahmi add
     "title": "Kemaskini Nama"
   },
   "ApplicationStatusSearch": {
@@ -1572,7 +1550,6 @@
     "tnc": "Terma & Syarat",
     "findUs": "Temui Kami",
     "faq": "Soalan Lazim",
-    //addby syahmi
     "callUsBill": "Hubungi Kami (Pertanyaan Pengebilan)", //Fallback - Service Dependent
     "callUsOutage": "Hubungi Kami (Gangguan Bekalan)" //Fallback - Service Dependent
   },
@@ -1656,9 +1633,7 @@
     "walkthroughStep2": "Lihat dan urus penguna yang melihat akaun anda atau beri akses kepada pihak lain di sini.",
     "tapToSkip": "Tekan untuk melangkau",
     "pendingRegistration": "Pendaftaran Belum Selesai",
-    //syahmi add
     "cancelAddSuccess": "{0} telah dikeluarkan dari senarai pengguna yang mempunyai akses kepada akaun elektrik ini.",
-    //add by wan
     "AddTNBUserSuccess": "{0} kini mempunyai akses ke {1} di myTNB.",
     "AddNonTNBUserSuccess": "Anda telah menjemput <strong>{0}</strong> untuk menyertai myTNB dan melihat akaun elektrik ini.",
     "hint_email": "Alamat e-mel pengguna",
@@ -1687,7 +1662,6 @@
     "payNow": "Bayar Sekarang",
     "paymentInProgress": "Pembayaran sedang diproses"
   },
-  //new Add folow IOS
   "RegisterNew": {
     "title": "Daftar",
     "etitleRegister": "Mari kita mulakan!",
@@ -1742,7 +1716,6 @@
     "IdBodyError": "Sila pastikan bahawa anda telah memasukkan nombor kad pengenalan yang betul, atau hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> untuk bertanya mengenai perkara ini.",
     "ctaTitleNew": "Daftar Akaun Saya",
     "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
-    //add by lop
     "tnc": "Dengan mengesahkan, saya telah membaca dan bersetuju dengan <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
     "idtypeSelectTitle": "Pilih Jenis Pengenalan"
   },

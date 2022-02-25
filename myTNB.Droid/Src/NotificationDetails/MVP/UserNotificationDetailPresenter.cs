@@ -783,6 +783,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             CustomerBillingAccount.RemoveSelected();
             CustomerBillingAccount.SetSelected(notificationDetails.AccountNum);
 
+            accountData.AccountTypeId = account.AccountTypeId;
             accountData.AccountNickName = account.AccDesc;
             accountData.AccountName = account.OwnerName;
             accountData.AccountNum = account.AccNum;

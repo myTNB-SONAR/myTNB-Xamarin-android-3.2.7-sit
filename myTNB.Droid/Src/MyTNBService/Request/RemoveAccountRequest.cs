@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using myTNB.Mobile;
 using static myTNB.Mobile.FeatureInfoClass;
 
 namespace myTNB_Android.Src.MyTNBService.Request
@@ -17,7 +18,7 @@ namespace myTNB_Android.Src.MyTNBService.Request
         {
             deviceInf = new DeviceInfoRequest();
             this.accNum = accNum;
-            featureInfo = new List<FeatureInfo>();
+            this.featureInfo = FeatureInfoManager.Instance.GetFeatureInfo();
             isTaggedSmartMeter = tagSM;
             IsInManageAccessList = manageAccessList;
             isOwner = isOwn;

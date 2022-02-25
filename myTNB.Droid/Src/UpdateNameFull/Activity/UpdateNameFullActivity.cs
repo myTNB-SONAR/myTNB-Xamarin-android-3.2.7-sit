@@ -63,15 +63,16 @@ namespace myTNB_Android.Src.UpdateNameFull.Activity
                     .Cancelable(false)
                     .Build();
 
+                txtInputLayoutNameFull.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                 // Create your application here
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNameFull);
                 TextViewUtils.SetMuseoSans300Typeface(txtNameFull);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave);
 
-                TextViewUtils.SetTextSize14(btnSave);
-                TextViewUtils.SetTextSize12(txtNameFull);
+                TextViewUtils.SetTextSize16(btnSave);
+                TextViewUtils.SetTextSize14(txtNameFull);
 
-                txtInputLayoutNameFull.Hint = GetLabelCommonByLanguage("name");
+                txtInputLayoutNameFull.Hint = GetLabelCommonByLanguage("name").ToUpper();
                 btnSave.Text = GetLabelCommonByLanguage("save");
                 txtNameFull.Text = user.DisplayName;
 

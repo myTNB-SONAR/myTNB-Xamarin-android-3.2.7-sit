@@ -150,14 +150,14 @@
 				android:layout_width="0dp"
 				android:layout_weight="0.5"
 				android:layout_marginRight="2dp"
-				android:layout_height="wrap_content"
+				android:layout_height="match_parent"
 				style="@style/LightButton"
 				android:textAllCaps="false" />
 			<Button
 				android:id="@id/btnGetStarted"
 				android:text="Let's Get Started"
 				android:layout_width="0dp"
-				android:layout_height="wrap_content"
+				android:layout_height="match_parent"
 				android:layout_weight="0.5"
 				android:layout_marginLeft="2dp"
 				style="@style/DarkButton"

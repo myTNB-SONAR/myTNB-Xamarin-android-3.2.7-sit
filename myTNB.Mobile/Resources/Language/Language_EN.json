@@ -100,9 +100,7 @@
     "paymentPendingMsg": "My payment is being processed",
     "processing": "Processing",
     "dontShowThisAgain": "Don't show this again",
-    //OT Add
     "verify": "Verify",
-    //Irul Add
     "tutorialSwipeTextNew": "Swipe to see more, double tap to dismiss.",
     "tutorialSwipeTextlastNew": "Double tap to dismiss.",
     "dbrPaperBill": "You’re receiving <b>Paper Bill</b> for this account. <b>Go Paperless today!</b>",
@@ -176,7 +174,6 @@
     "noMeterAccessErrorTitle": "Sorry this service may not be available to you.",
     "noMeterAccessErrorMessage": "The meter will need to be accessible so that you can read your meter. You may try again when you have access to the meter.",
     "invalidReferenceNumber": "Please enter a valid {0}.",
-    //yana
     "accountLengthNew": "Please enter a valid 12-digit electricity account number",
     "error_duplicateAccountMessageNew": "This electricity account number has already been added to the list.",
     "error_emptyIcAndEmailOwner": "Email or phone number owner cannot be empty.",
@@ -230,7 +227,6 @@
     "serviceRefreshMessage": "Uh oh, looks like your quick actions have been unplugged. Refresh to stay plugged in!",
     "receivedExtra": "received extra",
     "applicationStatus": "Application<br>Status",
-    //addby wan
     "later": "Later",
     "update": "Update",
     "proceed": "Proceed",
@@ -289,7 +285,6 @@
     "selectAnAccount": "Select an account",
     "tncSubscribeFAQ": "By submitting, you are agreeing to the <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Self Meter Reading FAQ</strong></a>, ",
     "tncSubscribeTNC": "<a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy Policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
-    //add new by irul
     "tncsmrNew": "By subscribing to Self Meter Reading, I understand and agree on the <a href=\"\\\"><strong>Self Meter Reading Terms and Conditions</strong></a>, <a href=\"\\\"><strong>TNB's Terms of Use and Personal Data Protection Policy</strong></a>. I also agree to submit meter reading on a monthly basis except non Self Meter Reading month"
   },
   "SSMRApplicationTnc": {
@@ -480,7 +475,6 @@
     "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
     "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.",
     "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
-    //added by yana
     "accountTypeDialogTitle": "View this electricity account on myTNB Portal for a better experience!",
     "accountTypeDialogMessage": "You can log in to myTNB <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> using the same login details and enjoy full access to the account.",
     //EnergyBudget
@@ -496,7 +490,6 @@
     "refreshNowEnergyBudgetButton": "Refresh Now",
     "youHaveNotSetBudget": "You have not set up your Energy Budget",
     "youHaveNotSetBudgetSubtitle": "Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!",
-    //add by lop
     "tutorialUsageTitle": "View and manage your account details here.",
     "tutorialUsageDesc": "Easily view your account details and manage who has access to your account from here.",
     "tutorialUsageTitleNonOwner": "View your account details here.",
@@ -724,7 +717,6 @@
     "paymentHistory": "Payment history",
     "currentBill": "Current bill",
     "pastBills": "Past bills",
-    //addby wan
     "AcctFoundMsg": "Give your account a name for your easy reference.",
     "additionalAddAccts": "Review your account details.",
     "labeladditionalAccts": "The electricity account owner will be notified that you have added the account. ",
@@ -739,7 +731,6 @@
     "bodyContinue": "You can still add the account manually with its account number, but your access to the account will be limited as an unverified owner. ",
     "tnc": "By confirming, I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>.",
     "tnc_checked": "I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>.",
-    //new added 
     "AccHeaderText": "Let's add your account by selecting your account type.",
     "PremisesHint": "The Premises I’m Adding is",
     "AccHeaderBlueText": "Is this electricity account registered under your name?",
@@ -764,7 +755,6 @@
     "GovDialogDetails": "You can still add and view your Government account through <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">myTNB Portal</a>.",
     "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference.",
     "titleOwnerDetailRegion": "Please provide the owner’s email or mobile number for the account above so we can notify them.",
-    //Add by lop
     "accountNickNameError": "You must have a nickname for your account. You can use letters, numbers and special characters for the account nickname.",
     "invalidROC": "The Identification Number you entered does not match this account number. Please check and try again."
   },
@@ -793,7 +783,6 @@
     "passwordUpdateSuccess": "Your password has been changed successfully.",
     "changeLanguageSuccess": "Your language preference has been changed successfully.",
     "fontChangeSuccess": "You've successfully updated your display text size to {0}!",
-    //addby syahmi
     "titleProfile": "myTNB Profile",
     "paymentMethod": "My Payment Methods",
     "myElecttricityAcc": "My Electricity Accounts",
@@ -807,7 +796,6 @@
     "modeDescription": "Select how you wish to receive your notifications",
     "changeLanguageSuccess": "Your language preference has been changed successfully."
   },
-  //new added
   "NotificationAddAccount": {
     "title": "Notification",
     "notificationTitle": "Your electricity account is added by someone else.",
@@ -867,7 +855,6 @@
     "popupremoveAccountTitleSwipe": "Remove Account",
     "popupremoveAccountMessageSwipe": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity account. Visit the myTNB Portal or Kedai Tenaga to close your electricity supply account.",
     "emptyListDetails": "There is no electricity account added. Add an account now and you’ll have access to your usage, bills and manage your account.",
-    //Add by lop
     "titleMyElectricityAccounts": "My Electricity Accounts",
     "addAccount": "Add Account"
   },
@@ -893,7 +880,6 @@
     "login": "Log In",
     "emailRequired": "Please enter an email address.",
     "passwordRequired": "Please enter a password.",
-    //add by lop
     "gotIt": "Got It",
     "resend": "Resend Link",
     "verifyEmailPopupTitle": "Pending Email Verification ",
@@ -904,9 +890,8 @@
     "title": "Reset Password",
     "subTitle": "Please enter your email address.",
     "details": "A 4 digit verification code will be sent to this email address.",
-    //add by lop
     "gotIt": "Got It",
-    "resend": "Resend",
+    "resend": "Resend Link",
     "verifyEmailPopupTitle": "Pending Email Verification",
     "verifyEmailPopupBody": "Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
     "toast_email_send": "An email verification link has been sent to {0}"
@@ -970,7 +955,6 @@
     "popupremoveAccountMessage": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity account. Visit the myTNB Portal or Kedai Tenaga to close your electricity supply account.",
     "dbrManageDeliveryMethod": "Manage Bill Delivery",
     "dbrViewBillDelivery": "View Bill Delivery",
-    //addby wan
     "detailSectionTitle": "myTNB Account",
     "accountSectionTitle": "TNB Electricity Supply Accounts",
     "logout": "Log Out",
@@ -1012,7 +996,6 @@
     "description8": "You can now track all your application status with zero hassle, anytime and anywhere.",
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
     "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot.",
-    //addby irul
     "title11": "Enhanced access controls to safeguard your information.",
     "description11": "Stay in control of your account information and permissions by defining what you let others access as an owner of an electricity account."
   },
@@ -1033,7 +1016,6 @@
     "removeCardMessage": "You are about to remove the credit / debit card ending with {0}.",
     "removeCardTitle": "Remove Credit / Debit Card",
     "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again.",
-    //addby wan
     "titleAutoPay": "My Accounts with AutoPay",
     "titleNoAutoPay": "You don't have AutoPay yet.",
     "bodyNoAutoPay": "Let us take care your monthly bills automatically. We'll pause AutoPay when your bills are higher than usual",
@@ -1351,7 +1333,6 @@
     "viewYes": "Yes",
     "viewNo": "No",
     "documentPdf": "Document",
-    //update identification details | yana
     "pageStep1": "Step 1 of 4",
     "pageStep2": "Step 2 of 4",
     "pageStep3": "Step 3 of 4",
@@ -1526,7 +1507,6 @@
     "passwordUpdateSuccess": "Your password has been changed successfully.",
     "mobileNumberVerified": "You've successfully updated your phone number!",
     "IDUpdateSuccess": "Thank you for updating! Your update has been recorded below.",
-    //syahmi add
     "lblID": "IC, Passport, Army / Police ID",
     "passwordchange": "Change My Password",
     "gotIt": "Got It",
@@ -1549,7 +1529,6 @@
     "saveMessage": "Success! You'll see up-to-date progress of the application status."
   },
   "UpdateName": {
-    //syahmi add
     "title": "Update Name"
   },
   "ApplicationStatusSearch": {
@@ -1572,7 +1551,6 @@
     "tnc": "Terms & Conditions",
     "findUs": "Find Us",
     "faq": "FAQ",
-    //addby syahmi
     "callUsBill": "Call Us (Billing Enquiries)",
     "callUsOutage": "Call Us (Outages & Breakdown)"
   },
@@ -1656,9 +1634,7 @@
     "walkthroughStep2": "View and manage people who are viewing your account or provide access to someone new here.",
     "tapToSkip": "Tap to skip",
     "pendingRegistration": "Pending Registration",
-    //syahmi
     "cancelAddSuccess": "{0} is cancelled from being added as a viewer to this electricity account.",
-    //add by wan
     "AddTNBUserSuccess": "{0} now has access to {1} on myTNB.",
     "AddNonTNBUserSuccess": "You have invited <strong>{0}</strong> to join myTNB and view this electricity account.",
     "hint_email": "User Email Address",
@@ -1687,7 +1663,6 @@
     "payNow": "Pay Now",
     "paymentInProgress": "My payment is being processed"
   },
-  //new add follow IOS
   "RegisterNew": {
     "title": "Register",
     "etitleRegister": "Let's Get Started!",
@@ -1742,7 +1717,6 @@
     "IdBodyError": "Please ensure that you’ve entered the correct identification number, or contact <b><a href=\"tel: 1300885454\">TNB Careline</a></b> to enquire further about this matter.",
     "ctaTitleNew": "Create My Account",
     "tnc_checked": "I have read and agreed to the <a href=\"\\\"><strong>TNB Terms and Conditions</strong></a>",
-    //add by lop
     "tnc": "By registering, I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>.",
     "idtypeSelectTitle": "Select Identification Type"
   },
