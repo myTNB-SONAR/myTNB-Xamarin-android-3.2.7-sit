@@ -29,19 +29,25 @@
                     android:layout_height="match_parent"
                     android:background="@color/white"
                     android:orientation="vertical">
-                    <FrameLayout
+                     <LinearLayout
+                        android:id="@+id/ContainerAction"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:padding="16dp">
+                        android:weightSum="1.0"
+                        android:orientation="horizontal">
                         <LinearLayout
-                            android:id="@+id/layoutHeader"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:id="@+id/itemContainer"
+                            android:orientation="horizontal"
+                            android:layout_alignParentLeft="true"
+                            android:layout_weight="0.85"
+                            android:layout_width="0dp"
+                            android:padding="16dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center |left">
                             <TextView
                                 android:id="@+id/headerText"
-                                android:layout_width="match_parent"
-                                android:layout_height="24dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:gravity="center|left"
                                 android:textSize="12dp"
                                 android:textColor="#1c79ca"
@@ -49,23 +55,24 @@
                                 android:text="Add Electricity Account Disclaimer"/>
                         </LinearLayout>
                         <LinearLayout
-                            android:orientation="horizontal"
+                            android:id="@+id/itemActionContainer"
+                            android:visibility="visible"
+                            android:orientation="vertical"
                             android:layout_alignParentRight="true"
-                            android:gravity="center|right"
-                            android:layout_width="match_parent"
+                            android:gravity="center"
+                            android:layout_weight="0.15"
+                            android:layout_width="0dp"
+                            android:padding="16dp"
                             android:layout_height="match_parent">
-                            <TextView
-                                android:visibility="gone"
-                                android:id="@+id/infoLabel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                   
                             <ImageView
                                 android:id="@+id/itemAction"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="right|center"/>
-                         </LinearLayout>
-                    </FrameLayout> 
+                                android:src="@drawable/expand_down_arrow"
+                                android:layout_gravity="right"/>
+                        </LinearLayout>
+                    </LinearLayout>
                     <View
                         android:id="@+id/view1"
                         android:layout_width="match_parent"
@@ -100,60 +107,104 @@
                                 android:layout_marginTop="16dp"
                                 android:text="Details2"/>
                         </LinearLayout>
-        
-        
                     <View
                         android:id="@+id/view2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/platinumGrey"/>
-                    <FrameLayout
+                     <LinearLayout
+                        android:id="@+id/ContainerAction2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:padding="16dp">
+                        android:weightSum="1.0"
+                        android:orientation="horizontal">
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:id="@+id/itemContainer2"
+                            android:orientation="horizontal"
+                            android:layout_alignParentLeft="true"
+                            android:layout_weight="0.85"
+                            android:layout_width="0dp"
+                            android:padding="16dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center |left">
                             <TextView
                                 android:id="@+id/headerText2"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center|left"
                                 android:textSize="12dp"
                                 android:textColor="#1c79ca"
-                                android:lineSpacingExtra="6sp"
                                 android:drawablePadding="16dp"
-                                android:text="TNB Terms of Use, User Agreement and Privacy policy"
-                                android:drawableRight="@drawable/expand_right_arrow"/>
+                               android:text="TNB Terms of Use, User Agreement and Privacy policy"/>
                         </LinearLayout>
-                    </FrameLayout>
+                        <LinearLayout
+                            android:id="@+id/itemActionContainer2"
+                            android:visibility="visible"
+                            android:orientation="vertical"
+                            android:layout_alignParentRight="true"
+                            android:gravity="center"
+                            android:layout_weight="0.15"
+                            android:layout_width="0dp"
+                            android:padding="16dp"
+                            android:layout_height="match_parent">
+                   
+                            <ImageView
+                                android:id="@+id/itemAction2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/expand_right_arrow"
+                                android:layout_gravity="right"/>
+                        </LinearLayout>
+                    </LinearLayout>
                     <View
                         android:id="@+id/view3"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/platinumGrey"/>
-                    <FrameLayout
+                    <LinearLayout
+                        android:id="@+id/ContainerAction3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:padding="16dp">
+                        android:weightSum="1.0"
+                        android:orientation="horizontal">
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:id="@+id/itemContainer3"
+                            android:orientation="horizontal"
+                            android:layout_alignParentLeft="true"
+                            android:layout_weight="0.85"
+                            android:layout_width="0dp"
+                            android:padding="16dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center |left">
                             <TextView
                                 android:id="@+id/headerText3"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center|left"
                                 android:textSize="12dp"
                                 android:textColor="#1c79ca"
-                                android:lineSpacingExtra="6sp"
                                 android:drawablePadding="16dp"
-                                android:text="Personal Data Protection Policy"
-                                android:drawableRight="@drawable/expand_right_arrow"/>
+                               android:text="Personal Data Protection Policy"/>
                         </LinearLayout>
-                    </FrameLayout> 
+                        <LinearLayout
+                            android:id="@+id/itemActionContainer3"
+                            android:visibility="visible"
+                            android:orientation="vertical"
+                            android:layout_alignParentRight="true"
+                            android:gravity="center"
+                            android:layout_weight="0.15"
+                            android:layout_width="0dp"
+                            android:padding="16dp"
+                            android:layout_height="match_parent">
+                   
+                            <ImageView
+                                android:id="@+id/itemAction3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/expand_right_arrow"
+                                android:layout_gravity="right"/>
+                        </LinearLayout>
+                    </LinearLayout>
                     <View
                         android:id="@+id/view4"
                         android:layout_width="match_parent"
@@ -162,5 +213,6 @@
                 </LinearLayout>
              </ScrollView>
         </LinearLayout>
+       
      </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>

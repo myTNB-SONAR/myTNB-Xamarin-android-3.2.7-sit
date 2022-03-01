@@ -492,6 +492,7 @@
     "youHaveNotSetBudgetSubtitle": "Tetapkan Energy Budget anda, pantau penggunaan anda dan terima pemberitahuan apabila berdekatan dengan Energy Budget anda!",
     "tutorialUsageTitle": "Lihat butiran akaun anda di sini.",
     "tutorialUsageDesc": "Lihat butiran akaun anda dengan mudah dan urus pengguna lain yang mempunyai akses pada akaun anda di sini.",
+    "tutorialUsageTitleNonOwner": "Lihat akaun anda di sini.",
     "tutorialUsageDescNonOwner": "Lihat butiran akaun anda dengan mudah di sini.",
     "skip": "Tekan untuk melangkau.",
     "feedback1Title": "Tahniah! Bagaimanakah pengalaman penetapan Energy Budget anda?",
@@ -760,8 +761,8 @@
   "Profile": {
     "title": "Profil",
     "appVersion": "Aplikasi Versi",
-    "callUsBilling": "Hubungi Kami (Pertanyaan Pengebilan)", //Fallback - Service Dependent
-    "callUsOutagesAndBreakdown": "Hubungi Kami (Gangguan Bekalan)", //Fallback - Service Dependent
+    "callUsBilling": "Hubungi Kami (Pertanyaan Pengebilan)",
+    "callUsOutagesAndBreakdown": "Hubungi Kami (Gangguan Bekalan)",
     "faq": "Soalan Lazim",
     "helpAndSupport": "Bantuan & Sokongan",
     "myAccount": "Akaun Saya",

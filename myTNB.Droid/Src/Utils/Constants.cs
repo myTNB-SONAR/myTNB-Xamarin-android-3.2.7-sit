@@ -373,10 +373,10 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS = "SDIP";
         public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION = "SDOR";
         public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW = "SDRC";
+        public const string NOTIFICATION_TYPE_ID_SD = "1000028";
 
+        //OwnerTenant
         public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
-
-        
         public const string ACCOUNT_PROFILENAME_PATTERN = "#profileName#";
         public const string ACCOUNT_ACCNO_PATTERN = "#accno#";
         //public const string ACCOUNT_FULLNAME_PATTERN = "#accountFullname/accountEmailAddress#";
@@ -439,6 +439,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string ITEMIZED_BILLING_PAYMENT_KEY = "PAYMENT";
 
         internal static readonly int LANGUAGE_MASTER_DATA_CHECK_TIMEOUT = 500;
+        internal static readonly int FONT_MASTER_DATA_CHECK_TIMEOUT = 500;
 
         internal static readonly int REWARDS_DATA_CHECK_TIMEOUT = 500;
 

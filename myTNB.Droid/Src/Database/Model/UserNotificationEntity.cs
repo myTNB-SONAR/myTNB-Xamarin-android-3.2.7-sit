@@ -258,7 +258,17 @@ namespace myTNB_Android.Src.Database.Model
                             || (UserEntity.GetActive().Email.Equals(item.Email)
                             && MyTNBAccountManagement.GetInstance().IsAccountNumberExist(item.AccountNum)))
                         {
-                            count++;
+                            if (item.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD)
+                            {
+                                if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
+                                {
+                                    count++;
+                                }
+                            }
+                            else
+                            {
+                                count++;
+                            }
                         }
                     }
                 }
