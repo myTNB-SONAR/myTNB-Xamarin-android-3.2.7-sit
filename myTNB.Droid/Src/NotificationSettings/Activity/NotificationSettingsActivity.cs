@@ -174,6 +174,14 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             isSelectionFontCheck();
         }
 
+        //private void UpdateFont()
+        //{
+        //    savedFont = TextViewUtils.SelectedFontSize();
+        //    savedFont = (savedFont != null && savedFont != string.Empty) ? savedFont : "R";
+        //    // UpdateLabels();
+            
+        //}
+
         public void UpdateSizeFontText()
         {
             savedFont = TextViewUtils.SelectedFontSize();
@@ -291,12 +299,20 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
                 mPresenter = new NotificationSettingsPresenter(this);
                 this.userActionsListener.Start();
-                bool hasUpdateLanguage = MyTNBAccountManagement.GetInstance().IsUpdateLanguage();
-                if (hasUpdateLanguage)
+                bool hasUpdateLargeFont = MyTNBAccountManagement.GetInstance().IsUpdateLargeFont();
+                if (hasUpdateLargeFont)
                 {
-                    ShowLanguageUpdateSuccess();
-                    MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
+                    //ShowLanguageUpdateSuccess();
+                    ShowLargeFontUpdateSuccess();
+                    MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
                 }
+                //bool hasUpdateLanguage = MyTNBAccountManagement.GetInstance().IsUpdateLanguage();
+                //if (hasUpdateLanguage)
+                //{
+                //    ShowLanguageUpdateSuccess();
+                //    MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
+                //}
+
             }
             catch (Exception ex)
             {
@@ -352,7 +368,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             FontName = selectedItemfont.title;
             SetSelectedFont(selectedItemfont.type);
 
-            if (selectedItemfont.title != savedFont)
+            if (selectedItemfont.type != savedFont)
             {
                 ShowTooltipConfirm();
             }
@@ -485,22 +501,12 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }).Show();
         }
 
-        //public void OnBack()
-        //{
-        //    MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
-        //    SetResult(Result.Ok);
-        //    Finish();
-        //    base.OnBackPressed();
-        //}
-
         public void OnBackProceed()
         {
             SetResult(Result.Ok);
             Finish();
             base.OnBackPressed();
         }
-
-
 
         private Task RunUpdateFont(Item selectedItem)
         {
@@ -511,7 +517,16 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 TextViewUtils.SaveFontSize(selectedItem);
                 UpdateFont();
                 MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(true);
-                OnBackProceed();
+                try
+                {
+                    Finish();
+                    StartActivity(new Intent(this, typeof(NotificationSettingsActivity)));
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
             });
         }
 
@@ -681,6 +696,20 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
         }
 
+        private void ShowLargeFontUpdateSuccess()
+        {
+            try
+            {
+                ToastUtils.OnDisplayToast(this, string.Format(Utility.GetLocalizedLabel("Profile", "fontChangeSuccess"), TextViewUtils.FontSelected));
+
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
