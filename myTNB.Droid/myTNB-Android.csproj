@@ -68,7 +68,6 @@
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">

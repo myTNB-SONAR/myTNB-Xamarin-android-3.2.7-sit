@@ -272,7 +272,7 @@
 
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
-                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json Test";
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNewV2";
 
                 public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";
@@ -282,7 +282,7 @@
                 public const string HowDoesCopyOfIdentification = "/sitecore/content/myTNBapp/Contents/HowDoesCopyOfIdentificationToolTip";
                 public const string HowDoesProofOfConsent = "/sitecore/content/myTNBapp/Contents/ProofOwnerConsentToolTips";
 
-                public const string NewBillDesignDiscoverMore = "/sitecore/content/myTNBapp/Contents/New Bill Design Test";
+                public const string NewBillDesignDiscoverMore = "/sitecore/content/myTNBapp/Contents/New Bill Design";
             }
         }
     }

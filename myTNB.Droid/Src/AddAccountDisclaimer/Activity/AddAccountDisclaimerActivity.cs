@@ -38,19 +38,22 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
         [BindView(Resource.Id.detailsText2)]
         TextView detailsText2;
 
-        [BindView(Resource.Id.layoutHeader)]
-        LinearLayout layoutHeader;
+        //[BindView(Resource.Id.layoutHeader)]
+        //LinearLayout layoutHeader;
 
-        [BindView(Resource.Id.layoutDetails)]
-        LinearLayout layoutDetails;
+        [BindView(Resource.Id.ContainerAction)]
+        LinearLayout ContainerAction;
 
-        [BindView(Resource.Id.view1)]
-        View view1;
+        [BindView(Resource.Id.ContainerAction2)]
+        LinearLayout ContainerAction2;
+
+        [BindView(Resource.Id.ContainerAction3)]
+        LinearLayout ContainerAction3;
 
 
         private string PAGE_ID = "AddAccount";
         UserEntity user = UserEntity.GetActive();
-        private ImageView itemAction;
+        //private ImageView itemAction;
         public override string GetPageId()
         {
             return PAGE_ID;
@@ -90,56 +93,70 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
             string temp = string.Format(data, email);
             detailsText.TextFormatted = GetFormattedText(temp);
             detailsText2.Text = GetLabelByLanguage("DisclaimerDetails2");
-            itemAction = FindViewById<ImageView>(Resource.Id.itemAction);
-            itemAction.SetBackgroundResource(Resource.Drawable.expand_down_arrow);
+            //itemAction = FindViewById<ImageView>(Resource.Id.itemAction);
+            //itemAction.SetBackgroundResource(Resource.Drawable.expand_down_arrow);
         }
 
-        [OnClick(Resource.Id.layoutHeader)]
-        void OnClickDetails(object sender, EventArgs eventArgs)
-        {
-            itemAction = FindViewById<ImageView>(Resource.Id.itemAction);
+        //[OnClick(Resource.Id.layoutHeader)]
+        //void OnClickDetails(object sender, EventArgs eventArgs)
+        //{
+        //    itemAction = FindViewById<ImageView>(Resource.Id.itemAction);
 
-            try
-            {
-                if (!this.GetIsClicked())
-                {
-                    this.SetIsClicked(true);
-                    layoutDetails.Visibility = ViewStates.Gone;
-                    view1.Visibility = ViewStates.Gone;
-                    //headerText.SetCompoundDrawablesWithIntrinsicBounds(null, null, null,(Android.Graphics.Drawables.Drawable)Resource.Drawable.expand_right_arrow);
-                    itemAction.SetBackgroundResource(Resource.Drawable.expand_right_arrow);
-                }
-                else
-                {
-                    this.SetIsClicked(false);
-                    layoutDetails.Visibility = ViewStates.Visible;
-                    view1.Visibility = ViewStates.Visible;
-                    //headerText.SetCompoundDrawablesWithIntrinsicBounds(null, null, null,(Android.Graphics.Drawables.Drawable)Resource.Drawable.expand_down_arrow );
-                    itemAction.SetBackgroundResource(Resource.Drawable.expand_down_arrow);
-                }
+        //    try
+        //    {
+        //        if (!this.GetIsClicked())
+        //        {
+        //            this.SetIsClicked(true);
+        //            layoutDetails.Visibility = ViewStates.Gone;
+        //            view1.Visibility = ViewStates.Gone;
+        //            //headerText.SetCompoundDrawablesWithIntrinsicBounds(null, null, null,(Android.Graphics.Drawables.Drawable)Resource.Drawable.expand_right_arrow);
+        //            itemAction.SetBackgroundResource(Resource.Drawable.expand_right_arrow);
+        //        }
+        //        else
+        //        {
+        //            this.SetIsClicked(false);
+        //            layoutDetails.Visibility = ViewStates.Visible;
+        //            view1.Visibility = ViewStates.Visible;
+        //            //headerText.SetCompoundDrawablesWithIntrinsicBounds(null, null, null,(Android.Graphics.Drawables.Drawable)Resource.Drawable.expand_down_arrow );
+        //            itemAction.SetBackgroundResource(Resource.Drawable.expand_down_arrow);
+        //        }
 
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-                this.SetIsClicked(false);
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Utility.LoggingNonFatalError(e);
+        //        this.SetIsClicked(false);
+        //    }
+        //}
 
-        [OnClick(Resource.Id.headerText2)]
+        [OnClick(Resource.Id.ContainerAction2)]
         void OnClickHeader1(object sender, EventArgs eventArgs)
         {
+            //StartActivity(typeof(TermsAndConditionActivity));
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("SubmitEnquiry", "antiSpamPolicy"));
+                webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "tnbTermUse"));
+                this.StartActivity(webIntent);
 
-
-            StartActivity(typeof(TermsAndConditionActivity));
+            }
         }
 
-        [OnClick(Resource.Id.headerText3)]
+        [OnClick(Resource.Id.ContainerAction3)]
         void OnClickHeader2(object sender, EventArgs eventArgs)
         {
+            //StartActivity(typeof(TermsAndConditionActivity));
 
-
-            StartActivity(typeof(TermsAndConditionActivity));
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicy"));
+                webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicyTitle"));
+                this.StartActivity(webIntent);
+            }
         }
 
         protected override void OnPause()

@@ -176,7 +176,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 mPresenter.Start();
                 bool hasUpdatedMobile = MyTNBAccountManagement.GetInstance().IsUpdatedMobile();
                 bool hasUpdatedPassword = MyTNBAccountManagement.GetInstance().IsPasswordUpdated();
-                bool hasUpdateLargeFont = MyTNBAccountManagement.GetInstance().IsUpdateLargeFont();
+                //bool hasUpdateLargeFont = MyTNBAccountManagement.GetInstance().IsUpdateLargeFont();
                 //bool hasUpdateLanguage = MyTNBAccountManagement.GetInstance().IsUpdateLanguage();
                 if (hasUpdatedMobile)
                 {
@@ -184,11 +184,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     ShowMobileUpdateSuccess(userEntity.MobileNo);
                     MyTNBAccountManagement.GetInstance().SetIsUpdatedMobile(false);
                 }
-                if (hasUpdateLargeFont)
-                {
-                    ShowLargeFontUpdateSuccess();
-                    MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
-                }
+                //if (hasUpdateLargeFont)
+                //{
+                //    ShowLargeFontUpdateSuccess();
+                //    MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
+                //}
                 /*if (hasUpdateLanguage)
                 {
                     ShowLanguageUpdateSuccess();
