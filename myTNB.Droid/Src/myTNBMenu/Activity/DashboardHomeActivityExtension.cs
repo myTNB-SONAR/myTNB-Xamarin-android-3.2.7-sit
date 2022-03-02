@@ -402,6 +402,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             try
             {
                 string caNumber = string.Empty;
+                bool isOwner = false;
                 if (DBRUtility.Instance.IsAccountEligible)
                 {
                     List<string> caList = DBRUtility.Instance.GetCAList();
@@ -435,6 +436,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         return;
                     }
                     caNumber = dbrAccount.AccNum;
+                    isOwner = dbrAccount.isOwned;
                 }
 
                 if (!AccessTokenCache.Instance.HasTokenSaved(mainActivity))
@@ -443,7 +445,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     AccessTokenCache.Instance.SaveAccessToken(mainActivity, accessToken);
                 }
                 GetBillRenderingResponse billRenderingResponse = await DBRManager.Instance.GetBillRendering(caNumber
-                    , AccessTokenCache.Instance.GetAccessToken(mainActivity));
+                    , AccessTokenCache.Instance.GetAccessToken(mainActivity), isOwner);
 
                 mainActivity.HideProgressDialog();
 

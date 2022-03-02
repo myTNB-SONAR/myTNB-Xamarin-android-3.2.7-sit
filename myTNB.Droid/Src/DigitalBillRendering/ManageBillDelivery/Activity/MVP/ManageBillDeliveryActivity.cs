@@ -1062,7 +1062,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         accountSelected = account.IsSelected,
                         isTaggedSMR = account.IsTaggedSMR,
                         accountAddress = account.AccountStAddress.ToUpper(),
-                        accountOwnerName = account.OwnerName
+                        accountOwnerName = account.OwnerName,
+                        IsOwner = account.isOwned
                     };
                     dbrEligibleAccountList.Add(dbrEligibleAccount);
                 });

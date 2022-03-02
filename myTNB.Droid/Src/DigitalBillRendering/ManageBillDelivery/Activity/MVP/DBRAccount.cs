@@ -15,5 +15,6 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
         public string mobileNumber { get; set; }
         public bool isTaggedSMR { get; set; }
         public string accountOwnerName { get; set; }
+        public bool IsOwner { get; set; }
     }
 }

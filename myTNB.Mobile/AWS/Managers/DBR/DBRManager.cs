@@ -36,7 +36,8 @@ namespace myTNB.Mobile
         /// <param name="accessToken">Generated Access Token</param>
         /// <returns>Rendeting method of CA</returns>
         public async Task<GetBillRenderingResponse> GetBillRendering(string ca
-            , string accessToken)
+            , string accessToken
+            , bool isOwner = false)
         {
             GetBillRenderingResponse response = new GetBillRenderingResponse();
             if (IsBillRenderingEnabled)
@@ -64,6 +65,7 @@ namespace myTNB.Mobile
                         && response.StatusDetail != null
                         && response.StatusDetail.Code.IsValid())
                     {
+                        response.Content.IsOwner = isOwner;
                         response.StatusDetail = AWSConstants.Services.GetBillRendering.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else

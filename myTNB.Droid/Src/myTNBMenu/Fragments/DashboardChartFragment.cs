@@ -2122,7 +2122,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             txtAddress.Text = selectedAccount.AddStreet;
 
-             //if not owner mask the address IRUL
+            //if not owner mask the address IRUL
             //if (!selectedAccount.IsOwner == true)
             //{
             //    if (!selectedAccount.IsHaveAccess == true)
@@ -5303,7 +5303,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
                         AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
                     }
-                    billrenderingresponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                    billrenderingresponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this.Activity), selectedAccount.IsOwner);
                     //Nullity Check
                     if (billrenderingresponse != null
                        && billrenderingresponse.StatusDetail != null
@@ -11441,7 +11441,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
                 }
                 _billRenderingResponse = await DBRManager.Instance.GetBillRendering(contractAccount,
-                    AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                    AccessTokenCache.Instance.GetAccessToken(this.Activity), GetSelectedAccount().IsOwner);
 
                 if (_billRenderingResponse != null
                    && _billRenderingResponse.StatusDetail != null

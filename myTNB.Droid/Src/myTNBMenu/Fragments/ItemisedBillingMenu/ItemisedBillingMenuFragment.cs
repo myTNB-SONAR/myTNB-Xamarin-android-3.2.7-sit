@@ -614,7 +614,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                 AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
                             }
                             billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum
-                                , AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                                , AccessTokenCache.Instance.GetAccessToken(this.Activity), dbrAccount.IsOwner);
                             _isOwner = selectedAccount.IsOwner && DBRUtility.Instance.IsCAEligible(dbrAccount.AccountNum);
 
                             if (billRenderingResponse != null

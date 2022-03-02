@@ -670,6 +670,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 string caNumber = string.Empty;
+                bool isOwner = false;
                 if (DBRUtility.Instance.IsAccountEligible)
                 {
                     List<string> caList = DBRUtility.Instance.GetCAList();
@@ -696,6 +697,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         return;
                     }
                     caNumber = dbrAccount.AccNum;
+                    isOwner = dbrAccount.isOwned;
                 }
 
                 if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
@@ -704,7 +706,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
                 }
                 billRenderingResponse = await DBRManager.Instance.GetBillRendering(caNumber
-                    , AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                    , AccessTokenCache.Instance.GetAccessToken(this.Activity), isOwner);
 
                 HideProgressDialog();
 
