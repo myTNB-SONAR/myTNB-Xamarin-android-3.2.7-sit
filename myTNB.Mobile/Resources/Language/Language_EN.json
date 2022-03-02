@@ -104,7 +104,7 @@
     "tutorialSwipeTextNew": "Swipe to see more, double tap to dismiss.",
     "tutorialSwipeTextlastNew": "Double tap to dismiss.",
     "dbrPaperBill": "You’re receiving <b>Paper Bill</b> for this account. <b>Go Paperless today!</b>",
-    "dbrPaperBillNonOwner": "You’re receiving Paper Bill for this account.",
+    "dbrPaperBillNonOwner": "You’re receiving <b>Paper Bill</b> for this account.",
     "dbrEmail": "You’re receiving <b>myTNB & Email Bills</b> for this account.",
     "dbrWhatsApp": "You’re receiving <b>myTNB & Whatsapp Bills</b> for this account.",
     "dbrViaMyTNB": "Your account is environmentally friendly with <b>myTNB Bill!</b>"

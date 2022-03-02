@@ -432,8 +432,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
                         AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
                     }
+                    var isOwner = accountList.Find(x => { return x.AccNum == UserSessions.DBROwnerNotificationAccountNumber; }).isOwned;
                     GetBillRenderingResponse? billRenderingResponse = await DBRManager.Instance.GetBillRendering(UserSessions.DBROwnerNotificationAccountNumber
-                        , AccessTokenCache.Instance.GetAccessToken(this));
+                        , AccessTokenCache.Instance.GetAccessToken(this), isOwner);
                     if (billRenderingResponse != null
                         && billRenderingResponse.StatusDetail != null
                         && billRenderingResponse.StatusDetail.IsSuccess
@@ -825,7 +826,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 }
 
             }
-            
+
         }
 
         public void OnTimeStampRecieved(string timestamp)
@@ -1331,7 +1332,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     }
                     else if (deepLinkUrl.Contains("UpdateUserStatusDeactivate"))
                     {
-                        
+
                         urlSchemaData = "UpdateUserStatusDeactivate";
 
                         Regex regex = new Regex("\\bUpdateUserStatusDeactivate.*\\b");

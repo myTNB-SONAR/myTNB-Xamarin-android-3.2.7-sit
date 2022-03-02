@@ -137,11 +137,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     .Cancelable(false)
                     .Build();
 
-                
+
                 ManageSupplyItemComponent manageSupplyItem = GetManageSupply();
                 profileMenuItemsContent.AddView(manageSupplyItem);
-                
-                
+
+
 
 
                 //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
@@ -168,7 +168,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 //if not owner mask the address IRUL
                 if (!accountData.IsOwner == true)
                 {
-                    if(isWhiteList)
+                    if (isWhiteList)
                     {
                         txtAccountAddress.Text = accountData.AddStreet;
                         infoAddress.Visibility = ViewStates.Gone;
@@ -187,11 +187,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                             infoAddress.Visibility = ViewStates.Gone;
                         }
                     }
-                    
+
                 }
                 else
                 {
-                    
+
                     txtAccountAddress.Text = accountData.AddStreet;
                     infoAddress.Visibility = ViewStates.Gone;
                 }
@@ -420,7 +420,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
                         AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
                     }
-                    _billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this));
+                    _billRenderingResponse = await DBRManager.Instance.GetBillRendering(dbrAccount.AccountNum, AccessTokenCache.Instance.GetAccessToken(this), dbrAccount.IsOwner);
 
                     //Nullity Check
                     if (_billRenderingResponse != null
@@ -561,11 +561,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                      // EMPTY WILL CLOSE SNACKBAR
                  }
                );
-            View v = updateSnackbar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-            TextViewUtils.SetTextSize14(tv);
-            updateSnackbar.Show();
+                View v = updateSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                TextViewUtils.SetTextSize14(tv);
+                updateSnackbar.Show();
                 SetResult(Result.Ok);
             }
             catch (Exception e)

@@ -111,7 +111,9 @@ namespace myTNB.Mobile.AWS.Models
                 string message = string.Empty;
                 if (DBRType == MobileEnums.DBRTypeEnum.Paper)
                 {
-                    message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_PaperBill);
+                    message = LanguageManager.Instance.GetCommonValue(IsOwner
+                        ? I18NConstants.DBR_PaperBillOwner
+                        : I18NConstants.DBR_PaperBillTenant);
                 }
                 else if (DBRType == MobileEnums.DBRTypeEnum.Email
                     || DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
@@ -125,6 +127,12 @@ namespace myTNB.Mobile.AWS.Models
                 }
                 return message;
             }
+        }
+
+        [JsonIgnore]
+        public bool IsOwner
+        {
+            set; get;
         }
 
         /// <summary>

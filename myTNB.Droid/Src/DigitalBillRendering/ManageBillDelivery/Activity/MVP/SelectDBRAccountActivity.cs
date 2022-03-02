@@ -173,7 +173,7 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                         accountList[i].accountSelected = false;
                     }
                 }
-                GetBillRendering(accountList.Find(x => { return x.accountSelected; }).accountNumber);
+                GetBillRendering(accountList.Find(x => { return x.accountSelected; }));
             }
         }
 
@@ -190,15 +190,15 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
             }
         }
 
-        private void GetBillRendering(string accountNumber)
+        private void GetBillRendering(DBRAccount account)
         {
             Task.Run(() =>
             {
-                _ = GetBillRenderingAsync(accountNumber);
+                _ = GetBillRenderingAsync(account.accountNumber, account.IsOwner);
             });
         }
 
-        private async Task GetBillRenderingAsync(string accountNumber)
+        private async Task GetBillRenderingAsync(string accountNumber, bool isOwner)
         {
             try
             {
@@ -207,7 +207,7 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
                     AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
                 }
-                GetBillRenderingResponse response = await DBRManager.Instance.GetBillRendering(accountNumber, AccessTokenCache.Instance.GetAccessToken(this));
+                GetBillRenderingResponse response = await DBRManager.Instance.GetBillRendering(accountNumber, AccessTokenCache.Instance.GetAccessToken(this), isOwner);
 
                 HideProgressDialog();
                 //Nullity Check
