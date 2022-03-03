@@ -131,13 +131,16 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             if (fromPushDirectNotification)
             {
-                if (notificationDetails  != null && notificationDetails.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD)
+                if (notificationDetails  != null)
                 {
-                    Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                    HomeMenuUtils.ResetAll();
-                    DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                    StartActivity(DashboardIntent);
+                    if (notificationDetails.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD || notificationDetails.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_EB)
+                    {
+                        Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                        MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                        HomeMenuUtils.ResetAll();
+                        DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                        StartActivity(DashboardIntent);
+                    }
                 }
             }
             else

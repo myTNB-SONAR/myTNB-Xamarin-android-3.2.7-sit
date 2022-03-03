@@ -334,6 +334,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_TC = "CEP TC";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_RC = "CEP RC";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_NEWS = "98";
+        public const string NOTIFICATION_TYPE_ID_EB = "1000020";
 
         //Account Statement
         public const string BCRM_NOTIFICATION_ACCT_STATEMENT_READY = "20008";
