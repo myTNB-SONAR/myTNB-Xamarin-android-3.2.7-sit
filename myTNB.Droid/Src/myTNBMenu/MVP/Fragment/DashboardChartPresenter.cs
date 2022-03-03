@@ -128,7 +128,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             var ca = this.mView.GetSelectedAccount().AccountNum;
             bool dbrHasShown = MarketingPopUpEntity.GetDBRPopUpFlag(ca);
 
-            if (!dbrHasShown && DBRUtility.Instance.IsCAEligible(ca))
+            if (!dbrHasShown && DBRUtility.Instance.IsCAEligible(ca) && CustomerBillingAccount.CAIsOwner(ca))
             {
                 this.mView.CheckOnPaperFromBillRendering();
             }

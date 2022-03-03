@@ -1428,5 +1428,17 @@ namespace myTNB_Android.Src.Database.Model
                 criteriaModelList.Add(criteriaModel);
             });
         }
+
+        public static bool HasOwnerCA()
+        {
+            List<CustomerBillingAccount> allAccountList = List();
+            return allAccountList.Any(s => s.isOwned);
+        }
+
+        public static bool CAIsOwner(string ca)
+        {
+            List<CustomerBillingAccount> allAccountList = List();
+            return allAccountList.Find(x => x.AccNum == ca).isOwned;
+        }
     }
 }
