@@ -689,7 +689,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
                         bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
 
-                        if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard)
+                        if (!dbrPopUpHasShown && loginCount == 1 &&
+                            DBRUtility.Instance.ShouldShowHomeCard &&
+                            CustomerBillingAccount.HasOwnerCA())
                         {
                             ShowMarketingTooltip();
                             UserSessions.SaveDBRPopUpFlag(this.mPref, true);
@@ -1179,7 +1181,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
                         if (keypress)
                         {
-                           
+
                             if (isfromHome)
                             {
                                 bottomImg.SetImageResource(Resource.Drawable.profile_unverified);
@@ -1235,7 +1237,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
                         if (Indicator)
                         {
-                           
+
                             if (!flag)
                             {
                                 bottomImg.SetImageResource(Resource.Drawable.ic_menu_more);

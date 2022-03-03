@@ -501,7 +501,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
-                IsAccountDBREligible = DBRUtility.Instance.IsAccountEligible;
+                IsAccountDBREligible = DBRUtility.Instance.IsAccountEligible && CustomerBillingAccount.HasOwnerCA();
                 MyTNBAccountManagement.GetInstance().SetIsEBUser(EBUtility.Instance.IsAccountEligible);
                 MyTNBAccountManagement.GetInstance().SetIsSDUser(SDUtility.Instance.IsAccountEligible);
                 summaryNestScrollView.SmoothScrollingEnabled = true;
@@ -1244,17 +1244,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             discoverView.Visibility = ViewStates.Visible;
                             img_discover_digital_bill.Visibility = ViewStates.Visible;
                             discoverMoreSectionTitle.Visibility = ViewStates.Visible;
-
-                            //UserEntity user = UserEntity.GetActive();
-                            //int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
-                            //bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
-
-                            //if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && GetHomeTutorialCallState())
-                            //{
-                            //    ShowMarketingTooltip();
-                            //    UserSessions.SaveDBRPopUpFlag(PreferenceManager.GetDefaultSharedPreferences(this.Activity), true);
-                            //}
-
                         }
                         else
                         {
