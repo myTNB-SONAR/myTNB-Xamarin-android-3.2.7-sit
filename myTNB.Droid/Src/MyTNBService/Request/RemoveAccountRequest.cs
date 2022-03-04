@@ -14,14 +14,14 @@ namespace myTNB_Android.Src.MyTNBService.Request
         public bool IsInManageAccessList;
         public bool isOwner;
 
-        public RemoveAccountRequest(string accNum, bool tagSM, bool manageAccessList, bool isOwn)
+        public RemoveAccountRequest(string accNum, bool isTaggedSmartMeter, bool isOwner, bool isInManageAccessList)
         {
             deviceInf = new DeviceInfoRequest();
             this.accNum = accNum;
             this.featureInfo = FeatureInfoManager.Instance.GetFeatureInfo();
-            isTaggedSmartMeter = tagSM;
-            IsInManageAccessList = manageAccessList;
-            isOwner = isOwn;
+            this.isTaggedSmartMeter = isTaggedSmartMeter;
+            this.IsInManageAccessList = isInManageAccessList;
+            this.isOwner = isOwner;
         }
     }
 }

@@ -1566,7 +1566,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             BudgetAmount = acc.BudgetAmount,
                             CreatedDate = acc.CreatedDate,
                             BusinessArea = acc.BusinessArea,
-                            RateCategory = acc.RateCategory
+                            RateCategory = acc.RateCategory,
+                            IsInManageAccessList = acc.IsInManageAccessList
                         };
 
                         if (index != -1)
@@ -1613,7 +1614,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 BudgetAmount = newAcc.BudgetAmount,
                                 CreatedDate = newAcc.CreatedDate,
                                 BusinessArea = newAcc.BusinessArea,
-                                RateCategory = newAcc.RateCategory
+                                RateCategory = newAcc.RateCategory,
+                                IsInManageAccessList = newAcc.IsInManageAccessList
                             };
 
                             newExistingList.Add(newRecord);

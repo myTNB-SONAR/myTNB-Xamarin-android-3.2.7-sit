@@ -2611,6 +2611,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         if (MyTNBAccountManagement.GetInstance().IsFromLoginPage())
                         {
+                            MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
                             Handler h = new Handler();
                             Action myAction = () =>
                             {
@@ -2637,6 +2638,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     if (MyTNBAccountManagement.GetInstance().IsFromLoginPage())
                     {
+                        MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
                         Handler h = new Handler();
                         Action myAction = () =>
                         {

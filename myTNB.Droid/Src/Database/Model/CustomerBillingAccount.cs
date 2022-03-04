@@ -1354,7 +1354,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             bool enabled = false;
 
-            if (NonREAccountList().Count > 0)
+            if (NonREAccountList().Count > 0 || NCAccountList().Count > 0)
             {
                 enabled = true;
             }
