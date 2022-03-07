@@ -654,6 +654,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         account.accountCategoryId = item.accountCategoryId;
                         account.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                         account.accountTypeId = item.accountTypeId == null ? "1" : item.accountTypeId;
+                        account.IsInManageAccessList = item.IsInManageAccessList;
                         accounts.Add(account);
                     }
                     foreach (NewAccount item in additionalList)
@@ -670,6 +671,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         account.mobileNoOwner = item.mobileNoOwner;
                         account.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                         account.accountTypeId = item.accountTypeId == null ? "1" : item.accountTypeId;
+                        account.IsInManageAccessList = item.IsInManageAccessList;
                         accounts.Add(account);
                     }
                     this.userActionsListener.AddMultipleAccounts(apiKeyID, userID, email, name, accounts);
@@ -1112,6 +1114,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             newAccount.IsHaveAccess = item.IsHaveAccess;
                             newAccount.BusinessArea = item.BusinessArea;
                             newAccount.RateCategory = item.RateCategory;
+                            newAccount.IsInManageAccessList = item.IsInManageAccessList;
                             finalAccountList.Add(newAccount);
 
                             //UserSessions.SaveAddress(mSharedPref, false);
@@ -1140,6 +1143,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.IsHaveAccess = item.IsHaveAccess;
                             extraAccount.BusinessArea = item.BusinessArea;
                             extraAccount.RateCategory = item.RateCategory;
+                            extraAccount.IsInManageAccessList = item.IsInManageAccessList;
                             finalAccountList.Add(extraAccount);
                         }
                     }

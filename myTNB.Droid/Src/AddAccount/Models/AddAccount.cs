@@ -82,6 +82,10 @@ namespace myTNB_Android.Src.AddAccount.Models
         [AliasAs("BusinessArea")]
         public string BusinessArea { get; set; }
 
+        [JsonProperty(PropertyName = "IsInManageAccessList")]
+        [AliasAs("IsInManageAccessList")]
+        public bool IsInManageAccessList { get; set; }
+
         [JsonProperty(PropertyName = "RateCategory")]
         [AliasAs("RateCategory")]
         public string RateCategory { get; set; }
