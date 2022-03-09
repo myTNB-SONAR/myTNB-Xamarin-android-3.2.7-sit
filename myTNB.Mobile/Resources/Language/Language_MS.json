@@ -1514,7 +1514,8 @@
     "verifyEmailPopupBody": "Sila sahkan alamat e-mel anda dengan pautan yang telah kami kirimkan. Anda juga boleh meminta kiriman semula jika anda tidak menerima pautan tersebut.",
     "verifyEmailPopupTitle": "Pengesahan E-mel Belum Selesai",
     "toast_email_send": "Pengesahan e-mel telah dihantar ke {0}",
-    "toast_SuccessUpdateName": "Anda telah berjaya mengemaskini nama anda!"
+    "toast_SuccessUpdateName": "Anda telah berjaya mengemaskini nama anda!",
+    "verifiedAccountMessage": "MS_Your account is verified and secured! Submit applications and enjoy more of myTNB with greater peace of mind."
   },
   "ApplicationStatusLanding": {
     "title": "Status Permohonan",
@@ -2910,6 +2911,28 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "EKYCStatus": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "EKYCIdentification": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -3210,5 +3233,24 @@
     "subTitle2": "Notifikasi ini hanya tersedia untuk perkhidmatan elektrik TNB dan tidak termasuk mana-mana bekalan terputus yang terjadi di dalam premis.",
     "note": "*Ciri gangguan perkhidmatan hanya disediakan di kawasan yang terpilih dan akan dikembangkan ke kawasan yang lain tidak lama lagi!",
     "buttonCTA": "Baik, Faham!"
+  },
+  "DSLanding": {
+    "title": "MS_Verify Your Identity",
+    "continue": "MS_Continue",
+    "subHeader": "MS_Here's how it works:",
+    "howItWorksTitle1": "MS_Capture or upload your identification.",
+    "howItWorksDescription1": "MS_You may take or upload a photo of your identification.",
+    "howItWorksTitle2": "MS_Verify your identity with face verification.",
+    "howItWorksDescription2": "MS_Next step, scan your face using your device’s camera to verify it’s you.",
+    "howItWorksTitle3": "MS_Your verification is complete!",
+    "howItWorksDescription3": "MS_You may continue using myTNB to conveniently submit applications!"
+  },
+  "DSWebview": {
+    "title": "MS_Verify Your Identity",
+    "confirmPopupTitle": "MS_Are you sure you want to leave this page?",
+    "confirmPopupMessage": "MS_Leaving this page will cancel your progress so far and you would need to restart the verfication process.",
+    "leave": "Ya",
+    "stay": "Tidak"
   }
 }
+
