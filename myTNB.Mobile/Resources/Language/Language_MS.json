@@ -2310,7 +2310,7 @@
     "bodyDialogWhatIsThis": "Untuk melindungi maklumat anda, kami tidak memaparkan maklumat peribadi anda kepada bukan pemilik dan beberapa ciri aplikasi. Walaubagaimanapun, anda boleh memberikan mereka akses yang disenaraikan di sini jika sesuai dan mereka akan dimaklumkan mengenainya.",
     "manageUserDialogTitle": "Anda akan mengubah akses {0}.",
     "manageUserDialogMessage": "Setelah disahkan, akses {0} akan dikemas kini dan pengguna akan dimaklumkan mengenai akses yang telah anda pilih untuknya berkenaan akaun elektrik anda.",
-    "notSaveTitle": "Adakah anda pasti mahu keluar tanpa menyimpan perubahan akses {0} yang anda lakukan??",
+    "notSaveTitle": "Adakah anda pasti mahu keluar tanpa menyimpan perubahan akses {0} yang anda lakukan?",
     "notSaveBody": "Perubahan pada akses {0} tidak akan disimpan jika anda memilih untuk keluar dari halaman ini dan akses mereka akan kekal seperti sebelumnya.",
     "saveSuccess": "Perubahan terhadap akses pengguna telah disimpan dan pengguna telah diberitahu tentang kemas kini akses mereka.",
     "manageUserInviteAccessDialogTitle": "Adakah anda mahu menghantar satu lagi jemputan untuk menyertai myTNB?",

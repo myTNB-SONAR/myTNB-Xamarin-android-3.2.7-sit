@@ -177,7 +177,8 @@
     "accountLengthNew": "Please enter a valid 12-digit electricity account number",
     "error_duplicateAccountMessageNew": "This electricity account number has already been added to the list.",
     "error_emptyIcAndEmailOwner": "Email or phone number owner cannot be empty.",
-    "error_NotExistsAccountMessage": "The account number you entered cannot be found."
+    "error_NotExistsAccountMessage": "The account number you entered cannot be found.",
+    "accountNickNameError": "You must have a nickname for your account. You can use letters, numbers and special characters for the account nickname."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",

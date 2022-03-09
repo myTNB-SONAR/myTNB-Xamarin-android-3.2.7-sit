@@ -183,15 +183,22 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 edtAccountLabel.AddTextChangedListener(new InputFilterFormField(edtAccountLabel, textInputLayoutAccountLabel));
                 mFormField = new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC);
 
+                //nickname
                 edtAccountLabel.FocusChange += (sender, e) =>
                 {
                     textInputLayoutAccountLabel.HelperText = "";
-                    string accountLabel = edtAccountLabel.Text.Trim();
-                    if (e.HasFocus)
+                    string nickname = edtAccountLabel.Text.ToString().Trim();
+                    string accNum = edtAccountNo.Text.ToString().Trim();
+                    if (!e.HasFocus)
+                    {
+                        this.userActionsListener.ValidateEditText(accNum, nickname);
+                    }
+                    else
                     {
                         textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
                         textInputLayoutAccountLabel.HelperText = Utility.GetLocalizedHintLabel("nickname");
                     }
+
                     try
                     {
                         Activity.RunOnUiThread(() =>
@@ -213,6 +220,22 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     {
                         Utility.LoggingNonFatalError(exp);
                     }
+                };
+
+                edtAccountNo.FocusChange += (sender, e) =>
+                {
+                    textInputLayoutAccountLabel.HelperText = "";
+                    string nickname = edtAccountLabel.Text.ToString().Trim();
+                    string accNum = edtAccountNo.Text.ToString().Trim();
+                    if (!e.HasFocus)
+                    {
+                        this.userActionsListener.ValidateEditText(accNum, nickname);
+                    }
+                    else
+                    {
+                        RemoveNumberErrorMessage();
+                    }
+
                 };
 
                 if (Android.OS.Build.Manufacturer.ToLower() == "samsung")
@@ -256,6 +279,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 textInputLayoutAccountLabel.Error = null;
                 textInputLayoutAccountLabel.ErrorEnabled = false;
             }
+        }
+
+        public void ClearNameHint()
+        {
+            textInputLayoutAccountLabel.HelperText = null;
+            textInputLayoutAccountLabel.HelperTextEnabled = false;
         }
 
         public override void OnResume()
@@ -467,7 +496,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public void ShowEmptyAccountNickNameError()
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountLabel.Error = "Invalid Account NickName";
+            textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("accountNickNameError");
 
         }
 
@@ -537,6 +566,38 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
 
         }
+
+        public void ShowInvalidAccountNicknameError()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+
+                        if (textInputLayoutAccountLabel.Error != Utility.GetLocalizedErrorLabel("accountNickNameError"))
+                        {
+                            textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("accountNickNameError");  // fix bouncing issue
+                        }
+
+                        textInputLayoutAccountLabel.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
+
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)

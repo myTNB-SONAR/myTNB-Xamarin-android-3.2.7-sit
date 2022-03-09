@@ -41,9 +41,14 @@ namespace myTNB_Android.Src.AddAccount.MVP
             void ShowSameAccountNameError();
 
             /// <summary>
-            /// Show error message that account name is empty 
+            /// Show error message that account number is empty 
             /// </summary>
             void ShowInvalidAccountNumberError();
+
+            /// <summary>
+            /// Show error message that account name is empty 
+            /// </summary>
+            void ShowInvalidAccountNicknameError();
 
             /// <summary>
             /// Show add account service response
@@ -89,6 +94,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
             /// Clear form text
             /// </summary>
             void ClearText();
+
+            /// <summary>
+            /// Clear hint text
+            /// </summary>
+            void ClearNameHint();
 
             /// <summary>
             /// 
@@ -143,6 +153,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
             /// Validate account service call Api : ValidateManualAccountLinking
             /// </summary>
             void ValidateAccount(string apiKeyId, string accountNum, string accountType, string userIdentificationNum, string suppliedMotherName, bool isOwner, string accountLabel);
+
+            /// <summary>
+            /// Check add account error for all fileds
+            /// </summary>
+            bool ValidateEditText(string accountno, string accountNickName);
 
             /// <summary>
             /// Check add account form all fileds are enterd properly
