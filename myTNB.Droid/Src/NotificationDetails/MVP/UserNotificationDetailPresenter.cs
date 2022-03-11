@@ -22,6 +22,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.NotificationDetails.Models;
+using myTNB_Android.Src.NotificationDetails.Activity;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
@@ -349,6 +350,15 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_APP_UPDATE_2:
                         {
                             imageResourceBanner = Resource.Drawable.Banner_Notification_App_Update;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_DIGITAL_SIGNATURE:
+                        {
+                            imageResourceBanner = Resource.Drawable.Icon_Notification_Details_Header;
+                            //primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DIGITAL_SIGNATURE),
+                            //    delegate () { DSNotificationDetails(); });
+                            //primaryCTA.SetSolidCTA(true);
+                            //ctaList.Add(primaryCTA);
                             break;
                         }
                     default:
