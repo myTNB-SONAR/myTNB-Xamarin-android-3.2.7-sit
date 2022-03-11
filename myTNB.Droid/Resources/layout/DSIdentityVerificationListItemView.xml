@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@android:color/transparent">
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/white">
+		<ImageView
+			android:layout_width="60dp"
+			android:layout_height="60dp"
+			android:scaleType="fitXY"
+			android:adjustViewBounds="true"
+			android:contentDescription=""
+			android:layout_marginTop="16dp"
+			android:layout_marginLeft="16dp"
+			android:layout_marginBottom="16dp"
+			android:layout_gravity="center_vertical"
+			android:id="@+id/identityVerListItemImage"
+			android:src="@drawable/icon_identity_verification_1"/>
+		<RelativeLayout
+			android:id="@+id/identityVerListItemLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/white"
+			android:layout_marginLeft="16dp"
+			android:paddingBottom="16dp"
+			android:layout_gravity="center_vertical">
+			<TextView
+				android:id="@+id/identityVerListItemTitle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_toRightOf="@+id/identityVerListItemImage"
+				android:layout_marginTop="16dp"
+				android:layout_marginRight="16dp"
+				tools:text="Have your identification ready!"
+				android:textColor="@color/tunaGrey"
+				android:textSize="12dp"
+				android:lineHeight="16dp">
+			</TextView>
+			<TextView
+				android:id="@+id/identityVerListItemDesc"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_toRightOf="@+id/identityVerListItemImage"
+				android:layout_below="@+id/identityVerListItemTitle"
+				android:layout_marginTop="4dp"
+				android:layout_marginBottom="16dp"
+				android:layout_marginRight="16dp"
+				tools:text="Before you start, get your identification ready."
+				android:textColor="@color/tunaGrey"
+				android:textSize="12dp"
+				android:lineHeight="16dp">
+			</TextView>
+		</RelativeLayout>
+	</LinearLayout>
+</LinearLayout>

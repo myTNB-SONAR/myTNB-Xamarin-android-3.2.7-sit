@@ -1514,7 +1514,8 @@
     "verifyEmailPopupBody": "Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
     "verifyEmailPopupTitle": "Pending Email Verification",
     "toast_email_send": "An email verification link has been sent to {0}",
-    "toast_SuccessUpdateName": "You’ve successfully updated your name!"
+    "toast_SuccessUpdateName": "You’ve successfully updated your name!",
+    "verifiedAccountMessage": "Your account is verified and secured! Submit applications and enjoy more of myTNB with greater peace of mind."
   },
   "ApplicationStatusLanding": {
     "title": "Application Status",
@@ -2910,6 +2911,28 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "EKYCStatus": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "EKYCIdentification": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -3210,5 +3233,23 @@
     "subTitle2": "These notifications are only applicable to TNB electricity services and not any power-trips that may be happening within your premises.",
     "note": "*Service disruption feature is currently only available in selected areas but we will be expanding to more areas soon!",
     "buttonCTA": "Okay, Got It!"
+  },
+  "DSLanding": {
+    "title": "Verify Your Identity",
+    "continue": "Continue",
+    "subHeader": "Here's how it works:",
+    "howItWorksTitle1": "Capture or upload your identification.",
+    "howItWorksDescription1": "You may take or upload a photo of your identification.",
+    "howItWorksTitle2": "Verify your identity with face verification.",
+    "howItWorksDescription2": "Next step, scan your face using your device’s camera to verify it’s you.",
+    "howItWorksTitle3": "Your verification is complete!",
+    "howItWorksDescription3": "You may continue using myTNB to conveniently submit applications!"
+  },
+  "DSWebview": {
+    "title": "Verify Your Identity",
+    "confirmPopupTitle": "Are you sure you want to leave this page?",
+    "confirmPopupMessage": "Leaving this page will cancel your progress so far and you would need to restart the verfication process.",
+    "leave": "Leave",
+    "stay": "Stay"
   }
 }

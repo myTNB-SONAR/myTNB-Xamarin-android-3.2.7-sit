@@ -7169,6 +7169,85 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\DSIdentityVerificationListItemView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\DSIdentityVerificationView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\DSWebView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\DigitalSignature\IdentityVerification\Activity\DSIdentityVerificationActivity.cs" />
+    <Compile Include="Src\DigitalSignature\IdentityVerification\Fragment\DSIdentityVerificationListItemComponent.cs" />
+    <Compile Include="Src\DigitalSignature\IdentityVerification\MVP\DSIdentityVerificationContract.cs" />
+    <Compile Include="Src\DigitalSignature\IdentityVerification\MVP\DSIdentityVerificationPresenter.cs" />
+    <Compile Include="Src\DigitalSignature\WebView\Activity\DSWebViewActivity.cs" />
+    <Compile Include="Src\DigitalSignature\WebView\MVP\DSWebViewContract.cs" />
+    <Compile Include="Src\DigitalSignature\WebView\MVP\DSWebViewPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -9557,6 +9636,14 @@
     <Folder Include="Src\Helper\" />
     <Folder Include="Src\OverVoltageClaim\Model\" />
     <Folder Include="Src\Utils\Notification\" />
+    <Folder Include="Src\DigitalSignature\" />
+    <Folder Include="Src\DigitalSignature\IdentityVerification\" />
+    <Folder Include="Src\DigitalSignature\WebView\" />
+    <Folder Include="Src\DigitalSignature\IdentityVerification\Activity\" />
+    <Folder Include="Src\DigitalSignature\IdentityVerification\Fragment\" />
+    <Folder Include="Src\DigitalSignature\IdentityVerification\MVP\" />
+    <Folder Include="Src\DigitalSignature\WebView\Activity\" />
+    <Folder Include="Src\DigitalSignature\WebView\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
