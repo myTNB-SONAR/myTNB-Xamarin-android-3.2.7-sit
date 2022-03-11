@@ -38,6 +38,7 @@ using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewReceipt.Activity;
+using myTNB_Android.Src.DigitalSignature.NotificationDetails.Activity;
 using Newtonsoft.Json;
 using Refit;
 
@@ -267,6 +268,10 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW)
                 {
                     SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_DIGITAL_SIGNATURE)
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DIGITAL_SIGNATURE));
                 }
 
                 if (pushFromDashboard)
@@ -604,6 +609,13 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 .SetContentGravity(GravityFlags.Center)
                 .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                 .Build().Show();
+        }
+
+        public void DSNotificationDetails()
+        {
+            Intent notifDetailsForDS = new Intent(this, typeof(DSNotificationDetailsActivity));
+            StartActivity(notifDetailsForDS);
+
         }
 
         protected override void OnPause()

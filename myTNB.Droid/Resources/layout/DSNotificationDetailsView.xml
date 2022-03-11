@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.Notification"
+    android:id="@+id/rootView">
+    <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+         
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:id="@+id/notificationMainLayout"
+            android:layout_above="@+id/notificationCTAComponent"
+            android:background="@color/lightGrey">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@drawable/login_background_bg">
+                <ImageView
+                    android:id="@+id/img_display"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="30dp"
+                    android:layout_marginBottom="6dp"
+                    android:src="@drawable/Icon_Notification_Details_Header" />
+                <TextView
+                    android:id="@+id/notificationDetailTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Verify your identity now to enjoy more of myTNB!"
+                    android:textSize="16dp"
+                    android:gravity="left|center"
+                    android:textColor="@color/powerBlue"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"/>
+                
+            </LinearLayout>
+        </ScrollView>
+     </RelativeLayout>   
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@color/white"
+            android:layout_gravity="bottom">
+           
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Verify Now"
+                android:id="@+id/btnVerify"
+                android:layout_marginTop="15dp"
+                style="@style/Theme.RegisterButton" />
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

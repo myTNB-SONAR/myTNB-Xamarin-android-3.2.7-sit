@@ -7169,6 +7169,91 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Notification_Details_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Notification_Details_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Notification_Details_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Notification_Details_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Notification_Details_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Notification_Details_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Notification_Details_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Notification_Details_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Notification_Details_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Notification_Details_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Notification_Details_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Notification_Details_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Notification_Details_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Notification_Details_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Notification_Details_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Notification_Details_Header.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Notification_Details_Header.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Notification_Details_Header.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Notification_Details_Header.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Notification_Details_Header.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\DSNotificationDetailsView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\DigitalSignature\NotificationDetails\Activity\DSNotificationDetailsActivity.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_1.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -9637,6 +9722,8 @@
     <Folder Include="Src\OverVoltageClaim\Model\" />
     <Folder Include="Src\Utils\Notification\" />
     <Folder Include="Src\DigitalSignature\" />
+    <Folder Include="Src\DigitalSignature\NotificationDetails\" />
+    <Folder Include="Src\DigitalSignature\NotificationDetails\Activity\" />
     <Folder Include="Src\DigitalSignature\IdentityVerification\" />
     <Folder Include="Src\DigitalSignature\WebView\" />
     <Folder Include="Src\DigitalSignature\IdentityVerification\Activity\" />
