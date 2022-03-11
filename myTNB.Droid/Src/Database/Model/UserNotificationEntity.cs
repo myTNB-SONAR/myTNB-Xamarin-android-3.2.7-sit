@@ -255,7 +255,7 @@ namespace myTNB_Android.Src.Database.Model
                     else
                     {
                         if (item.IsForceDisplay
-                            || (UserEntity.GetActive().Email.Equals(item.Email)
+                            || (UserEntity.GetActive().Email.ToLower().Equals(item.Email.ToLower())
                             && MyTNBAccountManagement.GetInstance().IsAccountNumberExist(item.AccountNum)))
                         {
                             if (item.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD)

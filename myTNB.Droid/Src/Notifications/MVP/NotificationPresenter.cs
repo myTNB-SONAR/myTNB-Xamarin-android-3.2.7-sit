@@ -298,6 +298,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                             try
                             {
                                 UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new BaseRequest());
+                                string dt = JsonConvert.SerializeObject(new BaseRequest());
                                 if (response != null && response.Response != null && response.Response.ErrorCode == "7200")
                                 {
                                     if (response.GetData() != null && response.GetData().UserNotificationList != null)
@@ -531,7 +532,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                         }
                                         else
                                         {
-                                            if (UserEntity.GetActive().Email.Equals(userNotificationData.Email)
+                                            if (UserEntity.GetActive().Email.ToLower().Equals(userNotificationData.Email.ToLower())
                                                 && MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
                                             {
                                                 if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
