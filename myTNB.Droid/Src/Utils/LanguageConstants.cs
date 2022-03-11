@@ -18,6 +18,8 @@
         internal static readonly string DBR_WEBVIEW = "DBRWebview";
         internal static readonly string USAGE = "Usage";
         internal static readonly string MANAGE_DIGITAL_BILL = "ManageDigitalBillLanding";
+        internal static readonly string DS_LANDING = "DSLanding";
+        internal static readonly string DS_WEBVIEW = "DSWebview";
 
         internal struct Common
         {
@@ -211,6 +213,28 @@
             internal static readonly string DBR_INFO_DESC_2 = "dbrInfoDescription2";
             internal static readonly string DBR_INFO_DESC_2_V2 = "dbrInfoDescription2V2";
             internal static readonly string DBR_INFO_DESC_3 = "dbrInfoDescription3";
+        }
+
+        internal struct DSLanding
+        {
+            internal static readonly string TITLE = "title";
+            internal static readonly string CONTINUE = "continue";
+            internal static readonly string SUB_HEADER = "subHeader";
+            internal static readonly string ITEM_LIST_TITLE_1 = "howItWorksTitle1";
+            internal static readonly string ITEM_LIST_TITLE_2 = "howItWorksTitle2";
+            internal static readonly string ITEM_LIST_TITLE_3 = "howItWorksTitle3";
+            internal static readonly string ITEM_LIST_DESC_1 = "howItWorksDescription1";
+            internal static readonly string ITEM_LIST_DESC_2 = "howItWorksDescription2";
+            internal static readonly string ITEM_LIST_DESC_3 = "howItWorksDescription3";
+        }
+
+        internal struct DSWebView
+        {
+            internal static readonly string TITLE = "title";
+            internal static readonly string CONFIRM_POPUP_TITLE = "confirmPopupTitle";
+            internal static readonly string CONFIRM_POPUP_MSG = "confirmPopupMessage";
+            internal static readonly string LEAVE = "leave";
+            internal static readonly string STAY = "stay";
         }
     }
 }

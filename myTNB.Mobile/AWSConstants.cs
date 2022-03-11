@@ -41,7 +41,7 @@
             internal const string GetMultiBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
             internal const string StartDigitalBill = "https://devdbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://devdbr.mytnb.com.my/PaperBill/OptIn";
-            public const string SSO = "https://devdbr.mytnb.com.my/Sso?s={0}";
+            public const string DBRSSO = "https://devdbr.mytnb.com.my/Sso?s={0}";
 #elif MASTER || SIT || DEBUG
             internal const string Domain = "https://stagingapi.mytnb.com.my";
             internal const string GenerateAccessToken = "https://stagingapi.mytnb.com.my/Identity/api/v1";
@@ -50,7 +50,9 @@
             internal const string GetMultiBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
             internal const string StartDigitalBill = "https://stagingdbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://stagingdbr.mytnb.com.my/PaperBill/OptIn";
-            public const string SSO = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
+            internal const string DSRedirect = "https://stagingds.mytnb.com.my/EKYC/StartEKYC";
+            public const string DBRSSO = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
+            public const string DSSSO = "https://stagingds.mytnb.com.my/Sso?s={0}";
 #else
             internal const string Domain = "https://api.mytnb.com.my";
             internal const string GenerateAccessToken = "https://api.mytnb.com.my/Identity/api/v1";
@@ -59,7 +61,8 @@
             internal const string GetMultiBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
             internal const string StartDigitalBill = "https://dbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://dbr.mytnb.com.my/PaperBill/OptIn";
-            public const string SSO = "https://dbr.mytnb.com.my/Sso?s={0}";
+            internal const string DSRedirect = "https://stagingds.mytnb.com.my/EKYC/StartEKYC";//stub
+            public const string DBRSSO = "https://dbr.mytnb.com.my/Sso?s={0}";
 #endif
         }
 
@@ -91,7 +94,9 @@
         //Services
         public struct Services
         {
+            //Identity
             internal const string GenerateAccessToken = "GenerateAccessToken";
+            //DBR
             internal const string GetBillRendering = "BillRendering";
             internal const string PostMultiBillRendering = "MultiBillRendering";
             internal const string PostInstallationDetails = "InstallationDetails";
@@ -99,6 +104,9 @@
             internal const string PostAccountStatement = "AccountStatement";
             internal const string PostAccountStatementNotification = "AccountStatementNotification";
             public const string GetEligibility = "Eligibility";
+            //DS
+            internal const string GetEKYCStatus = "EKYCStatus";
+            internal const string GetEKYCIdentification = "EKYCIdentification";
         }
     }
 }

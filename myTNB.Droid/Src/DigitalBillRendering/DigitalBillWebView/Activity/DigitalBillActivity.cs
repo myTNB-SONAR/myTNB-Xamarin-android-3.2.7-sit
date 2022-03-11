@@ -228,7 +228,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 {
                     UserEntity user = UserEntity.GetActive();
                     string myTNBAccountName = user?.DisplayName ?? string.Empty;
-                    string signature = SSOManager.Instance.GetSignature(myTNBAccountName
+                    string signature = SSOManager.Instance.GetDBRSignature(myTNBAccountName
                     , AccessTokenCache.Instance.GetAccessToken(this)
                     , user.DeviceId ?? string.Empty
                     , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
@@ -241,7 +241,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     , BillRendering.Content.RedirectURL
                     , _accountNumber);
 
-                    string ssoURL = string.Format(AWSConstants.Domains.SSO, signature);
+                    string ssoURL = string.Format(AWSConstants.Domains.DBRSSO, signature);
 
                     micrositeWebView.SetWebChromeClient(new WebChromeClient());
                     micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
