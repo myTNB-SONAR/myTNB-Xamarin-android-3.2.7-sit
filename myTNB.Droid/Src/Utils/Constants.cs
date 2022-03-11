@@ -342,7 +342,7 @@ namespace myTNB_Android.Src.Utils
         public const string ACCOUNT_FULLNAME_PATTERN = "#OwnerName#";
         public const string ACCOUNT_ADDRESS_PATTERN = "#MaskedAddress#";
 
-        
+
         //DBR
         public const string BCRM_NOTIFICATION_DBR_EMAIL = "21003";
         public const string BCRM_NOTIFICATION_DBR_EBILL = "21001";
@@ -363,6 +363,7 @@ namespace myTNB_Android.Src.Utils
         //App Update
         public const string BCRM_NOTIFICATION_APP_UPDATE = "20006";
         public const string BCRM_NOTIFICATION_APP_UPDATE_2 = "20007";
+        public const string BCRM_NOTIFICATION_APP_UPDATE_OT = "20009";
 
         //Bill Estimation
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";

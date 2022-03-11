@@ -249,11 +249,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewMyUsage"),
                                delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
-                            
+
                             secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "addNickname"),
                             delegate () { ViewManageAccess(notificationDetails); });
                             ctaList.Add(secondaryCTA);
-                            
+
 
                             break;
                         }
@@ -347,6 +347,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_APP_UPDATE:
                     case Constants.BCRM_NOTIFICATION_APP_UPDATE_2:
+                    case Constants.BCRM_NOTIFICATION_APP_UPDATE_OT:
                         {
                             imageResourceBanner = Resource.Drawable.Banner_Notification_App_Update;
                             break;
@@ -400,7 +401,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
                 notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
                     notificationDetailMessage, ctaList);
-                
+
             }
             catch (Exception e)
             {
