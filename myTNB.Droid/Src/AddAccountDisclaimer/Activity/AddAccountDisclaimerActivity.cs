@@ -97,42 +97,9 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
             //itemAction.SetBackgroundResource(Resource.Drawable.expand_down_arrow);
         }
 
-        //[OnClick(Resource.Id.layoutHeader)]
-        //void OnClickDetails(object sender, EventArgs eventArgs)
-        //{
-        //    itemAction = FindViewById<ImageView>(Resource.Id.itemAction);
-
-        //    try
-        //    {
-        //        if (!this.GetIsClicked())
-        //        {
-        //            this.SetIsClicked(true);
-        //            layoutDetails.Visibility = ViewStates.Gone;
-        //            view1.Visibility = ViewStates.Gone;
-        //            //headerText.SetCompoundDrawablesWithIntrinsicBounds(null, null, null,(Android.Graphics.Drawables.Drawable)Resource.Drawable.expand_right_arrow);
-        //            itemAction.SetBackgroundResource(Resource.Drawable.expand_right_arrow);
-        //        }
-        //        else
-        //        {
-        //            this.SetIsClicked(false);
-        //            layoutDetails.Visibility = ViewStates.Visible;
-        //            view1.Visibility = ViewStates.Visible;
-        //            //headerText.SetCompoundDrawablesWithIntrinsicBounds(null, null, null,(Android.Graphics.Drawables.Drawable)Resource.Drawable.expand_down_arrow );
-        //            itemAction.SetBackgroundResource(Resource.Drawable.expand_down_arrow);
-        //        }
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Utility.LoggingNonFatalError(e);
-        //        this.SetIsClicked(false);
-        //    }
-        //}
-
         [OnClick(Resource.Id.ContainerAction2)]
         void OnClickHeader1(object sender, EventArgs eventArgs)
         {
-            //StartActivity(typeof(TermsAndConditionActivity));
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
@@ -147,14 +114,14 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
         [OnClick(Resource.Id.ContainerAction3)]
         void OnClickHeader2(object sender, EventArgs eventArgs)
         {
-            //StartActivity(typeof(TermsAndConditionActivity));
-
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
+                string stringA = Utility.GetLocalizedLabel("AddAccount", "DiclaimerHeaderPersonalData").Replace("<b>", "");
+                string stringb = stringA.Replace("</b>", "");
                 Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
                 webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicy"));
-                webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicyTitle"));
+                webIntent.PutExtra(Constants.IN_APP_TITLE, stringb);
                 this.StartActivity(webIntent);
             }
         }

@@ -69,6 +69,12 @@ namespace myTNB_Android.Src.MyProfileDetail.MVP
             /// </summary>
             /// <param name="exception"></param>
             void ShowRetryOptionsCodeUnknownException(Exception exception);
+
+            /// <summary>
+            /// Determines if Account Verifed banner is to be shown or not
+            /// </summary>
+            /// <param name="isVerified"></param>
+            void ShowAccountVerified(bool isVerified);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -78,6 +84,11 @@ namespace myTNB_Android.Src.MyProfileDetail.MVP
             /// </summary>
             /// <param name="email"></param>
             void ResendEmailVerify(string apiKeyId, string email);
+
+            /// <summary>
+            /// Triggers API Call to get Account Verified status
+            /// </summary>
+            void GetEKYCStatusOnCall();
         }
     }
 }

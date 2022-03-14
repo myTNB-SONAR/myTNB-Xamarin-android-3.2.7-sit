@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -6,11 +7,13 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.Fragment;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP;
 using myTNB_Android.Src.DigitalSignature.WebView.Activity;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 {
@@ -35,7 +38,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            _ = new DSIdentityVerificationPresenter(this);
+            _ = new DSIdentityVerificationPresenter(this, this);
             this.userActionsListener?.OnInitialize();
         }
 
@@ -103,8 +106,13 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         [OnClick(Resource.Id.identityVerificationBtnContinue)]
         void ContinueOnClick(object sender, EventArgs eventArgs)
         {
-            Intent nbrDiscoverMoreIntent = new Intent(this, typeof(DSWebViewActivity));
-            StartActivity(nbrDiscoverMoreIntent);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                ShowProgressDialog();
+                this.userActionsListener.GetEKYCIdentificationOnCall();
+                this.SetIsClicked(false);
+            }
         }
 
         public void RenderContent()
@@ -156,6 +164,124 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                     Utility.LoggingNonFatalError(e);
                 }
             });
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowCompletedOnOtherDevicePopUp()
+        {
+            RunOnUiThread(() =>
+            {
+                HideProgressDialog();
+
+                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_ONE_BUTTON)
+                   .SetHeaderImage(Resource.Drawable.Icon_DS_Verify_Processing_Pop_Up)
+                   .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_VERIFY_PROCESSING_TITLE))
+                   .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_VERIFY_PROCESSING_MSG))
+                   .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.BACK_TO_HOME))
+                   .SetCTAaction(() =>
+                   {
+                       SetResult(Result.Canceled);
+                       Finish();
+                   })
+                   .Build();
+                marketingTooltip.Show();
+            });
+        }
+
+        public void ShowIdNotRegisteredPopUp()
+        {
+            RunOnUiThread(() =>
+            {
+                HideProgressDialog();
+
+                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_TWO_BUTTON)
+                   .SetHeaderImage(Resource.Drawable.Icon_DS_Verify_Pop_Up)
+                   .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_NO_REG_ID_TITLE))
+                   .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_NO_REG_ID_MSG))
+                   .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_CANCEL))
+                   .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_VERIFY_NOW))
+                   .SetCTAaction(() => { })
+                   .SetSecondaryCTAaction(() => OnVerifyNow())
+                   .Build();
+                marketingTooltip.Show();
+            });
+        }
+
+        public void ShowPrepareDocumentPopUp(int? idType)
+        {
+            RunOnUiThread(() =>
+            {
+                HideProgressDialog();
+
+                if (idType == null)
+                {
+                    return;
+                }
+
+                try
+                {
+                    string idTypeString = string.Empty;
+                    var selectorContent = LanguageManager.Instance.GetSelectorsByPage<DSIdTypeSelectorModel>(DigitalSignatureConstants.DS_LANDING_SELECTOR);
+                    if (selectorContent.ContainsKey(DigitalSignatureConstants.DS_ID_TYPE))
+                    {
+                        List<DSIdTypeSelectorModel> idTypeList = new List<DSIdTypeSelectorModel>();
+                        idTypeList = selectorContent[DigitalSignatureConstants.DS_ID_TYPE];
+                        if (idTypeList.Count > 0)
+                        {
+                            idTypeString = idTypeList.Find(x => { return x.key == idType.ToString(); }).description;
+                            var dialogMessage = string.Format(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_ACCEPTED_ID_MSG), idTypeString);
+                            var dropdownMessage = string.Format(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_DROPDOWN_MSG), idTypeString);
+
+                            MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_DROPDOWN_TWO_BUTTON)
+                               .SetHeaderImage(Resource.Drawable.Icon_DS_Verify_Pop_Up)
+                               .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_ACCEPTED_ID_TITLE))
+                               .SetMessage(dialogMessage)
+                               .SetDropdownTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_DROPDOWN_TITLE))
+                               .SetDropdownMessage(dropdownMessage)
+                               .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_CANCEL))
+                               .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_VERIFY_NOW))
+                               .SetCTAaction(() => { })
+                               .SetSecondaryCTAaction(() => OnVerifyNow())
+                               .Build();
+                            marketingTooltip.Show();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
+        }
+
+        private void OnVerifyNow()
+        {
+            Intent intent = new Intent(this, typeof(DSWebViewActivity));
+            intent.PutExtra(DigitalSignatureConstants.DS_IDENTIFICATION_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetIdentificationModel()));
+            StartActivity(intent);
         }
     }
 }

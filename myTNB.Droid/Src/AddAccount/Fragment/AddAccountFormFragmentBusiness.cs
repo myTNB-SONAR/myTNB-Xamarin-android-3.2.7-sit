@@ -505,6 +505,36 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             //mSnackBar.Show();
         }
 
+        public void ShowInvalidAccountNicknameError()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+
+                        if (textInputLayoutAccountLabel.Error != Utility.GetLocalizedErrorLabel("accountNickNameError"))
+                        {
+                            textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("accountNickNameError");  // fix bouncing issue
+                        }
+
+                        textInputLayoutAccountLabel.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
         public void ShowAddAccountInvalid(string errorMessage)
         {
 
@@ -845,6 +875,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                .Build();
             whereIsMyAccountNo.Show();
+        }
+
+        public void ClearNameHint()
+        {
+            textInputLayoutAccountLabel.HelperText = null;
+            textInputLayoutAccountLabel.HelperTextEnabled = false;
         }
     }
 }

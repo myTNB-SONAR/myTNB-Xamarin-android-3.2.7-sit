@@ -1,4 +1,5 @@
 ﻿using System;
+using myTNB.Mobile.AWS.Models.DS.Identification;
 using myTNB_Android.Src.Base.MVP;
 
 namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
@@ -16,6 +17,31 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             /// Rendering the UI content
             /// </summary>
             void RenderContent();
+
+            /// <summary>
+            /// Shows Loading Overlay
+            /// </summary>
+            void ShowProgressDialog();
+
+            /// <summary>
+            /// Hides Loading Overlay
+            /// </summary>
+            void HideProgressDialog();
+
+            /// <summary>
+            /// Shows Completed on other device pop up
+            /// </summary>
+            void ShowCompletedOnOtherDevicePopUp();
+
+            /// <summary>
+            /// Show Id not registered pop up
+            /// </summary>
+            void ShowIdNotRegisteredPopUp();
+
+            /// <summary>
+            /// Shows prepare document pop up
+            /// </summary>
+            void ShowPrepareDocumentPopUp(int? idType);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -29,6 +55,17 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             /// Method for triggering actions when screen has started
             /// </summary>
             void OnStart();
+
+            /// <summary>
+            /// Calls the GetEKYCIdentification API
+            /// </summary>
+            void GetEKYCIdentificationOnCall();
+
+            /// <summary>
+            /// Gets the Identification model
+            /// </summary>
+            /// <returns></returns>
+            GetEKYCIdentificationModel GetIdentificationModel();
         }
     }
 }

@@ -348,13 +348,14 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_APP_UPDATE:
                     case Constants.BCRM_NOTIFICATION_APP_UPDATE_2:
+                    case Constants.BCRM_NOTIFICATION_APP_UPDATE_OT:
                         {
                             imageResourceBanner = Resource.Drawable.Banner_Notification_App_Update;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_DIGITAL_SIGNATURE:
                         {
-                            imageResourceBanner = Resource.Drawable.Icon_Notification_Details_Header;
+                            imageResourceBanner = Resource.Drawable.Banner_DS_Notification_Detail;
                             //primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DIGITAL_SIGNATURE),
                             //    delegate () { DSNotificationDetails(); });
                             //primaryCTA.SetSolidCTA(true);

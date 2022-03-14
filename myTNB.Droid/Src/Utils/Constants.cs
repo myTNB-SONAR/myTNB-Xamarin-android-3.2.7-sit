@@ -361,11 +361,12 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_ACCT_STATEMENT_READY = "20008";
 
         //Digital Signature
-        public const string BCRM_NOTIFICATION_DIGITAL_SIGNATURE = "31001";
+        public const string BCRM_NOTIFICATION_DIGITAL_SIGNATURE = "31001";//stub
 
         //App Update
         public const string BCRM_NOTIFICATION_APP_UPDATE = "20006";
         public const string BCRM_NOTIFICATION_APP_UPDATE_2 = "20007";
+        public const string BCRM_NOTIFICATION_APP_UPDATE_OT = "20009";
 
         //Bill Estimation
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";

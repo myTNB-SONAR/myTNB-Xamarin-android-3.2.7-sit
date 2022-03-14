@@ -177,7 +177,8 @@
     "accountLengthNew": "Please enter a valid 12-digit electricity account number",
     "error_duplicateAccountMessageNew": "This electricity account number has already been added to the list.",
     "error_emptyIcAndEmailOwner": "Email or phone number owner cannot be empty.",
-    "error_NotExistsAccountMessage": "The account number you entered cannot be found."
+    "error_NotExistsAccountMessage": "The account number you entered cannot be found.",
+    "accountNickNameError": "You must have a nickname for your account. You can use letters, numbers or special characters."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -755,7 +756,7 @@
     "GovDialogDetails": "You can still add and view your Government account through <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">myTNB Portal</a>.",
     "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference.",
     "titleOwnerDetailRegion": "Please provide the owner’s email or mobile number for the account above so we can notify them.",
-    "accountNickNameError": "You must have a nickname for your account. You can use letters, numbers and special characters for the account nickname.",
+    "accountNickNameError": "You must have a nickname for your account. You can use letters, numbers or special characters.",
     "invalidROC": "The Identification Number you entered does not match this account number. Please check and try again."
   },
   "Profile": {
@@ -3243,7 +3244,30 @@
     "howItWorksTitle2": "Verify your identity with face verification.",
     "howItWorksDescription2": "Next step, scan your face using your device’s camera to verify it’s you.",
     "howItWorksTitle3": "Your verification is complete!",
-    "howItWorksDescription3": "You may continue using myTNB to conveniently submit applications!"
+    "howItWorksDescription3": "You may continue using myTNB to conveniently submit applications!",
+    "cancel": "Cancel",
+    "verifyNow": "Verify Now",
+    "noRegisteredIDTitle": "Have your identification ready!",
+    "noRegisteredIDMessage": "Accepted forms of identification:<br>&emsp;• Passport<br>&emsp;• Identity Card (applicable for myKad and Army ID)",
+    "acceptedIDTitle": "Have your identification ready!",
+    "acceptedIDMessage": "Before you begin, get your <b>{0}</b> ready.",
+    "cantUseOtherIDTitle": "Why can’t I use other forms of identification? #dropdown#",
+    "cantUseOtherIDMessage": "You previously registered with your <b>{0}</b> in your myTNB account. Every myTNB account can only have one registered identification.",
+    "idProcessingTitle": "We are processing your verification.",
+    "idProcessingMessage": "Your identity verification has been submitted. We’ll notify you once we’re done with your verification.",
+    "backToHome": "Back To Home"
+  },
+  "DSLanding_selector": {
+    "idType": [
+      {
+        "key": "1",
+        "description": "Passport"
+      },
+      {
+        "key": "2",
+        "description": "myKAD / Army ID"
+      }
+    ]
   },
   "DSWebview": {
     "title": "Verify Your Identity",
@@ -3251,5 +3275,21 @@
     "confirmPopupMessage": "Leaving this page will cancel your progress so far and you would need to restart the verfication process.",
     "leave": "Leave",
     "stay": "Stay"
+  },
+  "PushNotificationDetails_selector": {
+    "dsDescriptionList": [
+      {
+        "value": "Submit applications on myTNB Portal.",
+        "description": "Conveniently apply for change name on bill, open and close account, tariff change and many more with ease."
+      },
+      {
+        "value": "Safeguard your identity & account.",
+        "description": "Verifying your identity will ensure minimum risk of fraudulent applications on your myTNB account."
+      },
+      {
+        "value": "Unlock more features to come.",
+        "description": "As we’re offering you more services to be done online, we want to make sure a smooth experience for you with a one-time identity verification."
+      }
+    ]
   }
 }

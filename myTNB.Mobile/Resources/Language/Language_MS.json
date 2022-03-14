@@ -177,7 +177,8 @@
     "accountLengthNew": "Sila masukkan nombor akaun elektrik 12 digit yang sah.",
     "error_duplicateAccountMessageNew": "Nombor akaun elektrik ini telah ditambah ke senarai.",
     "error_emptyIcAndEmailOwner": "Pemilik e-mel atau nombor telefon tidak boleh kosong.",
-    "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan tidak dijumpai."
+    "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan tidak dijumpai.",
+    "accountNickNameError": "Akaun anda harus mempunyai nama gelaran. Anda boleh menggunakan huruf, angka atau simbol."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -755,7 +756,7 @@
     "GovDialogDetails": "Anda masih boleh menambah dan melihat akaun Kerajaan anda melalui <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">myTNB Portal</a>.",
     "titleNonOwnerAddAcc": "Teruskan memasuki akaun anda dan berikan nama gelaran untuk rujukan mudah.",
     "titleOwnerDetailRegion": "Sila masukkan alamat e-mel atau nombor telefon pemilik akaun ini supaya kami boleh memberikan makluman kepadanya.",
-    "accountNickNameError": "Akaun anda harus mempunyai nama panggilan. Anda boleh menggunakan huruf, angka dan simbol untuk nama panggilan akaun tersebut.",
+    "accountNickNameError": "Akaun anda harus mempunyai nama gelaran. Anda boleh menggunakan huruf, angka atau simbol.",
     "invalidROC": "Nombor KP yang anda masukkan tidak padan dengan nombor akaun ini. Sila semak dan cuba semula."
   },
   "Profile": {
@@ -3243,14 +3244,52 @@
     "howItWorksTitle2": "MS_Verify your identity with face verification.",
     "howItWorksDescription2": "MS_Next step, scan your face using your device’s camera to verify it’s you.",
     "howItWorksTitle3": "MS_Your verification is complete!",
-    "howItWorksDescription3": "MS_You may continue using myTNB to conveniently submit applications!"
+    "howItWorksDescription3": "MS_You may continue using myTNB to conveniently submit applications!",
+    "cancel": "MS_Cancel",
+    "verifyNow": "MS_Verify Now",
+    "noRegisteredIDTitle": "MS_Have your identification ready!",
+    "noRegisteredIDMessage": "MS_Accepted forms of identification:<br>&emsp;• Passport<br>&emsp;• Identity Card (applicable for myKad and Army ID)",
+    "acceptedIDTitle": "MS_Have your identification ready!",
+    "acceptedIDMessage": "MS_Before you begin, get your <b>{0}</b> ready.",
+    "cantUseOtherIDTitle": "MS_Why can’t I use other forms of identification? #dropdown#",
+    "cantUseOtherIDMessage": "MS_You previously registered with your <b>{0}</b> in your myTNB account. Every myTNB account can only have one registered identification.",
+    "idProcessingTitle": "MS_We are processing your verification.",
+    "idProcessingMessage": "MS_Your identity verification has been submitted. We’ll notify you once we’re done with your verification.",
+    "backToHome": "MS_Back To Home"
+  },
+  "DSLanding_selector": {
+    "idType": [
+      {
+        "key": "1",
+        "description": "MS_Passport"
+      },
+      {
+        "key": "2",
+        "description": "MS_myKAD / Army ID"
+      }
+    ]
   },
   "DSWebview": {
     "title": "MS_Verify Your Identity",
     "confirmPopupTitle": "MS_Are you sure you want to leave this page?",
     "confirmPopupMessage": "MS_Leaving this page will cancel your progress so far and you would need to restart the verfication process.",
-    "leave": "Ya",
-    "stay": "Tidak"
+    "leave": "MS_Leave",
+    "stay": "MS_Stay"
+  },
+  "PushNotificationDetails_selector": {
+    "dsDescriptionList": [
+      {
+        "value": "MS_Submit applications on myTNB Portal.",
+        "description": "MS_Conveniently apply for change name on bill, open and close account, tariff change and many more with ease."
+      },
+      {
+        "value": "MS_Safeguard your identity & account.",
+        "description": "MS_Verifying your identity will ensure minimum risk of fraudulent applications on your myTNB account."
+      },
+      {
+        "value": "MS_Unlock more features to come.",
+        "description": "MS_As we’re offering you more services to be done online, we want to make sure a smooth experience for you with a one-time identity verification."
+      }
+    ]
   }
 }
-

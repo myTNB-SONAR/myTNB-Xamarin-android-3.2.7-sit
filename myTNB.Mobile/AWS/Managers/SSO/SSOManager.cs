@@ -71,6 +71,7 @@ namespace myTNB.Mobile
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// This returns the app signature for Digital Signature
         /// </summary>
@@ -93,7 +94,7 @@ namespace myTNB.Mobile
             , string language
             , string fontSize
             , string userID
-            , int idType
+            , int? idType
             , string idNo)
         {
             try
