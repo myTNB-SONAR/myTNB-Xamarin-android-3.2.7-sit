@@ -157,7 +157,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 //txtInputLayoutNickName.SetHintTextAppearance(TextViewUtils.IsLargeFonts
                 //    ? Resource.Style.TextInputLayout_TextAppearance_Large
                 //    : Resource.Style.TextInputLayout_TextAppearance_Small);
-                TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
+                TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount, infoAddress);
                 TextViewUtils.SetTextSize14(txtAccountNumber, txtAccountAddress, btnTextUpdateNickName, manageBillTitle, infoAddress);
                 TextViewUtils.SetTextSize16(btnRemoveAccount, txtNickName);
 
