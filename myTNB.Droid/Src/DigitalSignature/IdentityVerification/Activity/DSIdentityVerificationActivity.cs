@@ -70,7 +70,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 
             SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.TITLE));
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
-            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+            SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
 
             if (identityVerificationTitle != null)
             {

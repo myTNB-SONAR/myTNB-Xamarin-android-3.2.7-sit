@@ -34,12 +34,14 @@
 				android:background="@color/white"
 				android:id="@+id/dsNotifDetailContainer">
 				<ImageView
+					android:layout_marginTop="-35dp"
 					android:scaleType="fitXY"
 					android:adjustViewBounds="true"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:id="@+id/dsNotifDetailBanner"
-					android:src="@drawable/banner_ds_notification_detail"/>
+					android:src="@drawable/banner_ds_notification_detail"
+					android:contentDescription=""/>
 				<TextView
 					tools:text="Verify your identity now to enjoy more of myTNB!"
 					android:layout_width="match_parent"
@@ -65,10 +67,7 @@
 			android:orientation="vertical"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:paddingTop="16dp"
-			android:paddingLeft="16dp"
-			android:paddingBottom="16dp"
-			android:paddingRight="16dp"
+			android:padding="16dp"
 			android:gravity="center|bottom"
 			android:background="@color/white"
 			android:visibility="visible"

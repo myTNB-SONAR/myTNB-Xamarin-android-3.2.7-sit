@@ -16,6 +16,8 @@ using Android.Util;
 using Android.Net.Http;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using Android.Content;
+using Google.Android.Material.Snackbar;
+using Android.Views;
 
 namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 {
@@ -28,6 +30,9 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
         private Android.Webkit.WebView micrositeWebView;
 
         GetEKYCIdentificationModel _identificationModel;
+
+        private static Snackbar mErrorMessageSnackBar;
+        private static FrameLayout mainView;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -117,7 +122,7 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
             });
         }
 
-        private void LeaveOnClick()
+        public void LeaveOnClick()
         {
             SetResult(Result.Canceled);
             Finish();
@@ -173,36 +178,28 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                     Log.Debug("[DEBUG]", "MyTNBWebViewClient url: " + url.ToString());
                     if (url.Contains("mytnbapp://action=backToApp"))
                     {
-                        mActivity.OnBackPressed();
+                        mActivity.LeaveOnClick();
                         shouldOverride = true;
                     }
                     else if (url.Contains("mytnbapp://action=backToHome"))
                     {
-                        //mActivity.OnShowDashboard();
+                        mActivity.OnShowDashboard();
                         shouldOverride = true;
                     }
 
                     //Update for X button
-                    if (url.ToString().Contains("BillDelivery/Success"))
+                    if (url.ToString().Contains("Ekyc/Success"))
                     {
                         //mActivity.ShouldBackToHome = true;
                         //mActivity.IsDBR = true;
                         //mActivity.OnTag(true);
                     }
-                    else if (url.ToString().Contains("Home/Error"))
+                    else if (url.ToString().Contains("Ekyc/Error"))
                     {
                         //mActivity.ShouldBackToHome = true;
                         //mActivity.IsDBR = true;
                         //mActivity.OnTag(true, true);
                     }
-                    else if (url.ToString().Contains("Feedback/Rate")
-                        || url.ToString().Contains("FeedbackRating/Success"))
-                    {
-                        //mActivity.ShouldBackToHome = true;
-                        //mActivity.IsDBR = false;
-                        //mActivity.OnTagRatingDynatrace(url.ToString().Contains("FeedbackRating/Success"));
-                    }
-                    //Log.Debug("[DEBUG]", "MyTNBWebViewClient ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }
                 return shouldOverride;
             }
@@ -214,27 +211,18 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                     base.OnPageStarted(view, url, favicon);
                     Log.Debug("[DEBUG]", "OnPageStarted url: " + url.ToString());
                     //Update for X button
-                    if (url.ToString().Contains("BillDelivery/Success"))
+                    if (url.ToString().Contains("Ekyc/Success"))
                     {
                         //mActivity.ShouldBackToHome = true;
                         //mActivity.IsDBR = true;
                         //mActivity.OnTag(true);
                     }
-                    else if (url.ToString().Contains("Home/Error"))
+                    else if (url.ToString().Contains("Ekyc/Error"))
                     {
                         //mActivity.ShouldBackToHome = true;
                         //mActivity.IsDBR = true;
                         //mActivity.OnTag(true, true);
                     }
-                    else if (url.ToString().Contains("Feedback/Rate")
-                       || url.ToString().Contains("FeedbackRating/Success"))
-                    {
-                        //mActivity.ShouldBackToHome = true;
-                        //mActivity.IsDBR = false;
-                        //mActivity.OnTagRatingDynatrace(url.ToString().Contains("FeedbackRating/Success"));
-                        //mActivity.SetShareFeedbackTitle();
-                    }
-                    //Log.Debug("[DEBUG]", "OnPageStarted ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }
                 catch (System.Exception e)
                 {
@@ -248,26 +236,18 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 {
                     Log.Debug("[DEBUG]", "OnPageFinished url: " + url.ToString());
                     //Update for X button
-                    if (url.ToString().Contains("BillDelivery/Success"))
+                    if (url.ToString().Contains("Ekyc/Success"))
                     {
                         //mActivity.ShouldBackToHome = true;
                         //mActivity.IsDBR = true;
                         //mActivity.OnTag(true);
                     }
-                    else if (url.ToString().Contains("Home/Error"))
+                    else if (url.ToString().Contains("Ekyc/Error"))
                     {
                         //mActivity.ShouldBackToHome = true;
                         //mActivity.IsDBR = true;
                         //mActivity.OnTag(true, true);
                     }
-                    else if (url.ToString().Contains("Feedback/Rate")
-                       || url.ToString().Contains("FeedbackRating/Success"))
-                    {
-                        //mActivity.ShouldBackToHome = true;
-                        //mActivity.IsDBR = false;
-                        //mActivity.OnTagRatingDynatrace(url.ToString().Contains("FeedbackRating/Success"));
-                    }
-                    //Log.Debug("[DEBUG]", "OnPageFinished ShouldBackToHome: " + mActivity.ShouldBackToHome);
                 }
                 catch (System.Exception e)
                 {
@@ -326,23 +306,23 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 
             public static void ShowErrorMessage(string failingUrl)
             {
-                //if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
-                //{
-                //    mErrorMessageSnackBar.Dismiss();
-                //}
+                if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+                {
+                    mErrorMessageSnackBar.Dismiss();
+                }
 
-                //mErrorMessageSnackBar = Snackbar.Make(mainView
-                //    , Utility.GetLocalizedErrorLabel("noDataConnectionMessage")
-                //    , Snackbar.LengthIndefinite)
-                //    .SetAction(Utility.GetLocalizedLabel("Common", "tryAgain")
-                //        , delegate
-                //        {
-                //            mErrorMessageSnackBar.Dismiss();
-                //        });
-                //View v = mErrorMessageSnackBar.View;
-                //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                //tv.SetMaxLines(5);
-                //mErrorMessageSnackBar.Show();
+                mErrorMessageSnackBar = Snackbar.Make(mainView
+                    , Utility.GetLocalizedErrorLabel("noDataConnectionMessage")
+                    , Snackbar.LengthIndefinite)
+                    .SetAction(Utility.GetLocalizedLabel("Common", "tryAgain")
+                        , delegate
+                        {
+                            mErrorMessageSnackBar.Dismiss();
+                        });
+                View v = mErrorMessageSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mErrorMessageSnackBar.Show();
             }
         }
     }

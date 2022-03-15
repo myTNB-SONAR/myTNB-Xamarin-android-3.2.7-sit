@@ -47,6 +47,9 @@ namespace myTNB_Android.Src.Utils.Notification
                     case MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN:
                         Type = Type.NewBillDesign;
                         break;
+                    case MobileConstants.PushNotificationTypes.DIGITAL_SIGNATURE:
+                        Type = Type.DigitalSignature;
+                        break;
                     default:
                         break;
                 }

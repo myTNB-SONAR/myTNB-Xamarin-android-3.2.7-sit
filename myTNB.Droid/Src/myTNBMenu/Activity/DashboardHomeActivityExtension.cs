@@ -30,6 +30,7 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using System.Linq;
 using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -226,14 +227,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             DeeplinkUtil.Instance.ClearDeeplinkData();
         }
 
-        private static void DeeplinkNewBillDesignValidation(DashboardHomeActivity mainActivity)
-        {
-            if (BillRedesignUtility.Instance.ShouldShowHomeCard && BillRedesignUtility.Instance.IsAccountEligible)
-            {
-                mainActivity.NavigateToNBR();
-            }
-        }
-
         internal static void ShowAddAccount(this DashboardHomeActivity mainActivity)
         {
             Intent linkAccount = new Intent(mainActivity, typeof(LinkAccountActivity));
@@ -284,8 +277,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 case Notification.TypeEnum.AppUpdate:
                 case Notification.TypeEnum.AccountStatement:
+                case Notification.TypeEnum.DigitalSignature:
                     UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
-                    OnGetNotificationDetails(mainActivity);
+                    OnGetNotificationDetails(mainActivity, NotificationUtil.Instance.Type);
                     break;
                 case Notification.TypeEnum.NewBillDesign:
                     NavigateToBillRedesign(mainActivity);
@@ -303,7 +297,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        private async static void OnGetNotificationDetails(DashboardHomeActivity mainActivity)
+        private async static void OnGetNotificationDetails(DashboardHomeActivity mainActivity, Notification.TypeEnum typeEnum)
         {
             mainActivity.ShowProgressDialog();
             try
@@ -318,7 +312,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (response.IsSuccessResponse())
                 {
                     Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
-                    ShowNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+                    if (typeEnum == Notification.TypeEnum.DigitalSignature)
+                    {
+                        ShowDigitalSignatureNotifDetails(mainActivity, response.GetData().UserNotificationDetail);
+                    }
+                    else
+                    {
+                        ShowNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+                    }
                     mainActivity.HideProgressDialog();
                 }
                 else
@@ -358,6 +359,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             Intent notificationDetails = new Intent(mainActivity, typeof(UserNotificationDetailActivity));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
             mainActivity.StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+        }
+
+        internal static void ShowDigitalSignatureNotifDetails(this DashboardHomeActivity mainActivity, NotificationDetails.Models.NotificationDetails details)
+        {
+            Intent dsNotifDetailIntent = new Intent(mainActivity, typeof(DSIdentityVerificationActivity));
+            dsNotifDetailIntent.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+            mainActivity.StartActivity(dsNotifDetailIntent);
         }
 
         internal static CustomerBillingAccount GetEligibleDBRAccount()
