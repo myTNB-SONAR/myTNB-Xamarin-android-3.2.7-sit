@@ -162,10 +162,10 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
                 if (!string.IsNullOrEmpty(accountno))
                 {
-                    this.mView.RemoveNumberErrorMessage();
+                   this.mView.RemoveNumberErrorMessage();
                 }
                 else
-                {   
+                {  
                     this.mView.ShowInvalidAccountNumberError();
                     isCorrect = false;
                 }
@@ -332,7 +332,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 //{
                 //    mView.RemoveNameErrorMessage();
                 //}
-               
 
                 if (accountno.Length == 0)
                 {

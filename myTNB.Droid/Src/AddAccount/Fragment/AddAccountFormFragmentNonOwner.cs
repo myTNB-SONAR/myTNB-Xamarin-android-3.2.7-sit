@@ -130,13 +130,29 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 textInputLayoutMotherMaidenName = mainView.FindViewById<TextInputLayout>(Resource.Id.owner_mother_maiden_name_layout);
                 textInputLayoutOwnerIC = mainView.FindViewById<TextInputLayout>(Resource.Id.owner_ic_no_layout);
                 txtNonOwnerTitle = mainView.FindViewById<TextView>(Resource.Id.txtNonOwnerTitle);
-
+                btnWhereIsMyAccountNo = mainView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
                 //accountType = mainView.FindViewById<TextView>(Resource.Id.selector_account_type);
 
                 txtNonOwnerTitle.Text = Utility.GetLocalizedLabel("AddAccount", "titleNonOwnerAddAcc");
                 textInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common", "accountNo");
                 textInputLayoutAccountLabel.Hint = Utility.GetLocalizedLabel("Common", "acctNickname");
                 textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "ownerICNumber");
+
+                textInputLayoutAccountNo.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
+                textInputLayoutAccountLabel.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
+                textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                    : Resource.Style.TextInputLayoutFeedbackCount);
+                textInputLayoutOwnerIC.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
+                textInputLayoutMotherMaidenName.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
 
                 TextViewUtils.SetMuseoSans300Typeface(edtAccountLabel
                     , edtAccountNo
@@ -160,7 +176,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 btnWhereIsMyAccountNo = rootView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
                 btnWhereIsMyAccountNo.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
-                TextViewUtils.SetMuseoSans300Typeface(btnWhereIsMyAccountNo);
+                TextViewUtils.SetMuseoSans500Typeface(btnWhereIsMyAccountNo);
                 btnWhereIsMyAccountNo.Click += async delegate
                 {
                     ShowWhereIsMyAccountNoTooltip();
