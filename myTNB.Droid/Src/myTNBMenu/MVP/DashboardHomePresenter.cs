@@ -241,6 +241,130 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         }
                     }
                 }
+                else if (requestCode == Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        Bundle extras = data.Extras;
+
+                        CustomerBillingAccount selectedAccount = CustomerBillingAccount.GetFirst();
+
+
+                        if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
+                        {
+                            if (selectedAccount != null && selectedAccount.SmartMeterCode != null && selectedAccount.SmartMeterCode.Equals("0"))
+                            {
+                                if (!string.IsNullOrEmpty(selectedAccount.AccNum) && !UsageHistoryEntity.IsSMDataUpdated(selectedAccount.AccNum))
+                                {
+                                    UsageHistoryEntity storedEntity = new UsageHistoryEntity();
+                                    storedEntity = UsageHistoryEntity.GetItemByAccountNo(selectedAccount.AccNum);
+                                    CustomerBillingAccount.RemoveSelected();
+                                    if (!string.IsNullOrEmpty(selectedAccount.AccNum))
+                                    {
+                                        CustomerBillingAccount.SetSelected(selectedAccount.AccNum);
+                                    }
+                                    if (storedEntity != null)
+                                    {
+                                        usageHistoryResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
+                                        if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200")
+                                        {
+                                            usageHistoryResponse = null;
+                                        }
+                                        else if ((usageHistoryResponse != null && usageHistoryResponse.Data == null) || (usageHistoryResponse == null))
+                                        {
+                                            usageHistoryResponse = null;
+                                        }
+                                        else if (!IsCheckHaveByMonthData(usageHistoryResponse.Data.UsageHistoryData))
+                                        {
+                                            usageHistoryResponse = null;
+                                        }
+                                        LoadUsageHistory(selectedAccount);
+                                    }
+                                    else
+                                    {
+                                        usageHistoryResponse = null;
+                                        LoadUsageHistory(selectedAccount);
+                                    }
+                                }
+                                else
+                                {
+                                    usageHistoryResponse = null;
+                                    LoadUsageHistory(selectedAccount);
+                                }
+                            }
+                            else
+                            {
+                                if (!SMUsageHistoryEntity.IsSMDataUpdated(selectedAccount.AccNum))
+                                {
+                                    //Get stored data
+                                    SMUsageHistoryEntity storedEntity = new SMUsageHistoryEntity();
+                                    if (!string.IsNullOrEmpty(selectedAccount.AccNum))
+                                    {
+                                        storedEntity = SMUsageHistoryEntity.GetItemByAccountNo(selectedAccount.AccNum);
+                                    }
+                                    SMUsageHistoryResponse storedSMData = new SMUsageHistoryResponse();
+
+                                    CustomerBillingAccount.RemoveSelected();
+                                    if (!string.IsNullOrEmpty(selectedAccount.AccNum))
+                                    {
+                                        CustomerBillingAccount.SetSelected(selectedAccount.AccNum);
+                                    }
+
+                                    if (storedEntity != null)
+                                    {
+                                        storedSMData = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(storedEntity.JsonResponse);
+                                        if (storedSMData != null && storedSMData.Data != null && storedSMData.Data.ErrorCode != "7200")
+                                        {
+                                            smUsageHistoryResponse = null;
+                                        }
+                                        else if ((storedSMData != null && storedSMData.Data == null) || (storedSMData == null))
+                                        {
+                                            smUsageHistoryResponse = null;
+                                        }
+                                        else if (storedSMData.Data.IsMDMSCurrentlyUnavailable || !IsCheckHaveByMonthData(storedSMData.Data.SMUsageHistoryData))
+                                        {
+                                            smUsageHistoryResponse = null;
+                                        }
+                                        else
+                                        {
+                                            smUsageHistoryResponse = storedSMData;
+                                        }
+
+                                        if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                                        {
+                                            smUsageHistoryResponse = null;
+                                        }
+
+                                        LoadSMUsageHistory(selectedAccount);
+                                    }
+                                    else
+                                    {
+                                        smUsageHistoryResponse = null;
+                                        LoadSMUsageHistory(selectedAccount);
+                                    }
+                                }
+                                else
+                                {
+                                    smUsageHistoryResponse = null;
+                                    LoadSMUsageHistory(selectedAccount);
+                                }
+                            }
+                        }
+                        else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
+                        {
+                            this.mView.SetAccountName(selectedAccount.AccDesc);
+                            AccountData accountData = new AccountData();
+                            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccNum);
+                            accountData.AccountNickName = selectedAccount.AccDesc;
+                            accountData.AccountName = selectedAccount.OwnerName;
+                            accountData.AccountNum = selectedAccount.AccNum;
+                            accountData.AddStreet = selectedAccount.AccountStAddress;
+                            accountData.IsOwner = customerBillingAccount.isOwned;
+                            accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+                            this.mView.ShowBillMenu(accountData);
+                        }
+                    }
+                }
                 else if (requestCode == Constants.UPDATE_IC_REQUEST)
                 {
                     this.mView.SetMenuMoreCheck();

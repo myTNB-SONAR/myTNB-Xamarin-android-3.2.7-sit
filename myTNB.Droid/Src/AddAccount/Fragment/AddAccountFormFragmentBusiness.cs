@@ -172,6 +172,18 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 txtTitleROC.Text = Utility.GetLocalizedLabel("AddAccount", "ROCDetailsText");
                 btnWhereIsMyAccountNo.Hint = Utility.GetLocalizedLabel("AddAccount", "WhereAccNo");
 
+                textInputLayoutAccountNo.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
+                textInputLayoutAccountLabel.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
+                textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                    : Resource.Style.TextInputLayoutFeedbackCount);
+                textInputLayoutMotherMaidenName.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
 
 
                 TextViewUtils.SetMuseoSans300Typeface(edtAccountLabel
@@ -184,8 +196,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     , textInputLayoutMotherMaidenName
                     , textInputLayoutRocNo);
 
-                TextViewUtils.SetMuseoSans300Typeface(txtAccountType, accountType, txtTitle, accountType, txtTitlePremise, btnWhereIsMyAccountNo);
-                TextViewUtils.SetMuseoSans500Typeface(txtTitleROC, txtSkipAcc);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountType, accountType, accountType, txtTitlePremise, btnWhereIsMyAccountNo, txtTitleROC);
+                TextViewUtils.SetMuseoSans500Typeface(txtSkipAcc, txtTitle);
 
                 if (fromRegisterPage)
                 {
@@ -220,8 +232,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     ShowWhereIsMyAccountNoTooltip();
                 };
 
-                TextViewUtils.SetTextSize18(txtAccountType, txtTitlePremise, txtTitle, txtTitleROC, btnWhereIsMyAccountNo);
-                TextViewUtils.SetTextSize14(accountType, txtSkipAcc);
+                TextViewUtils.SetTextSize18(txtAccountType, txtTitlePremise, txtTitle, txtTitleROC);
+                TextViewUtils.SetTextSize14(accountType, txtSkipAcc, btnWhereIsMyAccountNo);
 
                 AccountType Individual = new AccountType();
                 Individual.Id = "2";
@@ -503,6 +515,36 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             //tv.SetMaxLines(5);
 
             //mSnackBar.Show();
+        }
+
+        public void ShowInvalidAccountNicknameError()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+
+                        if (textInputLayoutAccountLabel.Error != Utility.GetLocalizedErrorLabel("accountNickNameError"))
+                        {
+                            textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("accountNickNameError");  // fix bouncing issue
+                        }
+
+                        textInputLayoutAccountLabel.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
         }
 
         public void ShowAddAccountInvalid(string errorMessage)
@@ -845,6 +887,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                .Build();
             whereIsMyAccountNo.Show();
+        }
+
+        public void ClearNameHint()
+        {
+            textInputLayoutAccountLabel.HelperText = null;
+            textInputLayoutAccountLabel.HelperTextEnabled = false;
         }
     }
 }

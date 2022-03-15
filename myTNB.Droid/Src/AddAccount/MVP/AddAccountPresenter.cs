@@ -152,6 +152,55 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         }
 
+        public bool ValidateEditText(string accountno, string accountNickName)
+        {
+            try
+            {
+                bool isCorrect = true;
+
+                this.mView.DisableAddAccountButton();
+
+                if (!string.IsNullOrEmpty(accountno))
+                {
+                   this.mView.RemoveNumberErrorMessage();
+                }
+                else
+                {  
+                    this.mView.ShowInvalidAccountNumberError();
+                    isCorrect = false;
+                }
+
+                if (!string.IsNullOrEmpty(accountNickName))
+                {
+                    this.mView.ClearNameHint();
+                }
+                else
+                {
+                    //disable button if no text
+                    //this.mView.ClearInvalidPasswordHint();
+                    this.mView.ShowEmptyAccountNickNameError();
+                    isCorrect = false;
+                }
+
+                //handle button to enable or disable
+                if (isCorrect == true)
+                {
+                    this.mView.EnableAddAccountButton();
+                    return true;
+                }
+                else
+                {
+                    this.mView.DisableAddAccountButton();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+                return false;
+            }
+        }
+
         public void ValidateAccount(string apiKeyId, string accountNum, string accountType, string userIdentificationNum, string suppliedMotherName, bool isOwner, string accountLabel)
         {
             try
@@ -174,7 +223,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
                 if (TextUtils.IsEmpty(accountLabel))
                 {
-                    mView.ShowEmptyAccountNickNameError();
+                    mView.ShowInvalidAccountNicknameError();
                     return;
                 }
 
@@ -279,13 +328,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
         {
             try
             {
+                //if (accountNickName.Length == 0)
+                //{
+                //    mView.RemoveNameErrorMessage();
+                //}
 
-                
-                if (accountNickName.Length == 0)
-                {
-                    mView.RemoveNameErrorMessage();
-                }
-                    
 
                 if (accountno.Length == 0)
                 {

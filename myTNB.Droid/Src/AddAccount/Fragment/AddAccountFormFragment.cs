@@ -650,6 +650,36 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
         }
 
+        public void ShowInvalidAccountNicknameError()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+
+                        if (textInputLayoutAccountLabel.Error != Utility.GetLocalizedErrorLabel("accountNickNameError"))
+                        {
+                            textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("accountNickNameError");  // fix bouncing issue
+                        }
+
+                        textInputLayoutAccountLabel.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
         public void ShowEmptyMothersMaidenNameError()
         {
             textInputLayoutOwnerIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
@@ -844,6 +874,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ClearNameHint()
+        {
+            textInputLayoutAccountLabel.HelperText = null;
+            textInputLayoutAccountLabel.HelperTextEnabled = false;
         }
 
         public void RemoveNameErrorMessage()

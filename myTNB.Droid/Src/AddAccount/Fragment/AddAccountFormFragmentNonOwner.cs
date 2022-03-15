@@ -130,13 +130,29 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 textInputLayoutMotherMaidenName = mainView.FindViewById<TextInputLayout>(Resource.Id.owner_mother_maiden_name_layout);
                 textInputLayoutOwnerIC = mainView.FindViewById<TextInputLayout>(Resource.Id.owner_ic_no_layout);
                 txtNonOwnerTitle = mainView.FindViewById<TextView>(Resource.Id.txtNonOwnerTitle);
-
+                btnWhereIsMyAccountNo = mainView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
                 //accountType = mainView.FindViewById<TextView>(Resource.Id.selector_account_type);
 
                 txtNonOwnerTitle.Text = Utility.GetLocalizedLabel("AddAccount", "titleNonOwnerAddAcc");
                 textInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common", "accountNo");
                 textInputLayoutAccountLabel.Hint = Utility.GetLocalizedLabel("Common", "acctNickname");
                 textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "ownerICNumber");
+
+                textInputLayoutAccountNo.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
+                textInputLayoutAccountLabel.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
+                textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                    : Resource.Style.TextInputLayoutFeedbackCount);
+                textInputLayoutOwnerIC.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
+                textInputLayoutMotherMaidenName.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
 
                 TextViewUtils.SetMuseoSans300Typeface(edtAccountLabel
                     , edtAccountNo
@@ -160,7 +176,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 btnWhereIsMyAccountNo = rootView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
                 btnWhereIsMyAccountNo.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
-                TextViewUtils.SetMuseoSans300Typeface(btnWhereIsMyAccountNo);
+                TextViewUtils.SetMuseoSans500Typeface(btnWhereIsMyAccountNo);
                 btnWhereIsMyAccountNo.Click += async delegate
                 {
                     ShowWhereIsMyAccountNoTooltip();
@@ -183,15 +199,22 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 edtAccountLabel.AddTextChangedListener(new InputFilterFormField(edtAccountLabel, textInputLayoutAccountLabel));
                 mFormField = new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC);
 
+                //nickname
                 edtAccountLabel.FocusChange += (sender, e) =>
                 {
                     textInputLayoutAccountLabel.HelperText = "";
-                    string accountLabel = edtAccountLabel.Text.Trim();
-                    if (e.HasFocus)
+                    string nickname = edtAccountLabel.Text.ToString().Trim();
+                    string accNum = edtAccountNo.Text.ToString().Trim();
+                    if (!e.HasFocus)
+                    {
+                        this.userActionsListener.ValidateEditText(accNum, nickname);
+                    }
+                    else
                     {
                         textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
                         textInputLayoutAccountLabel.HelperText = Utility.GetLocalizedHintLabel("nickname");
                     }
+
                     try
                     {
                         Activity.RunOnUiThread(() =>
@@ -213,6 +236,22 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     {
                         Utility.LoggingNonFatalError(exp);
                     }
+                };
+
+                edtAccountNo.FocusChange += (sender, e) =>
+                {
+                    textInputLayoutAccountLabel.HelperText = "";
+                    string nickname = edtAccountLabel.Text.ToString().Trim();
+                    string accNum = edtAccountNo.Text.ToString().Trim();
+                    if (!e.HasFocus)
+                    {
+                        this.userActionsListener.ValidateEditText(accNum, nickname);
+                    }
+                    else
+                    {
+                        RemoveNumberErrorMessage();
+                    }
+
                 };
 
                 if (Android.OS.Build.Manufacturer.ToLower() == "samsung")
@@ -256,6 +295,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 textInputLayoutAccountLabel.Error = null;
                 textInputLayoutAccountLabel.ErrorEnabled = false;
             }
+        }
+
+        public void ClearNameHint()
+        {
+            textInputLayoutAccountLabel.HelperText = null;
+            textInputLayoutAccountLabel.HelperTextEnabled = false;
         }
 
         public override void OnResume()
@@ -467,7 +512,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public void ShowEmptyAccountNickNameError()
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountLabel.Error = "Invalid Account NickName";
+            textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("accountNickNameError");
 
         }
 
@@ -537,6 +582,38 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
 
         }
+
+        public void ShowInvalidAccountNicknameError()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+
+                        if (textInputLayoutAccountLabel.Error != Utility.GetLocalizedErrorLabel("accountNickNameError"))
+                        {
+                            textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("accountNickNameError");  // fix bouncing issue
+                        }
+
+                        textInputLayoutAccountLabel.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
+
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)

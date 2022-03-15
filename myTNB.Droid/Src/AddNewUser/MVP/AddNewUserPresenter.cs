@@ -182,7 +182,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
                     UserManageAccessAccount newuser = new UserManageAccessAccount();
                     foreach (ManageAccessAccountListResponse.CustomerAccountData acc in list)
                     {
-                        if (acc.Email.Equals(email.ToLower()))
+                        if (acc.Email.ToLower().Equals(email.ToLower()))
                         {
                             var newRecord = new UserManageAccessAccount()
                             {
@@ -207,7 +207,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
                         newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
                         foreach (ManageAccessAccountListResponse.CustomerAccountData acc in list)
                         {
-                            if (acc.Email.Equals(email.ToLower()))
+                            if (acc.Email.ToLower().Equals(email.ToLower()))
                             {
                                 int rowChange = UserManageAccessAccount.InsertOrReplace(acc);
                                 ctr++;
