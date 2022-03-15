@@ -278,7 +278,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 bool dash = eText.Text.Contains("-");
                 string Idtype = idText.Text;
 
-                if (Idtype.Equals("IC / MyKad"))
+                if (Idtype.Equals("IC / MyKad") || Idtype.Equals("Kad Pengenalan / MyKad"))
                 {
                     if (len == 12 && !dash)
                     {
@@ -306,7 +306,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 int totallenafter = len - totallength;
                 string Idtype = idText.Text;
 
-                if (Idtype.Equals("IC / Mykad") && len > 0 && (totallenafter != 0) && !flagDel)
+                if ((Idtype.Equals("IC / MyKad") || Idtype.Equals("Kad Pengenalan / MyKad")) && len > 0 && (totallenafter != 0) && !flagDel)
                 {
                     flagDel = true;
                     KeyListener.KeyDel = 0;
@@ -326,7 +326,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
             public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
             {
                 string Idtype = idText.Text;
-                if (Idtype.Equals("IC / MyKad"))
+                if (Idtype.Equals("IC / MyKad") || Idtype.Equals("Kad Pengenalan / MyKad"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(14) });
                     if (!flagDel)
