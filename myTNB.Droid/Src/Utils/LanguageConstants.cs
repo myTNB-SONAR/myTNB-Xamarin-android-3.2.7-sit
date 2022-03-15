@@ -179,6 +179,7 @@
             internal static readonly string NOTIF_TITLE_DEFAULT = "notification";
             internal static readonly string NOTIF_TITLE_ENERGY_BUDGET = "EnergyBudgetTitle";
             internal static readonly string NOTIF_TITLE_SRVC_DISTRUPTION = "serviceDistruption";
+            internal static readonly string NOTIF_TITLE_DIGITAL_SIGNATURE = "digitalSignature";
         }
 
         internal struct DBRWebview
