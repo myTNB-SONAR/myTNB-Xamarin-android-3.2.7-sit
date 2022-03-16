@@ -552,8 +552,8 @@ namespace myTNB_Android.Src.ManageUser.Activity
                         .SetTitle((string.Format(Utility.GetLocalizedLabel("manageUser", "manageUserCancelAddAccessDialogTitle"), email)))
                         .SetMessage(string.Format(Utility.GetLocalizedLabel("manageUser", "manageUserCancelAddAccessDialogMessage"), email))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "no"))
-                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "yes"))
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();

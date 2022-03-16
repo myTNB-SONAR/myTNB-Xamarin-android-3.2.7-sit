@@ -394,7 +394,7 @@ namespace myTNB_Android.Src.Utils
                         .SetMessage(Utility.GetLocalizedLabel("RegisterNew", "EmailBodyError"))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("RegisterNew", "Reset"))
-                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "tryAgain"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("RegisterNew", "tryAgain"))
                         .Build();
             tooltipBuilder.SetCTAaction(() =>
             {

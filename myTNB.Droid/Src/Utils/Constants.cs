@@ -147,6 +147,7 @@ namespace myTNB_Android.Src.Utils
         {
             internal static readonly string END_POINT = myTNB.Mobile.MobileConstants.ApiDomain;
             internal static readonly string END_POINT_AWS = myTNB.Mobile.MobileConstants.AWSApiDomain;
+            internal static readonly string END_POINT_ISUSERAUTH_AWS = myTNB.Mobile.MobileConstants.IsUserAuthAWSApiDomain;
 
 #if DEBUG || STUB
             //internal static readonly string END_POINT = "http://10.215.128.191:89";  //dev

@@ -66,6 +66,8 @@ namespace myTNB.Mobile
         public static string AWSApiDomainDEV = "https://mytnb-core-staging-362772745.ap-southeast-1.elb.amazonaws.com/api";
         public static string AWSApiDomainPROD = "https://api.mytnb.com.my/core/api";
 
+        public static string IsUserAuthAWS_SIT = "https://17vjgjhncd.execute-api.ap-southeast-1.amazonaws.com/Staging";
+
         //OVIS Webview
         //public static string OvisWebviewBaseUrlDEV = "http://192.168.1.157:3000";
         //public static string OvisWebviewBaseUrlDEV = "http://mytnbwvovis.ap.ngrok.io";
@@ -91,6 +93,7 @@ namespace myTNB.Mobile
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
         public static string AWSApiDomain = AWSApiDomainSIT;
+        public static string IsUserAuthAWSApiDomain = IsUserAuthAWS_SIT;
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlSTG;
 #else
         public static string ApiDomain = PROD;
