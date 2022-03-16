@@ -100,16 +100,16 @@ namespace myTNB_Android.Src.MyLearnMoreAboutTnb.Activity
                 WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLE");
                 if (entity != null && !string.IsNullOrEmpty(entity.Title))
                 {
-                    billInquiry.SetTitle(entity.Title);
+                    billInquiry.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "callUsBill"));
                 }
                 else 
                 {
-                    billInquiry.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "callUsBilling"));
+                    billInquiry.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "callUsBill"));
                 }
             }
             else
             {
-                billInquiry.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "callUsBilling"));
+                billInquiry.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "callUsBill"));
             }
             billInquiry.SetItemActionCall(ShowCallUsBilling);
             helpSupportItems.Add(billInquiry);
@@ -120,7 +120,7 @@ namespace myTNB_Android.Src.MyLearnMoreAboutTnb.Activity
                 WeblinkEntity entity = WeblinkEntity.GetByCode("TNBCLO");
                 if (entity != null && !string.IsNullOrEmpty(entity.Title))
                 {
-                    outage.SetTitle(entity.Title);
+                    outage.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "callUsOutage"));
                 }
                 else
                 {

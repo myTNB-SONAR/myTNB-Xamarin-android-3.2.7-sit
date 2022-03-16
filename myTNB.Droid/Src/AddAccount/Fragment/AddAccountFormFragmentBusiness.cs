@@ -171,6 +171,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "ROCHeaderText");
                 txtTitleROC.Text = Utility.GetLocalizedLabel("AddAccount", "ROCDetailsText");
                 btnWhereIsMyAccountNo.Hint = Utility.GetLocalizedLabel("AddAccount", "WhereAccNo");
+                txtSkipAcc.Text = Utility.GetLocalizedLabel("AddAccount", "skip");
 
                 textInputLayoutAccountNo.SetHintTextAppearance(TextViewUtils.IsLargeFonts
                     ? Resource.Style.TextInputLayout_TextAppearance_Large

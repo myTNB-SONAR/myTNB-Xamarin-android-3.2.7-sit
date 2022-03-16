@@ -857,7 +857,7 @@
     "popupremoveAccountMessageSwipe": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda.",
     "emptyListDetails": "Tiada akaun elektrik yang ditambah. Tambahkan akaun sekarang dan anda boleh memantau penggunaan, membayar bil dan mengurus akaun anda.",
     "titleMyElectricityAccounts": "Akaun Elektrik Saya",
-    "addAccount": "Tambah Akaun"
+    "addAccount": "Tambah Akaun Lain"
   },
   "Prelogin": {
     "welcomeTitle": "Selamat datang ke myTNB",
@@ -1552,7 +1552,7 @@
     "tnc": "Terma dan Syarat",
     "findUs": "Cari kami",
     "faq": "Soalan Lazim",
-    "callUsBill": "Hubungi Kami (Pertanyaan Bil)", //Fallback - Service Dependent
+    "callUsBill": "Hubungi Kami (Pertanyaan Pengebilan)", //Fallback - Service Dependent
     "callUsOutage": "Hubungi Kami (Gangguan & Kerosakan Bekalan)" //Fallback - Service Dependent
   },
   "ApplicationStatusFilter": {
@@ -1619,7 +1619,7 @@
   },
   "UserAccess": {
     "title": "Urus Pengguna",
-    "LabelTitle": "Pengguna yang mempunyai akses ke akaun ini:",
+    "LabelTitle": "Pengguna yang mempunyai akses untuk akaun ini:",
     "LabelEmptyTitle": "Nampaknya akaun elektrik anda tidak dilihat atau diakses oleh sesiapa. Anda boleh menambah pengguna ke dalam akaun untuk memudahkan pantauan mereka.",
     "addUserBtn": "Tambah Pengguna",
     "AddTitle": "Tambah",
@@ -2278,7 +2278,7 @@
   "CompleteYourProfile": {
     "title": "Lengkapkan Profil Anda",
     "lblTitle": "Sediakan kami nombor pengenalan anda untuk pengalaman yang lebih baik!",
-    "lblSubTitle": "Dapatkan akses dan kawalan yang lebih menyeluruh atas akaun elektrik anda di myTNB dengan membantu kami mengesahkan pengenalan diri anda.",
+    "lblSubTitle": "Dapatkan akses yang lebih menyeluruh dan nikmati lebih tawaran TNB di myTNB dengan membantu kami mengesahkan pengenalan diri anda.",
     "txtFieldIDType": "Jenis Pengenalan",
     "txtFieldID": "Nombor Pengenalan",
     "mykad": "Kad Pengenalan / MyKad",

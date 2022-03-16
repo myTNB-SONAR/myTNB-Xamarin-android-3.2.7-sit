@@ -1619,7 +1619,7 @@
   },
   "UserAccess": {
     "title": "User Access",
-    "LabelTitle": "User that have access to this account:",
+    "LabelTitle": "Users that have access to this account:",
     "LabelEmptyTitle": "Looks like your electricity account is not viewed or accessed by anyone else. You can help them by adding this account to their view below.",
     "addUserBtn": "Add User",
     "AddTitle": "Add",
@@ -1635,7 +1635,7 @@
     "walkthroughStep2": "View and manage people who are viewing your account or provide access to someone new here.",
     "tapToSkip": "Tap to skip",
     "pendingRegistration": "Pending Registration",
-    "cancelAddSuccess": "{0}  is cancelled from being added as a  user to this electricity account.",
+    "cancelAddSuccess": "{0} is cancelled from being added as a user to this electricity account.",
     "AddTNBUserSuccess": "{0} now has access to {1} on myTNB.",
     "AddNonTNBUserSuccess": "You have invited <strong>{0}</strong> to join myTNB and view this electricity account.",
     "hint_email": "User Email Address",
