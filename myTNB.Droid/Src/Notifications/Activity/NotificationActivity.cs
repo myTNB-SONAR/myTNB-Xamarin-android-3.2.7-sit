@@ -27,6 +27,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.Snackbar;
+using myTNB_Android.Src.DigitalSignature.NotificationDetails.Activity;
 
 namespace myTNB_Android.Src.Notifications.Activity
 {
@@ -796,11 +797,19 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details, UserNotificationData notificationData, int position)
         {
-            Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
-            notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_LIST_ITEM, JsonConvert.SerializeObject(notificationData));
-            notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
-            notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
-            StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+            if (details.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_DIGITAL_SIGNATURE)
+            {
+                Intent notificationDetails = new Intent(this, typeof(DSNotificationDetailsActivity));
+                StartActivity(notificationDetails);
+            }
+            else
+            {
+                Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
+                notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_LIST_ITEM, JsonConvert.SerializeObject(notificationData));
+                notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+                notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
+                StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+            }
         }
 
         public void ShowQueryProgress()

@@ -153,6 +153,7 @@ namespace myTNB.Mobile
             public const string APP_UPDATE = "APPUPDATE";
             public const string ACCOUNT_STATEMENT = "ACCOUNTSTATEMENT";
             public const string NEW_BILL_DESIGN = "NEWBILLDESIGN";
+            public const string DIGITAL_SIGNATURE = "DIGITALSIGNATURE";
         }
 
         public struct OSType

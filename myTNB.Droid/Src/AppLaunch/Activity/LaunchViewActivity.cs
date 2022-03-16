@@ -157,7 +157,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         }
                         else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT ||
                             notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN)
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.DIGITAL_SIGNATURE)
                         {
                             if (UserEntity.IsCurrentlyActive())
                             {

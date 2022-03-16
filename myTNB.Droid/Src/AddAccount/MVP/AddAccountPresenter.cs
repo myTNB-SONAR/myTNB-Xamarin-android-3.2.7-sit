@@ -333,7 +333,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 //    mView.RemoveNameErrorMessage();
                 //}
 
-
                 if (accountno.Length == 0)
                 {
                     mView.RemoveNumberErrorMessage();

@@ -189,7 +189,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         UserSessions.SaveFeedbackUpdateDetailDisabled(mSharedPref, updateDetail.ToString());  //save sharedpref cater prelogin & after login
                         AppLaunchMasterDataModel responseData = masterDataResponse.Data;
 
-                       //UserSessions.SaveCheckEmailVerified(mSharedPref, responseData.UserVerificationInfo.Email.ToString());  //save sharedpref check email  //wan
+                        //UserSessions.SaveCheckEmailVerified(mSharedPref, responseData.UserVerificationInfo.Email.ToString());  //save sharedpref check email  //wan
 
                         if (responseData.AppVersionList != null && responseData.AppVersionList.Count > 0)
                         {
@@ -331,7 +331,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                                         if (hasNotification && isLoggedInEmail && (NotificationUtil.Instance.Type == NotificationType.AppUpdate ||
                                             NotificationUtil.Instance.Type == NotificationType.AccountStatement ||
-                                            NotificationUtil.Instance.Type == NotificationType.NewBillDesign))
+                                            NotificationUtil.Instance.Type == NotificationType.NewBillDesign ||
+                                            NotificationUtil.Instance.Type == NotificationType.DigitalSignature))
                                         {
                                             GetAccountAWS();
                                         }

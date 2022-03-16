@@ -61,8 +61,9 @@
             internal const string GetMultiBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
             internal const string StartDigitalBill = "https://dbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://dbr.mytnb.com.my/PaperBill/OptIn";
-            internal const string DSRedirect = "https://stagingds.mytnb.com.my/EKYC/StartEKYC";//stub
+            internal const string DSRedirect = "https://stagingds.mytnb.com.my/EKYC/StartEKYC";//Staging
             public const string DBRSSO = "https://dbr.mytnb.com.my/Sso?s={0}";
+            public const string DSSSO = "https://stagingds.mytnb.com.my/Sso?s={0}";//Staging
 #endif
         }
 

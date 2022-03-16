@@ -6,16 +6,16 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
-    <IntermediateOutputPath>obj\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</IntermediateOutputPath>
+    <IntermediateOutputPath>obj\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</IntermediateOutputPath>
     <Optimize>true</Optimize>
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;SIT;NETSTANDARD;NETSTANDARD2_0;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,7 +30,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -42,7 +42,7 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />
@@ -135,6 +135,9 @@
     <Folder Include="API\Services\Feature Info\" />
     <Folder Include="API\Models\Base Model\" />
     <Folder Include="AWS\Managers\ServiceDistruption\" />
+    <Folder Include="AWS\Managers\DS\" />
+    <Folder Include="Constants\" />
+    <Folder Include="Constants\DS\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -204,6 +207,9 @@
     <None Remove="API\Services\Feature Info\" />
     <None Remove="API\Models\Base Model\" />
     <None Remove="AWS\Managers\ServiceDistruption\" />
+    <None Remove="AWS\Managers\DS\" />
+    <None Remove="Constants\" />
+    <None Remove="Constants\DS\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />
