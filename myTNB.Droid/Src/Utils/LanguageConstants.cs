@@ -20,6 +20,7 @@
         internal static readonly string MANAGE_DIGITAL_BILL = "ManageDigitalBillLanding";
         internal static readonly string DS_LANDING = "DSLanding";
         internal static readonly string DS_WEBVIEW = "DSWebview";
+        internal static readonly string MY_PROFILE = "Tnb_Profile";
 
         internal struct Common
         {
@@ -226,6 +227,17 @@
             internal static readonly string ITEM_LIST_DESC_1 = "howItWorksDescription1";
             internal static readonly string ITEM_LIST_DESC_2 = "howItWorksDescription2";
             internal static readonly string ITEM_LIST_DESC_3 = "howItWorksDescription3";
+            internal static readonly string POP_UP_NO_REG_ID_TITLE = "noRegisteredIDTitle";
+            internal static readonly string POP_UP_NO_REG_ID_MSG = "noRegisteredIDMessage";
+            internal static readonly string POP_UP_CANCEL = "cancel";
+            internal static readonly string POP_UP_VERIFY_NOW = "verifyNow";
+            internal static readonly string POP_UP_VERIFY_PROCESSING_TITLE = "idProcessingTitle";
+            internal static readonly string POP_UP_VERIFY_PROCESSING_MSG = "idProcessingMessage";
+            internal static readonly string BACK_TO_HOME = "backToHome";
+            internal static readonly string POP_UP_ACCEPTED_ID_TITLE = "acceptedIDTitle";
+            internal static readonly string POP_UP_ACCEPTED_ID_MSG = "acceptedIDMessage";
+            internal static readonly string POP_UP_DROPDOWN_TITLE = "cantUseOtherIDTitle";
+            internal static readonly string POP_UP_DROPDOWN_MSG = "cantUseOtherIDMessage";
         }
 
         internal struct DSWebView
@@ -235,6 +247,11 @@
             internal static readonly string CONFIRM_POPUP_MSG = "confirmPopupMessage";
             internal static readonly string LEAVE = "leave";
             internal static readonly string STAY = "stay";
+        }
+
+        internal struct MYProfile
+        {
+            internal static readonly string VERIFIED_ACCT_MSG = "verifiedAccountMessage";
         }
     }
 }
