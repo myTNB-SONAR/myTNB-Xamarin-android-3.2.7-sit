@@ -968,7 +968,7 @@
     "titleManageUser": "Manage User",
     "dialogAddrress": "Why can't I see my full address?",
     "dialogAddrressMessage": "We mask sensitive information to safeguard owner's privacy. You are seeing masked information as you are not the owner of this electricity account.",
-    "dialogManageUser": "Giving your users more access.",
+    "dialogManageUser": "Give your users more access.",
     "dialogManageUserMessage": "To protect your information, we are not showing non-owners your personal infromation and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
     "manageUserAccess": "Manage User Access",
     "manageAutopay": "Manage Autopay"

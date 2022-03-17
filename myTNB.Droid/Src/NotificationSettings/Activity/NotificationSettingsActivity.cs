@@ -135,12 +135,12 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             {
                 case "EN":
                     {
-                        langLabel = "English";
+                        langLabel = Utility.GetLocalizedLabel("Common", "english");
                         break;
                     }
                 case "MS":
                     {
-                        langLabel = "Bahasa Malaysia";
+                        langLabel = Utility.GetLocalizedLabel("Common", "bahasa");
                         break;
                     }
                 default:
@@ -173,14 +173,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             TextViewUtils.SaveFontSize(selectedItem);
             isSelectionFontCheck();
         }
-
-        //private void UpdateFont()
-        //{
-        //    savedFont = TextViewUtils.SelectedFontSize();
-        //    savedFont = (savedFont != null && savedFont != string.Empty) ? savedFont : "R";
-        //    // UpdateLabels();
-            
-        //}
 
         public void UpdateSizeFontText()
         {
@@ -346,6 +338,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                             AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
                         }
                         _ = RunUpdateLanguage(selectedItem);
+                       
                     },
                     () =>
                     {
@@ -386,9 +379,30 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             savedLanguage = LanguageUtil.GetAppLanguage();
             await LanguageUtil.SaveUpdatedLanguagePreference();
             UpdateLabels();
-            isSelectionCheck();
+            ReloadList();
+            SetSelectedLanguage("");
         }
 
+        public void ReloadList()
+        {
+            
+            languageItemList = new List<Item>();
+
+            foreach (string languageName in Enum.GetNames(typeof(Constants.SUPPORTED_LANGUAGES)))
+            {
+                Item item = new Item();
+                item.title = GetLanguageLabelByCode(languageName);
+                item.type = languageName;
+                item.selected = false;
+                languageItemList.Add(item);
+            }
+           
+            selectItemAdapter = new SelectItemAdapter(this, languageItemList);
+            languageListView.Adapter = selectItemAdapter;
+            languageListView.SetNoScroll();
+            languageListView.SetScrollContainer(false);
+           
+        }
        
 
         public void isSelectionCheck()

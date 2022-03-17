@@ -1005,29 +1005,21 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             }
         }
 
-        public void ShowCancelAddSuccess(string message)
+        public void ShowCancelAddSuccess(string email)
         {
-            try
-            {
-
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (message), Snackbar.LengthIndefinite)
-                            .SetAction(GetLabelCommonByLanguage("close"),
-                             (view) =>
-                             {
-                                 // EMPTY WILL CLOSE SNACKBAR
-                             }
-                            );
-                View v = saveSnackBar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(4);
-                saveSnackBar.Show();
-                this.SetIsClicked(false);
-            }
-            catch (System.Exception e)
-            {
-                this.SetIsClicked(false);
-                Utility.LoggingNonFatalError(e);
-            }
+            Snackbar errorMessageSnackbar =
+            Snackbar.Make(rootView, string.Format(Utility.GetLocalizedLabel("UserAccess", "cancelAddSuccess"), email), Snackbar.LengthIndefinite)
+                        .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                         (view) =>
+                         {
+                             // EMPTY WILL CLOSE SNACKBAR
+                         }
+                        );//.Show();
+            View snackbarView = errorMessageSnackbar.View;
+            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            textView.SetMaxLines(4);
+            TextViewUtils.SetTextSize14(textView);
+            errorMessageSnackbar.Show();
         }
 
         public void ShowGetCardsProgressDialog()
