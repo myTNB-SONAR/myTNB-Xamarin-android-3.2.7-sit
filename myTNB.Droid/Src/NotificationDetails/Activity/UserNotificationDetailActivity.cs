@@ -242,6 +242,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     position = extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION);
                 }
                 SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 TextViewUtils.SetMuseoSans500Typeface(notificationDetailTitle);
                 TextViewUtils.SetMuseoSans300Typeface(notificationDetailMessage);
                 TextViewUtils.SetTextSize14(notificationDetailMessage);

@@ -1431,8 +1431,26 @@ namespace myTNB_Android.Src.Database.Model
 
         public static bool HasOwnerCA()
         {
+            var eligibleCAs = DBRUtility.Instance.GetCAList();
             List<CustomerBillingAccount> allAccountList = List();
-            return allAccountList.Any(s => s.isOwned);
+            List<CustomerBillingAccount> eligibleCAList = new List<CustomerBillingAccount>();
+
+            eligibleCAs.ForEach(ca =>
+            {
+                var account = allAccountList.Find(item => item.AccNum == ca);
+                if (account != null)
+                {
+                    eligibleCAList.Add(account);
+                }
+            });
+            if (eligibleCAList.Count > 0)
+            {
+                return eligibleCAList.Any(s => s.isOwned);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public static bool CAIsOwner(string ca)

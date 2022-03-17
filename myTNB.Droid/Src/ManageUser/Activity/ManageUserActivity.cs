@@ -552,8 +552,8 @@ namespace myTNB_Android.Src.ManageUser.Activity
                         .SetTitle((string.Format(Utility.GetLocalizedLabel("manageUser", "manageUserCancelAddAccessDialogTitle"), email)))
                         .SetMessage(string.Format(Utility.GetLocalizedLabel("manageUser", "manageUserCancelAddAccessDialogMessage"), email))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "no"))
-                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "yes"))
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();
@@ -581,10 +581,10 @@ namespace myTNB_Android.Src.ManageUser.Activity
             base.OnBackPressed();
         }
 
-        public void ShowSuccessCancelInvite(string cancelInvite)
+        public void ShowSuccessCancelInvite(string email)
         {
             Intent resultIntent = new Intent();
-            resultIntent.PutExtra("cancelInvited", cancelInvite);
+            resultIntent.PutExtra("cancelInvited", email);
             SetResult(Result.Ok, resultIntent);
             Finish();
         }

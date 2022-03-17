@@ -41,7 +41,7 @@ namespace myTNB_Android.Src.Common
             vh = new SelectItemViewHolder(convertView, mContext);
             Item item = GetItemObject(position);
             vh.txtItemTitle.Text = item.title;
-            TextViewUtils.SetTextSize16(vh.txtItemTitle);
+            //TextViewUtils.SetTextSize16(vh.txtItemTitle);
             vh.imageActionIcon.Visibility = item.selected ? ViewStates.Visible : ViewStates.Gone;
             return convertView;
         }

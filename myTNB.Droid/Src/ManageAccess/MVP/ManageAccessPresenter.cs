@@ -66,8 +66,8 @@ namespace myTNB_Android.Src.ManageAccess.MVP
 
                         if (data != null && data.Extras.GetString("cancelInvited") != null)
                         {
-                            string message = data.Extras.GetString("cancelInvited");
-                            this.mView.ShowCancelAddSuccess(message);
+                            string email = data.Extras.GetString("cancelInvited");
+                            this.mView.ShowCancelAddSuccess(email);
                         }
                     }
                 }
@@ -397,7 +397,8 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                             CreatedDate = acc.CreatedDate,
                             UserID = acc.UserID,
                             UserName = acc.UserName,
-                            IsPreRegister = acc.IsPreRegister
+                            IsPreRegister = acc.IsPreRegister,
+                            CreateByName = acc.CreateByName
                         };
                         newAccountList.Add(newRecord);
                     }

@@ -106,10 +106,9 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle"));
                 //2 set font type , 300 normal 500 button
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, txtInputLayoutNewIC);
-                TextViewUtils.SetMuseoSans300Typeface(txtAccountNo, txtNewIC, pageStep, infoLabeltxtWhereIsMyAcc);
-                TextViewUtils.SetMuseoSans500Typeface(enterYourNewDetails, btnNext);
-                TextViewUtils.SetTextSize12(infoLabeltxtWhereIsMyAcc);
-                TextViewUtils.SetTextSize14(txtAccountNo, pageStep);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountNo, txtNewIC, pageStep);
+                TextViewUtils.SetMuseoSans500Typeface(enterYourNewDetails, btnNext, infoLabeltxtWhereIsMyAcc);
+                TextViewUtils.SetTextSize14(txtAccountNo, pageStep, infoLabeltxtWhereIsMyAcc);
                 TextViewUtils.SetTextSize16(btnNext, enterYourNewDetails);
 
                 txtInputLayoutNewIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
@@ -226,7 +225,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 int totallenafter = len - totallength;
                 string Idtype = idText;
 
-                if (Idtype.Equals("IC / Mykad") && len > 0 && (totallenafter != 0) && !flagDel)
+                if ((Idtype.Equals("IC / MyKad") || Idtype.Equals("Kad Pengenalan / MyKad")) && len > 0 && (totallenafter != 0) && !flagDel)
                 {
                     flagDel = true;
                     KeyListener.KeyDel = 0;
@@ -247,7 +246,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
             {
                 string Idtype = "IC / Mykad";
 
-                if (Idtype.Equals("IC / Mykad"))
+                if (Idtype.Equals("IC / MyKad") || Idtype.Equals("Kad Pengenalan / MyKad"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(14) });
                     if (!flagDel)

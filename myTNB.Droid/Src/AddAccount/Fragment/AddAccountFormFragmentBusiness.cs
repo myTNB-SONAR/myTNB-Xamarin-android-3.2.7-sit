@@ -171,6 +171,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "ROCHeaderText");
                 txtTitleROC.Text = Utility.GetLocalizedLabel("AddAccount", "ROCDetailsText");
                 btnWhereIsMyAccountNo.Hint = Utility.GetLocalizedLabel("AddAccount", "WhereAccNo");
+                txtSkipAcc.Text = Utility.GetLocalizedLabel("AddAccount", "skip");
 
                 textInputLayoutAccountNo.SetHintTextAppearance(TextViewUtils.IsLargeFonts
                     ? Resource.Style.TextInputLayout_TextAppearance_Large
@@ -232,7 +233,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     ShowWhereIsMyAccountNoTooltip();
                 };
 
-                TextViewUtils.SetTextSize18(txtAccountType, txtTitlePremise, txtTitle, txtTitleROC);
+                TextViewUtils.SetTextSize16(txtAccountType, txtTitlePremise, txtTitle, txtTitleROC);
                 TextViewUtils.SetTextSize14(accountType, txtSkipAcc, btnWhereIsMyAccountNo);
 
                 AccountType Individual = new AccountType();

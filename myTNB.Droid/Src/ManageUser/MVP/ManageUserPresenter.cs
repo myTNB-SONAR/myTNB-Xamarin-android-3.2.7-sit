@@ -152,9 +152,9 @@ namespace myTNB_Android.Src.ManageUser.MVP
                 if (updateUserAccessReponse.IsSuccessResponse())
                 {
                     UserManageAccessAccount.DeleteInvited(userId);
-                    string message = updateUserAccessReponse.Response.DisplayMessage;
-                    string cancelInvite = accountData.email + message;
-                    this.mView.ShowSuccessCancelInvite(cancelInvite);
+                    //string message = updateUserAccessReponse.Response.DisplayMessage;
+                    //string cancelInvite = accountData.email + message;
+                    this.mView.ShowSuccessCancelInvite(accountData.email);
                 }
                 else
                 {
