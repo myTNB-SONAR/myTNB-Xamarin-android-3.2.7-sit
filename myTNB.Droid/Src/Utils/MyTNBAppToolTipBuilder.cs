@@ -1016,7 +1016,7 @@ namespace myTNB_Android.Src.Utils
                         tooltipDropdownMessage.TextFormatted = Html.FromHtml(this.dropdownMessage);
                     }
 
-                    ImageSpan imageSpan = new ImageSpan(this.mContext, Resource.Drawable.Icon_DS_Dropdown_Expand, SpanAlign.Center);
+                    ImageSpan imageSpan = new ImageSpan(this.mContext, Resource.Drawable.Icon_DS_Dropdown_Expand, SpanAlign.Bottom);
                     SpannableString imageString = new SpannableString(tooltipDropdownTitle.TextFormatted);
 
                     imageString.SetSpan(imageSpan, dropdownTitleBase.Length, this.dropdownTitle.Length, SpanTypes.ExclusiveExclusive);
@@ -1033,7 +1033,7 @@ namespace myTNB_Android.Src.Utils
                     expanded = !expanded;
                     tooltipDropdownMessage.Visibility = expanded ? ViewStates.Visible : ViewStates.Gone;
 
-                    ImageSpan imageSpan = new ImageSpan(this.mContext, expanded ? Resource.Drawable.Icon_DS_Dropdown_Collapse : Resource.Drawable.Icon_DS_Dropdown_Expand, SpanAlign.Center);
+                    ImageSpan imageSpan = new ImageSpan(this.mContext, expanded ? Resource.Drawable.Icon_DS_Dropdown_Collapse : Resource.Drawable.Icon_DS_Dropdown_Expand, SpanAlign.Bottom);
                     SpannableString imageString = new SpannableString(tooltipDropdownTitle.TextFormatted);
 
                     imageString.SetSpan(imageSpan, dropdownTitleBase.Length, this.dropdownTitle.Length, SpanTypes.ExclusiveExclusive);
