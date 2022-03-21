@@ -45,7 +45,10 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty("CreateByName")]
             public string CreateByName { get; set; }
-            
+
+            [JsonProperty("Email")]
+            public string Email { get; set; }
+
         }
     }
 }

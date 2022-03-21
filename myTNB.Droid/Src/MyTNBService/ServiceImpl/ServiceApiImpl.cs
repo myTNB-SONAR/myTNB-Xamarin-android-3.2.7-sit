@@ -15,7 +15,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
     {
         private static readonly Lazy<ServiceApiImpl>
             lazy = new Lazy<ServiceApiImpl>(() => new ServiceApiImpl());
-        private IServiceV6 api, apiAws, apiAwsIsUserAuth;
+        private IServiceV6 api, apiAws;
         HttpClient httpClient, httpClientAws, httpClientAwsIsUserAuth;
 
         private ServiceApiImpl()
@@ -27,8 +27,8 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             httpClientAws = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT_AWS) };
             apiAws = RestService.For<IServiceV6>(httpClientAws);
 
-            httpClientAwsIsUserAuth = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT_ISUSERAUTH_AWS) };
-            apiAwsIsUserAuth = RestService.For<IServiceV6>(httpClientAwsIsUserAuth);
+            // httpClientAwsIsUserAuth = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT_ISUSERAUTH_AWS) };
+            // apiAwsIsUserAuth = RestService.For<IServiceV6>(httpClientAwsIsUserAuth);
             
 #else
             api = RestService.For<IServiceV6>(Constants.SERVER_URL.END_POINT);

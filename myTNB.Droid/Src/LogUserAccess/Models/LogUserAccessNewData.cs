@@ -25,5 +25,7 @@ namespace myTNB_Android.Src.LogUserAccess.Models
         public bool IsPreRegister { get; set; }
 
         public string CreateByName { get; set; }
+
+        public string Email { get; set; }
     }
 }
