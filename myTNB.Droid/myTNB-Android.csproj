@@ -7252,7 +7252,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\DigitalSignature\NotificationDetails\Activity\DSNotificationDetailsActivity.cs" />
+    <Compile Include="Src\DigitalSignature\DSNotificationDetails\Activity\DSNotificationDetailsActivity.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_1.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -7466,6 +7466,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\DigitalSignature\DSNotificationDetails\MVP\DSNotificationDetailsPresenter.cs" />
+    <Compile Include="Src\DigitalSignature\DSNotificationDetails\MVP\DSNotificationDetailsContract.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -9855,8 +9857,8 @@
     <Folder Include="Src\OverVoltageClaim\Model\" />
     <Folder Include="Src\Utils\Notification\" />
     <Folder Include="Src\DigitalSignature\" />
-    <Folder Include="Src\DigitalSignature\NotificationDetails\" />
-    <Folder Include="Src\DigitalSignature\NotificationDetails\Activity\" />
+    <Folder Include="Src\DigitalSignature\DSNotificationDetails\" />
+    <Folder Include="Src\DigitalSignature\DSNotificationDetails\Activity\" />
     <Folder Include="Src\DigitalSignature\IdentityVerification\" />
     <Folder Include="Src\DigitalSignature\WebView\" />
     <Folder Include="Src\DigitalSignature\IdentityVerification\Activity\" />
@@ -9864,6 +9866,7 @@
     <Folder Include="Src\DigitalSignature\IdentityVerification\MVP\" />
     <Folder Include="Src\DigitalSignature\WebView\Activity\" />
     <Folder Include="Src\DigitalSignature\WebView\MVP\" />
+    <Folder Include="Src\DigitalSignature\DSNotificationDetails\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

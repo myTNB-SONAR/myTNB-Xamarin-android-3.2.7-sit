@@ -28,7 +28,6 @@ using myTNB_Android.Src.Bills.AccountStatement.Activity;
 using myTNB_Android.Src.Bills.NewBillRedesign;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DigitalSignature.NotificationDetails.Activity;
 using myTNB_Android.Src.EnergyBudgetRating.Activity;
 using myTNB_Android.Src.EnergyBudgetRating.Fargment;
 using myTNB_Android.Src.FAQ.Activity;
@@ -703,13 +702,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 .SetContentGravity(GravityFlags.Center)
                 .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                 .Build().Show();
-        }
-
-        public void DSNotificationDetails()
-        {
-            Intent notifDetailsForDS = new Intent(this, typeof(DSNotificationDetailsActivity));
-            StartActivity(notifDetailsForDS);
-
         }
 
         protected override void OnPause()
