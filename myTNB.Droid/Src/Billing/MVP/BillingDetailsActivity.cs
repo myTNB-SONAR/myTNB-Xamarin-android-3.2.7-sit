@@ -213,7 +213,7 @@ namespace myTNB_Android.Src.Billing.MVP
             TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, refreshBillingDetailMessage, paperlessTitle);
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency,
-                accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh, roundingAdjustmentLabel, roundingAdjustmentValue);
+                accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh, roundingAdjustmentLabel, roundingAdjustmentValue, infoLabelDetailEPP);
 
             if (TextViewUtils.IsLargeFonts)
             {
@@ -228,7 +228,7 @@ namespace myTNB_Android.Src.Billing.MVP
             }
 
             TextViewUtils.SetTextSize11(infoLabelDetailEPP);
-            TextViewUtils.SetTextSize12(accountAddress, refreshBillingDetailMessage, accountMinChargeLabel, paperlessTitle);
+            TextViewUtils.SetTextSize12(accountAddress, refreshBillingDetailMessage, accountMinChargeLabel, paperlessTitle, infoLabelDetailEPP);
             TextViewUtils.SetTextSize14(accountPayAmountDate, accountName, accountChargeLabel, accountChargeValue
                 , accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, roundingAdjustmentLabel, roundingAdjustmentValue);
             TextViewUtils.SetTextSize16(myBillDetailsLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
@@ -547,13 +547,16 @@ namespace myTNB_Android.Src.Billing.MVP
 
         private void PopulateCharges()
         {
-
             EnableEppTooltip(selectedAccountChargeModel.ShowEppToolTip);
 
-            if (selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f && selectedAccountChargeModel.ShowEppToolTip == false)
+            bool hasEPPToolTip = selectedAccountChargeModel.ShowEppToolTip;
+            bool hasOneTimeCharges = selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f;
+
+            accountMinChargeLabelContainer.Visibility = hasOneTimeCharges && !hasEPPToolTip ? ViewStates.Visible : ViewStates.Gone;
+
+            if (hasOneTimeCharges)
             {
                 otherChargesExpandableView.Visibility = ViewStates.Visible;
-                accountMinChargeLabelContainer.Visibility = ViewStates.Visible;
                 otherChargesExpandableView.SetExpandableType(ExpandableTextViewType.APPLICATION_CHARGES);
                 otherChargesExpandableView.SetApplicationChargesLabel(GetLabelByLanguage("applicationCharges"));
                 otherChargesExpandableView.SetOtherCharges(selectedAccountChargeModel.MandatoryCharges.TotalAmount, selectedAccountChargeModel.MandatoryCharges.ChargeModelList);
@@ -562,7 +565,6 @@ namespace myTNB_Android.Src.Billing.MVP
             else
             {
                 otherChargesExpandableView.Visibility = ViewStates.Gone;
-                accountMinChargeLabelContainer.Visibility = ViewStates.Gone;
             }
 
             CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
