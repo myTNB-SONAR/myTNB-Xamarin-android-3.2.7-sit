@@ -47,7 +47,7 @@
 					android:textSize="16dp"
 					android:gravity="left|center"
 					android:textColor="@color/powerBlue"
-					android:layout_marginBottom="16dp"
+					android:layout_marginBottom="10dp"
 					android:layout_marginTop="24dp"
 					android:layout_marginLeft="16dp"
 					android:layout_marginRight="16dp"/>
@@ -63,6 +63,14 @@
 					android:layout_marginLeft="16dp"
 					android:layout_marginRight="16dp"
 					android:layout_marginBottom="16dp"/>
+				<android.webkit.WebView
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+					android:layout_marginRight="10dp"
+                    android:background="@color/lightGrey"
+                    android:id="@+id/webViewNoti" />
 			</LinearLayout>
 		</ScrollView>
 	</LinearLayout>
