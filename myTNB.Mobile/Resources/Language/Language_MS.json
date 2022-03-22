@@ -1642,7 +1642,7 @@
     "hint_email": "Alamat e-mel pengguna",
     "removeAccountUserAccesssLog": "<strong>Anda</strong> mengeluarkan <strong>{0}</strong> daripada akses akaun elektrik ini.",
     "removeAccountLog": "<strong>{0}</strong> telah dikeluarkan daripada akses akaun elektrik ini.",
-    "addAccountUserAccesssLog": "Anda telah menambah <strong>{0}</strong> untuk melihat akaun elektrik ini.",
+    "addAccountUserAccesssLog": "<strong>Anda</strong> telah menambah <strong>{0}</strong> untuk melihat akaun elektrik ini.",
     "addAccountUserLog": "<strong>{0}</strong> menambah akaun elektrik ini di dalam pemerhatiannya.",
     "addAccesssLogfullBill": "<strong>Anda</strong> telah memberikan <strong>{0}</strong> akses untuk melihat bil elektrik penuh.",
     "addAccesssLogeBilling": "<strong>Anda</strong> telah memberikan akses kepada <strong>{0}</strong> telah menolak akses untuk melihat bil elektrik penuh.",

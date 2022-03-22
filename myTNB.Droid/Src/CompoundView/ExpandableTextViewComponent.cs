@@ -163,7 +163,7 @@ namespace myTNB_Android.Src.CompoundView
                     TextView textValue = item.FindViewById<TextView>(Resource.Id.otherChargeValue);
 
                     textView.Text = charge.Title;
-                    textValue.Text = "RM" + charge.Amount.ToString("#,##0.00", currCult);
+                    textValue.Text = "RM " + charge.Amount.ToString("#,##0.00", currCult);
                     TextViewUtils.SetMuseoSans300Typeface(textView, textValue);
                     TextViewUtils.SetTextSize14(textView, textValue);
                     expandableContainer.AddView(item);
