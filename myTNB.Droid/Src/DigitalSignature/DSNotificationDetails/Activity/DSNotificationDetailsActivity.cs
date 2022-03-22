@@ -4,21 +4,25 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using myTNB;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.Fragment;
-using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP;
+using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Utils;
+using Refit;
 
-namespace myTNB_Android.Src.DigitalSignature.NotificationDetails.Activity
+namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
 {
     [Activity(Label = "DS Notification Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
-    public class DSNotificationDetailsActivity : BaseActivityCustom
+    public class DSNotificationDetailsActivity : BaseActivityCustom, DSNotificationDetailsContract.IView
     {
         [BindView(Resource.Id.dsNotifDetailTitle)]
         TextView dsNotifDetailTitle;
@@ -29,6 +33,15 @@ namespace myTNB_Android.Src.DigitalSignature.NotificationDetails.Activity
         [BindView(Resource.Id.identityVerificationListContainer)]
         LinearLayout identityVerificationListContainer;
 
+        [BindView(Resource.Id.rootView)]
+        ViewGroup rootView;
+
+        NotificationDetails.Models.NotificationDetails notificationDetails;
+        UserNotificationData userNotificationData;
+        internal static myTNB.Mobile.NotificationOpenDirectDetails Notification;
+        int position;
+        DSNotificationDetailsPresenter mPresenter;
+        public bool pushFromDashboard = false;
         private const string PAGE_ID = "DSNotificationDetails";
 
         AlertDialog removeDialog;
@@ -75,7 +88,7 @@ namespace myTNB_Android.Src.DigitalSignature.NotificationDetails.Activity
                         .SetPositiveButton(Utility.GetLocalizedCommonLabel("ok"),
                         delegate
                         {
-                            //mPresenter.DeleteNotificationDetail(notificationDetails);
+                            mPresenter.DeleteNotificationDetail(notificationDetails);
                         })
                         .Show();
                     return true;
@@ -83,12 +96,38 @@ namespace myTNB_Android.Src.DigitalSignature.NotificationDetails.Activity
             return base.OnOptionsItemSelected(item);
         }
 
+        public override void OnBackPressed()
+        {
+            Intent result = new Intent();
+            result.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
+            result.PutExtra(Constants.ACTION_IS_READ, true);
+            SetResult(Result.Ok, result);
+            base.OnBackPressed();
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
+            try
+            {
+                mPresenter = new DSNotificationDetailsPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+                base.OnCreate(savedInstanceState);
 
-            SetUpViews();
-            RenderContent();
+                Bundle extras = Intent.Extras;
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM))
+                    {
+                        notificationDetails = DeSerialze<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
+                    }
+                }
+
+                SetUpViews();
+                RenderContent();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void SetUpViews()
@@ -108,7 +147,7 @@ namespace myTNB_Android.Src.DigitalSignature.NotificationDetails.Activity
             dsNotifDetailBtnVerifyNow.Text = "Verify Now";
         }
 
-        private void RenderContent()
+        public void RenderContent()
         {
             try
             {
@@ -145,6 +184,114 @@ namespace myTNB_Android.Src.DigitalSignature.NotificationDetails.Activity
                 identityVerificationListContainer.Visibility = ViewStates.Gone;
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowLoadingScreen()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideLoadingScreen()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ReturnToDashboard()
+        {
+            Finish();
+        }
+
+        public void ShowNotificationListAsDeleted()
+        {
+            Intent result = new Intent();
+            result.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
+            result.PutExtra(Constants.ACTION_IS_DELETE, true);
+            SetResult(Result.Ok, result);
+            Finish();
+        }
+
+        private Snackbar mCancelledExceptionSnackBar;
+        public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
+        {
+            if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+            {
+                mCancelledExceptionSnackBar.Dismiss();
+            }
+
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mCancelledExceptionSnackBar.Dismiss();
+
+            }
+            );
+            View v = mCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mCancelledExceptionSnackBar.Show();
+
+        }
+
+        private Snackbar mApiExcecptionSnackBar;
+        public void ShowRetryOptionsApiException(ApiException apiException)
+        {
+            if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+            {
+                mApiExcecptionSnackBar.Dismiss();
+            }
+
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mApiExcecptionSnackBar.Dismiss();
+
+            }
+            );
+            View v = mApiExcecptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mApiExcecptionSnackBar.Show();
+
+        }
+
+        private Snackbar mUknownExceptionSnackBar;
+        public void ShowRetryOptionsUnknownException(Exception exception)
+        {
+            if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
+            {
+                mUknownExceptionSnackBar.Dismiss();
+
+            }
+
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mUknownExceptionSnackBar.Dismiss();
+
+            }
+            );
+            View v = mUknownExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mUknownExceptionSnackBar.Show();
+
         }
 
         [OnClick(Resource.Id.dsNotifDetailBtnVerifyNow)]
