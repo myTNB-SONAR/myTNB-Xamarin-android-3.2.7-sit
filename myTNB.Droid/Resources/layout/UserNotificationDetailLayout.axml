@@ -19,13 +19,14 @@
 			id="@+id/toolbar" />
 		<ScrollView
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
+			android:layout_height="wrap_content"
 			android:fillViewport="true"
 			android:overScrollMode="never"
 			android:scrollbars="none"
 			android:id="@+id/notificationMainLayout"
 			android:layout_above="@+id/notificationCTAComponent"
-			android:background="@color/lightGrey">
+			android:background="@color/lightGrey"
+			android:layout_weight="1">
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -64,26 +65,31 @@
 					android:layout_marginRight="16dp"
 					android:layout_marginBottom="16dp"/>
 				<android.webkit.WebView
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+					tools:visibility="visible"
+					android:visibility="gone"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="10dp"
 					android:layout_marginRight="10dp"
-                    android:background="@color/lightGrey"
-                    android:id="@+id/webViewNoti" />
+					android:background="@color/lightGrey"
+					android:id="@+id/webViewNoti" />
 			</LinearLayout>
 		</ScrollView>
-	</LinearLayout>
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-		<myTNB_Android.Src.CompoundView.NotificationDetailCTAComponent
-			android:id="@+id/notificationCTAComponent"
-			android:layout_height="wrap_content"
+		<LinearLayout
+			android:orientation="vertical"
 			android:layout_width="match_parent"
-			android:orientation="horizontal"
-			android:padding="16dp"
-			android:layout_alignParentBottom="true"
-			android:background="@color/white"/>
-	</RelativeLayout>
+			android:layout_height="wrap_content"
+			android:gravity="center|bottom"
+			android:background="@color/white"
+			android:id="@+id/linearLayout1">
+			<myTNB_Android.Src.CompoundView.NotificationDetailCTAComponent
+				android:id="@+id/notificationCTAComponent"
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:padding="16dp"
+				android:layout_alignParentBottom="true"
+				android:background="@color/white"/>
+		</LinearLayout>
+	</LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
