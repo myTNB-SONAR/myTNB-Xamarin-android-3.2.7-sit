@@ -1,26 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Net.Http;
 using Android.OS;
 using Android.Preferences;
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
 using Android.Views;
+using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
 using DynatraceAndroid;
 using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.Bills.AccountStatement;
 using myTNB_Android.Src.Bills.AccountStatement.Activity;
+using myTNB_Android.Src.Bills.NewBillRedesign;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.DigitalSignature.NotificationDetails.Activity;
 using myTNB_Android.Src.EnergyBudgetRating.Activity;
 using myTNB_Android.Src.EnergyBudgetRating.Fargment;
 using myTNB_Android.Src.FAQ.Activity;
@@ -28,19 +36,27 @@ using myTNB_Android.Src.ManageAccess.Activity;
 using myTNB_Android.Src.ManageSupplyAccount.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.NotificationDetails.MVP;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Rating.Model;
+using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewReceipt.Activity;
-using myTNB_Android.Src.DigitalSignature.NotificationDetails.Activity;
+using myTNB_Android.Src.WhatsNewDetail.MVP;
 using Newtonsoft.Json;
 using Refit;
+
+using Constant = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.Constants;
+using Screen = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.ScreenEnum;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity
 {
@@ -62,6 +78,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         [BindView(Resource.Id.notificationMainLayout)]
         ScrollView notificationMainLayout;
 
+        [BindView(Resource.Id.webViewNoti)]
+        WebView webView;
 
         Models.NotificationDetails notificationDetails;
         UserNotificationData userNotificationData;
@@ -323,25 +341,38 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
                     if (detailModel.message != null)
                     {
-                        notificationDetailMessage = LinkRedirectionUtils
-                            .Create(this, string.Empty)
-                            .SetTextView(notificationDetailMessage)
-                            .SetMessage(detailModel.message)
-                            .Build(dynatraceTag ?? string.Empty)
-                            .GetProcessedTextView();
+                        webView.Visibility = ViewStates.Visible;
+                        notificationDetailMessage.Visibility = ViewStates.Gone;
+                        webView.HorizontalScrollBarEnabled = false;
 
-                        if (this.Resources.DisplayMetrics.WidthPixels <= 1200)
+                        webView.SetWebChromeClient(new WebChromeClient());
+                        webView.Settings.SetPluginState(WebSettings.PluginState.On);
+                        webView.SetWebViewClient(new MyTNBWebViewClients(this, string.Empty, string.Empty));
+                        WebSettings websettings = webView.Settings;
+                        websettings.JavaScriptEnabled = true;
+                        websettings.LoadWithOverviewMode = true;
+                        websettings.AllowFileAccess = true;
+                        websettings.AllowContentAccess = true;
+
+                        if (notificationDetails != null && notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID)
                         {
-                            TextView textView = FindViewById<TextView>(Resource.Id.notificationDetailMessage);
-                            int layWidth = this.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.07f) - GetDeviceHorizontalScaleInPixel(0.07f);
-                            LinearLayout.LayoutParams paramsss = new LinearLayout.LayoutParams(layWidth, ViewGroup.LayoutParams.MatchParent);
-                            textView.LayoutParameters = paramsss;
-                            ViewGroup.MarginLayoutParams txtBody = (ViewGroup.MarginLayoutParams)notificationDetailMessage.LayoutParameters;
-                            txtBody.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
-                            txtBody.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
-                            notificationDetailMessage.LayoutParameters = txtBody;
-                            notificationDetailMessage.RequestLayout();
+                            notificationMainLayout.SetBackgroundColor(Color.ParseColor("#ffffff"));
+                            webView.SetBackgroundColor(Color.ParseColor("#ffffff"));
                         }
+                        else
+                        {
+                            webView.SetBackgroundColor(Color.ParseColor("#F9F9F9"));
+                        }
+                        webView.LoadDataWithBaseURL("file:///android_asset",
+                        getHtmlData(this, detailModel.message),
+                        "text/html; charset=UTF-8", null, "about:blank");
+
+                        //notificationDetailMessage = LinkRedirectionUtils
+                        //.Create(this, string.Empty)
+                        //.SetTextView(notificationDetailMessage)
+                        //.SetMessage(detailModel.message)
+                        //.Build(string.Empty)
+                        //.GetProcessedTextView();
                     }
 
                     if (detailModel.ctaList.Count > 0)
@@ -373,6 +404,67 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private string getHtmlData(Context context, string data)
+        {
+            string[] whatsnewid;
+            string newWord = "";
+            string newWordImg = "";
+            if (data.Contains("<a"))
+            {
+                whatsnewid = data.Split("<a");
+                int arraylist = 1;
+                foreach (var item in whatsnewid)
+                {
+                    if (whatsnewid.Length > arraylist)
+                    {
+                        arraylist++;
+                        newWord = newWord + item + "<a style=\"text-decoration:none; color:#1c79ca; font-weight: bold\" ";
+                    }
+                    else
+                    {
+                        newWord = newWord + item;
+                    }
+                }
+            }
+            else
+            {
+                newWord = data;
+            }
+
+            if (newWord.Contains("<img"))
+            {
+
+                whatsnewid = newWord.Split("<img");
+                int arraylist = 1;
+                foreach (var item in whatsnewid)
+                {
+                    if (whatsnewid.Length > arraylist)
+                    {
+                        arraylist++;
+                        newWordImg = newWordImg + item + "<img style=\"max-width: 100%\" ";
+                    }
+                    else
+                    {
+                        newWordImg = newWordImg + item;
+                    }
+                }
+                newWord = newWordImg;
+            }
+
+            try
+            {
+                string fontSize = TextViewUtils.IsLargeFonts ? "font-size: 18px;" : "font-size: 14px;";
+                string htmlData = "<html>" + "<head>" + "<style type=\"text/css\">" + "@font-face {" + "font-family: MyFont;" + "src: url(\"file:///android_asset/fonts/MuseoSans_300.otf\")" + "}" +
+                    "body {" + "font-family: MyFont;" + fontSize + "text-align: left;" + "color:#49494a;" + "}," + "</style>" + "</head>" + "<body>" + newWord + "</body>" + "</html>";
+                return htmlData;
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+                return data;
             }
         }
 
@@ -783,6 +875,494 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public class MyTNBWebViewClients : WebViewClient
+        {
+            private UserNotificationDetailActivity mActivity;
+            private ProgressBar progressBar;
+            private string mHeaderTitle;
+            private Screen TargetScreen = Screen.None;
+            private RewardServiceImpl mApi;
+            bool shouldOverride = false;
+
+            public static List<string> RedirectTypeList = new List<string> {
+            "inAppBrowser=",
+            "externalBrowser=",
+            "tel=",
+            "whatsnew=",
+            "faq=",
+            "reward=",
+            "http",
+            "tel:",
+            "whatsnewid=",
+            "faqid=",
+            "rewardid=",
+            "inAppScreen="
+            };
+
+            public MyTNBWebViewClients(UserNotificationDetailActivity mActivity, string title, string dynatrace)
+            {
+                this.mActivity = mActivity;
+                this.mHeaderTitle = title;
+            }
+
+            public override bool ShouldOverrideUrlLoading(WebView view, string url)
+            {
+                if (ConnectionUtils.HasInternetConnection(mActivity))
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(url))
+                        {
+                            //for:
+                            //"inAppBrowser="
+                            //"externalBrowser="
+                            //"http"
+                            if (url.Contains(RedirectTypeList[0])
+                                || url.Contains(RedirectTypeList[1])
+                                || url.Contains(RedirectTypeList[6]))
+                            {
+                                string uri = url;
+                                if (url.Contains(RedirectTypeList[0]))
+                                {
+                                    uri = url.Split(RedirectTypeList[0])[1];
+                                }
+                                else if (url.Contains(RedirectTypeList[1]))
+                                {
+                                    uri = url.Split(RedirectTypeList[1])[1];
+                                }
+
+                                string compareText = uri.ToLower();
+
+                                if (!compareText.Contains("http"))
+                                {
+                                    uri = "http://" + uri;
+                                }
+
+                                //External Browser
+                                if (url.Contains(RedirectTypeList[1]))
+                                {
+                                    Intent intent = new Intent(Intent.ActionView);
+                                    intent.SetData(Android.Net.Uri.Parse(uri));
+                                    mActivity.StartActivity(intent);
+                                }
+                                //In App Browser
+                                else
+                                {
+                                    if (compareText.Contains(".pdf") && !compareText.Contains("docs.google"))
+                                    {
+                                        Intent webIntent = new Intent(mActivity, typeof(BasePDFViewerActivity));
+                                        webIntent.PutExtra(Constants.IN_APP_LINK, uri);
+                                        webIntent.PutExtra(Constants.IN_APP_TITLE, this.mHeaderTitle);
+                                        mActivity.StartActivity(webIntent);
+                                    }
+                                    else if (compareText.Contains(".jpeg") || compareText.Contains(".jpg") || compareText.Contains(".png"))
+                                    {
+                                        Intent webIntent = new Intent(mActivity, typeof(BaseFullScreenImageViewActivity));
+                                        webIntent.PutExtra(Constants.IN_APP_LINK, uri);
+                                        webIntent.PutExtra(Constants.IN_APP_TITLE, this.mHeaderTitle);
+                                        mActivity.StartActivity(webIntent);
+                                    }
+                                    else
+                                    {
+                                        Intent webIntent = new Intent(mActivity, typeof(BaseWebviewActivity));
+                                        webIntent.PutExtra(Constants.IN_APP_LINK, uri);
+                                        webIntent.PutExtra(Constants.IN_APP_TITLE, this.mHeaderTitle);
+                                        mActivity.StartActivity(webIntent);
+                                    }
+                                }
+                            }
+                            //for:
+                            //"tel="
+                            //"tel:"
+                            else if (url.Contains(RedirectTypeList[2])
+                                        || url.Contains(RedirectTypeList[7]))
+                            {
+                                string phonenum = url;
+                                if (url.Contains(RedirectTypeList[2]))
+                                {
+                                    phonenum = url.Split(RedirectTypeList[2])[1];
+                                }
+                                if (!string.IsNullOrEmpty(phonenum))
+                                {
+                                    if (!phonenum.Contains("tel:"))
+                                    {
+                                        phonenum = "tel:" + phonenum;
+                                    }
+
+                                    var call = Android.Net.Uri.Parse(phonenum);
+                                    var callIntent = new Intent(Intent.ActionView, call);
+                                    mActivity.StartActivity(callIntent);
+                                }
+                            }
+                            //for:
+                            //"whatsnew="
+                            //"whatsnewid="
+                            else if (url.Contains(RedirectTypeList[3])
+                                        || url.Contains(RedirectTypeList[8]))
+                            {
+                                string whatsnewid = url;
+                                if (url.Contains(RedirectTypeList[3]))
+                                {
+                                    whatsnewid = url.Split(RedirectTypeList[3])[1];
+                                }
+                                else if (url.Contains(RedirectTypeList[8]))
+                                {
+                                    whatsnewid = url.Split(RedirectTypeList[8])[1];
+                                }
+
+                                if (!string.IsNullOrEmpty(whatsnewid))
+                                {
+                                    if (!whatsnewid.Contains("{"))
+                                    {
+                                        whatsnewid = "{" + whatsnewid;
+                                    }
+
+                                    if (!whatsnewid.Contains("}"))
+                                    {
+                                        whatsnewid = whatsnewid + "}";
+                                    }
+
+                                    WhatsNewEntity wtManager = new WhatsNewEntity();
+
+                                    WhatsNewEntity item = wtManager.GetItem(whatsnewid);
+
+                                    if (item != null)
+                                    {
+                                        if (!item.Read)
+                                        {
+                                            UpdateWhatsNewRead(item.ID, true);
+                                        }
+
+                                        Intent activity = new Intent(mActivity, typeof(WhatsNewDetailActivity));
+                                        activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
+                                        activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
+                                        mActivity.StartActivity(activity);
+                                    }
+                                }
+                            }
+                            //for:
+                            //"faq="
+                            //"faqid="
+                            else if (url.Contains(RedirectTypeList[4])
+                                        || url.Contains(RedirectTypeList[9]))
+                            {
+                                string faqid = url;
+                                if (url.Contains(RedirectTypeList[4]))
+                                {
+                                    faqid = url.Split(RedirectTypeList[4])[1];
+                                }
+                                else if (url.Contains(RedirectTypeList[9]))
+                                {
+                                    faqid = url.Split(RedirectTypeList[9])[1];
+                                }
+
+                                if (!string.IsNullOrEmpty(faqid))
+                                {
+                                    if (!faqid.Contains("{"))
+                                    {
+                                        faqid = "{" + faqid;
+                                    }
+
+                                    if (!faqid.Contains("}"))
+                                    {
+                                        faqid = faqid + "}";
+                                    }
+
+                                    if (faqid.Contains("\""))
+                                    {
+                                        faqid = faqid.Replace("\"", string.Empty);
+                                    }
+
+                                    if (faqid.Contains("\\"))
+                                    {
+                                        faqid = faqid.Replace("\\", string.Empty);
+                                    }
+
+                                    Intent faqIntent = new Intent(mActivity, typeof(FAQListActivity));
+                                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                    mActivity.StartActivity(faqIntent);
+                                }
+                            }
+                            //for:
+                            //"reward="
+                            //"rewardid="
+                            else if (url.Contains(RedirectTypeList[5])
+                                        || url.Contains(RedirectTypeList[10]))
+                            {
+                                string rewardid = url;
+                                if (url.Contains(RedirectTypeList[5]))
+                                {
+                                    rewardid = url.Split(RedirectTypeList[5])[1];
+                                }
+                                else if (url.Contains(RedirectTypeList[10]))
+                                {
+                                    rewardid = url.Split(RedirectTypeList[10])[1];
+                                }
+
+                                if (!string.IsNullOrEmpty(rewardid))
+                                {
+                                    if (!rewardid.Contains("{"))
+                                    {
+                                        rewardid = "{" + rewardid;
+                                    }
+
+                                    if (!rewardid.Contains("}"))
+                                    {
+                                        rewardid = rewardid + "}";
+                                    }
+
+                                    RewardsEntity wtManager = new RewardsEntity();
+
+                                    RewardsEntity item = wtManager.GetItem(rewardid);
+
+                                    if (item != null)
+                                    {
+                                        if (!item.Read)
+                                        {
+                                            UpdateRewardRead(item.ID, true);
+                                        }
+
+                                        Intent activity = new Intent(mActivity, typeof(RewardDetailActivity));
+                                        activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardid);
+                                        activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
+                                        mActivity.StartActivity(activity);
+                                    }
+                                }
+                            }
+                            //for:
+                            //"inAppScreen="
+                            else if (url.Contains(RedirectTypeList[11]))
+                            {
+                                var targetScreen = GetTargetInAppScreen(url);
+                                if (targetScreen.Contains(Screen.NewBillDesignComms.ToString()))
+                                {
+                                    TargetScreen = Screen.NewBillDesignComms;
+                                }
+                                NavigateToTargetScreen(TargetScreen);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    shouldOverride = true;
+                }
+                return shouldOverride;
+            }
+
+            public override void OnPageStarted(WebView view, string url, Android.Graphics.Bitmap favicon)
+            {
+            }
+
+            public override void OnPageFinished(WebView view, string url)
+            {
+            }
+
+            public override bool OnRenderProcessGone(WebView view, RenderProcessGoneDetail detail)
+            {
+                return true;
+            }
+
+            public override void OnReceivedError(WebView view, ClientError errorCode, string description, string failingUrl)
+            {
+                try
+                {
+                    string message = "Please check your internet connection.";
+                    if (ConnectionUtils.HasInternetConnection(mActivity))
+                    {
+                        switch (errorCode)
+                        {
+                            case ClientError.FileNotFound:
+                                message = "File Not Found."; break;
+                            case ClientError.Authentication:
+                                message = "Authetication Error."; break;
+                            case ClientError.FailedSslHandshake:
+                                message = "SSL Handshake Failed."; break;
+                            case ClientError.Unknown:
+                                message = "Unkown Error."; break;
+                        }
+                        ShowErrorMessage(failingUrl);
+                    }
+                    else
+                    {
+                        ShowErrorMessage(failingUrl);
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error)
+            {
+                handler.Proceed();
+            }
+
+            public override void OnLoadResource(WebView view, string url)
+            {
+                if (!ConnectionUtils.HasInternetConnection(mActivity))
+                {
+                    view.StopLoading();
+                }
+            }
+
+            private void UpdateWhatsNewRead(string itemID, bool flag)
+            {
+                try
+                {
+                    DateTime currentDate = DateTime.UtcNow;
+                    WhatsNewEntity wtManager = new WhatsNewEntity();
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                    string formattedDate = currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
+                    if (!flag)
+                    {
+                        formattedDate = "";
+
+                    }
+                    wtManager.UpdateReadItem(itemID, flag, formattedDate);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            private void UpdateRewardRead(string itemID, bool flag)
+            {
+                try
+                {
+                    DateTime currentDate = DateTime.UtcNow;
+                    RewardsEntity wtManager = new RewardsEntity();
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                    string formattedDate = currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
+                    if (!flag)
+                    {
+                        formattedDate = "";
+
+                    }
+                    wtManager.UpdateReadItem(itemID, flag, formattedDate);
+
+                    _ = OnUpdateReward(itemID);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            private async Task OnUpdateReward(string itemID)
+            {
+                try
+                {
+                    // Update api calling
+                    RewardsEntity wtManager = new RewardsEntity();
+                    RewardsEntity currentItem = wtManager.GetItem(itemID);
+
+                    UserInterface currentUsrInf = new UserInterface()
+                    {
+                        eid = UserEntity.GetActive().Email,
+                        sspuid = UserEntity.GetActive().UserID,
+                        did = UserEntity.GetActive().DeviceId,
+                        ft = FirebaseTokenEntity.GetLatest().FBToken,
+                        lang = LanguageUtil.GetAppLanguage().ToUpper(),
+                        sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                        sec_auth_k2 = "",
+                        ses_param1 = "",
+                        ses_param2 = ""
+                    };
+
+                    string rewardId = currentItem.ID;
+                    rewardId = rewardId.Replace("{", "");
+                    rewardId = rewardId.Replace("}", "");
+
+                    AddUpdateRewardModel currentReward = new AddUpdateRewardModel()
+                    {
+                        Email = UserEntity.GetActive().Email,
+                        RewardId = rewardId,
+                        Read = currentItem.Read,
+                        ReadDate = !string.IsNullOrEmpty(currentItem.ReadDateTime) ? currentItem.ReadDateTime + " +00:00" : "",
+                        Favourite = currentItem.IsSaved,
+                        FavUpdatedDate = !string.IsNullOrEmpty(currentItem.IsSavedDateTime) ? currentItem.IsSavedDateTime + " +00:00" : "",
+                        Redeemed = currentItem.IsUsed,
+                        RedeemedDate = !string.IsNullOrEmpty(currentItem.IsUsedDateTime) ? currentItem.IsUsedDateTime + " +00:00" : ""
+                    };
+
+                    AddUpdateRewardRequest request = new AddUpdateRewardRequest()
+                    {
+                        usrInf = currentUsrInf,
+                        reward = currentReward
+                    };
+
+                    AddUpdateRewardResponse response = await this.mApi.AddUpdateReward(request, new System.Threading.CancellationTokenSource().Token);
+
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+
+            private string GetTargetInAppScreen(string path)
+            {
+                string value = string.Empty;
+                string pattern = string.Format(Constant.Pattern, Constant.InAppScreenKey);
+                Regex regex = new Regex(pattern);
+                Match match = regex.Match(path);
+                if (match.Success)
+                {
+                    value = match.Value.Replace(string.Format(Constant.ReplaceKey, Constant.InAppScreenKey), string.Empty);
+                }
+
+                return value;
+            }
+
+            private void NavigateToTargetScreen(Screen targetScreen)
+            {
+                switch (targetScreen)
+                {
+                    case Screen.NewBillDesignComms:
+                        {
+                            Intent nbrDiscoverMoreIntent = new Intent(mActivity, typeof(NBRDiscoverMoreActivity));
+                            mActivity.StartActivityForResult(nbrDiscoverMoreIntent, Constants.NEW_BILL_REDESIGN_REQUEST_CODE);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            private Snackbar mErrorMessageSnackBar;
+            public void ShowErrorMessage(string failingUrl)
+            {
+                //if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+                //{
+                //    mErrorMessageSnackBar.Dismiss();
+                //}
+
+                //mErrorMessageSnackBar = Snackbar.Make(Context
+                //    , Utility.GetLocalizedErrorLabel("noDataConnectionMessage")
+                //    , Snackbar.LengthIndefinite)
+                //    .SetAction(Utility.GetLocalizedLabel("Common", "tryAgain")
+                //        , delegate
+                //        {
+                //            mErrorMessageSnackBar.Dismiss();
+                //        });
+                //View v = mErrorMessageSnackBar.View;
+                //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                //tv.SetMaxLines(5);
+                //mErrorMessageSnackBar.Show();
+            }
+
+            //  TODO: AndroidX Temporary Fix for Android 5,5.1 
+            //  TODO: AndroidX Due to this: https://github.com/xamarin/AndroidX/issues/131
+            //public override AssetManager Assets =>
+            //    (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop && Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
+            //    ? Resources.Assets : base.Assets;
         }
 
     }

@@ -45,14 +45,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
         [BindView(Resource.Id.btnAddAnotherAccount)]
         Button btnAddAnotherAccount;
 
-        //[BindView(Resource.Id.btnAddAccount)]
-        //Button btnAddAccount;
-
         [BindView(Resource.Id.no_account_layout)]
         FrameLayout NoAccountLayout;
-
-        //[BindView(Resource.Id.txtMyAccountNoAccountTitle)]
-        //TextView txtMyAccountNoAccountTitle;
 
         [BindView(Resource.Id.txtMyAccountNoAccountContent)]
         TextView txtMyAccountNoAccountContent;
@@ -93,23 +87,12 @@ namespace myTNB_Android.Src.MyAccount.Activity
                     fromDashboard = Intent.Extras.GetBoolean("fromDashboard", false);
                 }
                 // Create your application here
-                //TextViewUtils.SetMuseoSans300Typeface(
-                //    txtMyAccountNoAccountContent);
-                //TextViewUtils.SetMuseoSans500Typeface(btnAddAnotherAccount,
-                //    btnAddAccount);
-
+               
                 TextViewUtils.SetTextSize12(txtMyAccountNoAccountContent);
-                //TextViewUtils.SetTextSize14(txtMyAccountNoAccountTitle);
                 TextViewUtils.SetTextSize16( btnAddAnotherAccount);
-                //TextViewUtils.SetTextSize18(txtTnBSupplyAccountTitle);
-
-                //txtTnBSupplyAccountTitle.Text = GetLabelByLanguage("accountSectionTitle");
-                //btnAddAnotherAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
-                //txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
+                
                 txtMyAccountNoAccountContent.Text = Utility.GetLocalizedLabel("MyAccount", "emptyListDetails");
-                //btnAddAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
-                //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-
+                SetToolBarTitle(Utility.GetLocalizedLabel("MyAccount", "titleMyElectricityAccounts"));
                 adapter = new MyAccountAdapter(this, false);
                 listView.Adapter = adapter;
                 adapter.setCustomButtonListner(this);
@@ -124,48 +107,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-        /*        public bool OnTouch(View v, MotionEvent e)
-                {
-                    float downX, downY, upX, upY;
-                    if (v is ListView)
-                    {
-                        ListView eListView = v as ListView;
-                        if (eListView.Id == Resource.Id.listView)
-                        {
-                            switch (e.Action)
-                            {
-                                case MotionEventActions.Down:
-                                    {
-                                         downX = e.GetX();
-                                         downY = e.GetY();
-                                         return false; // allow other events like Click to be processed
-                                    }
-                                case MotionEventActions.Move:
-                                    upX = e.GetX();
-                                    upY = e.GetY();
-                                    *//*float deltaX = downX - upX;
-                                    float deltaY = downY - upY;*//*
-                                    if (Math.Abs(upX) > HORIZONTAL_MIN)
-                                    {
-                                        // left or right
-                                        if (upX < 0)
-                                        {
-                                            ((SwipeLayout)(listView.GetChildAt(listView.FirstVisiblePosition))).Open(SwipeLayout.DragEdge.Right);
-                                            return true;
-                                        }
-                                        if (upX > 0)
-                                        {
-                                            return true;
-                                        }
-                                    }
-                                    break;
-                            }
-                            return true;
-                        }
-                    }
-                    return false;
-                }*/
 
         [Preserve]
 
@@ -207,14 +148,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
             else
                 this.Finish();
         }
-
-        //public void NavigateToDashboard()
-        //{
-        //    if (fromDashboard)
-        //        ShowDashboard();
-        //    else
-        //        this.Finish();
-        //}
 
         public void ShowDashboard()
         {
@@ -316,16 +249,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-        //[OnClick(Resource.Id.btnAddAccount)]
-        //void OnClickAddAccount(object sender, EventArgs eventArgs)
-        //{
-        //    if (!this.GetIsClicked())
-        //    {
-        //        this.SetIsClicked(true);
-        //        ShowAddAccount();
-        //    }
-        //}
 
         [OnClick(Resource.Id.btnAddAnotherAccount)]
         void OnClickAddAnotherAccount(object sender, EventArgs eventArgs)

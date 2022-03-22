@@ -19775,103 +19775,106 @@ namespace myTNB_Android
 			public const int webView = 2131298764;
 			
 			// aapt resource value: 0x7F0909CD
-			public const int web_view = 2131298765;
+			public const int webViewNoti = 2131298765;
 			
 			// aapt resource value: 0x7F0909CE
-			public const int whatsNewBottomView = 2131298766;
+			public const int web_view = 2131298766;
 			
 			// aapt resource value: 0x7F0909CF
-			public const int whatsNewCheckBoxLayout = 2131298767;
+			public const int whatsNewBottomView = 2131298767;
 			
 			// aapt resource value: 0x7F0909D0
-			public const int whatsNewDialogCardView = 2131298768;
+			public const int whatsNewCheckBoxLayout = 2131298768;
 			
 			// aapt resource value: 0x7F0909D1
-			public const int whatsNewDialogLinearView = 2131298769;
+			public const int whatsNewDialogCardView = 2131298769;
 			
 			// aapt resource value: 0x7F0909D2
-			public const int whatsNewDialogMainView = 2131298770;
+			public const int whatsNewDialogLinearView = 2131298770;
 			
 			// aapt resource value: 0x7F0909D3
-			public const int whatsNewEmptyImg = 2131298771;
+			public const int whatsNewDialogMainView = 2131298771;
 			
 			// aapt resource value: 0x7F0909D4
-			public const int whatsNewEmptyLayout = 2131298772;
+			public const int whatsNewEmptyImg = 2131298772;
 			
 			// aapt resource value: 0x7F0909D5
-			public const int whatsNewFullImageDetailLayout = 2131298773;
+			public const int whatsNewEmptyLayout = 2131298773;
 			
 			// aapt resource value: 0x7F0909D6
-			public const int whatsNewFullPDFDetailLayout = 2131298774;
+			public const int whatsNewFullImageDetailLayout = 2131298774;
 			
 			// aapt resource value: 0x7F0909D7
-			public const int whatsNewFullScreenShimmerLayout = 2131298775;
+			public const int whatsNewFullPDFDetailLayout = 2131298775;
 			
 			// aapt resource value: 0x7F0909D8
-			public const int whatsNewImg = 2131298776;
+			public const int whatsNewFullScreenShimmerLayout = 2131298776;
 			
 			// aapt resource value: 0x7F0909D9
-			public const int whatsNewMainImg = 2131298777;
+			public const int whatsNewImg = 2131298777;
 			
 			// aapt resource value: 0x7F0909DA
-			public const int whatsNewMainLayout = 2131298778;
+			public const int whatsNewMainImg = 2131298778;
 			
 			// aapt resource value: 0x7F0909DB
-			public const int whatsNewMainShimmerImgLayout = 2131298779;
+			public const int whatsNewMainLayout = 2131298779;
 			
 			// aapt resource value: 0x7F0909DC
-			public const int whatsNewMainShimmerTxtLayout = 2131298780;
+			public const int whatsNewMainShimmerImgLayout = 2131298780;
 			
 			// aapt resource value: 0x7F0909DD
-			public const int whatsNewNormalDetailLayout = 2131298781;
+			public const int whatsNewMainShimmerTxtLayout = 2131298781;
 			
 			// aapt resource value: 0x7F0909DE
-			public const int whatsNewPager = 2131298782;
+			public const int whatsNewNormalDetailLayout = 2131298782;
 			
 			// aapt resource value: 0x7F0909DF
-			public const int whatsNewRecyclerView = 2131298783;
+			public const int whatsNewPager = 2131298783;
 			
 			// aapt resource value: 0x7F0909E0
-			public const int whatsNewRefreshLayout = 2131298784;
+			public const int whatsNewRecyclerView = 2131298784;
 			
 			// aapt resource value: 0x7F0909E1
-			public const int whatsNewShimmerImg = 2131298785;
-			
-			// aapt resource value: 0x7F0909E4
-			public const int whatsNewsSlidingTabs = 2131298788;
+			public const int whatsNewRefreshLayout = 2131298785;
 			
 			// aapt resource value: 0x7F0909E2
-			public const int whatsNewUnreadImg = 2131298786;
+			public const int whatsNewShimmerImg = 2131298786;
+			
+			// aapt resource value: 0x7F0909E5
+			public const int whatsNewsSlidingTabs = 2131298789;
 			
 			// aapt resource value: 0x7F0909E3
-			public const int whatsNewViewPager = 2131298787;
+			public const int whatsNewUnreadImg = 2131298787;
+			
+			// aapt resource value: 0x7F0909E4
+			public const int whatsNewViewPager = 2131298788;
 			
 			// aapt resource value: 0x7F09007A
 			public const int WhoShouldWeContact = 2131296378;
 			
-			// aapt resource value: 0x7F0909E5
-			public const int whyAccountsNotHere = 2131298789;
-			
 			// aapt resource value: 0x7F0909E6
-			public const int whyAccountsNotHereLayOut = 2131298790;
+			public const int whyAccountsNotHere = 2131298790;
 			
 			// aapt resource value: 0x7F0909E7
-			public const int wide = 2131298791;
-			
-			// aapt resource value: 0x7F0909E9
-			public const int withinBounds = 2131298793;
+			public const int whyAccountsNotHereLayOut = 2131298791;
 			
 			// aapt resource value: 0x7F0909E8
-			public const int withText = 2131298792;
+			public const int wide = 2131298792;
 			
 			// aapt resource value: 0x7F0909EA
-			public const int wrap = 2131298794;
+			public const int withinBounds = 2131298794;
+			
+			// aapt resource value: 0x7F0909E9
+			public const int withText = 2131298793;
 			
 			// aapt resource value: 0x7F0909EB
-			public const int wrap_content = 2131298795;
+			public const int wrap = 2131298795;
 			
 			// aapt resource value: 0x7F0909EC
-			public const int zero_corner_chip = 2131298796;
+			public const int wrap_content = 2131298796;
+			
+			// aapt resource value: 0x7F0909ED
+			public const int zero_corner_chip = 2131298797;
 			
 			static Id()
 			{

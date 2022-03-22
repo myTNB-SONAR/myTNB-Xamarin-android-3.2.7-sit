@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Android.OS;
+using Android.Preferences;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -69,12 +70,13 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
 
                 string monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(month);
                 string formateddate = day.ToString() + " " + monthName.Substring(0, 3) + " " + year.ToString();
+                bool isWhiteList = UserSessions.GetWhiteList(PreferenceManager.GetDefaultSharedPreferences(this.context));
 
                 viewHolder.infoLabelDate.Text = formateddate;
 
                 if (data.Action.Equals("A"))
                 {
-                    if (UserEntity.GetActive().Email == data.CreateBy)
+                    if (UserEntity.GetActive().Email == data.CreateBy) //owner view
                     {
                         if (data.IsPreRegister)
                         {
@@ -109,7 +111,44 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                         }
 
                     }
-                    else
+                    else if (UserEntity.GetActive().Email != data.CreateBy && isWhiteList == true) //admin view
+                    {
+                        if (data.IsPreRegister)
+                        {
+                            viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_joined));
+                            string txtdata = Utility.GetLocalizedLabel("UserAccess", "AddNonTNBUserSuccessAdmin");
+                            string temp = string.Format(txtdata, data.CreateByName);
+                            string details = string.Format(temp, data.UserName);
+
+                            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                viewHolder.itemTitle.TextFormatted = Html.FromHtml(details, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                viewHolder.itemTitle.TextFormatted = Html.FromHtml(details);
+                            }
+                        }
+                        else
+                        {
+                            viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_joined));
+                            string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccountUserAccesssLogAdmin");
+                            string temp = string.Format(txtdata, data.CreateByName);
+                            string details = string.Format(temp, data.UserName);
+
+                            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                viewHolder.itemTitle.TextFormatted = Html.FromHtml(details, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                viewHolder.itemTitle.TextFormatted = Html.FromHtml(details);
+                            }
+
+                        }
+
+                    }
+                    else // Non-owner add ca view
                     {
                         viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_joined));
                         string txtData = Utility.GetLocalizedLabel("UserAccess", "addAccountUserLog");
@@ -124,7 +163,6 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                             viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp2);
                         }
                     }
-
                 }
                 else if (data.Action.Equals("U"))
                 {
@@ -144,21 +182,42 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                             viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
                         }
                     }
-                    else if (!data.IsApplyEBilling && data.IsHaveAccess)
+                    else if (!data.IsApplyEBilling && data.IsHaveAccess) //give full bill view (tick)
                     {
-                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_confirmed));
-
-                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccesssLogfullBill");
-                        string temp = string.Format(txtdata, data.UserName);
-
-                        if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        if (UserEntity.GetActive().Email == data.CreateBy) //done by owner
                         {
-                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                            viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_confirmed));
+
+                            string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccesssLogfullBill");
+                            string temp = string.Format(txtdata, data.UserName);
+
+                            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                            }
                         }
-                        else
+                        else //done by admin
                         {
-                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                            viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_confirmed));
+
+                            string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccesssLogfullBillAdmin");
+                            string temp = string.Format(txtdata, data.CreateByName);
+                            string details = string.Format(temp, data.UserName);
+
+                            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                viewHolder.itemTitle.TextFormatted = Html.FromHtml(details, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                viewHolder.itemTitle.TextFormatted = Html.FromHtml(details);
+                            }
                         }
+                        
                     }
                     else if (data.IsApplyEBilling && !data.IsHaveAccess)
                     {
@@ -176,20 +235,40 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                             viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
                         }
                     }
-                    else
+                    else // remove access for view full bill (untick)
                     {
-                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_denied));
-                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccesssLogBoth");
-                        string temp = string.Format(txtdata, data.UserName);
+                        if (UserEntity.GetActive().Email == data.CreateBy) //done by owner
+                        {
+                            viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_denied));
+                            string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccesssLogBoth");
+                            string temp = string.Format(txtdata, data.UserName);
 
-                        if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                        {
-                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                            }
                         }
-                        else
+                        else //done by admin
                         {
-                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                            viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_denied));
+                            string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccesssLogBothAdmin");
+                            string temp = string.Format(txtdata, data.CreateByName);
+                            string details = string.Format(temp, data.UserName);
+
+                            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                viewHolder.itemTitle.TextFormatted = Html.FromHtml(details, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                viewHolder.itemTitle.TextFormatted = Html.FromHtml(details);
+                            }
                         }
+                       
                     }
                 }
                 else
@@ -208,6 +287,22 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                         else
                         {
                             viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp2);
+                        }
+                    }
+                    else if (UserEntity.GetActive().Email != data.CreateBy && isWhiteList == true)
+                    {
+                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_left));
+                        string txtData = Utility.GetLocalizedLabel("UserAccess", "removeAccountUserAccesssLogAdmin");
+                        string temp2 = string.Format(txtData, data.CreateByName);
+                        string details = string.Format(temp2, data.UserName);
+
+                        if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(details, FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(details);
                         }
                     }
                     else
