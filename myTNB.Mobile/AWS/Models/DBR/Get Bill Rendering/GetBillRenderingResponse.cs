@@ -129,7 +129,6 @@ namespace myTNB.Mobile.AWS.Models
             }
         }
 
-        [JsonIgnore]
         public bool IsOwner
         {
             set; get;
