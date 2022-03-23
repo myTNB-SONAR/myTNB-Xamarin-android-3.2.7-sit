@@ -13,7 +13,6 @@ namespace myTNB.Mobile.AWS.Models.DS.Status
         [JsonProperty("status")]
         public string Status { set; get; }
 
-        [JsonIgnore]
         public bool IsVerified
         {
             get
