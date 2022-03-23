@@ -18,20 +18,17 @@ namespace myTNB.Mobile.AWS.Models.DS.Identification
         [JsonProperty("identificationNo")]
         public string IdentificationNo { set; get; }
 
-        [JsonIgnore]
         public string Status { set; get; }
 
-        [JsonIgnore]
         public bool IsCompletedOnOtherDevice
         {
             get
             {
                 return Status.IsValid()
-                    && (Status.ToUpper() == "VERIFIED" || Status.ToUpper() == "PENDING");
+                    && Status.ToUpper() == "PENDING";
             }
         }
 
-        [JsonIgnore]
         public string IDTypeName
         {
             get
