@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using myTNB_Android.Src.Base.Response;
 using myTNB_Android.Src.Login.Models;
 using myTNB_Android.Src.MyTNBService.InterfaceAPI;
 using myTNB_Android.Src.MyTNBService.Response;
@@ -864,6 +865,18 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<NCAutoAddAccountsResponse> NCAutoAddAccounts([Body] Request.NCAutoAddAccountsRequest request)
         {
             return api.NCAutoAddAccounts<NCAutoAddAccountsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call FcmTokenUpdate with timeout set.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public Task<APIBaseResponse> UpdateUserInfoDevice([Body] Request.BaseRequest request)
+        {
+            Console.WriteLine("APIWAS call :" + apiAws.UpdateUserInfoDevice<APIBaseResponse>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
+            return apiAws.UpdateUserInfoDevice<APIBaseResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
     }
 }

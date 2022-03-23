@@ -20,6 +20,7 @@ using System.Threading;
 using Android.Gms.Extensions;
 using System.Threading.Tasks;
 using myTNB.Mobile;
+using myTNB_Android.Src.Base.Response;
 
 namespace myTNB_Android.Src.Login.MVP
 {
@@ -239,17 +240,27 @@ namespace myTNB_Android.Src.Login.MVP
             {
 
                 string fcmToken = string.Empty;
-
-                if (FirebaseTokenEntity.HasLatest())
+                var token = await fbm.FirebaseMessaging.Instance.GetToken();
+                if (token != null)
                 {
-                    fcmToken = FirebaseTokenEntity.GetLatest().FBToken;
-                }
-                if (string.IsNullOrEmpty(fcmToken) || string.IsNullOrWhiteSpace(fcmToken))
-                {
-                    var fcmData = await fbm.FirebaseMessaging.Instance.GetToken();
-                    fcmToken = fcmData.ToString();
-                    FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
+                    string newfcmToken = token.ToString();
+                    if (FirebaseTokenEntity.HasLatest())
+                    {
+                        fcmToken = FirebaseTokenEntity.GetLatest().FBToken;
+                    }
 
+                    if (fcmToken != null && (fcmToken != newfcmToken))
+                    {
+                        fcmToken = newfcmToken;
+                        FirebaseTokenEntity.RemoveLatest();
+                        FirebaseTokenEntity.InsertOrReplace(newfcmToken, true);
+                        UserInfo usrinf = new UserInfo();
+                        UserEntity userEntity = UserEntity.GetActive();
+                        myTNB_Android.Src.MyTNBService.Request.BaseRequest baseRequest = new myTNB_Android.Src.MyTNBService.Request.BaseRequest();
+                        baseRequest.usrInf.ft = newfcmToken;
+                        //string ts = JsonConvert.SerializeObject(baseRequest);
+                        APIBaseResponse DataResponse = await ServiceApiImpl.Instance.UpdateUserInfoDevice(baseRequest);
+                    }
                 }
                 Log.Debug(TAG, "[DEBUG] FCM TOKEN: " + fcmToken);
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
