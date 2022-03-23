@@ -151,6 +151,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                     if (fcmToken != null && (fcmToken != newfcmToken))
                     {
+                        fcmToken = newfcmToken;
                         FirebaseTokenEntity.RemoveLatest();
                         FirebaseTokenEntity.InsertOrReplace(newfcmToken, true);
                         UserEntity userEntity = UserEntity.GetActive();
