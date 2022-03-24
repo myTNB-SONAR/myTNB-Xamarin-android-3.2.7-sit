@@ -108,7 +108,7 @@ namespace myTNB.Mobile
                     RoleId = roleID,
                     Lang = language,
                     FontSize = fontSize == "L" ? "L" : "N",
-                    OriginUrl = AWSConstants.BackToApp,
+                    OriginUrl = AWSConstants.BackToHome,
                     RedirectUrl = AWSConstants.Domains.DSRedirect,
                     CaNo = string.Empty,
                     UserID = userID,

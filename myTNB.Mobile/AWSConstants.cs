@@ -29,6 +29,7 @@
 
         //WEB Actions
         internal const string BackToApp = "mytnbapp://action=backToApp";
+        internal const string BackToHome = "mytnbapp://action=backToHome";
 
         //Domains
         public struct Domains
