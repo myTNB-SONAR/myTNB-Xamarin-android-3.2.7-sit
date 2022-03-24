@@ -51,6 +51,7 @@ using myTNB_Android.Src.Utils.Notification;
 
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 using System.Net.Http;
+using myTNB_Android.Src.Base.Response;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -137,23 +138,33 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             //For Testing Start
             string fcmToken = string.Empty;
-            if (FirebaseTokenEntity.HasLatest())
+            try
             {
-                fcmToken = FirebaseTokenEntity.GetLatest().FBToken;
-            }
-            else
-            {
-                try
+                var token = await fbm.FirebaseMessaging.Instance.GetToken();
+                if (token != null)
                 {
-                    var token = await fbm.FirebaseMessaging.Instance.GetToken();
-                    fcmToken = token.ToString();
-                    FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
+                    string newfcmToken = token.ToString();
+                    if (FirebaseTokenEntity.HasLatest())
+                    {
+                        fcmToken = FirebaseTokenEntity.GetLatest().FBToken;
+                    }
 
+                    if (fcmToken != null && (fcmToken != newfcmToken))
+                    {
+                        fcmToken = newfcmToken;
+                        FirebaseTokenEntity.RemoveLatest();
+                        FirebaseTokenEntity.InsertOrReplace(newfcmToken, true);
+                        UserEntity userEntity = UserEntity.GetActive();
+                        myTNB_Android.Src.MyTNBService.Request.BaseRequest baseRequest = new myTNB_Android.Src.MyTNBService.Request.BaseRequest();
+                        baseRequest.usrInf.ft = newfcmToken;
+                        //string ts = JsonConvert.SerializeObject(baseRequest);
+                        APIBaseResponse DataResponse = await ServiceApiImpl.Instance.UpdateUserInfoDevice(baseRequest);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
             System.Diagnostics.Debug.WriteLine("[DEBUG] FCM TOKEN: " + fcmToken);
             Log.Debug("[DEBUG]", "FCM TOKEN: " + fcmToken);

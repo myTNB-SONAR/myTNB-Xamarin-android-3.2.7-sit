@@ -399,5 +399,9 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/NCAutoAddAccounts")]
         Task<T> NCAutoAddAccounts<T>([Body] MyTNBService.Request.NCAutoAddAccountsRequest request, CancellationToken token);   //NC account
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v1/UserInfo/UpdateUserInfoDevice")]
+        Task<T> UpdateUserInfoDevice<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
     }
 }

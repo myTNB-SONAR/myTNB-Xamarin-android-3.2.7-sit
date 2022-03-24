@@ -102,7 +102,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
                 //set translation 
                 TextView_updatePersonalDataDisclaim.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "personalDisclamer");
                 TextView_TNB_TermOfUse.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "tnbTermUse");
-                TextView_privacypolicy.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicyTitle");
+                string stringA = Utility.GetLocalizedLabel("AddAccount", "DiclaimerHeaderPersonalData").Replace("<b>", "");
+                string stringb = stringA.Replace("</b>", "");
+                TextView_privacypolicy.Text = stringb;
 
                 //set font 
                 TextViewUtils.SetMuseoSans300Typeface(TextView_tnc_data); //inputLay
@@ -189,10 +191,18 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
         {
             if (!this.GetIsClicked())
             {
+                //this.SetIsClicked(true);
+                //Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                //webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicy"));
+                //webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicyTitle"));
+                //this.StartActivity(webIntent);
+
                 this.SetIsClicked(true);
+                string stringA = Utility.GetLocalizedLabel("AddAccount", "DiclaimerHeaderPersonalData").Replace("<b>", "");
+                string stringb = stringA.Replace("</b>", "");
                 Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
                 webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicy"));
-                webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicyTitle"));
+                webIntent.PutExtra(Constants.IN_APP_TITLE, stringb);
                 this.StartActivity(webIntent);
             }
         }
