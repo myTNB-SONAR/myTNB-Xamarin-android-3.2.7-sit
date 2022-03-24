@@ -18,6 +18,9 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using Android.Content;
 using Google.Android.Material.Snackbar;
 using Android.Views;
+using AndroidX.Core.Content;
+using Android;
+using System;
 
 namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 {
@@ -105,6 +108,11 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
             ShowBackPopUpConfirmation();
         }
 
+        public override bool CameraPermissionRequired()
+        {
+            return true;
+        }
+
         private void ShowBackPopUpConfirmation()
         {
             RunOnUiThread(() =>
@@ -145,10 +153,9 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 
             string ssoURL = string.Format(AWSConstants.Domains.DSSSO, signature);
 
-            micrositeWebView.SetWebChromeClient(new WebChromeClient());
+            micrositeWebView.SetWebChromeClient(new MyTNBWebChromeClient(this) { });
             micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
             micrositeWebView.Settings.JavaScriptEnabled = true;
-
             micrositeWebView.LoadUrl(ssoURL);
         }
 
@@ -158,6 +165,28 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
             HomeMenuUtils.ResetAll();
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
+        }
+
+        internal class MyTNBWebChromeClient : WebChromeClient
+        {
+            DSWebViewActivity _dSWebViewActivity;
+
+            public MyTNBWebChromeClient(DSWebViewActivity dSWebViewActivity)
+            {
+                _dSWebViewActivity = dSWebViewActivity;
+            }
+
+            public override void OnPermissionRequest(PermissionRequest? request)
+            {
+                if (ContextCompat.CheckSelfPermission(_dSWebViewActivity, Manifest.Permission.Camera) == (int)Permission.Granted)
+                {
+                    request?.Grant(new String[] { PermissionRequest.ResourceVideoCapture });
+                }
+                else
+                {
+                    request?.Deny();
+                }
+            }
         }
 
         public class MyTNBWebViewClient : WebViewClient
