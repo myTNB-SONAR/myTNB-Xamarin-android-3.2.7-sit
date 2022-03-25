@@ -3267,11 +3267,15 @@
     "idType": [
       {
         "key": "1",
-        "description": "Passport"
+        "description": "myKAD"
       },
       {
         "key": "2",
-        "description": "myKAD / Army ID"
+        "description": "Passport"
+      },
+      {
+        "key": "4",
+        "description": "Army ID"
       }
     ]
   },
