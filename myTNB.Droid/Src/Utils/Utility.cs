@@ -30,6 +30,7 @@ namespace myTNB_Android.Src.Utils
         private static bool IsPayDisableNotFromAppLaunch = false;
         private static string AppUpdateId = "";
 
+        public static string ACCOUNT_NAME_PATTERN = @"^[a-zA-Z0-9 @/-]*$";
 
         public enum Masking
         {
@@ -59,7 +60,7 @@ namespace myTNB_Android.Src.Utils
 
         public static bool isSpecialcharacter(string strToCheck)
         {
-            
+
             Regex rg = new Regex(@"^[\w@\-]+$"); ;
             return rg.IsMatch(strToCheck);
         }
@@ -76,6 +77,11 @@ namespace myTNB_Android.Src.Utils
             return rg.IsMatch(strToCheck);
         }
 
+        public static bool IsValidAccountName(string acctName)
+        {
+            Regex rg = new Regex(ACCOUNT_NAME_PATTERN);
+            return rg.IsMatch(acctName);
+        }
 
         public static bool IsValidMobileNumber(string mobileNumber)
         {
@@ -171,19 +177,19 @@ namespace myTNB_Android.Src.Utils
                 //Dictionary<string, List<SelectorModel>> monthSelectorList =
                 //if (monthSelectorList != null && monthSelectorList.Count > 0)
                 //{
-                    List<SelectorModel> list = FilterHelper.GetMonthList();
-                    if (list != null && list.Count > 0)
+                List<SelectorModel> list = FilterHelper.GetMonthList();
+                if (list != null && list.Count > 0)
+                {
+                    foreach (var item in list)
                     {
-                        foreach (var item in list)
+                        monthList.Add(new BaseKeyValueModel()
                         {
-                            monthList.Add(new BaseKeyValueModel()
-                            {
-                                Key = item.Key,
-                                Value = item.Value
-                            });
-                        }
+                            Key = item.Key,
+                            Value = item.Value
+                        });
                     }
-               // }
+                }
+                // }
             }
             catch (Exception e)
             {
@@ -385,7 +391,7 @@ namespace myTNB_Android.Src.Utils
             }).Show();
         }
 
-        
+
 
         public static void ShowEmailErrorDialog(Activity context, string selectedAction, Action confirmAction, Action cancelAction = null)
         {
@@ -547,7 +553,7 @@ namespace myTNB_Android.Src.Utils
         public static bool IsMDMSDownEnergyBudget()
         {
             bool isMDMSEnable = true;
-           
+
             DownTimeEntity smartmeterdailyEntity = DownTimeEntity.GetByCode(Constants.Smart_Meter_Daily_SYSTEM);
             DownTimeEntity smartmeter = DownTimeEntity.GetByCode(Constants.SMART_METER_SYSTEM);
 
@@ -682,7 +688,8 @@ namespace myTNB_Android.Src.Utils
             }
         }
 
-        public static string StringMasking(Masking masking , string premasking){
+        public static string StringMasking(Masking masking, string premasking)
+        {
             //proceed when is not null or empty
             if (!String.IsNullOrEmpty(premasking))
             {
@@ -694,7 +701,7 @@ namespace myTNB_Android.Src.Utils
                     {
 
                         string postMasking = premasking.Substring(commaIndex);
-                        string frontMasking=premasking.Substring(0, commaIndex);
+                        string frontMasking = premasking.Substring(0, commaIndex);
                         Regex replaceString = new Regex("\\S");
                         frontMasking = replaceString.Replace(frontMasking, "*");
                         return frontMasking + postMasking;
@@ -710,12 +717,14 @@ namespace myTNB_Android.Src.Utils
                     return premasking;
                 }
             }
-            else { 
-                return premasking; 
+            else
+            {
+                return premasking;
             }
         }
 
-        public static string StringSpaceMasking(Masking masking, string premasking){
+        public static string StringSpaceMasking(Masking masking, string premasking)
+        {
 
             //proceed when is not null or empty
             if (!String.IsNullOrEmpty(premasking))
