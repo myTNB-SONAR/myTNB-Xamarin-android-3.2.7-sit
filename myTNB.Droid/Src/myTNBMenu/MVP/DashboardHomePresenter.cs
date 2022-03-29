@@ -237,6 +237,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             accountData.AddStreet = selectedAccount.AccountStAddress;
                             accountData.IsOwner = customerBillingAccount.isOwned;
                             accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+                            accountData.IsHaveAccess = customerBillingAccount.IsHaveAccess;
                             this.mView.ShowBillMenu(accountData);
                         }
                     }
@@ -361,6 +362,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             accountData.AddStreet = selectedAccount.AccountStAddress;
                             accountData.IsOwner = customerBillingAccount.isOwned;
                             accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+                            accountData.IsHaveAccess = customerBillingAccount.IsHaveAccess;
                             this.mView.ShowBillMenu(accountData);
                         }
                     }
@@ -483,6 +485,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         accountData.IsOwner = customerBillingAccount.isOwned;
                         accountData.AccountNum = selected.AccNum;
                         accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+                        accountData.IsHaveAccess = customerBillingAccount.IsHaveAccess;
                         this.mView.ShowBillMenu(accountData, isIneligiblePopUpActive);
                     }
                     else

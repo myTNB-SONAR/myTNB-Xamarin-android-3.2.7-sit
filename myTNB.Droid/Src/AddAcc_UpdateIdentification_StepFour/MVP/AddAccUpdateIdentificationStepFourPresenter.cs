@@ -64,15 +64,21 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepFour.MVP
 
                 if (!TextUtils.IsEmpty(fullname))
                 {
-                    if (!Utility.isAlphaNumeric(fullname))
-                    {
-                        this.mView.ShowFullNameError();
-                        enableButton = false;
-                    }
-                    else
-                    {
-                        this.mView.ClearFullNameError();
-                    }
+                    this.mView.ClearFullNameError();
+                    //if (!Utility.isAlphaNumeric(fullname))
+                    //{
+                    //    this.mView.ShowFullNameError();
+                    //    enableButton = false;
+                    //}
+                    //else
+                    //{
+                    //    this.mView.ClearFullNameError();
+                    //}
+                }
+                else
+                {
+                    this.mView.ShowFullNameError();
+                    enableButton = false;
                 }
 
 

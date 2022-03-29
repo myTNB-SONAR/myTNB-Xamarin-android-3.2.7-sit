@@ -98,7 +98,7 @@
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="6dp"
                                 android:hint="Name"
-                                android:inputType="text"
+                                android:digits="@string/name_validation_with_character"
                                 android:maxLines="1"
                                 android:paddingTop="5dp"
                                 android:singleLine="true"

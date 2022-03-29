@@ -365,8 +365,8 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepFour.Activity
                     }
                     else
                     {
-
-                        txtInputLayoutName.Error = null;
+                        ShowFullNameError();
+                        //txtInputLayoutName.Error = null;
                     }
 
                 };
