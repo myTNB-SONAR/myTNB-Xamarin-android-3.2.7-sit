@@ -3286,6 +3286,10 @@
     "leave": "Leave",
     "stay": "Stay"
   },
+  "DSNotificationDetails": {
+    "title": "Verify your identity now to enjoy more of myTNB!",
+    "verifyNow": "Verify Now"
+  },
   "PushNotificationDetails_selector": {
     "dsDescriptionList": [
       {

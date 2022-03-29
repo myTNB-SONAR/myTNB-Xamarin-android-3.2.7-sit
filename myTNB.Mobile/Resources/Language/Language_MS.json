@@ -1516,7 +1516,7 @@
     "verifyEmailPopupTitle": "Pengesahan E-mel Belum Selesai",
     "toast_email_send": "Pengesahan e-mel telah dihantar ke {0}",
     "toast_SuccessUpdateName": "Anda telah berjaya mengemaskini nama anda!",
-    "verifiedAccountMessage": "MS_Your account is verified and secured! Submit applications and enjoy more of myTNB with greater peace of mind."
+    "verifiedAccountMessage": "Akaun anda sudah disahkan dan dilindungi dengan selamat! Hantar permohonan dan nikmati lebih banyak faedah di myTNB dengan lebih tenang."
   },
   "ApplicationStatusLanding": {
     "title": "Status Permohonan",
@@ -3242,63 +3242,67 @@
     "buttonCTA": "Baik, Faham!"
   },
   "DSLanding": {
-    "title": "MS_Verify Your Identity",
-    "continue": "MS_Continue",
-    "subHeader": "MS_Here's how it works:",
-    "howItWorksTitle1": "MS_Capture or upload your identification.",
-    "howItWorksDescription1": "MS_You may take or upload a photo of your identification.",
-    "howItWorksTitle2": "MS_Verify your identity with face verification.",
-    "howItWorksDescription2": "MS_Next step, scan your face using your device’s camera to verify it’s you.",
-    "howItWorksTitle3": "MS_Your verification is complete!",
-    "howItWorksDescription3": "MS_You may continue using myTNB to conveniently submit applications!",
-    "cancel": "MS_Cancel",
-    "verifyNow": "MS_Verify Now",
-    "noRegisteredIDTitle": "MS_Have your identification ready!",
-    "noRegisteredIDMessage": "MS_Accepted forms of identification:<br>&emsp;• Passport<br>&emsp;• Identity Card (applicable for myKad and Army ID)",
-    "acceptedIDTitle": "MS_Have your identification ready!",
-    "acceptedIDMessage": "MS_Before you begin, get your <b>{0}</b> ready.",
-    "cantUseOtherIDTitle": "MS_Why can’t I use other forms of identification? #dropdown#",
-    "cantUseOtherIDMessage": "MS_You previously registered with your <b>{0}</b> in your myTNB account. Every myTNB account can only have one registered identification.",
-    "idProcessingTitle": "MS_We are processing your verification.",
-    "idProcessingMessage": "MS_Your identity verification has been submitted. We’ll notify you once we’re done with your verification.",
-    "backToHome": "MS_Back To Home"
+    "title": "Sahkan Identiti Anda",
+    "continue": "Teruskan",
+    "subHeader": "Ini adalah langkah-langkah memohon:",
+    "howItWorksTitle1": "Tangkap atau muat naik kad pengenalan atau pasport.",
+    "howItWorksDescription1": "Anda mempunyai pilihan untuk menangkap atau memuat naik kad pengenalan atau pasport anda.",
+    "howItWorksTitle2": "Tangkap atau muat naik gambar muka anda.",
+    "howItWorksDescription2": "Langkah seterusnya, tangkap gambar atau muat naik gambar muka anda untuk mengesahkan identiti anda.",
+    "howItWorksTitle3": "Akaun anda disahkan tulen!",
+    "howItWorksDescription3": "Akaun anda telah ditingkatkan dan teruskan mengguna myTNB untuk memohon permohonan secara mudah!",
+    "cancel": "Batal",
+    "verifyNow": "Sahkan Sekarang",
+    "noRegisteredIDTitle": "Sediakan pengenalan diri anda!",
+    "noRegisteredIDMessage": "Jenis-jenis pengenalan diri yang diterima:<br>&emsp;• Pasport<br>&emsp;• Kad Pengenalan (berkenaan myKad & myTentera)",
+    "acceptedIDTitle": "Sediakan kad pengenalan atau pasport anda!",
+    "acceptedIDMessage": "Sebelum anda mula, pastikan <b>{0}</b> disediakan.",
+    "cantUseOtherIDTitle": "Mengapa saya tidak boleh menggunakan jenis pengenalan diri yang lain? #dropdown#",
+    "cantUseOtherIDMessage": "Anda sebelum ini telah mendaftar menggunakan <b>{0}</b> dalam akaun myTNB anda. Setiap akaun myTNB hanya boleh ada satu pengenalan diri yang berdaftar.",
+    "idProcessingTitle": "Kami sedang memproses pengesahan anda.",
+    "idProcessingMessage": "Pengesahan identiti anda sudah dihantar. Kami akan memberitahu anda setelah kami selesai memproses pengesahan anda.",
+    "backToHome": "Kembali ke Halaman Utama"
   },
   "DSLanding_selector": {
     "idType": [
       {
         "key": "1",
-        "description": "MS_myKAD"
+        "description": "Kad Pengenalan"
       },
       {
         "key": "2",
-        "description": "MS_Passport"
+        "description": "Pasport"
       },
       {
         "key": "4",
-        "description": "MS_Army ID"
+        "description": "myTentera"
       }
     ]
   },
   "DSWebview": {
-    "title": "MS_Verify Your Identity",
-    "confirmPopupTitle": "MS_Are you sure you want to leave this page?",
-    "confirmPopupMessage": "MS_Leaving this page will cancel your progress so far and you would need to restart the verfication process.",
-    "leave": "MS_Leave",
-    "stay": "MS_Stay"
+    "title": "Sahkan Identiti Anda",
+    "confirmPopupTitle": "Anda pasti anda mahu keluar dari halaman ini? Gambar yang telah diambil tidak akan disimpan dan anda akan kehilangan sebarang perubahan yang anda buat di halaman ini.",
+    "confirmPopupMessage": "Sekiranya anda keluar, permohonan ini akan terbatal dan anda perlu memulakan semula proses pengesahan identiti anda.",
+    "leave": "Batal",
+    "stay": "Sah"
+  },
+  "DSNotificationDetails": {
+    "title": "Sahkan identiti anda sekarang untuk menikmati lebih banyak di myTNB!",
+    "verifyNow": "Sahkan Sekarang"
   },
   "PushNotificationDetails_selector": {
     "dsDescriptionList": [
       {
-        "value": "MS_Submit applications on myTNB Portal.",
-        "description": "MS_Conveniently apply for change name on bill, open and close account, tariff change and many more with ease."
+        "value": "Hantar permohonan di myTNB Portal",
+        "description": "Anda boleh memohon pertukaran nama dengan senang, buka dan tutup akaun, menukar tarif dan banyak lagi secara mudah."
       },
       {
-        "value": "MS_Safeguard your identity & account.",
-        "description": "MS_Verifying your identity will ensure minimum risk of fraudulent applications on your myTNB account."
+        "value": "Lindungi identiti dan akaun anda.",
+        "description": "Dengan mengesahkan identiti anda, anda dapat mengurangkan risiko permohonan palsu dalam akaun myTNB anda."
       },
       {
-        "value": "MS_Unlock more features to come.",
-        "description": "MS_As we’re offering you more services to be done online, we want to make sure a smooth experience for you with a one-time identity verification."
+        "value": "Dapatkan ciri-ciri terbaharu pada masa depan.",
+        "description": "Dengan adanya lebih banyak perkhidmatan online, kami ingin memudahkan pengalaman dalam talian anda melalui pengesahan identiti sekali beri ini."
       }
     ]
   }

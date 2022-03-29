@@ -15,7 +15,6 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.Fragment;
 using myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP;
-using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Utils;
 using Refit;
 
@@ -25,19 +24,18 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
     public class DSNotificationDetailsActivity : BaseActivityCustom, DSNotificationDetailsContract.IView
     {
         [BindView(Resource.Id.dsNotifDetailTitle)]
-        TextView dsNotifDetailTitle;
+        readonly TextView dsNotifDetailTitle;
 
         [BindView(Resource.Id.dsNotifDetailBtnVerifyNow)]
-        Button dsNotifDetailBtnVerifyNow;
+        readonly Button dsNotifDetailBtnVerifyNow;
 
         [BindView(Resource.Id.identityVerificationListContainer)]
-        LinearLayout identityVerificationListContainer;
+        readonly LinearLayout identityVerificationListContainer;
 
         [BindView(Resource.Id.rootView)]
         ViewGroup rootView;
 
         NotificationDetails.Models.NotificationDetails notificationDetails;
-        UserNotificationData userNotificationData;
         internal static myTNB.Mobile.NotificationOpenDirectDetails Notification;
         int position;
         DSNotificationDetailsPresenter mPresenter;
@@ -140,11 +138,19 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
 
-            TextViewUtils.SetMuseoSans500Typeface(dsNotifDetailTitle, dsNotifDetailBtnVerifyNow);
-            TextViewUtils.SetTextSize16(dsNotifDetailTitle, dsNotifDetailBtnVerifyNow);
+            if (dsNotifDetailTitle != null)
+            {
+                TextViewUtils.SetMuseoSans500Typeface(dsNotifDetailTitle);
+                TextViewUtils.SetTextSize16(dsNotifDetailTitle);
+                dsNotifDetailTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.DS_NOTIF_DETAILS, LanguageConstants.DSNotificationDetails.TITLE);
+            }
 
-            dsNotifDetailTitle.Text = "Verify your identity now to enjoy more of myTNB!";
-            dsNotifDetailBtnVerifyNow.Text = "Verify Now";
+            if (dsNotifDetailBtnVerifyNow != null)
+            {
+                TextViewUtils.SetMuseoSans500Typeface(dsNotifDetailBtnVerifyNow);
+                TextViewUtils.SetTextSize16(dsNotifDetailBtnVerifyNow);
+                dsNotifDetailBtnVerifyNow.Text = Utility.GetLocalizedLabel(LanguageConstants.DS_NOTIF_DETAILS, LanguageConstants.DSNotificationDetails.VERIFY_NOW);
+            }
         }
 
         public void RenderContent()

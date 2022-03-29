@@ -21,6 +21,7 @@
         internal static readonly string DS_LANDING = "DSLanding";
         internal static readonly string DS_WEBVIEW = "DSWebview";
         internal static readonly string MY_PROFILE = "Tnb_Profile";
+        internal static readonly string DS_NOTIF_DETAILS = "DSNotificationDetails";
 
         internal struct Common
         {
@@ -252,6 +253,12 @@
         internal struct MYProfile
         {
             internal static readonly string VERIFIED_ACCT_MSG = "verifiedAccountMessage";
+        }
+
+        internal struct DSNotificationDetails
+        {
+            internal static readonly string TITLE = "title";
+            internal static readonly string VERIFY_NOW = "verifyNow";
         }
     }
 }
