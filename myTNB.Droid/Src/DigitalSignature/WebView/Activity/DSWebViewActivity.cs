@@ -149,7 +149,10 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 , TextViewUtils.FontInfo ?? "N"
                 , user?.UserID
                 , _identificationModel?.IdentificationType
-                , _identificationModel?.IdentificationNo);
+                , _identificationModel?.IdentificationNo
+                , "EKYC"
+                , DateTime.UtcNow
+                , null);
 
             string ssoURL = string.Format(AWSConstants.Domains.DSSSO, signature);
 

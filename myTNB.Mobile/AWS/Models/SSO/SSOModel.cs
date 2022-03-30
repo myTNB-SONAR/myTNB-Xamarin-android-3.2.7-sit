@@ -1,4 +1,6 @@
-﻿namespace myTNB.Mobile
+﻿using System;
+
+namespace myTNB.Mobile
 {
     public class SSOModel
     {
@@ -12,6 +14,9 @@
         public string OriginUrl { get; set; }
         public string RedirectUrl { get; set; }
         public string CaNo { get; set; }
+        public string TransactionType { get; set; }
+        public DateTime InitiateTime { get; set; }
+        public Guid? QRMappingID { get; set; }
     }
 
     public class DSModel : SSOModel
