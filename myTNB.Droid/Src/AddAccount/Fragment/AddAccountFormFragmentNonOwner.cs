@@ -171,6 +171,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 addAccount.Text = Utility.GetLocalizedLabel("Common", "next");
                 addAccount.Click += delegate
                 {
+                    ClearAllErrorFields();
                     CallValidateAccountService();
                 };
 
