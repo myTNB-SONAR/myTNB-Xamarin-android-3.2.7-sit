@@ -1040,5 +1040,27 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                .Build();
             whereIsMyAccountNo.Show();
         }
+
+        public void ClearAllErrorFields()
+        {
+            if (!string.IsNullOrEmpty(textInputLayoutAccountNo.Error))
+            {
+                textInputLayoutAccountNo.Error = null;
+                textInputLayoutAccountNo.ErrorEnabled = false;
+            }
+            if (!string.IsNullOrEmpty(textInputLayoutAccountLabel.Error))
+            {
+                textInputLayoutAccountLabel.Error = null;
+                textInputLayoutAccountLabel.ErrorEnabled = false;
+            }
+        }
+
+        public void ClearErrorFields()
+        {
+            textInputLayoutAccountNo.Error = null;
+            textInputLayoutAccountNo.ErrorEnabled = false;
+            textInputLayoutAccountLabel.Error = null;
+            textInputLayoutAccountLabel.ErrorEnabled = false;
+        }
     }
 }

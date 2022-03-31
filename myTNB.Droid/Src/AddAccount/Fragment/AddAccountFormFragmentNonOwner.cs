@@ -171,7 +171,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 addAccount.Text = Utility.GetLocalizedLabel("Common", "next");
                 addAccount.Click += delegate
                 {
-                    ClearAllErrorFields();
                     CallValidateAccountService();
                 };
 
@@ -296,6 +295,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 textInputLayoutAccountLabel.Error = null;
                 textInputLayoutAccountLabel.ErrorEnabled = false;
             }
+        }
+
+        public void ClearErrorFields()
+        {
+            textInputLayoutAccountNo.Error = null;
+            textInputLayoutAccountNo.ErrorEnabled = false;
+            textInputLayoutAccountLabel.Error = null;
+            textInputLayoutAccountLabel.ErrorEnabled = false;
         }
 
         public void ClearNameHint()

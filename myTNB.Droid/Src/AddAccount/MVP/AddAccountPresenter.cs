@@ -278,6 +278,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 else
                 {
                     mView.ClearText();
+                    mView.ClearErrorFields();
                     NewAccount account = new NewAccount();
                     account.accountNumber = accountNum;
                     account.accountAddress = result.GetData().accountStAddress;
