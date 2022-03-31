@@ -462,7 +462,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                         topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(35f);
                                     }
                                     //int topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(35f);
-                                    int middleHeight = (int)DPUtils.ConvertDPToPx(160f);
+                                    //int middleHeight = (int)DPUtils.ConvertDPToPx(160f);
+                                    int middleHeight;
+                                    middleHeight = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(190f) : (int)DPUtils.ConvertDPToPx(160f);
 
                                     LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                                     topLayoutParam.Height = topHeight;

@@ -173,7 +173,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
             }
             try
             {
-
                 ManageAccessAccountListResponse manageAccessAccountListResponse = await ServiceApiImpl.Instance.GetAccountAccessRightList(new GetAccountAccessRight(accountData.AccountNum));
 
                 if (mView.IsActive())
@@ -183,11 +182,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
 
                 if (manageAccessAccountListResponse != null && manageAccessAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
-                    if (manageAccessAccountListResponse.GetData().Count > 0)
-                    {
+                    //if (manageAccessAccountListResponse.GetData().Count > 0)
+                    //{
                         UserManageAccessAccount.RemoveActive();
                         ProcessManageAccessAccount(manageAccessAccountListResponse.GetData());
-                    }
+                    //}
                     this.mView.ManageUserActivity();
                 }
                 else

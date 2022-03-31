@@ -128,7 +128,7 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 //txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
                 //txtICNumber.AddTextChangedListener(new PhoneTextWatcher(txtICNumber, identityType));
                 //txtICNumber.SetOnKeyListener(new KeyListener());
-                //txtICNumber.InputType = InputTypes.ClassNumber;
+                //txtNewIC.InputType = InputTypes.ClassNumber;
                 string idnumber = UserEntity.GetActive().IdentificationNo;
                 txtNewIC.Text = idnumber;
 
@@ -455,13 +455,13 @@ namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 string ic = txtNewIC.Text.ToString().Trim();
                 string accno = txtAccountNo.Text.ToString().Trim();
 
-                if (!string.IsNullOrEmpty(accno))
-                {
-                    txtInputLayoutAccountNo.Error = null;
+                //if (!string.IsNullOrEmpty(accno))
+                //{
+                //    txtInputLayoutAccountNo.Error = null;
 
-                }
+                //}
                
-                //this.userActionsListener.CheckRequiredFields(accno, ic);
+                this.userActionsListener.CheckRequiredFields(accno, ic);
 
             }
             catch (Exception ex)

@@ -158,7 +158,8 @@
 							    android:drawablePadding="6dp"
 								android:hint="ENTER NEW IDENTIFICATION NUMBER"
 								android:textSize="16dp"
-								android:maxLines="1"/>
+								android:maxLines="1"
+								android:digits="@string/alphanumeric_validation_with_character"/>
 						</com.google.android.material.textfield.TextInputLayout>                  
 					</LinearLayout>
 				</LinearLayout>

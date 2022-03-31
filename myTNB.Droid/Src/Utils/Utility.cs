@@ -30,7 +30,7 @@ namespace myTNB_Android.Src.Utils
         private static bool IsPayDisableNotFromAppLaunch = false;
         private static string AppUpdateId = "";
 
-        public static string ACCOUNT_NAME_PATTERN = @"^[a-zA-Z0-9 @/-]*$";
+        public static string ACCOUNT_NAME_PATTERN = @"^[a-zA-Z @/-]*$";
 
         public enum Masking
         {

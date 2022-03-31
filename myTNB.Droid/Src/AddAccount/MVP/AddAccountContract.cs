@@ -138,6 +138,8 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
             void RemoveNameErrorMessage();
             void RemoveNumberErrorMessage();
+            void ClearAllErrorFields();
+            void ClearErrorFields();
             void ClearROCError();
 
         }

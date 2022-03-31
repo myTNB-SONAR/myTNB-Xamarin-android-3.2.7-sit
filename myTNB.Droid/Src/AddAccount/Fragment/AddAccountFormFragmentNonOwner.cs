@@ -297,6 +297,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
         }
 
+        public void ClearErrorFields()
+        {
+            textInputLayoutAccountNo.Error = null;
+            textInputLayoutAccountNo.ErrorEnabled = false;
+            textInputLayoutAccountLabel.Error = null;
+            textInputLayoutAccountLabel.ErrorEnabled = false;
+        }
+
         public void ClearNameHint()
         {
             textInputLayoutAccountLabel.HelperText = null;
