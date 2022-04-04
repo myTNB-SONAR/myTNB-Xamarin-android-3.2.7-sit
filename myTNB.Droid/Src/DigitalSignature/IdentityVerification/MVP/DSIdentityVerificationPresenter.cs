@@ -82,6 +82,10 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             {
                 this.view?.ShowIdNotRegisteredPopUp();
             }
+            else if (eKYCIdentificationModel.IdentityHasBeenVerified)
+            {
+                this.view?.ShowIdentityHasBeenVerified();
+            }
             else
             {
                 this.view?.ShowPrepareDocumentPopUp(eKYCIdentificationModel.IdentificationType);

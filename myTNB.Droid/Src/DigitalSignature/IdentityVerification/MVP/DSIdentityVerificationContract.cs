@@ -39,6 +39,11 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             void ShowIdNotRegisteredPopUp();
 
             /// <summary>
+            /// Shows identity has been verified
+            /// </summary>
+            void ShowIdentityHasBeenVerified();
+
+            /// <summary>
             /// Shows prepare document pop up
             /// </summary>
             void ShowPrepareDocumentPopUp(int? idType);

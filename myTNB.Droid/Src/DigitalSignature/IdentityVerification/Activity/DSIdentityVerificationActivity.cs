@@ -230,6 +230,27 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             });
         }
 
+        public void ShowIdentityHasBeenVerified()
+        {
+            RunOnUiThread(() =>
+            {
+                HideProgressDialog();
+
+                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_ONE_BUTTON)
+                   .SetHeaderImage(Resource.Drawable.Icon_Profile_Verified)
+                   .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_IDENTITY_VERIFIED_TITLE))
+                   .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_IDENTITY_VERIFIED_MSG))
+                   .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.BACK_TO_HOME))
+                   .SetCTAaction(() =>
+                   {
+                       SetResult(Result.Canceled);
+                       Finish();
+                   })
+                   .Build();
+                marketingTooltip.Show();
+            });
+        }
+
         public void ShowPrepareDocumentPopUp(int? idType)
         {
             RunOnUiThread(() =>

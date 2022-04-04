@@ -3261,6 +3261,8 @@
     "cantUseOtherIDMessage": "You previously registered with your <b>{0}</b> in your myTNB account. Every myTNB account can only have one registered identification.",
     "idProcessingTitle": "We are processing your verification.",
     "idProcessingMessage": "Your identity verification has been submitted. We’ll notify you once we’re done with your verification.",
+    "idVerifiedTitle": "Your identity has been verified.",
+    "idVerifiedMessage": "With a verified identity, you can now enjoy all of myTNB features with a secured account to ensure minimum risk of fraudulent applications",
     "backToHome": "Back To Home"
   },
   "DSLanding_selector": {

@@ -234,6 +234,8 @@
             internal static readonly string POP_UP_VERIFY_NOW = "verifyNow";
             internal static readonly string POP_UP_VERIFY_PROCESSING_TITLE = "idProcessingTitle";
             internal static readonly string POP_UP_VERIFY_PROCESSING_MSG = "idProcessingMessage";
+            internal static readonly string POP_UP_IDENTITY_VERIFIED_TITLE = "idVerifiedTitle";
+            internal static readonly string POP_UP_IDENTITY_VERIFIED_MSG = "idVerifiedMessage";
             internal static readonly string BACK_TO_HOME = "backToHome";
             internal static readonly string POP_UP_ACCEPTED_ID_TITLE = "acceptedIDTitle";
             internal static readonly string POP_UP_ACCEPTED_ID_MSG = "acceptedIDMessage";

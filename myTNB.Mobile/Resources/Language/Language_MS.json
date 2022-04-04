@@ -3261,6 +3261,8 @@
     "cantUseOtherIDMessage": "Anda sebelum ini telah mendaftar menggunakan <b>{0}</b> dalam akaun myTNB anda. Setiap akaun myTNB hanya boleh ada satu pengenalan diri yang berdaftar.",
     "idProcessingTitle": "Kami sedang memproses pengesahan anda.",
     "idProcessingMessage": "Pengesahan identiti anda sudah dihantar. Kami akan memberitahu anda setelah kami selesai memproses pengesahan anda.",
+    "idVerifiedTitle": "Identiti anda telah disahkan.",
+    "idVerifiedMessage": "Dengan identiti yang telah disahkan, anda kini boleh menikmati semua ciri-ciri myTNB dengan akaun yang dilindungi untuk memastikan risiko minimum dari permohonan penipuan",
     "backToHome": "Kembali ke Halaman Utama"
   },
   "DSLanding_selector": {
