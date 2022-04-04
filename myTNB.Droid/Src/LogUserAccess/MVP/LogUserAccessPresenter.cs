@@ -20,96 +20,35 @@ namespace myTNB_Android.Src.LogUserAccess.MVP
             this.mView.SetPresenter(this);
         }
 
-        public static bool DateInsideOneWeek(DateTime date1)
+        public static bool DateInsideOneWeek(DateTime date2)
         {
-            DayOfWeek firstDayOfWeek = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
-            DateTime startDateOfWeek = date1.Date;
-            
-            DateTime NewstartDateOfWeek = DateTime.Now;
-            DateTime date2;
             DateTime referenceDate;
-            DayOfWeek referenceDateDay;
-            DateTime datadate = new DateTime();
-
-            referenceDateDay = datadate.DayOfWeek;
             referenceDate = DateTime.Now;
 
-            while (startDateOfWeek.DayOfWeek != firstDayOfWeek)
-            { 
-                startDateOfWeek = startDateOfWeek.AddDays(-1d); 
-            }
-            DateTime endDateOfWeek = startDateOfWeek.AddDays(6d);
+            var cal = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
 
-            while (NewstartDateOfWeek.DayOfWeek != firstDayOfWeek)
-            {
-                NewstartDateOfWeek = NewstartDateOfWeek.AddDays(-1d);
-            }
-            DateTime NewendDateOfWeek = NewstartDateOfWeek.AddDays(6d);
+            var d1 = referenceDate.Date.AddDays(-1 * (int)cal.GetDayOfWeek(referenceDate));
+            var d2 = date2.Date.AddDays(-1 * (int)cal.GetDayOfWeek(date2));
 
-            if (referenceDate >= startDateOfWeek && referenceDate <= endDateOfWeek)
-            {
-                ThisweekStartDate = startDateOfWeek;
-                ThisweekEndDate = endDateOfWeek;
-            }
-            else if ((referenceDate >= NewstartDateOfWeek && referenceDate <= NewendDateOfWeek))
-            {
-                ThisweekStartDate = NewstartDateOfWeek;
-                ThisweekEndDate = NewendDateOfWeek;
-            }
-            return referenceDate >= startDateOfWeek && referenceDate <= endDateOfWeek;
+            return d1 == d2;
         }
 
-        public static bool DateInsideLastWeek(DateTime date1)
+        public static bool DateInsideLastWeek(DateTime date2)
         {
-            DayOfWeek firstDayOfWeek = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
-            DateTime startDateOfWeek = date1.Date;
-            DateTime date2;
             DateTime referenceDate;
-            DayOfWeek referenceDateDay;
-            DateTime datadate = new DateTime();
-
-            referenceDateDay = datadate.DayOfWeek;
             referenceDate = DateTime.Now;
 
-            while (startDateOfWeek.DayOfWeek != firstDayOfWeek)
-            {
-                startDateOfWeek = startDateOfWeek.AddDays(-1d);
-            }
-            DateTime endDateOfWeek = startDateOfWeek.AddDays(6d);
+            var cal = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
 
-            ThisweekStartDate = ThisweekStartDate.AddDays(-1d);
+            var d1 = referenceDate.Date.AddDays(-1 * (int)cal.GetDayOfMonth(referenceDate));
+            var d2 = date2.Date.AddDays(-1 * (int)cal.GetDayOfMonth(date2));
 
-            if (ThisweekStartDate.Day == endDateOfWeek.Day && ThisweekStartDate.Month == endDateOfWeek.Month)
-            {
-                return date1 >= startDateOfWeek && date1 <= endDateOfWeek;
-            }
-            else if (date1.Month == referenceDate.Month && date1.Year == referenceDate.Year)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return d1 == d2;
         }
 
-        public static bool DateInsideLastMonth(DateTime date1)
+        public static bool DateInsideLastMonth(DateTime date2)
         {
-            DateTime referenceDate;
-            DayOfWeek referenceDateDay;
-            DateTime datadate = new DateTime();
-            referenceDate = DateTime.Now;
-
-            datadate = referenceDate.AddMonths(-1);
-
-            if (datadate.Month != date1.Month)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return true;
         }
 
         public void SortLogListDataByDate(List<LogUserAccessNewData> loglist)
