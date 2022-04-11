@@ -525,6 +525,51 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                     listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                 }
                                             }
+                                            else if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
+                                            {
+                                                if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
+                                                {
+                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                }
+                                            }
+                                            else if (userNotificationData.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD)
+                                            {
+                                                if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
+                                                {
+                                                    if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
+                                                    {
+                                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                    }
+                                                    else
+                                                    {
+                                                        if (userNotificationData != null && !string.IsNullOrEmpty(userNotificationData.AccountNum))
+                                                        {
+                                                            List<string> CAs = userNotificationData.AccountNum.Split(',').ToList();
+                                                            if (CAs.Count > 1)
+                                                            {
+                                                                bool sameCa = false;
+                                                                foreach (var noCa in CAs)
+                                                                {
+                                                                    if (MyTNBAccountManagement.GetInstance().IsAccountNumberExist(noCa) && !sameCa)
+                                                                    {
+                                                                        sameCa = true;
+                                                                    }
+                                                                }
+
+                                                                if (sameCa)
+                                                                {
+                                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
                                             else
                                             {
                                                 listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
@@ -543,7 +588,11 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                     }
                                                 }
                                                 else if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS
-                                                        || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW)
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK
+                                                    || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2 || userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
                                                 {
                                                     if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
                                                     {
@@ -555,28 +604,52 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                     listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                 }
                                             }
-                                            else
+                                            else if (UserEntity.GetActive().Email.Equals(userNotificationData.Email) && userNotificationData.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD)
                                             {
-                                                
-                                                if (userNotificationData.NotificationTypeId == "1000005" && userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_REMOVE_ACCESS)
+                                                if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
                                                 {
-                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                    if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
+                                                    {
+                                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                    }
+                                                    else
+                                                    {
+                                                        if (userNotificationData != null && !string.IsNullOrEmpty(userNotificationData.AccountNum))
+                                                        {
+                                                            List<string> CAs = userNotificationData.AccountNum.Split(',').ToList();
+                                                            if (CAs.Count > 1)
+                                                            {
+                                                                bool sameCa = false;
+                                                                foreach (var noCa in CAs)
+                                                                {
+                                                                    if (MyTNBAccountManagement.GetInstance().IsAccountNumberExist(noCa) && !sameCa)
+                                                                    {
+                                                                        sameCa = true;
+                                                                    }
+                                                                }
+
+                                                                if (sameCa)
+                                                                {
+                                                                    listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
-                                                
+                                            }
+                                            else if (userNotificationData.NotificationTypeId == "1000005" && userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_REMOVE_ACCESS)
+                                            {
+                                                listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                             }
                                         }
-                                        
-                                   
                                     }
                                     else
                                     {
                                         listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                     }
                                 }
-                            }
-                            
+                            }                           
                         }
-
                     }
                 }
 

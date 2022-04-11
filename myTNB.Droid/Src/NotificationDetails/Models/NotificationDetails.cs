@@ -55,6 +55,9 @@ namespace myTNB_Android.Src.NotificationDetails.Models
         [JsonProperty("AccountStatementDetail", Required = Newtonsoft.Json.Required.AllowNull)]
         public AccountStatementDetailData AccountStatementDetail;
 
+        [JsonProperty("SDStatusDetails", Required = Newtonsoft.Json.Required.AllowNull)]
+        public SDStatusDetailsData SDStatusDetails;
+
         [JsonProperty("HeaderTitle")]
         public string HeaderTitle { get; set; }
 
@@ -72,6 +75,15 @@ namespace myTNB_Android.Src.NotificationDetails.Models
         {
             [JsonProperty("StatementPeriod")]
             public string StatementPeriod { get; set; }
+        }
+
+        public class SDStatusDetailsData
+        {
+            [JsonProperty("NotificationTimestamp")]
+            public string NotificationTimestamp { get; set; }
+
+            [JsonProperty("ServiceDisruptionID")]
+            public string ServiceDisruptionID { get; set; }
         }
     }
 }

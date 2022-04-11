@@ -7170,26 +7170,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <AndroidAsset Include="Assets\fonts\MuseoSans_300.otf" />
-    <AndroidAsset Include="Assets\fonts\MuseoSans_500.otf" />
-    <None Include="GettingStarted.Xamarin" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Resources\AboutResources.txt" />
-    <None Include="Properties\AndroidManifest.xml">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\layout\Toolbar.axml" />
-    <AndroidResource Include="Resources\layout\LoginView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\manage_bill_delivery_2.png">
-    <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -7782,6 +7762,189 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Database\Model\MarketingPopUpEntity.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Activity\ServiceDistruptionRatingActivity.cs" />
+    <AndroidResource Include="Resources\layout\FeedBackServiceDistruptionSubmitRatingView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ServiceDistruptionRating\Adapter\ImproveSelectAdapter.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Model\ImproveSelectModel.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Model\QuestionModel.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Model\RateUsStar.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Model\SubmitDataModel.cs" />
+    <AndroidResource Include="Resources\layout\ImproveSelectedServiceDistruption.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\active_hand_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\active_hourglass_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\active_information_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\active_phonecall_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\hand_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\hourglass_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\information_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\phonecall_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\active_hand_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\active_hourglass_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\active_information_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\active_phonecall_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\hand_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\hourglass_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\information_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\phonecall_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\active_hand_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\active_hourglass_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\active_information_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\active_phonecall_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\hand_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\hourglass_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\information_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\phonecall_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\active_hand_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\active_hourglass_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\active_information_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\active_phonecall_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\hand_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\hourglass_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\information_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\phonecall_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\active_hand_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\active_hourglass_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\active_information_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\active_phonecall_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\hand_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\hourglass_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\information_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\phonecall_icon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ServiceDistruptionRating\MVP\ServiceDistruptionRatingContract.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\MVP\ServiceDistruptionRatingPresenter.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Request\UserServicedistruptionSub.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserServicedistruptionSubResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserServiceDistruptionSetSubResponse.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Request\UserServiceDistruptionSetSubRequest.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Model\ServiceDisruptionInfo.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Request\SubmitRateUsRequest.cs" />
+    <Compile Include="Src\ServiceDistruptionRating\Request\GetFeedbackCountRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -9461,7 +9624,6 @@
     <AndroidAsset Include="Assets\dashboard_zoom_lottie.json" />
     <AndroidAsset Include="Assets\tnb_general_loading.json" />
     <AndroidAsset Include="Assets\ocr_loading_animation.json" />
-    <AndroidAsset Include="Assets\Dynatrace.properties" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -9556,6 +9718,13 @@
     <Folder Include="Src\Helper\" />
     <Folder Include="Src\OverVoltageClaim\Model\" />
     <Folder Include="Src\Utils\Notification\" />
+    <Folder Include="Src\ServiceDistruptionRating\" />
+    <Folder Include="Src\ServiceDistruptionRating\Activity\" />
+    <Folder Include="Src\ServiceDistruptionRating\Adapter\" />
+    <Folder Include="Src\ServiceDistruptionRating\Model\" />
+    <Folder Include="Src\ServiceDistruptionRating\MVP\" />
+    <Folder Include="Src\ServiceDistruptionRating\Request\" />
+    <Folder Include="Src\ServiceDistruptionRating\Response\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

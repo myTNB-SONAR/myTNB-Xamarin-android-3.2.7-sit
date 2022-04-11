@@ -265,6 +265,13 @@ namespace myTNB_Android.Src.Database.Model
                                     count++;
                                 }
                             }
+                            else if (item.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_EB)
+                            {
+                                if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                                {
+                                    count++;
+                                }
+                            }
                             else
                             {
                                 count++;

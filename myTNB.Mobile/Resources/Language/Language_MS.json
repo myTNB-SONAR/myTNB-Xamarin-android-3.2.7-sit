@@ -679,7 +679,12 @@
     "viewAccountStatement": "Semak Penyata Akaun",
     "updateNow": "Kemaskini Sekarang",
     "notification": "Notifikasi",
-    "serviceDistruption": "Gangguan Perkhidmatan"
+    "serviceDistruption": "Gangguan Perkhidmatan",
+    "toastStopNotiUpdate": "Anda telah menghentikan notifikasi bagi gangguan perkhidmatan kali ini!",
+    "toastResumeNotiUpdate": "Anda telah meneruskan notifikasi bagi gangguan perkhidmatan bekalan kali ini!",
+    "notifyCheck": "Hanya maklumkan saya apabila elektrik kembali",
+    "callUs": "Perlu bantuan lanjut? <a href='tel: 15454'>Hubungi kami</a>",
+    "shareFeedback": "Kongsi Maklum Balas"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -3212,10 +3217,22 @@
     ]
   },
   "ServiceDistruptionComm": {
-    "title": "Dapatkan  Notifikasi Terkini dengan Ciri Gangguan Perkhidmatan!",
-    "subTitle1": "Anda kini boleh menerima notifikasi terkini sekiranya terdapat gangguan bekalan dan status pemulihan menerusi Ciri Gangguan Perkhidmatan.",
+    "title": "Dapatkan Notifikasi dengan Pemakluman Gangguan Perkhidmatan!",
+    "subTitle1": "Anda kini boleh menerima notifikasi terkini sekiranya terdapat gangguan bekalan dan status pemulihan menerusi Pemakluman Gangguan Perkhidmatan.",
     "subTitle2": "Notifikasi ini hanya tersedia untuk perkhidmatan elektrik TNB dan tidak termasuk mana-mana bekalan terputus yang terjadi di dalam premis.",
-    "note": "*Ciri gangguan perkhidmatan hanya disediakan di kawasan yang terpilih dan akan dikembangkan ke kawasan yang lain tidak lama lagi!",
+    "note": "*Pemakluman Gangguan Perkhidmatan hanya disediakan di Melaka Barat dan akan dikembangkan ke kawasan yang lain tidak lama lagi!",
     "buttonCTA": "Baik, Faham!"
+  },
+  "FeedBackSD": {
+    "title": "Kongsi Maklum Balas Anda",
+    "helpfulTitle": "Adakah notifikasi Gangguan Perkhidmatan membantu anda?",
+    "titleSelectApplies": "Pilih semua yang berkenaan:",
+    "titleLastly": "Maklum balas tambahan?",
+    "tellusMore": "Nyatakan kepada kami (Pilihan)",
+    "hinttellusMore": "baki aksara",
+    "btnCancel": "Batal",
+    "btnSubmit": "Hantar",
+    "thumbUpYes": "Ya, sangat membantu!",
+    "thumbDownNo": "Kurang membantu"
   }
 }

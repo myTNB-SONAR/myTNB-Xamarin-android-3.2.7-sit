@@ -357,6 +357,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_TC = "CEP TC";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_RC = "CEP RC";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET_NEWS = "98";
+        public const string NOTIFICATION_TYPE_ID_EB = "1000020";
 
         //Account Statement
         public const string BCRM_NOTIFICATION_ACCT_STATEMENT_READY = "20008";
@@ -375,6 +376,14 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS = "SDIP";
         public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION = "SDOR";
         public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_UPDATE_NOW = "SDRC";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI = "SDHBI";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1 = "SDHBU1";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2 = "SDHBU2";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3 = "SDHBU3";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4 = "SDHBU4";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK = "SDOR";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2 = "SDHBR";
+        public const string BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3 = "SDFB";
         public const string NOTIFICATION_TYPE_ID_SD = "1000028";
 
         //OwnerTenant

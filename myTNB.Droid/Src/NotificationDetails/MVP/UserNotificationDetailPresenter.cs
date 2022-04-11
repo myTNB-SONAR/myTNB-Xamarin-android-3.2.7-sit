@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -22,6 +23,8 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.NotificationDetails.Models;
+using myTNB_Android.Src.ServiceDistruptionRating.Model;
+using myTNB_Android.Src.ServiceDistruptionRating.Request;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
@@ -327,13 +330,24 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             imageResourceBanner = Resource.Drawable.sd_outage_notification;
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1:
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2:
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3:
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4:
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI:
                     case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS:
                         {
                             imageResourceBanner = Resource.Drawable.sd_in_progress_notification;
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3:
+                    case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2:
                     case Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION:
                         {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, "shareFeedback"),
+                                   delegate () { ShareFeedbackPage(); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
                             imageResourceBanner = Resource.Drawable.sd_restoration_notification;
                             break;
                         }
@@ -396,7 +410,44 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
                 if (notificationDetailMessage.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
                 {
-                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + accountName + "\"");
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERN, "\'" + accountName + "\'");
+                }
+
+                // check if have have #accnos#
+                if (notificationDetailMessage.Contains(Constants.ACCOUNT_ACCNO_PATTERNS))
+                {
+                    try
+                    {
+                        string accData = notificationDetails.AccountNum;
+                        List<string> CAs = accData.Split(',').ToList();
+
+                        //only allow multiple ca can access this data
+                        if (CAs.Count > 1)
+                        {
+                            int num = 1;
+                            string stringFormat =  "{0}. {1}<br>";
+                            string preparedString = string.Empty;
+                            foreach (var ca in CAs)
+                            {
+                                List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+                                int caindex = accounts.FindIndex(x => x.AccNum == ca);
+                                if (caindex > -1)
+                                {
+                                    string accountNickname = accounts[caindex].AccDesc ?? string.Empty;
+                                    if (!string.IsNullOrEmpty(accountNickname))
+                                    {
+                                        preparedString = preparedString + String.Format(stringFormat, num++, accountNickname);
+                                    }
+                                }
+                            }
+                            notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERNS, preparedString); //accnos
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+
                 }
 
                 notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
@@ -562,6 +613,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         private void ViewTips()
         {
             this.mView.ViewTips();
+        }
+
+        private void ShareFeedbackPage()
+        {
+            this.mView.ShareFeedback();
         }
 
         private async void SubmitMeterReading(Models.NotificationDetails notificationDetails)
@@ -927,6 +983,106 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             }
         }
 
+        public async void OnCheckSubscription(string SdEventId, string email)
+        {
+            try
+            {
+                this.mView.ShowLoadingScreen();
+                UserServicedistruptionSub request = new UserServicedistruptionSub(email, SdEventId);
+                string ts = JsonConvert.SerializeObject(request);
+                UserServicedistruptionSubResponse response = await ServiceApiImpl.Instance.GetUserServiceDistruptionSub(request);
+                if (response.IsSuccessResponse())
+                {
+                    this.mView.UpateCheckBox((bool)response.Response.Data.subscriptionStatus);
+                }
+                else
+                {
+                    this.mView.UpateCheckBox(true);
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+                this.mView.HideLoadingScreen();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideLoadingScreen();
+                this.mView.UpateCheckBox(true);
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideLoadingScreen();
+                this.mView.UpateCheckBox(true);
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                this.mView.UpateCheckBox(true);
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public async void OnSetSubscription(string SdEventId, string Email, bool checkStatus)
+        {
+            try
+            {
+                this.mView.ShowLoadingScreen();
+                bool status = checkStatus == true ? false : true;
+                var SDInfo = new ServiceDisruptionInfo
+                {
+                    sdEventId = SdEventId,
+                    email = Email,
+                    subscriptionStatus = status
+                };
+                UserServiceDistruptionSetSubRequest request = new UserServiceDistruptionSetSubRequest("heartbeatsubscription",SDInfo);
+                string ts = JsonConvert.SerializeObject(request);
+                UserServiceDistruptionSetSubResponse response = await ServiceApiImpl.Instance.ServiceDisruptionInfo(request);
+                if (response.Response.ErrorCode  == Constants.SERVICE_CODE_SUCCESS)
+                {
+                    if (checkStatus)
+                    {
+                        this.mView.ShowStopNotiUpdate();
+                    }
+                    else
+                    {
+                        this.mView.ShowResumeNotiUpdate();
+                    }
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+                this.mView.HideLoadingScreen();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         //checking count feedback EnergyBudget
         public async void OnCheckFeedbackCount()
         {
@@ -1044,5 +1200,72 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
+
+        //feedback API QuestionCategoryId
+        public async void GetRateUsQuestions(string questionCategoryID)
+        {
+            try
+            {
+                this.mView.ShowLoadingScreen();
+                var questionRespone = await ServiceApiImpl.Instance.GetRateUsQuestions(new GetRateUsQuestionRequest(questionCategoryID));
+                if (!questionRespone.IsSuccessResponse())
+                {
+                    //isSixHaveQuestion = false;
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+                else
+                {
+                    if (questionCategoryID.Equals("9"))
+                    {
+                        this.mView.GetFeedbackTwoQuestionsNo(questionRespone);
+                        this.mView.FeedbackQuestionCall();
+                    }
+                    else
+                    {
+                        this.mView.GetFeedbackTwoQuestionsYes(questionRespone);
+                        GetRateUsQuestions("9");
+                    }
+                    this.mView.HideLoadingScreen();
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                this.mView.HideLoadingScreen();
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideLoadingScreen();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                this.mView.HideLoadingScreen();
+                Utility.LoggingNonFatalError(unknownException);
+            }
+        }
+
+        //checking count feedback Service Disruption
+        public async void OnCheckFeedbackSDCount(string SDEventID)
+        {
+            try
+            {
+                var questionRespone = await ServiceApiImpl.Instance.ShowSDRatingPage(new GetFeedbackCountRequest(SDEventID));
+                if (questionRespone.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                {
+                    this.mView.showFeedbackSDStatus(questionRespone.Response.ShowWLTYPage);
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
     }
 }

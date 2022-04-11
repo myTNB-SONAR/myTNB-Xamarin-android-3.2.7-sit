@@ -510,7 +510,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     if (customerAccountListResponse.customerAccountData.Count == 0 || customerAccountListResponse.customerAccountData.Count > 0)
                     {
                         CustomerBillingAccount.RemoveActive();
-
                         ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
                     }
                     else
@@ -878,6 +877,15 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetailsByRequestId(request);
                 if (response.IsSuccessResponse())
                 {
+                    bool isForceCall = !UserSessions.HasUpdateSkipped(this.mSharedPref);
+                    _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, isForceCall);
+
+                    UserInfo usrinf = new UserInfo();
+                    usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
+
+                    _ = Task.Run(async () => await FeatureInfoManager.Instance.SaveFeatureInfo(CustomEligibility.Instance.GetContractAccountList(),
+                        FeatureInfoManager.QueueTopicEnum.getca, usrinf, new DeviceInfoRequest()));
+
                     Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
                     UserNotificationEntity.UpdateIsRead(response.GetData().UserNotificationDetail.Id, true);
                     this.mView.ShowDetails(response.GetData().UserNotificationDetail);
