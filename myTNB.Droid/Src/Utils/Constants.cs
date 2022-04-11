@@ -390,6 +390,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
         public const string ACCOUNT_PROFILENAME_PATTERN = "#profileName#";
         public const string ACCOUNT_ACCNO_PATTERN = "#accno#";
+        public const string ACCOUNT_ACCNO_PATTERNS = "#accnos#";
         //public const string ACCOUNT_FULLNAME_PATTERN = "#accountFullname/accountEmailAddress#";
 
         public const string APP_TUTORIAL_PATTERN = "#dropdown#";
