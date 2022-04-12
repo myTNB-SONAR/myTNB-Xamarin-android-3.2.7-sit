@@ -513,27 +513,25 @@ namespace myTNB_Android.Src.UpdateID.Activity
                     string Idtype = selectedIdentificationType.Id.ToString().Trim();
                     string ic_no = txtICNumber.Text.ToString().Trim();
 
-
-                    //this.userActionsListener.CheckRequiredFields(ic_no, Idtype);
-                    this.userActionsListener.OnCheckID(ic_no, Idtype);
-
-                    bool hasExistedID = MyTNBAccountManagement.GetInstance().IsIDUpdated();
-
-                    if (hasExistedID)
+                    ShowUpdateIdDialog(this, () =>
                     {
-                        //this.userActionsListener.OnUpdateIC(Idtype, ic_no);
-                        ShowUpdateIdDialog(this, () =>
+                        this.userActionsListener.OnCheckID(ic_no, Idtype);
+                        bool hasExistedID = MyTNBAccountManagement.GetInstance().IsIDUpdated();
+
+                        if (hasExistedID)
                         {
-                            // _ = RunUpdateID(idtype,ic_no);
                             ShowProgress();
                             this.userActionsListener.OnUpdateIC(Idtype, ic_no);
-                        });
-                    }
-                    else
-                    {
-                        ShowInvalidIdentificationError();
-                        DisableRegisterButton();
-                    }
+                           
+                        }
+                        else
+                        {
+                            ShowInvalidIdentificationError();
+                            HideProgressDialog();
+                            DisableRegisterButton();
+                        }
+                    });
+                   
                 }
             }
             catch (Exception e)
