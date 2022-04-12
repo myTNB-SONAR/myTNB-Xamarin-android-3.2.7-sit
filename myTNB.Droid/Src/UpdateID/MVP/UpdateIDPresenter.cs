@@ -216,33 +216,25 @@ namespace myTNB_Android.Src.UpdateID.MVP
 
         public async void OnCheckID(string icno, string idtype)
         {
-
             this.mView.ShowProgressDialog();
-            //this.mView.ClearAllErrorFields();
-
             try
             {
-                var task = Task.Run(async () => {
+                UserCredentialsEntity userEntity = new UserCredentialsEntity();
+                icno = icno.Replace("-", string.Empty);
+                GetRegisteredUser getICVerify = new GetRegisteredUser(idtype, icno);
+                getICVerify.SetUserName(userEntity.Email);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticateIDOnlyNew(getICVerify);
 
-                    UserCredentialsEntity userEntity = new UserCredentialsEntity();
-                    icno = icno.Replace("-", string.Empty);
-                    GetRegisteredUser getICVerify = new GetRegisteredUser(idtype, icno);
-                    getICVerify.SetUserName(userEntity.Email);
-                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticateIDOnlyNew(getICVerify);
-
-                    //if (userResponse.GetDataAll().isActive)
-                    if (userResponse.Response.Data.isActive)
-                    {
-                        MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
-                    }
-                    else
-                    {
-                        MyTNBAccountManagement.GetInstance().SetIsIDUpdated(true);
-                        //this.mView.ShowInvalidAcquiringTokenThruSMS(userResponse.Response.DisplayMessage);
-                    }
-                });
-                Task.WaitAll(task);
-
+                //if (userResponse.GetDataAll().isActive)
+                if (userResponse.Response.Data.isActive)
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+                }
+                else
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsIDUpdated(true);
+                    //this.mView.ShowInvalidAcquiringTokenThruSMS(userResponse.Response.DisplayMessage);
+                }
             }
             catch (System.OperationCanceledException e)
             {
