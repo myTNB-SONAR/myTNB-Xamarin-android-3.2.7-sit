@@ -81,9 +81,10 @@
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:id="@+id/notify_check"
-                        android:layout_height="28dp"
+                        android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
                         android:paddingStart="4dp"
                         android:checked="false"
                         android:text="Only notify me when my power is back"
