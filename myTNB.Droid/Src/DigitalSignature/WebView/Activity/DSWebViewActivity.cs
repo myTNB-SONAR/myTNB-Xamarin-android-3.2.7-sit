@@ -21,6 +21,7 @@ using Android.Views;
 using AndroidX.Core.Content;
 using Android;
 using System;
+using AndroidX.AppCompat.App;
 
 namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 {
@@ -204,30 +205,37 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 bool shouldOverride = false;
                 if (ConnectionUtils.HasInternetConnection(mActivity))
                 {
+                    var act = this.mActivity as AppCompatActivity;
+                    var actionBar = act.SupportActionBar;
+
                     Log.Debug("[DEBUG]", "MyTNBWebViewClient url: " + url.ToString());
-                    if (url.Contains("mytnbapp://action=backToApp"))
+                    if (url.ToLower().Contains(DigitalSignatureConstants.DS_ACT_BACK_TO_APP))
                     {
                         mActivity.LeaveOnClick();
                         shouldOverride = true;
                     }
-                    else if (url.Contains("mytnbapp://action=backToHome"))
+                    else if (url.ToLower().Contains(DigitalSignatureConstants.DS_ACT_BACK_TO_HOME))
                     {
                         mActivity.OnShowDashboard();
                         shouldOverride = true;
                     }
 
                     //Update for X button
-                    if (url.ToString().Contains("Ekyc/Success"))
+                    if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_SUCCESS))
                     {
                         //mActivity.ShouldBackToHome = true;
                         //mActivity.IsDBR = true;
                         //mActivity.OnTag(true);
+
+                        actionBar.Hide();
                     }
-                    else if (url.ToString().Contains("Ekyc/Error"))
+                    else if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_ERROR))
                     {
                         //mActivity.ShouldBackToHome = true;
                         //mActivity.IsDBR = true;
                         //mActivity.OnTag(true, true);
+
+                        actionBar.Hide();
                     }
                 }
                 return shouldOverride;
@@ -237,20 +245,27 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
             {
                 try
                 {
+                    var act = this.mActivity as AppCompatActivity;
+                    var actionBar = act.SupportActionBar;
+
                     base.OnPageStarted(view, url, favicon);
                     Log.Debug("[DEBUG]", "OnPageStarted url: " + url.ToString());
                     //Update for X button
-                    if (url.ToString().Contains("Ekyc/Success"))
+                    if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_SUCCESS))
                     {
                         //mActivity.ShouldBackToHome = true;
                         //mActivity.IsDBR = true;
                         //mActivity.OnTag(true);
                     }
-                    else if (url.ToString().Contains("Ekyc/Error"))
+                    else if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_ERROR))
                     {
                         //mActivity.ShouldBackToHome = true;
                         //mActivity.IsDBR = true;
                         //mActivity.OnTag(true, true);
+                    }
+                    else if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_START))
+                    {
+                        actionBar.Show();
                     }
                 }
                 catch (System.Exception e)
@@ -263,19 +278,26 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
             {
                 try
                 {
+                    var act = this.mActivity as AppCompatActivity;
+                    var actionBar = act.SupportActionBar;
+
                     Log.Debug("[DEBUG]", "OnPageFinished url: " + url.ToString());
                     //Update for X button
-                    if (url.ToString().Contains("Ekyc/Success"))
+                    if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_SUCCESS))
                     {
                         //mActivity.ShouldBackToHome = true;
                         //mActivity.IsDBR = true;
                         //mActivity.OnTag(true);
                     }
-                    else if (url.ToString().Contains("Ekyc/Error"))
+                    else if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_ERROR))
                     {
                         //mActivity.ShouldBackToHome = true;
                         //mActivity.IsDBR = true;
                         //mActivity.OnTag(true, true);
+                    }
+                    else if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_START))
+                    {
+                        actionBar.Show();
                     }
                 }
                 catch (System.Exception e)
