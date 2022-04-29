@@ -81,6 +81,8 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
                 !eKYCIdentificationModel.IdentificationNo.IsValid())
             {
                 this.view?.ShowIdNotRegisteredPopUp();
+
+                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.DS_Popup_General); 
             }
             else if (eKYCIdentificationModel.IdentityHasBeenVerified)
             {
@@ -89,6 +91,8 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             else
             {
                 this.view?.ShowPrepareDocumentPopUp(eKYCIdentificationModel.IdentificationType);
+
+                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.DS_Popup_SpecifiedID); 
             }
         }
 

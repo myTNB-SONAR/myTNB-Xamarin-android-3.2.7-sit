@@ -17,6 +17,7 @@ using myTNB_Android.Src.DigitalSignature.IdentityVerification.Fragment;
 using myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP;
 using myTNB_Android.Src.Utils;
 using Refit;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
 {
@@ -101,6 +102,8 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
             result.PutExtra(Constants.ACTION_IS_READ, true);
             SetResult(Result.Ok, result);
             base.OnBackPressed();
+
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_Back_OnApplyPage);
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -121,6 +124,8 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
 
                 SetUpViews();
                 RenderContent();
+
+                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Notifications.DS_Why_Verify);
             }
             catch (Exception e)
             {
@@ -307,6 +312,8 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
             {
                 this.SetIsClicked(true);
                 NavigateToIdentityVerification();
+
+                DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_Verify_OnApplyPage);
             }
         }
 

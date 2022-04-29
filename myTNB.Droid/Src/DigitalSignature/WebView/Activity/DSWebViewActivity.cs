@@ -128,6 +128,8 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                    .SetSecondaryCTAaction(() => LeaveOnClick())
                    .Build();
                 marketingTooltip.Show();
+
+                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.DS_Popup_LeaveSite);
             });
         }
 
@@ -135,6 +137,8 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
         {
             SetResult(Result.Canceled);
             Finish();
+
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_Leave_OnStart);
         }
 
         private void PrepareWebView()
@@ -179,9 +183,12 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 
             public override void OnPermissionRequest(PermissionRequest? request)
             {
+                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.DS_Popup_Camera_Permission);
+
                 if (ContextCompat.CheckSelfPermission(_dSWebViewActivity, Manifest.Permission.Camera) == (int)Permission.Granted)
                 {
                     request?.Grant(new String[] { PermissionRequest.ResourceVideoCapture });
+                    DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_Access_FrontCamera);
                 }
                 else
                 {
@@ -194,6 +201,7 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
         {
             private DSWebViewActivity mActivity;
             private ProgressBar progressBar;
+            private Boolean transref = false;
 
             public MyTNBWebViewClient(DSWebViewActivity mActivity)
             {
@@ -220,22 +228,17 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                         shouldOverride = true;
                     }
 
-                    //Update for X button
                     if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_SUCCESS))
                     {
-                        //mActivity.ShouldBackToHome = true;
-                        //mActivity.IsDBR = true;
-                        //mActivity.OnTag(true);
-
                         actionBar.Hide();
+
+                        DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Webview.DS_Landing_Success);
                     }
                     else if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_ERROR))
                     {
-                        //mActivity.ShouldBackToHome = true;
-                        //mActivity.IsDBR = true;
-                        //mActivity.OnTag(true, true);
-
                         actionBar.Hide();
+
+                        DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Webview.DS_Landing_Error);
                     }
                 }
                 return shouldOverride;
@@ -250,20 +253,8 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 
                     base.OnPageStarted(view, url, favicon);
                     Log.Debug("[DEBUG]", "OnPageStarted url: " + url.ToString());
-                    //Update for X button
-                    if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_SUCCESS))
-                    {
-                        //mActivity.ShouldBackToHome = true;
-                        //mActivity.IsDBR = true;
-                        //mActivity.OnTag(true);
-                    }
-                    else if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_ERROR))
-                    {
-                        //mActivity.ShouldBackToHome = true;
-                        //mActivity.IsDBR = true;
-                        //mActivity.OnTag(true, true);
-                    }
-                    else if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_START))
+                    
+                    if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_START))
                     {
                         actionBar.Show();
                     }
@@ -282,18 +273,16 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                     var actionBar = act.SupportActionBar;
 
                     Log.Debug("[DEBUG]", "OnPageFinished url: " + url.ToString());
-                    //Update for X button
-                    if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_SUCCESS))
+
+                    if (url.ToString().ToLower().Contains("transref"))
                     {
-                        //mActivity.ShouldBackToHome = true;
-                        //mActivity.IsDBR = true;
-                        //mActivity.OnTag(true);
+                        transref = true;
                     }
-                    else if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_ERROR))
+
+                    if ((url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_START)) && (transref = true))
                     {
-                        //mActivity.ShouldBackToHome = true;
-                        //mActivity.IsDBR = true;
-                        //mActivity.OnTag(true, true);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Webview.DS_TryAgain);
+                        transref = false;
                     }
                     else if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_START))
                     {

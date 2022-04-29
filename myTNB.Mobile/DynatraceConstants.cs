@@ -210,5 +210,46 @@
                 }
             }
         }
+
+        public struct DS
+        {
+            public struct Screens
+            {
+                public struct Notifications
+                {
+                    public const string DS_Upgrade_Profile = "App_Visit_HowToIdentifyIdentity";
+                    public const string DS_Why_Verify = "Push_Action_WhyVerifyIdentity";
+                }
+
+                public struct Popup
+                {
+                    public const string DS_Popup_General = "App_Action_PrepareDocument_General";
+                    public const string DS_Popup_SpecifiedID = "App_Action_PrepareDocument_SpecifiedID";
+                    public const string DS_Popup_Camera_Permission = "App_Action_CameraPermission";
+                    public const string DS_Popup_LeaveSite = "App_Action_LeaveSiteFromIdentityVerification";
+                }
+
+                public struct Webview
+                {
+                    public const string DS_Landing_Success = "App_Visit_SuccessLandingPage";
+                    public const string DS_Landing_Error = "App_Visit_ErrorLandingPage";
+                    public const string DS_TryAgain = "App_Action_TryEKYCAgain";
+                }
+            }
+
+            public struct CTAs
+            {
+                public struct Apply
+                {
+                    public const string Popup_Back_OnApplyPage = "App_Action_ApplyVerification_BackOnApplyPage";
+                    public const string Popup_Verify_OnApplyPage = "App_Action_ApplyVerification_VerifyNowOnApplyPage";
+                    public const string Popup_Back_OnHowItWorks = "App_Action_ApplyVerification_BackOnHowItWorks";
+                    public const string Popup_Verify_OnHowItWorks = "App_Action_ApplyVerification_VerifyOnHowItWorks";
+                    public const string Popup_ID_Blocker_VerifyNow = "App_Action_IDBlocker_ClickVerifyNow";
+                    public const string Popup_Access_FrontCamera = "App_Action_FrontCamera_AccessGranted";
+                    public const string Popup_Leave_OnStart = "App_Action_LeaveSiteOnStartIdentification";
+                }
+            }
+        }
     }
 }
