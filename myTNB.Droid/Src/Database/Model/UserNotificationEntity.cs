@@ -250,7 +250,24 @@ namespace myTNB_Android.Src.Database.Model
                 {
                     if (item.ODNBatchSubcategory == "ODNAsBATCH")
                     {
-                        count++;
+                        if (item.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD)
+                        {
+                            if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
+                            {
+                                count++;
+                            }
+                        }
+                        else if (item.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_EB)
+                        {
+                            if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                            {
+                                count++;
+                            }
+                        }
+                        else
+                        {
+                            count++;
+                        }
                     }
                     else
                     {
@@ -265,9 +282,49 @@ namespace myTNB_Android.Src.Database.Model
                                     count++;
                                 }
                             }
+                            else if (item.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_EB)
+                            {
+                                if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+                                {
+                                    count++;
+                                }
+                            }
                             else
                             {
                                 count++;
+                            }
+                        }
+                        else if (UserEntity.GetActive().Email.ToLower().Equals(item.Email.ToLower()) && item.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD)
+                        {
+                            if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
+                            {
+                                if (item.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
+                                {
+                                    count++;
+                                }
+                                else
+                                {
+                                    if (item != null && !string.IsNullOrEmpty(item.AccountNum))
+                                    {
+                                        List<string> CAs = item.AccountNum.Split(',').ToList();
+                                        if (CAs.Count > 1)
+                                        {
+                                            bool sameCa = false;
+                                            foreach (var noCa in CAs)
+                                            {
+                                                if (MyTNBAccountManagement.GetInstance().IsAccountNumberExist(noCa) && !sameCa)
+                                                {
+                                                    sameCa = true;
+                                                }
+                                            }
+
+                                            if (sameCa)
+                                            {
+                                                count++;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

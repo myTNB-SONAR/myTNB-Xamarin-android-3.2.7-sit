@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
+    <LinearLayout
+        android:id="@+id/outerLayout"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:minHeight="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+	        android:id="@+id/img_display_select"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+	        android:paddingRight="16dp"
+	        android:src="@drawable/img_one" />
+        <TextView
+            android:id="@+id/bodyInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="8dp"
+            android:layout_gravity="center_vertical"
+            android:text="I did not enjoy it"
+            android:textColor="@color/silverchalice"
+            android:textSize="10dp" />
+    </LinearLayout>
+</LinearLayout>

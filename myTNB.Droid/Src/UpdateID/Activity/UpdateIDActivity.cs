@@ -501,7 +501,6 @@ namespace myTNB_Android.Src.UpdateID.Activity
             }
         }
 
-
         [OnClick(Resource.Id.btnUpdate)]
         void OnRegister(object sender, EventArgs eventArgs)
         {
@@ -521,8 +520,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                         if (hasExistedID)
                         {
                             ShowProgress();
-                            this.userActionsListener.OnUpdateIC(Idtype, ic_no);
-                           
+                            this.userActionsListener.OnUpdateIC(Idtype, ic_no);                         
                         }
                         else
                         {

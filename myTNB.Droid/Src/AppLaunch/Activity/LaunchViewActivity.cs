@@ -726,6 +726,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             isAppLaunchDone = true;
             Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+            notificationDetails.PutExtra(Constants.FROM_APP_LAUNCH, true);
             StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
         }
 

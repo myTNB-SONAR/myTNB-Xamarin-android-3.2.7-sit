@@ -216,9 +216,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
 
         public async void OnCheckID(string icno, string idtype)
         {
-
             this.mView.ShowProgressDialog();
-
             try
             {
                 UserCredentialsEntity userEntity = new UserCredentialsEntity();

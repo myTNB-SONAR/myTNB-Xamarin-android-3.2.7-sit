@@ -357,6 +357,22 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetNotificationDetailsByRequestId<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //cep new api // yana
 
         [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetSubscriptionStatus")]
+        Task<T> GetUserServiceDistruptionSub<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //cep-sd new api // wan
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/ServiceDisruptionInfo")]
+        Task<T> ServiceDisruptionInfo<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //cep-sd new api // wan
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SDSubmitRateUs")]
+        Task<T> SDSubmitRateUs<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //cep-sd new api // wan
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/ShowSDRatingPage")]
+        Task<T> ShowSDRatingPage<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //cep-sd new api // wan
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/DeleteUserNotification")]
         Task<T> DeleteUserNotification<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 

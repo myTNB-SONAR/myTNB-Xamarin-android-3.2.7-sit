@@ -778,6 +778,46 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call GetUserServiceDistruptionSub with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserServicedistruptionSubResponse> GetUserServiceDistruptionSub([Body] Request.BaseRequest request)
+        {
+            return api.GetUserServiceDistruptionSub<UserServicedistruptionSubResponse>(request, CancellationTokenSourceWrapper.GetToken()); //wan //sd
+        }
+
+        /// <summary>
+        /// Call ServiceDisruptionInfo with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserServiceDistruptionSetSubResponse> ServiceDisruptionInfo([Body] Request.BaseRequest request)
+        {
+            return api.ServiceDisruptionInfo<UserServiceDistruptionSetSubResponse>(request, CancellationTokenSourceWrapper.GetToken()); //wan //sd
+        }
+
+        /// <summary>
+        /// Call SDSubmitRateUs with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SubmitRateUsResponse> SDSubmitRateUs([Body] Request.BaseRequest request)
+        {
+            return api.SDSubmitRateUs<SubmitRateUsResponse>(request, CancellationTokenSourceWrapper.GetToken()); //wan //sd
+        }
+
+        /// <summary>
+        /// Call ShowSDRatingPage with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserServiceDistruptionSetSubResponse> ShowSDRatingPage([Body] Request.BaseRequest request)
+        {
+            return api.ShowSDRatingPage<UserServiceDistruptionSetSubResponse>(request, CancellationTokenSourceWrapper.GetToken()); //wan //sd
+        }
+
+        /// <summary>
         /// Call DeleteUserNotification with default timeout
         /// </summary>
         /// <param name="request"></param>

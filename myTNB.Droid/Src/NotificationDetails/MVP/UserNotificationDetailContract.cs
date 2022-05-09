@@ -62,6 +62,18 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void GetFeedbackTwoQuestionsYes(GetRateUsQuestionResponse questionRespone);
 
             void ShowUpateApp();
+            
+            void ShareFeedback();
+
+            void ShowStopNotiUpdate();
+
+            void ShowResumeNotiUpdate();
+
+            void UpateCheckBox(bool ishaveValue);
+            
+            void showFeedbackSDStatus(bool showWLTYPage);
+            
+            void FeedbackQuestionCall();
         }
     }
 }

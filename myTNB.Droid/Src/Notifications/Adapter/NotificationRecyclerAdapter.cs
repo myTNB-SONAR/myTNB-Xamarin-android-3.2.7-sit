@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
 using myTNB_Android.Src.Database.Model;
+using System.Linq;
 
 namespace myTNB_Android.Src.Notifications.Adapter
 {
@@ -158,7 +159,15 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 }
                 else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_INPROGRESS)
                         || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_OUTAGE)
-                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION))
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_RESTORATION)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_INI)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE1)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE2)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE3)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_UPDATE4)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2)
+                        || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3))
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_sd));
                 }
@@ -178,7 +187,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 }
                 if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
                 {
-                    viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + notificationAccountName + "\"");
+                    viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_ACCNO_PATTERN, "\'" + notificationAccountName + "\'");
                 }
 
                 /*if (notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100
@@ -197,7 +206,6 @@ namespace myTNB_Android.Src.Notifications.Adapter
                     string message = Regex.Replace(notificationData.Message, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName + "/" + UserEntity.GetActive().Email);
                     message = Regex.Replace(message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
                     viewHolder.txtNotificationContent.Text = message;
-
                 }
 
                 if (notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_NEW_ACCESS_ADDED)
@@ -207,14 +215,31 @@ namespace myTNB_Android.Src.Notifications.Adapter
                     viewHolder.txtNotificationContent.Text = message;
                 }
 
-                if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_PROFILENAME_PATTERN))
+                if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_ACCNO_PATTERNS))
                 {
-                    viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
-                }
-
-                if (viewHolder.txtNotificationContent.Text.Contains(Constants.ACCOUNT_ACCNO_PATTERN))
-                {
-                    viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + notificationAccountName + "\"");
+                    if (!string.IsNullOrEmpty(notificationData.AccountNum))
+                    {
+                        List<string> CAs = notificationData.AccountNum.Split(',').ToList();
+                        if (CAs.Count > 1)
+                        {
+                            string stringFormat = "{0},";
+                            string preparedString = string.Empty;
+                            foreach (var ca in CAs)
+                            {
+                                List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+                                int caindex = accounts.FindIndex(x => x.AccNum == ca);
+                                if (caindex > -1)
+                                {
+                                    string accountNickname = accounts[caindex].AccDesc ?? string.Empty;
+                                    if (!string.IsNullOrEmpty(accountNickname))
+                                    {
+                                        preparedString = preparedString + String.Format(stringFormat, accountNickname);
+                                    }
+                                }
+                            }
+                            viewHolder.txtNotificationContent.Text = Regex.Replace(viewHolder.txtNotificationContent.Text, Constants.ACCOUNT_ACCNO_PATTERNS, "\'" + preparedString + "\'");
+                        }
+                    }
                 }
 
                 if (notificationData.ShowSelectButton)
