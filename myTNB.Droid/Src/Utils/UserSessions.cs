@@ -923,6 +923,26 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static void SetFromBRCard(ISharedPreferences prefs, bool flag)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("BRCard", flag);
+            editor.Apply();
+        }
+
+        //whitelist getter | yana
+        public static bool GetFromBRCard(ISharedPreferences preferences)
+        {
+            return preferences.GetBoolean("BRCard", false);
+        }
+
+        internal static void UpdateFromBRCard(ISharedPreferences mSharedPref)
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("BRCard");
+            editor.Apply();
+        }
+
         public static void SetSMRAccountList(List<SMRAccount> sMRAccounts)
         {
             ISharedPreferencesEditor editor = mPreferences.Edit();

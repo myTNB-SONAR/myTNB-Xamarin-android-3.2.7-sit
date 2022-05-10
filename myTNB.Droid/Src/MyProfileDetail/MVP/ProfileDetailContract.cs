@@ -69,6 +69,11 @@ namespace myTNB_Android.Src.MyProfileDetail.MVP
             /// </summary>
             /// <param name="exception"></param>
             void ShowRetryOptionsCodeUnknownException(Exception exception);
+
+            /// <summary>
+            /// Reload the page
+            /// </summary>
+            void ReloadPage();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -78,6 +83,8 @@ namespace myTNB_Android.Src.MyProfileDetail.MVP
             /// </summary>
             /// <param name="email"></param>
             void ResendEmailVerify(string apiKeyId, string email);
+
+            void GetID(); 
         }
     }
 }

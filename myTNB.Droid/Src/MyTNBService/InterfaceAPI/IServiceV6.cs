@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetCustomerAccountList<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token); //lyana
         
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v1/launch/GetAppLaunchMasterData")]
+        [Post("/v2/launch/GetAppLaunchMasterData")]
         Task<T> GetAppLaunchMasterDataAWS<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
@@ -226,8 +226,6 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Post("/v6/mytnbappws.asmx/GetSubmittedFeedbackWithContactDetails")]
         Task<T> SubmittedFeedbackContactDetails<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
-
-
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/CreateNewUserWithToken")]
         Task<T> CreateNewUserWithToken<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
@@ -419,5 +417,9 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v1/UserInfo/UpdateUserInfoDevice")]
         Task<T> UpdateUserInfoDevice<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v1/UserInfo/GetIdentificationNo")]
+        Task<T> GetIdentificationNo<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);
     }
 }
