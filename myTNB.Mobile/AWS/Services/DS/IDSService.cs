@@ -15,7 +15,7 @@ namespace myTNB.Mobile.AWS.Services.DS
            , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
            , string environment = AWSConstants.Environment);
 
-        [Get("/DigitalSignature/api/v1/EKYC/UserIdentification/{userID}")]
+        [Get("/Identity/api/v1/Identity/UserIdentification/{userID}")]
         Task<HttpResponseMessage> GetEKYCIdentification(string userID
            , CancellationToken cancellationToken
            , [Header(AWSConstants.Headers.Authorization)] string accessToken
