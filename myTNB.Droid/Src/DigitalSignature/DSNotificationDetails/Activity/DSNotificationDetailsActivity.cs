@@ -110,6 +110,8 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
         {
             try
             {
+                SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
+
                 mPresenter = new DSNotificationDetailsPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
                 base.OnCreate(savedInstanceState);
 
@@ -119,6 +121,10 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
                     if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM))
                     {
                         notificationDetails = DeSerialze<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
+                        if (notificationDetails.HeaderTitle.IsValid())
+                        {
+                            SetToolBarTitle(notificationDetails.HeaderTitle);
+                        }
                     }
                 }
 
@@ -139,7 +145,6 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
                 ? Resource.Style.Theme_DashboardLarge
                 : Resource.Style.Theme_Dashboard);
 
-            SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.TITLE));
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
 

@@ -486,8 +486,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationRecyclerAdapter = new NotificationRecyclerAdapter(this, this, true);
             notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
             notificationSwipeDelete = new NotificationSwipeDeleteCallback(this, GetDrawable(Resource.Drawable.notification_delete_active), GetDrawable(Resource.Drawable.ic_header_markread));
-			notificationSwipeDelete.SetInitialState();
-			itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
+            notificationSwipeDelete.SetInitialState();
+            itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
             itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
         }
 
@@ -658,7 +658,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
 
             mCancelledErrorSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate 
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
                 mCancelledErrorSnackBar.Dismiss();
             }
@@ -873,7 +873,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
             else
             {
-				UpdatedSelectedNotifications();
+                UpdatedSelectedNotifications();
             }
         }
 
@@ -940,7 +940,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             selectedNotification = notificationPos;
             notificationRecyclerAdapter.GetItemObject(selectedNotification).IsSelected = true;
             this.mPresenter.DeleteAllSelectedNotifications();
-		}
+        }
 
         public void ReadNotificationByPosition(int notificationPos)
         {
@@ -950,7 +950,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         }
 
         public void UpdatedSelectedNotifications()
-		{
+        {
             if (editState == EditNotificationStates.SHOW)
             {
                 int selectedCount = GetSelectedNotificationCount();
@@ -997,14 +997,14 @@ namespace myTNB_Android.Src.Notifications.Activity
         }
 
         public void ShowNotificationDetails(int itemPosition)
-		{
+        {
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
                 UserNotificationData userNotificationData = notificationRecyclerAdapter.GetAllNotifications()[itemPosition];
                 mPresenter.OnShowNotificationDetails(userNotificationData, itemPosition);
             }
-		}
+        }
 
         public void ShowEditMode()
         {
