@@ -443,7 +443,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         }
 
                     }
-
+                    UserSessions.UpdateFromBRCard(mSharedPref);
                     OnUpdateRewardUnRead();
                     break;
                 case Resource.Id.menu_bill:
@@ -531,7 +531,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             accountData.IsHaveAccess = customerBillingAccount.IsHaveAccess;
                             this.mView.ShowBillMenu(accountData, isIneligiblePopUpActive);
                         }
-                        UserSessions.UpdateFromBRCard(mSharedPref);
+                        //UserSessions.UpdateFromBRCard(mSharedPref);
                     }
                     else
                     {
@@ -544,6 +544,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 case Resource.Id.menu_promotion:
                     currentBottomNavigationMenu = Resource.Id.menu_promotion;
                     trackBottomNavigationMenu = Resource.Id.menu_promotion;
+                    UserSessions.UpdateFromBRCard(mSharedPref);
                     this.mView.ShowWhatsNewMenu();
                     this.mView.OnCheckProfileTab(false, true);
 
@@ -568,6 +569,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     OnUpdateWhatsNewUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
                     trackBottomNavigationMenu = Resource.Id.menu_reward;
+                    UserSessions.UpdateFromBRCard(mSharedPref);
                     this.mView.ShowRewardsMenu();
                     this.mView.OnCheckProfileTab(false, true);
 
@@ -588,6 +590,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     }
                     break;
                 case Resource.Id.menu_more:
+                    UserSessions.UpdateFromBRCard(mSharedPref);
                     OnLoadMoreMenu();
                     break;
             }

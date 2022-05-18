@@ -167,8 +167,9 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 AccountCategoryId = "",
                 AccountTypeId = "",
                 SmartMeterCode = accountDetails.SmartMeterCode,
-                IsSelected = isSelected
-
+                IsSelected = isSelected,
+                IsHaveAccess = accountDetails.IsHaveAccess,
+                IsApplyEBilling = accountDetails.IsApplyEBilling
             };
         }
 
@@ -212,6 +213,8 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 IsOwner = customerBilling.isOwned,
                 SmartMeterCode = customerBilling.SmartMeterCode,
                 IsSelected = isSelected,
+                IsHaveAccess = customerBilling.IsHaveAccess,
+                IsApplyEBilling = customerBilling.IsApplyEBilling,
                 //IsInManageAccessList = customerBilling.IsInManageAccessList,
                 CreatedBy = customerBilling.CreatedBy
 
