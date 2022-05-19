@@ -16,7 +16,7 @@
             AppUpdate,
             AccountStatement,
             NewBillDesign,
-            DigitalSignature,
+            EKYC,
             None
         }
     }

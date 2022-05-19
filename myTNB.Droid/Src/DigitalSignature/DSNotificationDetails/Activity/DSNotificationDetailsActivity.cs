@@ -5,7 +5,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -18,17 +17,23 @@ using myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP;
 using myTNB_Android.Src.Utils;
 using Refit;
 using myTNB.Mobile;
+using myTNB_Android.Src.CompoundView;
+using myTNB_Android.Src.NotificationDetails.Models;
+using Android.Text;
 
 namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
 {
     [Activity(Label = "DS Notification Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class DSNotificationDetailsActivity : BaseActivityCustom, DSNotificationDetailsContract.IView
     {
+        [BindView(Resource.Id.dsNotifDetailBanner)]
+        readonly ImageView dsNotifDetailBanner;
+
         [BindView(Resource.Id.dsNotifDetailTitle)]
         readonly TextView dsNotifDetailTitle;
 
-        [BindView(Resource.Id.dsNotifDetailBtnVerifyNow)]
-        readonly Button dsNotifDetailBtnVerifyNow;
+        [BindView(Resource.Id.dsNotifDetailMessage)]
+        TextView dsNotifDetailMessage;
 
         [BindView(Resource.Id.identityVerificationListContainer)]
         readonly LinearLayout identityVerificationListContainer;
@@ -44,6 +49,8 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
         private const string PAGE_ID = "DSNotificationDetails";
 
         AlertDialog removeDialog;
+
+        DigitalSignatureConstants.EKYCNotifType eKYCNotifType;
 
         public override string GetPageId()
         {
@@ -110,10 +117,13 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
         {
             try
             {
-                SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
+
+                base.OnCreate(savedInstanceState);
 
                 mPresenter = new DSNotificationDetailsPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
-                base.OnCreate(savedInstanceState);
+                mPresenter.OnInitialize();
+
+                SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
 
                 Bundle extras = Intent.Extras;
                 if (extras != null)
@@ -128,10 +138,9 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
                     }
                 }
 
-                SetUpViews();
-                RenderContent();
+                mPresenter.EvaluateDetail(notificationDetails);
 
-                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Notifications.DS_Why_Verify);
+                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Notifications.DS_Why_Verify); //need to confirm if tracking is correct
             }
             catch (Exception e)
             {
@@ -148,22 +157,107 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
 
-            if (dsNotifDetailTitle != null)
-            {
-                TextViewUtils.SetMuseoSans500Typeface(dsNotifDetailTitle);
-                TextViewUtils.SetTextSize16(dsNotifDetailTitle);
-                dsNotifDetailTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.DS_NOTIF_DETAILS, LanguageConstants.DSNotificationDetails.TITLE);
-            }
+            TextViewUtils.SetMuseoSans500Typeface(dsNotifDetailTitle);
+            TextViewUtils.SetTextSize16(dsNotifDetailTitle);
 
-            if (dsNotifDetailBtnVerifyNow != null)
+            TextViewUtils.SetMuseoSans300Typeface(dsNotifDetailMessage);
+            TextViewUtils.SetTextSize14(dsNotifDetailMessage);
+        }
+
+        public void SetUpVerifyNowView()
+        {
+            try
             {
-                TextViewUtils.SetMuseoSans500Typeface(dsNotifDetailBtnVerifyNow);
-                TextViewUtils.SetTextSize16(dsNotifDetailBtnVerifyNow);
-                dsNotifDetailBtnVerifyNow.Text = Utility.GetLocalizedLabel(LanguageConstants.DS_NOTIF_DETAILS, LanguageConstants.DSNotificationDetails.VERIFY_NOW);
+                dsNotifDetailMessage.Visibility = ViewStates.Gone;
+
+                if (dsNotifDetailTitle != null)
+                {
+                    TextViewUtils.SetMuseoSans500Typeface(dsNotifDetailTitle);
+                    TextViewUtils.SetTextSize16(dsNotifDetailTitle);
+                    dsNotifDetailTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.DS_NOTIF_DETAILS, LanguageConstants.DSNotificationDetails.TITLE);
+                }
+
+                NotificationDetailModel detailModel = mPresenter.GetNotificationDetailModel();
+
+                if (detailModel != null)
+                {
+                    dsNotifDetailBanner.SetImageResource(detailModel.imageResourceBanner);
+
+                    NotificationDetailCTAComponent ctaComponent = FindViewById<NotificationDetailCTAComponent>(Resource.Id.dsNotifDetailCTAComponent);
+                    if (ctaComponent != null)
+                    {
+                        if (detailModel.ctaList.Count > 0)
+                        {
+                            ctaComponent.Visibility = ViewStates.Visible;
+                            ctaComponent.SetCTAButton(detailModel.ctaList);
+                        }
+                        else
+                        {
+                            ctaComponent.Visibility = ViewStates.Gone;
+                        }
+                    }
+                }
+
+                RenderContent();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
-        public void RenderContent()
+        public void SetUpDynamicView()
+        {
+            NotificationDetailModel detailModel = mPresenter.GetNotificationDetailModel();
+
+            if (detailModel != null)
+            {
+                dsNotifDetailBanner.SetImageResource(detailModel.imageResourceBanner);
+
+                if (dsNotifDetailTitle != null)
+                {
+                    dsNotifDetailTitle.Text = detailModel.title;
+                }
+
+
+                if (dsNotifDetailMessage != null)
+                {
+                    dsNotifDetailMessage.Visibility = ViewStates.Visible;
+
+                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        dsNotifDetailMessage.TextFormatted = Html.FromHtml(detailModel.message, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        dsNotifDetailMessage.TextFormatted = Html.FromHtml(detailModel.message);
+                    }
+
+                    dsNotifDetailMessage = LinkRedirectionUtils
+                        .Create(this, string.Empty)
+                        .SetTextView(dsNotifDetailMessage)
+                        .SetMessage(detailModel.message)
+                        .Build()
+                        .GetProcessedTextView();
+                }
+
+                NotificationDetailCTAComponent ctaComponent = FindViewById<NotificationDetailCTAComponent>(Resource.Id.dsNotifDetailCTAComponent);
+                if (ctaComponent != null)
+                {
+                    if (detailModel.ctaList.Count > 0)
+                    {
+                        ctaComponent.Visibility = ViewStates.Visible;
+                        ctaComponent.SetCustomCTAButton(detailModel.ctaList);
+                    }
+                    else
+                    {
+                        ctaComponent.Visibility = ViewStates.Gone;
+                    }
+                }
+            }
+        }
+
+        private void RenderContent()
         {
             try
             {
@@ -310,22 +404,16 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
 
         }
 
-        [OnClick(Resource.Id.dsNotifDetailBtnVerifyNow)]
-        void VerifyOnClick(object sender, EventArgs eventArgs)
+        public void NavigateToIdentityVerification()
         {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                NavigateToIdentityVerification();
-
-                DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_Verify_OnApplyPage);
-            }
-        }
-
-        private void NavigateToIdentityVerification()
-        {
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_Verify_OnApplyPage);
             Intent nbrDiscoverMoreIntent = new Intent(this, typeof(DSIdentityVerificationActivity));
             StartActivity(nbrDiscoverMoreIntent);
+        }
+
+        public void NavigateToExternalBrowser(string url)
+        {
+            // External browser navigation goes here
         }
     }
 }

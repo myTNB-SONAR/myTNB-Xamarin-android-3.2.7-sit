@@ -362,8 +362,13 @@ namespace myTNB_Android.Src.Utils
         //Account Statement
         public const string BCRM_NOTIFICATION_ACCT_STATEMENT_READY = "20008";
 
-        //Digital Signature
-        public const string BCRM_NOTIFICATION_DIGITAL_SIGNATURE = "20010";
+        //EKYC
+        public const string BCRM_NOTIFICATION_EKYC_ID_NOT_MATCHING = "20010";
+        public const string BCRM_NOTIFICATION_EKYC_FAILED = "20011";
+        public const string BCRM_NOTIFICATION_EKYC_THREE_TIMES_FAILURE = "20012";
+        public const string BCRM_NOTIFICATION_EKYC_SUCCESSFUL = "20013";
+        public const string BCRM_NOTIFICATION_EKYC_FIRST_NOTIFICATION = "20014";
+        public const string BCRM_NOTIFICATION_EKYC_SECOND_NOTIFICATION = "20015";
 
         //App Update
         public const string BCRM_NOTIFICATION_APP_UPDATE = "20006";

@@ -10,5 +10,15 @@
         internal static readonly string DS_EKYC_ERROR = "ekyc/error";
         internal static readonly string DS_ACT_BACK_TO_APP = "mytnbapp://action=backtoapp";
         internal static readonly string DS_ACT_BACK_TO_HOME = "mytnbapp://action=backtohome";
+
+        public struct EKYCNotifType
+        {
+            public const string EKYC_VERIFY_FIRST_NOTIF = "EKYCFIRSTNOTIFICATION";
+            public const string EKYC_VERIFY_SECOND_NOTIF = "EKYCSECONDNOTIFICATION";
+            public const string EKYC_SUCCESS = "EKYCVERIFICATIONSUCCESS";
+            public const string EKYC_FAILED = "EKYCFAILED";
+            public const string EKYC_THREE_TIMES_FAILURE = "EKYCTHREETIMESFAILURE";
+            public const string EKYC_NOTIF_ID_NOT_MATCH = "EKYCIDNOTMATCHING";
+        }
     }
 }

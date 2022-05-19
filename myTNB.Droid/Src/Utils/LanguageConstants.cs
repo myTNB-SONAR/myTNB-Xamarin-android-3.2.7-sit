@@ -261,6 +261,7 @@
         {
             internal static readonly string TITLE = "title";
             internal static readonly string VERIFY_NOW = "verifyNow";
+            internal static readonly string SET_APPOINTMENT_NOW = "setAppointmentNow"; //stub
         }
     }
 }

@@ -81,7 +81,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         [BindView(Resource.Id.webViewNoti)]
         WebView webView;
-        
+
         [BindView(Resource.Id.notify_check)]
         CheckBox notify_check;
 
@@ -155,7 +155,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             if (fromPushDirectNotification)
             {
-                if (notificationDetails  != null)
+                if (notificationDetails != null)
                 {
                     if (notificationDetails.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD || notificationDetails.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_EB)
                     {
@@ -302,7 +302,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 TextViewUtils.SetTextSize12(txtCallsBottom);
                 TextViewUtils.SetTextSize14(notificationDetailMessage);
                 TextViewUtils.SetTextSize16(notificationDetailTitle);
-                
+
                 if (notificationDetails != null && notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID)
                 {
                     notificationMainLayout.SetBackgroundColor(Color.ParseColor("#ffffff"));
@@ -329,9 +329,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 {
                     SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
                 }
-                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_DIGITAL_SIGNATURE)
+                else
                 {
-                    SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DIGITAL_SIGNATURE));
+                    SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
                 }
 
                 if (pushFromDashboard)
@@ -394,7 +394,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 try
                 {
                     if (notificationDetails.SDStatusDetails.NotificationTimestamp != null)
-                    {                        
+                    {
                         if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK
                            || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2
                            || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)

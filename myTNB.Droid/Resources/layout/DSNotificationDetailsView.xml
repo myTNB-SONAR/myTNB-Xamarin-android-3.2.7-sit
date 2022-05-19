@@ -53,6 +53,19 @@
 					android:textSize="16dp"
 					android:lineSpacingExtra="3dp"
 					android:id="@+id/dsNotifDetailTitle" />
+				<TextView
+					android:id="@+id/dsNotifDetailMessage"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					tools:text="Your bill is RM 234.25. Got a minute? Make a quick and easy payment on the myTNB app now. Account: My House"
+					android:textSize="14dp"
+					android:lineHeight="20dp"
+					android:textColor="@color/tunaGrey"
+					android:textColorLink="@color/powerBlue"
+					android:layout_marginTop="24dp"
+					android:layout_marginLeft="16dp"
+					android:layout_marginBottom="16dp"
+					android:layout_marginRight="16dp" />
 				<LinearLayout
 					android:orientation="vertical"
 					android:layout_width="match_parent"
@@ -67,18 +80,17 @@
 			android:orientation="vertical"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:padding="16dp"
 			android:gravity="center|bottom"
 			android:background="@color/white"
-			android:visibility="visible"
-			android:id="@+id/dsNotifDetailButtonLayout">
-			<Button
-				android:id="@+id/dsNotifDetailBtnVerifyNow"
-				tools:text="Verify Now"
+			android:id="@+id/linearLayout1">
+			<myTNB_Android.Src.CompoundView.NotificationDetailCTAComponent
+				android:id="@+id/dsNotifDetailCTAComponent"
+				android:layout_height="wrap_content"
 				android:layout_width="match_parent"
-				android:layout_height="48dp"
-				style="@style/DarkButton"
-				android:textAllCaps="false" />
+				android:orientation="horizontal"
+				android:padding="16dp"
+				android:layout_alignParentBottom="true"
+				android:background="@color/white"/>
 		</LinearLayout>
 	</LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

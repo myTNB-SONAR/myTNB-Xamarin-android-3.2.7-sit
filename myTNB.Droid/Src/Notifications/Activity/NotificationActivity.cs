@@ -797,21 +797,30 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details, UserNotificationData notificationData, int position)
         {
-            if (details.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_DIGITAL_SIGNATURE)
+            switch (details.BCRMNotificationTypeId)
             {
-                Intent notificationDetails = new Intent(this, typeof(DSNotificationDetailsActivity));
-                notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_LIST_ITEM, JsonConvert.SerializeObject(notificationData));
-                notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
-                notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
-                StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
-            }
-            else
-            {
-                Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
-                notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_LIST_ITEM, JsonConvert.SerializeObject(notificationData));
-                notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
-                notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
-                StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+                case Constants.BCRM_NOTIFICATION_EKYC_FIRST_NOTIFICATION:
+                case Constants.BCRM_NOTIFICATION_EKYC_SECOND_NOTIFICATION:
+                case Constants.BCRM_NOTIFICATION_EKYC_ID_NOT_MATCHING:
+                case Constants.BCRM_NOTIFICATION_EKYC_FAILED:
+                case Constants.BCRM_NOTIFICATION_EKYC_THREE_TIMES_FAILURE:
+                case Constants.BCRM_NOTIFICATION_EKYC_SUCCESSFUL:
+                    {
+                        Intent notificationDetails = new Intent(this, typeof(DSNotificationDetailsActivity));
+                        notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+                        notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
+                        StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+                    }
+                    break;
+                default:
+                    {
+                        Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
+                        notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_LIST_ITEM, JsonConvert.SerializeObject(notificationData));
+                        notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+                        notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
+                        StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+                    }
+                    break;
             }
         }
 

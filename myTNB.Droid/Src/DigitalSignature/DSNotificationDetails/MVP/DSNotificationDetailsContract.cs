@@ -4,6 +4,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Base.MVP;
 using Refit;
+using myTNB_Android.Src.NotificationDetails.Models;
 
 namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP
 {
@@ -18,11 +19,6 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP
 
             void ReturnToDashboard();
             void HideLoadingScreen();
-
-            /// <summary>
-            /// Rendering the UI content
-            /// </summary>
-            void RenderContent();
 
             void ShowLoadingScreen();
 
@@ -48,6 +44,23 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP
             /// </summary>
             /// <param name="exception">the returned exception</param>
             void ShowRetryOptionsUnknownException(Exception exception);
+
+            void SetUpVerifyNowView();
+
+            void SetUpDynamicView();
+
+            void NavigateToIdentityVerification();
+
+            void NavigateToExternalBrowser(string url);
+        }
+
+        public interface IUserActionsListener : IBasePresenter
+        {
+            NotificationDetailModel GetNotificationDetailModel();
+
+            void DeleteNotificationDetail(NotificationDetails.Models.NotificationDetails notificationDetails);
+
+            void EvaluateDetail(NotificationDetails.Models.NotificationDetails notificationDetails);
         }
     }
 }

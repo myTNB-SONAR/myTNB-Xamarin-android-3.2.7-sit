@@ -31,6 +31,7 @@ using myTNB_Android.Src.ManageBillDelivery.MVP;
 using System.Linq;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity;
+using myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -277,7 +278,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 case Notification.TypeEnum.AppUpdate:
                 case Notification.TypeEnum.AccountStatement:
-                case Notification.TypeEnum.DigitalSignature:
+                case Notification.TypeEnum.EKYC:
                     UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
                     OnGetNotificationDetails(mainActivity, NotificationUtil.Instance.Type);
                     break;
@@ -312,9 +313,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (response.IsSuccessResponse())
                 {
                     Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
-                    if (typeEnum == Notification.TypeEnum.DigitalSignature)
+                    if (typeEnum == Notification.TypeEnum.EKYC)
                     {
-                        ShowDigitalSignatureNotifDetails(mainActivity, response.GetData().UserNotificationDetail);
+                        ShowEKYCNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
                     }
                     else
                     {
@@ -361,11 +362,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             mainActivity.StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
         }
 
-        internal static void ShowDigitalSignatureNotifDetails(this DashboardHomeActivity mainActivity, NotificationDetails.Models.NotificationDetails details)
+        internal static void ShowEKYCNotificationDetails(this DashboardHomeActivity mainActivity, NotificationDetails.Models.NotificationDetails details)
         {
-            Intent dsNotifDetailIntent = new Intent(mainActivity, typeof(DSIdentityVerificationActivity));
-            dsNotifDetailIntent.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
-            mainActivity.StartActivity(dsNotifDetailIntent);
+            Intent notificationDetails = new Intent(mainActivity, typeof(DSNotificationDetailsActivity));
+            notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+            mainActivity.StartActivity(notificationDetails);
         }
 
         internal static CustomerBillingAccount GetEligibleDBRAccount()

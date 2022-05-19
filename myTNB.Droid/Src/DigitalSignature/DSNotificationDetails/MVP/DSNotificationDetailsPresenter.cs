@@ -1,7 +1,6 @@
 ﻿
 using System;
 using Android.Content;
-using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using System.Collections.Generic;
@@ -11,15 +10,16 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using Refit;
-using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP
 {
-    public class DSNotificationDetailsPresenter 
+    public class DSNotificationDetailsPresenter
     {
         DSNotificationDetailsContract.IView view;
         private ISharedPreferences mSharedPref;
         SSMRTerminateImpl terminationApi;
+        public NotificationDetailModel notificationDetailModel;
+        List<NotificationDetailModel.NotificationCTA> ctaList;
 
         public DSNotificationDetailsPresenter(DSNotificationDetailsContract.IView view, ISharedPreferences mSharedPref)
         {
@@ -31,12 +31,6 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP
         public void OnInitialize()
         {
             this.view?.SetUpViews();
-            OnStart();
-        }
-
-        public void OnStart()
-        {
-            this.view.RenderContent();
         }
 
         public async void DeleteNotificationDetail(NotificationDetails.Models.NotificationDetails notificationDetails)
@@ -79,6 +73,86 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP
                 this.view.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void EvaluateDetail(NotificationDetails.Models.NotificationDetails notificationDetails)
+        {
+            try
+            {
+                NotificationDetailModel.NotificationCTA primaryCTA;
+                int imageResourceBanner = Resource.Drawable.Banner_DS_Notification_Detail;
+                string pageTitle = Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT);
+                string notificationDetailTitle = notificationDetails.Title;
+                string notificationDetailMessage = notificationDetails.Message;
+                bool isDynamicView = true;
+                ctaList = new List<NotificationDetailModel.NotificationCTA>();
+
+                if (notificationDetails.HeaderTitle.IsValid())
+                {
+                    pageTitle = notificationDetails.HeaderTitle;
+                }
+
+                switch (notificationDetails.BCRMNotificationTypeId)
+                {
+                    case Constants.BCRM_NOTIFICATION_EKYC_FIRST_NOTIFICATION:
+                    case Constants.BCRM_NOTIFICATION_EKYC_SECOND_NOTIFICATION:
+                        imageResourceBanner = Resource.Drawable.Banner_DS_Notification_Detail;
+                        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.DS_NOTIF_DETAILS, LanguageConstants.DSNotificationDetails.VERIFY_NOW),
+                                delegate () { VerifyNowOnTap(); });
+                        ctaList.Add(primaryCTA);
+                        isDynamicView = false;
+                        break;
+                    case Constants.BCRM_NOTIFICATION_EKYC_ID_NOT_MATCHING:
+                    case Constants.BCRM_NOTIFICATION_EKYC_FAILED:
+                        imageResourceBanner = Resource.Drawable.Banner_Notification_EKYC_Failed;
+                        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.DS_NOTIF_DETAILS, LanguageConstants.DSNotificationDetails.VERIFY_NOW),
+                                delegate () { VerifyNowOnTap(); });
+                        ctaList.Add(primaryCTA);
+                        break;
+                    case Constants.BCRM_NOTIFICATION_EKYC_THREE_TIMES_FAILURE:
+                        imageResourceBanner = Resource.Drawable.Banner_Notification_EKYC_Failed;
+                        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.DS_NOTIF_DETAILS, LanguageConstants.DSNotificationDetails.VERIFY_NOW),//LanguageConstants.DSNotificationDetails.SET_APPOINTMENT_NOW),
+                                delegate () { SetAppointmentNowOnTap(); });
+                        ctaList.Add(primaryCTA);
+                        break;
+                    case Constants.BCRM_NOTIFICATION_EKYC_SUCCESSFUL:
+                        imageResourceBanner = Resource.Drawable.Banner_Notification_EKYC_Success;
+                        break;
+                    default:
+                        break;
+                }
+
+                notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
+                    notificationDetailMessage, ctaList);
+
+                if (isDynamicView)
+                {
+                    view.SetUpDynamicView();
+                }
+                else
+                {
+                    view.SetUpVerifyNowView();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public NotificationDetailModel GetNotificationDetailModel()
+        {
+            return notificationDetailModel;
+        }
+
+        private void VerifyNowOnTap()
+        {
+            view.NavigateToIdentityVerification();
+        }
+
+        private void SetAppointmentNowOnTap()
+        {
+            view.NavigateToExternalBrowser("url"); //need to pass the url link
         }
     }
 }

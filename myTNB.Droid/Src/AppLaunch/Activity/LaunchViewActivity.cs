@@ -150,7 +150,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                 : string.Empty;
                             UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
                         }
-                        else if (notifType.ToUpper() == "DBROWNER")
+                        else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.DBR_Owner)
                         {
                             string accountNumber = Intent.Extras.GetString("AccountNumber");
                             UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
@@ -158,7 +158,12 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT ||
                             notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE ||
                             notifType.ToUpper() == MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.DIGITAL_SIGNATURE)
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYC_VERIFY_FIRST_NOTIFICATION ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYC_VERIFY_SECOND_NOTIFICATION ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYC_SUCCESS ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYC_FAILED ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYC_THREE_TIMES_FAILURE ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYC_ID_NOT_MATCH)
                         {
                             if (UserEntity.IsCurrentlyActive())
                             {

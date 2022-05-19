@@ -599,13 +599,6 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                         listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                     }
                                                 }
-                                                else if (userNotificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_DIGITAL_SIGNATURE)
-                                                {
-                                                    if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
-                                                    {
-                                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
-                                                    }
-                                                }
                                                 else
                                                 {
                                                     listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
@@ -648,6 +641,24 @@ namespace myTNB_Android.Src.Notifications.MVP
                                             {
                                                 listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                             }
+                                            //other notification types to only check on Email matching with the logged-in user
+                                            else if (UserEntity.GetActive().Email.ToLower().Equals(userNotificationData.Email.ToLower()))
+                                            {
+                                                //EKYC
+                                                switch (userNotificationData.BCRMNotificationTypeId)
+                                                {
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_FIRST_NOTIFICATION:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_SECOND_NOTIFICATION:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_ID_NOT_MATCHING:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_FAILED:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_THREE_TIMES_FAILURE:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_SUCCESSFUL:
+                                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                            }
                                         }
                                     }
                                     else
@@ -655,7 +666,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                         listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                     }
                                 }
-                            }                           
+                            }
                         }
                     }
                 }
