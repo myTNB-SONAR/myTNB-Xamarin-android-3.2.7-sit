@@ -5163,7 +5163,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                this.userActionsListener.OnPay();
+                DownTimeEntity pgXEntity = DownTimeEntity.GetByCode(Constants.PG_SYSTEM);
+                if (isPaymentDown)
+                {
+                    if (pgXEntity != null)
+                    {
+                        Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
+                        {
+                            this.SetIsClicked(false);
+
+                        });
+                    }
+                }
+                else
+                {
+                    this.userActionsListener.OnPay();
+                }
                 try
                 {
                     FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Payment Buttom Clicked");
@@ -6913,6 +6928,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (isPaymentDown)
                     {
                         DisablePayButton();
+                        btnPay.Enabled = true;
                     }
                     else
                     {
@@ -7080,6 +7096,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     if (isPaymentDown)
                                     {
                                         DisablePayButton();
+                                        btnPay.Enabled = true;
                                     }
                                     else
                                     {
@@ -7254,6 +7271,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     if (isPaymentDown)
                                     {
                                         DisablePayButton();
+                                        btnPay.Enabled = true;
                                     }
                                     else
                                     {

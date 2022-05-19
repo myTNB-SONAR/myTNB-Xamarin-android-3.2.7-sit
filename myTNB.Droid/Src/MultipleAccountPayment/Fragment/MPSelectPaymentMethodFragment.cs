@@ -329,7 +329,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                     if (pgCCEntity.IsDown)
                     {
-                        ShowErrorMessage(pgCCEntity.DowntimeMessage);
+                        Utility.ShowBCRMDOWNTooltip(this.Activity, pgCCEntity, () =>
+                        {
+                        });
                     }
                     else
                     {
@@ -345,7 +347,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
                     if (pgFPXEntity.IsDown)
                     {
-                        ShowErrorMessage(pgFPXEntity.DowntimeMessage);
+                        Utility.ShowBCRMDOWNTooltip(this.Activity, pgFPXEntity, () =>
+                        {
+                        });
                     }
                     else
                     {

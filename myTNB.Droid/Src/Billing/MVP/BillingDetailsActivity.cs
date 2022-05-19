@@ -147,6 +147,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
         private bool isPendingPayment = false;
         private bool isCheckPendingPaymentNeeded = false;
+        private bool isPaymentButtonEnable = false;
 
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
@@ -171,17 +172,26 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             if (!this.GetIsClicked())
             {
-                if (fromSelectAccountPage)
+                if (fromSelectAccountPage && isPaymentButtonEnable)
                 {
                     Finish();
                 }
-                else
+                else if (isPaymentButtonEnable)
                 {
                     this.SetIsClicked(true);
                     Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
                     payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
                     payment_activity.PutExtra(Constants.FROM_BILL_DETAILS_PAGE, true);
                     StartActivity(payment_activity);
+                }
+                else
+                {
+                    DownTimeEntity pgXEntity = DownTimeEntity.GetByCode(Constants.PG_SYSTEM);
+                    Utility.ShowBCRMDOWNTooltip(this, pgXEntity, () =>
+                    {
+                        this.SetIsClicked(false);
+
+                    });
                 }
 
                 try
@@ -440,8 +450,8 @@ namespace myTNB_Android.Src.Billing.MVP
 
         private void EnablePayBillButtons()
         {
-            bool isPaymentButtonEnable = Utility.IsEnablePayment();
-            btnPayBill.Enabled = isPaymentButtonEnable;
+            isPaymentButtonEnable = Utility.IsEnablePayment();
+            btnPayBill.Enabled = true;
             if (isPaymentButtonEnable)
             {
                 btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
