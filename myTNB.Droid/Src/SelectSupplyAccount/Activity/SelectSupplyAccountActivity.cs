@@ -77,7 +77,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             List<CustomerBillingAccount> custBRList = new List<CustomerBillingAccount>();
             List<string> BRCas = BillRedesignUtility.Instance.GetCAList();
             bool BRflag = UserSessions.GetFromBRCard(PreferenceManager.GetDefaultSharedPreferences(this));
-
+            int isSelected = 0;
             if (BRflag && BRCas.Count > 0)
             {
                 int countBRlistAdded = 0;
@@ -95,17 +95,30 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                             customerBillingAccount.isOwned = customerBillingAccountList[x].isOwned;
                             customerBillingAccount.AccountCategoryId = customerBillingAccountList[x].AccountCategoryId;
                             customerBillingAccount.IsHaveAccess = customerBillingAccountList[x].IsHaveAccess;
+                            customerBillingAccount.IsSelected = customerBillingAccountList[x].IsSelected;
 
                             custBRList.Add(customerBillingAccount);
                             countBRlistAdded++;
+
+                            if (customerBillingAccountList[x].IsSelected)
+                            {
+                                isSelected++;
+                            }
                         }
-
                     }
-
-                    
                 }
-                accountListAdapter.AddAll(custBRList);
-                
+                if (isSelected == 0 && custBRList != null && custBRList.Count > 0)
+                {
+                    custBRList[0].IsSelected = true;
+                }
+                if (custBRList != null && custBRList.Count > 0)
+                {
+                    accountListAdapter.AddAll(custBRList);
+                }
+                else
+                {
+                    accountListAdapter.AddAll(customerBillingAccountList);
+                }
             }
             else
             {
