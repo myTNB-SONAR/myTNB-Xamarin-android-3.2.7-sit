@@ -22,13 +22,14 @@ using AndroidX.Core.Content;
 using Android;
 using System;
 using AndroidX.AppCompat.App;
+using myTNB.Mobile.Constants.DS;
 
 namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 {
     [Activity(Label = "DS WebView", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class DSWebViewActivity : BaseActivityCustom, DSWebViewContract.IView
     {
-        private const string PAGE_ID = "DSWebView";
+        private const string PAGE_ID = DSConstants.PageName_DSWebview;
 
         private DSWebViewContract.IUserActionsListener userActionsListener;
         private Android.Webkit.WebView micrositeWebView;
@@ -65,7 +66,7 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 ? Resource.Style.Theme_DashboardLarge
                 : Resource.Style.Theme_Dashboard);
 
-            SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_WEBVIEW, LanguageConstants.DSWebView.TITLE));
+            SetToolBarTitle(GetLabelByLanguage(DSConstants.I18N_Title));
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
@@ -120,10 +121,10 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
             {
                 MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_TWO_BUTTON)
                    .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
-                   .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_WEBVIEW, LanguageConstants.DSWebView.CONFIRM_POPUP_TITLE))
-                   .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DS_WEBVIEW, LanguageConstants.DSWebView.CONFIRM_POPUP_MSG))
-                   .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_WEBVIEW, LanguageConstants.DSWebView.STAY))
-                   .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_WEBVIEW, LanguageConstants.DSWebView.LEAVE))
+                   .SetTitle(GetLabelByLanguage(DSConstants.I18N_ConfirmPopupTitle))
+                   .SetMessage(GetLabelByLanguage(DSConstants.I18N_ConfirmPopupMessage))
+                   .SetCTALabel(GetLabelByLanguage(DSConstants.I18N_Stay))
+                   .SetSecondaryCTALabel(GetLabelByLanguage(DSConstants.I18N_Leave))
                    .SetCTAaction(() => { })
                    .SetSecondaryCTAaction(() => LeaveOnClick())
                    .Build();

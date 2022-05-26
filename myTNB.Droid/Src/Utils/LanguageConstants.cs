@@ -18,10 +18,7 @@
         internal static readonly string DBR_WEBVIEW = "DBRWebview";
         internal static readonly string USAGE = "Usage";
         internal static readonly string MANAGE_DIGITAL_BILL = "ManageDigitalBillLanding";
-        internal static readonly string DS_LANDING = "DSLanding";
-        internal static readonly string DS_WEBVIEW = "DSWebview";
         internal static readonly string MY_PROFILE = "Tnb_Profile";
-        internal static readonly string DS_NOTIF_DETAILS = "DSNotificationDetails";
 
         internal struct Common
         {
@@ -182,6 +179,9 @@
             internal static readonly string NOTIF_TITLE_ENERGY_BUDGET = "EnergyBudgetTitle";
             internal static readonly string NOTIF_TITLE_SRVC_DISTRUPTION = "serviceDistruption";
             internal static readonly string NOTIF_TITLE_DIGITAL_SIGNATURE = "digitalSignature";
+            internal static readonly string VERIFY_NOW = "verifyNow";
+            internal static readonly string SET_APPOINTMENT_NOW = "setAppointmentNow";
+            internal static readonly string SET_APPOINTMENT_URL = "setAppointmentURL";
         }
 
         internal struct DBRWebview
@@ -217,51 +217,9 @@
             internal static readonly string DBR_INFO_DESC_3 = "dbrInfoDescription3";
         }
 
-        internal struct DSLanding
-        {
-            internal static readonly string TITLE = "title";
-            internal static readonly string CONTINUE = "continue";
-            internal static readonly string SUB_HEADER = "subHeader";
-            internal static readonly string ITEM_LIST_TITLE_1 = "howItWorksTitle1";
-            internal static readonly string ITEM_LIST_TITLE_2 = "howItWorksTitle2";
-            internal static readonly string ITEM_LIST_TITLE_3 = "howItWorksTitle3";
-            internal static readonly string ITEM_LIST_DESC_1 = "howItWorksDescription1";
-            internal static readonly string ITEM_LIST_DESC_2 = "howItWorksDescription2";
-            internal static readonly string ITEM_LIST_DESC_3 = "howItWorksDescription3";
-            internal static readonly string POP_UP_NO_REG_ID_TITLE = "noRegisteredIDTitle";
-            internal static readonly string POP_UP_NO_REG_ID_MSG = "noRegisteredIDMessage";
-            internal static readonly string POP_UP_CANCEL = "cancel";
-            internal static readonly string POP_UP_VERIFY_NOW = "verifyNow";
-            internal static readonly string POP_UP_VERIFY_PROCESSING_TITLE = "idProcessingTitle";
-            internal static readonly string POP_UP_VERIFY_PROCESSING_MSG = "idProcessingMessage";
-            internal static readonly string POP_UP_IDENTITY_VERIFIED_TITLE = "idVerifiedTitle";
-            internal static readonly string POP_UP_IDENTITY_VERIFIED_MSG = "idVerifiedMessage";
-            internal static readonly string BACK_TO_HOME = "backToHome";
-            internal static readonly string POP_UP_ACCEPTED_ID_TITLE = "acceptedIDTitle";
-            internal static readonly string POP_UP_ACCEPTED_ID_MSG = "acceptedIDMessage";
-            internal static readonly string POP_UP_DROPDOWN_TITLE = "cantUseOtherIDTitle";
-            internal static readonly string POP_UP_DROPDOWN_MSG = "cantUseOtherIDMessage";
-        }
-
-        internal struct DSWebView
-        {
-            internal static readonly string TITLE = "title";
-            internal static readonly string CONFIRM_POPUP_TITLE = "confirmPopupTitle";
-            internal static readonly string CONFIRM_POPUP_MSG = "confirmPopupMessage";
-            internal static readonly string LEAVE = "leave";
-            internal static readonly string STAY = "stay";
-        }
-
         internal struct MYProfile
         {
             internal static readonly string VERIFIED_ACCT_MSG = "verifiedAccountMessage";
-        }
-
-        internal struct DSNotificationDetails
-        {
-            internal static readonly string TITLE = "title";
-            internal static readonly string VERIFY_NOW = "verifyNow";
-            internal static readonly string SET_APPOINTMENT_NOW = "setAppointmentNow"; //stub
         }
     }
 }

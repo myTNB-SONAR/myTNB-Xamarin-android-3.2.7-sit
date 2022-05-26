@@ -9,6 +9,7 @@ using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
 using Android.Text.Style;
 using System.Text.RegularExpressions;
+using myTNB.Mobile.Constants.DS;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -999,7 +1000,7 @@ namespace myTNB_Android.Src.Utils
                 tooltipPrimaryCTA.Text = this.ctaLabel;
                 tooltipSecondaryCTA.Text = this.secondaryCTALabel;
 
-                string dropdownTitleBase = Regex.Replace(this.dropdownTitle, Constants.APP_TUTORIAL_PATTERN, string.Empty);
+                string dropdownTitleBase = Regex.Replace(this.dropdownTitle, DSConstants.DropDown, string.Empty);
 
                 try
                 {

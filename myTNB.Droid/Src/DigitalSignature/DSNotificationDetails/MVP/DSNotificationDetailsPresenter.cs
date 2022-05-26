@@ -97,7 +97,7 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_EKYC_FIRST_NOTIFICATION:
                     case Constants.BCRM_NOTIFICATION_EKYC_SECOND_NOTIFICATION:
                         imageResourceBanner = Resource.Drawable.Banner_DS_Notification_Detail;
-                        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.DS_NOTIF_DETAILS, LanguageConstants.DSNotificationDetails.VERIFY_NOW),
+                        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.VERIFY_NOW),
                                 delegate () { VerifyNowOnTap(); });
                         ctaList.Add(primaryCTA);
                         isDynamicView = false;
@@ -105,13 +105,13 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_EKYC_ID_NOT_MATCHING:
                     case Constants.BCRM_NOTIFICATION_EKYC_FAILED:
                         imageResourceBanner = Resource.Drawable.Banner_Notification_EKYC_Failed;
-                        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.DS_NOTIF_DETAILS, LanguageConstants.DSNotificationDetails.VERIFY_NOW),
+                        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.VERIFY_NOW),
                                 delegate () { VerifyNowOnTap(); });
                         ctaList.Add(primaryCTA);
                         break;
                     case Constants.BCRM_NOTIFICATION_EKYC_THREE_TIMES_FAILURE:
                         imageResourceBanner = Resource.Drawable.Banner_Notification_EKYC_Failed;
-                        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.DS_NOTIF_DETAILS, LanguageConstants.DSNotificationDetails.VERIFY_NOW),//LanguageConstants.DSNotificationDetails.SET_APPOINTMENT_NOW),
+                        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.SET_APPOINTMENT_NOW),
                                 delegate () { SetAppointmentNowOnTap(); });
                         ctaList.Add(primaryCTA);
                         break;
@@ -152,7 +152,13 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP
 
         private void SetAppointmentNowOnTap()
         {
-            view.NavigateToExternalBrowser("url"); //need to pass the url link
+            var appointmentURL = DigitalSignatureConstants.EKYC_SET_APPOINTMENT_URL;
+            var url = Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.SET_APPOINTMENT_URL);
+            if (url.IsValid())
+            {
+                appointmentURL = url;
+            }
+            view.NavigateToExternalBrowser(appointmentURL);
         }
     }
 }

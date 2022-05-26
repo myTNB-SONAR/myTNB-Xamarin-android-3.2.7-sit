@@ -24,6 +24,7 @@
             QR,
             GetBill,
             ManageBillDelivery,
+            EKYCVerify,
             None
         }
     }

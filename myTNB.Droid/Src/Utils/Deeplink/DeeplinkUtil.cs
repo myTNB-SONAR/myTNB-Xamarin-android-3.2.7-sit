@@ -103,6 +103,10 @@ namespace myTNB_Android.Src.Utils.Deeplink
                     {
                         TargetScreen = Screen.ManageBillDelivery;
                     }
+                    else if (deepLinkUrlString.Contains(Screen.EKYCVerify.ToString().ToLower()))
+                    {
+                        TargetScreen = Screen.EKYCVerify;
+                    }
                 }
             }
         }

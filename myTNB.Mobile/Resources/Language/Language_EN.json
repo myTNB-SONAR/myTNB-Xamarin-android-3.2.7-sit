@@ -684,7 +684,26 @@
     "toastResumeNotiUpdate": "You have resumed the notification updates for this particular service disruption!",
     "notifyCheck": "Only notify me when my power is back",
     "callUs": "Need help? <a href='tel: 15454'>Call us</a> for more information",
-    "shareFeedback": "Share Feedback"
+    "shareFeedback": "Share Feedback",
+    "verifyNow": "Verify Now",
+    "setAppointmentNow": "Set Appointment Now",
+    "setAppointmentURL": "https://www.mytnb.com.my/tnbtemujanji"
+  },
+  "PushNotificationDetails_selector": {
+    "dsDescriptionList": [
+      {
+        "value": "Submit applications on myTNB Portal.",
+        "description": "Conveniently apply for change name on bill, open and close account, tariff change and many more with ease."
+      },
+      {
+        "value": "Safeguard your identity & account.",
+        "description": "Verifying your identity will ensure minimum risk of fraudulent applications on your myTNB account."
+      },
+      {
+        "value": "Unlock more features to come.",
+        "description": "As we’re offering you more services to be done online, we want to make sure a smooth experience for you with a one-time identity verification."
+      }
+    ]
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -3260,10 +3279,14 @@
     "verifyNow": "Verify Now",
     "noRegisteredIDTitle": "Have your identification ready!",
     "noRegisteredIDMessage": "Accepted forms of identification:<br>&emsp;• Passport<br>&emsp;• Identity Card (applicable for myKad and Army ID)",
-    "acceptedIDTitle": "Have your identification ready!",
-    "acceptedIDMessage": "Before you begin, get your <b>{0}</b> ready.",
-    "cantUseOtherIDTitle": "Why can’t I use other forms of identification? #dropdown#",
-    "cantUseOtherIDMessage": "You previously registered with your <b>{0}</b> in your myTNB account. Every myTNB account can only have one registered identification.",
+    "acceptedIDTitle_IC": "Have your identification ready!",
+    "acceptedIDMessage_IC": "Before you begin, get your <b>{0}</b> ready.",
+    "cantUseOtherIDTitle_IC": "Why can’t I use other forms of identification? #dropdown#",
+    "cantUseOtherIDMessage_IC": "You previously registered with your <b>{0}</b> in your myTNB account.<br>Every myTNB account can only have one registered identification.",
+    "acceptedIDTitle_Passport": "Have your identification ready!",
+    "acceptedIDMessage_Passport": "Before you begin, get your <b>{0}</b> ready.<br>The passport number you registered with ends with ******{1}.",
+    "cantUseOtherIDTitle_Passport": "Why can’t I use other forms of identification? #dropdown#",
+    "cantUseOtherIDMessage_Passport": "You previously registered with your <b>{0}</b> in your myTNB account.<br>Every myTNB account can only have one registered identification. If you would like to update your details, please contact TNB CareLine at 1300-88-5454.",
     "idProcessingTitle": "We are processing your verification.",
     "idProcessingMessage": "Your identity verification has been submitted. We’ll notify you once we’re done with your verification.",
     "idVerifiedTitle": "Your identity has been verified.",
@@ -3291,27 +3314,11 @@
     "confirmPopupTitle": "Are you sure you want to leave this page?",
     "confirmPopupMessage": "Leaving this page will cancel your progress so far and you would need to restart the verfication process.",
     "leave": "Leave",
-    "stay": "Stay"
-  },
-  "DSNotificationDetails": {
-    "title": "Verify your identity now to enjoy more of myTNB!",
-    "verifyNow": "Verify Now"
-  },
-  "PushNotificationDetails_selector": {
-    "dsDescriptionList": [
-      {
-        "value": "Submit applications on myTNB Portal.",
-        "description": "Conveniently apply for change name on bill, open and close account, tariff change and many more with ease."
-      },
-      {
-        "value": "Safeguard your identity & account.",
-        "description": "Verifying your identity will ensure minimum risk of fraudulent applications on your myTNB account."
-      },
-      {
-        "value": "Unlock more features to come.",
-        "description": "As we’re offering you more services to be done online, we want to make sure a smooth experience for you with a one-time identity verification."
-      }
-    ]
+    "stay": "Stay",
+    "iOSconfirmPopupTitle": "Are you sure you want to leave this page?",
+    "iOSconfirmPopupMessage": "Leaving this page will cancel your progress so far and you would need to restart the verfication process.",
+    "iOSleave": "Leave",
+    "iOSstay": "Stay"
   },
   "FeedBackSD": {
     "title": "Send Us Your Feedback",

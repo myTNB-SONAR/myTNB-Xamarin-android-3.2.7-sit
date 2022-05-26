@@ -9,6 +9,7 @@ using Android.Widget;
 using CheeseBind;
 using myTNB;
 using myTNB.Mobile;
+using myTNB.Mobile.Constants.DS;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.Fragment;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP;
@@ -30,7 +31,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         [BindView(Resource.Id.identityVerificationListContainer)]
         readonly LinearLayout identityVerificationListContainer;
 
-        private const string PAGE_ID = "DSIdentityVerification";
+        private const string PAGE_ID = DSConstants.PageName_DSLanding;
         private const int _totalItem = 3;
 
         private DSIdentityVerificationContract.IUserActionsListener userActionsListener;
@@ -71,7 +72,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                 ? Resource.Style.Theme_DashboardLarge
                 : Resource.Style.Theme_Dashboard);
 
-            SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.TITLE));
+            SetToolBarTitle(GetLabelByLanguage(DSConstants.I18N_Title));
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
 
@@ -79,14 +80,14 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             {
                 TextViewUtils.SetMuseoSans500Typeface(identityVerificationTitle);
                 TextViewUtils.SetTextSize16(identityVerificationTitle);
-                identityVerificationTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.SUB_HEADER);
+                identityVerificationTitle.Text = GetLabelByLanguage(DSConstants.I18N_SubHeader);
             }
 
             if (identityVerificationBtnContinue != null)
             {
                 TextViewUtils.SetMuseoSans500Typeface(identityVerificationBtnContinue);
                 TextViewUtils.SetTextSize16(identityVerificationBtnContinue);
-                identityVerificationBtnContinue.Text = Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.CONTINUE);
+                identityVerificationBtnContinue.Text = GetLabelByLanguage(DSConstants.I18N_Continue);
             }
         }
 
@@ -133,32 +134,18 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                     {
                         ctr++;
                         string title, desc;
-                        int resIcon;
                         DSIdentityVerificationListItemComponent itemListComponent = new DSIdentityVerificationListItemComponent(this);
-                        switch (ctr)
-                        {
-                            case 1:
-                                title = Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.ITEM_LIST_TITLE_1);
-                                desc = Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.ITEM_LIST_DESC_1);
-                                resIcon = Resource.Drawable.Icon_Identity_Verification_1;
-                                break;
-                            case 2:
-                                title = Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.ITEM_LIST_TITLE_2);
-                                desc = Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.ITEM_LIST_DESC_2);
-                                resIcon = Resource.Drawable.Icon_Identity_Verification_2;
-                                break;
-                            case 3:
-                                title = Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.ITEM_LIST_TITLE_3);
-                                desc = Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.ITEM_LIST_DESC_3);
-                                resIcon = Resource.Drawable.Icon_Identity_Verification_3;
-                                break;
-                            default:
-                                title = string.Empty;
-                                desc = string.Empty;
-                                resIcon = Resource.Drawable.Icon_Identity_Verification_1;
-                                break;
-                        }
 
+                        title = GetLabelByLanguage(string.Format(DSConstants.I18N_HowItWorksTitle, ctr));
+                        desc = GetLabelByLanguage(string.Format(DSConstants.I18N_HowItWorksDescription, ctr));
+
+                        var resIcon = ctr switch
+                        {
+                            1 => Resource.Drawable.Icon_Identity_Verification_1,
+                            2 => Resource.Drawable.Icon_Identity_Verification_2,
+                            3 => Resource.Drawable.Icon_Identity_Verification_3,
+                            _ => Resource.Drawable.Icon_Identity_Verification_1,
+                        };
                         itemListComponent.SetItemTitleText(title);
                         itemListComponent.SetItemDescText(desc);
                         itemListComponent.SetItemIcon(resIcon);
@@ -205,9 +192,9 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 
                 MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_ONE_BUTTON)
                    .SetHeaderImage(Resource.Drawable.Icon_DS_Verify_Processing_Pop_Up)
-                   .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_VERIFY_PROCESSING_TITLE))
-                   .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_VERIFY_PROCESSING_MSG))
-                   .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.BACK_TO_HOME))
+                   .SetTitle(GetLabelByLanguage(DSConstants.I18N_IDProcessingTitle))
+                   .SetMessage(GetLabelByLanguage(DSConstants.I18N_IDProcessingMessage))
+                   .SetCTALabel(GetLabelByLanguage(DSConstants.I18N_BackToHome))
                    .SetCTAaction(() =>
                    {
                        SetResult(Result.Canceled);
@@ -226,10 +213,10 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 
                 MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_TWO_BUTTON)
                    .SetHeaderImage(Resource.Drawable.Icon_DS_Verify_Pop_Up)
-                   .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_NO_REG_ID_TITLE))
-                   .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_NO_REG_ID_MSG))
-                   .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_CANCEL))
-                   .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_VERIFY_NOW))
+                   .SetTitle(GetLabelByLanguage(DSConstants.I18N_NoRegisteredIDTitle))
+                   .SetMessage(GetLabelByLanguage(DSConstants.I18N_NoRegisteredIDMessage))
+                   .SetCTALabel(GetLabelByLanguage(DSConstants.I18N_Cancel))
+                   .SetSecondaryCTALabel(GetLabelByLanguage(DSConstants.I18N_VerifyNow))
                    .SetCTAaction(() => { })
                    .SetSecondaryCTAaction(() => OnVerifyNow())
                    .Build();
@@ -245,9 +232,9 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 
                 MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_ONE_BUTTON)
                    .SetHeaderImage(Resource.Drawable.Icon_Profile_Verified)
-                   .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_IDENTITY_VERIFIED_TITLE))
-                   .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_IDENTITY_VERIFIED_MSG))
-                   .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.BACK_TO_HOME))
+                   .SetTitle(GetLabelByLanguage(DSConstants.I18N_IDVerifiedTitle))
+                   .SetMessage(GetLabelByLanguage(DSConstants.I18N_IDVerifiedMessage))
+                   .SetCTALabel(GetLabelByLanguage(DSConstants.I18N_BackToHome))
                    .SetCTAaction(() =>
                    {
                        SetResult(Result.Canceled);
@@ -263,7 +250,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             RunOnUiThread(() =>
             {
                 HideProgressDialog();
-
+                
                 if (idType == null)
                 {
                     return;
@@ -280,17 +267,43 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                         if (idTypeList.Count > 0)
                         {
                             idTypeString = idTypeList.Find(x => { return x.key == idType.ToString(); }).description;
-                            var dialogMessage = string.Format(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_ACCEPTED_ID_MSG), idTypeString);
-                            var dropdownMessage = string.Format(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_DROPDOWN_MSG), idTypeString);
+
+                            var dialogTitle = string.Empty;
+                            var dialogMessage = string.Empty;
+                            var dropdownTitle = string.Empty;
+                            var dropdownMessage = string.Empty;
+
+                            if (idTypeString.ToLower() == DSConstants.Passport.ToLower())
+                            {
+                                string lastFourDigits = string.Empty;
+                                var passportNumber = this.userActionsListener.GetIdentificationModel().IdentificationNo;
+
+                                if (passportNumber.IsValid())
+                                {
+                                    lastFourDigits = passportNumber[^4..];
+                                }
+
+                                dialogTitle = GetLabelByLanguage(DSConstants.I18N_AcceptedIDTitle_Passport);
+                                dialogMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_AcceptedIDMessage_Passport), idTypeString, lastFourDigits);
+                                dropdownTitle = GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDTitle_Passport);
+                                dropdownMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDMessage_Passport), idTypeString);
+                            }
+                            else
+                            {
+                                dialogTitle = GetLabelByLanguage(DSConstants.I18N_AcceptedIDTitle_IC);
+                                dialogMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_AcceptedIDMessage_IC), idTypeString);
+                                dropdownTitle = GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDTitle_IC);
+                                dropdownMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDMessage_IC), idTypeString);
+                            }
 
                             MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_DROPDOWN_TWO_BUTTON)
                                .SetHeaderImage(Resource.Drawable.Icon_DS_Verify_Pop_Up)
-                               .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_ACCEPTED_ID_TITLE))
+                               .SetTitle(dialogTitle)
                                .SetMessage(dialogMessage)
-                               .SetDropdownTitle(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_DROPDOWN_TITLE))
+                               .SetDropdownTitle(dropdownTitle)
                                .SetDropdownMessage(dropdownMessage)
-                               .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_CANCEL))
-                               .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DS_LANDING, LanguageConstants.DSLanding.POP_UP_VERIFY_NOW))
+                               .SetCTALabel(GetLabelByLanguage(DSConstants.I18N_Cancel))
+                               .SetSecondaryCTALabel(GetLabelByLanguage(DSConstants.I18N_VerifyNow))
                                .SetCTAaction(() => { })
                                .SetSecondaryCTAaction(() => OnVerifyNow())
                                .Build();

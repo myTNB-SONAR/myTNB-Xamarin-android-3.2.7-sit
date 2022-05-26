@@ -20,6 +20,7 @@ using myTNB.Mobile;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.NotificationDetails.Models;
 using Android.Text;
+using myTNB.Mobile.Constants.DS;
 
 namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
 {
@@ -117,7 +118,6 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
         {
             try
             {
-
                 base.OnCreate(savedInstanceState);
 
                 mPresenter = new DSNotificationDetailsPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
@@ -170,19 +170,19 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
             {
                 dsNotifDetailMessage.Visibility = ViewStates.Gone;
 
-                if (dsNotifDetailTitle != null)
-                {
-                    TextViewUtils.SetMuseoSans500Typeface(dsNotifDetailTitle);
-                    TextViewUtils.SetTextSize16(dsNotifDetailTitle);
-                    dsNotifDetailTitle.Text = Utility.GetLocalizedLabel(LanguageConstants.DS_NOTIF_DETAILS, LanguageConstants.DSNotificationDetails.TITLE);
-                }
-
                 NotificationDetailModel detailModel = mPresenter.GetNotificationDetailModel();
 
                 if (detailModel != null)
                 {
-                    dsNotifDetailBanner.SetImageResource(detailModel.imageResourceBanner);
+                    if (dsNotifDetailTitle != null)
+                    {
+                        TextViewUtils.SetMuseoSans500Typeface(dsNotifDetailTitle);
+                        TextViewUtils.SetTextSize16(dsNotifDetailTitle);
+                        dsNotifDetailTitle.Text = detailModel.title;
+                    }
 
+                    dsNotifDetailBanner.SetImageResource(detailModel.imageResourceBanner);
+                    
                     NotificationDetailCTAComponent ctaComponent = FindViewById<NotificationDetailCTAComponent>(Resource.Id.dsNotifDetailCTAComponent);
                     if (ctaComponent != null)
                     {
@@ -413,7 +413,9 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
 
         public void NavigateToExternalBrowser(string url)
         {
-            // External browser navigation goes here
+            Intent intent = new Intent(Intent.ActionView);
+            intent.SetData(Android.Net.Uri.Parse(url));
+            StartActivity(intent);
         }
     }
 }

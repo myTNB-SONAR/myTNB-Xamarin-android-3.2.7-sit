@@ -62,6 +62,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 case Deeplink.ScreenEnum.ManageBillDelivery:
                     DeeplinkManageBillDeliveryValidation(mainActivity);
                     break;
+                case Deeplink.ScreenEnum.EKYCVerify:
+                    ShowEKYCVerifyIdentity(mainActivity);
+                    break;
                 default:
                     break;
             }
@@ -367,6 +370,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             Intent notificationDetails = new Intent(mainActivity, typeof(DSNotificationDetailsActivity));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
             mainActivity.StartActivity(notificationDetails);
+        }
+
+        internal static void ShowEKYCVerifyIdentity(this DashboardHomeActivity mainActivity)
+        {
+            Intent ekycVerificationIntent = new Intent(mainActivity, typeof(DSIdentityVerificationActivity));
+            mainActivity.StartActivity(ekycVerificationIntent);
         }
 
         internal static CustomerBillingAccount GetEligibleDBRAccount()
