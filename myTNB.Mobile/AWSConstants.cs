@@ -35,14 +35,26 @@
         public struct Domains
         {
 #if DEBUG
-            internal const string Domain = "https://devapi.mytnb.com.my";
-            internal const string GenerateAccessToken = "https://devapi.mytnb.com.my/Identity/api/v1";
-            internal const string GetEligibility = "https://devapi.mytnb.com.my/Eligibility/api/v1";
-            internal const string GetBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
-            internal const string GetMultiBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
-            internal const string StartDigitalBill = "https://devdbr.mytnb.com.my/DigitalBill/Start";
-            internal const string OptInToPaperBill = "https://devdbr.mytnb.com.my/PaperBill/OptIn";
-            public const string DBRSSO = "https://devdbr.mytnb.com.my/Sso?s={0}";
+            //internal const string Domain = "https://devapi.mytnb.com.my";
+            //internal const string GenerateAccessToken = "https://devapi.mytnb.com.my/Identity/api/v1";
+            //internal const string GetEligibility = "https://devapi.mytnb.com.my/Eligibility/api/v1";
+            //internal const string GetBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
+            //internal const string GetMultiBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
+            //internal const string StartDigitalBill = "https://devdbr.mytnb.com.my/DigitalBill/Start";
+            //internal const string OptInToPaperBill = "https://devdbr.mytnb.com.my/PaperBill/OptIn";
+            //internal const string DSRedirect = "https://stagingds.mytnb.com.my/EKYC/StartEKYC";
+            //public const string DBRSSO = "https://devdbr.mytnb.com.my/Sso?s={0}";
+            //public const string DSSSO = "https://stagingds.mytnb.com.my/Sso?s={0}";
+            internal const string Domain = "https://stagingapi.mytnb.com.my";
+            internal const string GenerateAccessToken = "https://stagingapi.mytnb.com.my/Identity/api/v1";
+            internal const string GetEligibility = "https://stagingapi.mytnb.com.my/Eligibility/api/v1";
+            internal const string GetBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetMultiBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
+            internal const string StartDigitalBill = "https://stagingdbr.mytnb.com.my/DigitalBill/Start";
+            internal const string OptInToPaperBill = "https://stagingdbr.mytnb.com.my/PaperBill/OptIn";
+            internal const string DSRedirect = "https://stagingds.mytnb.com.my/EKYC/StartEKYC";
+            public const string DBRSSO = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
+            public const string DSSSO = "https://stagingds.mytnb.com.my/Sso?s={0}";
 #elif MASTER || SIT || DEBUG
             internal const string Domain = "https://stagingapi.mytnb.com.my";
             internal const string GenerateAccessToken = "https://stagingapi.mytnb.com.my/Identity/api/v1";
@@ -69,10 +81,14 @@
         }
 
 #if DEBUG
-        internal const string Environment = Environment_DEV;
-        internal const string XAPIKey = XAPIKey_DEV;
-        public const string SaltKey = SaltKey_DEV;
-        public const string PassPhrase = Passphrase_DEV;
+        //internal const string Environment = Environment_DEV;
+        //internal const string XAPIKey = XAPIKey_DEV;
+        //public const string SaltKey = SaltKey_DEV;
+        //public const string PassPhrase = Passphrase_DEV;
+        internal const string Environment = Environment_SIT;
+        internal const string XAPIKey = XAPIKey_SIT;
+        public const string SaltKey = SaltKey_SIT;
+        public const string PassPhrase = Passphrase_SIT;
 #elif MASTER || SIT || DEBUG
         internal const string Environment = Environment_SIT;
         internal const string XAPIKey = XAPIKey_SIT;
