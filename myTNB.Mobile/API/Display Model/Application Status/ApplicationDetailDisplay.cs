@@ -968,7 +968,9 @@ namespace myTNB.Mobile
         PayOffline,
         Reschedule,
         Save,
-        RescheduleDisabled
+        RescheduleDisabled,
+        VerifyNow,
+        SignApplication
     }
 
     public enum DetailTutorialType

@@ -8,7 +8,7 @@ using static myTNB.Mobile.EligibilitySessionCache;
 
 namespace myTNB.Mobile
 {
-    public class BillRedesignUtility
+    public sealed class BillRedesignUtility
     {
         private static readonly Lazy<BillRedesignUtility> lazy =
            new Lazy<BillRedesignUtility>(() => new BillRedesignUtility());
