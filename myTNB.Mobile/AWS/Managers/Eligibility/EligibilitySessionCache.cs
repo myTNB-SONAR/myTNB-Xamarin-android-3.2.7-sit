@@ -24,7 +24,8 @@ namespace myTNB.Mobile
             DBR,
             EB,
             BR,
-            SD
+            SD,
+            DS
             //Add Other Features
         }
 

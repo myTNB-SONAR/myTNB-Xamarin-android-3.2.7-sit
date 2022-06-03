@@ -47,12 +47,12 @@ namespace myTNB_Android.Src.Utils.Notification
                     case MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN:
                         Type = Type.NewBillDesign;
                         break;
-                    case MobileConstants.PushNotificationTypes.EKYC_VERIFY_FIRST_NOTIFICATION:
-                    case MobileConstants.PushNotificationTypes.EKYC_VERIFY_SECOND_NOTIFICATION:
-                    case MobileConstants.PushNotificationTypes.EKYC_SUCCESS:
-                    case MobileConstants.PushNotificationTypes.EKYC_FAILED:
-                    case MobileConstants.PushNotificationTypes.EKYC_THREE_TIMES_FAILURE:
-                    case MobileConstants.PushNotificationTypes.EKYC_ID_NOT_MATCH:
+                    case MobileConstants.PushNotificationTypes.EKYCFirstNotification:
+                    case MobileConstants.PushNotificationTypes.EKYCSecondNotification:
+                    case MobileConstants.PushNotificationTypes.EKYCSuccessful:
+                    case MobileConstants.PushNotificationTypes.EKYCFailed:
+                    case MobileConstants.PushNotificationTypes.EKYCThreeTimesFailure:
+                    case MobileConstants.PushNotificationTypes.EKYCIDNotMatching:
                         Type = Type.EKYC;
                         break;
                     default:

@@ -158,12 +158,12 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT ||
                             notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE ||
                             notifType.ToUpper() == MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYC_VERIFY_FIRST_NOTIFICATION ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYC_VERIFY_SECOND_NOTIFICATION ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYC_SUCCESS ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYC_FAILED ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYC_THREE_TIMES_FAILURE ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYC_ID_NOT_MATCH)
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCFirstNotification ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCSecondNotification ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCSuccessful ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCFailed ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThreeTimesFailure ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCIDNotMatching)
                         {
                             if (UserEntity.IsCurrentlyActive())
                             {

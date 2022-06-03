@@ -14,9 +14,6 @@ namespace myTNB.Mobile
         public string OriginUrl { get; set; }
         public string RedirectUrl { get; set; }
         public string CaNo { get; set; }
-        public string TransactionType { get; set; }
-        public DateTime InitiateTime { get; set; }
-        public Guid? QRMappingID { get; set; }
     }
 
     public class DSModel : SSOModel
@@ -24,5 +21,15 @@ namespace myTNB.Mobile
         public string UserID { get; set; }
         public int? IdType { get; set; }
         public string IdNo { get; set; }
+        public string TransactionType { get; set; }
+        public DateTime InitiateTime { get; set; }
+        public string QRMappingID { get; set; }
+        /// <summary>
+        /// 0 = Portal
+        /// 1 = Android
+        /// 2 = iOS
+        /// 3 = Huawei
+        /// </summary>
+        public int OSType { set; get; }
     }
 }

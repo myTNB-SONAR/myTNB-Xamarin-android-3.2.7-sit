@@ -5,7 +5,7 @@ using Refit;
 
 namespace myTNB.Mobile.AWS.Services.DS
 {
-    internal interface IDSService
+    internal interface  IDSService
     {
         [Get("/DigitalSignature/api/v1/EKYC/EKYCStatusByUserID/{userID}")]
         Task<HttpResponseMessage> GetEKYCStatus(string userID

@@ -215,39 +215,49 @@
         {
             public struct Screens
             {
-                public struct Notifications
+                public struct Verification
                 {
-                    public const string DS_Upgrade_Profile = "App_Visit_HowToIdentifyIdentity";
-                    public const string DS_Why_Verify = "Push_Action_WhyVerifyIdentity";
+                    public const string Verify_How_It_Works = "App_Action_StartIdentityVerification_VerifyNow";
+                }
+
+                public struct Notification
+                {
+                    public const string Why_Verify = "App_Action_IdentityVerification_About";
                 }
 
                 public struct Popup
                 {
-                    public const string DS_Popup_General = "App_Action_PrepareDocument_General";
-                    public const string DS_Popup_SpecifiedID = "App_Action_PrepareDocument_SpecifiedID";
-                    public const string DS_Popup_Camera_Permission = "App_Action_CameraPermission";
-                    public const string DS_Popup_LeaveSite = "App_Action_LeaveSiteFromIdentityVerification";
+                    public const string Document_Ready = "App_Action_IdentityVerification_DocumentReady";
+                    public const string Camera_Permission = "App_Action_IdentityVerification_CameraPermission";
+                    public const string Leave_Site = "App_Action_IdentityVerification_ExitPopOutAlert";
                 }
 
-                public struct Webview
+                public struct Microsite
                 {
-                    public const string DS_Landing_Success = "App_Visit_SuccessLandingPage";
-                    public const string DS_Landing_Error = "App_Visit_ErrorLandingPage";
-                    public const string DS_TryAgain = "App_Action_TryEKYCAgain";
+                    public const string Landing_Success = "App_Action_IdentityVerification_SuccessVerification";
+                    public const string Landing_Error = "App_Action_IdentityVerification_ErrorVerification";
                 }
             }
 
             public struct CTAs
             {
-                public struct Apply
+                public struct Verification
                 {
-                    public const string Popup_Back_OnApplyPage = "App_Action_ApplyVerification_BackOnApplyPage";
-                    public const string Popup_Verify_OnApplyPage = "App_Action_ApplyVerification_VerifyNowOnApplyPage";
-                    public const string Popup_Back_OnHowItWorks = "App_Action_ApplyVerification_BackOnHowItWorks";
-                    public const string Popup_Verify_OnHowItWorks = "App_Action_ApplyVerification_VerifyOnHowItWorks";
-                    public const string Popup_ID_Blocker_VerifyNow = "App_Action_IDBlocker_ClickVerifyNow";
-                    public const string Popup_Access_FrontCamera = "App_Action_FrontCamera_AccessGranted";
-                    public const string Popup_Leave_OnStart = "App_Action_LeaveSiteOnStartIdentification";
+                    public const string Verify_Now = "App_Action_IdentityVerification_VerifyNow";
+                    public const string Back_From_Verify = "App_Action_IdentityVerification_BackFromVerify";
+                    public const string PopUp_Verify_Now = "App_Action_ApplyBlocker_VerifyNow";
+                }
+
+                public struct Notification
+                {
+                    public const string Verify_Now = "App_Action_AboutIdentityVerification_VerifyNow";
+                    public const string Back_From_Verify = "App_Action_IdentityVerification_BackFromAbout";
+                }
+
+                public struct Microsite
+                {
+                    public const string Try_Again = "App_Action_IdentityVerification_ErrorVerification_Retry";
+                    public const string PopUp_Leave = "App_Action_IdentityVerification_ExitPopOut";
                 }
             }
         }

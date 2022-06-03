@@ -6,17 +6,16 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
-    <IntermediateOutputPath>obj\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</IntermediateOutputPath>
+    <IntermediateOutputPath>obj\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</IntermediateOutputPath>
     <Optimize>true</Optimize>
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
-    <DebugType>portable</DebugType>
+    <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
-    <DefineConstants>TRACE;SIT;NETSTANDARD;NETSTANDARD2_0;</DefineConstants>
+    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <DefineConstants>TRACE;SIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
@@ -30,7 +29,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -41,12 +40,9 @@
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
-  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Refit" Version="4.6.58" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Refit" Version="6.3.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\Managers\" />
@@ -136,8 +132,10 @@
     <Folder Include="API\Models\Base Model\" />
     <Folder Include="AWS\Managers\ServiceDistruption\" />
     <Folder Include="AWS\Managers\DS\" />
-    <Folder Include="Constants\" />
-    <Folder Include="Constants\DS\" />
+    <Folder Include="AWS\Services\DS\" />
+    <Folder Include="AWS\Models\DS\" />
+    <Folder Include="AWS\Models\DS\Status\" />
+    <Folder Include="AWS\Models\DS\Identification\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -200,7 +198,6 @@
     <None Remove="AWS\Managers\Account Statement\" />
     <None Remove="AWS\Models\Account Statement\" />
     <None Remove="AWS\Services\Account Statement\" />
-    <None Remove="Xamarin.Essentials" />
     <None Remove="AWS\Models\Account Statement\Statement\" />
     <None Remove="AWS\Models\Account Statement\Notification\" />
     <None Remove="AWS\Models\Eligibility\Post Eligibility\" />
@@ -208,8 +205,11 @@
     <None Remove="API\Models\Base Model\" />
     <None Remove="AWS\Managers\ServiceDistruption\" />
     <None Remove="AWS\Managers\DS\" />
-    <None Remove="Constants\" />
-    <None Remove="Constants\DS\" />
+    <None Remove="AWS\Services\DS\" />
+    <None Remove="AWS\Models\DS\" />
+    <None Remove="AWS\Models\DS\EKYCStatus\" />
+    <None Remove="AWS\Models\DS\EKYCIdentification\" />
+    <None Remove="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />
@@ -217,4 +217,3 @@
     <Compile Remove="Business\Managers\AccountUsageManager.cs" />
   </ItemGroup>
 </Project>
-

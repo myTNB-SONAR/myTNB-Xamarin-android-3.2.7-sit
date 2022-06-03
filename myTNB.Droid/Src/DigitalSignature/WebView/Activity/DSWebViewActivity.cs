@@ -130,16 +130,15 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                    .Build();
                 marketingTooltip.Show();
 
-                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.DS_Popup_LeaveSite);
+                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.Leave_Site);
             });
         }
 
         public void LeaveOnClick()
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Microsite.PopUp_Leave);
             SetResult(Result.Canceled);
             Finish();
-
-            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_Leave_OnStart);
         }
 
         private void PrepareWebView()
@@ -155,7 +154,8 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 , TextViewUtils.FontInfo ?? "N"
                 , user?.UserID
                 , _identificationModel?.IdentificationType
-                , _identificationModel?.IdentificationNo);
+                , _identificationModel?.IdentificationNo
+                , GetIntFromStringValue(Constants.DEVICE_PLATFORM));
 
             string ssoURL = string.Format(AWSConstants.Domains.DSSSO, signature);
 
@@ -173,6 +173,20 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
             StartActivity(DashboardIntent);
         }
 
+        private int GetIntFromStringValue(string val)
+        {
+            try
+            {
+                Int32.TryParse(val, out int parsedValue);
+                return parsedValue;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                return 1;
+            }
+        }
+
         internal class MyTNBWebChromeClient : WebChromeClient
         {
             DSWebViewActivity _dSWebViewActivity;
@@ -184,12 +198,11 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 
             public override void OnPermissionRequest(PermissionRequest? request)
             {
-                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.DS_Popup_Camera_Permission);
+                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.Camera_Permission);
 
                 if (ContextCompat.CheckSelfPermission(_dSWebViewActivity, Manifest.Permission.Camera) == (int)Permission.Granted)
                 {
                     request?.Grant(new String[] { PermissionRequest.ResourceVideoCapture });
-                    DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_Access_FrontCamera);
                 }
                 else
                 {
@@ -233,13 +246,13 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                     {
                         actionBar.Hide();
 
-                        DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Webview.DS_Landing_Success);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Microsite.Landing_Success);
                     }
                     else if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_ERROR))
                     {
                         actionBar.Hide();
 
-                        DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Webview.DS_Landing_Error);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Microsite.Landing_Error);
                     }
                 }
                 return shouldOverride;
@@ -282,8 +295,8 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 
                     if ((url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_START)) && (transref = true))
                     {
-                        DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Webview.DS_TryAgain);
                         transref = false;
+                        DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Microsite.Try_Again);
                     }
                     else if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_START))
                     {

@@ -111,7 +111,7 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
             SetResult(Result.Ok, result);
             base.OnBackPressed();
 
-            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_Back_OnApplyPage);
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Notification.Back_From_Verify);
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -139,8 +139,6 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
                 }
 
                 mPresenter.EvaluateDetail(notificationDetails);
-
-                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Notifications.DS_Why_Verify); //need to confirm if tracking is correct
             }
             catch (Exception e)
             {
@@ -199,6 +197,8 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
                 }
 
                 RenderContent();
+
+                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Notification.Why_Verify);
             }
             catch (Exception e)
             {
@@ -406,9 +406,10 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
 
         public void NavigateToIdentityVerification()
         {
-            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_Verify_OnApplyPage);
             Intent nbrDiscoverMoreIntent = new Intent(this, typeof(DSIdentityVerificationActivity));
             StartActivity(nbrDiscoverMoreIntent);
+
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Notification.Verify_Now);
         }
 
         public void NavigateToExternalBrowser(string url)

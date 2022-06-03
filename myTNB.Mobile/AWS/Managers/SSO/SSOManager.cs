@@ -95,7 +95,8 @@ namespace myTNB.Mobile
             , string fontSize
             , string userID
             , int? idType
-            , string idNo)
+            , string idNo
+            , int osType)
         {
             try
             {
@@ -116,7 +117,8 @@ namespace myTNB.Mobile
                     IdNo = idNo,
                     TransactionType = "EKYC",
                     InitiateTime = DateTime.UtcNow,
-                    QRMappingID = null
+                    QRMappingID = null,
+                    OSType = osType
                 };
                 Debug.WriteLine("[DEBUG] SSO ssoModel: " + JsonConvert.SerializeObject(ssoModel));
                 string signature = SecurityManager.Instance.AES256_Encrypt(AWSConstants.SaltKey

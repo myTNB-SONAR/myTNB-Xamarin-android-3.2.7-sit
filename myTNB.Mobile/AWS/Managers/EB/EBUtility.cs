@@ -22,7 +22,6 @@ namespace myTNB.Mobile
 
         public EBUtility() { }
 
-
         public List<string> GetCAList()
         {
             List<string> caList = new List<string>();

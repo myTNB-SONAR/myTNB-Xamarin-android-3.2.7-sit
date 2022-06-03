@@ -43,7 +43,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             _ = new DSIdentityVerificationPresenter(this, this);
             this.userActionsListener?.OnInitialize();
 
-            DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Notifications.DS_Upgrade_Profile);
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Verification.Verify_How_It_Works);
         }
 
         protected override void OnStart()
@@ -106,7 +106,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             SetResult(Result.Canceled);
             Finish();
 
-            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_Back_OnHowItWorks);
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Verification.Back_From_Verify);
         }
 
         [OnClick(Resource.Id.identityVerificationBtnContinue)]
@@ -120,7 +120,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                 this.SetIsClicked(false);
             }
 
-            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_Verify_OnHowItWorks);
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Verification.Verify_Now);
         }
 
         public void RenderContent()
@@ -221,6 +221,8 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                    .SetSecondaryCTAaction(() => OnVerifyNow())
                    .Build();
                 marketingTooltip.Show();
+
+                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.Document_Ready);
             });
         }
 
@@ -308,6 +310,8 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                                .SetSecondaryCTAaction(() => OnVerifyNow())
                                .Build();
                             marketingTooltip.Show();
+
+                            DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.Document_Ready);
                         }
                     }
                 }
@@ -324,7 +328,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             intent.PutExtra(DigitalSignatureConstants.DS_IDENTIFICATION_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetIdentificationModel()));
             StartActivity(intent);
 
-            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Apply.Popup_ID_Blocker_VerifyNow);
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Verification.PopUp_Verify_Now);
         }
     }
 }

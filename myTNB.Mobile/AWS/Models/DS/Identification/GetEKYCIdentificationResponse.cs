@@ -29,12 +29,12 @@ namespace myTNB.Mobile.AWS.Models.DS.Identification
             }
         }
 
-        public bool IdentityHasBeenVerified
+        public bool IsVerified
         {
             get
             {
                 return Status.IsValid()
-                    && Status.ToUpper() == "VERIFIED"; //need to check the actual value for verified
+                    && Status.ToUpper() == "VERIFIED";
             }
         }
 
