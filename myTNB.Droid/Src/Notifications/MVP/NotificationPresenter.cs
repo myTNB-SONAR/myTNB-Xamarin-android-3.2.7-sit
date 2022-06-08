@@ -19,6 +19,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SummaryDashBoard.Models;
+using myTNB.Mobile.AWS.Managers.DS;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -653,7 +654,10 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                     case Constants.BCRM_NOTIFICATION_EKYC_FAILED:
                                                     case Constants.BCRM_NOTIFICATION_EKYC_THREE_TIMES_FAILURE:
                                                     case Constants.BCRM_NOTIFICATION_EKYC_SUCCESSFUL:
-                                                        listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                        if (DSUtility.Instance.IsAccountEligible)
+                                                        {
+                                                            listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                        }
                                                         break;
                                                     default:
                                                         break;

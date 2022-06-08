@@ -32,6 +32,8 @@ using System.Linq;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity;
 using myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity;
+using myTNB.Mobile.AWS.Managers.DS;
+using myTNB_Android.Src.Notifications.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -282,15 +284,29 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 case Notification.TypeEnum.AppUpdate:
                 case Notification.TypeEnum.AccountStatement:
                 case Notification.TypeEnum.EKYC:
-                    UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
-                    OnGetNotificationDetails(mainActivity, NotificationUtil.Instance.Type);
+                    if (DSUtility.Instance.IsAccountEligible)
+                    {
+                        UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
+                        OnGetNotificationDetails(mainActivity, NotificationUtil.Instance.Type);
+                    }
+                    else
+                    {
+                        NavigateToNotificationListing(mainActivity);
+                    }
                     break;
                 case Notification.TypeEnum.NewBillDesign:
                     NavigateToBillRedesign(mainActivity);
                     break;
                 default:
+                    NavigateToNotificationListing(mainActivity);
                     break;
             }
+        }
+
+        internal static void NavigateToNotificationListing(DashboardHomeActivity mainActivity)
+        {
+            Intent notificationIntent = new Intent(mainActivity, typeof(NotificationActivity));
+            mainActivity.StartActivity(notificationIntent);
         }
 
         internal static void NavigateToBillRedesign(DashboardHomeActivity mainActivity)
@@ -374,8 +390,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         internal static void ShowEKYCVerifyIdentity(this DashboardHomeActivity mainActivity)
         {
-            Intent ekycVerificationIntent = new Intent(mainActivity, typeof(DSIdentityVerificationActivity));
-            mainActivity.StartActivity(ekycVerificationIntent);
+            if (DSUtility.Instance.IsAccountEligible)
+            {
+                Intent ekycVerificationIntent = new Intent(mainActivity, typeof(DSIdentityVerificationActivity));
+                mainActivity.StartActivity(ekycVerificationIntent);
+            }
         }
 
         internal static CustomerBillingAccount GetEligibleDBRAccount()

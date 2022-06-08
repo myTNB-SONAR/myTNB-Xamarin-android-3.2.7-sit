@@ -11,6 +11,7 @@ using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
+using myTNB.Mobile.AWS.Managers.DS;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -141,8 +142,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         private void GetAccountVerifiedStatus()
         {
-            ShowGetCodeProgressDialog();
-            this.userActionsListener.GetEKYCStatusOnCall();
+            if (DSUtility.Instance.IsAccountEligible)
+            {
+                ShowGetCodeProgressDialog();
+                this.userActionsListener.GetEKYCStatusOnCall();
+            }
         }
 
         private ProfileDetailItemComponent GetMyTNBAccountItems()
