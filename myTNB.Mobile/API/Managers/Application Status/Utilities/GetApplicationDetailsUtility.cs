@@ -278,6 +278,14 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     {
                         displayModel.Content.PremisesAddress = premiseAddress;
                     }
+                    if (GetObjectValue(props, "signApplicationURL") is string signApplicationURL && signApplicationURL.IsValid())
+                    {
+                        displayModel.Content.ApplicationDetail.SignApplicationURL = signApplicationURL;
+                    }
+                    if (GetObjectValue(props, "isVerifyNow") is bool isVerifyNow)
+                    {
+                        displayModel.Content.ApplicationDetail.IsVerifyNow = isVerifyNow;
+                    }
                     bool shouldShowLinkedWith = false;
 
                     for (int i = 0; i < additionalDisplayConfig.Count; i++)

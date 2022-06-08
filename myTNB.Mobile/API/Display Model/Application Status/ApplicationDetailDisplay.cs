@@ -346,6 +346,14 @@ namespace myTNB.Mobile
                             }
                     }
                 }
+                else if (ApplicationDetail.IsVerifyNow)
+                {
+                    type = DetailCTAType.VerifyNow;
+                }
+                else if (ApplicationDetail.SignApplicationURL.IsValid())
+                {
+                    type = DetailCTAType.SignApplication;
+                }
                 else if (ApplicationRatingDetail != null)
                 {
                     try
@@ -632,7 +640,9 @@ namespace myTNB.Mobile
         public string StatusCode { set; get; }
         public DateTime? CreatedDate { set; get; }
         public DateTime? StatusDate { set; get; }
-
+        //DS & eKYC
+        public string SignApplicationURL { set; get; }
+        public bool IsVerifyNow { set; get; }
         /// <summary>
         /// Formatted Created date display
         /// </summary>

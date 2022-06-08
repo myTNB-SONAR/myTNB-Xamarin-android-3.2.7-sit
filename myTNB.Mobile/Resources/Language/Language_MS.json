@@ -1641,7 +1641,9 @@
     "rescheduleDisabledCTAMessage": "Anda mempunyai janji temu pada <b>{0}, di antara {1}</b>.",
     "cannotReschedule": "Mengapakah saya tidak boleh mengubah butiran janji temu?",
     "cannotRescheduleTitle": "Janji temu tidak boleh diubah pada hari janji temu.",
-    "cannotRescheduleMessage": "Anda tidak boleh mengubah janji temu pada hari janji temu tersebut. Sila ambil maklum bahawa anda tidak perlu hadir sekiranya kawasan pemasangan meter anda boleh diakses tanpa memasuki premis.<br><br>Hubungi <a href=\"tel: 1300885454\">TNB Careline</a> sekiranya anda perlu mengubah  atau membatalkan janji temu."
+    "cannotRescheduleMessage": "Anda tidak boleh mengubah janji temu pada hari janji temu tersebut. Sila ambil maklum bahawa anda tidak perlu hadir sekiranya kawasan pemasangan meter anda boleh diakses tanpa memasuki premis.<br><br>Hubungi <a href=\"tel: 1300885454\">TNB Careline</a> sekiranya anda perlu mengubah  atau membatalkan janji temu.",
+    "verifyNowCTA": "Sahkan Sekarang",
+    "signApplicationCTA": "Tandatangan Permohonan"
   },
   "UserAccess": {
     "title": "Urus Pengguna",

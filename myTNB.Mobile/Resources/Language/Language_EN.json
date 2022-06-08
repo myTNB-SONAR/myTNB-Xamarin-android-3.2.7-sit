@@ -1641,7 +1641,9 @@
     "rescheduleDisabledCTAMessage": "You have an appointment set for <b>{0}, between {1}</b>",
     "cannotReschedule": "Why can’t I reschedule anymore?",
     "cannotRescheduleTitle": "Appointments can’t be rescheduled on the same day.",
-    "cannotRescheduleMessage": "You can’t reschedule your appointment anymore as it is coming up later today. Please note that you don’t have to be present if your meter installation area is accessible without entering the premises.<br><br>You may contact <a href=\"tel: 1300885454\">TNB Careline</a> if you have to reschedule or cancel."
+    "cannotRescheduleMessage": "You can’t reschedule your appointment anymore as it is coming up later today. Please note that you don’t have to be present if your meter installation area is accessible without entering the premises.<br><br>You may contact <a href=\"tel: 1300885454\">TNB Careline</a> if you have to reschedule or cancel.",
+    "verifyNowCTA": "Verify Now",
+    "signApplicationCTA": "Sign Application"
   },
   "UserAccess": {
     "title": "User Access",
