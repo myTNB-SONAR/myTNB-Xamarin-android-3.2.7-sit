@@ -30,6 +30,8 @@ using System.Globalization;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using myTNB.Mobile;
+using System.Linq;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP
 {
@@ -412,6 +414,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
             List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+            
 
             if (cts != null && cts.Token.CanBeCanceled)
             {
@@ -440,7 +443,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         }
 
                     }
-
+                    UserSessions.UpdateFromBRCard(mSharedPref);
                     OnUpdateRewardUnRead();
                     break;
                 case Resource.Id.menu_bill:
@@ -449,18 +452,41 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     {
                         trackBottomNavigationMenu = Resource.Id.menu_bill;
                         CustomerBillingAccount selected;
+                        CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                        CustomerBillingAccount brAccount = GetBRcountList();
+                        bool BRflag = UserSessions.GetFromBRCard(mSharedPref);
+                        selected = CustomerBillingAccount.GetSelected();
                         if (CustomerBillingAccount.HasSelected())
                         {
-                            selected = CustomerBillingAccount.GetSelected();
-                            PreNavigateBllMenu(selected);
-                            this.mView.SetAccountName(selected.AccDesc);
+                            if (BRflag) //check BR
+                            {
+                                PreNavigateBllMenu(brAccount);
+                                this.mView.SetAccountName(brAccount.AccDesc);
+                                //UserSessions.UpdateFromBRCard(mSharedPref);
+                            }
+                            else
+                            {
+                                
+                                PreNavigateBllMenu(selected);
+                                this.mView.SetAccountName(selected.AccDesc);
+                            }
                         }
                         else
                         {
-                            CustomerBillingAccount.SetSelected(accountList[0].AccNum);
-                            selected = accountList[0];
-                            PreNavigateBllMenu(selected);
-                            this.mView.SetAccountName(accountList[0].AccDesc);
+                            if (BRflag && BillRedesignUtility.Instance.IsCAEligible(selected.AccNum))
+                            {
+                                CustomerBillingAccount.SetSelected(brAccount.AccDesc);
+                                //selected = BRCas[0];
+                                PreNavigateBllMenu(brAccount);
+                                this.mView.SetAccountName(brAccount.AccDesc);
+                            }
+                            else
+                            {
+                                CustomerBillingAccount.SetSelected(accountList[0].AccNum);
+                                selected = accountList[0];
+                                PreNavigateBllMenu(selected);
+                                this.mView.SetAccountName(accountList[0].AccDesc);
+                            }
                         }
                         if (selected != null)
                         {
@@ -477,16 +503,35 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             }
                         }
 
-                        AccountData accountData = new AccountData();
-                        CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);
-                        accountData.AccountNickName = selected.AccDesc;
-                        accountData.AccountName = selected.OwnerName;
-                        accountData.AddStreet = selected.AccountStAddress;
-                        accountData.IsOwner = customerBillingAccount.isOwned;
-                        accountData.AccountNum = selected.AccNum;
-                        accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
-                        accountData.IsHaveAccess = customerBillingAccount.IsHaveAccess;
-                        this.mView.ShowBillMenu(accountData, isIneligiblePopUpActive);
+                        if (BRflag) //check BR
+                        {
+                            PreNavigateBllMenu(brAccount);
+                            this.mView.SetAccountName(brAccount.AccDesc);
+                            AccountData accountDataBR = new AccountData();
+                            CustomerBillingAccount customerBillingAccountBR = CustomerBillingAccount.FindByAccNum(brAccount.AccNum);
+                            accountDataBR.AccountNickName = brAccount.AccDesc;
+                            accountDataBR.AccountName = brAccount.OwnerName;
+                            accountDataBR.AddStreet = brAccount.AccountStAddress;
+                            accountDataBR.IsOwner = customerBillingAccountBR.isOwned;
+                            accountDataBR.AccountNum = brAccount.AccNum;
+                            accountDataBR.AccountCategoryId = customerBillingAccountBR.AccountCategoryId;
+                            accountDataBR.IsHaveAccess = brAccount.IsHaveAccess;
+                            this.mView.ShowBillMenu(accountDataBR, isIneligiblePopUpActive);
+                        }
+                        else
+                        {
+                            AccountData accountData = new AccountData();
+                            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);
+                            accountData.AccountNickName = selected.AccDesc;
+                            accountData.AccountName = selected.OwnerName;
+                            accountData.AddStreet = selected.AccountStAddress;
+                            accountData.IsOwner = customerBillingAccount.isOwned;
+                            accountData.AccountNum = selected.AccNum;
+                            accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+                            accountData.IsHaveAccess = customerBillingAccount.IsHaveAccess;
+                            this.mView.ShowBillMenu(accountData, isIneligiblePopUpActive);
+                        }
+                        //UserSessions.UpdateFromBRCard(mSharedPref);
                     }
                     else
                     {
@@ -499,6 +544,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 case Resource.Id.menu_promotion:
                     currentBottomNavigationMenu = Resource.Id.menu_promotion;
                     trackBottomNavigationMenu = Resource.Id.menu_promotion;
+                    UserSessions.UpdateFromBRCard(mSharedPref);
                     this.mView.ShowWhatsNewMenu();
                     this.mView.OnCheckProfileTab(false, true);
 
@@ -523,6 +569,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     OnUpdateWhatsNewUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
                     trackBottomNavigationMenu = Resource.Id.menu_reward;
+                    UserSessions.UpdateFromBRCard(mSharedPref);
                     this.mView.ShowRewardsMenu();
                     this.mView.OnCheckProfileTab(false, true);
 
@@ -543,6 +590,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     }
                     break;
                 case Resource.Id.menu_more:
+                    UserSessions.UpdateFromBRCard(mSharedPref);
                     OnLoadMoreMenu();
                     break;
             }
@@ -1884,6 +1932,62 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         public void OnGetBillEligibilityCheck(string accountNumber)
         {
             this.GetBillEligibilityCheck(accountNumber);
+        }
+
+        public CustomerBillingAccount GetEligibleDBRAccount()
+        {
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+            List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            CustomerBillingAccount account = new CustomerBillingAccount();
+            if (dBRCAs.Count > 0)
+            {
+                var dbrSelected = dBRCAs.Where(x => x == customerAccount.AccNum).FirstOrDefault();
+                if (dbrSelected != string.Empty)
+                {
+                    account = allAccountList.Where(x => x.AccNum == dbrSelected).FirstOrDefault();
+                }
+                if (account == null)
+                {
+                    foreach (var dbrca in dBRCAs)
+                    {
+                        account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
+                        if (account != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            return account;
+        }
+
+        public CustomerBillingAccount GetBRcountList()
+        {
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+            List<string> BRCas = BillRedesignUtility.Instance.GetCAList();
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            CustomerBillingAccount account = new CustomerBillingAccount();
+            if (BRCas.Count > 0)
+            {
+                var dbrSelected = BRCas.Where(x => x == customerAccount.AccNum).FirstOrDefault();
+                if (dbrSelected != string.Empty)
+                {
+                    account = allAccountList.Where(x => x.AccNum == dbrSelected).FirstOrDefault();
+                }
+                if (account == null)
+                {
+                    foreach (var dbrca in BRCas)
+                    {
+                        account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
+                        if (account != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            return account;
         }
     }
 

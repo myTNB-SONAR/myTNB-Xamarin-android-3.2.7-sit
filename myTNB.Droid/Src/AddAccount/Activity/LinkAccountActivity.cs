@@ -654,6 +654,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         account.accountCategoryId = item.accountCategoryId;
                         account.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                         account.accountTypeId = item.accountTypeId == null ? "1" : item.accountTypeId;
+                        account.IsHaveAccess = item.IsHaveAccess;
                         account.IsInManageAccessList = item.IsInManageAccessList;
                         accounts.Add(account);
                     }
@@ -671,6 +672,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         account.mobileNoOwner = item.mobileNoOwner;
                         account.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                         account.accountTypeId = item.accountTypeId == null ? "1" : item.accountTypeId;
+                        account.IsHaveAccess = item.IsHaveAccess;
                         account.IsInManageAccessList = item.IsInManageAccessList;
                         accounts.Add(account);
                     }

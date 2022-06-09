@@ -34,6 +34,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
     public class AppLaunchMasterDataResponseAWS
     {
+        [JsonProperty(PropertyName = "IdentificationNo")]
+        public string IdentificationNo { get; set; }
+
         [JsonProperty(PropertyName = "data")]
         [AliasAs("data")]
         public AppLaunchMasterDataModel Data { get; set; }

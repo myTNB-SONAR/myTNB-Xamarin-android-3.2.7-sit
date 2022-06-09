@@ -105,5 +105,11 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty("smartMeterCode")]
         public string SmartMeterCode { get; set; }
 
+        [JsonProperty("IsHaveAccess")]
+        public bool IsHaveAccess { get; set; }
+
+        [JsonProperty("IsApplyEBilling")]
+        public bool IsApplyEBilling { get; set; }
+
     }
 }

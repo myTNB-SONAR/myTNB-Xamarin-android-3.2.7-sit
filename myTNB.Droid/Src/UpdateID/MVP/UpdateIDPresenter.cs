@@ -235,6 +235,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
                     MyTNBAccountManagement.GetInstance().SetIsIDUpdated(true);
                     //this.mView.ShowInvalidAcquiringTokenThruSMS(userResponse.Response.DisplayMessage);
                 }
+                mView.callConfirm(icno, idtype);
             }
             catch (System.OperationCanceledException e)
             {

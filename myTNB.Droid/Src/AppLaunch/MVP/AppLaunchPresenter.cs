@@ -200,7 +200,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         UserSessions.SaveFeedbackUpdateDetailDisabled(mSharedPref, updateDetail.ToString());  //save sharedpref cater prelogin & after login
                         AppLaunchMasterDataModel responseData = masterDataResponse.Data;
 
-                       //UserSessions.SaveCheckEmailVerified(mSharedPref, responseData.UserVerificationInfo.Email.ToString());  //save sharedpref check email  //wan
+                        //UserSessions.SaveCheckEmailVerified(mSharedPref, responseData.UserVerificationInfo.Email.ToString());  //save sharedpref check email  //wan
+                       
+                        //update new ic from response
+                        UserEntity.UpdateICno(masterDataResponse.IdentificationNo);
 
                         if (responseData.AppVersionList != null && responseData.AppVersionList.Count > 0)
                         {
