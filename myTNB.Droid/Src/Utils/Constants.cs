@@ -221,6 +221,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string PG_FPX_SYSTEM = "PG_FPX";
         internal static readonly string Smart_Meter_Daily_SYSTEM = "SmartMeterDaily";
         internal static readonly string PG_SYSTEM = "PG";
+        internal static readonly string EB_SYSTEM = "EB";
 
         internal static readonly string ACCOUNT_REMOVED_FLAG = "ACCOUNT_REMOVED";
 

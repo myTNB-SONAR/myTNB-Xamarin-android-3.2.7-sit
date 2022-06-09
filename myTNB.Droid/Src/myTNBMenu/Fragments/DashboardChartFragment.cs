@@ -1054,9 +1054,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 btnEditBudget.Text = Utility.GetLocalizedLabel("Usage", "editEnergyButton");
                 energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "youHaveNotSetBudget");
                 btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "setEnergyButton");
-                btnRefresh_EB_MDMS.Text = Utility.GetLocalizedLabel("Usage", "refreshNowEnergyBudgetButton");
-                refreshcontentEBMDMSDown.Text = Utility.GetLocalizedLabel("Usage", "disconnectedEnergyBudget");
+                //btnRefresh_EB_MDMS.Text = Utility.GetLocalizedLabel("Usage", "refreshNowEnergyBudgetButton");
+                //refreshcontentEBMDMSDown.Text = Utility.GetLocalizedLabel("Usage", "disconnectedEnergyBudget");
                 energyBudgetbodytxt.Text = Utility.GetLocalizedLabel("Usage", "youHaveNotSetBudgetSubtitle");
+
+                DownTimeEntity EBEntity = DownTimeEntity.GetByCode(Constants.EB_SYSTEM);
+                DownTimeEntity SMEntity = DownTimeEntity.GetByCode(Constants.SMART_METER_SYSTEM);
+                if (EBEntity != null && SMEntity != null && SMEntity.IsDown)
+                {
+                    refreshcontentEBMDMSDown.Text = EBEntity.DowntimeMessage;
+                }
+                else
+                {
+                    refreshcontentEBMDMSDown.Text = Utility.GetLocalizedLabel("Usage", "disconnectedEnergyBudget");
+                }
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
 

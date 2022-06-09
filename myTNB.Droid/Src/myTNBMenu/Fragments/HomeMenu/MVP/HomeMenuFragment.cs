@@ -1782,9 +1782,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             else if (!Utility.IsMDMSDownEnergyBudget())
                             {
                                 DownTimeEntity SMEntity = DownTimeEntity.GetByCode(Constants.SMART_METER_SYSTEM);
-                                if (SMEntity != null && SMEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
+                                DownTimeEntity EBEntity = DownTimeEntity.GetByCode(Constants.EB_SYSTEM);
+                                if (SMEntity != null && EBEntity != null && SMEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
                                 {
-                                    Utility.ShowBCRMDOWNTooltip(this.Activity, SMEntity, () =>
+                                    Utility.ShowBCRMDOWNTooltip(this.Activity, EBEntity, () =>
                                     {
                                         this.SetIsClicked(false);
 
