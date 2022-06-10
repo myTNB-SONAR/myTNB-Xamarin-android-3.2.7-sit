@@ -35,6 +35,7 @@ using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
 using Android.Text;
 using Android.Content.PM;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -239,6 +240,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         webIntent.PutExtra("action", "contractorRating");
                         StartActivityForResult(webIntent, Constants.APPLICATION_STATUS_RATING_REQUEST_CODE);
                         FirebaseAnalyticsUtils.LogClickEvent(this, "Contractor Rating Button Clicked");
+                    }
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.VerifyNow)
+                    {
+                        Intent ekycVerificationIntent = new Intent(this, typeof(DSIdentityVerificationActivity));
+                        StartActivity(ekycVerificationIntent);
+                    }
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.SignApplication)
+                    {
+                        string url = applicationDetailDisplay.ApplicationDetail.SignApplicationURL;
+                        if (url.IsValid())
+                        {
+                            Intent intent = new Intent(Intent.ActionView);
+                            intent.SetData(Android.Net.Uri.Parse(url));
+                            StartActivity(intent);
+                        }
                     }
                 }
             }
@@ -856,6 +872,20 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
                             }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.VerifyNow)
+                            {
+                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+                                btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "verifyNowCTA");
+                            }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.SignApplication)
+                            {
+                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+                                btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "signApplicationCTA");
+                            }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.None)
                             {
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
@@ -904,7 +934,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     }
                 }
 
-                TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle);
+                TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle, howDoISeeApplicaton, btnPrimaryCTA);
                 TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote);
                 TextViewUtils.SetTextSize10(txtLinkedWithHeader);
                 TextViewUtils.SetTextSize12(txtApplicationStatusUpdated, txtApplicationStatusDetail, txtLinkedWithView

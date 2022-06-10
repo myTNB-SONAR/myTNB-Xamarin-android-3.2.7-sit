@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/rootView"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -601,6 +602,7 @@ will be recorded. Check back again later to view its update."/>
 					android:orientation="vertical"
 					android:weightSum="1"
 					android:visibility="gone"
+					tools:visibility="visible"
 					android:id="@+id/applicationStatusDetailSingleButtonLayout"
 					android:background="@color/white">
 					<TextView
