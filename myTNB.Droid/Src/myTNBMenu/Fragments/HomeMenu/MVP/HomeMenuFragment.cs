@@ -1701,15 +1701,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Intent applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
                             StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
-                        else if (selectedService.ServiceCategoryId == "1004" && (Utility.IsEnablePayment()
-                            && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded()))
+                        else if (selectedService.ServiceCategoryId == "1004")
                         {
-                            if (!UserSessions.HasPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            if (Utility.IsEnablePayment()
+                            && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded())
                             {
-                                UserSessions.DoPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                                if (!UserSessions.HasPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                                {
+                                    UserSessions.DoPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                                }
+                                Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
+                                StartActivity(payment_activity);
                             }
-                            Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
-                            StartActivity(payment_activity);
+
+                            if (!Utility.IsEnablePayment())
+                            {
+                                DownTimeEntity pgXEntity = DownTimeEntity.GetByCode(Constants.PG_SYSTEM);
+                                if (pgXEntity != null)
+                                {
+                                    Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
+                                    {
+                                        this.SetIsClicked(false);
+                                    });
+                                }
+                            }
                         }
                         else if (selectedService.ServiceCategoryId == "1005" && (!isRefreshShown
                             && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
