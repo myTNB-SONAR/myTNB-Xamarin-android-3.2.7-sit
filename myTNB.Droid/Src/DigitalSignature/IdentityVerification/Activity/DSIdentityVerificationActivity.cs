@@ -130,6 +130,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                     {
                         ShowUnMatchUserIdPopUp();
                     }
+                    DeeplinkUtil.Instance.ClearDeeplinkData();
                 }
                 else
                 {
