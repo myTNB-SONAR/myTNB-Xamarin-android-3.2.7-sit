@@ -3294,7 +3294,9 @@
     "idProcessingMessage": "Your identity verification has been submitted. We’ll notify you once we’re done with your verification.",
     "idVerifiedTitle": "Your identity has been verified.",
     "idVerifiedMessage": "With a verified identity, you can now enjoy all of myTNB features with a secured account to ensure minimum risk of fraudulent applications",
-    "backToHome": "Back To Home"
+    "backToHome": "Back To Home",
+    "userIDNotMatchTitle": "Oops!",
+    "userIDNotMatchMessage": "Please ensure that you are using the designated myTNB account for identity verification."
   },
   "DSLanding_selector": {
     "idType": [

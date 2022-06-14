@@ -28,6 +28,7 @@ namespace myTNB.Mobile.AWS.Managers.DS
         {
             get
             {
+                return true;
                 if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DS, FeatureProperty.Enabled))
                 {
                     if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DS, FeatureProperty.TargetGroup))

@@ -3294,7 +3294,9 @@
     "idProcessingMessage": "Pengesahan identiti anda sudah dihantar. Kami akan memberitahu anda setelah kami selesai memproses pengesahan anda.",
     "idVerifiedTitle": "Identiti anda telah disahkan.",
     "idVerifiedMessage": "Dengan identiti yang telah disahkan, anda kini boleh menikmati semua ciri-ciri myTNB dengan akaun yang dilindungi untuk memastikan risiko minimum dari permohonan penipuan",
-    "backToHome": "Kembali ke Halaman Utama"
+    "backToHome": "Kembali ke Halaman Utama",
+    "userIDNotMatchTitle": "Oops!",
+    "userIDNotMatchMessage": "Sila pastikan anda menggunakan akaun myTNB yang ditetapkan untuk pengesahan identiti."
   },
   "DSLanding_selector": {
     "idType": [

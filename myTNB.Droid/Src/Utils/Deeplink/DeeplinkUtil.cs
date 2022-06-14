@@ -59,6 +59,17 @@ namespace myTNB_Android.Src.Utils.Deeplink
                 case Screen.OvervoltageClaimDetails:
                     EnquiryDetailsDeeplinkCache.Instance.SetData(deeplink.ToString());
                     break;
+                case Screen.IdentityVerification:
+                    if (deeplink.Query.IsValid())
+                    {
+                        var deeplinkQuery = HttpUtility.ParseQueryString(deeplink.Query);
+                        ScreenKey = deeplinkQuery[Constant.UserIDKey];
+                    }
+                    else
+                    {
+                        ScreenKey = GetParamValueFromKey(Constant.UserIDKey, deeplink);
+                    }
+                    break;
                 default:
                     break;
             }
@@ -103,9 +114,10 @@ namespace myTNB_Android.Src.Utils.Deeplink
                     {
                         TargetScreen = Screen.ManageBillDelivery;
                     }
-                    else if (deepLinkUrlString.Contains(Screen.EKYCVerify.ToString().ToLower()))
+                    else if (deepLinkUrlString.Contains(Screen.IdentityVerification.ToString().ToLower()))
                     {
-                        TargetScreen = Screen.EKYCVerify;
+                        TargetScreen = Screen.IdentityVerification;
+                        SaveDeeplinkDetails(Screen.IdentityVerification, deeplink);
                     }
                 }
             }
@@ -143,7 +155,7 @@ namespace myTNB_Android.Src.Utils.Deeplink
             }
             else
             {
-                queryString = deeplink.Path;
+                queryString = deeplink.Path.ToLower();
             }
 
             var parameters = queryString?.Split(Constant.Slash);

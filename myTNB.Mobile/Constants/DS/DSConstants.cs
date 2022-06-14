@@ -29,6 +29,8 @@
         public const string I18N_IDProcessingMessage = "idProcessingMessage";
         public const string I18N_IDVerifiedTitle = "idVerifiedTitle";
         public const string I18N_IDVerifiedMessage = "idVerifiedMessage";
+        public const string I18N_UserIDNotMatchTitle = "userIDNotMatchTitle";
+        public const string I18N_UserIDNotMatchMessage = "userIDNotMatchMessage";
         public const string DropDown = "#dropdown#";
         public const string IC = "IC";
         public const string Passport = "Passport";

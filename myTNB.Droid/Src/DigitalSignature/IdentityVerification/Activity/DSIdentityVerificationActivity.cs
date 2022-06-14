@@ -11,10 +11,12 @@ using myTNB;
 using myTNB.Mobile;
 using myTNB.Mobile.Constants.DS;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.Fragment;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP;
 using myTNB_Android.Src.DigitalSignature.WebView.Activity;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Deeplink;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
@@ -115,12 +117,34 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                ShowProgressDialog();
-                this.userActionsListener.GetEKYCIdentificationOnCall();
+
+                if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.IdentityVerification &&
+                    DeeplinkUtil.Instance.ScreenKey.IsValid())
+                {
+                    string userID = UserEntity.GetActive().UserID.ToLower();
+                    if (userID.Equals(DeeplinkUtil.Instance.ScreenKey.ToLower()))
+                    {
+                        ProceedOnVerifyNow();
+                    }
+                    else
+                    {
+                        ShowUnMatchUserIdPopUp();
+                    }
+                }
+                else
+                {
+                    ProceedOnVerifyNow();
+                }
                 this.SetIsClicked(false);
             }
 
             DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Verification.Verify_Now);
+        }
+
+        private void ProceedOnVerifyNow()
+        {
+            ShowProgressDialog();
+            this.userActionsListener.GetEKYCIdentificationOnCall();
         }
 
         public void RenderContent()
@@ -182,6 +206,23 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void ShowUnMatchUserIdPopUp()
+        {
+            RunOnUiThread(() =>
+            {
+                HideProgressDialog();
+
+                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_ONE_BUTTON)
+                   .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
+                   .SetTitle(GetLabelByLanguage(DSConstants.I18N_UserIDNotMatchTitle))
+                   .SetMessage(GetLabelByLanguage(DSConstants.I18N_UserIDNotMatchMessage))
+                   .SetCTALabel(GetLabelCommonByLanguage(LanguageConstants.Common.OK))
+                   .SetCTAaction(() => { })
+                   .Build();
+                marketingTooltip.Show();
+            });
         }
 
         public void ShowCompletedOnOtherDevicePopUp()

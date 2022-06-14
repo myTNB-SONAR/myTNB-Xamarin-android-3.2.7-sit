@@ -64,7 +64,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 case Deeplink.ScreenEnum.ManageBillDelivery:
                     DeeplinkManageBillDeliveryValidation(mainActivity);
                     break;
-                case Deeplink.ScreenEnum.EKYCVerify:
+                case Deeplink.ScreenEnum.IdentityVerification:
                     ShowEKYCVerifyIdentity(mainActivity);
                     break;
                 default:

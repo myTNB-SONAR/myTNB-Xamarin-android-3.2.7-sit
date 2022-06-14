@@ -7,6 +7,7 @@
             internal static readonly string WhatsNewIDKey = "wnid";
             internal static readonly string RewardsIDKey = "rid";
             internal static readonly string GetBillIDKey = "CA";
+            internal static readonly string UserIDKey = "userid";
 
             internal static readonly string Pattern = "\\b{0}.*\\b";
             internal static readonly string ReplaceKey = "{0}=";
@@ -24,7 +25,7 @@
             QR,
             GetBill,
             ManageBillDelivery,
-            EKYCVerify,
+            IdentityVerification,
             None
         }
     }
