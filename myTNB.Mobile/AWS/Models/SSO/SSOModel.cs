@@ -31,5 +31,6 @@ namespace myTNB.Mobile
         /// 3 = Huawei
         /// </summary>
         public int OSType { set; get; }
+        public bool IsContractorApplied { set; get; }
     }
 }

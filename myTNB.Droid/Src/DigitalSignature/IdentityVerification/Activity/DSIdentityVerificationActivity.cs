@@ -124,7 +124,20 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                     string userID = UserEntity.GetActive().UserID.ToLower();
                     if (userID.Equals(DeeplinkUtil.Instance.ScreenKey.ToLower()))
                     {
-                        ProceedOnVerifyNow();
+                        bool isContractorAppliedFlag = false;
+                        try
+                        {
+                            string isContractorAppliedStr = DeeplinkUtil.Instance.eKYCIsContractorApplied;
+                            if (isContractorAppliedStr.IsValid())
+                            {
+                                isContractorAppliedFlag = bool.Parse(isContractorAppliedStr);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                        ProceedOnVerifyNow(isContractorAppliedFlag);
                     }
                     else
                     {
@@ -134,7 +147,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                 }
                 else
                 {
-                    ProceedOnVerifyNow();
+                    ProceedOnVerifyNow(false);
                 }
                 this.SetIsClicked(false);
             }
@@ -142,10 +155,10 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Verification.Verify_Now);
         }
 
-        private void ProceedOnVerifyNow()
+        private void ProceedOnVerifyNow(bool isContractorApplied)
         {
             ShowProgressDialog();
-            this.userActionsListener.GetEKYCIdentificationOnCall();
+            this.userActionsListener.GetEKYCIdentificationOnCall(isContractorApplied);
         }
 
         public void RenderContent()
@@ -368,6 +381,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         {
             Intent intent = new Intent(this, typeof(DSWebViewActivity));
             intent.PutExtra(DigitalSignatureConstants.DS_IDENTIFICATION_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetIdentificationModel()));
+            intent.PutExtra(DigitalSignatureConstants.DS_IS_CONTRACTOR_APPLIED, this.userActionsListener.GetIsContractorApplied());
             StartActivity(intent);
 
             DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Verification.PopUp_Verify_Now);

@@ -64,13 +64,19 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             /// <summary>
             /// Calls the GetEKYCIdentification API
             /// </summary>
-            void GetEKYCIdentificationOnCall();
+            void GetEKYCIdentificationOnCall(bool isContractorApplied);
 
             /// <summary>
             /// Gets the Identification model
             /// </summary>
             /// <returns></returns>
             GetEKYCIdentificationModel GetIdentificationModel();
+
+            /// <summary>
+            /// Gets the IsContractorApplied flag from dynamic link
+            /// </summary>
+            /// <returns></returns>
+            bool GetIsContractorApplied();
         }
     }
 }

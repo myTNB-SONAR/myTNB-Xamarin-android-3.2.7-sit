@@ -10,10 +10,12 @@ namespace myTNB_Android.Src.Utils.Deeplink
 {
     public sealed class DeeplinkUtil
     {
-        static DeeplinkUtil instance;
+        static DeeplinkUtil? instance;
 
         public string ScreenKey = string.Empty;
         public Screen TargetScreen = Screen.None;
+
+        public string eKYCIsContractorApplied = string.Empty;
 
         public static DeeplinkUtil Instance
         {
@@ -32,7 +34,8 @@ namespace myTNB_Android.Src.Utils.Deeplink
             switch (deeplinkScreen)
             {
                 case Screen.Rewards:
-                    if (deeplink.Query.IsValid())
+                    if (deeplink.Query != null &&
+                        deeplink.Query.IsValid())
                     {
                         var deeplinkQuery = HttpUtility.ParseQueryString(deeplink.Query);
                         ScreenKey = deeplinkQuery[Constant.RewardsIDKey];
@@ -43,7 +46,8 @@ namespace myTNB_Android.Src.Utils.Deeplink
                     }
                     break;
                 case Screen.WhatsNew:
-                    if (deeplink.Query.IsValid())
+                    if (deeplink.Query != null &&
+                        deeplink.Query.IsValid())
                     {
                         var deeplinkQuery = HttpUtility.ParseQueryString(deeplink.Query);
                         ScreenKey = deeplinkQuery[Constant.WhatsNewIDKey];
@@ -60,14 +64,17 @@ namespace myTNB_Android.Src.Utils.Deeplink
                     EnquiryDetailsDeeplinkCache.Instance.SetData(deeplink.ToString());
                     break;
                 case Screen.IdentityVerification:
-                    if (deeplink.Query.IsValid())
+                    if (deeplink.Query != null &&
+                        deeplink.Query.IsValid())
                     {
                         var deeplinkQuery = HttpUtility.ParseQueryString(deeplink.Query);
                         ScreenKey = deeplinkQuery[Constant.UserIDKey];
+                        eKYCIsContractorApplied = deeplinkQuery[Constant.IsContractorAppliedKey];
                     }
                     else
                     {
                         ScreenKey = GetParamValueFromKey(Constant.UserIDKey, deeplink);
+                        eKYCIsContractorApplied = GetParamValueFromKey(Constant.IsContractorAppliedKey, deeplink);
                     }
                     break;
                 default:
@@ -127,6 +134,7 @@ namespace myTNB_Android.Src.Utils.Deeplink
         {
             TargetScreen = Screen.None;
             ScreenKey = string.Empty;
+            eKYCIsContractorApplied = string.Empty;
         }
 
         private void SaveDeeplinkDetailsForQR(Uri deeplink)

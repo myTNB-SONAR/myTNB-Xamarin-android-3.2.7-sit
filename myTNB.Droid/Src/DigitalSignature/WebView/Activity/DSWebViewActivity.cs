@@ -35,6 +35,7 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
         private Android.Webkit.WebView micrositeWebView;
 
         GetEKYCIdentificationModel _identificationModel;
+        bool _isContractorApplied;
 
         private static Snackbar mErrorMessageSnackBar;
         private static FrameLayout mainView;
@@ -49,6 +50,10 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 if ((extras != null) && extras.ContainsKey(DigitalSignatureConstants.DS_IDENTIFICATION_MODEL))
                 {
                     _identificationModel = JsonConvert.DeserializeObject<GetEKYCIdentificationModel>(extras.GetString(DigitalSignatureConstants.DS_IDENTIFICATION_MODEL));
+                }
+                if ((extras != null) && extras.ContainsKey(DigitalSignatureConstants.DS_IS_CONTRACTOR_APPLIED))
+                {
+                    _isContractorApplied = extras.GetBoolean(DigitalSignatureConstants.DS_IS_CONTRACTOR_APPLIED);
                 }
 
                 _ = new DSWebViewPresenter(this);
@@ -155,7 +160,8 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 , user?.UserID
                 , _identificationModel?.IdentificationType
                 , _identificationModel?.IdentificationNo
-                , GetIntFromStringValue(Constants.DEVICE_PLATFORM));
+                , GetIntFromStringValue(Constants.DEVICE_PLATFORM)
+                , _isContractorApplied);
 
             string ssoURL = string.Format(AWSConstants.Domains.DSSSO, signature);
 

@@ -96,7 +96,8 @@ namespace myTNB.Mobile
             , string userID
             , int? idType
             , string idNo
-            , int osType)
+            , int osType
+            , bool isContractorApplied)
         {
             try
             {
@@ -118,7 +119,8 @@ namespace myTNB.Mobile
                     TransactionType = "EKYC",
                     InitiateTime = DateTime.UtcNow,
                     QRMappingID = null,
-                    OSType = osType
+                    OSType = osType,
+                    IsContractorApplied = isContractorApplied
                 };
                 Debug.WriteLine("[DEBUG] SSO ssoModel: " + JsonConvert.SerializeObject(ssoModel));
                 string signature = SecurityManager.Instance.AES256_Encrypt(AWSConstants.SaltKey

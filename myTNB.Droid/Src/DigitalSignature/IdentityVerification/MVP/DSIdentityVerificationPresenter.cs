@@ -14,6 +14,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
         private readonly DSIdentityVerificationContract.IView view;
         private BaseAppCompatActivity mActivity;
         GetEKYCIdentificationModel _identificationModel;
+        bool _isContractorApplied;
 
         public DSIdentityVerificationPresenter(DSIdentityVerificationContract.IView view, BaseAppCompatActivity activity)
         {
@@ -35,8 +36,14 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
 
         public void Start() { }
 
-        public void GetEKYCIdentificationOnCall()
+        public bool GetIsContractorApplied()
         {
+            return _isContractorApplied;
+        }
+
+        public void GetEKYCIdentificationOnCall(bool isContractorApplied)
+        {
+            _isContractorApplied = isContractorApplied;
             Task.Run(() =>
             {
                 _ = GetEKYCIdentification();
