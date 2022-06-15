@@ -422,7 +422,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 if (pgCCEntity.IsDown)
                 {
-                    ShowErrorMessage(pgCCEntity.DowntimeMessage);
+                    //ShowErrorMessage(pgCCEntity.DowntimeMessage);
+                    Utility.ShowBCRMDOWNTooltip(this.Activity, pgCCEntity, () =>
+                    {
+                    });
                 }
                 else
                 {
