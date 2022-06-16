@@ -14,7 +14,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
         private readonly DSIdentityVerificationContract.IView view;
         private BaseAppCompatActivity mActivity;
         GetEKYCIdentificationModel _identificationModel;
-        bool _isContractorApplied;
+        DSDynamicLinkParamsModel _dynamicLinkParamsModel;
 
         public DSIdentityVerificationPresenter(DSIdentityVerificationContract.IView view, BaseAppCompatActivity activity)
         {
@@ -36,14 +36,10 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
 
         public void Start() { }
 
-        public bool GetIsContractorApplied()
+        public void GetEKYCIdentificationOnCall(DSDynamicLinkParamsModel dynamicLinkParamsModel)
         {
-            return _isContractorApplied;
-        }
-
-        public void GetEKYCIdentificationOnCall(bool isContractorApplied)
-        {
-            _isContractorApplied = isContractorApplied;
+            _dynamicLinkParamsModel = new DSDynamicLinkParamsModel();
+            _dynamicLinkParamsModel = dynamicLinkParamsModel;
             Task.Run(() =>
             {
                 _ = GetEKYCIdentification();
@@ -102,6 +98,11 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
         public GetEKYCIdentificationModel GetIdentificationModel()
         {
             return _identificationModel;
+        }
+
+        public DSDynamicLinkParamsModel GetDSDynamicLinkParamsModel()
+        {
+            return _dynamicLinkParamsModel;
         }
     }
 }

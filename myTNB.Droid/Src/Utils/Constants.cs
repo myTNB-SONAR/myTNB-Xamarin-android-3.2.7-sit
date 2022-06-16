@@ -369,6 +369,9 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_EKYC_SUCCESSFUL = "20013";
         public const string BCRM_NOTIFICATION_EKYC_FIRST_NOTIFICATION = "20014";
         public const string BCRM_NOTIFICATION_EKYC_SECOND_NOTIFICATION = "20015";
+        public const string BCRM_NOTIFICATION_EKYC_THIRD_PARTY_FAILED = "20018";
+        public const string BCRM_NOTIFICATION_EKYC_THIRD_PARTY_THREE_TIMES_FAILURE = "20019";
+        public const string BCRM_NOTIFICATION_EKYC_THIRD_PARTY_SUCCESSFUL = "20020";
 
         //App Update
         public const string BCRM_NOTIFICATION_APP_UPDATE = "20006";

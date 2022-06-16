@@ -23,6 +23,7 @@ using Android;
 using System;
 using AndroidX.AppCompat.App;
 using myTNB.Mobile.Constants.DS;
+using myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP;
 
 namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 {
@@ -35,7 +36,7 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
         private Android.Webkit.WebView micrositeWebView;
 
         GetEKYCIdentificationModel _identificationModel;
-        bool _isContractorApplied;
+        DSDynamicLinkParamsModel _dsDynamicLinkParamsModel;
 
         private static Snackbar mErrorMessageSnackBar;
         private static FrameLayout mainView;
@@ -51,9 +52,9 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 {
                     _identificationModel = JsonConvert.DeserializeObject<GetEKYCIdentificationModel>(extras.GetString(DigitalSignatureConstants.DS_IDENTIFICATION_MODEL));
                 }
-                if ((extras != null) && extras.ContainsKey(DigitalSignatureConstants.DS_IS_CONTRACTOR_APPLIED))
+                if ((extras != null) && extras.ContainsKey(DigitalSignatureConstants.DS_DYNAMIC_LINK_PARAMS_MODEL))
                 {
-                    _isContractorApplied = extras.GetBoolean(DigitalSignatureConstants.DS_IS_CONTRACTOR_APPLIED);
+                    _dsDynamicLinkParamsModel = JsonConvert.DeserializeObject<DSDynamicLinkParamsModel>(extras.GetString(DigitalSignatureConstants.DS_DYNAMIC_LINK_PARAMS_MODEL));
                 }
 
                 _ = new DSWebViewPresenter(this);
@@ -149,8 +150,7 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
         private void PrepareWebView()
         {
             UserEntity user = UserEntity.GetActive();
-            string myTNBAccountName = user?.DisplayName ?? string.Empty;
-            string signature = SSOManager.Instance.GetDSSignature(myTNBAccountName
+            string myTNBAccountName = user?.DisplayName ?? string.Empty;string signature = SSOManager.Instance.GetDSSignature(myTNBAccountName
                 , AccessTokenCache.Instance.GetAccessToken(this)
                 , user?.DeviceId ?? string.Empty
                 , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
@@ -161,8 +161,11 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 , _identificationModel?.IdentificationType
                 , _identificationModel?.IdentificationNo
                 , GetIntFromStringValue(Constants.DEVICE_PLATFORM)
-                , _isContractorApplied);
-
+                , _dsDynamicLinkParamsModel != null ? _dsDynamicLinkParamsModel.IsContractorApplied : false
+                , _dsDynamicLinkParamsModel != null ? _dsDynamicLinkParamsModel.AppRef : string.Empty);
+            System.Console.WriteLine("_dsDynamicLinkParamsModel.UserID**" + _dsDynamicLinkParamsModel.UserID);
+            System.Console.WriteLine("_dsDynamicLinkParamsModel.IsContractorApplied**" + _dsDynamicLinkParamsModel.IsContractorApplied);
+            System.Console.WriteLine("_dsDynamicLinkParamsModel.AppRef**" + _dsDynamicLinkParamsModel.AppRef);
             string ssoURL = string.Format(AWSConstants.Domains.DSSSO, signature);
 
             micrositeWebView.SetWebChromeClient(new MyTNBWebChromeClient(this) { });

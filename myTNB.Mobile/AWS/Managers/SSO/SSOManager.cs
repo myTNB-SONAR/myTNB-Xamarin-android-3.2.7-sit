@@ -97,7 +97,8 @@ namespace myTNB.Mobile
             , int? idType
             , string idNo
             , int osType
-            , bool isContractorApplied)
+            , bool isContractorApplied
+            , string appReference)
         {
             try
             {
@@ -120,7 +121,8 @@ namespace myTNB.Mobile
                     InitiateTime = DateTime.UtcNow,
                     QRMappingID = null,
                     OSType = osType,
-                    IsContractorApplied = isContractorApplied
+                    IsContractorApplied = isContractorApplied,
+                    appRef = appReference
                 };
                 Debug.WriteLine("[DEBUG] SSO ssoModel: " + JsonConvert.SerializeObject(ssoModel));
                 string signature = SecurityManager.Instance.AES256_Encrypt(AWSConstants.SaltKey

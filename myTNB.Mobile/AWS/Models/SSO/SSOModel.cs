@@ -32,5 +32,6 @@ namespace myTNB.Mobile
         /// </summary>
         public int OSType { set; get; }
         public bool IsContractorApplied { set; get; }
+        public string appRef { set; get; }
     }
 }

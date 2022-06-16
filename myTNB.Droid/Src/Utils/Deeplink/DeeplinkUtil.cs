@@ -1,10 +1,11 @@
-﻿using System.Web;
-using Android.Net;
+﻿using System;
+using System.Web;
 using myTNB.Mobile.SessionCache;
 using System.Text.RegularExpressions;
 
 using Constant = myTNB_Android.Src.Utils.Deeplink.Deeplink.Constants;
 using Screen = myTNB_Android.Src.Utils.Deeplink.Deeplink.ScreenEnum;
+using myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP;
 
 namespace myTNB_Android.Src.Utils.Deeplink
 {
@@ -15,7 +16,7 @@ namespace myTNB_Android.Src.Utils.Deeplink
         public string ScreenKey = string.Empty;
         public Screen TargetScreen = Screen.None;
 
-        public string eKYCIsContractorApplied = string.Empty;
+        public DSDynamicLinkParamsModel EKYCDynamicLinkModel = new DSDynamicLinkParamsModel();
 
         public static DeeplinkUtil Instance
         {
@@ -29,7 +30,7 @@ namespace myTNB_Android.Src.Utils.Deeplink
             }
         }
 
-        private void SaveDeeplinkDetails(Screen deeplinkScreen, Uri deeplink)
+        private void SaveDeeplinkDetails(Screen deeplinkScreen, Android.Net.Uri deeplink)
         {
             switch (deeplinkScreen)
             {
@@ -68,13 +69,22 @@ namespace myTNB_Android.Src.Utils.Deeplink
                         deeplink.Query.IsValid())
                     {
                         var deeplinkQuery = HttpUtility.ParseQueryString(deeplink.Query);
-                        ScreenKey = deeplinkQuery[Constant.UserIDKey];
-                        eKYCIsContractorApplied = deeplinkQuery[Constant.IsContractorAppliedKey];
+                        EKYCDynamicLinkModel.UserID = deeplinkQuery[Constant.UserIDKey];
+                        string isContractorAppliedStr = deeplinkQuery[Constant.eKYCIsContractorAppliedKey];
+                        if (isContractorAppliedStr.IsValid())
+                        {
+                            EKYCDynamicLinkModel.IsContractorApplied = bool.Parse(isContractorAppliedStr);
+                        }
                     }
                     else
                     {
-                        ScreenKey = GetParamValueFromKey(Constant.UserIDKey, deeplink);
-                        eKYCIsContractorApplied = GetParamValueFromKey(Constant.IsContractorAppliedKey, deeplink);
+                        EKYCDynamicLinkModel.UserID = GetParamValueFromKey(Constant.UserIDKey, deeplink);
+                        string isContractorAppliedStr = GetParamValueFromKey(Constant.eKYCIsContractorAppliedKey, deeplink);
+                        if (isContractorAppliedStr.IsValid())
+                        {
+                            EKYCDynamicLinkModel.IsContractorApplied = bool.Parse(isContractorAppliedStr);
+                        }
+                        EKYCDynamicLinkModel.AppRef = GetParamValueFromKey(Constant.eKYCAppRefKey, deeplink);
                     }
                     break;
                 default:
@@ -82,7 +92,7 @@ namespace myTNB_Android.Src.Utils.Deeplink
             }
         }
 
-        public void InitiateDeepLink(Uri deeplink)
+        public void InitiateDeepLink(Android.Net.Uri deeplink)
         {
             if (deeplink != null)
             {
@@ -134,10 +144,10 @@ namespace myTNB_Android.Src.Utils.Deeplink
         {
             TargetScreen = Screen.None;
             ScreenKey = string.Empty;
-            eKYCIsContractorApplied = string.Empty;
+            EKYCDynamicLinkModel = new DSDynamicLinkParamsModel();
         }
 
-        private void SaveDeeplinkDetailsForQR(Uri deeplink)
+        private void SaveDeeplinkDetailsForQR(Android.Net.Uri deeplink)
         {
             string deepLinkUrlString = deeplink.ToString().ToLower();
             {
@@ -149,45 +159,60 @@ namespace myTNB_Android.Src.Utils.Deeplink
             }
         }
 
-        private string GetParamValueFromKey(string key, Uri deeplink, bool isQRCode = false)
+        private string GetParamValueFromKey(string key, Android.Net.Uri deeplink, bool isQRCode = false)
         {
             string value = string.Empty;
             string queryString = string.Empty;
 
-            if (isQRCode)
+            try
             {
-                if (deeplink != null && deeplink.Query != null)
+                if (isQRCode)
                 {
-                    queryString = deeplink.Query.ToString();
-                }
-            }
-            else
-            {
-                queryString = deeplink.Path.ToLower();
-            }
-
-            var parameters = queryString?.Split(Constant.Slash);
-            if (parameters.Length > 0)
-            {
-                foreach (var item in parameters)
-                {
-                    var segment = item?.Split(Constant.AmperSand);
-                    if (segment.Length > 0)
+                    if (deeplink != null && deeplink.Query != null)
                     {
-                        foreach (var pair in segment)
+                        queryString = deeplink.Query.ToString();
+                    }
+                }
+                else
+                {
+                    queryString = deeplink.Path ?? string.Empty;
+                }
+
+                var parameters = queryString?.Split(Constant.Slash);
+                if (parameters != null)
+                {
+                    if (parameters.Length > 0)
+                    {
+                        foreach (var item in parameters)
                         {
-                            string pattern = string.Format(Constant.Pattern, key);
-                            Regex regex = new Regex(pattern);
-                            Match match = regex.Match(pair);
-                            if (match.Success)
+                            var segment = item?.Split(Constant.AmperSand);
+                            if (segment != null)
                             {
-                                value = match.Value.Replace(string.Format(Constant.ReplaceKey, key), string.Empty);
-                                break;
+                                if (segment.Length > 0)
+                                {
+                                    foreach (var pair in segment)
+                                    {
+                                        string pattern = string.Format(Constant.Pattern, key);
+                                        Regex regex = new Regex(pattern);
+                                        Match match = regex.Match(pair);
+                                        if (match.Success)
+                                        {
+                                            value = match.Value.Replace(string.Format(Constant.ReplaceKey, key), string.Empty);
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
+                
             }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            
             return value;
         }
     }

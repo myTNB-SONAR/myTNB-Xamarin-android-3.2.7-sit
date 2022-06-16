@@ -64,7 +64,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             /// <summary>
             /// Calls the GetEKYCIdentification API
             /// </summary>
-            void GetEKYCIdentificationOnCall(bool isContractorApplied);
+            void GetEKYCIdentificationOnCall(DSDynamicLinkParamsModel dynamicLinkParamsModel);
 
             /// <summary>
             /// Gets the Identification model
@@ -73,10 +73,10 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             GetEKYCIdentificationModel GetIdentificationModel();
 
             /// <summary>
-            /// Gets the IsContractorApplied flag from dynamic link
+            /// Gets the DSDynamicLinkParamsModel from dynamic link parsing
             /// </summary>
             /// <returns></returns>
-            bool GetIsContractorApplied();
+            DSDynamicLinkParamsModel GetDSDynamicLinkParamsModel();
         }
     }
 }

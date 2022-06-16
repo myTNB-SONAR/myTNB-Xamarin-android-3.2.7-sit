@@ -117,27 +117,14 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-
+                var modelUserID = DeeplinkUtil.Instance.EKYCDynamicLinkModel.UserID ?? string.Empty;
                 if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.IdentityVerification &&
-                    DeeplinkUtil.Instance.ScreenKey.IsValid())
+                    modelUserID.IsValid())
                 {
                     string userID = UserEntity.GetActive().UserID.ToLower();
-                    if (userID.Equals(DeeplinkUtil.Instance.ScreenKey.ToLower()))
+                    if (userID.Equals(modelUserID.ToLower()))
                     {
-                        bool isContractorAppliedFlag = false;
-                        try
-                        {
-                            string isContractorAppliedStr = DeeplinkUtil.Instance.eKYCIsContractorApplied;
-                            if (isContractorAppliedStr.IsValid())
-                            {
-                                isContractorAppliedFlag = bool.Parse(isContractorAppliedStr);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
-                        ProceedOnVerifyNow(isContractorAppliedFlag);
+                        ProceedOnVerifyNow(DeeplinkUtil.Instance.EKYCDynamicLinkModel);
                     }
                     else
                     {
@@ -147,7 +134,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                 }
                 else
                 {
-                    ProceedOnVerifyNow(false);
+                    ShowUnMatchUserIdPopUp();
                 }
                 this.SetIsClicked(false);
             }
@@ -155,10 +142,10 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Verification.Verify_Now);
         }
 
-        private void ProceedOnVerifyNow(bool isContractorApplied)
+        private void ProceedOnVerifyNow(DSDynamicLinkParamsModel dsDynamicLinkParamsModel)
         {
             ShowProgressDialog();
-            this.userActionsListener.GetEKYCIdentificationOnCall(isContractorApplied);
+            this.userActionsListener.GetEKYCIdentificationOnCall(dsDynamicLinkParamsModel);
         }
 
         public void RenderContent()
@@ -381,7 +368,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         {
             Intent intent = new Intent(this, typeof(DSWebViewActivity));
             intent.PutExtra(DigitalSignatureConstants.DS_IDENTIFICATION_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetIdentificationModel()));
-            intent.PutExtra(DigitalSignatureConstants.DS_IS_CONTRACTOR_APPLIED, this.userActionsListener.GetIsContractorApplied());
+            intent.PutExtra(DigitalSignatureConstants.DS_DYNAMIC_LINK_PARAMS_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetDSDynamicLinkParamsModel()));
             StartActivity(intent);
 
             DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Verification.PopUp_Verify_Now);

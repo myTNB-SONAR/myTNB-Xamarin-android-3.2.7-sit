@@ -10,7 +10,7 @@
         internal static readonly string DS_EKYC_ERROR = "ekyc/error";
         internal static readonly string DS_ACT_BACK_TO_APP = "mytnbapp://action=backtoapp";
         internal static readonly string DS_ACT_BACK_TO_HOME = "mytnbapp://action=backtohome";
-        internal static readonly string DS_IS_CONTRACTOR_APPLIED = "isContractorApplied";
+        internal static readonly string DS_DYNAMIC_LINK_PARAMS_MODEL = "dsDynamicLinkParamsModel";
         internal static readonly string EKYC_SET_APPOINTMENT_URL = "https://www.mytnb.com.my/tnbtemujanji";
 
         public struct EKYCNotifType

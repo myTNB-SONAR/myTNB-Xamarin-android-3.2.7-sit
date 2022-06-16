@@ -163,7 +163,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCSuccessful ||
                             notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCFailed ||
                             notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThreeTimesFailure ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCIDNotMatching)
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCIDNotMatching ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyFailed ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyThreeTimesFailure ||
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartySuccessful)
                         {
                             if (UserEntity.IsCurrentlyActive())
                             {
