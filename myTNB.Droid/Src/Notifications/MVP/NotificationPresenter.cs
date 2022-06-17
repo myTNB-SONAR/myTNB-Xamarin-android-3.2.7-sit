@@ -654,6 +654,10 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                     case Constants.BCRM_NOTIFICATION_EKYC_FAILED:
                                                     case Constants.BCRM_NOTIFICATION_EKYC_THREE_TIMES_FAILURE:
                                                     case Constants.BCRM_NOTIFICATION_EKYC_SUCCESSFUL:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_FAILED:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_THREE_TIMES_FAILURE:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_SUCCESSFUL:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_ID_NO_TMATCHING:
                                                         if (DSUtility.Instance.IsAccountEligible)
                                                         {
                                                             listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));

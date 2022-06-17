@@ -56,6 +56,7 @@ namespace myTNB_Android.Src.Utils.Notification
                     case MobileConstants.PushNotificationTypes.EKYCThirdPartyFailed:
                     case MobileConstants.PushNotificationTypes.EKYCThirdPartyThreeTimesFailure:
                     case MobileConstants.PushNotificationTypes.EKYCThirdPartySuccessful:
+                    case MobileConstants.PushNotificationTypes.EKYCThirdPartyIDNotMaching:
                         Type = Type.EKYC;
                         break;
                     default:

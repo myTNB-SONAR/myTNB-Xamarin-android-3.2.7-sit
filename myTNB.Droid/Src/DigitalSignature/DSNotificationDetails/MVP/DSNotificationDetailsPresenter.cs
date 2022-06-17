@@ -105,6 +105,7 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_EKYC_ID_NOT_MATCHING:
                     case Constants.BCRM_NOTIFICATION_EKYC_FAILED:
                     case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_FAILED:
+                    case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_ID_NO_TMATCHING:
                         imageResourceBanner = Resource.Drawable.Banner_Notification_EKYC_Failed;
                         primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.VERIFY_NOW),
                                 delegate () { VerifyNowOnTap(); });

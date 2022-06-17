@@ -163,6 +163,7 @@ namespace myTNB.Mobile
             public const string EKYCThirdPartyFailed = "EKYCTHIRDPARTYFAILED";
             public const string EKYCThirdPartyThreeTimesFailure = "EKYCTHIRDPARTYMTHREETIMESFAILURE";
             public const string EKYCThirdPartySuccessful = "EKYCTHIRDPARTYVERIFICATIONSUCCESS";
+            public const string EKYCThirdPartyIDNotMaching = "EKYCTHIRDPARTYIDNOTMATCHING";
         }
 
         public struct OSType
