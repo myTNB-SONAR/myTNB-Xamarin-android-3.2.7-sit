@@ -187,7 +187,7 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
                         if (detailModel.ctaList.Count > 0)
                         {
                             ctaComponent.Visibility = ViewStates.Visible;
-                            ctaComponent.SetCTAButton(detailModel.ctaList);
+                            ctaComponent.SetCustomCTAButton(detailModel.ctaList);
                         }
                         else
                         {

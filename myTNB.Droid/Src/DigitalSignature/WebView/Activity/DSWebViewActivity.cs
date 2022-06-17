@@ -163,9 +163,7 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 , GetIntFromStringValue(Constants.DEVICE_PLATFORM)
                 , _dsDynamicLinkParamsModel != null ? _dsDynamicLinkParamsModel.IsContractorApplied : false
                 , _dsDynamicLinkParamsModel != null ? _dsDynamicLinkParamsModel.AppRef : string.Empty);
-            System.Console.WriteLine("_dsDynamicLinkParamsModel.UserID**" + _dsDynamicLinkParamsModel.UserID);
-            System.Console.WriteLine("_dsDynamicLinkParamsModel.IsContractorApplied**" + _dsDynamicLinkParamsModel.IsContractorApplied);
-            System.Console.WriteLine("_dsDynamicLinkParamsModel.AppRef**" + _dsDynamicLinkParamsModel.AppRef);
+
             string ssoURL = string.Format(AWSConstants.Domains.DSSSO, signature);
 
             micrositeWebView.SetWebChromeClient(new MyTNBWebChromeClient(this) { });
