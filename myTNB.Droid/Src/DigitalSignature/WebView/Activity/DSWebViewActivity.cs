@@ -169,6 +169,13 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
             micrositeWebView.SetWebChromeClient(new MyTNBWebChromeClient(this) { });
             micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));
             micrositeWebView.Settings.JavaScriptEnabled = true;
+            micrositeWebView.Settings.AllowFileAccess = true;
+            micrositeWebView.Settings.AllowFileAccessFromFileURLs = true;
+            micrositeWebView.Settings.AllowUniversalAccessFromFileURLs = true;
+            micrositeWebView.Settings.AllowContentAccess = true;
+            micrositeWebView.Settings.JavaScriptCanOpenWindowsAutomatically = true;
+            micrositeWebView.Settings.DomStorageEnabled = true;
+            micrositeWebView.Settings.MediaPlaybackRequiresUserGesture = false;
             micrositeWebView.LoadUrl(ssoURL);
         }
 
@@ -197,6 +204,10 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
         internal class MyTNBWebChromeClient : WebChromeClient
         {
             DSWebViewActivity _dSWebViewActivity;
+            View? _customView = null;
+            ICustomViewCallback? _customViewCallback = null;
+            ScreenOrientation _originalOrientation = ScreenOrientation.Unspecified; 
+            ViewStates _originalVisibility = ViewStates.Invisible;
 
             public MyTNBWebChromeClient(DSWebViewActivity dSWebViewActivity)
             {
@@ -214,6 +225,69 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 else
                 {
                     request?.Deny();
+                }
+            }
+
+            public override void OnShowCustomView(View? view, ICustomViewCallback? callback)
+            {
+                base.OnShowCustomView(view, callback);
+                
+                try
+                {
+                    if (_customView != null)
+                    {
+                        OnHideCustomView();
+                        return;
+                    }
+
+                    _customView = view;
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.R)
+                    {
+                        _originalVisibility = _dSWebViewActivity.Window.DecorView.Visibility;
+                        (_dSWebViewActivity.Window.DecorView as FrameLayout).AddView(_customView, new FrameLayout.LayoutParams(-1, -1));
+                        _dSWebViewActivity.Window.SetDecorFitsSystemWindows(false);
+                    }
+                    else
+                    {
+                        _originalVisibility = _dSWebViewActivity.Window.DecorView.WindowVisibility;
+                        (_dSWebViewActivity.Window.DecorView as FrameLayout).AddView(_customView, new FrameLayout.LayoutParams(-1, -1));
+                        _dSWebViewActivity.Window.DecorView.Visibility = ViewStates.Visible;
+                    }
+                    _originalOrientation = _dSWebViewActivity.RequestedOrientation;
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            public override void OnHideCustomView()
+            {
+                base.OnHideCustomView();
+
+                try
+                {
+                    (_dSWebViewActivity.Window.DecorView as FrameLayout).RemoveView(_customView);
+                    _customView = null;
+
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.R)
+                    {
+                        _dSWebViewActivity.Window.SetDecorFitsSystemWindows(true);
+                    }
+                    else
+                    {
+                        _dSWebViewActivity.Window.DecorView.Visibility = _originalVisibility;
+                    }
+                    _dSWebViewActivity.RequestedOrientation = _originalOrientation;
+                    if (_customViewCallback != null)
+                    {
+                        _customViewCallback.OnCustomViewHidden();
+                    }
+                    _customViewCallback = null;
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
                 }
             }
         }
@@ -274,7 +348,9 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 
                     base.OnPageStarted(view, url, favicon);
                     Log.Debug("[DEBUG]", "OnPageStarted url: " + url.ToString());
-                    
+
+                    view.LoadUrl("javascript:(function f() { window['__NVW_WEBVIEW__'] = { isAndroid: true } } )()");
+
                     if (url.ToString().ToLower().Contains(DigitalSignatureConstants.DS_EKYC_START))
                     {
                         actionBar.Show();

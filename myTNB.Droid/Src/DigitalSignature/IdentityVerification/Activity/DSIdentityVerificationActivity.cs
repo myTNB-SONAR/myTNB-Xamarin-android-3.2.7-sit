@@ -134,7 +134,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                 }
                 else
                 {
-                    ShowUnMatchUserIdPopUp();
+                    ProceedOnVerifyNow(new DSDynamicLinkParamsModel());
                 }
                 this.SetIsClicked(false);
             }
