@@ -21,6 +21,8 @@ using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.NotificationDetails.Models;
 using Android.Text;
 using myTNB.Mobile.Constants.DS;
+using myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
 {
@@ -406,8 +408,17 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
 
         public void NavigateToIdentityVerification()
         {
-            Intent nbrDiscoverMoreIntent = new Intent(this, typeof(DSIdentityVerificationActivity));
-            StartActivity(nbrDiscoverMoreIntent);
+            DSDynamicLinkParamsModel model = new DSDynamicLinkParamsModel();
+
+            if (notificationDetails.Verification != null)
+            {
+                model.IsContractorApplied = notificationDetails.Verification.IsContractorApplied;
+                model.AppRef = notificationDetails.Verification.AppRef;
+            }
+
+            Intent dsIdentityVerificationIntent = new Intent(this, typeof(DSIdentityVerificationActivity));
+            dsIdentityVerificationIntent.PutExtra(DigitalSignatureConstants.DS_DYNAMIC_LINK_PARAMS_MODEL, JsonConvert.SerializeObject(model));
+            StartActivity(dsIdentityVerificationIntent);
 
             DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Notification.Verify_Now);
         }

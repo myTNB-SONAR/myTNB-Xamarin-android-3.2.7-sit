@@ -36,16 +36,32 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         private const string PAGE_ID = DSConstants.PageName_DSLanding;
         private const int _totalItem = 3;
 
+        DSDynamicLinkParamsModel _dsDynamicLinkParamsModel;
+
         private DSIdentityVerificationContract.IUserActionsListener userActionsListener;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            _ = new DSIdentityVerificationPresenter(this, this);
-            this.userActionsListener?.OnInitialize();
+            try
+            {
+                Bundle extras = Intent.Extras;
 
-            DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Verification.Verify_How_It_Works);
+                if ((extras != null) && extras.ContainsKey(DigitalSignatureConstants.DS_DYNAMIC_LINK_PARAMS_MODEL))
+                {
+                    _dsDynamicLinkParamsModel = JsonConvert.DeserializeObject<DSDynamicLinkParamsModel>(extras.GetString(DigitalSignatureConstants.DS_DYNAMIC_LINK_PARAMS_MODEL));
+                }
+
+                _ = new DSIdentityVerificationPresenter(this, this);
+                this.userActionsListener?.OnInitialize();
+
+                DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Verification.Verify_How_It_Works);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnStart()
@@ -134,7 +150,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                 }
                 else
                 {
-                    ProceedOnVerifyNow(new DSDynamicLinkParamsModel());
+                    ProceedOnVerifyNow(_dsDynamicLinkParamsModel);
                 }
                 this.SetIsClicked(false);
             }

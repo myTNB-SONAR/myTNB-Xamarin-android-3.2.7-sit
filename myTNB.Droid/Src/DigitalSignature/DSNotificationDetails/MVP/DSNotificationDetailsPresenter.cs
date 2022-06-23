@@ -112,11 +112,13 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP
                         ctaList.Add(primaryCTA);
                         break;
                     case Constants.BCRM_NOTIFICATION_EKYC_THREE_TIMES_FAILURE:
-                    case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_THREE_TIMES_FAILURE:
                         imageResourceBanner = Resource.Drawable.Banner_Notification_EKYC_Failed;
                         primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.SET_APPOINTMENT_NOW),
                                 delegate () { SetAppointmentNowOnTap(); });
                         ctaList.Add(primaryCTA);
+                        break;
+                    case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_THREE_TIMES_FAILURE:
+                        imageResourceBanner = Resource.Drawable.Banner_Notification_EKYC_Failed;
                         break;
                     case Constants.BCRM_NOTIFICATION_EKYC_SUCCESSFUL:
                     case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_SUCCESSFUL:

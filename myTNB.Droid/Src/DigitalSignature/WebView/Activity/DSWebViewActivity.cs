@@ -150,7 +150,20 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
         private void PrepareWebView()
         {
             UserEntity user = UserEntity.GetActive();
-            string myTNBAccountName = user?.DisplayName ?? string.Empty;string signature = SSOManager.Instance.GetDSSignature(myTNBAccountName
+            string myTNBAccountName = user?.DisplayName ?? string.Empty;
+            bool isContractorApplied = false;
+            string appRef = string.Empty;
+            
+            if (_dsDynamicLinkParamsModel != null)
+            {
+                isContractorApplied = _dsDynamicLinkParamsModel.IsContractorApplied;
+                if (_dsDynamicLinkParamsModel.AppRef != null)
+                {
+                    appRef = _dsDynamicLinkParamsModel.AppRef;
+                }
+            }
+
+            string signature = SSOManager.Instance.GetDSSignature(myTNBAccountName
                 , AccessTokenCache.Instance.GetAccessToken(this)
                 , user?.DeviceId ?? string.Empty
                 , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
@@ -161,8 +174,8 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 , _identificationModel?.IdentificationType
                 , _identificationModel?.IdentificationNo
                 , GetIntFromStringValue(Constants.DEVICE_PLATFORM)
-                , _dsDynamicLinkParamsModel != null ? _dsDynamicLinkParamsModel.IsContractorApplied : false
-                , _dsDynamicLinkParamsModel != null ? _dsDynamicLinkParamsModel.AppRef : string.Empty);
+                , isContractorApplied
+                , appRef);
 
             string ssoURL = string.Format(AWSConstants.Domains.DSSSO, signature);
 

@@ -58,6 +58,9 @@ namespace myTNB_Android.Src.NotificationDetails.Models
         [JsonProperty("SDStatusDetails", Required = Newtonsoft.Json.Required.AllowNull)]
         public SDStatusDetailsData SDStatusDetails;
 
+        [JsonProperty("verification", Required = Newtonsoft.Json.Required.AllowNull)]
+        public EKYCVerification Verification;
+
         [JsonProperty("HeaderTitle")]
         public string HeaderTitle { get; set; }
 
@@ -84,6 +87,15 @@ namespace myTNB_Android.Src.NotificationDetails.Models
 
             [JsonProperty("ServiceDisruptionID")]
             public string ServiceDisruptionID { get; set; }
+        }
+
+        public class EKYCVerification
+        {
+            [JsonProperty("isContractorApplied")]
+            public bool IsContractorApplied { get; set; }
+
+            [JsonProperty("appRef")]
+            public string AppRef { get; set; }
         }
     }
 }
