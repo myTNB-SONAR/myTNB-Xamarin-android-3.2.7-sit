@@ -70,6 +70,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
                 this.mActivity.RunOnUiThread(() =>
                 {
                     this.view?.HideProgressDialog();
+                    this.view?.ShowErrorMessage(eKYCIdentificationResponse.StatusDetail);
                 });
             }
         }

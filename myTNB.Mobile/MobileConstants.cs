@@ -161,9 +161,9 @@ namespace myTNB.Mobile
             public const string EKYCFirstNotification = "EKYCFIRSTNOTIFICATION";
             public const string EKYCSecondNotification = "EKYCSECONDNOTIFICATION";
             public const string EKYCThirdPartyFailed = "EKYCTHIRDPARTYFAILED";
-            public const string EKYCThirdPartyThreeTimesFailure = "EKYCTHIRDPARTYMTHREETIMESFAILURE";
             public const string EKYCThirdPartySuccessful = "EKYCTHIRDPARTYVERIFICATIONSUCCESS";
-            public const string EKYCThirdPartyIDNotMaching = "EKYCTHIRDPARTYIDNOTMATCHING";
+            public const string EKYCThirdPartyThreeTimesFailure = "EKYCTHIRDPARTYMTHREETIMESFAILURE";
+            public const string EKYCThirdPartyIDNotMatching = "EKYCTHIRDPARTYIDNOTMATCHING";
         }
 
         public struct OSType

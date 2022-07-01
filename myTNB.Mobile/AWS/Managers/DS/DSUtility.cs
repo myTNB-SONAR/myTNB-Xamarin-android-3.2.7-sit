@@ -24,6 +24,30 @@ namespace myTNB.Mobile.AWS.Managers.DS
         {
         }
 
+        /*public bool IsAccountEligible
+        {
+            get
+            {
+                if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DS, FeatureProperty.Enabled))
+                {
+                    if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DS, FeatureProperty.TargetGroup))
+                    {
+                        return GetCAList() is List<string> caList
+                            && caList != null
+                            && caList.Count > 0;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }*/
+
         public bool IsAccountEligible
         {
             get

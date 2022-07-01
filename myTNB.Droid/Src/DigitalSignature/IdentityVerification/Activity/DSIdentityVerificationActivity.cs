@@ -380,6 +380,16 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             });
         }
 
+        public void ShowErrorMessage(StatusDetail statusDetail)
+        {
+            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(statusDetail.Title)
+                .SetMessage(statusDetail.Message)
+                .SetCTALabel(statusDetail.PrimaryCTATitle)
+                .Build();
+            whereisMyacc.Show();
+        }
+
         private void OnVerifyNow()
         {
             Intent intent = new Intent(this, typeof(DSWebViewActivity));

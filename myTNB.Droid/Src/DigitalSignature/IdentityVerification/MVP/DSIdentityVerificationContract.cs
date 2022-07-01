@@ -1,4 +1,5 @@
 ﻿using System;
+using myTNB;
 using myTNB.Mobile.AWS.Models.DS.Identification;
 using myTNB_Android.Src.Base.MVP;
 
@@ -47,6 +48,12 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             /// Shows prepare document pop up
             /// </summary>
             void ShowPrepareDocumentPopUp(int? idType);
+
+            /// <summary>
+            /// Shows API error pop up
+            /// </summary>
+            /// <param name="statusDetail"></param>
+            void ShowErrorMessage(StatusDetail statusDetail);
         }
 
         public interface IUserActionsListener : IBasePresenter

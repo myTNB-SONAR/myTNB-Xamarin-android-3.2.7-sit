@@ -643,6 +643,8 @@ namespace myTNB.Mobile
         //DS & eKYC
         public string SignApplicationURL { set; get; }
         public bool IsVerifyNow { set; get; }
+        public bool IsContractorApplied { set; get; }
+
         /// <summary>
         /// Formatted Created date display
         /// </summary>

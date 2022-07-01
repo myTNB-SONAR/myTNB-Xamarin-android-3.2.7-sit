@@ -286,6 +286,15 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     {
                         displayModel.Content.ApplicationDetail.IsVerifyNow = isVerifyNow;
                     }
+                    if (GetObjectValue(props, "isContractorApplied") is bool isContractorApplied)
+                    {
+                        displayModel.Content.ApplicationDetail.IsContractorApplied = isContractorApplied;
+                    }
+                    if (!displayModel.Content.ApplicationDetail.ReferenceNo.IsValid()
+                        && GetObjectValue(props, "referenceNo") is string referenceNo && referenceNo.IsValid())
+                    {
+                        displayModel.Content.ApplicationDetail.ReferenceNo = referenceNo;
+                    }
                     bool shouldShowLinkedWith = false;
 
                     for (int i = 0; i < additionalDisplayConfig.Count; i++)

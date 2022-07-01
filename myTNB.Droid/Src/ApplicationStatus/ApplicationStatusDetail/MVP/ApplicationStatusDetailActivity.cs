@@ -36,6 +36,8 @@ using Android.Text;
 using Android.Content.PM;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity;
+using myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP;
+using myTNB_Android.Src.DigitalSignature;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -243,7 +245,16 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.VerifyNow)
                     {
+                        DSDynamicLinkParamsModel model = new DSDynamicLinkParamsModel();
+
+                        if (applicationDetailDisplay.ApplicationDetail != null)
+                        {
+                            model.IsContractorApplied = applicationDetailDisplay.ApplicationDetail.IsContractorApplied;
+                            model.AppRef = applicationDetailDisplay.ApplicationDetail.ReferenceNo;
+                        }
+
                         Intent ekycVerificationIntent = new Intent(this, typeof(DSIdentityVerificationActivity));
+                        ekycVerificationIntent.PutExtra(DigitalSignatureConstants.DS_DYNAMIC_LINK_PARAMS_MODEL, JsonConvert.SerializeObject(model));
                         StartActivity(ekycVerificationIntent);
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.SignApplication)

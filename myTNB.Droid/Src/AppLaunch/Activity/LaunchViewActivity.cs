@@ -167,7 +167,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyFailed ||
                             notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyThreeTimesFailure ||
                             notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartySuccessful ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyIDNotMaching)
+                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyIDNotMatching)
                         {
                             if (UserEntity.IsCurrentlyActive())
                             {
