@@ -761,11 +761,25 @@ namespace myTNB_Android.Src.Utils
             }
         }
 
-
-
         public static string GetAppUpdateId()
         {
             return AppUpdateId;
+        }
+
+        public static void ShowBCRMDOWNTooltip(Activity context, DownTimeEntity downTimeEntity, Action confirmAction)
+        {
+            MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON_WITH_HEADER)
+                .SetHeaderImage(Resource.Drawable.maintenance_bcrm)
+                .SetHeaderTitle(downTimeEntity.DowntimeTextMessage)
+                .SetTitle("")
+                .SetMessage(downTimeEntity.DowntimeMessage)
+                .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                .SetCTAaction(() =>
+                {
+                    confirmAction();
+                })
+                .Build();
+            marketingTooltip.Show();
         }
     }
 }

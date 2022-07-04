@@ -167,7 +167,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 txtICNumber.AddTextChangedListener(new PhoneTextWatcher(txtICNumber, identityType));
                 txtICNumber.SetOnKeyListener(new KeyListener());
 
-                MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+                //MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
 
                 ClearFields();
                 ClearAllErrorFields();
@@ -511,30 +511,37 @@ namespace myTNB_Android.Src.UpdateID.Activity
                     this.SetIsClicked(true);
                     string Idtype = selectedIdentificationType.Id.ToString().Trim();
                     string ic_no = txtICNumber.Text.ToString().Trim();
-
-                    ShowUpdateIdDialog(this, () =>
-                    {
-                        this.userActionsListener.OnCheckID(ic_no, Idtype);
-                        bool hasExistedID = MyTNBAccountManagement.GetInstance().IsIDUpdated();
-
-                        if (hasExistedID)
-                        {
-                            ShowProgress();
-                            this.userActionsListener.OnUpdateIC(Idtype, ic_no);                         
-                        }
-                        else
-                        {
-                            ShowInvalidIdentificationError();
-                            HideProgressDialog();
-                            DisableRegisterButton();
-                        }
-                    });
-                   
+                    this.userActionsListener.OnCheckID(ic_no, Idtype);                                     
                 }
             }
             catch (Exception e)
             {
                 this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void callConfirm(string ic_no, string Idtype)
+        {
+            try
+            {
+                ShowUpdateIdDialog(this, () =>
+                {
+                    if (MyTNBAccountManagement.GetInstance().IsIDUpdated())
+                    {
+                        ShowProgress();
+                        this.userActionsListener.OnUpdateIC(Idtype, ic_no);
+                    }
+                    else
+                    {
+                        ShowInvalidIdentificationError();
+                        HideProgressDialog();
+                        DisableRegisterButton();
+                    }
+                });
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }

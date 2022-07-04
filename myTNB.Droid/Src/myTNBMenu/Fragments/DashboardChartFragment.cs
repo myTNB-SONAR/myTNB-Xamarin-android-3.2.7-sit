@@ -1054,9 +1054,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 btnEditBudget.Text = Utility.GetLocalizedLabel("Usage", "editEnergyButton");
                 energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "youHaveNotSetBudget");
                 btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "setEnergyButton");
-                btnRefresh_EB_MDMS.Text = Utility.GetLocalizedLabel("Usage", "refreshNowEnergyBudgetButton");
-                refreshcontentEBMDMSDown.Text = Utility.GetLocalizedLabel("Usage", "disconnectedEnergyBudget");
+                //btnRefresh_EB_MDMS.Text = Utility.GetLocalizedLabel("Usage", "refreshNowEnergyBudgetButton");
+                //refreshcontentEBMDMSDown.Text = Utility.GetLocalizedLabel("Usage", "disconnectedEnergyBudget");
                 energyBudgetbodytxt.Text = Utility.GetLocalizedLabel("Usage", "youHaveNotSetBudgetSubtitle");
+
+                DownTimeEntity EBEntity = DownTimeEntity.GetByCode(Constants.EB_SYSTEM);
+                DownTimeEntity SMEntity = DownTimeEntity.GetByCode(Constants.SMART_METER_SYSTEM);
+                if (EBEntity != null && SMEntity != null && SMEntity.IsDown)
+                {
+                    refreshcontentEBMDMSDown.Text = EBEntity.DowntimeMessage;
+                }
+                else
+                {
+                    refreshcontentEBMDMSDown.Text = Utility.GetLocalizedLabel("Usage", "disconnectedEnergyBudget");
+                }
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
 
@@ -5163,7 +5174,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                this.userActionsListener.OnPay();
+                DownTimeEntity pgXEntity = DownTimeEntity.GetByCode(Constants.PG_SYSTEM);
+                if (isPaymentDown)
+                {
+                    if (pgXEntity != null)
+                    {
+                        Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
+                        {
+                            this.SetIsClicked(false);
+
+                        });
+                    }
+                }
+                else
+                {
+                    this.userActionsListener.OnPay();
+                }
                 try
                 {
                     FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Payment Buttom Clicked");
@@ -6913,6 +6939,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (isPaymentDown)
                     {
                         DisablePayButton();
+                        btnPay.Enabled = true;
                     }
                     else
                     {
@@ -7080,6 +7107,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     if (isPaymentDown)
                                     {
                                         DisablePayButton();
+                                        btnPay.Enabled = true;
                                     }
                                     else
                                     {
@@ -7254,6 +7282,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     if (isPaymentDown)
                                     {
                                         DisablePayButton();
+                                        btnPay.Enabled = true;
                                     }
                                     else
                                     {

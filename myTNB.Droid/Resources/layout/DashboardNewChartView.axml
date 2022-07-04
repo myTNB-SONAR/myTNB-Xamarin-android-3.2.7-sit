@@ -991,7 +991,7 @@
 											android:layout_width="wrap_content"
 											android:layout_height="wrap_content"
 											android:layout_marginTop="18dp"
-											android:src="@drawable/icons_display_refresh_grey"
+											android:src="@drawable/mdms_down_dayview"
 											android:id="@+id/EB_MDMSDown_image"
 											android:layout_gravity="center"/>
 										<TextView
@@ -1000,6 +1000,7 @@
 											android:layout_width="match_parent"
 											android:layout_height="wrap_content"
 											android:layout_marginTop="20dp"
+											android:layout_marginBottom="16dp"
 											android:layout_marginLeft="32dp"
 											android:layout_marginRight="32dp"
 											android:lineSpacingExtra="3dp"
@@ -1014,6 +1015,7 @@
 											android:layout_marginRight="16dp"
 											android:layout_marginBottom="18dp"
 											android:layout_weight="1"
+											android:visibility="gone"
 											android:id="@+id/btnRefresh_EB_MDMS"
 											style="@style/Theme.ViewBill" />
 									</LinearLayout>

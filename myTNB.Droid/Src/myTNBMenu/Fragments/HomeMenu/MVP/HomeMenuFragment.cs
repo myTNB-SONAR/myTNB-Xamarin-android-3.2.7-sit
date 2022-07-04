@@ -1701,15 +1701,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Intent applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
                             StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
-                        else if (selectedService.ServiceCategoryId == "1004" && (Utility.IsEnablePayment()
-                            && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded()))
+                        else if (selectedService.ServiceCategoryId == "1004")
                         {
-                            if (!UserSessions.HasPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            if (Utility.IsEnablePayment()
+                            && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded())
                             {
-                                UserSessions.DoPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                                if (!UserSessions.HasPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                                {
+                                    UserSessions.DoPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                                }
+                                Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
+                                StartActivity(payment_activity);
                             }
-                            Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
-                            StartActivity(payment_activity);
+
+                            if (!Utility.IsEnablePayment())
+                            {
+                                DownTimeEntity pgXEntity = DownTimeEntity.GetByCode(Constants.PG_SYSTEM);
+                                if (pgXEntity != null)
+                                {
+                                    Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
+                                    {
+                                        this.SetIsClicked(false);
+                                    });
+                                }
+                            }
                         }
                         else if (selectedService.ServiceCategoryId == "1005" && (!isRefreshShown
                             && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
@@ -1758,23 +1773,39 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                             this.SetIsClicked(false);
                         }
-                        else if (selectedService.ServiceCategoryId == "1007" && (Utility.IsMDMSDownEnergyBudget() && !isRefreshShown))
+                        else if (selectedService.ServiceCategoryId == "1007")
                         {
-                            if (!UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            if (Utility.IsMDMSDownEnergyBudget() && !isRefreshShown)
                             {
-                                UserSessions.DoSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                                if (!UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                                {
+                                    UserSessions.DoSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                                }
+                                if (UserSessions.GetEnergyBudgetList().Count == 1)
+                                {
+                                    this.SetIsClicked(false);
+                                    List<SMRAccount> smacc = new List<SMRAccount>();
+                                    smacc = UserSessions.GetEnergyBudgetList();
+                                    ShowAccountDetails(smacc[0].accountNumber);
+                                }
+                                else if (UserSessions.GetEnergyBudgetList().Count > 1)
+                                {
+                                    Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
+                                    StartActivityForResult(energy_budget_activity, SELECT_SM_ACCOUNT_REQUEST_CODE);
+                                }
                             }
-                            if (UserSessions.GetEnergyBudgetList().Count == 1)
+                            else if (!Utility.IsMDMSDownEnergyBudget())
                             {
-                                this.SetIsClicked(false);
-                                List<SMRAccount> smacc = new List<SMRAccount>();
-                                smacc = UserSessions.GetEnergyBudgetList();
-                                ShowAccountDetails(smacc[0].accountNumber);
-                            }
-                            else if (UserSessions.GetEnergyBudgetList().Count > 1)
-                            {
-                                Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
-                                StartActivityForResult(energy_budget_activity, SELECT_SM_ACCOUNT_REQUEST_CODE);
+                                DownTimeEntity SMEntity = DownTimeEntity.GetByCode(Constants.SMART_METER_SYSTEM);
+                                DownTimeEntity EBEntity = DownTimeEntity.GetByCode(Constants.EB_SYSTEM);
+                                if (SMEntity != null && EBEntity != null && SMEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
+                                {
+                                    Utility.ShowBCRMDOWNTooltip(this.Activity, EBEntity, () =>
+                                    {
+                                        this.SetIsClicked(false);
+
+                                    });
+                                }
                             }
                         }
                         else
@@ -3807,7 +3838,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void ShowDiscoverMoreLayout()
         {
             if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify()
-                && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
+                && !MyTNBAccountManagement.GetInstance().COMCLandNEM() && Utility.IsMDMSDownEnergyBudget())
             {
                 SetupEBDiscoverView();
                 discoverMoreContainer.Visibility = ViewStates.Visible;

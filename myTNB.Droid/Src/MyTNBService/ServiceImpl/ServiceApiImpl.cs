@@ -918,5 +918,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             Console.WriteLine("APIWAS call :" + apiAws.UpdateUserInfoDevice<APIBaseResponse>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
             return apiAws.UpdateUserInfoDevice<APIBaseResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call GetIdentificationNo with timeout set.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public Task<GetIdentificationNoResponse> GetIdentificationNo([Body] Request.BaseRequestV4 request)
+        {
+            return apiAws.GetIdentificationNo<GetIdentificationNoResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

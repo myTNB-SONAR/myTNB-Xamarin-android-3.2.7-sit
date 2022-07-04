@@ -72,11 +72,11 @@ namespace myTNB_Android.Src.AddAccount.Models
 
         [JsonProperty(PropertyName = "IsApplyEBilling")]
         [AliasAs("IsApplyEBilling")]
-        public bool IsApplyEBilling { get; set; } = false;
+        public bool IsApplyEBilling { get; set; }
 
         [JsonProperty(PropertyName = "IsHaveAccess")]
         [AliasAs("IsHaveAccess")]
-        public bool IsHaveAccess { get; set; } = false;
+        public bool IsHaveAccess { get; set; }
 
         [JsonProperty(PropertyName = "BusinessArea")]
         [AliasAs("BusinessArea")]

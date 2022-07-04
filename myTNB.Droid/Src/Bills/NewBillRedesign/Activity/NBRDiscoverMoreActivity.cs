@@ -16,6 +16,7 @@ using System.Threading;
 using Android.Content;
 using myTNB_Android.Src.Bills.NewBillRedesign.Activity;
 using myTNB.Mobile;
+using Android.Preferences;
 
 namespace myTNB_Android.Src.Bills.NewBillRedesign
 {
@@ -166,6 +167,7 @@ namespace myTNB_Android.Src.Bills.NewBillRedesign
         [OnClick(Resource.Id.btnGoToBills)]
         void GoToBillsOnClick(object sender, EventArgs eventArgs)
         {
+            UserSessions.SetFromBRCard(PreferenceManager.GetDefaultSharedPreferences(this), true);
             DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.BillRedesignComms.View_Bill);
             SetResult(Result.Ok);
             Finish();

@@ -75,6 +75,11 @@ namespace myTNB_Android.Src.MyProfileDetail.MVP
             /// </summary>
             /// <param name="isVerified"></param>
             void ShowAccountVerified(bool isVerified);
+            
+            /// <summary>
+            /// Reload the page
+            /// </summary>
+            void ReloadPage();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -89,6 +94,8 @@ namespace myTNB_Android.Src.MyProfileDetail.MVP
             /// Triggers API Call to get Account Verified status
             /// </summary>
             void GetEKYCStatusOnCall();
+            
+            void GetID(); 
         }
     }
 }

@@ -2609,7 +2609,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         isWhatNewDialogOnHold = true;
 
-                        if (MyTNBAccountManagement.GetInstance().IsFromLoginPage())
+                        if (MyTNBAccountManagement.GetInstance().IsFromLoginPage() && Utility.IsMDMSDownEnergyBudget())
                         {
                             MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
                             Handler h = new Handler();
@@ -2636,7 +2636,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 else if (SetEligibleEBUser())
                 {
-                    if (MyTNBAccountManagement.GetInstance().IsFromLoginPage())
+                    if (MyTNBAccountManagement.GetInstance().IsFromLoginPage() && Utility.IsMDMSDownEnergyBudget())
                     {
                         MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
                         Handler h = new Handler();

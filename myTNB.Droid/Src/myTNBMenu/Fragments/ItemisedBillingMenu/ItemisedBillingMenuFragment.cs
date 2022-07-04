@@ -195,6 +195,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         private bool isDigitalContainerVisible = false;
         private bool isPendingPayment = false;
         private bool isIneligiblePopUpActive = false;
+        private bool isPaymentButtonEnable = false;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -331,10 +332,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             if (!this.GetIsClicked())
             {
-                this.SetIsClicked(true);
-                Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
-                payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
-                StartActivityForResult(payment_activity, DashboardHomeActivity.PAYMENT_RESULT_CODE);
+
+                if (isPaymentButtonEnable)
+                {
+                    this.SetIsClicked(true);
+                    Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
+                    payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+                    StartActivityForResult(payment_activity, DashboardHomeActivity.PAYMENT_RESULT_CODE);
+                }
+                else
+                {
+                    DownTimeEntity pgXEntity = DownTimeEntity.GetByCode(Constants.PG_SYSTEM);
+                    Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
+                    {
+                        this.SetIsClicked(false);
+
+                    });
+                }
             }
         }
 
@@ -996,8 +1010,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 btnViewDetails.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_button_background_disabled);
             }
 
-            bool isPaymentButtonEnable = Utility.IsEnablePayment();
-            btnPayBill.Enabled = isPaymentButtonEnable;
+            isPaymentButtonEnable = Utility.IsEnablePayment();
+            btnPayBill.Enabled = true;
             if (isPaymentButtonEnable)
             {
                 btnPayBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);

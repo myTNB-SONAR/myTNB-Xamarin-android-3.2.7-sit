@@ -201,7 +201,8 @@ namespace myTNB_Android.Src.Database.Model
                 InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
                 CreatedDate = accountResponse.CreatedDate,
                 IsInManageAccessList = accountResponse.IsInManageAccessList,
-                CreatedBy = accountResponse.CreatedBy
+                CreatedBy = accountResponse.CreatedBy,
+                IsHaveAccess = accountResponse.IsHaveAccess
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);

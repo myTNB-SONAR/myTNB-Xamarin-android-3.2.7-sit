@@ -33,6 +33,7 @@ using Refit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.MyAccount.Activity
 {
@@ -63,6 +64,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         private bool fromIDFlag = false;
 
+        private bool IdFlag = false;
+
         private bool fromEmailVerify = false;
 
         // private bool fromDashboard = false;
@@ -90,11 +93,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
             try
             {
+                if (Intent.HasExtra("IdFlag"))
+                {
+                    IdFlag = Intent.Extras.GetBoolean("IdFlag", IdFlag);
+                }
 
-                //if (Intent.HasExtra("fromDashboard"))
-                //{
-                //    fromDashboard = Intent.Extras.GetBoolean("fromDashboard", false);
-                //}
 
                 mPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
@@ -116,11 +119,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 ProfileDetailItemComponent MyTNBPasswordItem = GetPasswordItem();
                 profileMenuItemsContent.AddView(MyTNBPasswordItem);
 
-
                 PopulateActiveAccountDetails();
                 SetUpViews();
                 mPresenter = new ProfileDetailPresenter(this, this);
                 GetAccountVerifiedStatus();
+                this.userActionsListener.GetID();
                 //this.userActionsListener.Start();
             }
             catch (Exception e)
@@ -279,6 +282,22 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 {
                     Utility.LoggingNonFatalError(e);
                 }
+            }
+        }
+
+        public void ReloadPage()
+        {
+            try
+            {
+                //Finish();
+                //StartActivity(new Intent(this, typeof(MyProfileActivity)));
+                Finish();
+                Intent intent = new Intent(this, typeof(MyProfileActivity));
+                StartActivityForResult(intent, Constants.UPDATE_ID_REQUEST);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -788,6 +807,20 @@ namespace myTNB_Android.Src.MyAccount.Activity
                                 fromIDFlag = false;
                                 referenceNumber.SetFlagID(fromIDFlag);
                             }
+                        }
+                    }
+                }
+                else if (requestCode == Constants.UPDATE_ID_REQUEST)
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsIDUpdated(true);
+                    {
+                        //ShowIDUpdateSuccess();
+                        MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+                        UserEntity user = UserEntity.GetActive();
+                        if (!string.IsNullOrEmpty(user.IdentificationNo))
+                        {
+                            fromIDFlag = false;
+                            referenceNumber.SetFlagID(fromIDFlag);
                         }
                     }
                 }

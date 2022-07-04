@@ -3,14 +3,17 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
+using myTNB.Mobile;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Dashboard.Adapter;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SelectSupplyAccount.MVP;
 using myTNB_Android.Src.Utils;
@@ -19,6 +22,7 @@ using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime;
 
 namespace myTNB_Android.Src.SelectSupplyAccount.Activity
@@ -42,6 +46,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
         MaterialDialog materialDialog;
 
+        
         const string PAGE_ID = "SelectElectricityAccounts";
 
         private bool isFromQuickAction = false;
@@ -69,7 +74,57 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         public void ShowList(List<CustomerBillingAccount> customerBillingAccountList)
         {
             Console.WriteLine(string.Format("Size {0}", customerBillingAccountList.Count));
-            accountListAdapter.AddAll(customerBillingAccountList);
+            List<CustomerBillingAccount> custBRList = new List<CustomerBillingAccount>();
+            List<string> BRCas = BillRedesignUtility.Instance.GetCAList();
+            bool BRflag = UserSessions.GetFromBRCard(PreferenceManager.GetDefaultSharedPreferences(this));
+            int isSelected = 0;
+            if (BRflag && BRCas.Count > 0)
+            {
+                int countBRlistAdded = 0;
+                for (int x = 0; x < customerBillingAccountList.Count; x++)
+                {
+                    foreach (var brca in BRCas)
+                    {
+                        if (customerBillingAccountList[x].AccNum == brca)
+                        {
+                            CustomerBillingAccount customerBillingAccount = new CustomerBillingAccount();
+                            customerBillingAccount.AccDesc = customerBillingAccountList[x].AccDesc;
+                            customerBillingAccount.OwnerName = customerBillingAccountList[x].OwnerName;
+                            customerBillingAccount.AccNum = customerBillingAccountList[x].AccNum;
+                            customerBillingAccount.AccountStAddress = customerBillingAccountList[x].AccountStAddress;
+                            customerBillingAccount.isOwned = customerBillingAccountList[x].isOwned;
+                            customerBillingAccount.AccountCategoryId = customerBillingAccountList[x].AccountCategoryId;
+                            customerBillingAccount.IsHaveAccess = customerBillingAccountList[x].IsHaveAccess;
+                            customerBillingAccount.IsSelected = customerBillingAccountList[x].IsSelected;
+
+                            custBRList.Add(customerBillingAccount);
+                            countBRlistAdded++;
+
+                            if (customerBillingAccountList[x].IsSelected)
+                            {
+                                isSelected++;
+                            }
+                        }
+                    }
+                }
+                if (isSelected == 0 && custBRList != null && custBRList.Count > 0)
+                {
+                    custBRList[0].IsSelected = true;
+                }
+                if (custBRList != null && custBRList.Count > 0)
+                {
+                    accountListAdapter.AddAll(custBRList);
+                }
+                else
+                {
+                    accountListAdapter.AddAll(customerBillingAccountList);
+                }
+            }
+            else
+            {
+                accountListAdapter.AddAll(customerBillingAccountList);
+            }
+
         }
 
         private Snackbar mCancelledExceptionSnackBar;

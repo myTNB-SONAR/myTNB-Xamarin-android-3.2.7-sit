@@ -97,7 +97,8 @@ namespace myTNB_Android.Src.UpdateID.MVP
             void ShowProgressDialog();
 
             void HideProgressDialog();
-
+            
+            void callConfirm(string icno, string idtype);
         }
 
         public interface IUserActionsListener : IBasePresenter

@@ -296,28 +296,42 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             System.Diagnostics.Debug.WriteLine("[DEBUG] OnPay");
             if (!this.GetIsClicked())
             {
-                this.SetIsClicked(true);
-                Intent intent = new Intent(this, typeof(PaymentActivity));
-                intent.PutExtra("ISAPPLICATIONPAYMENT", true);
-                intent.PutExtra("APPLICATIONPAYMENTDETAIL", JsonConvert.SerializeObject(applicationDetailDisplay.applicationPaymentDetail));
-                intent.PutExtra("TOTAL", applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay);
-                intent.PutExtra("ApplicationType", applicationDetailDisplay.ApplicationTypeCode);
-                intent.PutExtra("SearchTerm", string.IsNullOrEmpty(applicationDetailDisplay.SavedApplicationID)
-                    || string.IsNullOrWhiteSpace(applicationDetailDisplay.SavedApplicationID)
-                        ? applicationDetailDisplay.ApplicationDetail?.ApplicationId ?? string.Empty
-                        : applicationDetailDisplay.SavedApplicationID);
-                intent.PutExtra("ApplicationSystem", applicationDetailDisplay.System);
-                intent.PutExtra("StatusId", applicationDetailDisplay?.ApplicationStatusDetail?.StatusId.ToString() ?? string.Empty);
-                intent.PutExtra("StatusCode", applicationDetailDisplay?.ApplicationStatusDetail?.StatusCode ?? string.Empty);
-                intent.PutExtra("ApplicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay) ?? string.Empty);
-                StartActivityForResult(intent, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
-                try
+                DownTimeEntity pgXEntity = DownTimeEntity.GetByCode(Constants.PG_SYSTEM);
+                if (!Utility.IsEnablePayment())
                 {
-                    FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
+                    if (pgXEntity != null)
+                    {
+                        Utility.ShowBCRMDOWNTooltip(this, pgXEntity, () =>
+                        {
+                            this.SetIsClicked(false);
+                        });
+                    }
                 }
-                catch (System.Exception ne)
+                else
                 {
-                    Utility.LoggingNonFatalError(ne);
+                    this.SetIsClicked(true);
+                    Intent intent = new Intent(this, typeof(PaymentActivity));
+                    intent.PutExtra("ISAPPLICATIONPAYMENT", true);
+                    intent.PutExtra("APPLICATIONPAYMENTDETAIL", JsonConvert.SerializeObject(applicationDetailDisplay.applicationPaymentDetail));
+                    intent.PutExtra("TOTAL", applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay);
+                    intent.PutExtra("ApplicationType", applicationDetailDisplay.ApplicationTypeCode);
+                    intent.PutExtra("SearchTerm", string.IsNullOrEmpty(applicationDetailDisplay.SavedApplicationID)
+                        || string.IsNullOrWhiteSpace(applicationDetailDisplay.SavedApplicationID)
+                            ? applicationDetailDisplay.ApplicationDetail?.ApplicationId ?? string.Empty
+                            : applicationDetailDisplay.SavedApplicationID);
+                    intent.PutExtra("ApplicationSystem", applicationDetailDisplay.System);
+                    intent.PutExtra("StatusId", applicationDetailDisplay?.ApplicationStatusDetail?.StatusId.ToString() ?? string.Empty);
+                    intent.PutExtra("StatusCode", applicationDetailDisplay?.ApplicationStatusDetail?.StatusCode ?? string.Empty);
+                    intent.PutExtra("ApplicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay) ?? string.Empty);
+                    StartActivityForResult(intent, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
+                    try
+                    {
+                        FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
+                    }
+                    catch (System.Exception ne)
+                    {
+                        Utility.LoggingNonFatalError(ne);
+                    }
                 }
             }
         }
@@ -856,6 +870,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 {
                                     btnApplicationStatusPay.Visibility = ViewStates.Visible;
                                     btnApplicationStatusPay.Enabled = false;
+                                    btnApplicationStatusPay.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.white));
+                                    btnApplicationStatusPay.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+                                }
+
+                                if (!Utility.IsEnablePayment())
+                                {
+                                    btnApplicationStatusPay.Visibility = ViewStates.Visible;
+                                    btnApplicationStatusPay.Enabled = true;
                                     btnApplicationStatusPay.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.white));
                                     btnApplicationStatusPay.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
                                 }
