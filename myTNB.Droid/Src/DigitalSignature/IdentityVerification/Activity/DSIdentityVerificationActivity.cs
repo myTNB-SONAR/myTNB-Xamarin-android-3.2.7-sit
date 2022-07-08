@@ -235,7 +235,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                    .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
                    .SetTitle(GetLabelByLanguage(DSConstants.I18N_UserIDNotMatchTitle))
                    .SetMessage(GetLabelByLanguage(DSConstants.I18N_UserIDNotMatchMessage))
-                   .SetCTALabel(GetLabelCommonByLanguage(LanguageConstants.Common.OK))
+                   .SetCTALabel(GetLabelCommonByLanguage(LanguageConstants.Common.GOT_IT))
                    .SetCTAaction(() => { })
                    .Build();
                 marketingTooltip.Show();
