@@ -365,6 +365,17 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.Banner_Notification_App_Update;
                             break;
+
+                        }
+                    case Constants.BCRM_NOTIFICATION_APP_UPDATE_DBR:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "updateNow"),
+                                   delegate () { UpdateNow(); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notification_App_Update;
+                            break;
+
                         }
                     default:
                         imageResourceBanner = Resource.Drawable.notification_generic_banner;
