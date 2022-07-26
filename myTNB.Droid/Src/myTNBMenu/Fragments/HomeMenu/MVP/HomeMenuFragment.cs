@@ -1781,17 +1781,48 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 {
                                     UserSessions.DoSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
                                 }
-                                if (UserSessions.GetEnergyBudgetList().Count == 1)
+
+                                DownTimeEntity TRILEntity = DownTimeEntity.GetByCode(Constants.TRIL_SYSTEM);
+                                DownTimeEntity SAGEEntity = DownTimeEntity.GetByCode(Constants.SAGE_SYSTEM);
+                                if (SAGEEntity != null && TRILEntity != null)
                                 {
-                                    this.SetIsClicked(false);
-                                    List<SMRAccount> smacc = new List<SMRAccount>();
-                                    smacc = UserSessions.GetEnergyBudgetList();
-                                    ShowAccountDetails(smacc[0].accountNumber);
+                                    if (TRILEntity.IsDown || SAGEEntity.IsDown)
+                                    {
+                                        List<CustomerBillingAccount> smartmeterAccounts = CustomerBillingAccount.SMeterBudgetAccountList();        //smart meter ca
+                                        string tril = "TRIL";
+                                        string sage = "SAGE";
+                                        bool resultTril = smartmeterAccounts.Exists(s => s.SmartMeterCode == tril);
+                                        bool resultSage = smartmeterAccounts.Exists(s => s.SmartMeterCode == sage);
+
+                                        if (TRILEntity.IsDown && resultTril)
+                                        {
+                                            Utility.ShowBCRMDOWNTooltip(this.Activity, TRILEntity, () =>
+                                            {
+                                                this.SetIsClicked(false);
+                                                EnergyBudgetPage();
+                                            });
+                                        }
+                                        else if (SAGEEntity.IsDown && resultSage)
+                                        {
+                                            Utility.ShowBCRMDOWNTooltip(this.Activity, SAGEEntity, () =>
+                                            {
+                                                this.SetIsClicked(false);
+                                                EnergyBudgetPage();
+                                            });
+                                        }
+                                        else
+                                        {
+                                            EnergyBudgetPage();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        EnergyBudgetPage();
+                                    }
                                 }
-                                else if (UserSessions.GetEnergyBudgetList().Count > 1)
+                                else
                                 {
-                                    Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
-                                    StartActivityForResult(energy_budget_activity, SELECT_SM_ACCOUNT_REQUEST_CODE);
+                                    EnergyBudgetPage();
                                 }
                             }
                             else if (!Utility.IsMDMSDownEnergyBudget())
@@ -1828,6 +1859,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void EnergyBudgetPage()
+        {
+            if (UserSessions.GetEnergyBudgetList().Count == 1)
+            {
+                this.SetIsClicked(false);
+                List<SMRAccount> smacc = new List<SMRAccount>();
+                smacc = UserSessions.GetEnergyBudgetList();
+                ShowAccountDetails(smacc[0].accountNumber);
+            }
+            else if (UserSessions.GetEnergyBudgetList().Count > 1)
+            {
+                Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
+                StartActivityForResult(energy_budget_activity, SELECT_SM_ACCOUNT_REQUEST_CODE);
             }
         }
 
