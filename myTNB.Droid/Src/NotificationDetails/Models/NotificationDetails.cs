@@ -58,7 +58,7 @@ namespace myTNB_Android.Src.NotificationDetails.Models
         [JsonProperty("SDStatusDetails", Required = Newtonsoft.Json.Required.AllowNull)]
         public SDStatusDetailsData SDStatusDetails;
 
-        [JsonProperty("verification", Required = Newtonsoft.Json.Required.AllowNull)]
+        [JsonProperty("verification")]
         public EKYCVerification Verification;
 
         [JsonProperty("HeaderTitle")]
