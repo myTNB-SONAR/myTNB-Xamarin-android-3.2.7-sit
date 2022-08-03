@@ -52,12 +52,12 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.Activity
             //Mykad.Type = GetLabelByLanguage("mykad");
 
             IdentificationType Armyid = new IdentificationType();
-            Armyid.Id = "2";
+            Armyid.Id = "4";
             Armyid.Type = Utility.GetLocalizedLabel("OneLastThing", "armyid");
             //Armyid.Type = GetLabelByLanguage("armyid");
 
             IdentificationType Passport = new IdentificationType();
-            Passport.Id = "3";
+            Passport.Id = "2";
             Passport.Type = Utility.GetLocalizedLabel("OneLastThing", "passport");
             //Passport.Type = GetLabelByLanguage("passport");
 
@@ -69,13 +69,13 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.Activity
                     Armyid.IsSelected = false;
                     Passport.IsSelected = false;
                 }
-                else if (selectedIdentificationType.Id.Equals("2"))
+                else if (selectedIdentificationType.Id.Equals("4"))
                 {
                     Mykad.IsSelected = false;
                     Armyid.IsSelected = true;
                     Passport.IsSelected = false;
                 }
-                else if (selectedIdentificationType.Id.Equals("3"))
+                else if (selectedIdentificationType.Id.Equals("2"))
                 {
                     Mykad.IsSelected = false;
                     Armyid.IsSelected = false;
