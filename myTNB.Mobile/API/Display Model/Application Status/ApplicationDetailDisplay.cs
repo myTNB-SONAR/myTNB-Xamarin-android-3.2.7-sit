@@ -163,6 +163,16 @@ namespace myTNB.Mobile
         public bool IsOwnApplication { set; get; }
 
         /// <summary>
+        /// CA Number
+        /// </summary>
+        public string ContractAccountNo { set; get; } = string.Empty;
+
+        /// <summary>
+        /// Business Area
+        /// </summary>
+        public string CABusinessArea { set; get; } = string.Empty;
+
+        /// <summary>
         /// Determines if BCRM is Offline and if need to show BCRM Downtime
         /// </summary>
         public bool IsOffLine

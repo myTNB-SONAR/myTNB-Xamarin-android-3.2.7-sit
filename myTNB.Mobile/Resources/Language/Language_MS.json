@@ -2848,6 +2848,17 @@
             "type": "none"
           }
         ],
+        "EligibilityByCriteria": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
         "GetEligibility": [
           {
             "code": "7200",

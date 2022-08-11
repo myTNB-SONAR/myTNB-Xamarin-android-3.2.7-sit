@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.AWS.Services.DBR;
+using myTNB.Mobile.AWS.Services.DS;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -58,7 +59,7 @@ namespace myTNB.Mobile
                 try
                 {
                     IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.Domain);
-
+                    AppInfoManager.Instance.SetAccountList(caList);
                     PostEligibilityRequest request = new PostEligibilityRequest
                     {
                         UserID = userID ?? string.Empty,
@@ -321,6 +322,149 @@ namespace myTNB.Mobile
                 return interval < minutes;
             }
             return false;
+        }
+
+
+        public async Task<GetEligibilityResponse> PostEligibilityByCriteria(List<string> businessAreaList
+            , string accessToken)
+        {
+            PostEligibilityResponse postResponse = new PostEligibilityResponse();
+            GetEligibilityResponse response = new GetEligibilityResponse();
+            if (businessAreaList != null && businessAreaList.Count > 0)
+            {
+                try
+                {
+                    IDSService service = RestService.For<IDSService>(AWSConstants.Domains.Domain);
+                    List<PremiseCriteriaModel> premistCriteriaList = new List<PremiseCriteriaModel>();
+                    for (int i = 0; i < businessAreaList.Count; i++)
+                    {
+                        premistCriteriaList.Add(new PremiseCriteriaModel
+                        {
+                            BusinessArea = businessAreaList[i]
+                        });
+                    }
+
+                    PostEligibilityByCriteriaRequest request = new PostEligibilityByCriteriaRequest
+                    {
+                        PremiseCriteria = premistCriteriaList
+                    };
+
+                    Debug.WriteLine("[DEBUG] PostEligibilityByCriteria Request: " + JsonConvert.SerializeObject(request));
+                    Debug.WriteLine("[DEBUG] PostEligibilityByCriteria ViewInfo: " + AppInfoManager.Instance.ViewInfo);
+
+                    HttpResponseMessage rawResponse = await service.PostEligibilityByCriteria(request
+                       , NetworkService.GetCancellationToken()
+                       , accessToken
+                       , AppInfoManager.Instance.ViewInfo);
+
+                    //Mark: Check for 404 First
+                    if ((int)rawResponse.StatusCode != 200)
+                    {
+                        GetEligibilityResponse httpErrorResponse = new GetEligibilityResponse();
+                        httpErrorResponse.StatusDetail = new StatusDetail();
+                        httpErrorResponse.StatusDetail = AWSConstants.Services.EligibilityByCriteria.GetStatusDetails(MobileConstants.DEFAULT);
+                        httpErrorResponse.StatusDetail.IsSuccess = false;
+                        return httpErrorResponse;
+                    }
+
+                    string responseString = await rawResponse.Content.ReadAsStringAsync();
+                    postResponse = JsonConvert.DeserializeObject<PostEligibilityResponse>(responseString);
+                    if (postResponse != null
+                        && postResponse.Content != null
+                        && postResponse.StatusDetail != null
+                        && postResponse.StatusDetail.Code.IsValid())
+                    {
+                        postResponse.StatusDetail = AWSConstants.Services.EligibilityByCriteria.GetStatusDetails(postResponse.StatusDetail.Code);
+
+                        response.StatusDetail = postResponse.StatusDetail;
+                        response.Content = new GetEligibilityModel
+                        {
+                            EligibileFeatures = postResponse.Content.EligibileFeaturesList
+                        };
+                        ParsePostEleigibilityByCriteriaFeature(ref response, postResponse);
+                    }
+                    else
+                    {
+                        if (postResponse != null
+                            && postResponse.StatusDetail != null
+                            && postResponse.StatusDetail.Code.IsValid())
+                        {
+                            postResponse.StatusDetail = AWSConstants.Services.EligibilityByCriteria.GetStatusDetails(postResponse.StatusDetail.Code);
+                        }
+                        else
+                        {
+                            postResponse = new PostEligibilityResponse
+                            {
+                                StatusDetail = new StatusDetail()
+                            };
+                            postResponse.StatusDetail = AWSConstants.Services.EligibilityByCriteria.GetStatusDetails(MobileConstants.DEFAULT);
+                        }
+                        response.StatusDetail = postResponse.StatusDetail;
+                    }
+
+                    Debug.WriteLine("[DEBUG] PostEligibilityByCriteria postResponse: " + JsonConvert.SerializeObject(postResponse));
+                    Debug.WriteLine("[DEBUG] PostEligibilityByCriteria response: " + JsonConvert.SerializeObject(response));
+                    return response;
+                }
+                catch (ApiException apiEx)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][PostEligibilityByCriteria]Refit Exception: " + apiEx.Message);
+#endif
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][PostEligibilityByCriteria]General Exception: " + ex.Message);
+#endif
+                }
+            }
+
+            response = new GetEligibilityResponse
+            {
+                StatusDetail = new StatusDetail()
+            };
+            response.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(MobileConstants.DEFAULT);
+            return response;
+        }
+
+        private void ParsePostEleigibilityByCriteriaFeature(ref GetEligibilityResponse eligibilityResponse
+            , PostEligibilityResponse postEligibilityResponse)
+        {
+            try
+            {
+                if (postEligibilityResponse != null
+                    && postEligibilityResponse.Content != null
+                    && postEligibilityResponse.Content.EligibilityByCriteria != null
+                    && postEligibilityResponse.Content.EligibilityByCriteria.Count > 0)
+                {
+                    List<FeatureCAModel> ds = postEligibilityResponse.Content.EligibilityByCriteria.FindAll(
+                        x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.DS.ToString().ToUpper()).ToList();
+                    if (ds != null && ds.Count > 0)
+                    {
+                        BaseCAListModel baseContent = new BaseCAListModel
+                        {
+                            ContractAccounts = new List<ContractAccountsModel>()
+                        };
+                        for (int i = 0; i < ds.Count; i++)
+                        {
+                            FeatureCAModel item = ds[i];
+                            baseContent.ContractAccounts.Add(new ContractAccountsModel
+                            {
+                                ContractAccount = item.ContractAccount,
+                                Acted = item.Acted,
+                                ModifiedDate = item.ModifiedDate,
+                                BusinessArea = item.BusinessArea
+                            });
+                        }
+                        eligibilityResponse.Content.DS = baseContent;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG][ParsePostEleigibilityByCriteriaFeature]General Exception: " + e.Message);
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using Refit;
 
 namespace myTNB.Mobile.AWS.Services.DS
 {
-    internal interface  IDSService
+    internal interface IDSService
     {
         [Get("/DigitalSignature/api/v1/EKYC/EKYCStatusByUserID/{userID}")]
         Task<HttpResponseMessage> GetEKYCStatus(string userID
@@ -17,6 +17,14 @@ namespace myTNB.Mobile.AWS.Services.DS
 
         [Get("/Identity/api/v1/Identity/UserIdentification/{userID}")]
         Task<HttpResponseMessage> GetEKYCIdentification(string userID
+           , CancellationToken cancellationToken
+           , [Header(AWSConstants.Headers.Authorization)] string accessToken
+           , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
+           , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
+           , string environment = AWSConstants.Environment);
+
+        [Post("/Eligibility/api/v1/Eligibility/GetEligibility/ByCriteria")]
+        Task<HttpResponseMessage> PostEligibilityByCriteria([Body] PostEligibilityByCriteriaRequest request
            , CancellationToken cancellationToken
            , [Header(AWSConstants.Headers.Authorization)] string accessToken
            , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo

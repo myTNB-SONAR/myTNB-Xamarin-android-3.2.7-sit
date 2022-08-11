@@ -109,6 +109,7 @@
             //DS
             internal const string GetEKYCStatus = "EKYCStatus";
             internal const string GetEKYCIdentification = "EKYCIdentification";
+            public const string EligibilityByCriteria = "EligibilityByCriteria";
         }
     }
 }

@@ -14,11 +14,15 @@ namespace myTNB.Mobile.AWS.Models
         public EligibileFeaturesModel EligibileFeaturesList { set; get; }
         [JsonProperty("featureCAList")]
         public List<FeatureCAModel> FeatureCAList { set; get; }
+        [JsonProperty("eligibleByCriteria")]
+        public List<FeatureCAModel> EligibilityByCriteria { set; get; }
     }
 
     public class FeatureCAModel : ContractAccountsModel
     {
         [JsonProperty("featureName")]
         public string FeatureName { set; get; }
+        [JsonProperty("businessArea")]
+        public string BusinessArea { set; get; }
     }
 }

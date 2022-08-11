@@ -129,6 +129,14 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                                     {
                                         displayModel.Content.IsOwnApplication = isOwnApplication;
                                     }
+                                    if (GetObjectValue(props, "contractAccountNo") is string contractAccountNo && contractAccountNo.IsValid())
+                                    {
+                                        displayModel.Content.ContractAccountNo = contractAccountNo;
+                                    }
+                                    if (GetObjectValue(props, "businessArea") is string businessArea && businessArea.IsValid())
+                                    {
+                                        displayModel.Content.CABusinessArea = businessArea;
+                                    }
                                 }
                             }
                         }

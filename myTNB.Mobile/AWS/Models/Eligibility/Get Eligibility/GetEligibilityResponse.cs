@@ -55,5 +55,6 @@ namespace myTNB.Mobile.AWS.Models
         public bool Acted { set; get; }
         [JsonProperty("modifiedDate")]
         public DateTime? ModifiedDate { set; get; }
+        public string BusinessArea { set; get; }
     }
 }

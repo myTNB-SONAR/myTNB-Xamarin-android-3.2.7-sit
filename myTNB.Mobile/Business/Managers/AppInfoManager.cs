@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using myTNB.Mobile;
+using myTNB.Mobile.AWS;
 using myTNB.Mobile.Extensions;
 using static myTNB.LanguageManager;
 
@@ -28,6 +31,7 @@ namespace myTNB
         private string Lang = string.Empty;
 
         internal Language Language { private set; get; } = LanguageManager.Language.EN;
+        internal List<string> ContractAccountList = new List<string>();
 
         /// <summary>
         /// Sets User Info to be pased for Service Calls
@@ -111,6 +115,7 @@ namespace myTNB
             UserId = string.Empty;
             UserName = string.Empty;
             PlatformUserInfo = null;
+            ClearAccountList();
         }
 
         public string GetUserInfo()
@@ -128,6 +133,29 @@ namespace myTNB
         public object GetPlatformUserInfo()
         {
             return PlatformUserInfo;
+        }
+
+        public string AccessToken { set; get; }
+
+        internal void SetAccountList(List<ContractAccountModel> caList)
+        {
+            try
+            {
+                if (caList != null
+                    && caList.Count > 0)
+                {
+                    ContractAccountList = caList.Select(x => x.accNum).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] SetAccount: " + e.Message);
+            }
+        }
+
+        internal void ClearAccountList()
+        {
+            ContractAccountList.Clear();
         }
     }
 }

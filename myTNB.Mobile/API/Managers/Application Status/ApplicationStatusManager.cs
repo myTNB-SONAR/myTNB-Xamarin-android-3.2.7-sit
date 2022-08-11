@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ using myTNB.Mobile.API.Models.ApplicationStatus.PostSyncSRApplication;
 using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.API.Services.ApplicationStatus;
+using myTNB.Mobile.AWS.Managers.DS;
+using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.Extensions;
 using myTNB.Mobile.SessionCache;
 using Newtonsoft.Json;
@@ -387,6 +390,7 @@ namespace myTNB.Mobile
                         //Mark: Increment Query Page Every Success Call
                         AllApplicationsCache.Instance.QueryPage += 1;
                     }
+                    Debug.WriteLine("[DEBUG][AllApplications]: " + JsonConvert.SerializeObject(response));
                     return response;
                 }
                 catch (ApiException apiEx)
@@ -458,6 +462,70 @@ namespace myTNB.Mobile
             , string applicationType
             , string system = "myTNB")
         {
+            bool isDSEligible = false;
+            ApplicationDetailDisplay displaymodel = await GetApplicationDetailV2(savedApplicationID
+                , applicationID
+                , applicationType
+                , isDSEligible
+                , system);
+            if (displaymodel.StatusDetail != null
+                && displaymodel.StatusDetail.IsSuccess
+                && displaymodel.Content != null)
+            {
+                if (displaymodel.Content.ContractAccountNo is string accountNumber
+                    && accountNumber.IsValid()
+                    && AppInfoManager.Instance.ContractAccountList != null
+                    && AppInfoManager.Instance.ContractAccountList.Count > 0
+                    && AppInfoManager.Instance.ContractAccountList.Contains(accountNumber))
+                {
+                    Debug.WriteLine("test");
+                    isDSEligible = DSUtility.Instance.IsCAEligible(accountNumber);
+                    if (isDSEligible)
+                    {
+                        Debug.WriteLine("[DEBUG][GetApplicationDetail] Check By CA");
+                        displaymodel = await GetApplicationDetailV2(savedApplicationID
+                            , applicationID
+                            , applicationType
+                            , isDSEligible
+                            , system);
+                    }
+                }
+                else if (displaymodel.Content.CABusinessArea is string businessArea
+                    && businessArea.IsValid())
+                {
+                    GetEligibilityResponse eligibilityByCriteriaResponse =
+                        await EligibilityManager.Instance.PostEligibilityByCriteria(new List<string> { displaymodel.Content.CABusinessArea }
+                        , AppInfoManager.Instance.AccessToken);
+
+                    if (DSUtility.Instance.IsAccountEligible
+                        && eligibilityByCriteriaResponse.StatusDetail != null
+                        && eligibilityByCriteriaResponse.StatusDetail.IsSuccess
+                        && eligibilityByCriteriaResponse.Content != null
+                        && eligibilityByCriteriaResponse.Content.DS != null
+                        && eligibilityByCriteriaResponse.Content.DS.ContractAccounts != null
+                        && eligibilityByCriteriaResponse.Content.DS.ContractAccounts.Count > 0)
+                    {
+                        Debug.WriteLine("[DEBUG][GetApplicationDetail] Check By BA");
+                        isDSEligible = true;
+                        displaymodel = await GetApplicationDetailV2(savedApplicationID
+                           , applicationID
+                           , applicationType
+                           , isDSEligible
+                           , system);
+                    }
+                }
+            }
+
+            Debug.WriteLine("[DEBUG][GetApplicationDetail] Display Model: " + JsonConvert.SerializeObject(displaymodel));
+            return displaymodel;
+        }
+
+        private async Task<ApplicationDetailDisplay> GetApplicationDetailV2(string savedApplicationID
+            , string applicationID
+            , string applicationType
+            , bool isDSEligible
+            , string system = "myTNB")
+        {
             string searchTerm = savedApplicationID.IsValid() ? savedApplicationID : applicationID;
             system = system.IsValid() ? system : "myTNB";
             ApplicationDetailDisplay displaymodel = new ApplicationDetailDisplay();
@@ -469,6 +537,7 @@ namespace myTNB.Mobile
                     HttpResponseMessage rawResponse = await service.GetApplicationDetail(applicationType
                          , searchTerm
                          , system
+                         , isDSEligible
                          , AppInfoManager.Instance.GetUserInfo()
                          , NetworkService.GetCancellationToken()
                          , AppInfoManager.Instance.Language.ToString()
@@ -537,7 +606,7 @@ namespace myTNB.Mobile
                     catch (Exception ex)
                     {
 #if DEBUG
-                        Debug.WriteLine("[DEBUG][GetApplicationDetail ASMX Payment Details]General Exception: " + ex.Message);
+                        Debug.WriteLine("[DEBUG][GetApplicationDetailV2 ASMX Payment Details]General Exception: " + ex.Message);
 #endif
                     }
                     return displaymodel;
@@ -545,13 +614,13 @@ namespace myTNB.Mobile
                 catch (ApiException apiEx)
                 {
 #if DEBUG
-                    Debug.WriteLine("[DEBUG][GetApplicationDetail]Refit Exception: " + apiEx.Message);
+                    Debug.WriteLine("[DEBUG][GetApplicationDetailV2]Refit Exception: " + apiEx.Message);
 #endif
                 }
                 catch (Exception ex)
                 {
 #if DEBUG
-                    Debug.WriteLine("[DEBUG][GetApplicationDetail]General Exception: " + ex.Message);
+                    Debug.WriteLine("[DEBUG][GetApplicationDetailV2]General Exception: " + ex.Message);
 #endif
                 }
             }

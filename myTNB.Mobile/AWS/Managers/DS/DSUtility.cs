@@ -76,5 +76,26 @@ namespace myTNB.Mobile.AWS.Managers.DS
             return caList;
         }
 
+        internal bool IsCAEligible(string ca)
+        {
+            try
+            {
+                BaseCAListModel dsContent = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.DS);
+                if (dsContent != null
+                    && dsContent.ContractAccounts != null
+                    && dsContent.ContractAccounts.Count > 0)
+                {
+                    int index = dsContent.ContractAccounts.FindIndex(x => x.ContractAccount == ca);
+                    return index > -1;
+                }
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine("[DEBUG]IsCAEligible Exception: " + e.Message);
+#endif
+            }
+            return false;
+        }
     }
 }
