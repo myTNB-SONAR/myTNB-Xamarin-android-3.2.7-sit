@@ -222,6 +222,8 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string Smart_Meter_Daily_SYSTEM = "SmartMeterDaily";
         internal static readonly string PG_SYSTEM = "PG";
         internal static readonly string EB_SYSTEM = "EB";
+        internal static readonly string TRIL_SYSTEM = "TRIL";
+        internal static readonly string SAGE_SYSTEM = "SAGE";
 
         internal static readonly string ACCOUNT_REMOVED_FLAG = "ACCOUNT_REMOVED";
 
@@ -380,6 +382,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_APP_UPDATE = "20006";
         public const string BCRM_NOTIFICATION_APP_UPDATE_2 = "20007";
         public const string BCRM_NOTIFICATION_APP_UPDATE_OT = "20009";
+        public const string BCRM_NOTIFICATION_APP_UPDATE_DBR = "21010";
 
         //Bill Estimation
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";
