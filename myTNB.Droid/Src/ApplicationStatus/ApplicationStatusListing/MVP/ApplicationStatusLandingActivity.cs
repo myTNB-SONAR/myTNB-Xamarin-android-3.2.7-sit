@@ -745,6 +745,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                     else
                     {
                         ShowApplicaitonPopupMessage(this, response.StatusDetail);
+                        this.SetIsClicked(false);
                     }
                     HideProgressDialog();
                 }

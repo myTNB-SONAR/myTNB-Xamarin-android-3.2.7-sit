@@ -22,7 +22,5 @@ namespace myTNB.Mobile.AWS.Models
     {
         [JsonProperty("featureName")]
         public string FeatureName { set; get; }
-        [JsonProperty("businessArea")]
-        public string BusinessArea { set; get; }
     }
 }

@@ -325,7 +325,7 @@ namespace myTNB.Mobile
         }
 
 
-        public async Task<GetEligibilityResponse> PostEligibilityByCriteria(List<string> businessAreaList
+        internal async Task<GetEligibilityResponse> PostEligibilityByCriteria(List<string> businessAreaList
             , string accessToken)
         {
             PostEligibilityResponse postResponse = new PostEligibilityResponse();

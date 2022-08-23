@@ -476,9 +476,11 @@ namespace myTNB.Mobile
                     && accountNumber.IsValid()
                     && AppInfoManager.Instance.ContractAccountList != null
                     && AppInfoManager.Instance.ContractAccountList.Count > 0
-                    && AppInfoManager.Instance.ContractAccountList.Contains(accountNumber))
+                    && AppInfoManager.Instance.ContractAccountList.FindIndex(x => x.accNum == accountNumber) is int index
+                    && index > -1
+                    && AppInfoManager.Instance.ContractAccountList[index] !=null
+                    && AppInfoManager.Instance.ContractAccountList[index].BusinessArea.IsValid())
                 {
-                    Debug.WriteLine("test");
                     isDSEligible = DSUtility.Instance.IsCAEligible(accountNumber);
                     if (isDSEligible)
                     {
