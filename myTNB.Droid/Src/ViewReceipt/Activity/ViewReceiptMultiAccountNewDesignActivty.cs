@@ -430,33 +430,37 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                     document.Add(grayLine);
                     document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-                    document.Add(new Paragraph(GetLabelByLanguage("trnBankReference").ToUpper(), labelFont));
-                    if (response.GetData().paymentRefBank != null && !string.IsNullOrEmpty(response.GetData().paymentRefBank))
+                    if (response.GetData().payMethod.ToUpper() == "FPX")
                     {
-                        document.Add(new Paragraph(response.GetData().paymentRefBank, detailsFont));
-                    }
-                    else
-                    {
-                        document.Add(new Paragraph(GetLabelByLanguage("emptyValue"), detailsFont));
-                    }
-
-                    document.Add(new Paragraph(Environment.NewLine, titleFont));
-                    document.Add(grayLine);
-                    document.Add(new Paragraph(Environment.NewLine, labelFont));
-
-                    document.Add(new Paragraph(GetLabelByLanguage("trnAcquirerBank").ToUpper(), labelFont));
-                    if (response.GetData().paymentAcqBank != null && !string.IsNullOrEmpty(response.GetData().paymentAcqBank))
-                    {
-                        document.Add(new Paragraph(response.GetData().paymentAcqBank, detailsFont));
-                    }
-                    else
-                    {
-                        document.Add(new Paragraph(GetLabelByLanguage("emptyValue"), detailsFont));
+                        document.Add(new Paragraph(GetLabelByLanguage("trnBankReference").ToUpper(), labelFont));
+                        if (response.GetData().paymentRefBank != null && !string.IsNullOrEmpty(response.GetData().paymentRefBank))
+                        {
+                            document.Add(new Paragraph(response.GetData().paymentRefBank, detailsFont));
+                        }
+                        else
+                        {
+                            document.Add(new Paragraph(GetLabelByLanguage("emptyValue"), detailsFont));
+                        }
+                        document.Add(new Paragraph(Environment.NewLine, titleFont));
+                        document.Add(grayLine);
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
                     }
 
-                    document.Add(new Paragraph(Environment.NewLine, titleFont));
-                    document.Add(grayLine);
-                    document.Add(new Paragraph(Environment.NewLine, labelFont));
+                    if (response.GetData().payMethod.ToUpper() == "FPX")
+                    {
+                        document.Add(new Paragraph(GetLabelByLanguage("trnAcquirerBank").ToUpper(), labelFont));
+                        if (response.GetData().paymentAcqBank != null && !string.IsNullOrEmpty(response.GetData().paymentAcqBank))
+                        {
+                            document.Add(new Paragraph(response.GetData().paymentAcqBank, detailsFont));
+                        }
+                        else
+                        {
+                            document.Add(new Paragraph(GetLabelByLanguage("emptyValue"), detailsFont));
+                        }
+                        document.Add(new Paragraph(Environment.NewLine, titleFont));
+                        document.Add(grayLine);
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
+                    }
 
                     document.Add(new Paragraph(GetLabelCommonByLanguage("totalAmountRM").ToUpper(), detailsFont));
                     document.Add(new Paragraph(response.GetData().payAmt, totalAmounFont));
@@ -572,21 +576,41 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 txnIdValue.Text = receiptDetails.payTransID;
                 txnMethodValue.Text = receiptDetails.payMethod;
                 totalAmtValue.Text = receiptDetails.payAmt;
-                if (receiptDetails.paymentRefBank != null && !string.IsNullOrEmpty(receiptDetails.paymentRefBank))
+
+                if (receiptDetails.payMethod.ToUpper() == "FPX")
                 {
-                    txnBankRefValue.Text = receiptDetails.paymentRefBank;
+                    if (receiptDetails.paymentRefBank != null && !string.IsNullOrEmpty(receiptDetails.paymentRefBank))
+                    {
+                        txnBankRefValue.Text = receiptDetails.paymentRefBank;
+                    }
+                    else
+                    {
+                        txnBankRefValue.Text = GetLabelByLanguage("emptyValue");
+                    }
                 }
                 else
                 {
-                    txnBankRefValue.Text = GetLabelByLanguage("emptyValue");
+                    line_bankRef_value.Visibility = ViewStates.Gone;
+                    txnBankRefValue.Visibility = ViewStates.Gone;
+                    txnBankRefText.Visibility = ViewStates.Gone;
                 }
-                if (receiptDetails.paymentAcqBank != null && !string.IsNullOrEmpty(receiptDetails.paymentAcqBank))
+
+                if (receiptDetails.payMethod.ToUpper() == "FPX")
                 {
-                    txnAcqrBankValue.Text = receiptDetails.paymentAcqBank;
+                    if (receiptDetails.paymentAcqBank != null && !string.IsNullOrEmpty(receiptDetails.paymentAcqBank))
+                    {
+                        txnAcqrBankValue.Text = receiptDetails.paymentAcqBank;
+                    }
+                    else
+                    {
+                        txnAcqrBankValue.Text = GetLabelByLanguage("emptyValue");
+                    }
                 }
                 else
                 {
-                    txnAcqrBankValue.Text = GetLabelByLanguage("emptyValue");
+                    line_AcqrBank_value.Visibility = ViewStates.Gone;
+                    txnAcqrBankValue.Visibility = ViewStates.Gone;
+                    txnAcqrBankText.Visibility = ViewStates.Gone;
                 }
 
                 if (isApplicationReceipt)
