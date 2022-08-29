@@ -89,7 +89,7 @@ namespace myTNB.Mobile
 #elif MASTER || SIT || DEBUG
         public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
-        public const string SitecoreURL = SitecorePROD;
+        public const string SitecoreURL = SitecoreSIT;
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
         public static string AWSApiDomain = AWSApiDomainSIT;

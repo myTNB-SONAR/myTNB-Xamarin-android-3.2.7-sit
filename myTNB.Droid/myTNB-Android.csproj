@@ -71,9 +71,8 @@
     <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
     <DebugType></DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\SIT\</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -90,7 +89,6 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
-    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -171,12 +169,6 @@
     </Reference>
     <Reference Include="crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.8.1.1\lib\netstandard1.3\crypto.dll</HintPath>
-    </Reference>
-    <Reference Include="Dynatrace.OneAgent.Android, Version=7.2.7.1233, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Dynatrace.OneAgent.Forms.Android, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Forms.Android.dll</HintPath>
     </Reference>
     <Reference Include="FastAndroidCamera, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FastAndroidCamera.2.0.0\lib\MonoAndroid403\FastAndroidCamera.dll</HintPath>
@@ -786,7 +778,13 @@
     <Reference Include="Sitecore.MobileSDK.PasswordProvider.Android, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.MobileSDK.PasswordProvider.1.3.0\lib\MonoAndroid\Sitecore.MobileSDK.PasswordProvider.Android.dll</HintPath>
     </Reference>
-    <Reference Include="Dynatrace.OneAgent.Forms, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Dynatrace.OneAgent.Android">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.OneAgent.Forms.Android">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Forms.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.OneAgent.Forms">
       <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Forms.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -7176,6 +7174,26 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\MyTNBService\Response\GetIdentificationNoResponse.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">
@@ -11519,7 +11537,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_hide_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_launcher2.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_promo_close.png" />
@@ -11534,7 +11552,7 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_action_hide_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_launcher2.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_promo_close.png" />
@@ -11549,7 +11567,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_hide_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_launcher2.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_promo_close.png" />
@@ -11564,7 +11582,7 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_hide_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher2.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_promo_close.png" />
@@ -11579,7 +11597,7 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_hide_password_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_launcher2.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_promo_close.png" />
@@ -13372,4 +13390,5 @@
   <Import Project="..\packages\Xamarin.Firebase.Auth.121.0.1\build\MonoAndroid90\Xamarin.Firebase.Auth.targets" Condition="Exists('..\packages\Xamarin.Firebase.Auth.121.0.1\build\MonoAndroid90\Xamarin.Firebase.Auth.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Dynamic.Links.120.1.0\build\MonoAndroid90\Xamarin.Firebase.Dynamic.Links.targets" Condition="Exists('..\packages\Xamarin.Firebase.Dynamic.Links.120.1.0\build\MonoAndroid90\Xamarin.Firebase.Dynamic.Links.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Iid.121.1.0\build\MonoAndroid90\Xamarin.Firebase.Iid.targets" Condition="Exists('..\packages\Xamarin.Firebase.Iid.121.1.0\build\MonoAndroid90\Xamarin.Firebase.Iid.targets')" />
+  <Import Project="..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets" Condition="Exists('..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets')" />
 </Project>
