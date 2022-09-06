@@ -1,0 +1,50 @@
+2022-08-26 15:47:14.327 INFO: APKit-AdkInstrumentor(1): Dynatrace Auto-Instrumentation version 7.2.7.1233 for Android
+2022-08-26 15:47:14.329 INFO: APKit-e(1): Decoding /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb.apk
+2022-08-26 15:47:23.691 INFO: APKit-e(1): Updating manifest file /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/AndroidManifest.xml
+2022-08-26 15:47:23.753 INFO: APKit-AdkInstrumentor(1): MinSdkVersion=21 TargetSdkVersion=30
+2022-08-26 15:47:23.796 INFO: APKit-AdkInstrumentor(1): /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes.dex ... #methods: 65268
+2022-08-26 15:47:23.796 INFO: APKit-AdkInstrumentor(1): *** Primary DEX file contains too many methods: 65268 starting multidex preprocessor.
+2022-08-26 15:47:23.845 INFO: APKit-ax(1): Forcing jumbo string option ...
+2022-08-26 15:47:23.913 INFO: APKit-q(1): Input file: /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes-no-jumbo.dex
+2022-08-26 15:47:23.913 INFO: APKit-q(1): Output file: /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes.dex
+2022-08-26 15:47:28.167 INFO: APKit-q(1): /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes.dex created
+2022-08-26 15:47:28.168 INFO: APKit-q(1): Count: 458 already jumbo & 21741 made jumbo
+2022-08-26 15:47:28.168 INFO: APKit-q(1): Strings: 122 already jumbo & 12627 became jumbo
+2022-08-26 15:47:28.168 INFO: APKit-q(1): Total string count: 66138
+2022-08-26 15:47:32.860 INFO: APKit-ax(1): Added DEX file: /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes.dexsplitPart2.dex
+2022-08-26 15:47:32.861 INFO: APKit-ax(1): Split DEX file: /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes.dexsplitPart1.dex
+2022-08-26 15:47:32.861 INFO: APKit-ax(1): DEX split process complete. Making a copy of 'com.mytnb.mytnb.apk'.
+2022-08-26 15:47:49.940 INFO: APKit-ax(1): Multidex preprocess complete. New APK file is 'com.mytnb.mytnb-multidexPreprocess.apk', and ready for instrumentation.
+2022-08-26 15:47:49.941 INFO: APKit-AdkInstrumentor(1): Dynatrace Auto-Instrumentation version 7.2.7.1233 for Android
+2022-08-26 15:47:49.941 INFO: APKit-e(1): Decoding /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb-multidexPreprocess.apk
+2022-08-26 15:47:57.171 INFO: APKit-e(1): Updating manifest file /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/AndroidManifest.xml
+2022-08-26 15:47:57.177 INFO: APKit-AdkInstrumentor(1): MinSdkVersion=21 TargetSdkVersion=30
+2022-08-26 15:47:57.270 INFO: APKit-AdkInstrumentor(1): /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes.dex ... #methods: 63518
+2022-08-26 15:47:57.274 INFO: APKit-AdkInstrumentor(1): /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes3.dex ... #methods: 23562
+2022-08-26 15:47:57.274 INFO: APKit-AdkInstrumentor(1): /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes2.dex ... #methods: 2672
+2022-08-26 15:48:01.385 INFO: APKit-AdkInstrumentor(1): Detected Mobile Agent 7.2.7.1233
+2022-08-26 15:48:01.910 INFO: APKit-AdkInstrumentor(1): Forcing jumbo string option for classes.dex
+2022-08-26 15:48:01.980 INFO: APKit-q(1): Input file: /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes-no-jumbo.dex
+2022-08-26 15:48:01.980 INFO: APKit-q(1): Output file: /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes.dex
+2022-08-26 15:48:04.636 INFO: APKit-q(1): /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes.dex created
+2022-08-26 15:48:04.636 INFO: APKit-q(1): Count: 22102 already jumbo & 0 made jumbo
+2022-08-26 15:48:04.636 INFO: APKit-q(1): Strings: 12692 already jumbo & 0 became jumbo
+2022-08-26 15:48:04.636 INFO: APKit-q(1): Total string count: 64960
+2022-08-26 15:48:04.637 INFO: APKit-q(1): Force-jumbo did not take effect for /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/classes.dex
+2022-08-26 15:48:04.717 INFO: APKit-v(1): 646 + 64960 = 65606 strings
+2022-08-26 15:48:05.555 INFO: APKit-AdkInstrumentor(1): Handling primary DEX file
+2022-08-26 15:48:05.563 INFO: APKit-AdkInstrumentor(1): Original DEX #methods=63518 #fields=46753
+2022-08-26 15:48:09.058 INFO: APKit-AdkInstrumentor(1): Combined DEX #methods=63706 #fields=46882
+2022-08-26 15:48:09.058 INFO: APKit-AdkInstrumentor(1): Instrumenting /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/combined-classes.dex
+2022-08-26 15:48:10.359 INFO: APKit-AdkInstrumentor(1): No classes (with interested http listeners) found for instrumentation.
+2022-08-26 15:48:14.602 INFO: APKit-AdkInstrumentor(1): Instrumented DEX #methods=63739
+2022-08-26 15:48:16.431 INFO: APKit-AdkInstrumentor(1): Using Dynatrace OneAgent (Android) 7.2.7.1233
+2022-08-26 15:48:16.432 INFO: APKit-AdkInstrumentor(1): Handling secondary DEX files ...
+2022-08-26 15:48:17.113 INFO: APKit-AdkInstrumentor(1): Instrumenting /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/orig-classes3.dex
+2022-08-26 15:48:18.351 INFO: APKit-AdkInstrumentor(1): No classes (with interested http listeners) found for instrumentation.
+2022-08-26 15:48:19.581 INFO: APKit-AdkInstrumentor(1): Instrumented classes3.dex ... #methods=24734
+2022-08-26 15:48:20.104 INFO: APKit-AdkInstrumentor(1): Instrumenting /Users/Yana/Documents/TNB/ANDROID ICON MERDEKA/myTNB-Xamarin/myTNB.Droid/obj/Release/android/bin/com.mytnb.mytnb/orig-classes2.dex
+2022-08-26 15:48:21.374 INFO: APKit-AdkInstrumentor(1): No classes (with interested http listeners) found for instrumentation.
+2022-08-26 15:48:21.823 INFO: APKit-AdkInstrumentor(1): Instrumented classes2.dex ... #methods=2674
+2022-08-26 15:48:21.871 INFO: APKit-e(1): Rebuilding APK ...
+2022-08-26 15:48:27.489 INFO: APKit-AdkInstrumentor(1): Auto-Instrumentation finished

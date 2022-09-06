@@ -50,7 +50,7 @@ namespace myTNB.Mobile
         //Mark: http://tnbcsdevapp.tnb.my/
         private const string SitecoreDEV = "http://10.215.70.246/";
         //Mark: http://tnbcsstgapp.tnb.my/
-        private const string SitecoreSIT = "http://10.215.70.248/";
+        private const string SitecoreSIT = "https://sitecore.tnb.com.my/";//"http://10.215.70.248/";
         private const string SitecorePROD = "https://sitecore.tnb.com.my/";
         private const string ApiKeyIdDEV = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         private const string ApiKeyIdPROD = "E6148656-205B-494C-BC95-CC241423E72F";
@@ -87,7 +87,7 @@ namespace myTNB.Mobile
 #elif MASTER || SIT || DEBUG
         public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
-        public const string SitecoreURL = SitecorePROD;
+        public const string SitecoreURL = SitecoreSIT;
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
         public static string AWSApiDomain = AWSApiDomainSIT;
