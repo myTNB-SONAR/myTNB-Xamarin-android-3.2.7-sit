@@ -216,6 +216,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
             void SetDefaultAppLaunchImage();
 
+            void RenderAppLaunchImage(AppLaunchModel item);
+
             void SetCustomAppLaunchImage(AppLaunchModel item);
 
             void OnGoAppLaunchEvent();
@@ -259,6 +261,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void OnGetAppLaunchItem();
 
             void GetSavedTimeStamp();
+
+            void OnGetPhoto(AppLaunchModel item);
+
+            void OnDownloadPhoto(AppLaunchModel item);
 
             /// <summary>
             /// Action to request sms permission
