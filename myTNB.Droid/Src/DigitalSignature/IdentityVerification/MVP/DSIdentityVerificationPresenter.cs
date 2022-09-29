@@ -32,6 +32,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
         public void OnStart()
         {
             this.view.RenderContent();
+            this.view.GetEKYCIdOnAPICall();
         }
 
         public void Start() { }
@@ -63,14 +64,25 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
                 eKYCIdentificationResponse.Content != null)
             {
                 _identificationModel = eKYCIdentificationResponse.Content;
-                OnDisplayPopUp(eKYCIdentificationResponse.Content);
+
+                this.mActivity.RunOnUiThread(() =>
+                {
+                    this.view?.UpdateLoadingShimmer(false);
+                    this.view?.UpdateBottomContainer(true);
+                    OnDisplayPopUp(_identificationModel);
+                });
             }
             else
             {
                 this.mActivity.RunOnUiThread(() =>
                 {
-                    this.view?.HideProgressDialog();
-                    this.view?.ShowErrorMessage(eKYCIdentificationResponse.StatusDetail);
+                    this.view?.UpdateLoadingShimmer(false);
+                    this.view?.UpdateBottomContainer(false);
+                    this.view?.UpdateButtonState(false);
+                    if (eKYCIdentificationResponse != null && eKYCIdentificationResponse.StatusDetail != null)
+                    {
+                        this.view?.ShowErrorMessage(eKYCIdentificationResponse.StatusDetail);
+                    }
                 });
             }
         }

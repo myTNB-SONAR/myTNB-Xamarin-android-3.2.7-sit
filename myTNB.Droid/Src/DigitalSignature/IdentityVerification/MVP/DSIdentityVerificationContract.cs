@@ -20,16 +20,6 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             void RenderContent();
 
             /// <summary>
-            /// Shows Loading Overlay
-            /// </summary>
-            void ShowProgressDialog();
-
-            /// <summary>
-            /// Hides Loading Overlay
-            /// </summary>
-            void HideProgressDialog();
-
-            /// <summary>
             /// Shows Completed on other device pop up
             /// </summary>
             void ShowCompletedOnOtherDevicePopUp();
@@ -54,6 +44,29 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             /// </summary>
             /// <param name="statusDetail"></param>
             void ShowErrorMessage(StatusDetail statusDetail);
+
+            /// <summary>
+            /// Shows or Hides Loading Shimmer
+            /// </summary>
+            /// <param name="toShow"></param>
+            void UpdateLoadingShimmer(bool toShow);
+
+            /// <summary>
+            /// Shows or Hides Bottom Container
+            /// </summary>
+            /// <param name="toShow"></param>
+            void UpdateBottomContainer(bool toShow);
+
+            /// <summary>
+            /// Updates the Button state
+            /// </summary>
+            /// <param name="toShow"></param>
+            void UpdateButtonState(bool toShow);
+
+            /// <summary>
+            /// Calls the API from the view
+            /// </summary>
+            void GetEKYCIdOnAPICall();
         }
 
         public interface IUserActionsListener : IBasePresenter

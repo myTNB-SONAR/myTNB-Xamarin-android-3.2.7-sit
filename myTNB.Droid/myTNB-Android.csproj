@@ -7254,66 +7254,6 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\DigitalSignature\DSNotificationDetails\Activity\DSNotificationDetailsActivity.cs" />
-    <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_1.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\Icon_Identity_Verification_1.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Identity_Verification_1.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Identity_Verification_1.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_1.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_2.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Identity_Verification_2.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Identity_Verification_2.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\Icon_Identity_Verification_2.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_2.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_3.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\Icon_Identity_Verification_3.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Identity_Verification_3.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Identity_Verification_3.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_3.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\DSIdentityVerificationListItemView.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -7531,6 +7471,66 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_3.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

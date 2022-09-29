@@ -70,34 +70,34 @@
 					android:layout_marginLeft="16dp"
 					android:layout_marginRight="16dp"
 					android:id="@+id/dropdownContentLayout">
-				<TextView
-					android:id="@+id/dialogDropdownTitle"
-					android:layout_height="wrap_content"
-					android:layout_width="wrap_content"
-					tools:text="Have your identification ready!"
-					android:layout_marginLeft="32dp"
-					android:layout_marginRight="32dp"
-					android:layout_marginTop="14dp"
-					android:textColor="@color/powerBlue"
-					android:textSize="12dp"
-					android:lineSpacingExtra="3dp"
-					android:textAlignment="center"
-					android:layout_gravity="center"/>
-				<TextView
-					android:id="@+id/dialogDropdownMessage"
-					android:layout_height="wrap_content"
-					android:layout_width="match_parent"
-					android:textColor="@color/charcoalGrey"
-					android:layout_marginLeft="16dp"
-					android:layout_marginRight="16dp"
-					android:layout_marginTop="8dp"
-					tools:text="Before you begin, get your Identification Type ready."
-					android:textSize="12dp"
-					android:lineSpacingExtra="3dp"
-					android:textAlignment="center"
-					android:layout_gravity="center"
-					android:visibility="gone"
-					tools:visibility="visible"/>
+					<TextView
+						android:id="@+id/dialogDropdownTitle"
+						android:layout_height="wrap_content"
+						android:layout_width="wrap_content"
+						tools:text="Have your identification ready!"
+						android:layout_marginLeft="32dp"
+						android:layout_marginRight="32dp"
+						android:layout_marginTop="14dp"
+						android:textColor="@color/powerBlue"
+						android:textSize="12dp"
+						android:lineSpacingExtra="3dp"
+						android:textAlignment="center"
+						android:layout_gravity="center"/>
+					<TextView
+						android:id="@+id/dialogDropdownMessage"
+						android:layout_height="wrap_content"
+						android:layout_width="match_parent"
+						android:textColor="@color/charcoalGrey"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:layout_marginTop="8dp"
+						tools:text="Before you begin, get your Identification Type ready."
+						android:textSize="12dp"
+						android:lineSpacingExtra="3dp"
+						android:textAlignment="center"
+						android:layout_gravity="center"
+						android:visibility="gone"
+						tools:visibility="visible"/>
 				</LinearLayout>
 				<View
 					android:layout_marginTop="24dp"

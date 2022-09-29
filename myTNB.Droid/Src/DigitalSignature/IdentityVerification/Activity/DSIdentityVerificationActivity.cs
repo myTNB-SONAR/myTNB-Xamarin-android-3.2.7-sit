@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Text;
+using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -33,8 +36,36 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         [BindView(Resource.Id.identityVerificationListContainer)]
         readonly LinearLayout identityVerificationListContainer;
 
+        [BindView(Resource.Id.dsIdVerifShimmerContainer)]
+        readonly LinearLayout dsIdVerifShimmerContainer;
+
+        [BindView(Resource.Id.dsIdVerifButtonShimmerContainer)]
+        readonly LinearLayout dsIdVerifButtonShimmerContainer;
+
+        [BindView(Resource.Id.dsIdVerifBottomInfoContainer)]
+        readonly LinearLayout dsIdVerifBottomInfoContainer;
+
+        [BindView(Resource.Id.dsIdVerifInfoDropdownContentLayout)]
+        readonly LinearLayout dsIdVerifInfoDropdownContentLayout;
+
+        [BindView(Resource.Id.identityVerificationButtonLayout)]
+        readonly LinearLayout identityVerificationButtonLayout;
+
+        [BindView(Resource.Id.dsIdVerifInfoTitle)]
+        readonly TextView dsIdVerifInfoTitle;
+
+        [BindView(Resource.Id.dsIdVerifInfoMessage)]
+        readonly TextView dsIdVerifInfoMessage;
+
+        [BindView(Resource.Id.dsIdVerifInfoDropdownTitle)]
+        readonly TextView dsIdVerifInfoDropdownTitle;
+
+        [BindView(Resource.Id.dsIdVerifInfoDropdownMessage)]
+        readonly TextView dsIdVerifInfoDropdownMessage;
+
         private const string PAGE_ID = DSConstants.PageName_DSLanding;
         private const int _totalItem = 3;
+        private Action buttonCTA;
 
         DSDynamicLinkParamsModel _dsDynamicLinkParamsModel;
 
@@ -107,6 +138,12 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                 TextViewUtils.SetTextSize16(identityVerificationBtnContinue);
                 identityVerificationBtnContinue.Text = GetLabelByLanguage(DSConstants.I18N_Continue);
             }
+
+            TextViewUtils.SetTextSize12(dsIdVerifInfoDropdownTitle, dsIdVerifInfoDropdownMessage);
+            TextViewUtils.SetTextSize16(dsIdVerifInfoTitle);
+            TextViewUtils.SetTextSize14(dsIdVerifInfoMessage);
+            TextViewUtils.SetMuseoSans300Typeface(dsIdVerifInfoMessage, dsIdVerifInfoDropdownTitle, dsIdVerifInfoDropdownMessage);
+            TextViewUtils.SetMuseoSans500Typeface(dsIdVerifInfoTitle);
         }
 
         public void SetPresenter(DSIdentityVerificationContract.IUserActionsListener userActionListener)
@@ -133,25 +170,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                var modelUserID = DeeplinkUtil.Instance.EKYCDynamicLinkModel.UserID ?? string.Empty;
-                if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.IdentityVerification &&
-                    modelUserID.IsValid())
-                {
-                    string userID = UserEntity.GetActive().UserID.ToLower();
-                    if (userID.Equals(modelUserID.ToLower()))
-                    {
-                        ProceedOnVerifyNow(DeeplinkUtil.Instance.EKYCDynamicLinkModel);
-                    }
-                    else
-                    {
-                        ShowUnMatchUserIdPopUp();
-                    }
-                    DeeplinkUtil.Instance.ClearDeeplinkData();
-                }
-                else
-                {
-                    ProceedOnVerifyNow(_dsDynamicLinkParamsModel);
-                }
+                buttonCTA?.Invoke();
                 this.SetIsClicked(false);
             }
 
@@ -160,7 +179,8 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 
         private void ProceedOnVerifyNow(DSDynamicLinkParamsModel dsDynamicLinkParamsModel)
         {
-            ShowProgressDialog();
+            UpdateLoadingShimmer(true);
+            UpdateBottomContainer(false);
             this.userActionsListener.GetEKYCIdentificationOnCall(dsDynamicLinkParamsModel);
         }
 
@@ -201,36 +221,16 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             });
         }
 
-        public void ShowProgressDialog()
+        private void BackToHome()
         {
-            try
-            {
-                LoadingOverlayUtils.OnRunLoadingAnimation(this);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void HideProgressDialog()
-        {
-            try
-            {
-                LoadingOverlayUtils.OnStopLoadingAnimation(this);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            SetResult(Result.Canceled);
+            Finish();
         }
 
         private void ShowUnMatchUserIdPopUp()
         {
             RunOnUiThread(() =>
             {
-                HideProgressDialog();
-
                 MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_ONE_BUTTON)
                    .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
                    .SetTitle(GetLabelByLanguage(DSConstants.I18N_UserIDNotMatchTitle))
@@ -246,20 +246,22 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         {
             RunOnUiThread(() =>
             {
-                HideProgressDialog();
+                dsIdVerifInfoDropdownContentLayout.Visibility = ViewStates.Gone;
+                UpdateButtonState(true);
 
-                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_ONE_BUTTON)
-                   .SetHeaderImage(Resource.Drawable.Icon_DS_Verify_Processing_Pop_Up)
-                   .SetTitle(GetLabelByLanguage(DSConstants.I18N_IDProcessingTitle))
-                   .SetMessage(GetLabelByLanguage(DSConstants.I18N_IDProcessingMessage))
-                   .SetCTALabel(GetLabelByLanguage(DSConstants.I18N_BackToHome))
-                   .SetCTAaction(() =>
-                   {
-                       SetResult(Result.Canceled);
-                       Finish();
-                   })
-                   .Build();
-                marketingTooltip.Show();
+                dsIdVerifInfoTitle.Text = GetLabelByLanguage(DSConstants.I18N_IDProcessingTitle);
+                identityVerificationBtnContinue.Text = GetLabelByLanguage(DSConstants.I18N_BackToHome);
+
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_IDProcessingMessage), FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_IDProcessingMessage));
+                }
+
+                buttonCTA = BackToHome;
             });
         }
 
@@ -267,18 +269,22 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         {
             RunOnUiThread(() =>
             {
-                HideProgressDialog();
+                dsIdVerifInfoDropdownContentLayout.Visibility = ViewStates.Gone;
+                UpdateButtonState(true);
 
-                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_TWO_BUTTON)
-                   .SetHeaderImage(Resource.Drawable.Icon_DS_Verify_Pop_Up)
-                   .SetTitle(GetLabelByLanguage(DSConstants.I18N_NoRegisteredIDTitle))
-                   .SetMessage(GetLabelByLanguage(DSConstants.I18N_NoRegisteredIDMessage))
-                   .SetCTALabel(GetLabelByLanguage(DSConstants.I18N_Cancel))
-                   .SetSecondaryCTALabel(GetLabelByLanguage(DSConstants.I18N_VerifyNow))
-                   .SetCTAaction(() => { })
-                   .SetSecondaryCTAaction(() => OnVerifyNow())
-                   .Build();
-                marketingTooltip.Show();
+                dsIdVerifInfoTitle.Text = GetLabelByLanguage(DSConstants.I18N_NoRegisteredIDTitle);
+                identityVerificationBtnContinue.Text = GetLabelByLanguage(DSConstants.I18N_VerifyNow);
+
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_NoRegisteredIDMessage), FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_NoRegisteredIDMessage));
+                }
+
+                buttonCTA = OnVerifyNow;
 
                 DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.Document_Ready);
             });
@@ -288,20 +294,22 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         {
             RunOnUiThread(() =>
             {
-                HideProgressDialog();
+                dsIdVerifInfoDropdownContentLayout.Visibility = ViewStates.Gone;
+                UpdateButtonState(true);
 
-                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_ONE_BUTTON)
-                   .SetHeaderImage(Resource.Drawable.Icon_Profile_Verified)
-                   .SetTitle(GetLabelByLanguage(DSConstants.I18N_IDVerifiedTitle))
-                   .SetMessage(GetLabelByLanguage(DSConstants.I18N_IDVerifiedMessage))
-                   .SetCTALabel(GetLabelByLanguage(DSConstants.I18N_BackToHome))
-                   .SetCTAaction(() =>
-                   {
-                       SetResult(Result.Canceled);
-                       Finish();
-                   })
-                   .Build();
-                marketingTooltip.Show();
+                dsIdVerifInfoTitle.Text = GetLabelByLanguage(DSConstants.I18N_IDVerifiedTitle);
+                identityVerificationBtnContinue.Text = GetLabelByLanguage(DSConstants.I18N_BackToHome);
+
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_IDVerifiedMessage), FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_IDVerifiedMessage));
+                }
+
+                buttonCTA = BackToHome;
             });
         }
 
@@ -309,8 +317,6 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         {
             RunOnUiThread(() =>
             {
-                HideProgressDialog();
-                
                 if (idType == null)
                 {
                     return;
@@ -356,21 +362,64 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                                 dropdownMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDMessage_IC), idTypeString);
                             }
 
-                            MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_DROPDOWN_TWO_BUTTON)
-                               .SetHeaderImage(Resource.Drawable.Icon_DS_Verify_Pop_Up)
-                               .SetTitle(dialogTitle)
-                               .SetMessage(dialogMessage)
-                               .SetDropdownTitle(dropdownTitle)
-                               .SetDropdownMessage(dropdownMessage)
-                               .SetCTALabel(GetLabelByLanguage(DSConstants.I18N_Cancel))
-                               .SetSecondaryCTALabel(GetLabelByLanguage(DSConstants.I18N_VerifyNow))
-                               .SetCTAaction(() => { })
-                               .SetSecondaryCTAaction(() => OnVerifyNow())
-                               .Build();
-                            marketingTooltip.Show();
+                            dsIdVerifInfoDropdownContentLayout.Visibility = ViewStates.Visible;
+                            UpdateButtonState(true);
+
+                            dsIdVerifInfoTitle.Text = dialogTitle;
+                            identityVerificationBtnContinue.Text = GetLabelByLanguage(DSConstants.I18N_VerifyNow);
+
+                            try
+                            {
+                                string dropdownTitleBase = Regex.Replace(dropdownTitle, DSConstants.DropDown, string.Empty);
+
+                                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                                {
+                                    dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(dialogMessage, FromHtmlOptions.ModeLegacy);
+                                    dsIdVerifInfoDropdownTitle.TextFormatted = Html.FromHtml(dropdownTitle, FromHtmlOptions.ModeLegacy);
+                                    dsIdVerifInfoDropdownMessage.TextFormatted = Html.FromHtml(dropdownMessage, FromHtmlOptions.ModeLegacy);
+                                }
+                                else
+                                {
+                                    dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(dialogMessage);
+                                    dsIdVerifInfoDropdownTitle.TextFormatted = Html.FromHtml(dropdownTitle);
+                                    dsIdVerifInfoDropdownMessage.TextFormatted = Html.FromHtml(dropdownMessage);
+                                }
+
+                                ImageSpan imageSpan = new ImageSpan(this, Resource.Drawable.Icon_DS_Dropdown_Expand, SpanAlign.Bottom);
+                                SpannableString imageString = new SpannableString(dsIdVerifInfoDropdownTitle.TextFormatted);
+
+                                imageString.SetSpan(imageSpan, dropdownTitleBase.Length, dropdownTitle.Length, SpanTypes.ExclusiveExclusive);
+                                dsIdVerifInfoDropdownTitle.TextFormatted = imageString;
+
+                                dsIdVerifInfoDropdownMessage.Visibility = ViewStates.Gone;
+
+                                var expanded = false;
+                                dsIdVerifInfoDropdownTitle.Click += delegate
+                                {
+                                    expanded = !expanded;
+                                    dsIdVerifInfoDropdownMessage.Visibility = expanded ? ViewStates.Visible : ViewStates.Gone;
+
+                                    ImageSpan imageSpan = new ImageSpan(this, expanded ? Resource.Drawable.Icon_DS_Dropdown_Collapse : Resource.Drawable.Icon_DS_Dropdown_Expand, SpanAlign.Bottom);
+                                    SpannableString imageString = new SpannableString(dsIdVerifInfoDropdownTitle.TextFormatted);
+
+                                    imageString.SetSpan(imageSpan, dropdownTitleBase.Length, dropdownTitle.Length, SpanTypes.ExclusiveExclusive);
+                                    dsIdVerifInfoDropdownTitle.TextFormatted = imageString;
+                                };
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+
+                            buttonCTA = OnVerifyNow;
 
                             DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.Document_Ready);
                         }
+                    }
+                    else
+                    {
+                        UpdateBottomContainer(false);
+                        UpdateButtonState(false);
                     }
                 }
                 catch (Exception e)
@@ -382,12 +431,12 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 
         public void ShowErrorMessage(StatusDetail statusDetail)
         {
-            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+            MyTNBAppToolTipBuilder errMsg = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                 .SetTitle(statusDetail.Title)
                 .SetMessage(statusDetail.Message)
                 .SetCTALabel(statusDetail.PrimaryCTATitle)
                 .Build();
-            whereisMyacc.Show();
+            errMsg.Show();
         }
 
         private void OnVerifyNow()
@@ -398,6 +447,45 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             StartActivity(intent);
 
             DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Verification.PopUp_Verify_Now);
+        }
+
+        public void UpdateLoadingShimmer(bool toShow)
+        {
+            dsIdVerifShimmerContainer.Visibility = toShow ? ViewStates.Visible : ViewStates.Gone;
+            dsIdVerifButtonShimmerContainer.Visibility = toShow ? ViewStates.Visible : ViewStates.Gone;
+        }
+
+        public void UpdateBottomContainer(bool toShow)
+        {
+            dsIdVerifBottomInfoContainer.Visibility = toShow ? ViewStates.Visible : ViewStates.Gone;
+        }
+
+        public void UpdateButtonState(bool toShow)
+        {
+            identityVerificationButtonLayout.Visibility = toShow ? ViewStates.Visible : ViewStates.Gone;
+        }
+
+        public void GetEKYCIdOnAPICall()
+        {
+            var modelUserID = DeeplinkUtil.Instance.EKYCDynamicLinkModel.UserID ?? string.Empty;
+            if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.IdentityVerification &&
+                modelUserID.IsValid())
+            {
+                string userID = UserEntity.GetActive().UserID.ToLower();
+                if (userID.Equals(modelUserID.ToLower()))
+                {
+                    ProceedOnVerifyNow(DeeplinkUtil.Instance.EKYCDynamicLinkModel);
+                }
+                else
+                {
+                    ShowUnMatchUserIdPopUp();
+                }
+                DeeplinkUtil.Instance.ClearDeeplinkData();
+            }
+            else
+            {
+                ProceedOnVerifyNow(_dsDynamicLinkParamsModel);
+            }
         }
     }
 }
