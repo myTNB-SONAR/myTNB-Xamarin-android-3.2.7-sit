@@ -3286,21 +3286,25 @@
     "howItWorksTitle1": "Capture or upload your identification.",
     "howItWorksDescription1": "You may take or upload a photo of your identification.",
     "howItWorksTitle2": "Verify your identity with face verification.",
-    "howItWorksDescription2": "Next step, scan your face using your device’s camera to verify it’s you.",
+    "howItWorksDescription2": "Scan your face using your device’s camera to verify it’s you. Please expect the camera image to be <b>grayscale</b> due to the identification process.",
     "howItWorksTitle3": "Your verification is complete!",
     "howItWorksDescription3": "You may continue using myTNB to conveniently submit applications!",
     "cancel": "Cancel",
     "verifyNow": "Verify Now",
-    "noRegisteredIDTitle": "Have your identification ready!",
-    "noRegisteredIDMessage": "Accepted forms of identification:<br>&emsp;• Passport<br>&emsp;• Identity Card (applicable for myKad and Army ID)",
-    "acceptedIDTitle_IC": "Have your identification ready!",
-    "acceptedIDMessage_IC": "Before you begin, get your <b>{0}</b> ready.",
+    "noRegisteredIDTitle": "Have your identification ready",
+    "noRegisteredIDMessage": "Accepted forms of identification:<br>&emsp;• Passport<br>&emsp;• Identity Card (applicable for myKad and MyTentera)",
+    "acceptedIDTitle_IC": "Have your identification ready",
+    "acceptedIDMessage_IC": "Before you begin, get your <b>{0}</b> ready.<br>The <b>MyKad</b> number you registered with ends with <b>******{1}<b>.",
     "cantUseOtherIDTitle_IC": "Why can’t I use other forms of identification? #dropdown#",
     "cantUseOtherIDMessage_IC": "You previously registered with your <b>{0}</b> in your myTNB account.<br>Every myTNB account can only have one registered identification.",
-    "acceptedIDTitle_Passport": "Have your identification ready!",
-    "acceptedIDMessage_Passport": "Before you begin, get your <b>{0}</b> ready.<br>The passport number you registered with ends with ******{1}.",
+    "acceptedIDTitle_Passport": "Have your identification ready",
+    "acceptedIDMessage_Passport": "Before you begin, get your <b>{0}</b> ready.<br>The <b>Passport</b> number you registered with ends with <b>******{1}<b>.",
     "cantUseOtherIDTitle_Passport": "Why can’t I use other forms of identification? #dropdown#",
     "cantUseOtherIDMessage_Passport": "You previously registered with your <b>{0}</b> in your myTNB account.<br>Every myTNB account can only have one registered identification. If you would like to update your details, please contact TNB CareLine at 1300-88-5454.",
+    "acceptedIDTitle_MyTentera": "Have your identification ready",
+    "acceptedIDMessage_MyTentera": "Before you begin, get your <b>{0}</b> ready.<br>The <b>MyTentera</b> number you registered with ends with <b>******{1}<b>.",
+    "cantUseOtherIDTitle_MyTentera": "Why can’t I use other forms of identification? #dropdown#",
+    "cantUseOtherIDMessage_MyTentera": "You previously registered with your <b>{0}</b> in your myTNB account.<br>Every myTNB account can only have one registered identification. If you would like to update your details, please contact TNB CareLine at 1300-88-5454.",
     "idProcessingTitle": "We are processing your verification.",
     "idProcessingMessage": "Your identity verification has been submitted. We’ll notify you once we’re done with your verification.",
     "idVerifiedTitle": "Your identity has been verified.",
@@ -3313,7 +3317,7 @@
     "idType": [
       {
         "key": "1",
-        "description": "myKAD"
+        "description": "MyKad"
       },
       {
         "key": "2",
@@ -3321,7 +3325,7 @@
       },
       {
         "key": "4",
-        "description": "Army ID"
+        "description": "MyTentera"
       }
     ]
   },

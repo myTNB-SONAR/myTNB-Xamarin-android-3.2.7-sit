@@ -324,6 +324,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 
                 try
                 {
+                    string idKeyString = string.Empty;
                     string idTypeString = string.Empty;
                     var selectorContent = LanguageManager.Instance.GetSelectorsByPage<DSIdTypeSelectorModel>(DigitalSignatureConstants.DS_LANDING_SELECTOR);
                     if (selectorContent.ContainsKey(DigitalSignatureConstants.DS_ID_TYPE))
@@ -332,6 +333,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                         idTypeList = selectorContent[DigitalSignatureConstants.DS_ID_TYPE];
                         if (idTypeList.Count > 0)
                         {
+                            idKeyString = idTypeList.Find(x => { return x.key == idType.ToString(); }).key;
                             idTypeString = idTypeList.Find(x => { return x.key == idType.ToString(); }).description;
 
                             var dialogTitle = string.Empty;
@@ -339,27 +341,36 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                             var dropdownTitle = string.Empty;
                             var dropdownMessage = string.Empty;
 
-                            if (idTypeString.ToLower() == DSConstants.Passport.ToLower())
+                            string lastFourDigits = string.Empty;
+                            var idNumber = this.userActionsListener.GetIdentificationModel().IdentificationNo;
+
+                            if (idNumber.IsValid())
                             {
-                                string lastFourDigits = string.Empty;
-                                var passportNumber = this.userActionsListener.GetIdentificationModel().IdentificationNo;
-
-                                if (passportNumber.IsValid())
-                                {
-                                    lastFourDigits = passportNumber[^4..];
-                                }
-
-                                dialogTitle = GetLabelByLanguage(DSConstants.I18N_AcceptedIDTitle_Passport);
-                                dialogMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_AcceptedIDMessage_Passport), idTypeString, lastFourDigits);
-                                dropdownTitle = GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDTitle_Passport);
-                                dropdownMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDMessage_Passport), idTypeString);
+                                lastFourDigits = idNumber[^4..];
                             }
-                            else
+                            
+                            switch (idKeyString)
                             {
-                                dialogTitle = GetLabelByLanguage(DSConstants.I18N_AcceptedIDTitle_IC);
-                                dialogMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_AcceptedIDMessage_IC), idTypeString);
-                                dropdownTitle = GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDTitle_IC);
-                                dropdownMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDMessage_IC), idTypeString);
+                                case "1":
+                                    dialogTitle = GetLabelByLanguage(DSConstants.I18N_AcceptedIDTitle_IC);
+                                    dialogMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_AcceptedIDMessage_IC), idTypeString, lastFourDigits);
+                                    dropdownTitle = GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDTitle_IC);
+                                    dropdownMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDMessage_IC), idTypeString);
+                                    break;
+                                case "2":
+                                    dialogTitle = GetLabelByLanguage(DSConstants.I18N_AcceptedIDTitle_Passport);
+                                    dialogMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_AcceptedIDMessage_Passport), idTypeString, lastFourDigits);
+                                    dropdownTitle = GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDTitle_Passport);
+                                    dropdownMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDMessage_Passport), idTypeString);
+                                    break;
+                                case "4":
+                                    dialogTitle = GetLabelByLanguage(DSConstants.I18N_AcceptedIDTitle_MyTentera);
+                                    dialogMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_AcceptedIDMessage_MyTentera), idTypeString, lastFourDigits);
+                                    dropdownTitle = GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDTitle_MyTentera);
+                                    dropdownMessage = string.Format(GetLabelByLanguage(DSConstants.I18N_CantUseOtherIDMessage_MyTentera), idTypeString);
+                                    break;
+                                default:
+                                    break;
                             }
 
                             dsIdVerifInfoDropdownContentLayout.Visibility = ViewStates.Visible;

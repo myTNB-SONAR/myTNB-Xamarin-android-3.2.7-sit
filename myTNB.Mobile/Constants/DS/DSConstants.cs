@@ -20,6 +20,10 @@
         public const string I18N_AcceptedIDMessage_Passport = "acceptedIDMessage_Passport";
         public const string I18N_CantUseOtherIDTitle_Passport = "cantUseOtherIDTitle_Passport";
         public const string I18N_CantUseOtherIDMessage_Passport = "cantUseOtherIDMessage_Passport";
+        public const string I18N_AcceptedIDTitle_MyTentera = "acceptedIDTitle_MyTentera";
+        public const string I18N_AcceptedIDMessage_MyTentera = "acceptedIDMessage_MyTentera";
+        public const string I18N_CantUseOtherIDTitle_MyTentera = "cantUseOtherIDTitle_MyTentera";
+        public const string I18N_CantUseOtherIDMessage_MyTentera = "cantUseOtherIDMessage_MyTentera";
         public const string I18N_Cancel = "cancel";
         public const string I18N_VerifyNow = "verifyNow";
         public const string I18N_NoRegisteredIDTitle = "noRegisteredIDTitle";
@@ -34,6 +38,7 @@
         public const string DropDown = "#dropdown#";
         public const string IC = "IC";
         public const string Passport = "Passport";
+        public const string MyTentera = "MyTentera";
 
         public const string PageName_DSWebview = "DSWebview";
         //public const string I18N_Title = "title"; ---> Use the same I18N_Title of DSLanding
