@@ -1643,7 +1643,7 @@
     "cannotRescheduleTitle": "Janji temu tidak boleh diubah pada hari janji temu.",
     "cannotRescheduleMessage": "Anda tidak boleh mengubah janji temu pada hari janji temu tersebut. Sila ambil maklum bahawa anda tidak perlu hadir sekiranya kawasan pemasangan meter anda boleh diakses tanpa memasuki premis.<br><br>Hubungi <a href=\"tel: 1300885454\">TNB Careline</a> sekiranya anda perlu mengubah  atau membatalkan janji temu.",
     "verifyNowCTA": "Sahkan Sekarang",
-    "signApplicationCTA": "Tandatangan Permohonan"
+    "signApplicationCTA": "Mengakui Permohonan"
   },
   "UserAccess": {
     "title": "Urus Pengguna",
@@ -3294,15 +3294,15 @@
     "noRegisteredIDTitle": "Sediakan pengenalan diri anda",
     "noRegisteredIDMessage": "Jenis-jenis pengenalan diri yang diterima:<br>&emsp;• Pasport<br>&emsp;• Kad Pengenalan (berkenaan myKad & myTentera)",
     "acceptedIDTitle_IC": "Sediakan kad pengenalan atau pasport anda",
-    "acceptedIDMessage_IC": "Sebelum anda mula, pastikan <b>{0}</b> disediakan.<br>Nombor <b>Kad Pengenalan</b> yang anda daftarkan berakhir dengan <b>******{1}<b>",
+    "acceptedIDMessage_IC": "Sebelum anda mula, pastikan <b>{0}</b> disediakan.<br>Nombor <b>Kad Pengenalan</b> yang anda daftarkan berakhir dengan <b>******{1}</b>",
     "cantUseOtherIDTitle_IC": "Mengapa saya tidak boleh menggunakan jenis pengenalan diri yang lain? #dropdown#",
     "cantUseOtherIDMessage_IC": "Anda sebelum ini telah mendaftar menggunakan <b>{0}</b> dalam akaun myTNB anda. Setiap akaun myTNB hanya boleh ada satu pengenalan diri yang berdaftar.",
     "acceptedIDTitle_Passport": "Sediakan kad pengenalan atau pasport anda",
-    "acceptedIDMessage_Passport": "Sebelum anda mula, pastikan <b>{0}</b> disediakan.<br>Nombor <b>Pasport</b> yang anda daftarkan berakhir dengan <b>******{1}<b>",
+    "acceptedIDMessage_Passport": "Sebelum anda mula, pastikan <b>{0}</b> disediakan.<br>Nombor <b>Pasport</b> yang anda daftarkan berakhir dengan <b>******{1}</b>",
     "cantUseOtherIDTitle_Passport": "Mengapa saya tidak boleh menggunakan jenis pengenalan diri yang lain? #dropdown#",
     "cantUseOtherIDMessage_Passport": "Anda sebelum ini telah mendaftar menggunakan <b>{0}</b> dalam akaun myTNB anda. Setiap akaun myTNB hanya boleh ada satu pengenalan diri yang berdaftar.<br>Jika anda ingin mengemas kini butiran anda, sila hubungi TNB CareLine di 1300-88-5454.",
     "acceptedIDTitle_MyTentera": "Sediakan kad pengenalan atau pasport anda",
-    "acceptedIDMessage_MyTentera": "Sebelum anda mula, pastikan <b>{0}</b> disediakan.<br>Nombor <b>MyTentera</b> yang anda daftarkan berakhir dengan <b>******{1}<b>",
+    "acceptedIDMessage_MyTentera": "Sebelum anda mula, pastikan <b>{0}</b> disediakan.<br>Nombor <b>MyTentera</b> yang anda daftarkan berakhir dengan <b>******{1}</b>",
     "cantUseOtherIDTitle_MyTentera": "Mengapa saya tidak boleh menggunakan jenis pengenalan diri yang lain? #dropdown#",
     "cantUseOtherIDMessage_MyTentera": "Anda sebelum ini telah mendaftar menggunakan <b>{0}</b> dalam akaun myTNB anda. Setiap akaun myTNB hanya boleh ada satu pengenalan diri yang berdaftar.<br>Jika anda ingin mengemas kini butiran anda, sila hubungi TNB CareLine di 1300-88-5454.",
     "idProcessingTitle": "Kami sedang memproses pengesahan anda.",
