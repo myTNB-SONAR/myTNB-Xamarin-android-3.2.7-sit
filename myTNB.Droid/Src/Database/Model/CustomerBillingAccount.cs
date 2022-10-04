@@ -122,6 +122,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("CreatedBy")]
         public string CreatedBy { get; set; }
 
+        [Column("AMSIDCategory")]
+        public string AMSIDCategory { get; set; }
+
         [JsonIgnore]
         public bool IsNormalMeter
         {
@@ -199,6 +202,7 @@ namespace myTNB_Android.Src.Database.Model
                 IsTaggedSMR = accountResponse.IsTaggedSMR,
                 BudgetAmount = accountResponse.BudgetAmount == null ? "0" : accountResponse.BudgetAmount,
                 InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
+                AMSIDCategory = accountResponse.AMSIDCategory == null ? "0" : accountResponse.AMSIDCategory,
                 CreatedDate = accountResponse.CreatedDate,
                 IsInManageAccessList = accountResponse.IsInManageAccessList,
                 CreatedBy = accountResponse.CreatedBy,
@@ -271,6 +275,7 @@ namespace myTNB_Android.Src.Database.Model
                 IsApplyEBilling = accountResponse.IsApplyEBilling,
                 BudgetAmount = accountResponse.BudgetAmount,
                 InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
+                AMSIDCategory = accountResponse.AMSIDCategory == null ? "0" : accountResponse.AMSIDCategory,
                 CreatedDate = accountResponse.CreatedDate,
                 BusinessArea = accountResponse.BusinessArea,
                 RateCategory = accountResponse.RateCategory,
@@ -312,6 +317,7 @@ namespace myTNB_Android.Src.Database.Model
                 IsApplyEBilling = accountResponse.IsApplyEBilling,
                 BudgetAmount = accountResponse.BudgetAmount,
                 InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
+                AMSIDCategory = accountResponse.AMSIDCategory == null ? "0" : accountResponse.AMSIDCategory,
                 CreatedDate = accountResponse.CreatedDate,
                 BusinessArea = accountResponse.BusinessArea,
                 RateCategory = accountResponse.RateCategory,

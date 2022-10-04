@@ -1784,16 +1784,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                                 DownTimeEntity TRILEntity = DownTimeEntity.GetByCode(Constants.TRIL_SYSTEM);
                                 DownTimeEntity SAGEEntity = DownTimeEntity.GetByCode(Constants.SAGE_SYSTEM);
-                                if (SAGEEntity != null && TRILEntity != null)
+                                DownTimeEntity CatchupCell = DownTimeEntity.GetByCode(Constants.CatchupCell);
+                                DownTimeEntity CatchupPLC = DownTimeEntity.GetByCode(Constants.CatchupPLC);
+                                DownTimeEntity CatchupRF = DownTimeEntity.GetByCode(Constants.CatchupRF);
+                                if (SAGEEntity != null && TRILEntity != null && CatchupCell != null && CatchupPLC != null && CatchupRF != null)
                                 {
-                                    if (TRILEntity.IsDown || SAGEEntity.IsDown)
+                                    if (TRILEntity.IsDown || SAGEEntity.IsDown || CatchupCell.IsDown || CatchupPLC.IsDown || CatchupRF.IsDown)
                                     {
                                         List<CustomerBillingAccount> smartmeterAccounts = CustomerBillingAccount.SMeterBudgetAccountList();        //smart meter ca
                                         string tril = "TRIL";
                                         string sage = "SAGE";
+                                        string cell = "CEL";
+                                        string plc = "PLC";
+                                        string rf = "RF";
                                         bool resultTril = smartmeterAccounts.Exists(s => s.SmartMeterCode == tril);
                                         bool resultSage = smartmeterAccounts.Exists(s => s.SmartMeterCode == sage);
-
+                                        bool resultCell = smartmeterAccounts.Exists(s => s.AMSIDCategory == cell);
+                                        bool resultPlc = smartmeterAccounts.Exists(s => s.AMSIDCategory == plc);
+                                        bool resultRf = smartmeterAccounts.Exists(s => s.AMSIDCategory == rf);
                                         if (TRILEntity.IsDown && resultTril)
                                         {
                                             Utility.ShowBCRMDOWNTooltip(this.Activity, TRILEntity, () =>
@@ -1810,11 +1818,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                                 EnergyBudgetPage();
                                             });
                                         }
+                                        else if (CatchupCell.IsDown && resultCell)
+                                        {
+                                            Utility.ShowBCRMDOWNTooltip(this.Activity, CatchupCell, () =>
+                                            {
+                                                this.SetIsClicked(false);
+                                                EnergyBudgetPage();
+                                            });
+                                        }
+                                        else if (CatchupPLC.IsDown && resultPlc)
+                                        {
+                                            Utility.ShowBCRMDOWNTooltip(this.Activity, CatchupPLC, () =>
+                                            {
+                                                this.SetIsClicked(false);
+                                                EnergyBudgetPage();
+                                            });
+                                        }
+                                        else if (CatchupRF.IsDown && resultRf)
+                                        {
+                                            Utility.ShowBCRMDOWNTooltip(this.Activity, CatchupRF, () =>
+                                            {
+                                                this.SetIsClicked(false);
+                                                EnergyBudgetPage();
+                                            });
+                                        }
                                         else
                                         {
                                             EnergyBudgetPage();
                                         }
-                                    }
+                                    }                                   
                                     else
                                     {
                                         EnergyBudgetPage();
@@ -2531,6 +2563,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                     smrAccount.accountSelected = false;
                                     smrAccount.BudgetAmount = billingAccount.BudgetAmount;
                                     smrAccount.InstallationType = billingAccount.InstallationType;
+                                    smrAccount.AMSIDCategory = billingAccount.AMSIDCategory;
                                     SMeterAccountList.Add(smrAccount);
                                 }
                             }
@@ -2640,6 +2673,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                     smrAccount.accountSelected = false;
                                     smrAccount.BudgetAmount = billingAccount.BudgetAmount;
                                     smrAccount.InstallationType = billingAccount.InstallationType;
+                                    smrAccount.AMSIDCategory = billingAccount.AMSIDCategory;
                                     SMeterAccountList.Add(smrAccount);
                                 }
                             }
@@ -2845,6 +2879,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 smrAccount.accountSelected = false;
                                 smrAccount.BudgetAmount = billingAccount.BudgetAmount;
                                 smrAccount.InstallationType = billingAccount.InstallationType;
+                                smrAccount.AMSIDCategory = billingAccount.AMSIDCategory;
                                 SMeterAccountList.Add(smrAccount);
                             }
                         }
