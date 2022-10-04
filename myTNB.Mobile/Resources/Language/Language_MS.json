@@ -1095,7 +1095,10 @@
     "trnDate": "TARIKH TRANSAKSI",
     "trnID": "ID TRANSAKSI",
     "trnMethod": "KAEDAH TRANSAKSI",
-    "paymentType": "JENIS PEMBAYARAN"
+    "paymentType": "JENIS PEMBAYARAN",
+    "trnBankReference": "NOMBOR RUJUKAN BANK",
+    "trnAcquirerBank": "BANK PEMEROLEH",
+    "emptyValue":  "--"
   },
   "FeedbackList": {
     "title": "Maklum Balas"

@@ -309,12 +309,24 @@ namespace myTNB_Android.Src.MyAccount.Activity
             {
                 string maskedNo = !string.IsNullOrEmpty(user?.IdentificationNo) ? user.IdentificationNo : "";
 
-                if (!string.IsNullOrEmpty(maskedNo) && maskedNo.Count() > 4)
+                if (maskedNo.Length == 12)
                 {
-                    string lastDigit = maskedNo.Substring(maskedNo.Length - 4);
+                    if (!string.IsNullOrEmpty(maskedNo) && maskedNo.Count() > 4)
+                    {
+                        string lastDigit = maskedNo.Substring(maskedNo.Length - 4);
 
-                    maskedNo = GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
+                        maskedNo = GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
+                    }
+
                 }
+                else //passport,army and police id
+                {
+                    if (!string.IsNullOrEmpty(maskedNo) && maskedNo.Count() > 4)
+                    {
+                        maskedNo = Utility.StringIdMasking(Utility.Masking.Id, maskedNo);
+                    }
+                }
+
 
                 referenceNumber.SetValue(maskedNo);
 

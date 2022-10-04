@@ -112,18 +112,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             DateTime dt = DateTime.Now.ToLocalTime();
             int hour_only = dt.Hour;
 
-            if (hour_only >= 6 && hour_only < 12)
+            //if (hour_only >= 6 && hour_only < 12)
+            //{
+            //    greeting = Constants.GREETING.MORNING;
+            //}
+            //else if (hour_only >= 12 && hour_only < 18)
+            //{
+            //    greeting = Constants.GREETING.AFTERNOON;
+            //}
+            //else if (hour_only >= 0 && hour_only < 6)
+            //{
+            //    greeting = Constants.GREETING.EVENING;
+            //}
+            //else
+            //{
+            //    greeting = Constants.GREETING.EVENING;
+            //}
+
+            if (hour_only < 12)
             {
                 greeting = Constants.GREETING.MORNING;
             }
-            else if (hour_only >= 12 && hour_only < 18)
+            else if (hour_only < 18)
             {
                 greeting = Constants.GREETING.AFTERNOON;
             }
-            else if (hour_only >= 0 && hour_only < 6)
-            {
-                greeting = Constants.GREETING.EVENING;
-            }
+            //else if (hour_only >= 0 && hour_only < 6)
+            //{
+            //    greeting = Constants.GREETING.EVENING;
+            //}
             else
             {
                 greeting = Constants.GREETING.EVENING;

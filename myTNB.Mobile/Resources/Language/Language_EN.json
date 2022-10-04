@@ -1095,7 +1095,10 @@
     "trnDate": "TRANSACTION DATE",
     "trnID": "TRANSACTION ID",
     "trnMethod": "TRANSACTION METHOD",
-    "paymentType": "Payment Type"
+    "paymentType": "Payment Type",
+    "trnBankReference": "BANK REFERENCE",
+    "trnAcquirerBank": "ACQUIRER BANK",
+    "emptyValue": "--"
   },
   "FeedbackList": {
     "title": "Feedback"

@@ -338,14 +338,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_PAYMENT_FAILED_ID = "71";
         public const string BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID = "72";
 
-        public const string BCRM_NOTIFICATION_REMOVE_ACCESS = "10002";
-        public const string BCRM_NOTIFICATION_NEW_ACCESS_ADDED = "10003";
-        public const string BCRM_NOTIFICATION_UPDATE_ACCESS = "10004";
-
-        public const string ACCOUNT_NICKNAME_PATTERN = "#accountNickname#";
-        public const string ACCOUNT_FULLNAME_EMAIL_PATTERN = "#accountFullname/accountEmailAddress#";
-        public const string ACCOUNT_FULLNAME_PATTERN = "#OwnerName#";
-        public const string ACCOUNT_ADDRESS_PATTERN = "#MaskedAddress#";
+        
 
 
         //DBR
@@ -408,6 +401,15 @@ namespace myTNB_Android.Src.Utils
         public const string ACCOUNT_PROFILENAME_PATTERN = "#profileName#";
         public const string ACCOUNT_ACCNO_PATTERN = "#accno#";
         public const string ACCOUNT_ACCNO_PATTERNS = "#accnos#";
+
+        public const string BCRM_NOTIFICATION_REMOVE_ACCESS = "10002";
+        public const string BCRM_NOTIFICATION_NEW_ACCESS_ADDED = "10003";
+        public const string BCRM_NOTIFICATION_UPDATE_ACCESS = "10004";
+
+        public const string ACCOUNT_NICKNAME_PATTERN = "#accountNickname#";
+        public const string ACCOUNT_FULLNAME_EMAIL_PATTERN = "#accountFullname/accountEmailAddress#";
+        public const string ACCOUNT_FULLNAME_PATTERN = "#OwnerName#";
+        public const string ACCOUNT_ADDRESS_PATTERN = "#MaskedAddress#";
         //public const string ACCOUNT_FULLNAME_PATTERN = "#accountFullname/accountEmailAddress#";
 
         public const string APP_TUTORIAL_PATTERN = "#dropdown#";

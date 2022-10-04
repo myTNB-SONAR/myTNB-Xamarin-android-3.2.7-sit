@@ -100,6 +100,24 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         [BindView(Resource.Id.txn_paymentType_value)]
         TextView paymentTypeValue;
 
+        [BindView(Resource.Id.line_bankRef_value)]
+        View line_bankRef_value;
+
+        [BindView(Resource.Id.txn_bankRef_text)]
+        TextView txnBankRefText;
+
+        [BindView(Resource.Id.txn_bankRef_value)]
+        TextView txnBankRefValue;
+
+        [BindView(Resource.Id.line_AcqrBank_value)]
+        View line_AcqrBank_value;
+
+        [BindView(Resource.Id.txn_AcqrBank_text)]
+        TextView txnAcqrBankText;
+
+        [BindView(Resource.Id.txn_AcqrBank_value)]
+        TextView txnAcqrBankValue;
+
         ViewReceiptMultiAccountNewDesignPresenter mPresenter = null;
         ViewReceiptMultiAccountNewDesignContract.IUserActionsListener iPresenter = null;
 
@@ -136,7 +154,8 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 TextViewUtils.SetMuseoSans500Typeface(noteText, totalAmtValue, totalAmtText
                     , txnMethodValue, txnMethodText, txnIdValue, txnIdText, txnDateValue
                     , txnDateText, referenceNumberValue, referenceNumberText, pleasedText
-                    , thanksText, dearCustomer, receiptTitle, paymentTypeText, paymentTypeValue);
+                    , thanksText, dearCustomer, receiptTitle, paymentTypeText, paymentTypeValue
+                    , txnBankRefText, txnAcqrBankText);
 
                 mGetReceiptDialog = new AlertDialog.Builder(this)
                   .SetTitle("Get Receipt")
@@ -154,9 +173,12 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 txnMethodText.Text = GetLabelByLanguage("trnMethod").ToUpper();
                 totalAmtText.Text = GetLabelCommonByLanguage("totalAmountRM").ToUpper();
                 noteText.Text = GetLabelByLanguage("note");
+                txnBankRefText.Text = GetLabelByLanguage("trnBankReference").ToUpper();
+                txnAcqrBankText.Text = GetLabelByLanguage("trnAcquirerBank").ToUpper();
 
                 TextViewUtils.SetTextSize10(referenceNumberText, txnDateText
-                    , txnIdText, txnMethodText, noteText, paymentTypeText);
+                    , txnIdText, txnMethodText, noteText, paymentTypeText, txnBankRefText
+                    , txnAcqrBankText);
                 TextViewUtils.SetTextSize14(dearCustomer, thanksText, totalAmtText);
                 TextViewUtils.SetTextSize20(receiptTitle);
 
@@ -408,6 +430,38 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                     document.Add(grayLine);
                     document.Add(new Paragraph(Environment.NewLine, labelFont));
 
+                    if (response.GetData().payMethod.ToUpper() == "FPX")
+                    {
+                        document.Add(new Paragraph(GetLabelByLanguage("trnBankReference").ToUpper(), labelFont));
+                        if (response.GetData().paymentRefBank != null && !string.IsNullOrEmpty(response.GetData().paymentRefBank))
+                        {
+                            document.Add(new Paragraph(response.GetData().paymentRefBank, detailsFont));
+                        }
+                        else
+                        {
+                            document.Add(new Paragraph(GetLabelByLanguage("emptyValue"), detailsFont));
+                        }
+                        document.Add(new Paragraph(Environment.NewLine, titleFont));
+                        document.Add(grayLine);
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
+                    }
+
+                    if (response.GetData().payMethod.ToUpper() == "FPX")
+                    {
+                        document.Add(new Paragraph(GetLabelByLanguage("trnAcquirerBank").ToUpper(), labelFont));
+                        if (response.GetData().paymentAcqBank != null && !string.IsNullOrEmpty(response.GetData().paymentAcqBank))
+                        {
+                            document.Add(new Paragraph(response.GetData().paymentAcqBank, detailsFont));
+                        }
+                        else
+                        {
+                            document.Add(new Paragraph(GetLabelByLanguage("emptyValue"), detailsFont));
+                        }
+                        document.Add(new Paragraph(Environment.NewLine, titleFont));
+                        document.Add(grayLine);
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
+                    }
+
                     document.Add(new Paragraph(GetLabelCommonByLanguage("totalAmountRM").ToUpper(), detailsFont));
                     document.Add(new Paragraph(response.GetData().payAmt, totalAmounFont));
 
@@ -522,6 +576,42 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 txnIdValue.Text = receiptDetails.payTransID;
                 txnMethodValue.Text = receiptDetails.payMethod;
                 totalAmtValue.Text = receiptDetails.payAmt;
+
+                if (receiptDetails.payMethod.ToUpper() == "FPX")
+                {
+                    if (receiptDetails.paymentRefBank != null && !string.IsNullOrEmpty(receiptDetails.paymentRefBank))
+                    {
+                        txnBankRefValue.Text = receiptDetails.paymentRefBank;
+                    }
+                    else
+                    {
+                        txnBankRefValue.Text = GetLabelByLanguage("emptyValue");
+                    }
+                }
+                else
+                {
+                    line_bankRef_value.Visibility = ViewStates.Gone;
+                    txnBankRefValue.Visibility = ViewStates.Gone;
+                    txnBankRefText.Visibility = ViewStates.Gone;
+                }
+
+                if (receiptDetails.payMethod.ToUpper() == "FPX")
+                {
+                    if (receiptDetails.paymentAcqBank != null && !string.IsNullOrEmpty(receiptDetails.paymentAcqBank))
+                    {
+                        txnAcqrBankValue.Text = receiptDetails.paymentAcqBank;
+                    }
+                    else
+                    {
+                        txnAcqrBankValue.Text = GetLabelByLanguage("emptyValue");
+                    }
+                }
+                else
+                {
+                    line_AcqrBank_value.Visibility = ViewStates.Gone;
+                    txnAcqrBankValue.Visibility = ViewStates.Gone;
+                    txnAcqrBankText.Visibility = ViewStates.Gone;
+                }
 
                 if (isApplicationReceipt)
                 {

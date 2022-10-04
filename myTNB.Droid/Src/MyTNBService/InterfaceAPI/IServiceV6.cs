@@ -135,7 +135,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/AddAccountsV4")]
-        Task<T> AddMultipleAccounts_OT<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);    //lyana //merge DBR and CEP
+        Task<T> AddMultipleAccounts_OT<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);    //yana //merge DBR and CEP
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/ValidateManualAccountLinking_OT")]
@@ -153,9 +153,13 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Post("/v6/mytnbappws.asmx/GetReviewAccount")]
         Task<T> GetReviewAccount<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan //api review account
 
+        //[Headers("Content-Type:application/json; charset=utf-8")]
+        //[Post("/v6/mytnbappws.asmx/CreateNewUserWithToken_OT")]
+        //Task<T> CreateNewUserWithToken_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan //api register baru
+
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/CreateNewUserWithToken_OT")]
-        Task<T> CreateNewUserWithToken_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan //api register baru
+        [Post("/v6/mytnbappws.asmx/CreateNewUserWithTokenV2")]
+        Task<T> CreateNewUserWithToken_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //yana - handle for idtype
 
         //[Headers("Content-Type:application/json; charset=utf-8")]
         //[Post("/v6/mytnbappws.asmx/IsUserAuth_OT")]
@@ -166,17 +170,29 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         //Task<T> UserAuthenticateLoginNew<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);      //lyana //merge DBR
 
 
-        [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetRegisteredUser")]
-        Task<T> UserAuthenticateEmail<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
+        //[Headers("Content-Type:application/json; charset=utf-8")]
+        //[Post("/v6/mytnbappws.asmx/GetRegisteredUser")]
+        //Task<T> UserAuthenticateEmail<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
+
+        //[Headers("Content-Type:application/json; charset=utf-8")]
+        //[Post("/v6/mytnbappws.asmx/GetRegisteredUser")]
+        //Task<T> UserAuthenticateID<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetRegisteredUser")]
-        Task<T> UserAuthenticateID<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
+        [Post("/v6/mytnbappws.asmx/GetRegisteredUserV2")]
+        Task<T> UserAuthenticateEmail<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //yana - to handle id type based on master lookup
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/UpdateIdentificationNo")]
-        Task<T> UserUpdateIdentifcationNo<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
+        [Post("/v6/mytnbappws.asmx/GetRegisteredUserV2")]
+        Task<T> UserAuthenticateID<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);       //yana - to handle id type based on master lookup
+
+        //[Headers("Content-Type:application/json; charset=utf-8")]
+        //[Post("/v6/mytnbappws.asmx/UpdateIdentificationNo")]
+        //Task<T> UserUpdateIdentifcationNo<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/UpdateIdentificationNoV2")]
+        Task<T> UserUpdateIdentifcationNo<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //yana - to handle id type based on master lookup
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdateUserInfo")]
