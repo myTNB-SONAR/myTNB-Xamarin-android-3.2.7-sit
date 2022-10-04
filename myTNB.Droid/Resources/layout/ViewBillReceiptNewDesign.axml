@@ -230,6 +230,60 @@
 					android:layout_marginRight="@dimen/receipt_right_align"
 					android:layout_marginTop="@dimen/receipt_top_align" />
 				<TextView
+					android:id="@+id/txn_bankRef_text"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="@color/silverChalice"
+					android:textSize="@dimen/receipt_text_size"
+					android:layout_marginTop="@dimen/receipt_top_align"
+					android:layout_marginLeft="@dimen/receipt_left_align"
+					android:layout_marginRight="@dimen/receipt_right_align"
+					android:text="BANK REFERENCE" />
+				<TextView
+					android:id="@+id/txn_bankRef_value"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="@dimen/receipt_top_align_value"
+					android:textColor="@color/tunagrey"
+					android:layout_marginLeft="@dimen/receipt_left_align"
+					android:layout_marginRight="@dimen/receipt_right_align"
+					android:textSize="@dimen/receipt_value_size" />
+				<View
+					android:id="@+id/line_bankRef_value"
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:background="@color/receiptline"
+					android:layout_marginLeft="@dimen/receipt_left_align"
+					android:layout_marginRight="@dimen/receipt_right_align"
+					android:layout_marginTop="@dimen/receipt_top_align" />
+				<TextView
+					android:id="@+id/txn_AcqrBank_text"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="@color/silverChalice"
+					android:textSize="@dimen/receipt_text_size"
+					android:layout_marginTop="@dimen/receipt_top_align"
+					android:layout_marginLeft="@dimen/receipt_left_align"
+					android:layout_marginRight="@dimen/receipt_right_align"
+					android:text="ACQUIRER BANK" />
+				<TextView
+					android:id="@+id/txn_AcqrBank_value"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="@dimen/receipt_top_align_value"
+					android:textColor="@color/tunagrey"
+					android:layout_marginLeft="@dimen/receipt_left_align"
+					android:layout_marginRight="@dimen/receipt_right_align"
+					android:textSize="@dimen/receipt_value_size" />
+				<View
+					android:id="@+id/line_AcqrBank_value"
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:background="@color/receiptline"
+					android:layout_marginLeft="@dimen/receipt_left_align"
+					android:layout_marginRight="@dimen/receipt_right_align"
+					android:layout_marginTop="@dimen/receipt_top_align" />
+				<TextView
 					android:id="@+id/total_amt_text"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"

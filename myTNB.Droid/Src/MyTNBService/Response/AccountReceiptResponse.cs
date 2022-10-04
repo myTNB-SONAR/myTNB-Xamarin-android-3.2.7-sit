@@ -36,7 +36,7 @@ namespace myTNB_Android.Src.MyTNBService.Response
             public MultiReceiptDetails receiptDetails { get; set; }
         }
 
-        public class MultiReceiptDetails
+        public class MultiReceiptDetails : BankPaymentParam
         {
             [JsonProperty(PropertyName = "referenceNum")]
             [AliasAs("referenceNum")]
@@ -108,6 +108,17 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "AccountOwnerName")]
             [AliasAs("AccountOwnerName")]
             public string accountOwnerName { get; set; }
+        }
+
+        public class BankPaymentParam
+        {
+            [JsonProperty(PropertyName = "paymentRefBank")]
+            [AliasAs("paymentRefBank")]
+            public string paymentRefBank { get; set; }
+
+            [JsonProperty(PropertyName = "paymentAcqBank")]
+            [AliasAs("paymentAcqBank")]
+            public string paymentAcqBank { get; set; }
         }
     }
 }

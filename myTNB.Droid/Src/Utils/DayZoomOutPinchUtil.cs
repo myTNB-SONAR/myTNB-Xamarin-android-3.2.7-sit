@@ -47,6 +47,7 @@ namespace myTNB_Android.Src.Utils
 
             txtTitle.Text = Utility.GetLocalizedLabel("Usage", "SMOverlayTitle");
             txtMessage.Text = Utility.GetLocalizedLabel("Usage", "SMOverlayMsg");
+            txtBtnFirst.Text = Utility.GetLocalizedLabel("Common", "gotIt");
             TextViewUtils.SetTextSize14(txtTitle, txtMessage);
             TextViewUtils.SetTextSize16(txtBtnFirst);
 

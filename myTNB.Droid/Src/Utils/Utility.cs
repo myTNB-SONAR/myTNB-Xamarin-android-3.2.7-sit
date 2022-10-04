@@ -34,7 +34,8 @@ namespace myTNB_Android.Src.Utils
 
         public enum Masking
         {
-            Address
+            Address,
+            Id
         }
 
         public Utility()
@@ -685,6 +686,33 @@ namespace myTNB_Android.Src.Utils
             catch (Exception e)
             {
                 LoggingNonFatalError(e);
+            }
+        }
+
+        public static string StringIdMasking(Masking masking, string premasking)
+        {
+            //proceed when is not null or empty
+            if (!String.IsNullOrEmpty(premasking))
+            {
+                if (masking.Equals(Masking.Id))
+                {
+                    string lastDigit = premasking.Substring(premasking.Length - 4);
+                    int index = premasking.IndexOf(lastDigit);
+
+                    string frontMasking = premasking.Substring(0, index);
+                    Regex replaceString = new Regex("\\S");
+                    frontMasking = replaceString.Replace(frontMasking, "•");
+                    return frontMasking + lastDigit;
+                   
+                }
+                else
+                {
+                    return premasking;
+                }
+            }
+            else
+            {
+                return premasking;
             }
         }
 
