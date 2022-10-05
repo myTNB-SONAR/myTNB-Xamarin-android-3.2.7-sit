@@ -164,6 +164,11 @@ namespace myTNB.Mobile
 
         public bool IsResidential(string rateCategory)
         {
+            if (string.IsNullOrEmpty(rateCategory))
+            {
+                return false;
+            }
+
             List<string> residentialRateCategoryList = LanguageManager.Instance.GetConfigProperty<List<string>>(LanguageManager.ConfigPropertyEnum.ResidentialRateCategory);
             if (residentialRateCategoryList != null)
             {
