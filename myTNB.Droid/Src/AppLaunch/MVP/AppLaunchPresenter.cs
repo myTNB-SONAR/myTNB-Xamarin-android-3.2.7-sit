@@ -112,6 +112,16 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         UserSessions.SaveDeviceId(this.mView.GetDeviceId());
                     }
+                    else
+                    {
+                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.S)      //Starting android 12 disable bluetooth.address checking deviceId
+                        {
+                            if (UserSessions.GetDeviceId() != this.mView.GetDeviceId())         
+                            {
+                                UserSessions.SaveDeviceId(this.mView.GetDeviceId());
+                            }
+                        }
+                    }
                     LoadAppMasterData();
                     GetCountryList();
                 }
