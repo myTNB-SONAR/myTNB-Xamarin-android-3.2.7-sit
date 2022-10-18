@@ -170,6 +170,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         //string ts = JsonConvert.SerializeObject(baseRequest);
                         APIBaseResponse DataResponse = await ServiceApiImpl.Instance.UpdateUserInfoDevice(baseRequest);
                     }
+                    else if (string.IsNullOrEmpty(fcmToken) && !string.IsNullOrEmpty(newfcmToken))
+                    {
+                        FirebaseTokenEntity.RemoveLatest();
+                        FirebaseTokenEntity.InsertOrReplace(newfcmToken, true);
+                    }
                 }
             }
             catch (Exception e)

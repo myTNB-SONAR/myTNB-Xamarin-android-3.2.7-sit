@@ -261,6 +261,11 @@ namespace myTNB_Android.Src.Login.MVP
                         //string ts = JsonConvert.SerializeObject(baseRequest);
                         APIBaseResponse DataResponse = await ServiceApiImpl.Instance.UpdateUserInfoDevice(baseRequest);
                     }
+                    else if (string.IsNullOrEmpty(fcmToken) && !string.IsNullOrEmpty(newfcmToken))
+                    {
+                        FirebaseTokenEntity.RemoveLatest();
+                        FirebaseTokenEntity.InsertOrReplace(newfcmToken, true);
+                    }
                 }
                 Log.Debug(TAG, "[DEBUG] FCM TOKEN: " + fcmToken);
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
