@@ -112,6 +112,16 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         UserSessions.SaveDeviceId(this.mView.GetDeviceId());
                     }
+                    else
+                    {
+                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.S)      //Starting android 12 disable bluetooth.address checking deviceId
+                        {
+                            if (UserSessions.GetDeviceId() != this.mView.GetDeviceId())         
+                            {
+                                UserSessions.SaveDeviceId(this.mView.GetDeviceId());
+                            }
+                        }
+                    }
                     LoadAppMasterData();
                     GetCountryList();
                 }
@@ -159,6 +169,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         baseRequest.usrInf.ft = newfcmToken;
                         //string ts = JsonConvert.SerializeObject(baseRequest);
                         APIBaseResponse DataResponse = await ServiceApiImpl.Instance.UpdateUserInfoDevice(baseRequest);
+                    }
+                    else if (string.IsNullOrEmpty(fcmToken) && !string.IsNullOrEmpty(newfcmToken))
+                    {
+                        FirebaseTokenEntity.RemoveLatest();
+                        FirebaseTokenEntity.InsertOrReplace(newfcmToken, true);
                     }
                 }
             }
@@ -1582,6 +1597,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             AccountCategoryId = acc.AccountCategoryId,
                             SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
                             InstallationType = acc.InstallationType == null ? "0" : acc.InstallationType,
+                            AMSIDCategory = acc.AMSIDCategory == null ? "0" : acc.AMSIDCategory,
                             IsSelected = false,
                             IsHaveAccess = acc.IsHaveAccess,
                             IsApplyEBilling = acc.IsApplyEBilling,
@@ -1630,6 +1646,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 AccountCategoryId = newAcc.AccountCategoryId,
                                 SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
                                 InstallationType = newAcc.InstallationType == null ? "0" : newAcc.InstallationType,
+                                AMSIDCategory = newAcc.AMSIDCategory == null ? "0" : newAcc.AMSIDCategory,
                                 IsSelected = false,
                                 IsHaveAccess = newAcc.IsHaveAccess,
                                 IsApplyEBilling = newAcc.IsApplyEBilling,

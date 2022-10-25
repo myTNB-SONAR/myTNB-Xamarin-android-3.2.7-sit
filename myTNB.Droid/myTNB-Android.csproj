@@ -19,19 +19,13 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <TargetFrameworkVersion>v11.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v12.0</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
-  </PropertyGroup>
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
-    <NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -79,7 +73,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <MandroidI18n>West</MandroidI18n>
     <LangVersion>8.0</LangVersion>
     <AotAssemblies>false</AotAssemblies>
@@ -107,6 +100,7 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <MandroidI18n>West</MandroidI18n>
     <LangVersion>8.0</LangVersion>
+    <AndroidDexTool>d8</AndroidDexTool>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stub|AnyCPU'">
     <OutputPath>bin\Stub\</OutputPath>
@@ -117,6 +111,7 @@
     <LangVersion>8.0</LangVersion>
     <ExternalConsole>false</ExternalConsole>
     <RunWithWarnings>true</RunWithWarnings>
+    <AndroidFastDeploymentType></AndroidFastDeploymentType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -136,7 +131,7 @@
     <EnableLLVM>false</EnableLLVM>
     <AndroidManagedSymbols>false</AndroidManagedSymbols>
     <AndroidUseAapt2>true</AndroidUseAapt2>
-    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <MandroidExtraArgs></MandroidExtraArgs>
     <MandroidExtraArgs></MandroidExtraArgs>
     <BundleAssemblies></BundleAssemblies>
     <AndroidHttpClientHandlerType></AndroidHttpClientHandlerType>
