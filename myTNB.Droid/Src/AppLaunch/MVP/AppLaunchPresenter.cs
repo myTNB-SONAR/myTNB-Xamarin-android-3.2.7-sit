@@ -52,6 +52,8 @@ using myTNB_Android.Src.Utils.Notification;
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 using System.Net.Http;
 using myTNB_Android.Src.Base.Response;
+using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile.AWS.Models;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -201,7 +203,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         AppLaunchMasterDataModel responseData = masterDataResponse.Data;
 
                         //UserSessions.SaveCheckEmailVerified(mSharedPref, responseData.UserVerificationInfo.Email.ToString());  //save sharedpref check email  //wan
-                       
+
                         //update new ic from response
                         UserEntity.UpdateICno(masterDataResponse.IdentificationNo);
 
@@ -438,7 +440,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     {
                                         mView.ShowPreLogin();
                                     }
-                                   
+
                                 }
                                 else //baru install
                                 {
@@ -602,12 +604,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 }
                 else
                 {
-                    
+
                     MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
                     this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                     this.mView.ShowDashboard();
                 }
+
+
 
             }
             catch (ApiException apiException)
@@ -1539,9 +1543,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             });
         }
 
-        
-       
-       
+
+
+
         //private void ProcessCustomerAccount(List<CustomerAccountListResponse.CustomerAccountData> list)
         private void ProcessCustomerAccount(List<CustomerAccountListResponseAppLaunch.CustomerAccountData> list)
         {
@@ -1557,11 +1561,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     List<CustomerBillingAccount> newExistingList = new List<CustomerBillingAccount>();
                     List<int> newExisitingListArray = new List<int>();
                     List<CustomerBillingAccount> newAccountList = new List<CustomerBillingAccount>();
-                   
+
 
                     foreach (CustomerAccountListResponseAppLaunch.CustomerAccountData acc in list)
                     {
-                        
+
                         int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
 
                         var newRecord = new CustomerBillingAccount()
@@ -1589,7 +1593,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             CreatedDate = acc.CreatedDate,
                             BusinessArea = acc.BusinessArea,
                             RateCategory = acc.RateCategory,
-                            IsInManageAccessList = acc.IsInManageAccessList
+                            IsInManageAccessList = acc.IsInManageAccessList,
+                            AccountHasOwner = acc.AccountHasOwner
+                            
                         };
 
                         if (index != -1)
@@ -1637,7 +1643,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 CreatedDate = newAcc.CreatedDate,
                                 BusinessArea = newAcc.BusinessArea,
                                 RateCategory = newAcc.RateCategory,
-                                IsInManageAccessList = newAcc.IsInManageAccessList
+                                IsInManageAccessList = newAcc.IsInManageAccessList,
+                                AccountHasOwner = newAcc.AccountHasOwner
                             };
 
                             newExistingList.Add(newRecord);
@@ -1702,7 +1709,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     lang = "EN";
                 }
 
-                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid,lang);
+                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid, lang);
                 string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
                 var updateUserStatusActivateResponse = await ServiceApiImpl.Instance.UpdateUserStatusActivate(updateUserStatusActivateRequest);
 
@@ -1772,7 +1779,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     lang = "EN";
                 }
 
-                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid,lang);
+                UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid, lang);
                 string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
                 var updateUserStatusActivateResponse = await ServiceApiImpl.Instance.UpdateUserStatusDeactivate(updateUserStatusActivateRequest);
 

@@ -100,6 +100,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         private string StatusId = string.Empty;
         private string StatusCode = string.Empty;
 
+        GetBillRenderingTenantResponse billRenderingTenantResponse;
+
         public bool IsActive()
         {
             return IsVisible;
@@ -210,14 +212,53 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         && multiBillRenderingResponse.Content != null
                                         && multiBillRenderingResponse.Content.Count > 0)
                                     {
+                                        billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dbrCAForPaymentList, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                                        List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+
+
                                         for (int j = 0; j < dbrCAForPaymentList.Count; j++)
                                         {
                                             int index = multiBillRenderingResponse.Content.FindIndex(x =>
                                                 x.ContractAccountNumber == dbrCAForPaymentList[j]
-                                                && x.DBRType == MobileEnums.DBRTypeEnum.Paper);
-                                            if (index > -1)
+                                                && x.DBRType == MobileEnums.DBRTypeEnum.Paper
+                                                );
+
+                                            int indexHasOwner = accounts.FindIndex(x =>
+                                                x.AccNum == dbrCAForPaymentList[j]
+                                                && x.AccountHasOwner == true
+                                                );
+
+                                            int indexTenant = billRenderingTenantResponse.Content.FindIndex(x =>
+                                                x.CaNo == dbrCAForPaymentList[j]
+                                                && x.IsOwnerAlreadyOptIn == false
+                                                && x.IsOwnerOverRule == false
+                                                && x.IsTenantAlreadyOptIn == false
+                                                );
+
+                                            int owner = accounts.FindIndex(x =>
+                                                x.AccNum == dbrCAForPaymentList[j]
+                                                && x.isOwned == true
+                                                );
+
+                                            if (index > -1 )
                                             {
-                                                PaymentActivity.CAsWithPaperBillList.Add(dbrCAForPaymentList[index]);
+                                                if(owner > -1)
+                                                {
+                                                    PaymentActivity.CAsWithPaperBillList.Add(dbrCAForPaymentList[owner]);
+                                                }
+                                                else
+                                                {
+                                                    if (indexHasOwner > -1)
+                                                    {
+                                                        if (indexTenant > -1)
+                                                        {
+                                                            PaymentActivity.CAsWithPaperBillList.Add(dbrCAForPaymentList[indexTenant]);
+                                                        }
+                                                    }
+                                                }
+                                                
+
+
                                             }
                                         }
                                     }
@@ -241,7 +282,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         paymentItemAccountPayment.AccountOwnerName = customerBillingAccount.OwnerName;
                                         paymentItemAccountPayment.AccountNo = chargeModel.ContractAccount;
                                         paymentItemAccountPayment.AccountAmount = item.amount.ToString(currCult);
-                                        paymentItemAccountPayment.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1;
+                                        // paymentItemAccountPayment.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1;
+                                        
+                                        paymentItemAccountPayment.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1; //enable for tenant
 
                                         List<AccountPayment> accountPaymentList = new List<AccountPayment>();
                                         chargeModel.MandatoryCharges.ChargeModelList.ForEach(charge =>
@@ -263,7 +306,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                             AccountOwnerName = customerBillingAccount.OwnerName,
                                             AccountNo = chargeModel.ContractAccount,
                                             AccountAmount = item.amount.ToString(currCult),
-                                            dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1
+                                            //dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1
+                                            dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1 //enable for tenant
                                         };
                                         selectedPaymentItemList.Add(payItem);
                                     }

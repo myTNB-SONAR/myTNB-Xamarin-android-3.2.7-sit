@@ -72,6 +72,8 @@ using myTNB_Android.Src.ManageBillDelivery.MVP;
 using System.Linq;
 using myTNB_Android.Src.SessionCache;
 using System.Threading.Tasks;
+using myTNB.Mobile.AWS.Models.DBR.AutoOptIn;
+using myTNB_Android.Src.DigitalBill.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -715,6 +717,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         ScaleGestureDetector mScaleDetector;
 
         GetBillRenderingResponse _billRenderingResponse;
+        GetBillRenderingTenantResponse billRenderingTenantResponse;
+        GetAutoOptInCaResponse getAutoOptInCaResponse;
 
         public override int ResourceId()
         {
@@ -1383,6 +1387,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     ShowUnableToFecthSmartMeterData(errorMSG);
                 }
+
+                //var accNum = GetSelectedAccount().AccountNum;
+                //bool dbrHasShown = MarketingPopUpEntity.GetDBRPopUpFlag(accNum);
+                //if (dbrHasShown && DBRUtility.Instance.IsCAEligible(accNum))
+                //{
+                //    CheckOnAutoOptIn();
+                //}
 
                 txtNewRefreshMessage.Click += delegate
                 {
@@ -11435,6 +11446,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             });
         }
 
+        public void ShowAutoOptInTooltip()
+        {
+            this.Activity.RunOnUiThread(() =>
+            {
+                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
+                .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_TITLE))
+                .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_MSG))
+                .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_BTN))
+                .SetCTAaction(() => ShowGoToPaperlessMicrosite())
+                .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                .SetSecondaryCTAaction(() =>
+                {
+                    this.SetIsClicked(false);
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_GotIt);
+                })
+                .Build();
+                marketingTooltip.Show();
+            });
+        }
+
         public void ShowManageBill()
         {
             try
@@ -11442,6 +11474,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_Viewmore);
                 Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(_billRenderingResponse));
+                intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                 intent.PutExtra("accountNumber", GetSelectedAccount().AccountNum);
                 StartActivity(intent);
             }
@@ -11451,11 +11484,77 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        public void ShowGoToPaperlessMicrosite()
+        {
+            try
+            {
+                SetDynatraceCTATags();
+                Intent intent = new Intent(Activity, typeof(DigitalBillActivity));
+                intent.PutExtra(Constants.SELECTED_ACCOUNT, GetSelectedAccount().AccountNum);
+                intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(_billRenderingResponse));
+                StartActivity(intent);
+            }
+            catch (System.Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] InitiatePaymentRequest: " + e.Message);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void SetDynatraceCTATags()
+        {
+            if (_billRenderingResponse == null
+                || _billRenderingResponse.Content == null)
+            {
+                return;
+            }
+            string dynatraceTag;
+            switch (_billRenderingResponse.Content.CurrentRenderingMethod)
+            {
+                case MobileEnums.RenderingMethodEnum.EBill:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.EBill;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Email:
+                case MobileEnums.RenderingMethodEnum.Email:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.EBill_Email;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.EBill_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.EBill_Paper;
+                        break;
+                    }
+                case MobileEnums.RenderingMethodEnum.Email_Paper:
+                case MobileEnums.RenderingMethodEnum.EBill_Email_Paper:
+                    {
+                        dynatraceTag = DynatraceConstants.DBR.CTAs.ManageBillDelivery.EBill_Email_Paper;
+                        break;
+                    }
+                default:
+                    {
+                        dynatraceTag = string.Empty;
+                        break;
+                    }
+            }
+            DynatraceHelper.OnTrack(dynatraceTag);
+        }
+
         public void CheckOnPaperFromBillRendering()
         {
             Task.Run(() =>
             {
                 _ = CheckOnPaperAsync();
+            });
+        }
+
+        public void CheckOnAutoOptIn()
+        {
+            Task.Run(() =>
+            {
+                _ = CheckOnAutoOptInAsync();
             });
         }
 
@@ -11470,7 +11569,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
                 }
                 _billRenderingResponse = await DBRManager.Instance.GetBillRendering(contractAccount,
-                    AccessTokenCache.Instance.GetAccessToken(this.Activity), GetSelectedAccount().IsOwner);
+                    AccessTokenCache.Instance.GetAccessToken(this.Activity), GetSelectedAccount().IsOwner); //cek balik sini
+                List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+                GetBillRenderingTenantModel tenantInfo = new GetBillRenderingTenantModel();
+                CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
+                List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+
+                //for (int i = 0; i < dBRCAs.Count; i++)
+                //{
+                //    if (billRenderingTenantResponse.Content[i].CaNo == selectedAccount.AccountNum)
+                //    {
+                //        var newRecord = new GetBillRenderingTenantModel()
+                //        {
+                //            CaNo = billRenderingTenantResponse.Content[i].CaNo,
+                //            IsOwnerAlreadyOptIn = billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn,
+                //            IsOwnerOverRule = billRenderingTenantResponse.Content[i].IsOwnerOverRule,
+                //            IsTenantAlreadyOptIn = billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn,
+
+                //        };
+                //        tenantInfo = newRecord;
+                //    }
+
+                //    if (accounts[i].AccNum == selectedAccount.AccountNum)
+                //    {
+                //        var newRecordOwner = new CustomerBillingAccount()
+                //        {
+                //            AccountHasOwner = accounts[i].AccountHasOwner
+
+                //        };
+                //        tenantOwnerInfo = newRecordOwner;
+                //    }
+                //}
 
                 if (_billRenderingResponse != null
                    && _billRenderingResponse.StatusDetail != null
@@ -11479,8 +11608,74 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                    && _billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
                    && _billRenderingResponse.Content.IsInProgress == false)
                 {
-                    ShowMarketingTooltip();
+
+                    if (_billRenderingResponse.Content.IsOwner)
+                    {
+                        ShowMarketingTooltip();
+                    }
+                    else
+                    {
+                        //For tenant checking DBR
+                        billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+
+                        bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
+                        bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
+                        bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
+                        bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccount.AccountNum).AccountHasOwner;
+
+                        if (billRenderingTenantResponse != null
+                           && billRenderingTenantResponse.StatusDetail != null
+                           && billRenderingTenantResponse.StatusDetail.IsSuccess
+                           && billRenderingTenantResponse.Content != null)
+                        {
+                            if (AccountHasOwner == true && !isOwnerAlreadyOptIn && !isOwnerOverRule && !isTenantAlreadyOptIn)
+                            {
+                                ShowMarketingTooltip();
+                            }
+                        }
+                    }
+                    //ShowMarketingTooltip();
                     MarketingPopUpEntity.InsertOrReplace(contractAccount, true);
+                    //flag
+                    UserSessions.SaveDBRMarketingPopUpFlag(this.mPref, true);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private async Task CheckOnAutoOptInAsync()
+        {
+            try
+            {
+                string contractAccount = GetSelectedAccount().AccountNum;
+                bool dbrHasShown = MarketingPopUpEntity.GetDBRPopUpFlag(contractAccount);
+                if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                }
+                getAutoOptInCaResponse = await DBRManager.Instance.GetAutoOptInCaDBR(contractAccount, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity)); //cek balik sini
+
+                if (getAutoOptInCaResponse != null
+                   && getAutoOptInCaResponse.StatusDetail != null
+                   && getAutoOptInCaResponse.Content != null
+                   && _billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.Paper
+                   && _billRenderingResponse.Content.IsOwner == true
+                   && _billRenderingResponse.Content.IsInProgress == false
+                   && getAutoOptInCaResponse.Content.isPopupSeen == false
+                   )
+                {
+                    ShowAutoOptInTooltip();
+                    MarketingPopUpEntity.InsertOrReplace(contractAccount, true);
+
+                    //update the flag of isPopupSeen
+                    getAutoOptInCaResponse = await DBRManager.Instance.UpdateAutoOptInCaDBR(contractAccount, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity)); //cek balik sini
+
+
+                    //flag
                 }
             }
             catch (System.Exception e)

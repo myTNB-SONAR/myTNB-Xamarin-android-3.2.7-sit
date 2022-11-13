@@ -47,9 +47,13 @@
             internal const string GenerateAccessToken = "https://stagingapi.mytnb.com.my/Identity/api/v1";
             internal const string GetEligibility = "https://stagingapi.mytnb.com.my/Eligibility/api/v1";
             internal const string GetBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetBillRenderingTenant = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetAutoOptInCa = "https://stagingapi.mytnb.com.my/StagedData/api/v1/";
+            internal const string UpdateAutoOptInCa = "https://stagingapi.mytnb.com.my/StagedData/api/v1/";
             internal const string GetMultiBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
             internal const string StartDigitalBill = "https://stagingdbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://stagingdbr.mytnb.com.my/PaperBill/OptIn";
+            //internal const string AutoOptInToPaperless = "https://stagingapi.mytnb.com.my/StagedData/api/v1"
             public const string SSO = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
 #else
             internal const string Domain = "https://api.mytnb.com.my";
@@ -93,6 +97,9 @@
         {
             internal const string GenerateAccessToken = "GenerateAccessToken";
             internal const string GetBillRendering = "BillRendering";
+            internal const string GetBillRenderingTenant = "BillRenderingTenant";
+            internal const string GetAutoOptInCaDBR = "GetAutoOptIn";
+            internal const string UpdateAutoOptInCaDBR = "UpdateAutoOptIn";
             internal const string PostMultiBillRendering = "MultiBillRendering";
             internal const string PostInstallationDetails = "InstallationDetails";
             internal const string PostMultiInstallationDetails = "MultiInstallationDetails";

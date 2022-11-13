@@ -63,6 +63,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private string StatusCode = string.Empty;
         internal GetApplicationStatusDisplay ApplicationDetailDisplay;
         private GetBillRenderingResponse billRenderingResponse;
+        private GetBillRenderingTenantResponse billRenderingTenantResponse;
         public bool paymentReceiptGenerated = false;
 
         internal bool ShouldBackToHome { set; get; } = false;
@@ -456,8 +457,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                        && billRenderingResponse.Content != null
                        && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
                     {
+
+                        billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(CAsWithPaperBillList, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+
                         Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                         intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                        intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                         intent.PutExtra("accountNumber", dbrAccount);
                         StartActivity(intent);
                     }

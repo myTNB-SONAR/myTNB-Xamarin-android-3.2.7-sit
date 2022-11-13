@@ -111,5 +111,8 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty("IsApplyEBilling")]
         public bool IsApplyEBilling { get; set; }
 
+        [JsonProperty("AccountHasOwner")]
+        public bool AccountHasOwner { get; set; }
+
     }
 }

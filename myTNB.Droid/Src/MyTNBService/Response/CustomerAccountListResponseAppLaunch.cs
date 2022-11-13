@@ -43,6 +43,8 @@ namespace myTNB_Android.Src.MyTNBService.Response
         [JsonProperty(PropertyName = "RefreshBtnText")]
         public string RefreshBtnText { get; set; }
 
+        
+
         [JsonProperty(PropertyName = "data")]
         [AliasAs("data")]
         public List<CustomerAccountData> customerAccountData { set; get; }
@@ -127,6 +129,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "CreatedBy")]
             public string CreatedBy { set; get; }
+
+            [JsonProperty(PropertyName = "AccountHasOwner")]
+            public bool AccountHasOwner { get; set; }
         }
 
 

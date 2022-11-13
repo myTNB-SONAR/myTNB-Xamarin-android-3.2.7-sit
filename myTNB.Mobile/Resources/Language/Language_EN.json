@@ -503,7 +503,10 @@
     "dbrReminderPopupTitle": "Go Paperless with your bills",
     "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill! Join us in our mission to be more environmentally friendly by receiving your bills exclusively via myTNB App & Portal.",
     "dbrReminderPopupViewMore": "View More",
-    "dbrReminderPopupGotIt": "Got it!"
+    "dbrReminderPopupGotIt": "Got it!",
+    "dbrReminderAutoPopupTitle": "Your electricity bills are now paperless!",
+    "dbrReminderAutoPopupMessage": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 3 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
+    "dbrReminderAutoPopUpBtn": "Manage Bill Delivery"
   },
   "Bills": {
     "title": "Bills",
@@ -2861,6 +2864,17 @@
             "type": "none"
           }
         ],
+        "BillRenderingTenant": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
         "MultiBillRendering": [
           {
             "code": "7200",
@@ -3036,6 +3050,9 @@
     "ForceHideDBRBanner": false,
     "ForceHideBillRedesignBanner": false,
     "BillRendering": {
+      "enabled": true
+    },
+    "BillRenderingTenant": {
       "enabled": true
     },
     "IsAboutMyBillEnquiryEnabled": true,

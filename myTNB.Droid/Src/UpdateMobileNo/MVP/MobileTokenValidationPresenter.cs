@@ -791,7 +791,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             BusinessArea = acc.BusinessArea,
                             RateCategory = acc.RateCategory,
                             IsInManageAccessList = acc.IsInManageAccessList,
-                            CreatedBy = acc.CreatedBy
+                            CreatedBy = acc.CreatedBy,
+                            AccountHasOwner = acc.AccountHasOwner
                         };
 
                         if (index != -1)
@@ -838,7 +839,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                 BusinessArea = newAcc.BusinessArea,
                                 RateCategory = newAcc.RateCategory,
                                 IsInManageAccessList = newAcc.IsInManageAccessList,
-                                CreatedBy = newAcc.CreatedBy
+                                CreatedBy = newAcc.CreatedBy,
+                                AccountHasOwner = newAcc.AccountHasOwner
                             };
 
                             newExistingList.Add(newRecord);

@@ -89,5 +89,9 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty(PropertyName = "RateCategory")]
         [AliasAs("RateCategory")]
         public string RateCategory { get; set; }
+
+        [JsonProperty(PropertyName = "AccountHasOwner")]
+        [AliasAs("AccountHasOwner")]
+        public bool AccountHasOwner { get; set; }
     }
 }
