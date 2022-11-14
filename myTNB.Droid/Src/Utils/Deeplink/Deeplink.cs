@@ -10,6 +10,11 @@
             internal static readonly string UserIDKey = "userID";
             internal static readonly string eKYCIsContractorAppliedKey = "isContractorApplied";
             internal static readonly string eKYCAppRefKey = "appRef";
+            internal static readonly string identificationType = "idType";
+            internal static readonly string identificationNo = "idNo";
+            internal static readonly string eKYCStatus = "ekycStatus";
+            internal static readonly string applicationModuleID = "applicationModuleID";
+
 
             internal static readonly string Pattern = "\\b{0}.*\\b";
             internal static readonly string ReplaceKey = "{0}=";

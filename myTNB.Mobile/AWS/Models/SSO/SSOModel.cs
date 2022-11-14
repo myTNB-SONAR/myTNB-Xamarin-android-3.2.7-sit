@@ -33,5 +33,6 @@ namespace myTNB.Mobile
         public int OSType { set; get; }
         public bool IsContractorApplied { set; get; }
         public string appRef { set; get; }
+        public int? ApplicationModuleID { set; get; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using myTNB;
-using myTNB.Mobile.AWS.Models.DS.Identification;
 using myTNB_Android.Src.Base.MVP;
 
 namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
@@ -82,15 +81,14 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             void OnStart();
 
             /// <summary>
-            /// Calls the GetEKYCIdentification API
+            /// Gets the value of EKYCIdentification from DSDynamicLinkParamsModel 
             /// </summary>
-            void GetEKYCIdentificationOnCall(DSDynamicLinkParamsModel dynamicLinkParamsModel);
+            void GetEKYCIdentityVerification(DSDynamicLinkParamsModel dynamicLinkParamsModel);
 
             /// <summary>
-            /// Gets the Identification model
+            /// Calls the GetEKYCStatus API
             /// </summary>
-            /// <returns></returns>
-            GetEKYCIdentificationModel GetIdentificationModel();
+            void GetEKYCStatusOnCall(DSDynamicLinkParamsModel dynamicLinkParamsModel);
 
             /// <summary>
             /// Gets the DSDynamicLinkParamsModel from dynamic link parsing

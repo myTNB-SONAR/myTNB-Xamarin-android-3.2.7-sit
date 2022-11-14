@@ -179,9 +179,16 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 
         private void ProceedOnVerifyNow(DSDynamicLinkParamsModel dsDynamicLinkParamsModel)
         {
-            UpdateLoadingShimmer(true);
             UpdateBottomContainer(false);
-            this.userActionsListener.GetEKYCIdentificationOnCall(dsDynamicLinkParamsModel);
+            if(dsDynamicLinkParamsModel.Status != null)
+            {
+                this.userActionsListener.GetEKYCIdentityVerification(dsDynamicLinkParamsModel);
+            }
+            else
+            {
+                UpdateLoadingShimmer(true);
+                this.userActionsListener.GetEKYCStatusOnCall(dsDynamicLinkParamsModel);
+            }
         }
 
         public void RenderContent()
@@ -342,7 +349,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                             var dropdownMessage = string.Empty;
 
                             string lastFourDigits = string.Empty;
-                            var idNumber = this.userActionsListener.GetIdentificationModel().IdentificationNo;
+                            var idNumber = this.userActionsListener.GetDSDynamicLinkParamsModel().IdentificationNo;
 
                             if (idNumber.IsValid())
                             {
@@ -453,7 +460,6 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         private void OnVerifyNow()
         {
             Intent intent = new Intent(this, typeof(DSWebViewActivity));
-            intent.PutExtra(DigitalSignatureConstants.DS_IDENTIFICATION_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetIdentificationModel()));
             intent.PutExtra(DigitalSignatureConstants.DS_DYNAMIC_LINK_PARAMS_MODEL, JsonConvert.SerializeObject(this.userActionsListener.GetDSDynamicLinkParamsModel()));
             StartActivity(intent);
 

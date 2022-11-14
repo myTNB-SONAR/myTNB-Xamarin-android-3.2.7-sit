@@ -98,10 +98,12 @@ namespace myTNB.Mobile
             , string idNo
             , int osType
             , bool isContractorApplied
-            , string appReference)
+            , string appReference
+            , int? applicationModuleID)
         {
             try
             {
+                //Add ApplicationModuleID = int?
                 DSModel ssoModel = new DSModel
                 {
                     Name = name,
@@ -122,7 +124,8 @@ namespace myTNB.Mobile
                     QRMappingID = null,
                     OSType = osType,
                     IsContractorApplied = isContractorApplied,
-                    appRef = appReference
+                    appRef = appReference,
+                    ApplicationModuleID = applicationModuleID
                 };
                 Debug.WriteLine("[DEBUG] SSO ssoModel: " + JsonConvert.SerializeObject(ssoModel));
                 string signature = SecurityManager.Instance.AES256_Encrypt(AWSConstants.SaltKey

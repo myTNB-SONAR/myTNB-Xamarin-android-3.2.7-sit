@@ -3,8 +3,8 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile;
-using myTNB.Mobile.AWS.Models.DS.Identification;
 using myTNB.Mobile.AWS.Managers.DS;
+using myTNB.Mobile.AWS.Models.DS.Status;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
@@ -13,7 +13,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
     {
         private readonly DSIdentityVerificationContract.IView view;
         private BaseAppCompatActivity mActivity;
-        GetEKYCIdentificationModel _identificationModel;
+        GetEKYCStatusModel _eKYCstatusModel;
         DSDynamicLinkParamsModel _dynamicLinkParamsModel;
 
         public DSIdentityVerificationPresenter(DSIdentityVerificationContract.IView view, BaseAppCompatActivity activity)
@@ -37,57 +37,19 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
 
         public void Start() { }
 
-        public void GetEKYCIdentificationOnCall(DSDynamicLinkParamsModel dynamicLinkParamsModel)
+        public void GetEKYCIdentityVerification(DSDynamicLinkParamsModel dynamicLinkParamsModel)
         {
             _dynamicLinkParamsModel = new DSDynamicLinkParamsModel();
             _dynamicLinkParamsModel = dynamicLinkParamsModel;
-            Task.Run(() =>
-            {
-                _ = GetEKYCIdentification();
-            });
-        }
 
-        private async Task GetEKYCIdentification()
-        {
-            string userId = UserEntity.GetActive().UserID ?? string.Empty;
-
-            if (!AccessTokenCache.Instance.HasTokenSaved(this.mActivity))
+            if (_dynamicLinkParamsModel != null)
             {
-                string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(userId);
-                AccessTokenCache.Instance.SaveAccessToken(this.mActivity, accessToken);
-            }
-
-            GetEKYCIdentificationResponse eKYCIdentificationResponse = await DSManager.Instance.GetEKYCIdentification(userId, AccessTokenCache.Instance.GetAccessToken(this.mActivity));
-            if (eKYCIdentificationResponse != null &&
-                eKYCIdentificationResponse.StatusDetail != null &&
-                eKYCIdentificationResponse.StatusDetail.IsSuccess &&
-                eKYCIdentificationResponse.Content != null)
-            {
-                _identificationModel = eKYCIdentificationResponse.Content;
-
-                this.mActivity.RunOnUiThread(() =>
-                {
-                    this.view?.UpdateLoadingShimmer(false);
-                    this.view?.UpdateBottomContainer(true);
-                    OnDisplayPopUp(_identificationModel);
-                });
-            }
-            else
-            {
-                this.mActivity.RunOnUiThread(() =>
-                {
-                    this.view?.UpdateLoadingShimmer(false);
-                    this.view?.UpdateBottomContainer(false);
-                    this.view?.UpdateButtonState(false);
-                    if (eKYCIdentificationResponse != null && eKYCIdentificationResponse.StatusDetail != null)
-                    {
-                        this.view?.ShowErrorMessage(eKYCIdentificationResponse.StatusDetail);
-                    }
-                });
+                this.view?.UpdateBottomContainer(true);
+                OnDisplayPopUp(_dynamicLinkParamsModel);
             }
         }
 
-        private void OnDisplayPopUp(GetEKYCIdentificationModel eKYCIdentificationModel)
+        private void OnDisplayPopUp(DSDynamicLinkParamsModel eKYCIdentificationModel)
         {
             if (eKYCIdentificationModel.IsCompletedOnOtherDevice)
             {
@@ -108,9 +70,80 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             }
         }
 
-        public GetEKYCIdentificationModel GetIdentificationModel()
+        public void GetEKYCStatusOnCall(DSDynamicLinkParamsModel dynamicLinkParamsModel)
         {
-            return _identificationModel;
+            _dynamicLinkParamsModel = new DSDynamicLinkParamsModel();
+            _dynamicLinkParamsModel = dynamicLinkParamsModel;
+
+            Task.Run(() =>
+            {
+                _ = GetEKYCStatus();
+            });
+        }
+
+        private async Task GetEKYCStatus()
+        {
+            string userId = UserEntity.GetActive().UserID ?? string.Empty;
+
+            if (!AccessTokenCache.Instance.HasTokenSaved(this.mActivity))
+            {
+                string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(userId);
+                AccessTokenCache.Instance.SaveAccessToken(this.mActivity, accessToken);
+            }
+
+            GetEKYCStatusResponse eKYCStatusResponse = await DSManager.Instance.GetEKYCStatus(userId, AccessTokenCache.Instance.GetAccessToken(this.mActivity));
+            if (eKYCStatusResponse != null &&
+                eKYCStatusResponse.StatusDetail != null &&
+                eKYCStatusResponse.StatusDetail.IsSuccess &&
+                eKYCStatusResponse.Content != null)
+            {
+                _eKYCstatusModel = eKYCStatusResponse.Content;
+                this.mActivity.RunOnUiThread(() =>
+                {
+                    this.view?.UpdateLoadingShimmer(false);
+                    this.view?.UpdateBottomContainer(true);
+                    OnDisplayEKYCStatus(_eKYCstatusModel);
+                });
+            }
+            else
+            {
+                this.mActivity.RunOnUiThread(() =>
+                {
+                    this.view?.UpdateLoadingShimmer(false);
+                    this.view?.UpdateBottomContainer(false);
+                    this.view?.UpdateButtonState(false);
+                    if (eKYCStatusResponse != null && eKYCStatusResponse.StatusDetail != null)
+                    {
+                        this.view?.ShowErrorMessage(eKYCStatusResponse.StatusDetail);
+                    }
+                });
+            }
+        }
+
+        private void OnDisplayEKYCStatus(GetEKYCStatusModel eKYCStatusResponse)
+        {
+            if (eKYCStatusResponse.Status == "PENDING")
+            {
+                this.view?.ShowCompletedOnOtherDevicePopUp();
+            }
+            else if (eKYCStatusResponse.Status == null ||
+                !eKYCStatusResponse.Status.IsValid())
+            {
+                this.view?.ShowIdNotRegisteredPopUp();
+            }
+            else if (eKYCStatusResponse.IsVerified)
+            {
+                this.view?.ShowIdentityHasBeenVerified();
+            }
+            else
+            {
+                this.view?.ShowPrepareDocumentPopUp(_dynamicLinkParamsModel.IdentificationType);
+            }
+        }
+
+        public GetEKYCStatusModel GetStatusModel()
+        {
+            return _eKYCstatusModel;
         }
 
         public DSDynamicLinkParamsModel GetDSDynamicLinkParamsModel()

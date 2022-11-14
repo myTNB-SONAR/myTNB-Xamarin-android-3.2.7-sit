@@ -96,6 +96,18 @@ namespace myTNB_Android.Src.NotificationDetails.Models
 
             [JsonProperty("appRef")]
             public string AppRef { get; set; }
+
+            [JsonProperty("identificationType")]
+            public int IdentificationType { get; set; }
+
+            [JsonProperty("identificationNo")]
+            public string IdentificationNo { get; set; }
+
+            [JsonProperty("status")]
+            public string Status { get; set; }
+
+            [JsonProperty("applicationModuleID")]
+            public string ApplicationModuleID { get; set; }
         }
     }
 }

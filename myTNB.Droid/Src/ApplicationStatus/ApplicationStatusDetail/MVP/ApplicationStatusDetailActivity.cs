@@ -251,6 +251,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         {
                             model.IsContractorApplied = applicationDetailDisplay.ApplicationDetail.IsContractorApplied;
                             model.AppRef = applicationDetailDisplay.ApplicationDetail.ReferenceNo;
+                            model.IdentificationType = applicationDetailDisplay.ApplicationDetail.IdentificationType;
+                            model.IdentificationNo = applicationDetailDisplay.ApplicationDetail.IdentificationNo;
+                            model.ApplicationModuleID = applicationDetailDisplay.ApplicationDetail.ApplicationModuleId;
                         }
 
                         Intent ekycVerificationIntent = new Intent(this, typeof(DSIdentityVerificationActivity));

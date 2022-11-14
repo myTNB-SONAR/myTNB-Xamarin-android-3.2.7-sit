@@ -298,10 +298,22 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     {
                         displayModel.Content.ApplicationDetail.IsContractorApplied = isContractorApplied;
                     }
+                    if (GetObjectValue(props, "identificationNo") is string identificationNo && identificationNo.IsValid())
+                    {
+                        displayModel.Content.ApplicationDetail.IdentificationNo = identificationNo;
+                    }
+                    if (GetObjectValue(props, "identificationType") is int identificationType)
+                    {
+                        displayModel.Content.ApplicationDetail.IdentificationType = identificationType;
+                    }
                     if (!displayModel.Content.ApplicationDetail.ReferenceNo.IsValid()
                         && GetObjectValue(props, "referenceNo") is string referenceNo && referenceNo.IsValid())
                     {
                         displayModel.Content.ApplicationDetail.ReferenceNo = referenceNo;
+                    }
+                    if (GetObjectValue(props, "applicationModuleId") is string applicationModuleId && applicationModuleId.IsValid())
+                    {
+                        displayModel.Content.ApplicationDetail.ApplicationModuleID = int.Parse(applicationModuleId);
                     }
                     bool shouldShowLinkedWith = false;
 
