@@ -1,4 +1,6 @@
-﻿namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
+﻿using myTNB.Mobile.AWS.Managers.DS;
+using myTNB_Android.Src.Utils;
+namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
 {
     public class DSIdentityVerificationModel { }
 
@@ -13,5 +15,34 @@
         public string? UserID { get; set; }
         public bool IsContractorApplied { get; set; } = false;
         public string? AppRef { get; set; }
+        public int? IdentificationType { get; set; }
+        public string IdentificationNo { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public string? ApplicationModuleID { get; set; }
+        public string IdentificationTypeDescription
+        {
+            get
+            {
+                return DSUtility.Instance.GetIdentificationTypeDescription(IdentificationType);
+            }
+        }
+
+        public bool IsCompletedOnOtherDevice
+        {
+            get
+            {
+                return Status.IsValid()
+                    && Status.ToUpper() == "PENDING";
+            }
+        }
+
+        public bool IsVerified
+        {
+            get
+            {
+                return Status.IsValid()
+                    && Status.ToUpper() == "VERIFIED";
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.Extensions;
 using static myTNB.Mobile.EligibilitySessionCache;
 
 namespace myTNB.Mobile.AWS.Managers.DS
@@ -96,6 +97,33 @@ namespace myTNB.Mobile.AWS.Managers.DS
 #endif
             }
             return false;
+        }
+
+        public string GetIdentificationTypeDescription(int? identificationType)
+        {
+            try
+            {
+                Dictionary<string, List<SelectorModel>> dsLandingDictionary = LanguageManager.Instance.GetSelectorsByPage("DSLanding");
+                if (dsLandingDictionary != null
+                    && dsLandingDictionary.Count > 0
+                    && dsLandingDictionary.ContainsKey("idType")
+                    && dsLandingDictionary["idType"] is List<SelectorModel> idTypeList
+                    && idTypeList != null
+                    && idTypeList.Count > 0
+                    && identificationType != null
+                    && identificationType.Value.ToString() is string idTypeString
+                    && idTypeString.IsValid()
+                    && idTypeList.FindIndex(x => x.Key == idTypeString) is int idTypeIndex
+                    && idTypeIndex > -1)
+                {
+                    return idTypeList[idTypeIndex].Description;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] GetIdentificationTypeDescription Error: " + e.Message);
+            }
+            return string.Empty;
         }
     }
 }

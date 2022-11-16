@@ -35,7 +35,6 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
         private DSWebViewContract.IUserActionsListener userActionsListener;
         private Android.Webkit.WebView micrositeWebView;
 
-        GetEKYCIdentificationModel _identificationModel;
         DSDynamicLinkParamsModel _dsDynamicLinkParamsModel;
 
         private static Snackbar mErrorMessageSnackBar;
@@ -48,10 +47,6 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
             try
             {
                 Bundle extras = Intent.Extras;
-                if ((extras != null) && extras.ContainsKey(DigitalSignatureConstants.DS_IDENTIFICATION_MODEL))
-                {
-                    _identificationModel = JsonConvert.DeserializeObject<GetEKYCIdentificationModel>(extras.GetString(DigitalSignatureConstants.DS_IDENTIFICATION_MODEL));
-                }
                 if ((extras != null) && extras.ContainsKey(DigitalSignatureConstants.DS_DYNAMIC_LINK_PARAMS_MODEL))
                 {
                     _dsDynamicLinkParamsModel = JsonConvert.DeserializeObject<DSDynamicLinkParamsModel>(extras.GetString(DigitalSignatureConstants.DS_DYNAMIC_LINK_PARAMS_MODEL));
@@ -153,13 +148,28 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
             string myTNBAccountName = user?.DisplayName ?? string.Empty;
             bool isContractorApplied = false;
             string appRef = string.Empty;
-            
+            int? ApplicationModuleID = null;
+            int? IdentificationType = null;
+            string identificationNo = string.Empty;
+
             if (_dsDynamicLinkParamsModel != null)
             {
                 isContractorApplied = _dsDynamicLinkParamsModel.IsContractorApplied;
                 if (_dsDynamicLinkParamsModel.AppRef != null)
                 {
                     appRef = _dsDynamicLinkParamsModel.AppRef;
+                }
+
+                if (_dsDynamicLinkParamsModel.ApplicationModuleID != null)
+                {
+                    ApplicationModuleID = int.Parse(_dsDynamicLinkParamsModel.ApplicationModuleID);
+                }
+
+                IdentificationType = _dsDynamicLinkParamsModel.IdentificationType;
+
+                if (_dsDynamicLinkParamsModel.IdentificationNo != null)
+                {
+                    identificationNo = _dsDynamicLinkParamsModel.IdentificationNo;
                 }
             }
 
@@ -171,11 +181,12 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 , (LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN).ToString()
                 , TextViewUtils.FontInfo ?? "N"
                 , user?.UserID
-                , _identificationModel?.IdentificationType
-                , _identificationModel?.IdentificationNo
+                , IdentificationType
+                , identificationNo
                 , GetIntFromStringValue(Constants.DEVICE_PLATFORM)
                 , isContractorApplied
-                , appRef);
+                , appRef
+                , ApplicationModuleID);
 
             string ssoURL = string.Format(AWSConstants.Domains.DSSSO, signature);
 

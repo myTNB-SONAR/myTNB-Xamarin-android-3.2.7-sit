@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using myTNB.Mobile.AWS.Managers.DS;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 
@@ -42,22 +42,7 @@ namespace myTNB.Mobile.AWS.Models.DS.Identification
         {
             get
             {
-                Dictionary<string, List<SelectorModel>> dsLandingDictionary = LanguageManager.Instance.GetSelectorsByPage("DSLanding");
-                if (dsLandingDictionary != null
-                    && dsLandingDictionary.Count > 0
-                    && dsLandingDictionary.ContainsKey("idType")
-                    && dsLandingDictionary["idType"] is List<SelectorModel> idTypeList
-                    && idTypeList != null
-                    && idTypeList.Count > 0
-                    && IdentificationType != null
-                    && IdentificationType.Value.ToString() is string idTypeString
-                    && idTypeString.IsValid()
-                    && idTypeList.FindIndex(x => x.Key == idTypeString) is int idTypeIndex
-                    && idTypeIndex > -1)
-                {
-                    return idTypeList[idTypeIndex].Description;
-                }
-                return string.Empty;
+                return DSUtility.Instance.GetIdentificationTypeDescription(IdentificationType);
             }
         }
     }

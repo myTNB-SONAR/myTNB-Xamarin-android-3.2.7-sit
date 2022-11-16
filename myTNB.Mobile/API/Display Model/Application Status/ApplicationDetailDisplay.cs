@@ -5,6 +5,7 @@ using System.Globalization;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
+using myTNB.Mobile.AWS.Managers.DS;
 using myTNB.Mobile.Extensions;
 using myTNB.Mobile.SessionCache;
 
@@ -654,6 +655,16 @@ namespace myTNB.Mobile
         public string SignApplicationURL { set; get; }
         public bool IsVerifyNow { set; get; }
         public bool IsContractorApplied { set; get; }
+        public string IdentificationNo { set; get; }
+        public int IdentificationType { set; get; }
+        public int? ApplicationModuleID { set; get; }
+        public string IdentificationTypeDescription
+        {
+            get
+            {
+                return DSUtility.Instance.GetIdentificationTypeDescription(IdentificationType);
+            }
+        }
 
         /// <summary>
         /// Formatted Created date display

@@ -101,9 +101,13 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string linkedAsrReferenceNo { set; get; }
         public string signApplicationURL { set; get; }
         public bool isVerifyNow { set; get; }
-        public bool isContractorApplied { set; get; }
         public bool? isPremiseServiceReady { set; get; } = false;
         public DateTime? electricityStartDate { set; get; }
+
+        public bool isContractorApplied { set; get; }
+        public string identificationNo { get; set; }
+        public int? identificationType { get; set; }
+
         [JsonIgnore]
         public string electricityStartDateDisplay
         {
@@ -219,6 +223,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string signApplicationURL { set; get; }
         public bool isVerifyNow { set; get; }
         public bool isContractorApplied { set; get; }
+        public int? identificationType { get; set; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]

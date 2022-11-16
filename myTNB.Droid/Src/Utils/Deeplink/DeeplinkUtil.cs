@@ -75,6 +75,18 @@ namespace myTNB_Android.Src.Utils.Deeplink
                         {
                             EKYCDynamicLinkModel.IsContractorApplied = bool.Parse(isContractorAppliedStr);
                         }
+
+                        EKYCDynamicLinkModel.AppRef = deeplinkQuery[Constant.eKYCAppRefKey];
+                        EKYCDynamicLinkModel.IdentificationNo = deeplinkQuery[Constant.identificationNo];
+
+                        string identificationTypeStr = deeplinkQuery[Constant.identificationType];
+                        if (identificationTypeStr.IsValid())
+                        {
+                            EKYCDynamicLinkModel.IdentificationType = int.Parse(identificationTypeStr);
+                        }
+
+                        EKYCDynamicLinkModel.ApplicationModuleID = deeplinkQuery[Constant.applicationModuleID];
+                        EKYCDynamicLinkModel.Status = deeplinkQuery[Constant.eKYCStatus];
                     }
                     else
                     {
@@ -85,6 +97,16 @@ namespace myTNB_Android.Src.Utils.Deeplink
                             EKYCDynamicLinkModel.IsContractorApplied = bool.Parse(isContractorAppliedStr);
                         }
                         EKYCDynamicLinkModel.AppRef = GetParamValueFromKey(Constant.eKYCAppRefKey, deeplink);
+                        EKYCDynamicLinkModel.IdentificationNo = GetParamValueFromKey(Constant.identificationNo, deeplink);
+
+                        string identificationTypeStr = GetParamValueFromKey(Constant.identificationType, deeplink);
+                        if (identificationTypeStr.IsValid())
+                        {
+                            EKYCDynamicLinkModel.IdentificationType = int.Parse(identificationTypeStr);
+                        }
+
+                        EKYCDynamicLinkModel.ApplicationModuleID = GetParamValueFromKey(Constant.applicationModuleID, deeplink);
+                        EKYCDynamicLinkModel.Status = GetParamValueFromKey(Constant.eKYCStatus, deeplink);
                     }
                     break;
                 default:
