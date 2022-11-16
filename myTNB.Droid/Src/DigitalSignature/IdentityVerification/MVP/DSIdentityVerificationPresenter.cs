@@ -13,7 +13,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
     {
         private readonly DSIdentityVerificationContract.IView view;
         private BaseAppCompatActivity mActivity;
-        GetEKYCStatusModel _eKYCstatusModel;
+        private GetEKYCStatusModel _eKYCstatusModel;
         DSDynamicLinkParamsModel _dynamicLinkParamsModel;
 
         public DSIdentityVerificationPresenter(DSIdentityVerificationContract.IView view, BaseAppCompatActivity activity)
@@ -32,7 +32,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
         public void OnStart()
         {
             this.view.RenderContent();
-            this.view.GetEKYCIdOnAPICall();
+            this.view.VerifyMatchingID();
         }
 
         public void Start() { }
@@ -98,6 +98,8 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
                 eKYCStatusResponse.Content != null)
             {
                 _eKYCstatusModel = eKYCStatusResponse.Content;
+                _dynamicLinkParamsModel.Status = _eKYCstatusModel.Status;
+
                 this.mActivity.RunOnUiThread(() =>
                 {
                     this.view?.UpdateLoadingShimmer(false);
@@ -122,7 +124,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
 
         private void OnDisplayEKYCStatus(GetEKYCStatusModel eKYCStatusResponse)
         {
-            if (eKYCStatusResponse.Status == "PENDING")
+            if (eKYCStatusResponse.Status == DigitalSignatureConstants.EKYC_STATUS_PENDING)
             {
                 this.view?.ShowCompletedOnOtherDevicePopUp();
             }
@@ -139,11 +141,6 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             {
                 this.view?.ShowPrepareDocumentPopUp(_dynamicLinkParamsModel.IdentificationType);
             }
-        }
-
-        public GetEKYCStatusModel GetStatusModel()
-        {
-            return _eKYCstatusModel;
         }
 
         public DSDynamicLinkParamsModel GetDSDynamicLinkParamsModel()

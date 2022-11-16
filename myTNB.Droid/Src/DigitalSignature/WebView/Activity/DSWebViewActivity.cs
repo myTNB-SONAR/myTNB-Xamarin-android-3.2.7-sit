@@ -158,16 +158,19 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 if (_dsDynamicLinkParamsModel.AppRef != null)
                 {
                     appRef = _dsDynamicLinkParamsModel.AppRef;
-
                 }
+
+                if (_dsDynamicLinkParamsModel.ApplicationModuleID != null)
+                {
+                    ApplicationModuleID = int.Parse(_dsDynamicLinkParamsModel.ApplicationModuleID);
+                }
+
+                IdentificationType = _dsDynamicLinkParamsModel.IdentificationType;
 
                 if (_dsDynamicLinkParamsModel.IdentificationNo != null)
                 {
                     identificationNo = _dsDynamicLinkParamsModel.IdentificationNo;
-
                 }
-
-                IdentificationType = _dsDynamicLinkParamsModel.IdentificationType;
             }
 
             string signature = SSOManager.Instance.GetDSSignature(myTNBAccountName

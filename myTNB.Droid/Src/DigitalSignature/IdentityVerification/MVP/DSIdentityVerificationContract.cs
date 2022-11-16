@@ -65,7 +65,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             /// <summary>
             /// Calls the API from the view
             /// </summary>
-            void GetEKYCIdOnAPICall();
+            void VerifyMatchingID();
         }
 
         public interface IUserActionsListener : IBasePresenter

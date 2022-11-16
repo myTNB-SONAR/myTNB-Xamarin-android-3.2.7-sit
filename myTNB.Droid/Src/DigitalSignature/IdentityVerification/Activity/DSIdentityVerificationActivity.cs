@@ -482,7 +482,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             identityVerificationButtonLayout.Visibility = toShow ? ViewStates.Visible : ViewStates.Gone;
         }
 
-        public void GetEKYCIdOnAPICall()
+        public void VerifyMatchingID()
         {
             var modelUserID = DeeplinkUtil.Instance.EKYCDynamicLinkModel.UserID ?? string.Empty;
             if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.IdentityVerification &&
