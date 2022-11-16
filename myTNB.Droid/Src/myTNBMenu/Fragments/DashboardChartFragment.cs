@@ -11575,32 +11575,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
                 List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
 
-                //for (int i = 0; i < dBRCAs.Count; i++)
-                //{
-                //    if (billRenderingTenantResponse.Content[i].CaNo == selectedAccount.AccountNum)
-                //    {
-                //        var newRecord = new GetBillRenderingTenantModel()
-                //        {
-                //            CaNo = billRenderingTenantResponse.Content[i].CaNo,
-                //            IsOwnerAlreadyOptIn = billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn,
-                //            IsOwnerOverRule = billRenderingTenantResponse.Content[i].IsOwnerOverRule,
-                //            IsTenantAlreadyOptIn = billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn,
-
-                //        };
-                //        tenantInfo = newRecord;
-                //    }
-
-                //    if (accounts[i].AccNum == selectedAccount.AccountNum)
-                //    {
-                //        var newRecordOwner = new CustomerBillingAccount()
-                //        {
-                //            AccountHasOwner = accounts[i].AccountHasOwner
-
-                //        };
-                //        tenantOwnerInfo = newRecordOwner;
-                //    }
-                //}
-
                 if (_billRenderingResponse != null
                    && _billRenderingResponse.StatusDetail != null
                    && _billRenderingResponse.StatusDetail.IsSuccess

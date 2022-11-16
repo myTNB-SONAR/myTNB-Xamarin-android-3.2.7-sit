@@ -224,6 +224,9 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string EB_SYSTEM = "EB";
         internal static readonly string TRIL_SYSTEM = "TRIL";
         internal static readonly string SAGE_SYSTEM = "SAGE";
+        internal static readonly string CatchupCell = "CatchupCell";
+        internal static readonly string CatchupRF = "CatchupRF";
+        internal static readonly string CatchupPLC = "CatchupPLC";
 
         internal static readonly string ACCOUNT_REMOVED_FLAG = "ACCOUNT_REMOVED";
 
@@ -346,6 +349,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_DBR_EBILL = "21001";
         public const string BCRM_NOTIFICATION_DBR_PAPER = "21002";
         public const string BCRM_NOTIFICATION_DBR_EMAIL_REMOVED = "21004";
+        public const string BCRM_NOTIFICATION_DBR_AUTO_OPTIN = "21011";
 
         //Energy Budget
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET = "11001";

@@ -115,6 +115,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "InstallationType")]
             public string InstallationType { get; set; }
 
+            [JsonProperty(PropertyName = "AMSIDCategory")]
+            public string AMSIDCategory { get; set; }
+
             [JsonProperty(PropertyName = "CreatedDate")]
             public string CreatedDate { set; get; }
 

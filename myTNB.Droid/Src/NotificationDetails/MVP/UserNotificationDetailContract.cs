@@ -27,6 +27,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void HideLoadingScreen();
             void ViewTips();
             void ViewAccountStatement(AccountData mSelectedAccountData, string statementPeriod);
+            void ViewManageBillDelivery();
 
             /// <summary>
             /// 

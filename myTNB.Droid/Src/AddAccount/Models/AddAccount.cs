@@ -93,5 +93,9 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty(PropertyName = "AccountHasOwner")]
         [AliasAs("AccountHasOwner")]
         public bool AccountHasOwner { get; set; }
+        
+        [JsonProperty(PropertyName = "AMSIDCategory")]
+        [AliasAs("AMSIDCategory")]
+        public string AMSIDCategory { get; set; }
     }
 }

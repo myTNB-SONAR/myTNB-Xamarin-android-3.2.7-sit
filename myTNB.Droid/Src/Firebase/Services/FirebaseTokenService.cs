@@ -8,8 +8,8 @@ using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.Firebase.Services
 {
-    [Service]
-    [IntentFilter(new[] { "com.google.firebase.INSTANCE_ID_EVENT" })]
+    //[Service]
+    //[IntentFilter(new[] { "com.google.firebase.INSTANCE_ID_EVENT" })]
     internal class FirebaseTokenService : FirebaseMessagingService
     {
         readonly string TAG = typeof(FirebaseTokenService).Name;

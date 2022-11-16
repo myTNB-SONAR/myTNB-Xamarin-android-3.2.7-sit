@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SQLite;
 
 namespace myTNB_Android.Src.AddAccount.Models
 {
@@ -56,5 +57,7 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty(PropertyName = "isTaggedSMR")]
         public string IsTaggedSMR { get; set; }
 
+        [JsonProperty(PropertyName = "AMSIDCategory")]
+        public string AMSIDCategory { get; set; }
     }
 }

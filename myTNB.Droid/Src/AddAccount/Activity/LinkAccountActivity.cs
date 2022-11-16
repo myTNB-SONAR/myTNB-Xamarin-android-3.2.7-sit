@@ -1111,6 +1111,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             newAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             newAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                             newAccount.InstallationType = item.InstallationType == null ? "0" : item.InstallationType;
+                            newAccount.AMSIDCategory = item.AMSIDCategory == null ? "0" : item.AMSIDCategory;
                             newAccount.CreatedDate = item.CreatedDate;
                             newAccount.IsApplyEBilling = item.IsApplyEBilling;
                             newAccount.IsHaveAccess = item.IsHaveAccess;
@@ -1141,6 +1142,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             extraAccount.BudgetAmount = item.BudgetAmount == null ? "0" : item.BudgetAmount;
                             extraAccount.InstallationType = item.InstallationType == null ? "0" : item.InstallationType;
+                            extraAccount.AMSIDCategory = item.AMSIDCategory == null ? "0" : item.AMSIDCategory;
                             extraAccount.CreatedDate = item.CreatedDate;
                             extraAccount.IsApplyEBilling = item.IsApplyEBilling;
                             extraAccount.IsHaveAccess = item.IsHaveAccess;

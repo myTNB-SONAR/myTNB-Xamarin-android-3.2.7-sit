@@ -287,6 +287,16 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             imageResourceBanner = Resource.Drawable.notification_dbr_banner_ebill;
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_DBR_AUTO_OPTIN:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_dbr_banner_ebill;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "title"),
+                              delegate () { ShowManageBillDelivery(); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+
+                            break;
+                        }
                     case Constants.BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS:
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_check_banner;
@@ -572,6 +582,19 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             else
             {
                 this.mView.ShowRetryOptionsApiException(null);
+            }
+        }
+
+        private void ShowManageBillDelivery()
+        {
+            try
+            {
+                this.mView.ViewManageBillDelivery();
+            }
+            catch (Exception e)
+            {
+                this.mView.ShowRetryOptionsApiException(null);
+                Utility.LoggingNonFatalError(e);
             }
         }
 
