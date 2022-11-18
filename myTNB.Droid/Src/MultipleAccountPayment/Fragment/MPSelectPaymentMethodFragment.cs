@@ -48,6 +48,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         private static string METHOD_CREDIT_CARD = "CC";
         private static string METHOD_FPX = "FPX";
+        private static string METHOD_TNG = "TNG";
         private string param3 = "0";
         private string selectedPaymentMethod;
         private CreditCard selectedCard;
@@ -57,6 +58,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         TextView lblTotalAmount;
         TextView lblCreditDebitCard;
         TextView lblOtherPaymentMethods;
+        TextView lblTNGPayment;
 
         TextView lblCvvInfo;
         TextView lblBack;
@@ -81,6 +83,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         Button btnAddCard;
         Button btnFPXPayment;
+        Button btnTNGPayment;
 
         private MaterialDialog mRequestingPaymentDialog;
         private MaterialDialog mGetRegisteredCardsDialog;
@@ -290,6 +293,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 lblTotalAmount = rootView.FindViewById<TextView>(Resource.Id.lblTotalAmount);
                 lblCreditDebitCard = rootView.FindViewById<TextView>(Resource.Id.lblCreditDebitCard);
                 lblOtherPaymentMethods = rootView.FindViewById<TextView>(Resource.Id.lblOtherPayment);
+                lblTNGPayment = rootView.FindViewById<TextView>(Resource.Id.lblTNGPayment);
 
                 lblCvvInfo = rootView.FindViewById<TextView>(Resource.Id.lblCVVInfo);
                 lblBack = rootView.FindViewById<TextView>(Resource.Id.lblBack);
@@ -361,18 +365,38 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                 };
 
+                btnTNGPayment = rootView.FindViewById<Button>(Resource.Id.btnTNGPayment);
+                btnTNGPayment.Click += delegate
+                {
+                    DownTimeEntity pgTNGEntity = DownTimeEntity.GetByCode(Constants.PG_TNG_SYSTEM);
+                    if (pgTNGEntity != null  && pgTNGEntity.IsDown)
+                    {
+                        Utility.ShowBCRMDOWNTooltip(this.Activity, pgTNGEntity, () =>
+                        {
+                        });
+                    }
+                    else
+                    {
+                        HideErrorMessageSnakebar();
+                        selectedPaymentMethod = METHOD_TNG;
+                        selectedCard = null;
+                        InitiatePaymentRequest();
+                        DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_TNG);
+                    }
+                };
+
                 listAddedCards = rootView.FindViewById<ListView>(Resource.Id.listAddedCards);
                 cardAdapter = new MPAddCardAdapter(Activity, registerdCards);
                 listAddedCards.Adapter = cardAdapter;
                 cardAdapter.OnItemClick += OnItemClick;
 
                 TextViewUtils.SetMuseoSans300Typeface(lblTotalAmount);
-                TextViewUtils.SetMuseoSans500Typeface(lblCreditDebitCard, lblOtherPaymentMethods, txtTotalAmount);
-                TextViewUtils.SetMuseoSans300Typeface(btnAddCard, btnFPXPayment);
+                TextViewUtils.SetMuseoSans500Typeface(lblCreditDebitCard, lblOtherPaymentMethods, txtTotalAmount, lblTNGPayment);
+                TextViewUtils.SetMuseoSans300Typeface(btnAddCard, btnFPXPayment, btnTNGPayment);
 
                 TextViewUtils.SetTextSize10(lblTotalAmount);
-                TextViewUtils.SetTextSize16(txtTotalAmount, btnFPXPayment, btnAddCard);
-                TextViewUtils.SetTextSize18(lblCreditDebitCard, lblOtherPaymentMethods);
+                TextViewUtils.SetTextSize16(txtTotalAmount, btnFPXPayment, btnAddCard, btnTNGPayment);
+                TextViewUtils.SetTextSize18(lblCreditDebitCard, lblOtherPaymentMethods, lblTNGPayment);
                 TextViewUtils.SetTextSize22(edtNumber1, edtNumber2, edtNumber3, edtNumber4);
 
                 TextViewUtils.SetMuseoSans300Typeface(lblCvvInfo);
@@ -381,9 +405,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 lblCreditDebitCard.Text = Utility.GetLocalizedLabel("Common", "cards");
                 lblOtherPaymentMethods.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "otherPaymentMethods");
                 lblTotalAmount.Text = Utility.GetLocalizedLabel("Common", "totalAmountRM").ToUpper();
+                lblTNGPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "eWalletPaymentMethods");
+                btnTNGPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "tngTitle");
                 btnAddCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "addCard");
                 btnFPXPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "fpxTitle");
 
+                btnTNGPayment.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.tng ,0, 0, 0);
                 //if(selectedAccount != null){
 
                 //    txtTotalAmount.Text = decimalFormat.Format(selectedAccount.AmtCustBal).Replace(",","");
@@ -867,6 +894,29 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         }
 
+        public void InitiateTNGPayment(PaymentTransactionIdResponse response)
+        {
+            try
+            {
+                PaymentTransactionIdResponse.InitiatePaymentResult initiatePaymentResult = response.GetData();
+                string parameter1 = "Param1=18";         //Touch N Go = 18
+                string parameter2 = "Param2=" + initiatePaymentResult.payMerchant_transID;
+                string parameter3 = "Param3=" + param3;
+                string langProp = "lang=" + LanguageUtil.GetAppLanguage().ToUpper();
+                var uri = Android.Net.Uri.Parse(initiatePaymentResult.action +
+                    "?" + parameter1 + "&" + parameter2 + "&" + parameter3 + "&" + langProp);
+
+                Bundle bundle = new Bundle();
+                bundle.PutString("html_TnG", uri.ToString());
+                bundle.PutString("SummaryDashBoardRequest", JsonConvert.SerializeObject(summaryDashBoardRequest));
+                ((PaymentActivity)Activity).NextFragment(this, bundle);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public bool IsValidPayableAmount()
         {
             bool isValid = true;
@@ -1166,6 +1216,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         if (selectedPaymentMethod.Equals(METHOD_CREDIT_CARD))
                         {
                             InitiateSubmitPayment(response, cardDetails);
+                        }
+                        else if (selectedPaymentMethod.Equals(METHOD_TNG))
+                        {
+                            InitiateTNGPayment(response);
                         }
                         else
                         {
