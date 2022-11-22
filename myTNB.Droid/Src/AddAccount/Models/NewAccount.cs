@@ -69,5 +69,7 @@ namespace myTNB_Android.Src.AddAccount.Models
         public bool IsInManageAccessList { get; set; }
 
         public string CreatedBy { get; set; }
+
+        public string AMSIDCategory { get; set; }
     }
 }

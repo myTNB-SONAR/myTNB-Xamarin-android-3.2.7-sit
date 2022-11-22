@@ -109,15 +109,22 @@ namespace myTNB_Android.Src.Utils
                     Build.Type.Length % 10 +
                     Build.User.Length % 10;
 
-            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
-            String btId = "";
-
-            if (bluetoothAdapter != null)
-            {
-                btId = bluetoothAdapter.Address;
+            String longId = "";
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.S)      //Starting android 12 disable bluetooth.address checking deviceId
+            {                
+                longId = pseudoId + androidId;
             }
+            else
+            {
+                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
+                String btId = "";
 
-            String longId = pseudoId + androidId + btId;
+                if (bluetoothAdapter != null)
+                {
+                    btId = bluetoothAdapter.Address;
+                }
+                longId = pseudoId + androidId + btId;
+            }
 
             try
             {

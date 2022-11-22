@@ -409,8 +409,8 @@ namespace myTNB_Android.Src.FindUs.Activity
             {
                 try
                 {
-                    LocationRequest locationRequest = LocationRequest.Create();
-                    locationRequest.SetPriority(LocationRequest.PriorityHighAccuracy);
+                    Android.Gms.Location.LocationRequest locationRequest = Android.Gms.Location.LocationRequest.Create();
+                    locationRequest.SetPriority(Android.Gms.Location.LocationRequest.PriorityHighAccuracy);
                     LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                                   .AddLocationRequest(locationRequest);
 
@@ -509,7 +509,7 @@ namespace myTNB_Android.Src.FindUs.Activity
             base.OnActivityResult(requestCode, resultCode, data);
             try
             {
-                if (requestCode == LocationRequest.PriorityHighAccuracy)
+                if (requestCode == Android.Gms.Location.LocationRequest.PriorityHighAccuracy)
                 {
                     if (resultCode == Result.Ok)
                     {
@@ -759,7 +759,7 @@ namespace myTNB_Android.Src.FindUs.Activity
                         ResolvableApiException resolvable = (ResolvableApiException)mException;
                         resolvable.StartResolutionForResult(
                                         this,
-                                        LocationRequest.PriorityHighAccuracy);
+                                        Android.Gms.Location.LocationRequest.PriorityHighAccuracy);
                     }
                     catch (IntentSender.SendIntentException ex)
                     {

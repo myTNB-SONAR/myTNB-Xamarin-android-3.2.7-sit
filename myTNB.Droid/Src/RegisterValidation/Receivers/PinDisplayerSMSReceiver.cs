@@ -6,8 +6,8 @@ using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.RegisterValidation.Receivers
 {
-    [BroadcastReceiver(Enabled = true)]
-    [IntentFilter(new[] { "com.myTNB.smsReceiver" })]
+    //[BroadcastReceiver(Enabled = true)]
+    //[IntentFilter(new[] { "com.myTNB.smsReceiver" })]
     public class PinDisplayerSMSReceiver : BroadcastReceiver
     {
         private EditText[] pin;
