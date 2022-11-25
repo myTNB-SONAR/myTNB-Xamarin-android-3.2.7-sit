@@ -261,6 +261,11 @@ namespace myTNB_Android.Src.Login.MVP
                         //string ts = JsonConvert.SerializeObject(baseRequest);
                         APIBaseResponse DataResponse = await ServiceApiImpl.Instance.UpdateUserInfoDevice(baseRequest);
                     }
+                    else if (string.IsNullOrEmpty(fcmToken) && !string.IsNullOrEmpty(newfcmToken))
+                    {
+                        FirebaseTokenEntity.RemoveLatest();
+                        FirebaseTokenEntity.InsertOrReplace(newfcmToken, true);
+                    }
                 }
                 Log.Debug(TAG, "[DEBUG] FCM TOKEN: " + fcmToken);
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
@@ -941,6 +946,7 @@ namespace myTNB_Android.Src.Login.MVP
                             AccountCategoryId = acc.AccountCategoryId,
                             SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
                             InstallationType = acc.InstallationType == null ? "0" : acc.InstallationType,
+                            AMSIDCategory = acc.AMSIDCategory == null ? "0" : acc.AMSIDCategory,
                             IsSelected = false,
                             IsHaveAccess = acc.IsHaveAccess,
                             IsApplyEBilling = acc.IsApplyEBilling,
@@ -990,6 +996,7 @@ namespace myTNB_Android.Src.Login.MVP
                                 AccountCategoryId = newAcc.AccountCategoryId,
                                 SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
                                 InstallationType = newAcc.InstallationType == null ? "0" : newAcc.InstallationType,
+                                AMSIDCategory = newAcc.AMSIDCategory == null ? "0" : newAcc.AMSIDCategory,
                                 IsSelected = false,
                                 IsHaveAccess = newAcc.IsHaveAccess,
                                 IsApplyEBilling = newAcc.IsApplyEBilling,

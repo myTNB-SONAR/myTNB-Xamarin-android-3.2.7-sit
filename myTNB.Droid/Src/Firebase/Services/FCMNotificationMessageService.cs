@@ -21,8 +21,8 @@ using System.Threading;
 
 namespace myTNB_Android.Src.Firebase.Services
 {
-    [Service]
-    [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
+    //[Service]
+    //[IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
     internal class FCMNotificationMessageService : FirebaseMessagingService
     {
         CancellationTokenSource cts;

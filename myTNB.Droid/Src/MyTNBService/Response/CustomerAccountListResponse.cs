@@ -90,6 +90,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "CreatedBy")]
             public string CreatedBy { set; get; }
+
+            [JsonProperty(PropertyName = "AMSIDCategory")]
+            public string AMSIDCategory { get; set; }
         }
     }
 }

@@ -89,5 +89,9 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty(PropertyName = "RateCategory")]
         [AliasAs("RateCategory")]
         public string RateCategory { get; set; }
+
+        [JsonProperty(PropertyName = "AMSIDCategory")]
+        [AliasAs("AMSIDCategory")]
+        public string AMSIDCategory { get; set; }
     }
 }
