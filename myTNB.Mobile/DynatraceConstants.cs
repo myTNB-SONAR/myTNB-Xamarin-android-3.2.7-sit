@@ -223,6 +223,7 @@
                 public struct Notification
                 {
                     public const string Why_Verify = "App_Action_IdentityVerification_About";
+                    public const string Success_Verification = "App_Action_CongratulationsNotification";
                 }
 
                 public struct Popup
@@ -236,6 +237,11 @@
                 {
                     public const string Landing_Success = "App_Action_IdentityVerification_SuccessVerification";
                     public const string Landing_Error = "App_Action_IdentityVerification_ErrorVerification";
+                }
+
+                public struct Application
+                {
+                    public const string Acknowledge_Required = "App_Visit_AcknowledgementRequired";
                 }
             }
 
@@ -258,6 +264,11 @@
                 {
                     public const string Try_Again = "App_Action_IdentityVerification_ErrorVerification_Retry";
                     public const string PopUp_Leave = "App_Action_IdentityVerification_ExitPopOut";
+                }
+
+                public struct Application
+                {
+                    public const string Acknowledge_Now = "App_Action_AcknowledgementRequired_AcknowledgeApplication";
                 }
             }
         }

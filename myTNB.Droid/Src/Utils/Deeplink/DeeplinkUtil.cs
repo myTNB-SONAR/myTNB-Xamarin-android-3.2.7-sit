@@ -86,7 +86,6 @@ namespace myTNB_Android.Src.Utils.Deeplink
                         }
 
                         EKYCDynamicLinkModel.ApplicationModuleID = deeplinkQuery[Constant.applicationModuleID];
-                        EKYCDynamicLinkModel.Status = deeplinkQuery[Constant.eKYCStatus];
                     }
                     else
                     {
@@ -106,7 +105,6 @@ namespace myTNB_Android.Src.Utils.Deeplink
                         }
 
                         EKYCDynamicLinkModel.ApplicationModuleID = GetParamValueFromKey(Constant.applicationModuleID, deeplink);
-                        EKYCDynamicLinkModel.Status = GetParamValueFromKey(Constant.eKYCStatus, deeplink);
                     }
                     break;
                 default:

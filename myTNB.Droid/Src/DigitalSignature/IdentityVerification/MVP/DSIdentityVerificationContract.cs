@@ -81,11 +81,6 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             void OnStart();
 
             /// <summary>
-            /// Gets the value of EKYCIdentification from DSDynamicLinkParamsModel 
-            /// </summary>
-            void GetEKYCIdentityVerification(DSDynamicLinkParamsModel dynamicLinkParamsModel);
-
-            /// <summary>
             /// Calls the GetEKYCStatus API
             /// </summary>
             void GetEKYCStatusOnCall(DSDynamicLinkParamsModel dynamicLinkParamsModel);

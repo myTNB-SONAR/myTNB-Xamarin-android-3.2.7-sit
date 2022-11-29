@@ -268,6 +268,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             Intent intent = new Intent(Intent.ActionView);
                             intent.SetData(Android.Net.Uri.Parse(url));
                             StartActivity(intent);
+
+                            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Application.Acknowledge_Now);
                         }
                     }
                 }
@@ -982,6 +984,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     , btnPrimaryCTA, btnApplicationStatusViewBill, btnApplicationStatusPay);
                 TextViewUtils.SetTextSize25(txtApplicationStatusBottomPayable);
             }
+
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Application.Acknowledge_Required);
         }
 
         private void EvaluateReceipts()

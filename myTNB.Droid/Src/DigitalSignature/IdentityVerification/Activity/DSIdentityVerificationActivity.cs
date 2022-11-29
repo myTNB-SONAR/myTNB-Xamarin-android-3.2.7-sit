@@ -179,16 +179,8 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 
         private void ProceedOnVerifyNow(DSDynamicLinkParamsModel dsDynamicLinkParamsModel)
         {
-            UpdateBottomContainer(false);
-            if(dsDynamicLinkParamsModel.Status != null)
-            {
-                this.userActionsListener.GetEKYCIdentityVerification(dsDynamicLinkParamsModel);
-            }
-            else
-            {
-                UpdateLoadingShimmer(true);
-                this.userActionsListener.GetEKYCStatusOnCall(dsDynamicLinkParamsModel);
-            }
+            UpdateLoadingShimmer(true);
+            this.userActionsListener.GetEKYCStatusOnCall(dsDynamicLinkParamsModel);
         }
 
         public void RenderContent()

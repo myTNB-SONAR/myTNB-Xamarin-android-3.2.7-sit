@@ -12,7 +12,6 @@
             internal static readonly string eKYCAppRefKey = "appRef";
             internal static readonly string identificationType = "idType";
             internal static readonly string identificationNo = "idNo";
-            internal static readonly string eKYCStatus = "ekycStatus";
             internal static readonly string applicationModuleID = "applicationModuleID";
 
 
