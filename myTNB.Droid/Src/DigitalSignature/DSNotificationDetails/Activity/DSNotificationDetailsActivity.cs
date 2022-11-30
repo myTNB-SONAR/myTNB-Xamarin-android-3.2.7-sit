@@ -137,6 +137,11 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
                         {
                             SetToolBarTitle(notificationDetails.HeaderTitle);
                         }
+
+                        if (notificationDetails.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_EKYC_SUCCESSFUL))
+                        {
+                            DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Notification.Success_Verification);
+                        }
                     }
                 }
 
@@ -416,7 +421,6 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
                 model.AppRef = notificationDetails.Verification.AppRef;
                 model.IdentificationType = notificationDetails.Verification.IdentificationType;
                 model.IdentificationNo = notificationDetails.Verification.IdentificationNo;
-                model.Status = notificationDetails.Verification.Status;
                 model.ApplicationModuleID = notificationDetails.Verification.ApplicationModuleID;
             }
 

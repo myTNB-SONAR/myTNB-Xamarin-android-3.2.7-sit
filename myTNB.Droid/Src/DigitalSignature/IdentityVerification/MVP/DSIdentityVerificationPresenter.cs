@@ -37,39 +37,6 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
 
         public void Start() { }
 
-        public void GetEKYCIdentityVerification(DSDynamicLinkParamsModel dynamicLinkParamsModel)
-        {
-            _dynamicLinkParamsModel = new DSDynamicLinkParamsModel();
-            _dynamicLinkParamsModel = dynamicLinkParamsModel;
-
-            if (_dynamicLinkParamsModel != null)
-            {
-                this.view?.UpdateBottomContainer(true);
-                OnDisplayPopUp(_dynamicLinkParamsModel);
-            }
-        }
-
-        private void OnDisplayPopUp(DSDynamicLinkParamsModel eKYCIdentificationModel)
-        {
-            if (eKYCIdentificationModel.IsCompletedOnOtherDevice)
-            {
-                this.view?.ShowCompletedOnOtherDevicePopUp();
-            }
-            else if (eKYCIdentificationModel.IdentificationType == null ||
-                !eKYCIdentificationModel.IdentificationNo.IsValid())
-            {
-                this.view?.ShowIdNotRegisteredPopUp();
-            }
-            else if (eKYCIdentificationModel.IsVerified)
-            {
-                this.view?.ShowIdentityHasBeenVerified();
-            }
-            else
-            {
-                this.view?.ShowPrepareDocumentPopUp(eKYCIdentificationModel.IdentificationType);
-            }
-        }
-
         public void GetEKYCStatusOnCall(DSDynamicLinkParamsModel dynamicLinkParamsModel)
         {
             _dynamicLinkParamsModel = new DSDynamicLinkParamsModel();
