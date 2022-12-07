@@ -34,6 +34,7 @@ using myTNB.Mobile;
 using myTNB_Android.Src.SessionCache;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -410,7 +411,35 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 btnAddCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "addCard");
                 btnFPXPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "fpxTitle");
 
-                btnTNGPayment.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.tng ,0, 0, 0);
+                if (TNGUtility.Instance.IsAccountEligible)
+                {
+                    if (IsApplicationPayment)
+                    {
+                        if (!MyTNBAccountManagement.GetInstance().IsTNGEnableVerify())
+                        {
+                            btnTNGPayment.Visibility = ViewStates.Gone;
+                            lblTNGPayment.Visibility = ViewStates.Gone;
+                        }
+                        else
+                        {
+                            btnTNGPayment.Visibility = ViewStates.Visible;
+                            lblTNGPayment.Visibility = ViewStates.Visible;
+                            btnTNGPayment.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.tng, 0, 0, 0);
+                        }
+                    }
+                    else
+                    {
+                        btnTNGPayment.Visibility = ViewStates.Visible;
+                        lblTNGPayment.Visibility = ViewStates.Visible;
+                        btnTNGPayment.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.tng, 0, 0, 0);
+                    }
+                }
+                else
+                {
+                    btnTNGPayment.Visibility = ViewStates.Gone;
+                    lblTNGPayment.Visibility = ViewStates.Gone;
+                }
+                
                 //if(selectedAccount != null){
 
                 //    txtTotalAmount.Text = decimalFormat.Format(selectedAccount.AmtCustBal).Replace(",","");
