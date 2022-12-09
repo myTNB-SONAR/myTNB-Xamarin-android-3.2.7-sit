@@ -11448,23 +11448,85 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowAutoOptInTooltip()
         {
-            this.Activity.RunOnUiThread(() =>
+            //this.Activity.RunOnUiThread(() =>
+            //{
+            //    MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+            //    .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
+            //    .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_TITLE))
+            //    .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_MSG))
+            //    .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_BTN))
+            //    .SetCTAaction(() => ShowGoToPaperlessMicrosite())
+            //    .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+            //    .SetSecondaryCTAaction(() =>
+            //    {
+            //        this.SetIsClicked(false);
+            //        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_GotIt);
+            //    })
+            //    .Build();
+            //    marketingTooltip.Show();
+            //});
+
+            if (getAutoOptInCaResponse.Content.currentMonthCount == 1) //copywriting for first month
             {
-                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
-                .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
-                .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_TITLE))
-                .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_MSG))
-                .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_BTN))
-                .SetCTAaction(() => ShowGoToPaperlessMicrosite())
-                .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
-                .SetSecondaryCTAaction(() =>
+                this.Activity.RunOnUiThread(() =>
                 {
-                    this.SetIsClicked(false);
-                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_GotIt);
-                })
-                .Build();
-                marketingTooltip.Show();
-            });
+                    MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                    .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
+                    .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_TITLE))
+                    .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_MSG_FIRST_MONTH))
+                    .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_BTN))
+                    .SetCTAaction(() => ShowGoToPaperlessMicrosite())
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                    .SetSecondaryCTAaction(() =>
+                    {
+                        this.SetIsClicked(false);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_GotIt);
+                    })
+                    .Build();
+                    marketingTooltip.Show();
+                });
+            }
+            else if (getAutoOptInCaResponse.Content.currentMonthCount == 2) //copywriting for second month
+            {
+                this.Activity.RunOnUiThread(() =>
+                {
+                    MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                    .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
+                    .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_TITLE))
+                    .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_MSG_SECOND_MONTH))
+                    .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_BTN))
+                    .SetCTAaction(() => ShowGoToPaperlessMicrosite())
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                    .SetSecondaryCTAaction(() =>
+                    {
+                        this.SetIsClicked(false);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_GotIt);
+                    })
+                    .Build();
+                    marketingTooltip.Show();
+                });
+            }
+            else //copywriting for third month
+            {
+                this.Activity.RunOnUiThread(() =>
+                {
+                    MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                    .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
+                    .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_TITLE))
+                    .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_MSG_THIRD_MONTH))
+                    .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_BTN))
+                    .SetCTAaction(() => ShowGoToPaperlessMicrosite())
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                    .SetSecondaryCTAaction(() =>
+                    {
+                        this.SetIsClicked(false);
+                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_GotIt);
+                    })
+                    .Build();
+                    marketingTooltip.Show();
+                });
+            }
+
         }
 
         public void ShowManageBill()

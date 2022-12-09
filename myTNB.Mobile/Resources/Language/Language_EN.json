@@ -505,7 +505,9 @@
     "dbrReminderPopupViewMore": "View More",
     "dbrReminderPopupGotIt": "Got it!",
     "dbrReminderAutoPopupTitle": "Your electricity bills are now paperless!",
-    "dbrReminderAutoPopupMessage": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 3 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
+    "dbrReminderAutoPopupMessageFirstMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 3 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
+    "dbrReminderAutoPopupMessageSecondMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 2 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
+    "dbrReminderAutoPopupMessageThirdMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 1 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
     "dbrReminderAutoPopUpBtn": "Manage Bill Delivery"
   },
   "Bills": {
@@ -687,7 +689,8 @@
     "toastResumeNotiUpdate": "You have resumed the notification updates for this particular service disruption!",
     "notifyCheck": "Only notify me when my power is back",
     "callUs": "Need help? <a href='tel: 15454'>Call us</a> for more information",
-    "shareFeedback": "Share Feedback"
+    "shareFeedback": "Share Feedback",
+    "manageBillDelivery": "Manage Bill Delivery"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -977,7 +980,7 @@
     "dialogAddrress": "Why can't I see my full address?",
     "dialogAddrressMessage": "We mask sensitive information to safeguard owner's privacy. You are seeing masked information as you are not the owner of this electricity account.",
     "dialogManageUser": "Give your users more access.",
-    "dialogManageUserMessage": "To protect your information, we are not showing non-owners your personal infromation and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
+    "dialogManageUserMessage": "To protect your information, we are not showing non-owners your personal information and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
     "manageUserAccess": "Manage User Access",
     "manageAutopay": "Manage Autopay"
   },

@@ -282,15 +282,26 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_DBR_EBILL:
+                    case Constants.BCRM_NOTIFICATION_DBR_EBILL_TENANT:
                     case Constants.BCRM_NOTIFICATION_DBR_EMAIL_REMOVED:
                         {
                             imageResourceBanner = Resource.Drawable.notification_dbr_banner_ebill;
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_DBR_EBILL_OWNER:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_dbr_banner_ebill;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "manageBillDelivery"),
+                                 delegate () { ShowManageBillDelivery(); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+
+                            break;
+                        }
                     case Constants.BCRM_NOTIFICATION_DBR_AUTO_OPTIN:
                         {
                             imageResourceBanner = Resource.Drawable.notification_dbr_banner_ebill;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "title"),
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "manageBillDelivery"),
                               delegate () { ShowManageBillDelivery(); });
                             primaryCTA.SetSolidCTA(true);
                             ctaList.Add(primaryCTA);

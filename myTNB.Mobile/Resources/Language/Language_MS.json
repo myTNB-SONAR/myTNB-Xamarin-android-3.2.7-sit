@@ -505,7 +505,9 @@
     "dbrReminderPopupViewMore": "Ketahui Lanjut",
     "dbrReminderPopupGotIt": "Ok!",
     "dbrReminderAutoPopupTitle": "Bil elektrik anda kini 'paperless'!",
-    "dbrReminderAutoPopupMessage": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopupMessageFirstMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopupMessageSecondMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 2 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopupMessageThirdMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 1 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
     "dbrReminderAutoPopUpBtn": "Urus Cara Penghantaran Bil"
   },
   "Bills": {
@@ -687,7 +689,8 @@
     "toastResumeNotiUpdate": "Anda telah meneruskan notifikasi bagi gangguan perkhidmatan bekalan kali ini!",
     "notifyCheck": "Hanya maklumkan saya apabila elektrik kembali",
     "callUs": "Perlu bantuan lanjut? <a href='tel: 15454'>Hubungi kami</a>",
-    "shareFeedback": "Kongsi Maklum Balas"
+    "shareFeedback": "Kongsi Maklum Balas",
+    "manageBillDelivery": "Urus Cara Penghantaran"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
