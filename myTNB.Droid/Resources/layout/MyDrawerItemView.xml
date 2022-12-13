@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="top|center"
+    android:id="@+id/rootView">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+        <ImageView
+            android:id="@+id/myDrawerImg"
+            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:src="@drawable/check_status"/>
+            <LinearLayout
+                android:id="@+id/newLabel"
+                android:layout_width="26dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/new_label"
+                android:layout_marginLeft="28dp"
+                android:visibility="visible"
+                android:gravity="center">
+            <TextView
+                android:id="@+id/txtNewLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/charcoalGrey"
+                android:textSize="8dp"
+                android:gravity="center"
+                android:layout_gravity="center|center_vertical"
+                android:text="New"/>
+            </LinearLayout>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/myDrawerTitle"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/powerBlue"
+        android:gravity="center"
+        android:textSize="10dp"
+        android:lineSpacingExtra="2dp"
+        tools:text="Drawer Item"/>
+</LinearLayout>

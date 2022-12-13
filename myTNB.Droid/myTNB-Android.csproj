@@ -7187,6 +7187,17 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\MyTNBDrawer.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\MyHome\MyHomeDrawerFragment.cs" />
+    <AndroidResource Include="Resources\layout\MyDrawerItemView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\MyDrawer\MyDrawerAdapter.cs" />
+    <Compile Include="Src\MyDrawer\MyDrawerModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">
@@ -9744,6 +9755,8 @@
     <Folder Include="Src\ServiceDistruptionRating\MVP\" />
     <Folder Include="Src\ServiceDistruptionRating\Request\" />
     <Folder Include="Src\ServiceDistruptionRating\Response\" />
+    <Folder Include="Src\MyHome\" />
+    <Folder Include="Src\MyDrawer\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
