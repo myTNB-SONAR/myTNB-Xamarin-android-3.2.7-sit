@@ -12,8 +12,8 @@
     "settings": "Tetapan",
     "cancel": "Batal",
     "cameraPermissionTitle": "\"myTNB\" Would like to Access the Camera",
-    "galleryPermissionTitle": "\"myTNB\" Would like to Access Your Photos",
-    "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.",
+    "galleryPermissionTitle": "This app lets you browse and choose photos from your library for enquiry submission",
+    "photoPermissionDescription": "This app uses the camera as to ease users experience in inserting account number by scanning the bar code at the bill",
     "delete": "Padam",
     "refreshDescription": "Halaman ini terputus sambungan. 'Refresh' untuk sambung semula!",
     "refreshNow": "'Refresh' Sekarang",
@@ -690,7 +690,7 @@
     "notifyCheck": "Hanya maklumkan saya apabila elektrik kembali",
     "callUs": "Perlu bantuan lanjut? <a href='tel: 15454'>Hubungi kami</a>",
     "shareFeedback": "Kongsi Maklum Balas",
-    "manageBillDelivery": "Urus Cara Penghantaran"
+    "manageBillDelivery": "Urus Cara Penghantaran Bil"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -1084,7 +1084,7 @@
     "paymentType": "JENIS PEMBAYARAN",
     "trnBankReference": "NOMBOR RUJUKAN BANK",
     "trnAcquirerBank": "BANK PEMEROLEH",
-    "emptyValue":  "--"
+    "emptyValue": "--"
   },
   "FeedbackList": {
     "title": "Maklum Balas"
@@ -2879,6 +2879,39 @@
           }
         ],
         "MultiBillRendering": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "BREligibilityIndicators": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "GetAutoOptInCa": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "PatchUpdateAutoOptInCa": [
           {
             "code": "7200",
             "title": "",
