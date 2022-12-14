@@ -11644,6 +11644,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                    && _billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
                    && _billRenderingResponse.Content.IsInProgress == false)
                 {
+                    billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
 
                     if (_billRenderingResponse.Content.IsOwner)
                     {
@@ -11652,7 +11653,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     else
                     {
                         //For tenant checking DBR
-                        billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
 
                         bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
                         bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
