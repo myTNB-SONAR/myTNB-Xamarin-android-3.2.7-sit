@@ -60,6 +60,9 @@
             internal const string GenerateAccessToken = "https://api.mytnb.com.my/Identity/api/v1";
             internal const string GetEligibility = "https://api.mytnb.com.my/Eligibility/api/v1";
             internal const string GetBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetBillRenderingTenant = "https://api.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetAutoOptInCa = "https://api.mytnb.com.my/StagedData/api/v1/";
+            internal const string UpdateAutoOptInCa = "https://api.mytnb.com.my/StagedData/api/v1/";
             internal const string GetMultiBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
             internal const string StartDigitalBill = "https://dbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://dbr.mytnb.com.my/PaperBill/OptIn";
