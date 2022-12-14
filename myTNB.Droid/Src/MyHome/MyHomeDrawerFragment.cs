@@ -70,7 +70,7 @@ namespace myTNB_Android.Src.MyHome
                     Dialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.Transparent));
                     Dialog.Window.SetDimAmount(0.75f);
                     Dialog.SetCancelable(false);
-                    Dialog.SetCanceledOnTouchOutside(false);
+                    Dialog.SetCanceledOnTouchOutside(true);
                     Dialog.Window.SetLayout(WindowManagerLayoutParams.MatchParent, WindowManagerLayoutParams.WrapContent);
                 }
 

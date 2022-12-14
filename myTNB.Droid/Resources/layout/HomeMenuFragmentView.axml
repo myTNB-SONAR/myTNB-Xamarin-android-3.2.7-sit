@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/rootView"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
@@ -464,7 +465,8 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="16dp"
-					android:id="@+id/discoverMoreSectionContainer">
+					android:id="@+id/discoverMoreSectionContainer"
+					tools:visibility="visible">
 					<TextView
 						android:id="@+id/discoverMoreSectionTitle"
 						android:layout_width="match_parent"
@@ -475,7 +477,29 @@
 						android:layout_marginRight="16dp"
 						android:textColor="@color/powerBlue"
 						android:layout_gravity="left"
-						android:visibility="gone"/>
+						android:visibility="gone"
+						tools:visibility="visible"/>
+					<!--myHome-->
+					<LinearLayout
+						android:orientation="vertical"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="8dp"
+						android:visibility="visible"
+						android:id="@+id/discoverMoreMyHomeContainer"
+						tools:visibility="visible">
+						<ImageView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginLeft="16dp"
+							android:layout_marginRight="16dp"
+							android:scaleType="fitXY"
+							android:adjustViewBounds="true"
+							android:id="@+id/myHomeBanner"
+							android:src="@drawable/banner_home_myhome_en"
+							android:visibility="visible"
+							tools:visibility="visible"/>
+					</LinearLayout>
 					<!--New Bill Redesign-->
 					<LinearLayout
 						android:orientation="vertical"
