@@ -3336,12 +3336,12 @@
     "title": "Sahkan Identiti Anda",
     "confirmPopupTitle": "Anda pasti anda mahu keluar dari halaman ini? Gambar yang telah diambil tidak akan disimpan dan anda akan kehilangan sebarang perubahan yang anda buat di halaman ini.",
     "confirmPopupMessage": "Sekiranya anda keluar dari halaman ini, proses ini akan terbatal dan anda perlu memulakan semula proses pengesahan identiti anda.",
-    "leave": "Batal",
-    "stay": "Sah",
+    "leave": "Keluar",
+    "stay": "Kekal",
     "iOSconfirmPopupTitle": "Anda pasti anda mahu keluar dari halaman ini? Gambar yang telah diambil tidak akan disimpan dan anda akan kehilangan sebarang perubahan yang anda buat di halaman ini.",
     "iOSconfirmPopupMessage": "Sekiranya anda keluar dari halaman ini, proses ini akan terbatal dan anda perlu memulakan semula proses pengesahan identiti anda.",
-    "iOSleave": "Batal",
-    "iOSstay": "Sah"
+    "iOSleave": "Keluar",
+    "iOSstay": "Kekal"
   },
   "FeedBackSD": {
     "title": "Kongsi Maklum Balas Anda",
