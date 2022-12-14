@@ -3289,7 +3289,7 @@
     "howItWorksTitle1": "Capture or upload your identification.",
     "howItWorksDescription1": "Take or upload a photo of the front (and back if applicable) of your identification document.",
     "howItWorksTitle2": "Verify your identity with face verification.",
-    "howItWorksDescription2": "Scan your face using your device’s camera to verify it’s you. Please expect the image on-screen to be <b>grayscale</b> as part of the identification process.",
+    "howItWorksDescription2": "Scan your face using your device’s camera to verify it’s you. Please expect the image on-screen to be <b>greyscale</b> as part of the identification process.",
     "howItWorksTitle3": "Your verification is complete!",
     "howItWorksDescription3": "You may continue using myTNB to conveniently submit applications!",
     "cancel": "Cancel",
