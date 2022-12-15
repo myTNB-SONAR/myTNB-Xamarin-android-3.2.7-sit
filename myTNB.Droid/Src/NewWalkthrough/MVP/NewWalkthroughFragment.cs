@@ -19,6 +19,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         private static string DESCRIPTION = "slide_description";
         private static string IMAGE = "image";
         private static string IS_LAST_ITEM = "islastitem";
+        private static string BG_IMAGE = "bg_image";
         private string appLanguage;
         const string PAGE_ID = "";
 
@@ -61,6 +62,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             args.PutString(IMAGE, model.Image);
             args.PutString(TITLE, model.Title);
             args.PutString(DESCRIPTION, model.Description);
+            args.PutString(BG_IMAGE, model.Background);
             args.PutBoolean(IS_LAST_ITEM, isLastItem);
             fragment.Arguments = args;
             return fragment;
@@ -75,6 +77,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             string title = Arguments.GetString(TITLE, "");
             string description = Arguments.GetString(DESCRIPTION, "");
             bool isLastItem = Arguments.GetBoolean(IS_LAST_ITEM, false);
+            string bgImage = Arguments.GetString(BG_IMAGE, "");
 
             TextViewUtils.SetMuseoSans500Typeface(titleView);
             TextViewUtils.SetMuseoSans300Typeface(descriptionView, btnToggleEN, btnToggleMS);
@@ -103,12 +106,23 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             btnToggleContainer.Visibility = ViewStates.Gone;
             bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
             bool IsLargeFontDisabled = MyTNBAccountManagement.GetInstance().IsLargeFontDisabled();
+            int bgResource = Resource.Drawable.OnboardingBG1;
+
+            try
+            {
+                bgResource = Resources.GetIdentifier(bgImage.ToLower(), "drawable", ((NewWalkthroughActivity)Activity).PackageName);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             switch (imageUrl)
             {
                 case "walkthrough_img_install_0":
                     btnToggleContainer.Visibility = ViewStates.Visible;
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_0);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughZeroBg);
+                    bgLayout.SetBackgroundResource(bgResource);
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
@@ -121,7 +135,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_install_1":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_1);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
+                    bgLayout.SetBackgroundResource(bgResource);
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
@@ -134,7 +148,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_install_2":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_2);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
+                    bgLayout.SetBackgroundResource(bgResource);
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(79f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
@@ -148,7 +162,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_install_3":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_3);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughThirdBg);
+                    bgLayout.SetBackgroundResource(bgResource);
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
@@ -160,7 +174,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_install_4":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_4);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughForthBg);
+                    bgLayout.SetBackgroundResource(bgResource);
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
@@ -172,14 +186,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_install_5":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_5);
-                    if (!IsRewardsDisabled)
-                    {
-                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFifthBg);
-                    }
-                    else
-                    {
-                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughForthBg);
-                    }
+                    bgLayout.SetBackgroundResource(bgResource);
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
@@ -191,14 +198,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_install_6":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_6);
-                    if (!IsRewardsDisabled)
-                    {
-                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFifthBg);
-                    }
-                    else
-                    {
-                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFifthBg);
-                    }
+                    bgLayout.SetBackgroundResource(bgResource);
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
@@ -210,8 +210,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_install_7":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_7);
-
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSeventhBg);
+                    bgLayout.SetBackgroundResource(bgResource);
 
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
@@ -224,8 +223,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_install_8":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_8);
-
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
+                    bgLayout.SetBackgroundResource(bgResource);
 
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
@@ -252,9 +250,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     {
                         imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_9);
                     }
-                    
 
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughNinthBg);
+                    bgLayout.SetBackgroundResource(bgResource);
 
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
@@ -267,7 +264,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_update_1":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_4);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
+                    bgLayout.SetBackgroundResource(bgResource);
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
@@ -279,14 +276,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_update_2":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_5);
-                    if (!IsRewardsDisabled)
-                    {
-                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
-                    }
-                    else
-                    {
-                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
-                    }
+                    bgLayout.SetBackgroundResource(bgResource);
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
@@ -298,14 +288,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_update_3":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_6);
-                    if (!IsRewardsDisabled)
-                    {
-                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
-                    }
-                    else
-                    {
-                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSixthBg);
-                    }
+                    bgLayout.SetBackgroundResource(bgResource);
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
@@ -317,14 +300,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_update_4":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_7);
-                    if (!IsRewardsDisabled)
-                    {
-                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
-                    }
-                    else
-                    {
-                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughThirdBg);
-                    }
+                    bgLayout.SetBackgroundResource(bgResource);
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
@@ -336,14 +312,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_update_5":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_8);
-                    if (!IsRewardsDisabled)
-                    {
-                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
-                    }
-                    else
-                    {
-                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughForthBg);
-                    }
+                    bgLayout.SetBackgroundResource(bgResource);
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
@@ -354,7 +323,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     imgParam.Height = imgHeight;
                     break;
                 case "walkthrough_img_update_6":
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughTwelfthBg);
+                    bgLayout.SetBackgroundResource(bgResource);
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
@@ -366,7 +335,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 default:
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_1);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
+                    bgLayout.SetBackgroundResource(bgResource);
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;

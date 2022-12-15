@@ -3965,30 +3965,6 @@
     <Compile Include="Src\Database\Model\SSMRMeterReadingThreePhaseScreensOCROffParentEntity.cs" />
     <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingOnePhaseWalkThroughOCROffService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingThreePhaseWalkthroughOCROffService.cs" />
-    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_1.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_2.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_3.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_update_1.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_1.png">
       <SubType>
       </SubType>
@@ -4008,30 +3984,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_update_1.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_1.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_2.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_3.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_update_1.png">
       <SubType>
       </SubType>
       <Generator>
@@ -4061,30 +4013,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_1.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_2.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_3.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_update_1.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_1.png">
       <SubType>
       </SubType>
@@ -4109,30 +4037,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_1.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_2.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_3.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_update_1.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_1.png">
       <SubType>
       </SubType>
@@ -4152,30 +4056,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_update_1.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_1.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_2.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_3.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_update_1.png">
       <SubType>
       </SubType>
       <Generator>
@@ -4206,30 +4086,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\NewWalkthroughFragmentLayout.axml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\InstallWalkthroughFirstBg.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\InstallWalkthroughSecondBg.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\InstallWalkthroughThirdBg.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\UpdateWalkthroughFirstBg.xml">
       <SubType>
       </SubType>
       <Generator>
@@ -4362,27 +4218,16 @@
     <AndroidResource Include="Resources\drawable-xhdpi\filter_blue.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\filter_blue.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\filter_blue.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_0.png" />
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_0.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_0.png" />
     <AndroidResource Include="Resources\drawable-mdpi\walkthrough_img_install_0.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_0.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_0.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_0.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_0.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_0.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_img_install_0.png" />
-    <AndroidResource Include="Resources\drawable\InstallWalkthroughZeroBg.xml" />
     <Compile Include="Src\Base\Fragments\BaseFragmentV4Custom.cs" />
-    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_4.png" />
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_4.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_4.png" />
     <AndroidResource Include="Resources\drawable-mdpi\walkthrough_img_install_4.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_4.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_4.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_4.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_4.png" />
-    <AndroidResource Include="Resources\drawable\InstallWalkthroughForthBg.xml" />
     <Compile Include="Src\MyTNBService\InterfaceAPI\IAccountAPI.cs" />
     <Compile Include="Src\MyTNBService\ServiceImpl\AccountApiImpl.cs" />
     <Compile Include="Src\MyTNBService\Response\LanguagePreferenceResponse.cs" />
@@ -5633,12 +5478,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_5.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_5.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_img_install_5.png" />
-    <AndroidResource Include="Resources\drawable\InstallWalkthroughFifthBg.xml" />
-    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_5.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_5.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_5.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_5.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_5.png" />
     <AndroidResource Include="Resources\drawable\bq.png" />
     <AndroidResource Include="Resources\drawable\cc.png" />
     <AndroidResource Include="Resources\drawable\cx.png" />
@@ -6177,37 +6016,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\InstallWalkthroughSixthBg.xml" />
-    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_6.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_6.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_6.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_6.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_6.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\AppointmentCalendarLayout.xml">
       <SubType>
       </SubType>
@@ -6474,12 +6282,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\InstallWalkthroughSeventhBg.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_7.png">
       <SubType>
       </SubType>
@@ -6505,36 +6307,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_img_install_7.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_7.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_7.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_7.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_7.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_7.png">
       <SubType>
       </SubType>
       <Generator>
@@ -6678,36 +6450,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_img_install_8.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\InstallWalkthroughEightBg.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_8.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_8.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_8.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_8.png">
       <SubType>
       </SubType>
       <Generator>
@@ -7235,6 +6977,150 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Quick_Access_MyHome.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\OnboardingBG0.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Onboarding_BG_One.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Onboarding_BG_One.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Onboarding_BG_One.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Onboarding_BG_One.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Onboarding_BG_One.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\OnboardingBG1.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Onboarding_BG_Two.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Onboarding_BG_Two.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Onboarding_BG_Two.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Onboarding_BG_Two.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Onboarding_BG_Two.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Onboarding_BG_Three.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Onboarding_BG_Three.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Onboarding_BG_Three.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Onboarding_BG_Three.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Onboarding_BG_Three.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Onboarding_BG_Four.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Onboarding_BG_Four.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Onboarding_BG_Four.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Onboarding_BG_Four.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Onboarding_BG_Four.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Onboarding_BG_Five.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Onboarding_BG_Five.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Onboarding_BG_Five.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Onboarding_BG_Five.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Onboarding_BG_Five.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Onboarding_BG_Six.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Onboarding_BG_Six.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Onboarding_BG_Six.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Onboarding_BG_Six.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Onboarding_BG_Six.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\OnboardingBG2.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\OnboardingBG3.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\OnboardingBG4.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\OnboardingBG5.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -8316,12 +8202,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\InstallWalkthroughTwelfthBg.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ManageBillDelivery.axml">
       <SubType>
       </SubType>
@@ -8329,72 +8209,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ManageBillDeliveryFragmentLayout.axml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\InstallWalkthroughNinthBg.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_9.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_9.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_9.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_9.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_9.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_10.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_10.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_10.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_10.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_10.png">
       <SubType>
       </SubType>
       <Generator>

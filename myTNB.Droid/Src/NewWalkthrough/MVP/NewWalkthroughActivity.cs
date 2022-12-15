@@ -305,7 +305,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             {
                 if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop)
                 {
-                    Drawable drawable = Resources.GetDrawable(Resource.Drawable.walkthrough_bg_install_1);
+                    Drawable drawable = Resources.GetDrawable(Resource.Drawable.Onboarding_BG_One);
                     this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
                     this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
                     this.Window.SetBackgroundDrawable(drawable);

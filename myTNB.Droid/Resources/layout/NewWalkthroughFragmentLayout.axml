@@ -16,7 +16,7 @@
 			android:orientation="vertical"
 			android:paddingTop="75dp"
 			android:id="@+id/walkthrough_layout"
-			android:background="@drawable/InstallWalkthroughFirstBg">
+			android:background="@drawable/OnboardingBG1">
 			<ImageView
 				android:id="@+id/img_display"
 				android:layout_height="216dp"
