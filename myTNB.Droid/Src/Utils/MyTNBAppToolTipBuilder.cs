@@ -843,6 +843,7 @@ namespace myTNB_Android.Src.Utils
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipSecondaryCTA);
 
                 tooltipTitle.Gravity = GravityFlags.Center;
+                tooltipMessage.Gravity = GravityFlags.Center;
 
                 if (this.imageResourceBitmap != null)
                 {
