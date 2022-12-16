@@ -2430,6 +2430,14 @@
       {
         "key": "Resolving",
         "value": "Resolving"
+      },
+      {
+        "key": "Verification Required",
+        "value": "Verification Required"
+      },
+      {
+        "key": "Acknowledgement Required",
+        "value": "Acknowledgement Required"
       }
     ]
   },

@@ -2430,6 +2430,14 @@
       {
         "key": "Menyelesaikan",
         "value": "Menyelesaikan"
+      },
+      {
+        "key": "Pengesahan Diperlukan",
+        "value": "Pengesahan Diperlukan"
+      },
+      {
+        "key": "Perakuan Diperlukan",
+        "value": "Perakuan Diperlukan"
       }
     ]
   },
