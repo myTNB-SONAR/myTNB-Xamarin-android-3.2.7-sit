@@ -557,20 +557,45 @@ namespace myTNB_Android.Src.Utils
 
             DownTimeEntity smartmeterdailyEntity = DownTimeEntity.GetByCode(Constants.Smart_Meter_Daily_SYSTEM);
             DownTimeEntity smartmeter = DownTimeEntity.GetByCode(Constants.SMART_METER_SYSTEM);
+            DownTimeEntity ebdowntime = DownTimeEntity.GetByCode(Constants.EB_SYSTEM);
+
+            //if (smartmeterdailyEntity != null && smartmeterdailyEntity.IsDown)
+            //{
+            //    isMDMSEnable = false;
+            //}
+            //else
+            //{
+            //    if (smartmeter != null && smartmeter != null)
+            //    {
+            //        if (smartmeter.IsDown || smartmeterdailyEntity.IsDown)
+            //        {
+            //            isMDMSEnable = false;
+            //        }
+            //    }
+            //}
 
             if (smartmeterdailyEntity != null && smartmeterdailyEntity.IsDown)
             {
-                isMDMSEnable = false;
+                isMDMSEnable = false; //smart meter daily is down
+            }
+            else if (smartmeter != null && smartmeter.IsDown)
+            {
+                isMDMSEnable = false; //smart meter is down
             }
             else
             {
-                if (smartmeter != null && smartmeter != null)
+                if (ebdowntime != null)
                 {
-                    if (smartmeter.IsDown || smartmeterdailyEntity.IsDown)
+                    if (ebdowntime.IsDown)
                     {
-                        isMDMSEnable = false;
+                        isMDMSEnable = false; //energy budget is down
+                    }
+                    else
+                    {
+                        isMDMSEnable = true; //energy budget is not down
                     }
                 }
+                
             }
 
             return isMDMSEnable;
