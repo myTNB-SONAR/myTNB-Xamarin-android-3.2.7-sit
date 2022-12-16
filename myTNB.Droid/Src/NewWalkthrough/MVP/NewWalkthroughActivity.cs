@@ -108,7 +108,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 //    editor.PutBoolean("hasItemizedBillingNMSMTutorialShown", false);
                 //    editor.Apply();
                 //}
-                if (position == newWalkthroughAdapter.Count - 2)
+                if (position == newWalkthroughAdapter.Count - 5)
                 {
                     ShowSubmitButton(true);
                 }

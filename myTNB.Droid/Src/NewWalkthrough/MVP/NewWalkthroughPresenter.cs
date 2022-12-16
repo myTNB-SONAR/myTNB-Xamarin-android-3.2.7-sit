@@ -83,13 +83,6 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Image = "walkthrough_img_install_5",
                     Background = GetBackgroundName(newWalkthroughList)
                 });
-                newWalkthroughList.Add(new NewWalkthroughModel()
-                {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title8"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description8"),
-                    Image = "walkthrough_img_install_6",
-                    Background = GetBackgroundName(newWalkthroughList)
-                });
                 if (!MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
                 {
                     newWalkthroughList.Add(new NewWalkthroughModel()
@@ -115,6 +108,27 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
                     Image = "walkthrough_img_install_9",
+                    Background = GetBackgroundName(newWalkthroughList)
+                });
+                newWalkthroughList.Add(new NewWalkthroughModel()
+                {
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title12"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description12"),
+                    Image = "walkthrough_img_install_10",
+                    Background = GetBackgroundName(newWalkthroughList)
+                });
+                newWalkthroughList.Add(new NewWalkthroughModel()
+                {
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title13"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description13"),
+                    Image = "walkthrough_img_install_11",
+                    Background = GetBackgroundName(newWalkthroughList)
+                });
+                newWalkthroughList.Add(new NewWalkthroughModel()
+                {
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title8"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description8"),
+                    Image = "walkthrough_img_install_6",
                     Background = GetBackgroundName(newWalkthroughList)
                 });
             }
@@ -181,40 +195,61 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Image = "walkthrough_img_install_9",
                     Background = GetBackgroundName(newWalkthroughList)
                 });
-               /* UserEntity activeUser = UserEntity.GetActive();
-
-                if (activeUser != null)
+                newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    bool IsDigitalBillApplied = false; // MyTNBAccountManagement.GetInstance().IsDigitalBilApplied();
-                    bool IsBillPostConversion = true;
-                    if (IsDigitalBillApplied)
-                    {
-                        newWalkthroughList.Add(new NewWalkthroughModel()
-                        {
-                            Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
-                            Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
-                            Image = "walkthrough_img_install_9"
-                        });
-                    }
-                    else if (IsBillPostConversion)
-                    {
-                        newWalkthroughList.Add(new NewWalkthroughModel()
-                        {
-                            Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
-                            Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
-                            Image = "walkthrough_img_install_9"
-                        });
-                    }
-                    else
-                    {
-                        newWalkthroughList.Add(new NewWalkthroughModel()
-                        {
-                            Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
-                            Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
-                            Image = "walkthrough_img_install_9"
-                        });
-                    }
-                }*/
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title12"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description12"),
+                    Image = "walkthrough_img_install_10",
+                    Background = GetBackgroundName(newWalkthroughList)
+                });
+                newWalkthroughList.Add(new NewWalkthroughModel()
+                {
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title13"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description13"),
+                    Image = "walkthrough_img_install_11",
+                    Background = GetBackgroundName(newWalkthroughList)
+                });
+                newWalkthroughList.Add(new NewWalkthroughModel()
+                {
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title8"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description8"),
+                    Image = "walkthrough_img_install_6",
+                    Background = GetBackgroundName(newWalkthroughList)
+                });
+                /* UserEntity activeUser = UserEntity.GetActive();
+
+                 if (activeUser != null)
+                 {
+                     bool IsDigitalBillApplied = false; // MyTNBAccountManagement.GetInstance().IsDigitalBilApplied();
+                     bool IsBillPostConversion = true;
+                     if (IsDigitalBillApplied)
+                     {
+                         newWalkthroughList.Add(new NewWalkthroughModel()
+                         {
+                             Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
+                             Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
+                             Image = "walkthrough_img_install_9"
+                         });
+                     }
+                     else if (IsBillPostConversion)
+                     {
+                         newWalkthroughList.Add(new NewWalkthroughModel()
+                         {
+                             Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
+                             Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
+                             Image = "walkthrough_img_install_9"
+                         });
+                     }
+                     else
+                     {
+                         newWalkthroughList.Add(new NewWalkthroughModel()
+                         {
+                             Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
+                             Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
+                             Image = "walkthrough_img_install_9"
+                         });
+                     }
+                 }*/
             }
 
             return newWalkthroughList;

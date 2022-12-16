@@ -992,6 +992,9 @@
     "title8": "Sentiasa ketahui status permohonan anda!",
     "title9": "Pilih Saiz Teks Paparan Anda.",
     "title10": "Tetapkan janji temu anda!",
+    "title11": "Peningkatan kawalan akses untuk melindungi maklumat anda.",
+    "title12": "BM_Enhance your moving experience with myHome!",
+    "title13": "BM_Connect your premises to electricity with ease",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
@@ -1002,8 +1005,9 @@
     "description8": "Anda boleh jejaki semua status permohonan dengan mudah, pada bila-bila masa dan di mana-mana sahaja.",
     "description9": "Ubah suai myTNB anda dengan saiz teks paparan bersesuaian untuk pengendalian yang lebih selesa. Anda boleh memilih antara saiz normal atau besar dan boleh mengubah tetapan ini pada bila-bila masa di Profil anda.",
     "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai.",
-    "title11": "Peningkatan kawalan akses untuk melindungi maklumat anda.",
-    "description11": "Sebagai pemilik akaun elektrik, pastikan anda mempunyai kawalan terhadap maklumat dan permintaan akaun dengan menetapkan akses yang anda beri kepada pihak lain."
+    "description11": "Sebagai pemilik akaun elektrik, pastikan anda mempunyai kawalan terhadap maklumat dan permintaan akaun dengan menetapkan akses yang anda beri kepada pihak lain.",
+    "description12": "BM_Planning to move in to your home? You can now apply for your electricity account easily and track your application status with our new feature.",
+    "description13": "BM_Create new applications and manage your existing electricity accounts anytime!"
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",

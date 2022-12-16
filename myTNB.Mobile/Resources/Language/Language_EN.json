@@ -992,6 +992,9 @@
     "title8": "Stay Updated with Your Applications!",
     "title9": "Personalise Your Text Size.",
     "title10": "Set your appointment with us!",
+    "title11": "Enhanced access controls to safeguard your information.",
+    "title12": "Enhance your moving experience with myHome!",
+    "title13": "Connect your premises to electricity with ease",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
@@ -1002,8 +1005,9 @@
     "description8": "You can now track all your application status with zero hassle, anytime and anywhere.",
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
     "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot.",
-    "title11": "Enhanced access controls to safeguard your information.",
-    "description11": "Stay in control of your account information and permissions by defining what you let others access as an owner of an electricity account."
+    "description11": "Stay in control of your account information and permissions by defining what you let others access as an owner of an electricity account.",
+    "description12": "Planning to move in to your home? You can now apply for your electricity account easily and track your application status with our new feature.",
+    "description13": "Create new applications and manage your existing electricity accounts anytime!"
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
