@@ -60,7 +60,7 @@ namespace myTNB
                     using (StreamReader reader = new StreamReader(stream))
                     {
                         JSONLang = reader.ReadToEnd();
-                        Debug.WriteLine("[DEBUG] JSONLang: " + JSONLang);
+                        //Debug.WriteLine("[DEBUG] JSONLang: " + JSONLang);
                     }
                     Debug.WriteLine("[DEBUG] SUCCESS");
                 }

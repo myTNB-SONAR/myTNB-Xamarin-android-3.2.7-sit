@@ -65,6 +65,7 @@ namespace myTNB.Mobile
                         ContractAccounts = caList
                     };
                     Debug.WriteLine("[DEBUG] PostEligibility Request: " + JsonConvert.SerializeObject(request));
+                    Debug.WriteLine("[DEBUG] PostEligibility ViewInfo: " + AppInfoManager.Instance.ViewInfo);
 
                     HttpResponseMessage rawResponse = await service.PostEligibility(request
                        , NetworkService.GetCancellationToken()

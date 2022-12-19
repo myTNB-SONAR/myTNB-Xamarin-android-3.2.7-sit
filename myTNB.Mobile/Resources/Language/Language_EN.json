@@ -12,8 +12,8 @@
     "settings": "Settings",
     "cancel": "Cancel",
     "cameraPermissionTitle": "\"myTNB\" Would like to Access the Camera",
-    "galleryPermissionTitle": "\"myTNB\" Would like to Access Your Photos",
-    "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.",
+    "galleryPermissionTitle": "This app lets you browse and choose photos from your library for enquiry submission",
+    "photoPermissionDescription": "This app uses the camera as to ease users experience in inserting account number by scanning the bar code at the bill",
     "delete": "Delete",
     "refreshDescription": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
     "refreshNow": "Refresh Now",
@@ -255,7 +255,11 @@
     //DiscoverMore
     "DiscoverMore": "Discover More",
     "DiscoverMoreTitle": "The new Energy Budget feature is here!",
-    "DiscoverMoreDate": "07 May 2021"
+    "DiscoverMoreDate": "07 May 2021",
+    //myHome
+    "myHome": "myHome",
+    "connectMyPremise": "Connect My<br>Premise",
+    "myHomeDrawerTitle": "myHome"
   },
   "Tabbar": {
     "home": "Home",
@@ -994,7 +998,7 @@
     "title10": "Set your appointment with us!",
     "title11": "Enhanced access controls to safeguard your information.",
     "title12": "Enhance your moving experience with myHome!",
-    "title13": "Connect your premises to electricity with ease",
+    "title13": "Connect your premises to electricity with ease.",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
@@ -1513,7 +1517,11 @@
     "manageDeliveryMethodEmailTitle": "Recipient(s) of email bills.",
     "manageDeliveryMethodEmailMessage": "View email recipients who are receiving monthly bills for this account.",
     "billStatementTitle": "Download your account statement.",
-    "billStatementMessage": "You can now download a summary of your accounts monthly statements and bills by your preferred statement period."
+    "billStatementMessage": "You can now download a summary of your accounts monthly statements and bills by your preferred statement period.",
+    "myHomeTitle": "Introducing myHome.",
+    "myHomeMessage": "Manage your electricity connection accounts and applications by selecting the myHome feature.",
+    "connectMyPremiseTitle": "Start your applications.",
+    "connectMyPremiseMessage": "Apply for new electricity connections, change of tenancy and closure of your electricity accounts here."
   },
   "Tnb_Profile": {
     "title": "myTNB Profile",
@@ -3241,5 +3249,12 @@
     "btnSubmit": "Submit",
     "thumbUpYes": "Yes, absolutely!",
     "thumbDownNo": "Not really"
+  },
+  "ConnectMyPremise": {
+    "title": "Connect My Premise",
+    "description": "Submit application for an electricity connection account.",
+    "iWantTo": "I want to:",
+    "moveInTitle": "Move In",
+    "moveInDescription": "I want to open an account for new/existing premise."
   }
 }

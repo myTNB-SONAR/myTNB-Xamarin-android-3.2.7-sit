@@ -12,8 +12,8 @@
     "settings": "Tetapan",
     "cancel": "Batal",
     "cameraPermissionTitle": "\"myTNB\" Would like to Access the Camera",
-    "galleryPermissionTitle": "\"myTNB\" Would like to Access Your Photos",
-    "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.",
+    "galleryPermissionTitle": "This app lets you browse and choose photos from your library for enquiry submission",
+    "photoPermissionDescription": "This app uses the camera as to ease users experience in inserting account number by scanning the bar code at the bill",
     "delete": "Padam",
     "refreshDescription": "Halaman ini terputus sambungan. 'Refresh' untuk sambung semula!",
     "refreshNow": "'Refresh' Sekarang",
@@ -255,7 +255,11 @@
     //DiscoverMore
     "DiscoverMore": "Terokai",
     "DiscoverMoreTitle": "Energy Budget kini telah tiba!",
-    "DiscoverMoreDate": "07 May 2021"
+    "DiscoverMoreDate": "07 May 2021",
+    //myHome
+    "myHome": "MS_myHome",
+    "connectMyPremise": "MS_Connect My<br>Premise",
+    "myHomeDrawerTitle": "MS_myHome"
   },
   "Tabbar": {
     "home": "Utama",
@@ -993,8 +997,8 @@
     "title9": "Pilih Saiz Teks Paparan Anda.",
     "title10": "Tetapkan janji temu anda!",
     "title11": "Peningkatan kawalan akses untuk melindungi maklumat anda.",
-    "title12": "BM_Enhance your moving experience with myHome!",
-    "title13": "BM_Connect your premises to electricity with ease",
+    "title12": "MS_Enhance your moving experience with myHome!",
+    "title13": "MS_Connect your premises to electricity with ease.",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
@@ -1006,8 +1010,8 @@
     "description9": "Ubah suai myTNB anda dengan saiz teks paparan bersesuaian untuk pengendalian yang lebih selesa. Anda boleh memilih antara saiz normal atau besar dan boleh mengubah tetapan ini pada bila-bila masa di Profil anda.",
     "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai.",
     "description11": "Sebagai pemilik akaun elektrik, pastikan anda mempunyai kawalan terhadap maklumat dan permintaan akaun dengan menetapkan akses yang anda beri kepada pihak lain.",
-    "description12": "BM_Planning to move in to your home? You can now apply for your electricity account easily and track your application status with our new feature.",
-    "description13": "BM_Create new applications and manage your existing electricity accounts anytime!"
+    "description12": "MS_Planning to move in to your home? You can now apply for your electricity account easily and track your application status with our new feature.",
+    "description13": "MS_Create new applications and manage your existing electricity accounts anytime!"
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -1082,7 +1086,7 @@
     "paymentType": "JENIS PEMBAYARAN",
     "trnBankReference": "NOMBOR RUJUKAN BANK",
     "trnAcquirerBank": "BANK PEMEROLEH",
-    "emptyValue":  "--"
+    "emptyValue": "--"
   },
   "FeedbackList": {
     "title": "Maklum Balas"
@@ -1513,7 +1517,11 @@
     "manageDeliveryMethodEmailTitle": "Penerima bil e-mel.",
     "manageDeliveryMethodEmailMessage": "Semak penerima e-mel yang menerima bil bulanan untuk akaun ini.",
     "billStatementTitle": "Muat turun penyata akaun anda.",
-    "billStatementMessage": "Anda boleh memuat turun ringkasan penyata bulanan dan bil akaun anda mengikut tempoh penyata pilihan anda."
+    "billStatementMessage": "Anda boleh memuat turun ringkasan penyata bulanan dan bil akaun anda mengikut tempoh penyata pilihan anda.",
+    "myHomeTitle": "MS_Introducing myHome.",
+    "myHomeMessage": "MS_Manage your electricity connection accounts and applications by selecting the myHome feature.",
+    "connectMyPremiseTitle": "MS_Start your applications.",
+    "connectMyPremiseMessage": "MS_Apply for new electricity connections, change of tenancy and closure of your electricity accounts here."
   },
   "Tnb_Profile": {
     "title": "Profil myTNB",
@@ -3241,5 +3249,12 @@
     "btnSubmit": "Hantar",
     "thumbUpYes": "Ya, sangat membantu!",
     "thumbDownNo": "Kurang membantu"
+  },
+  "ConnectMyPremise": {
+    "title": "MS_Connect My Premise",
+    "description": "MS_Submit application for an electricity connection account.",
+    "iWantTo": "MS_I want to:",
+    "moveInTitle": "MS_Move In",
+    "moveInDescription": "MS_I want to open an account for new/existing premise."
   }
 }
