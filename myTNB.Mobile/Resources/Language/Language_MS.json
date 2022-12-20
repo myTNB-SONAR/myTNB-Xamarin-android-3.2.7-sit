@@ -632,13 +632,16 @@
     "otherPaymentMethods": "Kaedah Pembayaran Lain",
     "maxCCAmountMessage": "Untuk bayaran lebih daripada RM 5000, sila gunakan mod pembayaran FPX.",
     "addCard": "Tambah kad",
-    "fpxTitle": "Perbankan dalam talian melalui FPX"
+    "fpxTitle": "Perbankan dalam talian melalui FPX",
+    "eWalletPaymentMethods": "e-Dompet",
+    "tngTitle": "TNG eWallet"
   },
   "MakePayment": {
     "enterOTP": "Masukkan Kod OTP",
     "onlineBanking": "Perbankan Dalam Talian",
     "abortTitle": "Batalkan Pembayaran",
-    "abortMessage": "Anda pasti anda ingin membatalkan pembayaran?"
+    "abortMessage": "Anda pasti anda ingin membatalkan pembayaran?",
+    "tngEwallet": "Touch'n Go"
   },
   "PushNotificationList": {
     "allNotifications": "Semua Pemberitahuan",

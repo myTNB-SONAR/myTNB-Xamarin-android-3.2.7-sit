@@ -159,6 +159,8 @@ namespace myTNB.Mobile
                         x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.EB.ToString().ToUpper()).ToList();
                     List<FeatureCAModel> sd = postEligibilityResponse.Content.FeatureCAList.FindAll(
                         x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.SD.ToString().ToUpper()).ToList();
+                    List<FeatureCAModel> tng = postEligibilityResponse.Content.FeatureCAList.FindAll(
+                        x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.TNG.ToString().ToUpper()).ToList();
 
                     if (dbr != null && dbr.Count > 0)
                     {
@@ -234,6 +236,25 @@ namespace myTNB.Mobile
                             });
                         }
                         eligibilityResponse.Content.SD = baseContent;
+                    }
+
+                    if (tng != null && tng.Count > 0)
+                    {
+                        BaseCAListModel baseContent = new BaseCAListModel
+                        {
+                            ContractAccounts = new List<ContractAccountsModel>()
+                        };
+                        for (int i = 0; i < tng.Count; i++)
+                        {
+                            FeatureCAModel item = tng[i];
+                            baseContent.ContractAccounts.Add(new ContractAccountsModel
+                            {
+                                ContractAccount = item.ContractAccount,
+                                Acted = item.Acted,
+                                ModifiedDate = item.ModifiedDate
+                            });
+                        }
+                        eligibilityResponse.Content.TNG = baseContent;
                     }
                 }
             }

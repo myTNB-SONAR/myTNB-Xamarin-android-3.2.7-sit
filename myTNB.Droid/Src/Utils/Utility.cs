@@ -633,6 +633,7 @@ namespace myTNB_Android.Src.Utils
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+                DownTimeEntity pgTNGEntity = DownTimeEntity.GetByCode(Constants.PG_TNG_SYSTEM);
 
                 if (bcrmEntity != null && bcrmEntity.IsDown)
                 {
@@ -640,9 +641,9 @@ namespace myTNB_Android.Src.Utils
                 }
                 else
                 {
-                    if (pgCCEntity != null && pgFPXEntity != null)
+                    if (pgCCEntity != null && pgFPXEntity != null && pgTNGEntity != null)
                     {
-                        if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                        if (pgCCEntity.IsDown && pgFPXEntity.IsDown && pgTNGEntity.IsDown)
                         {
                             isPaymentEnable = false;
                         }

@@ -540,6 +540,11 @@ namespace myTNB.Mobile
         public bool IsPaymentAvailable { set; get; }
 
         /// <summary>
+        /// Use to hide TNG section
+        /// </summary>
+        public bool IsTNGEnableApplicationStatus { set; get; }
+
+        /// <summary>
         /// Coming from app launch master data
         /// </summary>
         public bool IsSchedulerEnable { set; get; } = true;
