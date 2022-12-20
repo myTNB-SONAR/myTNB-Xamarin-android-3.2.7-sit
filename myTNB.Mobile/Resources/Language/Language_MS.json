@@ -2962,7 +2962,7 @@
     "userExistedDetails": "Pengguna ini sudah mempunyai akses untuk akaun ini. Cuba alamat e-mel yang lain."
   },
   "EnregyBudgetListing": {
-    "title": "Pilih Akaun Meter Pintar",
+    "title": "Pilih Akaun Smart Meter",
     "tootltipTitle": "Kenapa sesetengah akaun saya yang tidak tersenarai?",
     "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
     "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"

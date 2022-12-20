@@ -1744,7 +1744,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             Utility.ShowBCRMDOWNTooltip(this.Activity, TRILEntity, () =>
                             {
                                 this.SetIsClicked(false);
-                                EnergyBudgetPage();
+                                //EnergyBudgetPage();
                             });
                         }
                         else if (SAGEEntity.IsDown && resultSage)
@@ -1752,7 +1752,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             Utility.ShowBCRMDOWNTooltip(this.Activity, SAGEEntity, () =>
                             {
                                 this.SetIsClicked(false);
-                                EnergyBudgetPage();
+                                //EnergyBudgetPage();
                             });
                         }
                         else if (CatchupCell.IsDown && resultCell)
@@ -1760,7 +1760,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             Utility.ShowBCRMDOWNTooltip(this.Activity, CatchupCell, () =>
                             {
                                 this.SetIsClicked(false);
-                                EnergyBudgetPage();
+                                //EnergyBudgetPage();
                             });
                         }
                         else if (CatchupPLC.IsDown && resultPlc)
@@ -1768,7 +1768,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             Utility.ShowBCRMDOWNTooltip(this.Activity, CatchupPLC, () =>
                             {
                                 this.SetIsClicked(false);
-                                EnergyBudgetPage();
+                                //EnergyBudgetPage();
                             });
                         }
                         else if (CatchupRF.IsDown && resultRf)
@@ -1776,7 +1776,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             Utility.ShowBCRMDOWNTooltip(this.Activity, CatchupRF, () =>
                             {
                                 this.SetIsClicked(false);
-                                EnergyBudgetPage();
+                                //EnergyBudgetPage();
                             });
                         }
                         else
