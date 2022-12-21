@@ -40,9 +40,9 @@ namespace myTNB.Mobile
 
         private const string SIT_AWS = "https://stagingapi.mytnb.com.my/asmx";
         //ASMX
-        //private const string SIT = "https://mobiletestingws.tnb.com.my";
+        private const string SIT = "https://mobiletestingws.tnb.com.my";
         //AWS ASMX Copy
-        private const string SIT = "https://stagingapi.mytnb.com.my/asmx-97";
+        //private const string SIT = "https://stagingapi.mytnb.com.my/asmx-97";
         //AWS OVIS
         //private const string SIT = "http://mytnbwsovisstg.ap.ngrok.io";
         private const string PROD = "https://mytnbapp.tnb.com.my";

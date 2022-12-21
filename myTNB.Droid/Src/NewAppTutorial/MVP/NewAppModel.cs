@@ -8,8 +8,20 @@
         TopRight = 3
     }
 
+    public enum FeatureType
+    {
+        None = 0,
+        Accounts = 1,
+        AccountsNC = 2,
+        QuickAccess = 3,
+        QuickActions = 4,
+        MyHome = 5,
+        NeedHelp = 6
+    }
+
     public class NewAppModel
     {
+        public FeatureType Feature { get; set; }
         public ContentType ContentShowPosition { get; set; }
         public string ContentTitle { get; set; }
         public string ContentMessage { get; set; }

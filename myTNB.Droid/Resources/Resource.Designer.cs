@@ -21650,13 +21650,16 @@ namespace myTNB_Android
 			public const int GetCustomerBillingAccountListResponseV5 = 2131689486;
 			
 			// aapt resource value: 0x7F0F000F
-			public const int GetUsageHistoryResponse = 2131689487;
+			public const int GetServicesV3 = 2131689487;
 			
 			// aapt resource value: 0x7F0F0010
-			public const int UserLoginResponseV4 = 2131689488;
+			public const int GetUsageHistoryResponse = 2131689488;
 			
 			// aapt resource value: 0x7F0F0011
-			public const int UserLoginResponseV5 = 2131689489;
+			public const int UserLoginResponseV4 = 2131689489;
+			
+			// aapt resource value: 0x7F0F0012
+			public const int UserLoginResponseV5 = 2131689490;
 			
 			static Raw()
 			{

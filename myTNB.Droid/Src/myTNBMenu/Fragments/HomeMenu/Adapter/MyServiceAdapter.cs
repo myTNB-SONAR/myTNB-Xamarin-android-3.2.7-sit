@@ -410,6 +410,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
                             break;
+                        case "1008":
+                            vh.serviceImg.SetImageResource(Resource.Drawable.Icon_Quick_Access_MyHome);
+                            break;
                     }
 
                     ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;

@@ -61,6 +61,8 @@ using System.Globalization;
 using DynatraceAndroid;
 using myTNB_Android.Src.ServiceDistruption.Activity;
 using System.Threading.Tasks;
+using AndroidX.Fragment.App;
+using myTNB_Android.Src.MyHome;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1871,6 +1873,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 }
                             }
                         }
+                        else if (selectedService.ServiceCategoryId == "1008")
+                        {
+                            MyHomeDrawerFragment myHomeBottomSheetDialog = new MyHomeDrawerFragment(this.Activity);
+
+                            myHomeBottomSheetDialog.Cancelable = true;
+                            myHomeBottomSheetDialog.Show(this.Activity.SupportFragmentManager, "My Home Dialog");
+
+                            this.SetIsClicked(false);
+                        }
                         else
                         {
                             this.SetIsClicked(false);
@@ -3476,6 +3487,50 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public int GetMyServiceContainerHeight()
         {
             return myServiceContainer.Height;
+        }
+
+        public int GetMyServiceItemHeight()
+        {
+            var servicesList = currentMyServiceList;
+
+            int a = (int)System.Math.Ceiling((double)servicesList.Count / 3);
+            var itemHeight = myServiceListRecycleView.Height / a;
+
+            return itemHeight;
+        }
+
+        public int GetMyServiceItemWidth()
+        {
+            var itemWidth = myServiceListRecycleView.Width / 3;
+            return itemWidth;
+        }
+
+        public int GetMyServiceItemTopPosition(string id)
+        {
+            var topPosition = 0;
+            var servicesList = currentMyServiceList;
+            int itemPosition = servicesList.FindIndex(x => x.ServiceCategoryId == id) + 1;
+
+            int row = (int)System.Math.Ceiling((double)itemPosition / 3);
+            int rowIndex = row - 1;
+            topPosition = rowIndex * GetMyServiceItemHeight();
+
+            return topPosition;
+        }
+
+        public int GetMyServiceItemLeftPosition(string id)
+        {
+            var leftPosition = 0;
+
+            int column = 0;
+
+            var servicesList = currentMyServiceList;
+            int itemIndex = servicesList.FindIndex(x => x.ServiceCategoryId == id);
+
+            column = (itemIndex % 3);
+            leftPosition = column * GetMyServiceItemWidth();
+
+            return leftPosition;
         }
 
         public int GetAccountContainerHeight()
