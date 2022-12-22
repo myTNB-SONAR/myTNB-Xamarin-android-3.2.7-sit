@@ -19,6 +19,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
         public string IdentificationNo { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public string? ApplicationModuleID { get; set; }
+        public string Email { get; set; }
         public string IdentificationTypeDescription
         {
             get

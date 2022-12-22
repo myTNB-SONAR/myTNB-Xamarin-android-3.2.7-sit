@@ -97,6 +97,7 @@ namespace myTNB.Mobile
             , int? idType
             , string idNo
             , int osType
+            , string email
             , bool isContractorApplied
             , string appReference
             , int? applicationModuleID)
@@ -123,6 +124,7 @@ namespace myTNB.Mobile
                     InitiateTime = DateTime.UtcNow,
                     QRMappingID = null,
                     OSType = osType,
+                    Email = email,
                     IsContractorApplied = isContractorApplied,
                     appRef = appReference,
                     ApplicationModuleID = applicationModuleID

@@ -31,6 +31,7 @@ namespace myTNB.Mobile
         /// 3 = Huawei
         /// </summary>
         public int OSType { set; get; }
+        public string Email { get; set; }
         public bool IsContractorApplied { set; get; }
         public string appRef { set; get; }
         public int? ApplicationModuleID { set; get; }

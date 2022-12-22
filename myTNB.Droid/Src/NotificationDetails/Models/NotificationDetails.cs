@@ -105,6 +105,9 @@ namespace myTNB_Android.Src.NotificationDetails.Models
 
             [JsonProperty("applicationModuleID")]
             public string ApplicationModuleID { get; set; }
+
+            [JsonProperty("email")]
+            public string Email { get; set; }
         }
     }
 }
