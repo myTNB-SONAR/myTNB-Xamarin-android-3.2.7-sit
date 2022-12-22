@@ -161,13 +161,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Image = "walkthrough_img_update_2",
                     Background = GetBackgroundName(newWalkthroughList)
                 });
-                newWalkthroughList.Add(new NewWalkthroughModel()
-                {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title8"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description8"),
-                    Image = "walkthrough_img_update_3",
-                    Background = GetBackgroundName(newWalkthroughList)
-                });
+                
                 if (!MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
                 {
                     newWalkthroughList.Add(new NewWalkthroughModel()
@@ -216,6 +210,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Image = "walkthrough_img_install_6",
                     Background = GetBackgroundName(newWalkthroughList)
                 });
+                
                 /* UserEntity activeUser = UserEntity.GetActive();
 
                  if (activeUser != null)
