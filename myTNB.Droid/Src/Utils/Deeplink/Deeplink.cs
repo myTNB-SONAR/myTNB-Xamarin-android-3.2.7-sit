@@ -13,6 +13,7 @@
             internal static readonly string identificationType = "idType";
             internal static readonly string identificationNo = "idNo";
             internal static readonly string applicationModuleID = "applicationModuleID";
+            internal static readonly string email = "email";
 
 
             internal static readonly string Pattern = "\\b{0}.*\\b";

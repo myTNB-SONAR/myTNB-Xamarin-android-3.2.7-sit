@@ -315,6 +315,11 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     {
                         displayModel.Content.ApplicationDetail.ApplicationModuleID = int.Parse(applicationModuleId);
                     }
+                    if (!displayModel.Content.ApplicationDetail.Email.IsValid()
+                        && GetObjectValue(props, "email") is string email && email.IsValid())
+                    {
+                        displayModel.Content.ApplicationDetail.Email = email;
+                    }
                     bool shouldShowLinkedWith = false;
 
                     for (int i = 0; i < additionalDisplayConfig.Count; i++)

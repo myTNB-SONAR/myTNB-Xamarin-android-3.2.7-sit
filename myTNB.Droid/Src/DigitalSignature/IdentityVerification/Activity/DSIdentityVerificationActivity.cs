@@ -476,12 +476,12 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 
         public void VerifyMatchingID()
         {
-            var modelUserID = DeeplinkUtil.Instance.EKYCDynamicLinkModel.UserID ?? string.Empty;
+            var modelEmail = DeeplinkUtil.Instance.EKYCDynamicLinkModel.Email ?? string.Empty;
             if (DeeplinkUtil.Instance.TargetScreen == Deeplink.ScreenEnum.IdentityVerification &&
-                modelUserID.IsValid())
+                modelEmail.IsValid())
             {
-                string userID = UserEntity.GetActive().UserID.ToLower();
-                if (userID.Equals(modelUserID.ToLower()))
+                string email = UserEntity.GetActive().Email.ToLower();
+                if (email.Equals(modelEmail.ToLower()))
                 {
                     ProceedOnVerifyNow(DeeplinkUtil.Instance.EKYCDynamicLinkModel);
                 }

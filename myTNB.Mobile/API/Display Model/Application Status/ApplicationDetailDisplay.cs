@@ -658,6 +658,7 @@ namespace myTNB.Mobile
         public string IdentificationNo { set; get; }
         public int IdentificationType { set; get; }
         public int? ApplicationModuleID { set; get; }
+        public string Email { set; get; }
         public string IdentificationTypeDescription
         {
             get

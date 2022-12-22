@@ -422,6 +422,7 @@ namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
                 model.IdentificationType = notificationDetails.Verification.IdentificationType;
                 model.IdentificationNo = notificationDetails.Verification.IdentificationNo;
                 model.ApplicationModuleID = notificationDetails.Verification.ApplicationModuleID;
+                model.Email = notificationDetails.Verification.Email;
             }
 
             Intent dsIdentityVerificationIntent = new Intent(this, typeof(DSIdentityVerificationActivity));

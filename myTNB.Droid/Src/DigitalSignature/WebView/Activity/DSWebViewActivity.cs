@@ -146,6 +146,7 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
         {
             UserEntity user = UserEntity.GetActive();
             string myTNBAccountName = user?.DisplayName ?? string.Empty;
+            string email = string.Empty;
             bool isContractorApplied = false;
             string appRef = string.Empty;
             int? ApplicationModuleID = null;
@@ -154,6 +155,11 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
 
             if (_dsDynamicLinkParamsModel != null)
             {
+                if (_dsDynamicLinkParamsModel.Email != null)
+                {
+                    email = _dsDynamicLinkParamsModel.Email;
+                }
+
                 isContractorApplied = _dsDynamicLinkParamsModel.IsContractorApplied;
                 if (_dsDynamicLinkParamsModel.AppRef != null)
                 {
@@ -184,6 +190,7 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 , IdentificationType
                 , identificationNo
                 , GetIntFromStringValue(Constants.DEVICE_PLATFORM)
+                , email
                 , isContractorApplied
                 , appRef
                 , ApplicationModuleID);

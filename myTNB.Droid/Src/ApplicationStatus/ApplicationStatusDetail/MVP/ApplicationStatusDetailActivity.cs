@@ -254,6 +254,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             model.IdentificationType = applicationDetailDisplay.ApplicationDetail.IdentificationType;
                             model.IdentificationNo = applicationDetailDisplay.ApplicationDetail.IdentificationNo;
                             model.ApplicationModuleID = applicationDetailDisplay.ApplicationDetail.ApplicationModuleId;
+                            model.Email = applicationDetailDisplay.ApplicationDetail.Email;
                         }
 
                         Intent ekycVerificationIntent = new Intent(this, typeof(DSIdentityVerificationActivity));

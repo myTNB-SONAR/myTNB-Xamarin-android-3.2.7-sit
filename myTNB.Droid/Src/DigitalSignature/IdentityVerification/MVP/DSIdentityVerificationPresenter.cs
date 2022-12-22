@@ -95,8 +95,8 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
             {
                 this.view?.ShowCompletedOnOtherDevicePopUp();
             }
-            else if (eKYCStatusResponse.Status == null ||
-                !eKYCStatusResponse.Status.IsValid())
+            else if (_dynamicLinkParamsModel.IdentificationType == null ||
+                !_dynamicLinkParamsModel.IdentificationNo.IsValid())
             {
                 this.view?.ShowIdNotRegisteredPopUp();
             }
