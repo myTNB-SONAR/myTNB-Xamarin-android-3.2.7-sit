@@ -29,6 +29,9 @@ using static myTNB_Android.Src.MyDrawer.MyDrawerModel;
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceAdapter;
 using static myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShimmerAdapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
+using Android.Preferences;
+using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.MyHome
 {
@@ -39,7 +42,7 @@ namespace myTNB_Android.Src.MyHome
 
         private static BottomSheetBehavior bottomSheetBehavior;
 
-        LinearLayout bottomSheet;
+        LinearLayout bottomSheet, drawer;
         TextView titleLabel;
         ImageView closeIcon;
 
@@ -78,6 +81,8 @@ namespace myTNB_Android.Src.MyHome
                 {
                     await Task.Delay(200);
                     bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                    await Task.Delay(300);
+                    NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), OnGeneraMyHomeDrawerTutorialList(), true);
                 });
             }
             catch (System.Exception e)
@@ -93,6 +98,7 @@ namespace myTNB_Android.Src.MyHome
             View rootView = inflater.Inflate(Resource.Layout.MyTNBDrawer, container, false);
 
             bottomSheet = (LinearLayout)rootView.FindViewById(Resource.Id.myTNBDrawerBottomSheet);
+            drawer = (LinearLayout)rootView.FindViewById(Resource.Id.myTNBDrawer);
             closeIcon = (ImageView)rootView.FindViewById<ImageView>(Resource.Id.myTNBDrawerCloseIcon);
             myHomeDrawerListRecycleView = (RecyclerView)rootView.FindViewById<RecyclerView>(Resource.Id.myTNBDrawerList);
             titleLabel = (TextView)rootView.FindViewById<TextView>(Resource.Id.myTNBDrawerTitle);
@@ -124,18 +130,13 @@ namespace myTNB_Android.Src.MyHome
 
             MyDrawerModel model = new MyDrawerModel();
             model.ServiceCategoryId = "001";
-            model.serviceCategoryName = "Connect My Home";
+            model.serviceCategoryName = "Connect My <br>Premise";
             myDrawerList.Add(model);
 
-            MyDrawerModel model2 = new MyDrawerModel();
-            model2.ServiceCategoryId = "002";
-            model2.serviceCategoryName = "Home Move Organizer";
-            myDrawerList.Add(model2);
-
-            MyDrawerModel model3 = new MyDrawerModel();
-            model3.ServiceCategoryId = "003";
-            model3.serviceCategoryName = "Application Status";
-            myDrawerList.Add(model3);
+            //MyDrawerModel model2 = new MyDrawerModel();
+            //model2.ServiceCategoryId = "002";
+            //model2.serviceCategoryName = "Home Move Organizer";
+            //myDrawerList.Add(model2);
 
             myHomeDrawerAdapter = new MyDrawerAdapter(myDrawerList, this.Activity);
             myHomeDrawerListRecycleView.SetAdapter(myHomeDrawerAdapter);
@@ -144,6 +145,36 @@ namespace myTNB_Android.Src.MyHome
         private void CloseOnClick(object sender, EventArgs e)
         {
             bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+        }
+
+        private List<NewAppModel> OnGeneraMyHomeDrawerTutorialList()
+        {
+            List<NewAppModel> tutorialList = new List<NewAppModel>();
+
+            tutorialList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.TopLeft,
+                ContentTitle = Utility.GetLocalizedLabel("Tutorial", "connectMyPremiseTitle"),
+                ContentMessage = Utility.GetLocalizedLabel("Tutorial", "connectMyPremiseMessage"),
+                Feature = FeatureType.MyHome
+            });
+
+            return tutorialList;
+        }
+
+        public int GetDrawerWidth()
+        {
+            return drawer.Width;
+        }
+
+        public int GetDrawerHeight()
+        {
+            return drawer.Height;
+        }
+
+        public int GetBottomSheetHeight()
+        {
+            return bottomSheet.Height;
         }
 
         private class MyHomeBottomSheetCallBack : BottomSheetBehavior.BottomSheetCallback

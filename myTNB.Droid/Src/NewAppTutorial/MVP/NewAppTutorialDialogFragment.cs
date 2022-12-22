@@ -29,6 +29,7 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.ManageSupplyAccount.Activity;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile;
+using myTNB_Android.Src.MyHome;
 
 namespace myTNB_Android.Src.NewAppTutorial.MVP
 {
@@ -324,13 +325,23 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     }
                     else if (this.mContext is DashboardHomeActivity)
                     {
-                        swipeTopDoubleTapLayout.Visibility = ViewStates.Gone;
-                        swipeDoubleTapLayout.Visibility = ViewStates.Visible;
+                        if (this.mFragment != null && this.mFragment is MyHomeDrawerFragment)
+                        {
+                            swipeTopDoubleTapLayout.Visibility = ViewStates.Visible;
+                            swipeDoubleTapLayout.Visibility = ViewStates.Gone;
 
-                        txtDoubleTapDismiss.Visibility = ViewStates.Visible;
-                        txtDoubleTapDismiss.Text = Utility.GetLocalizedLabel("Tutorial", "skip");
-                        indicator.Visibility = ViewStates.Visible;
-                        indicatorTopContainer.Visibility = ViewStates.Visible;
+                            txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
+                            txtTopDoubleTapDismiss.Text = Utility.GetLocalizedLabel("Tutorial", "skip");
+                        }
+                        else
+                        {
+                            swipeTopDoubleTapLayout.Visibility = ViewStates.Gone;
+                            swipeDoubleTapLayout.Visibility = ViewStates.Visible;
+                            txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                            txtDoubleTapDismiss.Text = Utility.GetLocalizedLabel("Tutorial", "skip");
+                            indicator.Visibility = ViewStates.Visible;
+                            indicatorTopContainer.Visibility = ViewStates.Visible;
+                        }
                     }
                     else
                     {

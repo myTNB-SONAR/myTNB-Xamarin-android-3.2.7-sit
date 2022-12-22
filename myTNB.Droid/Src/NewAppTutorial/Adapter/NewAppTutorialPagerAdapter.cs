@@ -34,6 +34,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageSupplyAccount.Activity;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile;
+using myTNB_Android.Src.MyHome;
 
 namespace myTNB_Android.Src.NewAppTutorial.Adapter
 {
@@ -3349,6 +3350,50 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTxtBtnBottomLayout.RequestLayout();
                     }
+                }
+                else if (this.mFragment is MyHomeDrawerFragment)
+                {
+                    var padding = (int)DPUtils.ConvertDPToPx(16f);
+                    var screenWidth = this.mContext.Resources.DisplayMetrics.WidthPixels;
+                    var itemWidth = ((MyHomeDrawerFragment)this.mFragment).GetDrawerWidth() / 3;
+                    int topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((MyHomeDrawerFragment)this.mFragment).GetDrawerHeight();
+
+                    LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    topLayoutParam.Height = topHeight + (padding * 3);
+                    topLayout.RequestLayout();
+
+                    LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    middleLayoutParam.Height = itemWidth - (padding * 2);
+                    middleLayout.RequestLayout();
+
+                    LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedLeftLayoutParam.Width = padding * 2;
+                    highlightedLeftLayout.RequestLayout();
+
+                    LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedLayoutParam.Width = itemWidth - (padding * 2);
+                    highlightedLayout.RequestLayout();
+
+                    LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedRightLayoutParam.Width = ((MyHomeDrawerFragment)this.mFragment).GetDrawerWidth() - itemWidth + padding;
+                    highlightedRightLayout.RequestLayout();
+
+                    LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                    bottomLayout.RequestLayout();
+
+                    RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                    if (model.NeedHelpHide)
+                    {
+                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
+                    }
+                    else
+                    {
+                        innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
+                    }
+                    innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                    innerTopLayout.RequestLayout();
                 }
             }
             else if (this.mContext is BillingDetailsActivity)

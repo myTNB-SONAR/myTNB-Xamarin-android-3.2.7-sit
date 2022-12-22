@@ -20,6 +20,7 @@
 		segmentedgroup:behavior_hideable="true"
 		segmentedgroup:behavior_peekHeight="600dp">
 		<LinearLayout
+			android:id="@+id/myTNBDrawer"
 			android:layout_height="wrap_content"
 			android:layout_width="match_parent"
 			android:orientation="vertical"
