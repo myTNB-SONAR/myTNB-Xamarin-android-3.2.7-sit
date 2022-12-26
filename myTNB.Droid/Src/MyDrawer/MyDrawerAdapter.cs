@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
@@ -50,7 +51,14 @@ namespace myTNB_Android.Src.MyDrawer
 
                 MyDrawerModel model = myDrawerList[position];
 
-                vh.myDrawerTitle.Text = model.serviceCategoryName;
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    vh.myDrawerTitle.TextFormatted = Html.FromHtml(model.serviceCategoryName, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    vh.myDrawerTitle.TextFormatted = Html.FromHtml(model.serviceCategoryName);
+                }
 
                 ViewGroup.LayoutParams currentCard = vh.myDrawerCardView.LayoutParameters;
                 ViewGroup.LayoutParams currentImg = vh.myDrawerImg.LayoutParameters;
@@ -76,6 +84,17 @@ namespace myTNB_Android.Src.MyDrawer
                 }
                 currentImg.Height = imgHeight;
                 currentImg.Width = imgHeight;
+
+                switch(model.ServiceCategoryId)
+                {
+                    case "001":
+                        vh.myDrawerImg.SetImageResource(Resource.Drawable.Icon_Connect_My_Premise);
+                        if (UserSessions.ConnectMyPremiseHasShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
+                        {
+                            vh.newLabel.Visibility = ViewStates.Gone;
+                        }
+                        break;
+                }
 
                 RelativeLayout.LayoutParams currentNewLabel = vh.newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                 currentNewLabel.LeftMargin = imgHeight;
@@ -104,6 +123,10 @@ namespace myTNB_Android.Src.MyDrawer
         {
             if (ClickChanged != null)
             {
+                if (sender != null)
+                {
+                    sender.newLabel.Visibility = ViewStates.Gone;
+                }
                 ClickChanged(this, position);
             }
         }

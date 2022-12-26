@@ -1145,5 +1145,41 @@ namespace myTNB_Android.Src.Utils
         {
             return preferences.GetBoolean("DBRPopUpHasShown", false);
         }
+
+        public static bool HasMyHomeDrawerTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("myHomeDrawerTutorialHasShown", false);
+        }
+
+        public static void SetShownMyHomeDrawerTutorial(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("myHomeDrawerTutorialHasShown", true);
+            editor.Apply();
+        }
+
+        public static bool MyHomeQuickLinkHasShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("myHomeQuickLinkHasShown", false);
+        }
+
+        public static void SetShownMyHomeQuickLink(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("myHomeQuickLinkHasShown", true);
+            editor.Apply();
+        }
+
+        public static bool ConnectMyPremiseHasShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("connectMyPremiseHasShown", false);
+        }
+
+        public static void SetShownConnectMyPremise(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("connectMyPremiseHasShown", true);
+            editor.Apply();
+        }
     }
 }

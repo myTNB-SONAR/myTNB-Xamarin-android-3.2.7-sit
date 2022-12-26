@@ -1875,6 +1875,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         else if (selectedService.ServiceCategoryId == "1008")
                         {
+                            if (!UserSessions.MyHomeQuickLinkHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            {
+                                UserSessions.SetShownMyHomeQuickLink(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                            }
+
                             MyHomeDrawerFragment myHomeBottomSheetDialog = new MyHomeDrawerFragment(this.Activity);
 
                             myHomeBottomSheetDialog.Cancelable = true;

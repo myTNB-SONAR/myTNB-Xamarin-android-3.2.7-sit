@@ -32,6 +32,8 @@ using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
 using Android.Preferences;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using myTNB_Android.Src.MyHome.Activity;
 
 namespace myTNB_Android.Src.MyHome
 {
@@ -81,8 +83,12 @@ namespace myTNB_Android.Src.MyHome
                 {
                     await Task.Delay(200);
                     bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-                    await Task.Delay(300);
-                    NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), OnGeneraMyHomeDrawerTutorialList(), true);
+
+                    if (!UserSessions.HasMyHomeDrawerTutorialShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                    {
+                        await Task.Delay(300);
+                        NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), OnGeneraMyHomeDrawerTutorialList(), true);
+                    }
                 });
             }
             catch (System.Exception e)
@@ -130,16 +136,24 @@ namespace myTNB_Android.Src.MyHome
 
             MyDrawerModel model = new MyDrawerModel();
             model.ServiceCategoryId = "001";
-            model.serviceCategoryName = "Connect My <br>Premise";
+            model.serviceCategoryName = Utility.GetLocalizedLabel("DashboardHome", "connectMyPremise");
+
             myDrawerList.Add(model);
 
-            //MyDrawerModel model2 = new MyDrawerModel();
-            //model2.ServiceCategoryId = "002";
-            //model2.serviceCategoryName = "Home Move Organizer";
-            //myDrawerList.Add(model2);
-
             myHomeDrawerAdapter = new MyDrawerAdapter(myDrawerList, this.Activity);
+            myHomeDrawerAdapter.ClickChanged += OnClickChanged;
             myHomeDrawerListRecycleView.SetAdapter(myHomeDrawerAdapter);
+        }
+
+        private void OnClickChanged(object sender, int position)
+        {
+            if (!UserSessions.ConnectMyPremiseHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+            {
+                UserSessions.SetShownConnectMyPremise(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+            }
+
+            Intent micrositeActivity = new Intent(this.Activity, typeof(MyHomeMicrositeActivity));
+            StartActivity(micrositeActivity);
         }
 
         private void CloseOnClick(object sender, EventArgs e)

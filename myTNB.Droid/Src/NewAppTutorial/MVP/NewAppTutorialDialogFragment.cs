@@ -1002,6 +1002,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         ((WhatsNewMenuFragment)this.mFragment).StopScrolling();
                         UserSessions.DoWhatsNewShown(this.mPref);
                     }
+                    else if (this.mFragment is MyHomeDrawerFragment)
+                    {
+                        UserSessions.SetShownMyHomeDrawerTutorial(this.mPref);
+                    }
                 }
                 else
                 {
@@ -1105,6 +1109,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     {
                         ((WhatsNewMenuFragment)this.mFragment).StopScrolling();
                         UserSessions.DoWhatsNewShown(this.mPref);
+                    }
+                    else if (this.mFragment is MyHomeDrawerFragment)
+                    {
+                        UserSessions.SetShownMyHomeDrawerTutorial(this.mPref);
                     }
                 }
                 else

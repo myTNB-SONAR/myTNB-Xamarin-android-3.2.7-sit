@@ -412,6 +412,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             break;
                         case "1008":
                             vh.serviceImg.SetImageResource(Resource.Drawable.Icon_Quick_Access_MyHome);
+                            if (UserSessions.MyHomeQuickLinkHasShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
+                            {
+                                vh.newLabel.Visibility = ViewStates.Gone;
+                            }
                             break;
                     }
 
@@ -476,7 +480,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         {
             try
             {
-                ClickChanged(this, position);
+                if (ClickChanged != null)
+                {
+                    MyService model = myServiceList[position];
+                    if (model != null)
+                    {
+                        if (model.ServiceCategoryId == "1008")
+                        {
+                            if (sender != null)
+                            {
+                                sender.newLabel.Visibility = ViewStates.Gone;
+                            }
+                        }
+                    }
+
+                    ClickChanged(this, position);
+                }
             }
             catch (System.Exception e)
             {

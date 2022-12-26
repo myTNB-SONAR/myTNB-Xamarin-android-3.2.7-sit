@@ -497,7 +497,7 @@
 							android:adjustViewBounds="true"
 							android:id="@+id/myHomeBanner"
 							android:src="@drawable/banner_home_myhome_en"
-							android:visibility="visible"
+							android:visibility="gone"
 							tools:visibility="visible"/>
 					</LinearLayout>
 					<!--New Bill Redesign-->
