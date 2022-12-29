@@ -35,6 +35,7 @@ using myTNB_Android.Src.ManageSupplyAccount.Activity;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile;
 using myTNB_Android.Src.MyHome;
+using System.Runtime.Remoting.Contexts;
 
 namespace myTNB_Android.Src.NewAppTutorial.Adapter
 {
@@ -3353,29 +3354,44 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
                 else if (this.mFragment is MyHomeDrawerFragment)
                 {
+                    var viewMargin = (int)DPUtils.ConvertDPToPx(10f);
                     var padding = (int)DPUtils.ConvertDPToPx(16f);
+                    var bottomPadding = (int)DPUtils.ConvertDPToPx(50f);
                     var screenWidth = this.mContext.Resources.DisplayMetrics.WidthPixels;
-                    var itemWidth = ((MyHomeDrawerFragment)this.mFragment).GetDrawerWidth() / 3;
-                    int topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((MyHomeDrawerFragment)this.mFragment).GetDrawerHeight();
+                    var itemWidth = (((MyHomeDrawerFragment)this.mFragment).GetRecyclerViewWidth() / 3);
+
+                    //STUB
+                    var addtlPadding = 0;
+
+                    if (this.mContext.Resources.DisplayMetrics.HeightPixels > 2028)
+                    {
+                        addtlPadding = padding + viewMargin;
+                    }
+
+                    int topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((MyHomeDrawerFragment)this.mFragment).GetRecyclerViewHeight() - bottomPadding + addtlPadding;
+
+                    //STUB
+                    DisplayMetrics displayMetrics = this.mContext.Resources.DisplayMetrics;
+                    float dpHeight = displayMetrics.HeightPixels / displayMetrics.Density;
 
                     LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                    topLayoutParam.Height = topHeight + (padding * 3);
+                    topLayoutParam.Height = topHeight;
                     topLayout.RequestLayout();
 
                     LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                    middleLayoutParam.Height = itemWidth - (padding * 2);
+                    middleLayoutParam.Height = ((MyHomeDrawerFragment)this.mFragment).GetRecyclerViewHeight();
                     middleLayout.RequestLayout();
 
                     LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                    highlightedLeftLayoutParam.Width = padding * 2;
+                    highlightedLeftLayoutParam.Width = padding + (int)DPUtils.ConvertDPToPx(1f);
                     highlightedLeftLayout.RequestLayout();
 
                     LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                    highlightedLayoutParam.Width = itemWidth - (padding * 2);
+                    highlightedLayoutParam.Width = itemWidth;
                     highlightedLayout.RequestLayout();
 
                     LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                    highlightedRightLayoutParam.Width = ((MyHomeDrawerFragment)this.mFragment).GetDrawerWidth() - itemWidth + padding;
+                    highlightedRightLayoutParam.Width = (itemWidth * 2) + padding;
                     highlightedRightLayout.RequestLayout();
 
                     LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;

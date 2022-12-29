@@ -34,6 +34,7 @@ using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.MyHome.Activity;
+using AndroidX.CoordinatorLayout.Widget;
 
 namespace myTNB_Android.Src.MyHome
 {
@@ -45,6 +46,7 @@ namespace myTNB_Android.Src.MyHome
         private static BottomSheetBehavior bottomSheetBehavior;
 
         LinearLayout bottomSheet, drawer;
+        RelativeLayout titleLayout;
         TextView titleLabel;
         ImageView closeIcon;
 
@@ -104,6 +106,7 @@ namespace myTNB_Android.Src.MyHome
             View rootView = inflater.Inflate(Resource.Layout.MyTNBDrawer, container, false);
 
             bottomSheet = (LinearLayout)rootView.FindViewById(Resource.Id.myTNBDrawerBottomSheet);
+            titleLayout = (RelativeLayout)rootView.FindViewById(Resource.Id.myTNBDrawerTitleLayout);
             drawer = (LinearLayout)rootView.FindViewById(Resource.Id.myTNBDrawer);
             closeIcon = (ImageView)rootView.FindViewById<ImageView>(Resource.Id.myTNBDrawerCloseIcon);
             myHomeDrawerListRecycleView = (RecyclerView)rootView.FindViewById<RecyclerView>(Resource.Id.myTNBDrawerList);
@@ -176,19 +179,14 @@ namespace myTNB_Android.Src.MyHome
             return tutorialList;
         }
 
-        public int GetDrawerWidth()
+        public int GetRecyclerViewWidth()
         {
-            return drawer.Width;
+            return myHomeDrawerListRecycleView.Width;
         }
 
-        public int GetDrawerHeight()
+        public int GetRecyclerViewHeight()
         {
-            return drawer.Height;
-        }
-
-        public int GetBottomSheetHeight()
-        {
-            return bottomSheet.Height;
+            return myHomeDrawerListRecycleView.Height;
         }
 
         private class MyHomeBottomSheetCallBack : BottomSheetBehavior.BottomSheetCallback
