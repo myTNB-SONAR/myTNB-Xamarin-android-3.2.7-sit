@@ -48,6 +48,9 @@
             internal const string GenerateAccessToken = "https://stagingapi.mytnb.com.my/Identity/api/v1";
             internal const string GetEligibility = "https://stagingapi.mytnb.com.my/Eligibility/api/v1";
             internal const string GetBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetBillRenderingTenant = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetAutoOptInCa = "https://stagingapi.mytnb.com.my/StagedData/api/v1/";
+            internal const string UpdateAutoOptInCa = "https://stagingapi.mytnb.com.my/StagedData/api/v1/";
             internal const string GetMultiBillRendering = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
             internal const string StartDigitalBill = "https://stagingdbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://stagingdbr.mytnb.com.my/PaperBill/OptIn";
@@ -59,6 +62,9 @@
             internal const string GenerateAccessToken = "https://api.mytnb.com.my/Identity/api/v1";
             internal const string GetEligibility = "https://api.mytnb.com.my/Eligibility/api/v1";
             internal const string GetBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetBillRenderingTenant = "https://api.mytnb.com.my/BillRendering/api/v1";
+            internal const string GetAutoOptInCa = "https://api.mytnb.com.my/StagedData/api/v1/";
+            internal const string UpdateAutoOptInCa = "https://api.mytnb.com.my/StagedData/api/v1/";
             internal const string GetMultiBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
             internal const string StartDigitalBill = "https://dbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://dbr.mytnb.com.my/PaperBill/OptIn";
@@ -100,6 +106,9 @@
             internal const string GenerateAccessToken = "GenerateAccessToken";
             //DBR
             internal const string GetBillRendering = "BillRendering";
+            internal const string GetBillRenderingTenant = "BillRenderingTenant";
+            internal const string GetAutoOptInCaDBR = "GetAutoOptIn";
+            internal const string UpdateAutoOptInCaDBR = "UpdateAutoOptIn";
             internal const string PostMultiBillRendering = "MultiBillRendering";
             internal const string PostInstallationDetails = "InstallationDetails";
             internal const string PostMultiInstallationDetails = "MultiInstallationDetails";

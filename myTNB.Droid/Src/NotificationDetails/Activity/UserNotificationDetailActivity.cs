@@ -58,6 +58,11 @@ using Refit;
 
 using Constant = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.Constants;
 using Screen = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.ScreenEnum;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile;
+using myTNB.Mobile.AWS.Models;
+using System.Linq;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity
 {
@@ -305,7 +310,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
                 if (notificationDetails != null && notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID)
                 {
-                    notificationMainLayout.SetBackgroundColor(Color.ParseColor("#ffffff"));
+                    notificationMainLayout.SetBackgroundColor(Android.Graphics.Color.ParseColor("#ffffff"));
                 }
 
                 if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80
@@ -512,12 +517,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
                         if (notificationDetails != null && notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID)
                         {
-                            notificationMainLayout.SetBackgroundColor(Color.ParseColor("#ffffff"));
-                            webView.SetBackgroundColor(Color.ParseColor("#ffffff"));
+                            notificationMainLayout.SetBackgroundColor(Android.Graphics.Color.ParseColor("#ffffff"));
+                            webView.SetBackgroundColor(Android.Graphics.Color.ParseColor("#ffffff"));
                         }
                         else
                         {
-                            webView.SetBackgroundColor(Color.ParseColor("#F9F9F9"));
+                            webView.SetBackgroundColor(Android.Graphics.Color.ParseColor("#F9F9F9"));
                         }
                         webView.LoadDataWithBaseURL("file:///android_asset",
                         getHtmlData(this, detailModel.message),
@@ -1143,6 +1148,91 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ViewManageBillDelivery()
+        {
+           OnShowManageBillDelivery();
+        }
+
+        public async void OnShowManageBillDelivery()
+        {
+            string caNumber = string.Empty;
+            bool isOwner = false;
+            if (DBRUtility.Instance.IsAccountEligible)
+            {
+                List<string> caList = DBRUtility.Instance.GetCAList();
+                caNumber = caList != null && caList.Count > 0
+                    ? caList[0]
+                    : string.Empty;
+            }
+            else
+            {
+                CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                if (dbrAccount == null)
+                {
+                    this.RunOnUiThread(() =>
+                    {
+                        //HideProgressDialog();
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+                            .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
+                            .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.GOT_IT))
+                            .Build();
+                        errorPopup.Show();
+                    });
+
+                    return;
+                }
+                caNumber = dbrAccount.AccNum;
+                isOwner = dbrAccount.isOwned;
+            }
+            GetBillRenderingResponse? billRenderingResponse = await DBRManager.Instance.GetBillRendering(caNumber
+                    , AccessTokenCache.Instance.GetAccessToken(this), isOwner);
+            if (billRenderingResponse != null
+                && billRenderingResponse.StatusDetail != null
+                && billRenderingResponse.StatusDetail.IsSuccess
+                && billRenderingResponse.Content != null
+                && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
+            {
+                //For tenant checking DBR
+                List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+                GetBillRenderingTenantResponse billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+
+                Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
+                intent.PutExtra("accountNumber", caNumber);
+                StartActivity(intent);
+            }
+        }
+
+        public CustomerBillingAccount GetEligibleDBRAccount()
+        {
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+            List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            CustomerBillingAccount account = new CustomerBillingAccount();
+            if (dBRCAs.Count > 0)
+            {
+                var dbrSelected = dBRCAs.Where(x => x == customerAccount.AccNum).FirstOrDefault();
+                if (dbrSelected != string.Empty)
+                {
+                    account = allAccountList.Where(x => x.AccNum == dbrSelected).FirstOrDefault();
+                }
+                if (account == null)
+                {
+                    foreach (var dbrca in dBRCAs)
+                    {
+                        account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
+                        if (account != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            return account;
         }
 
         public class MyTNBWebViewClients : WebViewClient

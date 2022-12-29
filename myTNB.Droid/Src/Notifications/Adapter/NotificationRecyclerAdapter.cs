@@ -141,7 +141,8 @@ namespace myTNB_Android.Src.Notifications.Adapter
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.icons_display_email));
                 }
                 else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DBR_EBILL)
-                    || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DBR_EMAIL_REMOVED))
+                    || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DBR_EMAIL_REMOVED)
+                    || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DBR_AUTO_OPTIN))
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.icons_display_digital_bill));
                 }
