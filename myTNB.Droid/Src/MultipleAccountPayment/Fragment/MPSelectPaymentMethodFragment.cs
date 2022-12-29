@@ -34,6 +34,7 @@ using myTNB.Mobile;
 using myTNB_Android.Src.SessionCache;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.Common.Model;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -90,7 +91,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         private bool isClicked = false;
-
+        GetBillRenderingTenantResponse billRenderingTenantResponse;
+        bool tenantDBR;
         //Mark: Application Payment
         private bool IsApplicationPayment;
         private ApplicationPaymentDetail ApplicationPaymentDetail;
@@ -99,7 +101,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         private string ApplicationSystem = string.Empty;
         private string StatusId = string.Empty;
         private string StatusCode = string.Empty;
-
+        
         public bool IsActive()
         {
             return IsVisible;
@@ -204,22 +206,58 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                 {
                                     PostMultiBillRenderingResponse multiBillRenderingResponse = await DBRManager.Instance.PostMultiBillRendering(dbrCAForPaymentList
                                         , AccessTokenCache.Instance.GetAccessToken(Activity));
+
                                     if (multiBillRenderingResponse != null
                                         && multiBillRenderingResponse.StatusDetail != null
                                         && multiBillRenderingResponse.StatusDetail.IsSuccess
                                         && multiBillRenderingResponse.Content != null
                                         && multiBillRenderingResponse.Content.Count > 0)
                                     {
+                                        billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dbrCAForPaymentList, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(Activity));
+                                        
+                                        //if (billRenderingTenantResponse != null
+                                        //   && billRenderingTenantResponse.StatusDetail != null
+                                        //   && billRenderingTenantResponse.StatusDetail.IsSuccess
+                                        //   && billRenderingTenantResponse.Content != null)
+                                        //{
+
                                         for (int j = 0; j < dbrCAForPaymentList.Count; j++)
-                                        {
-                                            int index = multiBillRenderingResponse.Content.FindIndex(x =>
-                                                x.ContractAccountNumber == dbrCAForPaymentList[j]
-                                                && x.DBRType == MobileEnums.DBRTypeEnum.Paper);
+                                            {
+                                                int index = multiBillRenderingResponse.Content.FindIndex(x =>
+                                                    x.ContractAccountNumber == dbrCAForPaymentList[j]
+                                                    && x.DBRType == MobileEnums.DBRTypeEnum.Paper
+                                                    );
+
+                                            //int indexHasOwner = accountTenant.FindIndex(x =>
+                                            //    x.AccNum == dbrCAForPaymentList[j]
+                                            //    && x.AccountHasOwner == true
+                                            //    );
+
+                                            int indexTenant = billRenderingTenantResponse.Content.FindIndex(x =>
+                                                x.CaNo == dbrCAForPaymentList[j]
+                                                && x.IsOwnerAlreadyOptIn == false
+                                                && x.IsOwnerOverRule == false
+                                                && x.IsTenantAlreadyOptIn == false
+                                                );
+
+                                            //int owner = accountTenant.FindIndex(x =>
+                                            //    x.AccNum == dbrCAForPaymentList[j]
+                                            //    && x.isOwned == true
+                                            //    );
+
+                                            if (indexTenant > -1)
+                                            {
+                                                tenantDBR = true;
+                                            }
+
                                             if (index > -1)
                                             {
                                                 PaymentActivity.CAsWithPaperBillList.Add(dbrCAForPaymentList[index]);
                                             }
+                                            
+
                                         }
+                                        
                                     }
                                 }
                             }
@@ -227,6 +265,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                             foreach (MPAccount item in accounts)
                             {
                                 CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(item.accountNumber);
+                                bool AccountHasOwner = customerBillingAccount.AccountHasOwner;
+
                                 AccountChargeModel chargeModel = accountChargeList.Find(accountCharge =>
                                 {
                                     return accountCharge.ContractAccount == item.accountNumber;
@@ -241,7 +281,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         paymentItemAccountPayment.AccountOwnerName = customerBillingAccount.OwnerName;
                                         paymentItemAccountPayment.AccountNo = chargeModel.ContractAccount;
                                         paymentItemAccountPayment.AccountAmount = item.amount.ToString(currCult);
-                                        paymentItemAccountPayment.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1;
+                                        if (item.isOwner)
+                                        {
+                                            paymentItemAccountPayment.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1;
+                                        }
+                                        else if (AccountHasOwner == true && tenantDBR == true)
+                                        {
+                                            paymentItemAccountPayment.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1; //enable for tenant
+                                        }
 
                                         List<AccountPayment> accountPaymentList = new List<AccountPayment>();
                                         chargeModel.MandatoryCharges.ChargeModelList.ForEach(charge =>
@@ -258,12 +305,26 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                     }
                                     else
                                     {
+                                        bool dbrEnable = false;
+
+                                        if (item.isOwner)
+                                        {
+                                            dbrEnable = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1;
+                                        }
+                                        else if (AccountHasOwner == true && tenantDBR == true)
+                                        {
+                                            dbrEnable = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1; //enable for tenant
+                                        }
+
                                         PaymentItem payItem = new PaymentItem
                                         {
                                             AccountOwnerName = customerBillingAccount.OwnerName,
                                             AccountNo = chargeModel.ContractAccount,
                                             AccountAmount = item.amount.ToString(currCult),
-                                            dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1
+                                            //dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1
+                                            //dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1 //enable for tenant
+
+                                            dbrEnabled = dbrEnable //enable for tenant
                                         };
                                         selectedPaymentItemList.Add(payItem);
                                     }

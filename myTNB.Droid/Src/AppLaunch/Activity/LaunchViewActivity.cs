@@ -451,8 +451,13 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         && billRenderingResponse.Content != null
                         && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
                     {
+                        //For tenant checking DBR
+                        List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+                        GetBillRenderingTenantResponse billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+
                         Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                         intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                        intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                         intent.PutExtra("accountNumber", UserSessions.DBROwnerNotificationAccountNumber);
                         StartActivity(intent);
                     }

@@ -207,6 +207,8 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
                     AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
                 }
+
+                
                 GetBillRenderingResponse response = await DBRManager.Instance.GetBillRendering(accountNumber, AccessTokenCache.Instance.GetAccessToken(this), isOwner);
 
                 HideProgressDialog();
@@ -215,8 +217,13 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                    && response.StatusDetail != null
                    && response.StatusDetail.IsSuccess)
                 {
+                    //For tenant checking DBR
+                    List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+                    GetBillRenderingTenantResponse billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+
                     Intent returnIntent = new Intent();
                     returnIntent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(response));
+                    returnIntent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                     returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
                     SetResult(Result.Ok, returnIntent);
                     Finish();

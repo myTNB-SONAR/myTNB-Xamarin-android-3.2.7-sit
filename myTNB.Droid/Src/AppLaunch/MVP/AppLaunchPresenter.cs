@@ -52,6 +52,8 @@ using myTNB_Android.Src.Utils.Notification;
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 using System.Net.Http;
 using myTNB_Android.Src.Base.Response;
+using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile.AWS.Models;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -216,7 +218,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         AppLaunchMasterDataModel responseData = masterDataResponse.Data;
 
                         //UserSessions.SaveCheckEmailVerified(mSharedPref, responseData.UserVerificationInfo.Email.ToString());  //save sharedpref check email  //wan
-                       
+
                         //update new ic from response
                         UserEntity.UpdateICno(masterDataResponse.IdentificationNo);
 
@@ -585,6 +587,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                     this.mView.ShowDashboard();
                 }
+
+
 
             }
             catch (ApiException apiException)
@@ -1706,7 +1710,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             CreatedDate = acc.CreatedDate,
                             BusinessArea = acc.BusinessArea,
                             RateCategory = acc.RateCategory,
-                            IsInManageAccessList = acc.IsInManageAccessList
+                            IsInManageAccessList = acc.IsInManageAccessList,
+                            AccountHasOwner = acc.AccountHasOwner
+                            
                         };
 
                         if (index != -1)
@@ -1755,7 +1761,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 CreatedDate = newAcc.CreatedDate,
                                 BusinessArea = newAcc.BusinessArea,
                                 RateCategory = newAcc.RateCategory,
-                                IsInManageAccessList = newAcc.IsInManageAccessList
+                                IsInManageAccessList = newAcc.IsInManageAccessList,
+                                AccountHasOwner = newAcc.AccountHasOwner
                             };
 
                             newExistingList.Add(newRecord);

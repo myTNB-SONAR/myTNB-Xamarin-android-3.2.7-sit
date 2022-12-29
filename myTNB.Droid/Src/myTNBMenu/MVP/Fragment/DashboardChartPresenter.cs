@@ -127,13 +127,29 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             var ca = this.mView.GetSelectedAccount().AccountNum;
             bool dbrHasShown = MarketingPopUpEntity.GetDBRPopUpFlag(ca);
+            //bool DBRMarketingPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
 
-            if (!dbrHasShown && DBRUtility.Instance.IsCAEligible(ca) && CustomerBillingAccount.CAIsOwner(ca))
+            if (!dbrHasShown && DBRUtility.Instance.IsCAEligible(ca))
             {
                 this.mView.CheckOnPaperFromBillRendering();
             }
+
+            if (DBRUtility.Instance.IsCAEligible(ca))
+            {
+                this.mView.CheckOnAutoOptIn();
+            }
         }
 
+        //private void ValidateAutoOptInPopUp()
+        //{
+        //    var ca = this.mView.GetSelectedAccount().AccountNum;
+        //    bool dbrHasShown = MarketingPopUpEntity.GetDBRPopUpFlag(ca);
+        //    if (dbrHasShown && DBRUtility.Instance.IsCAEligible(ca))
+        //    {
+        //        this.mView.CheckOnAutoOptIn();
+        //    }
+        //}
+        
         private async Task GetAccountStatus()
         {
             try
@@ -332,6 +348,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         public async Task LoadUsageHistory()
         {
             ValidateMarketingPopUp();
+            //ValidateAutoOptInPopUp();
 
             await GetAccountStatus();
 

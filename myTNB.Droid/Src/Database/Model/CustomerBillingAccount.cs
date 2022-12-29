@@ -122,6 +122,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("CreatedBy")]
         public string CreatedBy { get; set; }
 
+        [Column("AccountHasOwner")]
+        public bool AccountHasOwner { get; set; }
+        
         [Column("AMSIDCategory")]
         public string AMSIDCategory { get; set; }
 
@@ -206,7 +209,9 @@ namespace myTNB_Android.Src.Database.Model
                 CreatedDate = accountResponse.CreatedDate,
                 IsInManageAccessList = accountResponse.IsInManageAccessList,
                 CreatedBy = accountResponse.CreatedBy,
-                IsHaveAccess = accountResponse.IsHaveAccess
+                IsHaveAccess = accountResponse.IsHaveAccess,
+                AccountHasOwner = accountResponse.AccountHasOwner
+                
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -280,7 +285,8 @@ namespace myTNB_Android.Src.Database.Model
                 BusinessArea = accountResponse.BusinessArea,
                 RateCategory = accountResponse.RateCategory,
                 IsInManageAccessList = accountResponse.IsInManageAccessList,
-                CreatedBy = accountResponse.CreatedBy
+                CreatedBy = accountResponse.CreatedBy,
+                AccountHasOwner = accountResponse.AccountHasOwner
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -322,7 +328,8 @@ namespace myTNB_Android.Src.Database.Model
                 BusinessArea = accountResponse.BusinessArea,
                 RateCategory = accountResponse.RateCategory,
                 IsInManageAccessList = accountResponse.IsInManageAccessList,
-                CreatedBy = accountResponse.CreatedBy
+                CreatedBy = accountResponse.CreatedBy,
+                AccountHasOwner = accountResponse.AccountHasOwner
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);

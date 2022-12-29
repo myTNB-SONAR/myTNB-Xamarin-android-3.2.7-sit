@@ -200,6 +200,12 @@
             internal static readonly string DBR_REMINDER_POPUP_MSG = "dbrReminderPopupMessage";
             internal static readonly string DBR_REMINDER_POPUP_VIEW_MORE = "dbrReminderPopupViewMore";
             internal static readonly string DBBR_REMINDER_POPUP_GOT_IT = "dbrReminderPopupGotIt";
+            //auto opt in pop up
+            internal static readonly string DBR_REMINDER_AUTOPOPUP_TITLE = "dbrReminderAutoPopupTitle";
+            internal static readonly string DBR_REMINDER_AUTOPOPUP_MSG_FIRST_MONTH = "dbrReminderAutoPopupMessageFirstMonth";
+            internal static readonly string DBR_REMINDER_AUTOPOPUP_MSG_SECOND_MONTH = "dbrReminderAutoPopupMessageSecondMonth";
+            internal static readonly string DBR_REMINDER_AUTOPOPUP_MSG_THIRD_MONTH = "dbrReminderAutoPopupMessageThirdMonth";
+            internal static readonly string DBR_REMINDER_AUTOPOPUP_BTN = "dbrReminderAutoPopUpBtn";
         }
 
         internal struct ManageDigitalBill

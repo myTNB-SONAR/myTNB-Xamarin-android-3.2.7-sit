@@ -1118,6 +1118,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             newAccount.BusinessArea = item.BusinessArea;
                             newAccount.RateCategory = item.RateCategory;
                             newAccount.IsInManageAccessList = item.IsInManageAccessList;
+                            newAccount.AccountHasOwner = item.AccountHasOwner;
                             finalAccountList.Add(newAccount);
 
                             //UserSessions.SaveAddress(mSharedPref, false);
@@ -1148,6 +1149,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.BusinessArea = item.BusinessArea;
                             extraAccount.RateCategory = item.RateCategory;
                             extraAccount.IsInManageAccessList = item.IsInManageAccessList;
+                            extraAccount.AccountHasOwner = item.AccountHasOwner;
                             finalAccountList.Add(extraAccount);
                         }
                     }

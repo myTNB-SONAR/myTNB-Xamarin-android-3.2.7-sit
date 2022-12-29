@@ -503,7 +503,12 @@
     "dbrReminderPopupTitle": "Go Paperless with your bills",
     "dbrReminderPopupMessage": "Be the first to make an impact today and choose to go paperless for your next bill! Join us in our mission to be more environmentally friendly by receiving your bills exclusively via myTNB App & Portal.",
     "dbrReminderPopupViewMore": "View More",
-    "dbrReminderPopupGotIt": "Got it!"
+    "dbrReminderPopupGotIt": "Got it!",
+    "dbrReminderAutoPopupTitle": "Your electricity bills are now paperless!",
+    "dbrReminderAutoPopupMessageFirstMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 3 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
+    "dbrReminderAutoPopupMessageSecondMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 2 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
+    "dbrReminderAutoPopupMessageThirdMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 1 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
+    "dbrReminderAutoPopUpBtn": "Manage Bill Delivery"
   },
   "Bills": {
     "title": "Bills",
@@ -685,6 +690,7 @@
     "notifyCheck": "Only notify me when my power is back",
     "callUs": "Need help? <a href='tel: 15454'>Call us</a> for more information",
     "shareFeedback": "Share Feedback",
+    "manageBillDelivery": "Manage Bill Delivery",
     "verifyTitle": "Verify your identity now to enjoy more of myTNB!",
     "verifyNow": "Verify Now",
     "setAppointmentNow": "Set Appointment Now",
@@ -994,7 +1000,7 @@
     "dialogAddrress": "Why can't I see my full address?",
     "dialogAddrressMessage": "We mask sensitive information to safeguard owner's privacy. You are seeing masked information as you are not the owner of this electricity account.",
     "dialogManageUser": "Give your users more access.",
-    "dialogManageUserMessage": "To protect your information, we are not showing non-owners your personal infromation and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
+    "dialogManageUserMessage": "To protect your information, we are not showing non-owners your personal information and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
     "manageUserAccess": "Manage User Access",
     "manageAutopay": "Manage Autopay"
   },
@@ -2903,7 +2909,51 @@
             "type": "none"
           }
         ],
+        "BillRenderingTenant": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
         "MultiBillRendering": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "BREligibilityIndicators": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "GetAutoOptInCa": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "PatchUpdateAutoOptInCa": [
           {
             "code": "7200",
             "title": "",
@@ -3100,6 +3150,9 @@
     "ForceHideDBRBanner": false,
     "ForceHideBillRedesignBanner": false,
     "BillRendering": {
+      "enabled": true
+    },
+    "BillRenderingTenant": {
       "enabled": true
     },
     "IsAboutMyBillEnquiryEnabled": true,

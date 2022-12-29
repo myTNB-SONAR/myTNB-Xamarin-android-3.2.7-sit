@@ -1145,5 +1145,17 @@ namespace myTNB_Android.Src.Utils
         {
             return preferences.GetBoolean("DBRPopUpHasShown", false);
         }
+
+        public static void SaveDBRMarketingPopUpFlag(ISharedPreferences prefs, bool flag)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("DBRMarketingPopUpHasShown", flag);
+            editor.Apply();
+        }
+
+        public static bool GetDBRMarketingPopUpFlag(ISharedPreferences preferences)
+        {
+            return preferences.GetBoolean("DBRMarketingPopUpHasShown", false);
+        }
     }
 }

@@ -91,6 +91,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "CreatedBy")]
             public string CreatedBy { set; get; }
 
+            [JsonProperty(PropertyName = "AccountHasOwner")]
+            public bool AccountHasOwner { get; set; }
+            
             [JsonProperty(PropertyName = "AMSIDCategory")]
             public string AMSIDCategory { get; set; }
         }
