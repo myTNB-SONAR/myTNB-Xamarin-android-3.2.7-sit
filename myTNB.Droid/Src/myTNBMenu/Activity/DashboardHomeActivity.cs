@@ -60,6 +60,7 @@ using myTNB_Android.Src.Bills.AccountStatement;
 using myTNB_Android.Src.Utils.Notification;
 
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
+using myTNB_Android.Src.Login.Models;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -689,7 +690,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
                         bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
 
-                        if (!dbrPopUpHasShown && loginCount == 1 &&
+                        bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
+
+                        if (!myHomeHasBeenTapped)
+                        {
+                            ShowMyHomeMarketingPopUp();
+                        }
+                        else if (!dbrPopUpHasShown && loginCount == 1 &&
                             DBRUtility.Instance.ShouldShowHomeCard &&
                             CustomerBillingAccount.HasOwnerCA())
                         {
@@ -731,6 +738,32 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     .Build();
                 marketingTooltip.Show();
             }
+        }
+
+        public void ShowMyHomeMarketingPopUp()
+        {
+            MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                    .SetHeaderImage(Resource.Drawable.Banner_MyHome_Marketing)
+                    .SetTitle("Check out myHome today!")
+                    .SetMessage("You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, track your application status and even organise your moving plans with ease using myHome.")
+                    .SetCTALabel("Got It!")
+                    .SetCTAaction(() =>
+                    {
+                        this.SetIsClicked(false);
+                        //DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
+
+                        int loginCount = UserLoginCountEntity.GetLoginCount(UserEntity.GetActive().Email);
+                        bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
+                        if(!dbrPopUpHasShown && loginCount == 1 &&
+                            DBRUtility.Instance.ShouldShowHomeCard &&
+                            CustomerBillingAccount.HasOwnerCA())
+                        {
+                            ShowMarketingTooltip();
+                            UserSessions.SaveDBRPopUpFlag(this.mPref, true);
+                        }
+                    })
+                    .Build();
+            marketingTooltip.Show();
         }
 
         public void ShowManageBill()
@@ -1644,7 +1677,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
                 bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
                 bool popupID = UserSessions.GetUpdateIdPopUp(this.mPref);
-                if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && popupID)
+
+                bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
+
+                if (!myHomeHasBeenTapped && popupID)
+                {
+                    ShowMyHomeMarketingPopUp();
+                }
+                else if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && popupID)
                 {
                     ShowMarketingTooltip();
                     UserSessions.SaveDBRPopUpFlag(this.mPref, true);
