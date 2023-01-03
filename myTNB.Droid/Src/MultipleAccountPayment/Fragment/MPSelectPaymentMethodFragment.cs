@@ -92,7 +92,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         private bool isClicked = false;
         GetBillRenderingTenantResponse billRenderingTenantResponse;
-        bool tenantDBR;
+        bool tenantDBR = false;
         //Mark: Application Payment
         private bool IsApplicationPayment;
         private ApplicationPaymentDetail ApplicationPaymentDetail;
@@ -214,41 +214,33 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         && multiBillRenderingResponse.Content.Count > 0)
                                     {
                                         billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dbrCAForPaymentList, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(Activity));
-                                        
-                                        //if (billRenderingTenantResponse != null
-                                        //   && billRenderingTenantResponse.StatusDetail != null
-                                        //   && billRenderingTenantResponse.StatusDetail.IsSuccess
-                                        //   && billRenderingTenantResponse.Content != null)
-                                        //{
 
                                         for (int j = 0; j < dbrCAForPaymentList.Count; j++)
-                                            {
-                                                int index = multiBillRenderingResponse.Content.FindIndex(x =>
-                                                    x.ContractAccountNumber == dbrCAForPaymentList[j]
-                                                    && x.DBRType == MobileEnums.DBRTypeEnum.Paper
-                                                    );
-
-                                            //int indexHasOwner = accountTenant.FindIndex(x =>
-                                            //    x.AccNum == dbrCAForPaymentList[j]
-                                            //    && x.AccountHasOwner == true
-                                            //    );
-
-                                            int indexTenant = billRenderingTenantResponse.Content.FindIndex(x =>
-                                                x.CaNo == dbrCAForPaymentList[j]
-                                                && x.IsOwnerAlreadyOptIn == false
-                                                && x.IsOwnerOverRule == false
-                                                && x.IsTenantAlreadyOptIn == false
+                                        {
+                                            int index = multiBillRenderingResponse.Content.FindIndex(x =>
+                                                x.ContractAccountNumber == dbrCAForPaymentList[j]
+                                                && x.DBRType == MobileEnums.DBRTypeEnum.Paper
                                                 );
 
-                                            //int owner = accountTenant.FindIndex(x =>
-                                            //    x.AccNum == dbrCAForPaymentList[j]
-                                            //    && x.isOwned == true
-                                            //    );
-
-                                            if (indexTenant > -1)
+                                            if (billRenderingTenantResponse != null
+                                               && billRenderingTenantResponse.StatusDetail != null
+                                               && billRenderingTenantResponse.StatusDetail.IsSuccess
+                                               && billRenderingTenantResponse.Content != null)
                                             {
-                                                tenantDBR = true;
+                                               int indexTenant = billRenderingTenantResponse.Content.FindIndex(x =>
+                                               x.CaNo == dbrCAForPaymentList[j]
+                                               && x.IsOwnerAlreadyOptIn == false
+                                               && x.IsOwnerOverRule == false
+                                               && x.IsTenantAlreadyOptIn == false
+                                               );
+
+
+                                                if (indexTenant > -1)
+                                                {
+                                                    tenantDBR = true;
+                                                }
                                             }
+                                           
 
                                             if (index > -1)
                                             {
