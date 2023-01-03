@@ -310,10 +310,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     alreadyStarted = true;
                 }
             }
-            //if (extras.ContainsKey("billRenderingTenantResponse") && extras.ContainsKey("fromAddAccount"))
-            //{
-            //    billRenderingTenantResponse = JsonConvert.DeserializeObject<GetBillRenderingTenantResponse>(extras.GetString("billRenderingTenantResponse"));
-            //}
 
             // if (extras != null && extras.ContainsKey("urlSchemaData"))
             // {
@@ -761,26 +757,33 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
 
 
-                        foreach (CustomerBillingAccount item in accounts)
+                        if (billRenderingTenantResponse != null
+                           && billRenderingTenantResponse.StatusDetail != null
+                           && billRenderingTenantResponse.StatusDetail.IsSuccess
+                           && billRenderingTenantResponse.Content != null)
                         {
-                            if (item.AccountHasOwner == true)
+                            foreach (CustomerBillingAccount item in accounts)
                             {
-                                flagOwner = true;
-                            }
-                        }
-
-                        for (int j = 0; j < accounts.Count; j++)
-                        {
-                            for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
-                            {
-                                if (flagOwner
-                                    && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
-                                    && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
-                                    && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
-                                    && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
+                                if (item.AccountHasOwner == true)
                                 {
-                                    countCA++;
+                                    flagOwner = true;
                                 }
+                            }
+
+                            for (int j = 0; j < accounts.Count; j++)
+                            {
+                                for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
+                                {
+                                    if (flagOwner
+                                        && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
+                                        && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
+                                        && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
+                                        && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
+                                    {
+                                        countCA++;
+                                    }
+                                }
+
                             }
 
                         }
@@ -1751,53 +1754,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
                 bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
-
-                //int countCA = 0;
-                //bool flagOwner = false;
-                //List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                //List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
-                //GetBillRenderingTenantModel tenantInfo = new GetBillRenderingTenantModel();
-                //CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
-
-
-                //foreach (CustomerBillingAccount item in accounts)
-                //{
-                //    if (item.AccountHasOwner == true)
-                //    {
-                //        flagOwner = true;
-                //    }
-                //}
-
-                //for (int j = 0; j < accounts.Count; j++)
-                //{
-                //    for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
-                //    {
-                //        if (flagOwner
-                //            && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
-                //            && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
-                //            && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
-                //            && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
-                //        {
-                //            countCA++;
-                //        }
-                //    }
-
-                //}
-
                 bool popupID = UserSessions.GetUpdateIdPopUp(this.mPref);
                 if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && popupID)
                 {
                     ShowMarketingTooltip();
                     UserSessions.SaveDBRPopUpFlag(this.mPref, true);
                 }
-                //else
-                //{
-                //    if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && popupID && countCA > 0)
-                //    {
-                //        ShowMarketingTooltip();
-                //        UserSessions.SaveDBRPopUpFlag(this.mPref, true);
-                //    }
-                //}
             }
 
             //var sharedpref_data = UserSessions.GetCheckEmailVerified(this.mPref);

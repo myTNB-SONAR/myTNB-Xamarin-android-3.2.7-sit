@@ -667,7 +667,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void GetBillTenantRendering()
         {
-            ShowProgressDialog();
             Task.Run(() =>
             {
                 _ = GetBillTenantRenderingAsync();

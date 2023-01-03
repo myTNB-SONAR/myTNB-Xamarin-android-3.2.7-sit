@@ -11897,16 +11897,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         //For tenant checking DBR
 
-                        bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
-                        bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
-                        bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
-                        bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccount.AccountNum).AccountHasOwner;
-
                         if (billRenderingTenantResponse != null
                            && billRenderingTenantResponse.StatusDetail != null
                            && billRenderingTenantResponse.StatusDetail.IsSuccess
                            && billRenderingTenantResponse.Content != null)
                         {
+                            bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
+                            bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
+                            bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
+                            bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccount.AccountNum).AccountHasOwner;
+
                             if (AccountHasOwner == true && !isOwnerAlreadyOptIn && !isOwnerOverRule && !isTenantAlreadyOptIn)
                             {
                                 ShowMarketingTooltip();

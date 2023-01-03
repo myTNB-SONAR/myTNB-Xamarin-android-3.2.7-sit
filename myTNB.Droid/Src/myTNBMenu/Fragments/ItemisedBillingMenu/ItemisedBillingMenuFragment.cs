@@ -642,27 +642,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                 List<string> dBRCAs = DBRUtility.Instance.GetCAList();
                                 List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
                                 billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
-                                
+                                bool tenantAllowOptIn = false;
 
-                                bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerOverRule;
-                                bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerAlreadyOptIn;
-                                bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsTenantAlreadyOptIn;
-                                bool AccountHasOwner = accounts.Find(x => x.AccNum == dbrAccount.AccountNum).AccountHasOwner;
-                                //for (int i = 0; i < dBRCAs.Count; i++)
-                                //{
-                                //    if (billRenderingTenantResponse.Content[i].CaNo == selectedAccount.AccountNum)
-                                //    {
-                                //        var newRecord = new GetBillRenderingTenantModel()
-                                //        {
-                                //            CaNo = billRenderingTenantResponse.Content[i].CaNo,
-                                //            IsOwnerAlreadyOptIn = billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn,
-                                //            IsOwnerOverRule = billRenderingTenantResponse.Content[i].IsOwnerOverRule,
-                                //            IsTenantAlreadyOptIn = billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn,
+                                if (billRenderingTenantResponse != null
+                                    && billRenderingTenantResponse.StatusDetail != null
+                                    && billRenderingTenantResponse.StatusDetail.IsSuccess
+                                    && billRenderingTenantResponse.Content != null)
+                                {
+                                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerOverRule;
+                                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerAlreadyOptIn;
+                                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsTenantAlreadyOptIn;
+                                    bool AccountHasOwner = accounts.Find(x => x.AccNum == dbrAccount.AccountNum).AccountHasOwner;
 
-                                //        };
-                                //        tenantInfo = newRecord;
-                                //    }
-                                //}
+                                    if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                                    {
+                                        tenantAllowOptIn = true;
+                                    }
+                                }
 
                                 if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
                                 {
@@ -695,20 +691,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                         }
                                         else
                                         {
-                                            if (billRenderingTenantResponse != null
-                                               && billRenderingTenantResponse.StatusDetail != null
-                                               && billRenderingTenantResponse.StatusDetail.IsSuccess
-                                               && billRenderingTenantResponse.Content != null)
+                                            if (tenantAllowOptIn)
                                             {
-                                                if (AccountHasOwner == true && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
-                                                {
-                                                    paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
-                                                }
-                                                else
-                                                {
-                                                    paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBillNonOwner"));
-                                                }
+                                                paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
                                             }
+                                            else
+                                            {
+                                                paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBillNonOwner"));
+                                            }
+                                            
                                         }
                                     }
                                     SetDynatraceScreenTags();

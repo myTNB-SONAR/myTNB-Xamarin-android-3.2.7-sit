@@ -291,32 +291,23 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 
                 billRenderingTenantResponse = JsonConvert.DeserializeObject<GetBillRenderingTenantResponse>(extras.GetString("billRenderingTenantResponse"));
-                // GetBillRenderingTenantModel tenantInfo = new GetBillRenderingTenantModel();
-                //for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
-                //{
-                //    if (billRenderingTenantResponse.Content[i].CaNo == selectedAccountData.AccountNum)
-                //    {
-                //        var newRecord = new GetBillRenderingTenantModel()
-                //        {
-                //            CaNo = billRenderingTenantResponse.Content[i].CaNo,
-                //            IsOwnerAlreadyOptIn = billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn,
-                //            IsOwnerOverRule = billRenderingTenantResponse.Content[i].IsOwnerOverRule,
-                //            IsTenantAlreadyOptIn = billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn,
-
-                //        };
-                //        tenantInfo = newRecord;
-                //    }
-                //}
                
                 List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
-                bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerOverRule;
-                bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerAlreadyOptIn;
-                bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsTenantAlreadyOptIn;
+                bool tenantAllowOptIn = false;
+                if (billRenderingTenantResponse != null)
+                {
+                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerOverRule;
+                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerAlreadyOptIn;
+                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsTenantAlreadyOptIn;
+                    bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccountData.AccountNum).AccountHasOwner;
+
+                    if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                    {
+                        tenantAllowOptIn = true;
+                    }
+                }
+
                 _isOwner = selectedAccountData.IsOwner && DBRUtility.Instance.IsCAEligible(selectedAccountData.AccountNum);
-                bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccountData.AccountNum).AccountHasOwner;
-
-
-                //bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccountData.AccountNum).AccountHasOwner;
 
                 if (billRenderingResponse != null)
                 {
@@ -349,7 +340,7 @@ namespace myTNB_Android.Src.Billing.MVP
                             }
                             else
                             {
-                                if (AccountHasOwner == true && !isOwnerAlreadyOptIn && !isOwnerOverRule && !isTenantAlreadyOptIn)
+                                if (tenantAllowOptIn)
                                 {
                                     paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
                                 }

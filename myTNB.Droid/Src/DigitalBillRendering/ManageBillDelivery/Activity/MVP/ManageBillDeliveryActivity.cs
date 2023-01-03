@@ -202,34 +202,22 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     UpdateAccountListIndicator();
                 }
 
-                //For tenant checking DBR | Get a single data for specific ca from response list
-                //CustomerBillingAccount accountTenant = CustomerBillingAccount.FindByAccNum(selectedAccountNumber);
-                //GetBillRenderingTenantModel tenantInfo = new GetBillRenderingTenantModel();
-                //for (int i = 0; i < _billRenderingTenantResponse.Content.Count; i++)
-                //{
-                //    if (_billRenderingTenantResponse.Content[i].CaNo == selectedAccountNumber)
-                //    {
-                //        var newRecord = new GetBillRenderingTenantModel()
-                //        {
-                //            CaNo = _billRenderingTenantResponse.Content[i].CaNo,
-                //            IsOwnerAlreadyOptIn = _billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn,
-                //            IsOwnerOverRule = _billRenderingTenantResponse.Content[i].IsOwnerOverRule,
-                //            IsTenantAlreadyOptIn = _billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn,
-
-                //        };
-                //        tenantInfo = newRecord;
-                //    }
-                //}
                 List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
                 bool tenantAllowOptIn = false;
-                bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
-                bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
-                bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
-               // bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
-
-                if (mSelectedAccountData.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                if (_billRenderingTenantResponse != null
+                    && _billRenderingTenantResponse.StatusDetail != null
+                    && _billRenderingTenantResponse.StatusDetail.IsSuccess
+                    && _billRenderingTenantResponse.Content != null)
                 {
-                    tenantAllowOptIn = true;
+                    bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
+                    bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
+                    bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
+                    // bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
+
+                    if (mSelectedAccountData.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                    {
+                        tenantAllowOptIn = true;
+                    }
                 }
 
                 GetDeliveryDisplay(_billRenderingResponse, tenantAllowOptIn);
@@ -973,17 +961,25 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         _isOwner = account.isOwned && DBRUtility.Instance.IsCAEligible(selectedAccountNumber);
                         _accountNumber = selectedAccountNumber;
 
-                        //For tenant checking DBR | Get a single data for specific ca from response list
-                        List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
-                        bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
-                        bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
-                        bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
-                        bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
                         bool tenantAllowOptIn = false;
 
-                        if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                        if (_billRenderingTenantResponse != null
+                            && _billRenderingTenantResponse.StatusDetail != null
+                            && _billRenderingTenantResponse.StatusDetail.IsSuccess
+                            && _billRenderingTenantResponse.Content != null)
                         {
-                            tenantAllowOptIn = true;
+                            //For tenant checking DBR | Get a single data for specific ca from response list
+                            List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
+                            bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
+                            bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
+                            bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
+                            bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
+
+
+                            if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                            {
+                                tenantAllowOptIn = true;
+                            }
                         }
 
                         SetToolBarTitle(GetLabelByLanguage(_isOwner || tenantAllowOptIn ? "title" : "dbrViewBillDelivery"));
