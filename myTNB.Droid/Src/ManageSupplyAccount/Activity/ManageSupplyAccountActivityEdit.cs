@@ -454,11 +454,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                             ? "dbrManageDeliveryMethod"
                             : "dbrViewBillDelivery");
 
-                        //ManageBill_container.Visibility = ViewStates.Visible;
-                        if (_isOwner || tenantAllowOptIn == true)
-                        {
-                            ManageBill_container.Visibility = ViewStates.Visible;
-                        }
+                        ManageBill_container.Visibility = ViewStates.Visible;
+                        //if (_isOwner || tenantAllowOptIn == true)
+                        //{
+                        //    ManageBill_container.Visibility = ViewStates.Visible;
+                        //}
 
 
 
