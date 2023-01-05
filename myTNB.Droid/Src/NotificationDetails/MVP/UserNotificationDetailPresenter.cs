@@ -382,6 +382,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "updateNow"),
                                    delegate () { UpdateNow(); });
                             primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
                             imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_App_Update;
                             break;
@@ -390,8 +391,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA("View Application Details",
-                                   delegate () { UpdateNow(); });
+                                   delegate () { NCViewApplicationDetails(); });
                             primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
                             imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Success;
                             break;
@@ -399,8 +401,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Now",
-                                   delegate () { UpdateNow(); });
+                                   delegate () { NCSubmitNow(); });
                             primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
                             imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Resume_Application;
                             break;
@@ -408,8 +411,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_ADDRESS_SEARCH_COMPLETED:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Continue Application",
-                                   delegate () { UpdateNow(); });
+                                   delegate () { NCContinueApplication(); });
                             primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
                             imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Address_Search_Success;
                             break;
@@ -417,8 +421,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Verify Now",
-                                   delegate () { UpdateNow(); });
+                                   delegate () { NCVerifyNow(); });
                             primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
                             imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_OTP_Verify;
                             break;
@@ -632,6 +637,26 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 this.mView.ShowRetryOptionsApiException(null);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void NCViewApplicationDetails()
+        {
+
+        }
+
+        private void NCVerifyNow()
+        {
+
+        }
+
+        private void NCSubmitNow()
+        {
+
+        }
+
+        private void NCContinueApplication()
+        {
+
         }
 
         private void ViewAccountStatement(Models.NotificationDetails notificationDetails)
