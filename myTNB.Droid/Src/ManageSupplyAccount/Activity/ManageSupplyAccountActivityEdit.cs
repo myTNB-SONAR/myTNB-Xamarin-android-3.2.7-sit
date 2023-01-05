@@ -459,7 +459,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         //    ManageBill_container.Visibility = ViewStates.Visible;
                         //}
 
-
                         Handler handler = new Handler();
                         Action myAction = () =>
                         {
