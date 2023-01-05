@@ -449,7 +449,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                                 tenantAllowOptIn = true;
                             }
                         }
-
                         manageBillTitle.Text = Utility.GetLocalizedLabel("ManageAccount", _isOwner || tenantAllowOptIn
                             ? "dbrManageDeliveryMethod"
                             : "dbrViewBillDelivery");

@@ -11896,7 +11896,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     else
                     {
                         //For tenant checking DBR
-
                         if (billRenderingTenantResponse != null
                            && billRenderingTenantResponse.StatusDetail != null
                            && billRenderingTenantResponse.StatusDetail.IsSuccess
