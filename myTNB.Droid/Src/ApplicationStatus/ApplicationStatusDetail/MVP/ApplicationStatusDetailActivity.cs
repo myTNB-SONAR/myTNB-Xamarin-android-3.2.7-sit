@@ -986,7 +986,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 TextViewUtils.SetTextSize25(txtApplicationStatusBottomPayable);
             }
 
-            DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Application.Acknowledge_Required);
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Application.Acknowledgement_Required);
         }
 
         private void EvaluateReceipts()
