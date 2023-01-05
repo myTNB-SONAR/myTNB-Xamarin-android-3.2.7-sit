@@ -125,18 +125,16 @@ namespace myTNB_Android.Src.MyHome
         {
             TextViewUtils.SetMuseoSans500Typeface(titleLabel);
             TextViewUtils.SetTextSize16(titleLabel);
-            titleLabel.Text = "myHome"; //STUB
+            titleLabel.Text = Utility.GetLocalizedLabel("DashboardHome", "myHome");
 
             closeIcon.Click += CloseOnClick;
 
             GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
             layoutManager.Orientation = RecyclerView.Vertical;
             myHomeDrawerListRecycleView.SetLayoutManager(layoutManager);
-            //myHomeDrawerListRecycleView.AddItemDecoration(new MyServiceItemDecoration(3, 3, false, this.Activity));
 
             //STUB
             List<MyDrawerModel> myDrawerList = new List<MyDrawerModel>();
-
             MyDrawerModel model = new MyDrawerModel();
             model.ServiceCategoryId = "001";
             model.serviceCategoryName = Utility.GetLocalizedLabel("DashboardHome", "connectMyPremise");
@@ -187,6 +185,24 @@ namespace myTNB_Android.Src.MyHome
         public int GetRecyclerViewHeight()
         {
             return myHomeDrawerListRecycleView.Height;
+        }
+
+        public int GetTopHeight()
+        {
+            int i = 0;
+
+            try
+            {
+                int[] location = new int[2];
+                myHomeDrawerListRecycleView.GetLocationOnScreen(location);
+                i = location[1];
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
         }
 
         private class MyHomeBottomSheetCallBack : BottomSheetBehavior.BottomSheetCallback

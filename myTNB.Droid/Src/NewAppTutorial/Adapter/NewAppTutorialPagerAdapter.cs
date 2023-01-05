@@ -3354,25 +3354,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
                 else if (this.mFragment is MyHomeDrawerFragment)
                 {
-                    var viewMargin = (int)DPUtils.ConvertDPToPx(10f);
                     var padding = (int)DPUtils.ConvertDPToPx(16f);
-                    var bottomPadding = (int)DPUtils.ConvertDPToPx(50f);
-                    var screenWidth = this.mContext.Resources.DisplayMetrics.WidthPixels;
                     var itemWidth = (((MyHomeDrawerFragment)this.mFragment).GetRecyclerViewWidth() / 3);
-
-                    //STUB
-                    var addtlPadding = 0;
-
-                    if (this.mContext.Resources.DisplayMetrics.HeightPixels > 2028)
-                    {
-                        addtlPadding = padding + viewMargin;
-                    }
-
-                    int topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((MyHomeDrawerFragment)this.mFragment).GetRecyclerViewHeight() - bottomPadding + addtlPadding;
-
-                    //STUB
-                    DisplayMetrics displayMetrics = this.mContext.Resources.DisplayMetrics;
-                    float dpHeight = displayMetrics.HeightPixels / displayMetrics.Density;
+                    int topHeight = ((MyHomeDrawerFragment)this.mFragment).GetTopHeight() - GetStatusBarHeight();
 
                     LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                     topLayoutParam.Height = topHeight;
