@@ -14,6 +14,7 @@ namespace myTNB_Android.Src.Utils.Notification
         public string PushMapId = string.Empty;
         public string Email = string.Empty;
         public Type Type = Type.None;
+        public bool IsDirectPush = false;
 
         public static NotificationUtil Instance
         {
@@ -30,6 +31,7 @@ namespace myTNB_Android.Src.Utils.Notification
         public void SaveData(Bundle extras)
         {
             GetData(extras);
+            SetIsDirectPush();
         }
 
         private void SetType(string type)
@@ -46,6 +48,21 @@ namespace myTNB_Android.Src.Utils.Notification
                         break;
                     case MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN:
                         Type = Type.NewBillDesign;
+                        break;
+                    case MobileConstants.PushNotificationTypes.MYHOME_NC_ADDRESS_SEARCH_COMPLETED:
+                        Type = Type.NCAddressSearchCompleted;
+                        break;
+                    case MobileConstants.PushNotificationTypes.MYHOME_NC_RESUME_APPLICATION:
+                        Type = Type.NCResumeApplication;
+                        break;
+                    case MobileConstants.PushNotificationTypes.MYHOME_NC_APPLICATION_COMPLETED:
+                        Type = Type.NCApplicationCompleted;
+                        break;
+                    case MobileConstants.PushNotificationTypes.MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED:
+                        Type = Type.NCApplicationContractorCompleted;
+                        break;
+                    case MobileConstants.PushNotificationTypes.MYHOME_NC_OTP_VERIFY:
+                        Type = Type.NCOTPVerify;
                         break;
                     default:
                         break;
@@ -80,6 +97,27 @@ namespace myTNB_Android.Src.Utils.Notification
             }
         }
 
+        /** Add here the Type which is expected to navigate from push notif banner directly to notification detials **/
+        private void SetIsDirectPush()
+        {
+            switch (Type)
+            {
+                case Type.AppUpdate:
+                case Type.AccountStatement:
+                case Type.NewBillDesign:
+                case Type.NCAddressSearchCompleted:
+                case Type.NCResumeApplication:
+                case Type.NCApplicationCompleted:
+                case Type.NCApplicationContractorCompleted:
+                case Type.NCOTPVerify:
+                    IsDirectPush = true;
+                    break;
+                default:
+                    IsDirectPush = false;
+                    break;
+            }
+        }
+
         public void ClearData()
         {
             Type = Type.None;
@@ -87,6 +125,7 @@ namespace myTNB_Android.Src.Utils.Notification
             NotificationType = string.Empty;
             PushMapId = string.Empty;
             Email = string.Empty;
+            IsDirectPush = false;
         }
     }
 }

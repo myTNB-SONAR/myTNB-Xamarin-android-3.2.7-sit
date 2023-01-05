@@ -377,6 +377,52 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             break;
 
                         }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_APP_UPDATE:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "updateNow"),
+                                   delegate () { UpdateNow(); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_App_Update;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED:
+                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Application Details",
+                                   delegate () { UpdateNow(); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Success;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Now",
+                                   delegate () { UpdateNow(); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Resume_Application;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_ADDRESS_SEARCH_COMPLETED:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Continue Application",
+                                   delegate () { UpdateNow(); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Address_Search_Success;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Verify Now",
+                                   delegate () { UpdateNow(); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_OTP_Verify;
+                            break;
+                        }
                     default:
                         imageResourceBanner = Resource.Drawable.notification_generic_banner;
                         break;

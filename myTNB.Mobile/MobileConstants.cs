@@ -40,11 +40,11 @@ namespace myTNB.Mobile
 
         private const string SIT_AWS = "https://stagingapi.mytnb.com.my/asmx";
         //ASMX
-        //private const string SIT = "https://mobiletestingws.tnb.com.my";
+        private const string SIT = "https://mobiletestingws.tnb.com.my";
         //AWS ASMX Copy
         //private const string SIT = "https://stagingapi.mytnb.com.my/asmx-97";
         //myHome On Prem
-        private const string SIT = "http://10.215.128.162:99";
+        //private const string SIT = "http://10.215.128.162:99";
         //AWS OVIS
         //private const string SIT = "http://mytnbwsovisstg.ap.ngrok.io";
         private const string PROD = "https://mytnbapp.tnb.com.my";
@@ -155,6 +155,13 @@ namespace myTNB.Mobile
             public const string APP_UPDATE = "APPUPDATE";
             public const string ACCOUNT_STATEMENT = "ACCOUNTSTATEMENT";
             public const string NEW_BILL_DESIGN = "NEWBILLDESIGN";
+
+            //myHome
+            public const string MYHOME_NC_ADDRESS_SEARCH_COMPLETED = "NCADDDRESSSEARCHCOMPLETED";
+            public const string MYHOME_NC_RESUME_APPLICATION = "NCRESUMEAPPLICATION";
+            public const string MYHOME_NC_APPLICATION_COMPLETED = "NCAPPLICATIONCOMPLETED";
+            public const string MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED = "NCAPPLICATIONCONTRACTORCOMPLETED";
+            public const string MYHOME_NC_OTP_VERIFY = "NCOTPVERIFY";
         }
 
         public struct OSType
