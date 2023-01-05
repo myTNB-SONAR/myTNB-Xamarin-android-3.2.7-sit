@@ -241,7 +241,7 @@
 
                 public struct Application
                 {
-                    public const string Acknowledge_Required = "App_Visit_AcknowledgementRequired";
+                    public const string Acknowledgement_Required = "App_Visit_AcknowledgementRequired";
                 }
             }
 
