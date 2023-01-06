@@ -280,18 +280,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         internal static void NotificationValidation(this DashboardHomeActivity mainActivity)
         {
-            switch (NotificationUtil.Instance.Type)
+            if (NotificationUtil.Instance.IsDirectPush)
             {
-                case Notification.TypeEnum.AppUpdate:
-                case Notification.TypeEnum.AccountStatement:
+                if (NotificationUtil.Instance.Type == Notification.TypeEnum.NewBillDesign)
+                {
+                    NavigateToBillRedesign(mainActivity);
+                }
+                else
+                {
                     UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
                     OnGetNotificationDetails(mainActivity);
-                    break;
-                case Notification.TypeEnum.NewBillDesign:
-                    NavigateToBillRedesign(mainActivity);
-                    break;
-                default:
-                    break;
+                }
             }
         }
 
