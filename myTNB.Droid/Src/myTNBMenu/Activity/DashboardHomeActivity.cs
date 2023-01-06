@@ -691,10 +691,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
 
                         bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
+                        bool myHomeMarketingPopUpHasShown = UserSessions.MyHomeMarketingPopUpHasShown(this.mPref);
 
-                        if (!myHomeHasBeenTapped)
+                        if (!myHomeHasBeenTapped && !myHomeMarketingPopUpHasShown)
                         {
                             ShowMyHomeMarketingPopUp();
+                            UserSessions.SetShownMyHomeMarketingPopUp(this.mPref);
                         }
                         else if (!dbrPopUpHasShown && loginCount == 1 &&
                             DBRUtility.Instance.ShouldShowHomeCard &&
@@ -1679,10 +1681,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 bool popupID = UserSessions.GetUpdateIdPopUp(this.mPref);
 
                 bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
+                bool myHomeMarketingPopUpHasShown = UserSessions.MyHomeMarketingPopUpHasShown(this.mPref);
 
-                if (!myHomeHasBeenTapped && popupID)
+                if (!myHomeMarketingPopUpHasShown && !myHomeHasBeenTapped && popupID)
                 {
                     ShowMyHomeMarketingPopUp();
+                    UserSessions.SetShownMyHomeMarketingPopUp(this.mPref);
                 }
                 else if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && popupID)
                 {

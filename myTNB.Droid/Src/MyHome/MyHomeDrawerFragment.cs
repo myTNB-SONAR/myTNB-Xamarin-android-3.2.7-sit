@@ -86,7 +86,7 @@ namespace myTNB_Android.Src.MyHome
                     await Task.Delay(200);
                     bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
 
-                    if (!UserSessions.HasMyHomeDrawerTutorialShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                    if (!UserSessions.MyHomeDrawerTutorialHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                     {
                         await Task.Delay(300);
                         NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), OnGeneraMyHomeDrawerTutorialList(), true);
