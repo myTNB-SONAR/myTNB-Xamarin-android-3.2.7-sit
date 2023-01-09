@@ -286,10 +286,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     NavigateToBillRedesign(mainActivity);
                 }
-                else
+                else if (NotificationUtil.Instance.PushMapId.IsValid())
                 {
                     UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
                     OnGetNotificationDetails(mainActivity);
+                }
+                else
+                {
+                    NotificationUtil.Instance.ClearData();
                 }
             }
         }

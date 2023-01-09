@@ -97,7 +97,10 @@ namespace myTNB_Android.Src.Utils.Notification
             }
         }
 
-        /** Add here the Type which is expected to navigate from push notif banner directly to notification detials **/
+        /*
+         * Add here the Type which is expected to navigate from push notif banner
+         * directly to notification detials
+         */
         private void SetIsDirectPush()
         {
             switch (Type)

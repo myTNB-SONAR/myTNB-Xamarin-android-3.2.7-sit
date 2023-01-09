@@ -135,6 +135,11 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     if (Intent.Extras.ContainsKey("Type"))
                     {
+                        if (UserEntity.IsCurrentlyActive())
+                        {
+                            NotificationUtil.Instance.SaveData(Intent.Extras);
+                        } 
+
                         string notifType = Intent.Extras.GetString("Type");
                         UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
                         if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.APPLICATIONSTATUS
@@ -154,16 +159,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             string accountNumber = Intent.Extras.GetString("AccountNumber");
                             UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
-                        }
-                        else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN)
-                        {
-                            if (UserEntity.IsCurrentlyActive())
-                            {
-                                NotificationUtil.Instance.SaveData(Intent.Extras);
-                                UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
-                            }
                         }
                         else
                         {
