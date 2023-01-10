@@ -70,6 +70,8 @@ namespace myTNB_Android.Src.AddAccount.Models
 
         public string CreatedBy { get; set; }
 
+        public bool AccountHasOwner { get; set; }
+        
         public string AMSIDCategory { get; set; }
     }
 }

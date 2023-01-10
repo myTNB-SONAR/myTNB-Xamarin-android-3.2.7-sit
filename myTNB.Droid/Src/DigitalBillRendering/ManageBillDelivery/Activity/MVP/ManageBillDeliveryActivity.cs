@@ -30,6 +30,7 @@ using Android.Graphics;
 using static myTNB.Mobile.MobileEnums;
 using myTNB_Android.Src.DigitalBillRendering.ManageBillDelivery.Activity.MVP;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.DeviceCache;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -122,9 +123,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         private const string PAGE_ID = "ManageDigitalBillLanding";
         private ManageBillDeliveryEmailListAdapter manageBillDeliveryEmailListAdapter;
         private GetBillRenderingResponse _billRenderingResponse;
+        private GetBillRenderingTenantResponse _billRenderingTenantResponse;
         private RecyclerView.LayoutManager layoutManager;
         private ISharedPreferences mPref;
         private bool _isOwner { get; set; }
+        private bool fromdashboard = false;
         private ManageBillDeliveryContract.IUserActionsListener userActionsListener;
         private List<DBRAccount> dbrEligibleAccountList = new List<DBRAccount>();
         public readonly static int DBR_SELECT_ACCOUNT_ACTIVITY_CODE = 8798;
@@ -185,7 +188,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 if (extras.ContainsKey("billRenderingResponse"))
                 {
                     _billRenderingResponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billRenderingResponse"));
-                    GetDeliveryDisplay(_billRenderingResponse);
+                }
+                if (extras.ContainsKey("billRenderingTenantResponse"))
+                {
+                    _billRenderingTenantResponse = JsonConvert.DeserializeObject<GetBillRenderingTenantResponse>(extras.GetString("billRenderingTenantResponse"));
+                    
                 }
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
                 {
@@ -195,7 +202,28 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     UpdateAccountListIndicator();
                 }
 
-                SetToolBarTitle(GetLabelByLanguage(_isOwner ? "title" : "dbrViewBillDelivery"));
+
+                List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
+                bool tenantAllowOptIn = false;
+                if (_billRenderingTenantResponse != null
+                    && _billRenderingTenantResponse.StatusDetail != null
+                    && _billRenderingTenantResponse.StatusDetail.IsSuccess
+                    && _billRenderingTenantResponse.Content != null)
+                {
+                    bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
+                    bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
+                    bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
+                    // bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
+
+                    if (mSelectedAccountData.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                    {
+                        tenantAllowOptIn = true;
+                    }
+                }
+
+                GetDeliveryDisplay(_billRenderingResponse, tenantAllowOptIn);
+
+                SetToolBarTitle(GetLabelByLanguage(_isOwner || tenantAllowOptIn ? "title" : "dbrViewBillDelivery"));
             }
             btnStartDigitalBill.Click += delegate
             {
@@ -244,7 +272,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             vPager.Adapter = ManageBillDeliveryAdapter;
         }
 
-        public void GetDeliveryDisplay(GetBillRenderingResponse getBillRenderingModel)
+        public void GetDeliveryDisplay(GetBillRenderingResponse getBillRenderingModel, bool tenantAllowOptIn)
         {
             if (getBillRenderingModel != null && getBillRenderingModel.Content != null)
             {
@@ -496,7 +524,28 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         }
                         else
                         {
-                            manageBillDeliveryEmailRecyclerView.Visibility
+                            if (tenantAllowOptIn)
+                            {
+                                manageBillDeliveryEmailRecyclerView.Visibility
+                              = digitalBillLabelContainer.Visibility
+                              = ic_ca_info.Visibility
+                              = digitalBillLabelLayout.Visibility
+                              = applicationIndicator.Visibility
+                              = btnStartDigitalBillLayout.Visibility
+                              = applicationIndicator.Visibility
+                              = indicatorContainer.Visibility
+                              = vPager.Visibility
+                              = deliveringAddress.Visibility
+                              = ViewStates.Visible;
+                              TenantDeliveringAddress.Visibility
+                              = email_layout.Visibility
+                              = email_container.Visibility
+                              = btnUpdateDigitalBillLayout.Visibility
+                              = ViewStates.Gone;
+                            }
+                            else
+                            {
+                                manageBillDeliveryEmailRecyclerView.Visibility
                                 = digitalBillLabelContainer.Visibility
                                 = ic_ca_info.Visibility
                                 = digitalBillLabelLayout.Visibility
@@ -505,13 +554,15 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                                 = applicationIndicator.Visibility
                                 = indicatorContainer.Visibility
                                 = vPager.Visibility
-                                = btnUpdateDigitalBillLayout.Visibility
                                 = deliveringAddress.Visibility
+                                = btnUpdateDigitalBillLayout.Visibility
                                 = ViewStates.Gone;
-                            TenantDeliveringAddress.Visibility
+                                TenantDeliveringAddress.Visibility
                                 = email_layout.Visibility
                                 = email_container.Visibility
                                 = ViewStates.Visible;
+                            }
+
                             img_display.SetImageResource(Resource.Drawable.manage_bill_delivery_3);
                             txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "nonOwnerPaperTitle");
                             txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "nonOwnerPaperMessage"));
@@ -900,6 +951,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     NewAppTutorialUtils.ForceCloseNewAppTutorial();
                     selectedAccountNumber = data.GetStringExtra("SELECTED_ACCOUNT_NUMBER");
                     _billRenderingResponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(data.GetStringExtra("billrenderingresponse"));
+                    _billRenderingTenantResponse = JsonConvert.DeserializeObject<GetBillRenderingTenantResponse>(data.GetStringExtra("billRenderingTenantResponse"));
+
                     if (_billRenderingResponse != null
                         && _billRenderingResponse.StatusDetail != null
                         && _billRenderingResponse.StatusDetail.IsSuccess
@@ -908,8 +961,31 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(selectedAccountNumber);
                         _isOwner = account.isOwned && DBRUtility.Instance.IsCAEligible(selectedAccountNumber);
                         _accountNumber = selectedAccountNumber;
-                        SetToolBarTitle(GetLabelByLanguage(_isOwner ? "title" : "dbrViewBillDelivery"));
-                        GetDeliveryDisplay(_billRenderingResponse);
+
+                        bool tenantAllowOptIn = false;
+
+                        if (_billRenderingTenantResponse != null
+                            && _billRenderingTenantResponse.StatusDetail != null
+                            && _billRenderingTenantResponse.StatusDetail.IsSuccess
+                            && _billRenderingTenantResponse.Content != null)
+                        {
+                            //For tenant checking DBR | Get a single data for specific ca from response list
+                            List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
+                            bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
+                            bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
+                            bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
+                            bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
+
+
+                            if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                            {
+                                tenantAllowOptIn = true;
+                            }
+                        }
+
+                        SetToolBarTitle(GetLabelByLanguage(_isOwner || tenantAllowOptIn ? "title" : "dbrViewBillDelivery"));
+
+                        GetDeliveryDisplay(_billRenderingResponse, tenantAllowOptIn);
                     }
                     foreach (DBRAccount account in dbrEligibleAccountList)
                     {

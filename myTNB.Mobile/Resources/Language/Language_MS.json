@@ -507,7 +507,12 @@
     "dbrReminderPopupTitle": "Jom Paperless dengan bil anda",
     "dbrReminderPopupMessage": "Jadilah orang terawal yang memberi impak dengan memilih kaedah paperless untuk bil anda! Sertai misi kami agar lebih mesra alam dengan menerima bil hanya melalui Aplikasi & Portal myTNB.",
     "dbrReminderPopupViewMore": "Ketahui Lanjut",
-    "dbrReminderPopupGotIt": "Ok!"
+    "dbrReminderPopupGotIt": "Ok!",
+    "dbrReminderAutoPopupTitle": "Bil elektrik anda kini 'paperless'!",
+    "dbrReminderAutoPopupMessageFirstMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopupMessageSecondMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 2 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopupMessageThirdMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 1 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopUpBtn": "Urus Cara Penghantaran Bil"
   },
   "Bills": {
     "title": "Bil",
@@ -688,7 +693,8 @@
     "toastResumeNotiUpdate": "Anda telah meneruskan notifikasi bagi gangguan perkhidmatan bekalan kali ini!",
     "notifyCheck": "Hanya maklumkan saya apabila elektrik kembali",
     "callUs": "Perlu bantuan lanjut? <a href='tel: 15454'>Hubungi kami</a>",
-    "shareFeedback": "Kongsi Maklum Balas"
+    "shareFeedback": "Kongsi Maklum Balas",
+    "manageBillDelivery": "Urus Cara Penghantaran Bil"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -2873,7 +2879,51 @@
             "type": "none"
           }
         ],
+        "BillRenderingTenant": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
         "MultiBillRendering": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "BREligibilityIndicators": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "GetAutoOptInCa": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "PatchUpdateAutoOptInCa": [
           {
             "code": "7200",
             "title": "",
@@ -3048,6 +3098,9 @@
     "ForceHideDBRBanner": false,
     "ForceHideBillRedesignBanner": false,
     "BillRendering": {
+      "enabled": true
+    },
+    "BillRenderingTenant": {
       "enabled": true
     },
     "IsAboutMyBillEnquiryEnabled": true,

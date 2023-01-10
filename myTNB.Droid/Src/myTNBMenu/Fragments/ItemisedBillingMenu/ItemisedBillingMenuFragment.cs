@@ -166,7 +166,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         AccountData mSelectedAccountData;
 
         GetBillRenderingResponse billRenderingResponse;
-
+        GetBillRenderingTenantResponse billRenderingTenantResponse;
         List<AccountChargeModel> selectedAccountChargesModelList;
         List<Item> itemFilterList = new List<Item>();
         List<AccountBillPayHistoryModel> selectedBillingHistoryModelList;
@@ -305,6 +305,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 this.SetIsClicked(true);
                 Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                 intent.PutExtra("accountNumber", mSelectedAccountData.AccountNum);
                 StartActivity(intent);
             }
@@ -322,6 +323,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 intent.PutExtra("PENDING_PAYMENT", isPendingPayment);
                 intent.PutExtra("IS_VIEW_BILL_DISABLE", isViewBillDisable);
                 intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billRenderingResponse));
+                intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
 
                 StartActivity(intent);
             }
@@ -546,7 +548,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             base.OnViewCreated(view, savedInstanceState);
             itemisedBillingInfoShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.itemisedBillingInfoShimmer);
             paperlessTitle = view.FindViewById<TextView>(Resource.Id.paperlessTitle);
-            paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
+           // paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
             itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
             itemisedBillingInfoShimmer.StartShimmer();
             billFilterIcon.Enabled = false;
@@ -620,7 +622,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         GetBillRenderingModel getBillRenderingModel = new GetBillRenderingModel();
                         AccountData dbrAccount = selectedAccount;
 
-                        if (DBRUtility.Instance.IsAccountEligible && DBRUtility.Instance.IsCAEligible(dbrAccount.AccountNum))
+                        if (DBRUtility.Instance.IsAccountEligible && DBRUtility.Instance.IsCAEligible(selectedAccount.AccountNum))
                         {
                             if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
                             {
@@ -636,6 +638,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                 && billRenderingResponse.StatusDetail.IsSuccess
                                 && billRenderingResponse.Content != null)
                             {
+                                //For tenant checking DBR 
+                                List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+                                List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+                                billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                                bool tenantAllowOptIn = false;
+
+                                if (billRenderingTenantResponse != null
+                                    && billRenderingTenantResponse.StatusDetail != null
+                                    && billRenderingTenantResponse.StatusDetail.IsSuccess
+                                    && billRenderingTenantResponse.Content != null)
+                                {
+                                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerOverRule;
+                                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerAlreadyOptIn;
+                                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsTenantAlreadyOptIn;
+                                    bool AccountHasOwner = accounts.Find(x => x.AccNum == dbrAccount.AccountNum).AccountHasOwner;
+
+                                    if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                                    {
+                                        tenantAllowOptIn = true;
+                                    }
+                                }
+
                                 if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
                                 {
                                     isDigitalContainerVisible = false;
@@ -649,19 +673,39 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                         || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
                                     {
                                         bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
+                                        paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
                                     }
                                     else if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Email
                                         || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
                                     {
                                         bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
+                                        paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
                                     }
                                     if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
                                     {
                                         bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
+
+                                        if (_isOwner)
+                                        {
+                                            paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
+                                        }
+                                        else
+                                        {
+                                            
+                                            if (tenantAllowOptIn)
+                                            {
+                                                paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
+                                            }
+                                            else
+                                            {
+                                                paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBillNonOwner"));
+                                            }
+                                           
+                                        }
                                     }
-                                    paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
                                     SetDynatraceScreenTags();
                                 }
+
                             }
                         }
                     }

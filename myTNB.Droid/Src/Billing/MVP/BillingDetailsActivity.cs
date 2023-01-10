@@ -134,6 +134,7 @@ namespace myTNB_Android.Src.Billing.MVP
         ImageView bill_paperless_icon;
 
         GetBillRenderingResponse billRenderingResponse;
+        GetBillRenderingTenantResponse billRenderingTenantResponse;
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
@@ -148,6 +149,8 @@ namespace myTNB_Android.Src.Billing.MVP
         private bool isPendingPayment = false;
         private bool isCheckPendingPaymentNeeded = false;
         private bool isPaymentButtonEnable = false;
+
+        internal bool _isOwner { get; set; }
 
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
@@ -282,6 +285,30 @@ namespace myTNB_Android.Src.Billing.MVP
             if (extras.ContainsKey("billrenderingresponse"))
             {
                 billRenderingResponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
+                
+            }
+            if (extras.ContainsKey("billRenderingTenantResponse"))
+            {
+                
+                billRenderingTenantResponse = JsonConvert.DeserializeObject<GetBillRenderingTenantResponse>(extras.GetString("billRenderingTenantResponse"));
+               
+                List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+                bool tenantAllowOptIn = false;
+                if (billRenderingTenantResponse != null)
+                {
+                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerOverRule;
+                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerAlreadyOptIn;
+                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsTenantAlreadyOptIn;
+                    bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccountData.AccountNum).AccountHasOwner;
+
+                    if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                    {
+                        tenantAllowOptIn = true;
+                    }
+                }
+
+                _isOwner = selectedAccountData.IsOwner && DBRUtility.Instance.IsCAEligible(selectedAccountData.AccountNum);
+
                 if (billRenderingResponse != null)
                 {
                     if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
@@ -295,17 +322,35 @@ namespace myTNB_Android.Src.Billing.MVP
                             || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
                         {
                             bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
+                            paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
                         }
                         else if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Email
                             || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
                         {
                             bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
+                            paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
                         }
                         if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
                         {
                             bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
+
+                            if (_isOwner)
+                            {
+                                paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
+                            }
+                            else
+                            {
+                                if (tenantAllowOptIn == true)
+                                {
+                                    paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
+                                }
+                                else
+                                {
+                                    paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBillNonOwner"));
+                                }
+                            }
                         }
-                        paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
+                       
                         SetDynatraceScreenTags();
                     }
                 }
@@ -430,6 +475,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 SetDynatraceCTATags();
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
+                intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                 intent.PutExtra("accountNumber", selectedAccountData.AccountNum);
                 StartActivity(intent);
             }
