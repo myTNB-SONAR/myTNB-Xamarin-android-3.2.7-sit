@@ -694,7 +694,11 @@
     "notifyCheck": "Only notify me when my power is back",
     "callUs": "Need help? <a href='tel: 15454'>Call us</a> for more information",
     "shareFeedback": "Share Feedback",
-    "manageBillDelivery": "Manage Bill Delivery"
+    "manageBillDelivery": "Manage Bill Delivery",
+    "continueApplication": "Continue Application",
+    "submitNow": "Submit Now",
+    "viewApplicationDetails": "View Application Details",
+    "otpVerifyNow": "Verify Now"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -999,7 +1003,7 @@
     "title5": "Say hi to myTNB Rewards!",
     "title6": "What’s new with myTNB?",
     "title7": "Use myTNB with Any Mobile Number.",
-    "title8": "Manage your applications with ease!",
+    "title8": "Stay Updated with Your Applications!",
     "title9": "Personalise Your Text Size.",
     "title10": "Set your appointment with us!",
     "title11": "Enhanced access controls to safeguard your information.",
@@ -1012,11 +1016,11 @@
     "description5": "That's right, we're bringing you exclusive perks and freebies - all of this just for myTNB users! Check out the new Rewards section to claim something now!",
     "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.",
     "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
-    "description8": "You can now edit, manage and track all your application status with zero hassle, anytime and anywhere.",
+    "description8": "You can now track all your application status with zero hassle, anytime and anywhere.",
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
     "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot.",
     "description11": "Stay in control of your account information and permissions by defining what you let others access as an owner of an electricity account.",
-    "description12": "Planning to move in and out of your home? You can now easily apply for your electricity account, edit your applications and take note of your moving plans with our new feature.",
+    "description12": "Planning to move in to your home? You can now apply for your electricity account easily and track your application status with our new feature.",
     "description13": "Create new applications and manage your existing electricity accounts anytime!"
   },
   "ManageCards": {
@@ -2987,6 +2991,17 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "GetServices": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -3109,7 +3124,9 @@
     "AccountStatementTimeout": 5000,
     "ShouldShowAccountStatementToNonOwner": true,
     "MaxAccountList": 100000,
-    "ResidentialRateCategory": [ "A_LV", "A_LV_D", "A_MV" ]
+    "ResidentialRateCategory": [ "A_LV", "A_LV_D", "A_MV" ],
+    "IsMyHomeMarketingPopupEnable": true,
+    "ForceHidemyHomeBanner": true
   },
   "StatementPeriod": {
     "title": "Account Statement",
@@ -3309,5 +3326,10 @@
     "iWantTo": "I want to:",
     "moveInTitle": "Move In",
     "moveInDescription": "I want to open an account for new/existing premise."
+  },
+  "MarketingPopup": {
+    "myHomeTitle": "Check out myHome today!",
+    "myHomeMessage": "You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, track your application status and even organise your moving plans with ease using myHome.",
+    "myHomeCTA": "Got It!"
   }
 }

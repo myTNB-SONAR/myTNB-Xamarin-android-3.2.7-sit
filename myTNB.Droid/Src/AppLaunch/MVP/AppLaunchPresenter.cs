@@ -354,6 +354,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             , UserSessions.GetDeviceId()
                                             , DeviceIdUtils.GetAppVersionName()
                                             , myTNB.Mobile.MobileConstants.OSType.Android
+                                            , DeviceIdUtils.GetAndroidVersion()
+                                            , FirebaseTokenEntity.GetLatest().FBToken
                                             , TextViewUtils.FontInfo
                                             , LanguageUtil.GetAppLanguage() == "MS"
                                                 ? LanguageManager.Language.MS
@@ -446,6 +448,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         , UserSessions.GetDeviceId()
                                         , DeviceIdUtils.GetAppVersionName()
                                         , myTNB.Mobile.MobileConstants.OSType.Android
+                                        , DeviceIdUtils.GetAndroidVersion()
+                                        , FirebaseTokenEntity.GetLatest().FBToken
                                         , TextViewUtils.FontInfo
                                         , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
 

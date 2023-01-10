@@ -1,4 +1,5 @@
-﻿namespace myTNB.Mobile
+﻿
+namespace myTNB.Mobile
 {
     public static class AWSConstants
     {
@@ -109,6 +110,7 @@
             internal const string PostAccountStatement = "AccountStatement";
             internal const string PostAccountStatementNotification = "AccountStatementNotification";
             public const string GetEligibility = "Eligibility";
+            internal const string PostServices = "GetServices";
         }
     }
 }

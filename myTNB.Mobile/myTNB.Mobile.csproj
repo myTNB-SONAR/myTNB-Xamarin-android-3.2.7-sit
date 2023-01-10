@@ -138,6 +138,14 @@
     <Folder Include="Constants\" />
     <Folder Include="Constants\myHome\" />
     <Folder Include="AWS\Models\DBR\Auto OptIn \" />
+    <Folder Include="API\Managers\Home\" />
+    <Folder Include="API\Models\Home\" />
+    <Folder Include="API\Models\Home\Post Services\" />
+    <Folder Include="API\Services\Home\" />
+    <Folder Include="Business\Utility\" />
+    <Folder Include="Business\Utility\myHome\" />
+    <Folder Include="Constants\Marketing Popup\" />
+    <Folder Include="Constants\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -211,6 +219,14 @@
     <None Remove="Constants\" />
     <None Remove="Constants\myHome\" />
     <None Remove="AWS\Models\DBR\Auto OptIn \" />
+    <None Remove="API\Managers\Home\" />
+    <None Remove="API\Models\Home\" />
+    <None Remove="API\Models\Home\Post Services\" />
+    <None Remove="API\Services\Home\" />
+    <None Remove="Business\Utility\" />
+    <None Remove="Business\Utility\myHome\" />
+    <None Remove="Constants\Marketing Popup\" />
+    <None Remove="Constants\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />

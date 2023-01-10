@@ -37,6 +37,7 @@ namespace myTNB.Mobile
         private const string DEV2 = "http://10.215.128.191:89";
         private const string DEV3 = "http://10.215.128.191:99";
         private const string DEV4 = "http://10.215.128.191:97";
+        internal const string DEV5 = "http://10.215.128.162:99";
 
         private const string SIT_AWS = "https://stagingapi.mytnb.com.my/asmx";
         //ASMX

@@ -694,7 +694,11 @@
     "notifyCheck": "Hanya maklumkan saya apabila elektrik kembali",
     "callUs": "Perlu bantuan lanjut? <a href='tel: 15454'>Hubungi kami</a>",
     "shareFeedback": "Kongsi Maklum Balas",
-    "manageBillDelivery": "Urus Cara Penghantaran Bil"
+    "manageBillDelivery": "Urus Cara Penghantaran Bil",
+    "continueApplication": "MS_Continue Application",
+    "submitNow": "MS_Submit Now",
+    "viewApplicationDetails": "MS_View Application Details",
+    "otpVerifyNow": "MS_Verify Now"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -1016,7 +1020,7 @@
     "description9": "Ubah suai myTNB anda dengan saiz teks paparan bersesuaian untuk pengendalian yang lebih selesa. Anda boleh memilih antara saiz normal atau besar dan boleh mengubah tetapan ini pada bila-bila masa di Profil anda.",
     "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai.",
     "description11": "Sebagai pemilik akaun elektrik, pastikan anda mempunyai kawalan terhadap maklumat dan permintaan akaun dengan menetapkan akses yang anda beri kepada pihak lain.",
-    "description12": "MS_Planning to move in and out of your home? You can now easily apply for your electricity account, edit your applications and take note of your moving plans with our new feature.",
+    "description12": "MS_Planning to move in to your home? You can now apply for your electricity account easily and track your application status with our new feature.",
     "description13": "MS_Create new applications and manage your existing electricity accounts anytime!"
   },
   "ManageCards": {
@@ -2987,6 +2991,17 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "GetServices": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -3109,7 +3124,9 @@
     "AccountStatementTimeout": 5000,
     "ShouldShowAccountStatementToNonOwner": true,
     "MaxAccountList": 100000,
-    "ResidentialRateCategory": [ "A_LV", "A_LV_D", "A_MV" ]
+    "ResidentialRateCategory": [ "A_LV", "A_LV_D", "A_MV" ],
+    "IsMyHomeMarketingPopupEnable": true,
+    "ForceHidemyHomeBanner": true
   },
   "StatementPeriod": {
     "title": "Penyata Akaun",
@@ -3309,5 +3326,10 @@
     "iWantTo": "MS_I want to:",
     "moveInTitle": "MS_Move In",
     "moveInDescription": "MS_I want to open an account for new/existing premise."
+  },
+  "MarketingPopup": {
+    "myHomeTitle": "MS_Check out myHome today!",
+    "myHomeMessage": "MS_You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, track your application status and even organise your moving plans with ease using myHome.",
+    "myHomeCTA": "MS_Got It!"
   }
 }

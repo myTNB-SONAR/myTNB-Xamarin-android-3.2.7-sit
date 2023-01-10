@@ -245,6 +245,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         , UserSessions.GetDeviceId()
                         , DeviceIdUtils.GetAppVersionName()
                         , MobileConstants.OSType.Android
+                        , DeviceIdUtils.GetAndroidVersion()
+                        , FirebaseTokenEntity.GetLatest().FBToken
                         , TextViewUtils.FontInfo
                         , LanguageUtil.GetAppLanguage() == "MS"
                             ? LanguageManager.Language.MS

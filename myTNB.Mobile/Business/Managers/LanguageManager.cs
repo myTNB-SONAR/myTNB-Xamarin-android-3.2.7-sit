@@ -41,6 +41,7 @@ namespace myTNB
         private const string Hint = "Hint";
         private const string Error = "Error";
         private const string Tutorial = "Tutorial";
+        private const string MarketingPopup = "MarketingPopup";
         private const string LANGUAGE_RESOURCE_PATH = "myTNB.Mobile.Resources.Language.Language_{0}.json";
 
         /// <summary>
@@ -127,10 +128,24 @@ namespace myTNB
                ? errorDictionary[key] : string.Empty;
         }
 
+        /// <summary>
+        /// Takes the Tutorial Overlay's Key Value Pairs
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, string> GetTutorialValuePairs()
         {
             return GetValuesByPage(Tutorial);
         }
+
+        /// <summary>
+        /// Takes the Marketing Popup Key Value Pairs
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, string> GetMarketingPopupValuePairs()
+        {
+            return GetValuesByPage(MarketingPopup);
+        }
+
         /// <summary>
         /// Gets the key-value pair of texts of a page.
         /// Advisable to call on intialisation of the page.
@@ -320,7 +335,9 @@ namespace myTNB
             AccountStatementTimeout,
             ShouldShowAccountStatementToNonOwner,
             MaxAccountList,
-            ResidentialRateCategory
+            ResidentialRateCategory,
+            IsMyHomeMarketingPopupEnable,
+            ForceHidemyHomeBanner
         }
 
         public Dictionary<string, List<T>> GetSelectorsByPage<T>(string pageName) where T : new()

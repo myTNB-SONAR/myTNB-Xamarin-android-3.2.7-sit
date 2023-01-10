@@ -1,4 +1,4 @@
-﻿namespace myTNB.Mobile.Constants.myHome
+﻿namespace myTNB.Mobile.Constants
 {
     public struct myHome
     {

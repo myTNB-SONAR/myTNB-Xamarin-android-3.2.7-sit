@@ -23,9 +23,11 @@ namespace myTNB
         private AppInfoManager() { }
         private object PlatformUserInfo;
         private string RoleId = string.Empty;
-        private string UserId = string.Empty;
-        private string UserName = string.Empty;
-        private string Lang = string.Empty;
+        internal string UserId = string.Empty;
+        internal string UserName = string.Empty;
+        internal string Lang = string.Empty;
+        internal string FCMToken = string.Empty;
+        internal string OSVersion = string.Empty;
 
         internal Language Language { private set; get; } = LanguageManager.Language.EN;
 
@@ -45,6 +47,8 @@ namespace myTNB
             , string deviceToken
             , string appVersion
             , string osType
+            , string osVersion
+            , string fcmToken
             , string fontSize = "N"
             , Language language = Language.EN)
         {
@@ -54,6 +58,8 @@ namespace myTNB
             UserId = userID ?? string.Empty;
             UserName = userName ?? string.Empty;
             Lang = this.Language.ToString();
+            FCMToken = fcmToken;
+            OSVersion = osVersion;
 
             //View Info
             ViewInfoHeader = new ViewInfoHeader
@@ -69,7 +75,7 @@ namespace myTNB
             };
         }
 
-        private ViewInfoHeader ViewInfoHeader { set; get; }
+        internal ViewInfoHeader ViewInfoHeader { set; get; }
 
         internal string ViewInfo
         {
@@ -111,6 +117,8 @@ namespace myTNB
             UserId = string.Empty;
             UserName = string.Empty;
             PlatformUserInfo = null;
+            FCMToken = string.Empty;
+            OSVersion = string.Empty;
         }
 
         public string GetUserInfo()
