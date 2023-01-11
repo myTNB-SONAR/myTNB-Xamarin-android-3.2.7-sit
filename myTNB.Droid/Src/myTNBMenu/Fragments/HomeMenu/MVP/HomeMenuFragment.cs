@@ -63,6 +63,7 @@ using myTNB_Android.Src.ServiceDistruption.Activity;
 using System.Threading.Tasks;
 using AndroidX.Fragment.App;
 using myTNB_Android.Src.MyHome;
+using myTNB.Mobile.Business;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -284,6 +285,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.newBillRedesignBanner)]
         ImageView newBillRedesignBanner;
+
+        [BindView(Resource.Id.discoverMoreMyHomeContainer)]
+        LinearLayout discoverMoreMyHomeContainer;
+
+        [BindView(Resource.Id.myHomeBanner)]
+        ImageView myHomeBanner;
 
         [BindView(Resource.Id.discovercontainer)]
         LinearLayout discovercontainer;
@@ -520,6 +527,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 //SetDBRDiscoverView();
                 SetUpNBRView();
                 SetupNewFAQView();
+                SetUpMyHomeBanner();
 
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
@@ -4218,6 +4226,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Home.Home_Banner);
             ((DashboardHomeActivity)Activity).NavigateToNBR();
+        }
+
+        private void SetUpMyHomeBanner()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    if (!MyHomeUtility.IsBannerHidden)
+                    {
+                        discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+                        discoverMoreMyHomeContainer.Visibility = ViewStates.Visible;
+                        myHomeBanner.Visibility = ViewStates.Visible;
+                        myHomeBanner.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.Banner_Home_NBR_MS//STUB
+                            : Resource.Drawable.Banner_Home_MyHome_EN);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

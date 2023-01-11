@@ -1009,6 +1009,7 @@
     "title11": "Enhanced access controls to safeguard your information.",
     "title12": "Enhance your moving experience with myHome!",
     "title13": "Connect your premises to electricity with ease.",
+    "title14": "Manage your applications with ease!",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
@@ -1020,8 +1021,9 @@
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
     "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot.",
     "description11": "Stay in control of your account information and permissions by defining what you let others access as an owner of an electricity account.",
-    "description12": "Planning to move in to your home? You can now apply for your electricity account easily and track your application status with our new feature.",
-    "description13": "Create new applications and manage your existing electricity accounts anytime!"
+    "description12": "Planning to move in and out of your home? You can now easily apply for your electricity account, edit your applications and take note of your moving plans with our new feature.",
+    "description13": "Create new applications and manage your existing electricity accounts anytime!",
+    "description14": "You can now edit, manage and track all your application status with zero hassle, anytime and anywhere."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -1530,8 +1532,8 @@
     "billStatementMessage": "You can now download a summary of your accounts monthly statements and bills by your preferred statement period.",
     "myHomeTitle": "Introducing myHome.",
     "myHomeMessage": "Manage your electricity connection accounts and applications by selecting the myHome feature.",
-    "connectMyPremiseTitle": "Start your applications.",
-    "connectMyPremiseMessage": "Apply for new electricity connections, change of tenancy and closure of your electricity accounts here."
+    "connectMyPremiseTitle": "Start Your Application",
+    "connectMyPremiseMessage": "Apply for new electricity connections, change of account ownership and close your electricity accounts here."
   },
   "Tnb_Profile": {
     "title": "myTNB Profile",
@@ -3125,7 +3127,7 @@
     "ShouldShowAccountStatementToNonOwner": true,
     "MaxAccountList": 100000,
     "ResidentialRateCategory": [ "A_LV", "A_LV_D", "A_MV" ],
-    "IsMyHomeMarketingPopupEnable": true,
+    "IsMyHomeMarketingPopupEnable": false,
     "ForceHidemyHomeBanner": true
   },
   "StatementPeriod": {
@@ -3321,11 +3323,11 @@
     "thumbDownNo": "Not really"
   },
   "ConnectMyPremise": {
-    "title": "Connect My Premise",
+    "title": "Connect My Home",
     "description": "Submit application for an electricity connection account.",
     "iWantTo": "I want to:",
     "moveInTitle": "Move In",
-    "moveInDescription": "I want to open an account for new/existing premise."
+    "moveInDescription": "I want to open an account for new or existing permise."
   },
   "MarketingPopup": {
     "myHomeTitle": "Check out myHome today!",

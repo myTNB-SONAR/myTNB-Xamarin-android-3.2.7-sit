@@ -32,7 +32,7 @@ namespace myTNB.Mobile
         /// <param name="redirectURL">Redirect URL of a feature configured in mobile constants</param>
         /// <param name="CANumber">Electricity Account Number</param>
         /// <returns></returns>
-        public string GetSignature(string name
+        public string GetDBRSignature(string name
             , string accessToken
             , string deviceToken
             , string appVersion
@@ -68,6 +68,60 @@ namespace myTNB.Mobile
             catch (Exception e)
             {
                 Debug.WriteLine("[DEBUG] GetSignature: " + e.Message);
+                return string.Empty;
+            }
+        }
+
+        public string GetMyHomeSignature(string name
+            , string accessToken
+            , string deviceToken
+            , string appVersion
+            , int roleID
+            , string language
+            , string fontSize
+            , string originURL
+            , string redirectURL
+            , string userID
+            , int osType
+            , string email)
+        {
+            try
+            {
+                MyHomeModel ssoModel = new MyHomeModel
+                {
+                    Name = name,
+                    AccessToken = accessToken,
+                    DeviceToken = deviceToken,
+                    AppVersion = appVersion,
+                    RoleId = roleID,
+                    Lang = language,
+                    FontSize = fontSize == "L" ? "L" : "N",
+                    OriginUrl = originURL,
+                    RedirectUrl = redirectURL,
+                    CaNo = string.Empty,
+                    UserID = userID,
+                    IdType = null,
+                    IdNo = string.Empty,
+                    TransactionType = string.Empty,
+                    InitiateTime = DateTime.UtcNow,
+                    QRMappingID = null,
+                    OSType = osType,
+                    Email = email,
+                    IsContractorApplied = false,
+                    IsNonLogin = false,
+                    AppRef = string.Empty,
+                    ApplicationModuleID = null
+                };
+                Debug.WriteLine("[DEBUG] SSO ssoModel: " + JsonConvert.SerializeObject(ssoModel));
+                string signature = SecurityManager.Instance.AES256_Encrypt(AWSConstants.SaltKey
+                    , AWSConstants.PassPhrase
+                    , JsonConvert.SerializeObject(ssoModel));
+                Debug.WriteLine("[DEBUG] SSO GetMyHomeSignature: " + signature);
+                return signature;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] GetMyHomeSignature Error: " + e.Message);
                 return string.Empty;
             }
         }

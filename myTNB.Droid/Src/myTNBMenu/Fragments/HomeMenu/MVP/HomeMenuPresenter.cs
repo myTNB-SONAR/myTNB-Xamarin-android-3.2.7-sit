@@ -33,6 +33,11 @@ using System.Globalization;
 using Java.Util;
 using Android.Content.Res;
 using System.IO;
+using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile.AWS.Managers.Home;
+using myTNB.Mobile.API.Models.Home.PostServices;
+using myTNB;
+using Android.Util;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1733,6 +1738,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 //    usrInf = currentUsrInf
                 //});
 
+
+                //PostServicesResponse servicesResponse =  await HomeManager.Instance.PostServices(string.Empty, string.Empty);
+
+                //if (servicesResponse != null
+                //    && servicesResponse.Data != null
+                //    && servicesResponse.Data.StatusDetail != null
+                //    && servicesResponse.Data.StatusDetail.IsSuccess)
+                //{
+                //    Log.Debug("SUCCESS servicesResponse:", servicesResponse.Data.ToString());
+                //}
+                //else
+                //{
+                //    Log.Debug("FAILED servicesResponse:", "");
+                //}
+
+                //STUB
                 GetServicesResponse getServicesResponse = JsonConvert.DeserializeObject<GetServicesResponse>(GeServicesStub());
 
                 if (getServicesResponse != null && getServicesResponse.Data != null && getServicesResponse.Data.ErrorCode == "7200")

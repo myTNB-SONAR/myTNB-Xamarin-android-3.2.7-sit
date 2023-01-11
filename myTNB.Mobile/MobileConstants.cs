@@ -170,6 +170,10 @@ namespace myTNB.Mobile
             public const string Android = "1";
             public const string iOS = "2";
             public const string Huawei = "3";
+
+            public const int int_Android = 1;
+            public const int int_iOS = 2;
+            public const int int_Huawei = 3;
         }
 
         internal struct BillRenderingCodes

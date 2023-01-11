@@ -7424,6 +7424,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Database\Model\MyServiceIconEntity.cs" />
+    <Compile Include="Src\MyHome\Model\MyServiceIconModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">
@@ -9912,6 +9914,7 @@
     <Folder Include="Src\MyHome\" />
     <Folder Include="Src\MyDrawer\" />
     <Folder Include="Src\MyHome\Activity\" />
+    <Folder Include="Src\MyHome\Model\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

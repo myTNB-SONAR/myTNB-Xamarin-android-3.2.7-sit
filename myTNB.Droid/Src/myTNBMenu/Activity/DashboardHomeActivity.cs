@@ -61,6 +61,8 @@ using myTNB_Android.Src.Utils.Notification;
 
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.Login.Models;
+using myTNB.Mobile.Business;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -744,80 +746,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else
                     {
-                        int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
-                        bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
-
-
-                        //GetBillTenantRenderingAsync();
-
-                        int countCA = 0;
-                        bool flagOwner = false;
-                        List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                        List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
-                        GetBillRenderingTenantModel tenantInfo = new GetBillRenderingTenantModel();
-                        CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
-
-
-                        if (billRenderingTenantResponse != null
-                            && billRenderingTenantResponse.StatusDetail != null
-                            && billRenderingTenantResponse.StatusDetail.IsSuccess
-                            && billRenderingTenantResponse.Content != null
-                           )
-                        {
-                            foreach (CustomerBillingAccount item in accounts)
-                            {
-                                if (item.AccountHasOwner == true)
-                                {
-                                    flagOwner = true;
-                                }
-                            }
-
-                            for (int j = 0; j < accounts.Count; j++)
-                            {
-                                for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
-                                {
-                                    if (flagOwner
-                                        && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
-                                        && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
-                                        && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
-                                        && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
-                                    {
-                                        countCA++;
-                                    }
-                                }
-
-                            }
-
-                        }
-
-                        if (!dbrPopUpHasShown && loginCount == 1 &&
-                            DBRUtility.Instance.ShouldShowHomeCard &&
-                            DBRUtility.Instance.IsAccountEligible &&
-                            CustomerBillingAccount.HasOwnerCA())
-                        {
-                            ShowMarketingTooltip();
-                            UserSessions.SaveDBRPopUpFlag(this.mPref, true);
-                        }
-                        else
-                        {
-                            if (!dbrPopUpHasShown
-                                && loginCount == 1
-                                && DBRUtility.Instance.ShouldShowHomeCard
-                                && countCA > 0)
-                            {
-                                ShowMarketingTooltip();
-                                UserSessions.SaveDBRPopUpFlag(this.mPref, true);
-                            }
-                        }
-
-                        //NEED TO REVISIT
                         bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
                         bool myHomeMarketingPopUpHasShown = UserSessions.MyHomeMarketingPopUpHasShown(this.mPref);
 
-                        if (!myHomeHasBeenTapped && !myHomeMarketingPopUpHasShown)
+                        if (!myHomeHasBeenTapped && !myHomeMarketingPopUpHasShown && MyHomeUtility.IsMarketingPopupEnabled)
                         {
                             ShowMyHomeMarketingPopUp();
                             UserSessions.SetShownMyHomeMarketingPopUp(this.mPref);
+                        }
+                        else
+                        {
+                            LogicCheckForDBRMarketingPopUp();
                         }
                     }
                 }
@@ -831,6 +770,75 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 MyTNBAccountManagement.GetInstance().OnHoldWhatNew(true);
                 UserSessions.SetUpdateIdDialog(this.mPref);
+            }
+        }
+
+        private void LogicCheckForDBRMarketingPopUp()
+        {
+            UserEntity user = UserEntity.GetActive();
+            int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
+            bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
+
+            //GetBillTenantRenderingAsync();
+
+            int countCA = 0;
+            bool flagOwner = false;
+            List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+            List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+            GetBillRenderingTenantModel tenantInfo = new GetBillRenderingTenantModel();
+            CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
+
+
+            if (billRenderingTenantResponse != null
+                && billRenderingTenantResponse.StatusDetail != null
+                && billRenderingTenantResponse.StatusDetail.IsSuccess
+                && billRenderingTenantResponse.Content != null
+               )
+            {
+                foreach (CustomerBillingAccount item in accounts)
+                {
+                    if (item.AccountHasOwner == true)
+                    {
+                        flagOwner = true;
+                    }
+                }
+
+                for (int j = 0; j < accounts.Count; j++)
+                {
+                    for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
+                    {
+                        if (flagOwner
+                            && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
+                            && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
+                            && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
+                            && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
+                        {
+                            countCA++;
+                        }
+                    }
+
+                }
+
+            }
+
+            if (!dbrPopUpHasShown && loginCount == 1 &&
+                DBRUtility.Instance.ShouldShowHomeCard &&
+                DBRUtility.Instance.IsAccountEligible &&
+                CustomerBillingAccount.HasOwnerCA())
+            {
+                ShowMarketingTooltip();
+                UserSessions.SaveDBRPopUpFlag(this.mPref, true);
+            }
+            else
+            {
+                if (!dbrPopUpHasShown
+                    && loginCount == 1
+                    && DBRUtility.Instance.ShouldShowHomeCard
+                    && countCA > 0)
+                {
+                    ShowMarketingTooltip();
+                    UserSessions.SaveDBRPopUpFlag(this.mPref, true);
+                }
             }
         }
 
@@ -868,15 +876,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         this.SetIsClicked(false);
                         //DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
 
-                        int loginCount = UserLoginCountEntity.GetLoginCount(UserEntity.GetActive().Email);
-                        bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
-                        if(!dbrPopUpHasShown && loginCount == 1 &&
-                            DBRUtility.Instance.ShouldShowHomeCard &&
-                            CustomerBillingAccount.HasOwnerCA())
-                        {
-                            ShowMarketingTooltip();
-                            UserSessions.SaveDBRPopUpFlag(this.mPref, true);
-                        }
+                        LogicCheckForDBRMarketingPopUp();
                     })
                     .Build();
             marketingTooltip.Show();
@@ -1798,7 +1798,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
                 bool myHomeMarketingPopUpHasShown = UserSessions.MyHomeMarketingPopUpHasShown(this.mPref);
 
-                if (!myHomeMarketingPopUpHasShown && !myHomeHasBeenTapped && popupID)
+                if (!myHomeMarketingPopUpHasShown && !myHomeHasBeenTapped && popupID && MyHomeUtility.IsMarketingPopupEnabled)
                 {
                     ShowMyHomeMarketingPopUp();
                     UserSessions.SetShownMyHomeMarketingPopUp(this.mPref);

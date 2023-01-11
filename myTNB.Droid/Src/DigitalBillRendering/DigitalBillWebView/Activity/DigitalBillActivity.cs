@@ -228,7 +228,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 {
                     UserEntity user = UserEntity.GetActive();
                     string myTNBAccountName = user?.DisplayName ?? string.Empty;
-                    string signature = SSOManager.Instance.GetSignature(myTNBAccountName
+                    string signature = SSOManager.Instance.GetDBRSignature(myTNBAccountName
                     , AccessTokenCache.Instance.GetAccessToken(this)
                     , user.DeviceId ?? string.Empty
                     , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
