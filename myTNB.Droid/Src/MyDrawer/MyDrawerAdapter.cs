@@ -18,6 +18,8 @@ using myTNB_Android.Src.MyDrawer;
 using myTNB_Android.Src.Utils;
 using static myTNB_Android.Src.MyDrawer.MyDrawerAdapter;
 
+using ServiceEnum = myTNB.Mobile.MobileEnums.ServiceEnum;
+
 namespace myTNB_Android.Src.MyDrawer
 {
     public class MyDrawerAdapter : RecyclerView.Adapter
@@ -53,11 +55,11 @@ namespace myTNB_Android.Src.MyDrawer
 
                 if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    vh.myDrawerTitle.TextFormatted = Html.FromHtml(model.serviceCategoryName, FromHtmlOptions.ModeLegacy);
+                    vh.myDrawerTitle.TextFormatted = Html.FromHtml(model.ServiceName, FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    vh.myDrawerTitle.TextFormatted = Html.FromHtml(model.serviceCategoryName);
+                    vh.myDrawerTitle.TextFormatted = Html.FromHtml(model.ServiceName);
                 }
 
                 ViewGroup.LayoutParams currentCard = vh.myDrawerCardView.LayoutParameters;
@@ -85,9 +87,10 @@ namespace myTNB_Android.Src.MyDrawer
                 currentImg.Height = imgHeight;
                 currentImg.Width = imgHeight;
 
-                switch(model.ServiceCategoryId)
+                //TODO: Need to download image from model
+                switch(model.ServiceType)
                 {
-                    case "001":
+                    case ServiceEnum.CONNECTMYPREMISE:
                         vh.myDrawerImg.SetImageResource(Resource.Drawable.Icon_Connect_My_Premise);
                         if (UserSessions.ConnectMyPremiseHasShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
                         {

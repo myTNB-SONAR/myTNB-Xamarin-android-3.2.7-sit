@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using myTNB.Mobile.API.Base;
 using Newtonsoft.Json;
+using static myTNB.Mobile.MobileEnums;
 
 namespace myTNB.Mobile.API.Models.Home.PostServices
 {
@@ -47,5 +48,50 @@ namespace myTNB.Mobile.API.Models.Home.PostServices
         public string ServiceBannerPreferenceKey { get { return string.Format("QuicklinksBanner{0}", ServiceId); } }
         public string ServiceIconPreferenceKey { get { return string.Format("Quicklinks{0}", ServiceId); } }
         public string DisabledServiceIconPreferenceKey { get { return string.Format("QuicklinksDisabled{0}", ServiceId); } }
+
+        public ServiceEnum ServiceType
+        {
+            get
+            {
+                ServiceEnum servicetType = default(ServiceEnum);
+
+
+
+                if (!string.IsNullOrEmpty(ServiceId))
+                {
+                    switch (ServiceId)
+                    {
+                        case "1001":
+                            servicetType = ServiceEnum.SELFMETERREADING;
+                            break;
+                        case "1003":
+                            servicetType = ServiceEnum.SUBMITFEEDBACK;
+                            break;
+                        case "1004":
+                            servicetType = ServiceEnum.PAYBILL;
+                            break;
+                        case "1005":
+                            servicetType = ServiceEnum.VIEWBILL;
+                            break;
+                        case "1006":
+                            servicetType = ServiceEnum.APPLICATIONSTATUS;
+                            break;
+                        case "1007":
+                            servicetType = ServiceEnum.ENERGYBUDGET;
+                            break;
+                        case "1008":
+                            servicetType = ServiceEnum.MYHOME;
+                            break;
+                        case "1009":
+                            servicetType = ServiceEnum.CONNECTMYPREMISE;
+                            break;
+                        default:
+                            servicetType = ServiceEnum.None;
+                            break;
+                    }
+                }
+                return servicetType;
+            }
+        }
     }
 }

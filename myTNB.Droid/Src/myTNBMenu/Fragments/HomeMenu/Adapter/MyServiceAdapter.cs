@@ -7,17 +7,19 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 
+using ServiceEnum = myTNB.Mobile.MobileEnums.ServiceEnum;
+
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 {
     public class MyServiceAdapter : RecyclerView.Adapter
     {
-
-        List<MyService> myServiceList = new List<MyService>();
+        List<MyServiceModel> myServicesList = new List<MyServiceModel>();
 
         public event EventHandler<int> ClickChanged;
 
@@ -25,23 +27,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
         private bool isRefreshShown = false;
 
-
-        public MyServiceAdapter(List<MyService> data, Android.App.Activity Activity, bool currentRefresh)
+        public MyServiceAdapter(List<MyServiceModel> data, Android.App.Activity Activity, bool currentRefresh)
         {
             if (data == null)
             {
-                this.myServiceList.Clear();
+                this.myServicesList.Clear();
             }
             else
             {
-                this.myServiceList = data;
+                this.myServicesList = data;
             }
             this.mActivity = Activity;
 
             this.isRefreshShown = currentRefresh;
         }
 
-        public override int ItemCount => myServiceList.Count;
+        public override int ItemCount => myServicesList.Count;
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
@@ -50,31 +51,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
                 MyServiceViewHolder vh = holder as MyServiceViewHolder;
 
-                MyService model = myServiceList[position];
+                MyServiceModel model = myServicesList[position];
                 try
                 {
                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                     {
-                        if (model.serviceCategoryName.Contains("<br/>") || model.serviceCategoryName.Contains("\n"))
+                        if (model.ServiceName.Contains("<br/>") || model.ServiceName.Contains("\n"))
                         {
                             string newStringValue = "";
-                            if (model.serviceCategoryName.Contains("\n"))
+                            if (model.ServiceName.Contains("\n"))
                             {
-                                newStringValue = model.serviceCategoryName.Replace("\n", "<br/>");
+                                newStringValue = model.ServiceName.Replace("\n", "<br/>");
                             }
-                            else if (model.serviceCategoryName.Contains("\r\n"))
+                            else if (model.ServiceName.Contains("\r\n"))
                             {
-                                newStringValue = model.serviceCategoryName.Replace("\r\n", "<br/>");
+                                newStringValue = model.ServiceName.Replace("\r\n", "<br/>");
                             }
                             else
                             {
-                                newStringValue = model.serviceCategoryName;
+                                newStringValue = model.ServiceName;
                             }
                             vh.serviceTitle.TextFormatted = Html.FromHtml(newStringValue, FromHtmlOptions.ModeLegacy);
                         }
                         else
                         {
-                            string[] splittedString = model.serviceCategoryName.Trim().Split(" ");
+                            string[] splittedString = model.ServiceName.Trim().Split(" ");
                             string newStringName = "";
                             if (splittedString.Length > 4)
                             {
@@ -132,7 +133,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             }
                             else
                             {
-                                newStringName = model.serviceCategoryName;
+                                newStringName = model.ServiceName;
                             }
 
                             vh.serviceTitle.TextFormatted = Html.FromHtml(newStringName, FromHtmlOptions.ModeLegacy);
@@ -140,26 +141,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     }
                     else
                     {
-                        if (model.serviceCategoryName.Contains("<br/>") || model.serviceCategoryName.Contains("\n"))
+                        if (model.ServiceName.Contains("<br/>") || model.ServiceName.Contains("\n"))
                         {
                             string newStringValue = "";
-                            if (model.serviceCategoryName.Contains("\n"))
+                            if (model.ServiceName.Contains("\n"))
                             {
-                                newStringValue = model.serviceCategoryName.Replace("\n", "<br/>");
+                                newStringValue = model.ServiceName.Replace("\n", "<br/>");
                             }
-                            else if (model.serviceCategoryName.Contains("\r\n"))
+                            else if (model.ServiceName.Contains("\r\n"))
                             {
-                                newStringValue = model.serviceCategoryName.Replace("\r\n", "<br/>");
+                                newStringValue = model.ServiceName.Replace("\r\n", "<br/>");
                             }
                             else
                             {
-                                newStringValue = model.serviceCategoryName;
+                                newStringValue = model.ServiceName;
                             }
                             vh.serviceTitle.TextFormatted = Html.FromHtml(newStringValue);
                         }
                         else
                         {
-                            string[] splittedString = model.serviceCategoryName.Trim().Split(" ");
+                            string[] splittedString = model.ServiceName.Trim().Split(" ");
                             string newStringName = "";
                             if (splittedString.Length > 4)
                             {
@@ -235,7 +236,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             }
                             else
                             {
-                                newStringName = model.serviceCategoryName;
+                                newStringName = model.ServiceName;
                             }
 
                             vh.serviceTitle.TextFormatted = Html.FromHtml(newStringName);
@@ -249,9 +250,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
                 try
                 {
-                    switch (model.ServiceCategoryId)
+                    switch (model.ServiceType)
                     {
-                        case "1001":
+                        case ServiceEnum.SELFMETERREADING:
                             vh.serviceImg.SetImageResource(Resource.Drawable.submit_meter);
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                             {
@@ -266,11 +267,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
                             break;
-                        case "1002":
-                            vh.serviceImg.SetImageResource(Resource.Drawable.check_status);
-                            vh.newLabel.Visibility = ViewStates.Gone;
-                            break;
-                        case "1003":
+                        case ServiceEnum.SUBMITFEEDBACK:
                             vh.serviceImg.SetImageResource(Resource.Drawable.feedback);
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                             {
@@ -282,7 +279,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             }
                             vh.newLabel.Visibility = ViewStates.Gone;
                             break;
-                        case "1004":
+                        case ServiceEnum.PAYBILL:
                             if (Utility.IsEnablePayment() && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded())
                             {
                                 vh.serviceImg.SetImageResource(Resource.Drawable.bills);
@@ -320,7 +317,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
                             break;
-                        case "1005":
+                        case ServiceEnum.VIEWBILL:
                             if (!isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded())
                             {
                                 vh.serviceImg.SetImageResource(Resource.Drawable.pdf_bill);
@@ -371,7 +368,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
                             break;
-                        case "1006":
+                        case ServiceEnum.APPLICATIONSTATUS:
                             vh.serviceImg.SetImageResource(Resource.Drawable.check_status);
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                             {
@@ -386,7 +383,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
                             break;
-                        case "1007":
+                        case ServiceEnum.ENERGYBUDGET:
                             if (!isRefreshShown && Utility.IsMDMSDownEnergyBudget() && UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
                             {
                                 vh.serviceImg.SetImageResource(Resource.Drawable.Check_Status_Icon);
@@ -410,7 +407,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
                             break;
-                        case "1008":
+                        case ServiceEnum.MYHOME:
                             vh.serviceImg.SetImageResource(Resource.Drawable.Icon_Quick_Access_MyHome);
                             if (UserSessions.MyHomeQuickLinkHasShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
                             {
@@ -482,10 +479,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             {
                 if (ClickChanged != null)
                 {
-                    MyService model = myServiceList[position];
-                    if (model != null)
+                    MyServiceModel service = myServicesList[position];
+                    if (service != null)
                     {
-                        if (model.ServiceCategoryId == "1008")
+                        if (service.ServiceType == ServiceEnum.MYHOME)
                         {
                             if (sender != null)
                             {

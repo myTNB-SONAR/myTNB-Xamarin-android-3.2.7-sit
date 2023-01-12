@@ -53,9 +53,12 @@ namespace myTNB_Android.Src.MyHome
         RecyclerView myHomeDrawerListRecycleView;
         MyDrawerAdapter myHomeDrawerAdapter;
 
-        public MyHomeDrawerFragment(Android.App.Activity ctx)
+        List<MyDrawerModel> myDrawerList;
+
+        public MyHomeDrawerFragment(Android.App.Activity ctx, List<MyDrawerModel> modelList)
         {
             this.mContext = ctx;
+            this.myDrawerList = modelList;
             if (this.mContext is DashboardHomeActivity)
             {
                 this.mActivity = ((DashboardHomeActivity)this.mContext);
@@ -132,14 +135,6 @@ namespace myTNB_Android.Src.MyHome
             GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
             layoutManager.Orientation = RecyclerView.Vertical;
             myHomeDrawerListRecycleView.SetLayoutManager(layoutManager);
-
-            //STUB
-            List<MyDrawerModel> myDrawerList = new List<MyDrawerModel>();
-            MyDrawerModel model = new MyDrawerModel();
-            model.ServiceCategoryId = "001";
-            model.serviceCategoryName = Utility.GetLocalizedLabel("DashboardHome", "connectMyPremise");
-
-            myDrawerList.Add(model);
 
             myHomeDrawerAdapter = new MyDrawerAdapter(myDrawerList, this.Activity);
             myHomeDrawerAdapter.ClickChanged += OnClickChanged;

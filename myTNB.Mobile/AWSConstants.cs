@@ -58,7 +58,7 @@ namespace myTNB.Mobile
             internal const string OptInToPaperBill = "https://stagingdbr.mytnb.com.my/PaperBill/OptIn";
             //internal const string AutoOptInToPaperless = "https://stagingapi.mytnb.com.my/StagedData/api/v1"
             public const string SSO = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
-            public const string MyHomeSSO = "http://52.76.106.232/Sso?s={0}";
+            public const string MyHomeSSO = "https://52.76.106.232/Sso?s={0}";
 #else
             internal const string Domain = "https://api.mytnb.com.my";
             internal const string GenerateAccessToken = "https://api.mytnb.com.my/Identity/api/v1";

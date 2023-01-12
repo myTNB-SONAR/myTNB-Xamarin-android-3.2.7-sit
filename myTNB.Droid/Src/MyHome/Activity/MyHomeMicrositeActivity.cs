@@ -93,12 +93,12 @@ namespace myTNB_Android.Src.MyHome.Activity
             {
                 //STUB
                 string accessTokenStub = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6IntcIkNoYW5uZWxcIjpcIm15VE5CX0FQSV9Nb2JpbGVcIixcIlVzZXJJZFwiOlwiOGNjM2JmNGYtOGRjNi00YjFkLWI2ZTgtOGNhOGMwZDE0N2Y1XCIsXCJVc2VyTmFtZVwiOlwidGVzdGVyMi50bmJAZ21haWwuY29tXCIsXCJSb2xlSWRzXCI6WzE2LDIsMzZdfSIsIm5iZiI6MTYyNzI2MjAwNCwiZXhwIjoxNjI3MjY1NjA0LCJpYXQiOjE2MjcyNjIwMDQsImlzcyI6Im15VE5CIiwiYXVkIjoibXlUTkIgQXVkaWVuY2UifQ.p8Fs71PU0YNyetjGKdy6yKlCMGSQt1dNkqdSyyGdDS9gKeYl-RnmmGif5vPHSoM1RC8oucYf7CX4LoFYysz9xw";
-                string redirectURL = "http://52.76.106.232/Application/Offerings";
+                string redirectURL = "https://52.76.106.232/Application/Offerings";
 
                 UserEntity user = UserEntity.GetActive();
                 string myTNBAccountName = user?.DisplayName ?? string.Empty;
                 string signature = SSOManager.Instance.GetMyHomeSignature(myTNBAccountName
-                , accessTokenStub //AccessTokenCache.Instance.GetAccessToken(this)
+                , AccessTokenCache.Instance.GetAccessToken(this)
                 , user.DeviceId ?? string.Empty
                 , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
                 , 16

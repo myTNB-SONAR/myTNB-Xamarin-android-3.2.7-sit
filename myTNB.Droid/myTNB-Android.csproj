@@ -7426,6 +7426,8 @@
     </AndroidResource>
     <Compile Include="Src\Database\Model\MyServiceIconEntity.cs" />
     <Compile Include="Src\MyHome\Model\MyServiceIconModel.cs" />
+    <Compile Include="Src\MyHome\Model\MyServiceModel.cs" />
+    <Compile Include="Src\Database\Model\MyServiceChildEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">

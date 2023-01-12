@@ -64,6 +64,8 @@ using System.Threading.Tasks;
 using AndroidX.Fragment.App;
 using myTNB_Android.Src.MyHome;
 using myTNB.Mobile.Business;
+using myTNB_Android.Src.MyHome.Model;
+using myTNB_Android.Src.MyDrawer;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -314,7 +316,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         internal static readonly int SELECT_SD_POPUP_REQUEST_CODE = 8820;
 
-        private static List<MyService> currentMyServiceList = new List<MyService>();
+        private static List<MyServiceModel> myServicesList = new List<MyServiceModel>();
 
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
 
@@ -1135,7 +1137,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             this.presenter.InitiateMyService();
         }
 
-        public void SetMyServiceResult(List<MyService> list)
+        public void SetMyServicesResult(List<MyServiceModel> list)
         {
             try
             {
@@ -1145,8 +1147,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
                         myServiceListRecycleView.SetAdapter(myServiceAdapter);
-                        currentMyServiceList.Clear();
-                        currentMyServiceList.AddRange(list);
+                        myServicesList.Clear();
+                        myServicesList.AddRange(list);
                         myServiceAdapter.ClickChanged += OnClickChanged;
                         this.SetIsClicked(false);
                         try
@@ -1839,12 +1841,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         this.SetIsClicked(true);
 
-                        MyService selectedService = currentMyServiceList[position];
-                        if (selectedService.ServiceCategoryId == "1003")
+                        MyServiceModel selectedService = myServicesList[position];
+                        if (selectedService.ServiceType == MobileEnums.ServiceEnum.SUBMITFEEDBACK)
                         {
                             ShowFeedbackMenu();
                         }
-                        else if (selectedService.ServiceCategoryId == "1001")
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.SELFMETERREADING)
                         {
                             if (!UserSessions.HasSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
@@ -1854,7 +1856,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Intent applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
                             StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
-                        else if (selectedService.ServiceCategoryId == "1004")
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.PAYBILL)
                         {
                             if (Utility.IsEnablePayment()
                             && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded())
@@ -1879,7 +1881,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 }
                             }
                         }
-                        else if (selectedService.ServiceCategoryId == "1005" && (!isRefreshShown
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.VIEWBILL && (!isRefreshShown
                             && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
                         {
                             if (!UserSessions.HasViewBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
@@ -1907,7 +1909,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 StartActivity(supplyAccount);
                             }
                         }
-                        else if (selectedService.ServiceCategoryId == "1006")
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.APPLICATIONSTATUS)
                         {
                             _searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
                             if (_searchApplicationTypeResponse == null)
@@ -1926,7 +1928,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                             this.SetIsClicked(false);
                         }
-                        else if (selectedService.ServiceCategoryId == "1007")
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.ENERGYBUDGET)
                         {
                             if (Utility.IsMDMSDownEnergyBudget() && !isRefreshShown)
                             {
@@ -2024,14 +2026,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 }
                             }
                         }
-                        else if (selectedService.ServiceCategoryId == "1008")
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.MYHOME)
                         {
                             if (!UserSessions.MyHomeQuickLinkHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
                                 UserSessions.SetShownMyHomeQuickLink(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
                             }
 
-                            MyHomeDrawerFragment myHomeBottomSheetDialog = new MyHomeDrawerFragment(this.Activity);
+                            List<MyDrawerModel> drawerList = new List<MyDrawerModel>();
+
+                            if (selectedService.Children != null
+                                && selectedService.Children.Count > 0)
+                            {
+                                foreach (MyServiceModel child in selectedService.Children)
+                                {
+                                    drawerList.Add(new MyDrawerModel()
+                                    {
+                                        ParentServiceId = child.ParentServiceId,
+                                        ServiceId = child.ServiceId,
+                                        ServiceName = child.ServiceName,
+                                        ServiceIconUrl = child.ServiceIconUrl,
+                                        DisabledServiceIconUrl = child.DisabledServiceIconUrl,
+                                        SSODomain = child.SSODomain,
+                                        OriginURL = child.OriginURL,
+                                        RedirectURL = child.RedirectURL,
+                                        ServiceType = child.ServiceType
+                                    });
+                                }
+                            }
+
+                            MyHomeDrawerFragment myHomeBottomSheetDialog = new MyHomeDrawerFragment(this.Activity, drawerList);
 
                             myHomeBottomSheetDialog.Cancelable = true;
                             myHomeBottomSheetDialog.Show(this.Activity.SupportFragmentManager, "My Home Dialog");
@@ -2657,9 +2681,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }
 
-            if (currentMyServiceList.Count > 0)
+            if (myServicesList.Count > 0)
             {
-                myServiceAdapter = new MyServiceAdapter(currentMyServiceList, this.Activity, isRefreshShown);
+                myServiceAdapter = new MyServiceAdapter(myServicesList, this.Activity, isRefreshShown);
                 myServiceListRecycleView.SetAdapter(myServiceAdapter);
 
                 myServiceAdapter.ClickChanged += OnClickChanged;
@@ -3101,7 +3125,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             this.presenter.RefreshAccountSummary();
 
-            currentMyServiceList = new List<MyService>();
+            myServicesList = new List<MyServiceModel>();
 
             this.presenter.InitiateMyServiceRefresh();
 
@@ -3136,7 +3160,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             SetBottomLayoutBackground(false);
 
-            currentMyServiceList = new List<MyService>();
+            myServicesList = new List<MyServiceModel>();
 
             this.presenter.InitiateMyServiceRefresh();
         }
@@ -3647,7 +3671,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public int GetMyServiceItemHeight()
         {
-            var servicesList = currentMyServiceList;
+            var servicesList = myServicesList;
 
             int a = (int)System.Math.Ceiling((double)servicesList.Count / 3);
             var itemHeight = myServiceListRecycleView.Height / a;
@@ -3664,8 +3688,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public int GetMyServiceItemTopPosition(string id)
         {
             var topPosition = 0;
-            var servicesList = currentMyServiceList;
-            int itemPosition = servicesList.FindIndex(x => x.ServiceCategoryId == id) + 1;
+            var servicesList = myServicesList;
+            int itemPosition = servicesList.FindIndex(x => x.ServiceId == id) + 1;
 
             int row = (int)System.Math.Ceiling((double)itemPosition / 3);
             int rowIndex = row - 1;
@@ -3680,8 +3704,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             int column = 0;
 
-            var servicesList = currentMyServiceList;
-            int itemIndex = servicesList.FindIndex(x => x.ServiceCategoryId == id);
+            var servicesList = myServicesList;
+            int itemIndex = servicesList.FindIndex(x => x.ServiceId == id);
 
             column = (itemIndex % 3);
             leftPosition = column * GetMyServiceItemWidth();
