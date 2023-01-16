@@ -1205,5 +1205,17 @@ namespace myTNB_Android.Src.Utils
             editor.PutBoolean("connectMyPremiseHasShown", true);
             editor.Apply();
         }
+
+        public static string GetServicesTimeStamp(ISharedPreferences prefs)
+        {
+            return prefs.GetString("getServicesTimeStamp", string.Empty);
+        }
+
+        public static void SetGetServicesTimeStamp(ISharedPreferences prefs, string timeStamp)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("getServicesTimeStamp", timeStamp);
+            editor.Apply();
+        }
     }
 }

@@ -8,6 +8,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Net.Http;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -46,6 +47,10 @@ namespace myTNB_Android.Src.MyHome.Activity
                 : Resource.Style.Theme_Dashboard);
 
             SetToolBarTitle(Utility.GetLocalizedLabel("ConnectMyPremise", "title"));
+
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
             HideTopNavBar();
             SetUpWebView();
         }
@@ -92,7 +97,7 @@ namespace myTNB_Android.Src.MyHome.Activity
             try
             {
                 //STUB
-                string accessTokenStub = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6IntcIkNoYW5uZWxcIjpcIm15VE5CX0FQSV9Nb2JpbGVcIixcIlVzZXJJZFwiOlwiOGNjM2JmNGYtOGRjNi00YjFkLWI2ZTgtOGNhOGMwZDE0N2Y1XCIsXCJVc2VyTmFtZVwiOlwidGVzdGVyMi50bmJAZ21haWwuY29tXCIsXCJSb2xlSWRzXCI6WzE2LDIsMzZdfSIsIm5iZiI6MTYyNzI2MjAwNCwiZXhwIjoxNjI3MjY1NjA0LCJpYXQiOjE2MjcyNjIwMDQsImlzcyI6Im15VE5CIiwiYXVkIjoibXlUTkIgQXVkaWVuY2UifQ.p8Fs71PU0YNyetjGKdy6yKlCMGSQt1dNkqdSyyGdDS9gKeYl-RnmmGif5vPHSoM1RC8oucYf7CX4LoFYysz9xw";
+                string originURL = "mytnbapp://action=backToApp";
                 string redirectURL = "https://52.76.106.232/Application/Offerings";
 
                 UserEntity user = UserEntity.GetActive();
@@ -106,13 +111,13 @@ namespace myTNB_Android.Src.MyHome.Activity
                 ? LanguageManager.Language.MS
                 : LanguageManager.Language.EN).ToString()
                 , TextViewUtils.FontInfo ?? "N"
-                , "mytnbapp://action=backToApp"
+                , originURL
                 , redirectURL
                 , user.UserID
                 , myTNB.Mobile.MobileConstants.OSType.int_Android
                 , user.Email);
                 
-                string ssoURL = string.Format(AWSConstants.Domains.MyHomeSSO, signature);
+                string ssoURL = string.Format(AWSConstants.Domains.SSO.MyHome, signature);
 
                 micrositeWebview.SetWebChromeClient(new WebChromeClient());
                 micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
@@ -165,19 +170,15 @@ namespace myTNB_Android.Src.MyHome.Activity
                 return shouldOverride;
             }
 
-            public override void OnPageStarted(WebView view, string url, Bitmap favicon)
-            {
-                base.OnPageStarted(view, url, favicon);
-            }
+            public override void OnPageStarted(WebView view, string url, Bitmap favicon) { }
 
-            public override void OnPageFinished(WebView view, string url)
-            {
-                base.OnPageFinished(view, url);
-            }
+            public override void OnPageFinished(WebView view, string url) { }
 
-            public override void OnReceivedError(WebView view, IWebResourceRequest request, WebResourceError error)
+            public override void OnReceivedError(WebView view, IWebResourceRequest request, WebResourceError error) { }
+
+            public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error)
             {
-                base.OnReceivedError(view, request, error);
+                handler.Proceed();
             }
         }
     }

@@ -1742,17 +1742,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                 }
 
-                //STUB
-                //GetServicesResponse getServicesResponse = await this.serviceApi.GetServices(new GetServiceRequests()
-                //{
-                //    usrInf = currentUsrInf
-                //});
-
-
-
-
-
-                PostServicesResponse servicesResponse = await HomeManager.Instance.PostServices(string.Empty, string.Empty);
+                string getSErvicesTimeStamp = UserSessions.GetServicesTimeStamp(this.mPref);
+                PostServicesResponse servicesResponse = await HomeManager.Instance.PostServices(getSErvicesTimeStamp);
 
                 if (servicesResponse != null
                     && servicesResponse.Data != null
@@ -1765,6 +1756,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     myServicesList.Clear();
 
                     List<ServicesModel> servicesList = servicesResponse.Data.Content.Services;
+                    bool shouldUpdateImages = servicesResponse.Data.Content.ShouldUpdateImages;
+                    string timeStamp = servicesResponse.Data.Content.TimeStamp;
+
+                    UserSessions.SetGetServicesTimeStamp(this.mPref, timeStamp);
 
                     if (servicesList.Count > 0)
                     {
@@ -1837,50 +1832,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isMyServiceRefreshNeeded = true;
                     SetMyServiceRefreshScreen(contentTxt, buttonTxt);
                 }
-
-
-                //STUB
-                //GetServicesResponse getServicesResponse = JsonConvert.DeserializeObject<GetServicesResponse>(GeServicesStub());
-
-                //if (getServicesResponse != null && getServicesResponse.Data != null && getServicesResponse.Data.ErrorCode == "7200")
-                //{
-                //    MyServiceEntity.RemoveAll();
-                //    currentMyServiceList.Clear();
-                //    if (getServicesResponse.Data.Data.CurrentServices.Count > 0)
-                //    {
-                //        List<MyService> fetchList = new List<MyService>();
-                //        foreach (MyService service in getServicesResponse.Data.Data.CurrentServices)
-                //        {
-                //            fetchList.Add(service);
-                //            currentMyServiceList.Add(service);
-                //        }
-                //        OnProcessMyServiceCards();
-                //        FirstTimeMyServiceInitiate = false;
-                //    }
-                //    else
-                //    {
-                //        SetMyServiceHideScreen();
-                //    }
-                //}
-                //else
-                //{
-                //    string contentTxt = string.Empty;
-                //    string buttonTxt = string.Empty;
-
-                //    if (getServicesResponse != null && getServicesResponse.Data != null && !string.IsNullOrEmpty(getServicesResponse.Data.RefreshMessage))
-                //    {
-                //        contentTxt = getServicesResponse.Data.RefreshMessage;
-                //    }
-
-                //    if (getServicesResponse != null && getServicesResponse.Data != null && !string.IsNullOrEmpty(getServicesResponse.Data.RefreshBtnText))
-                //    {
-                //        buttonTxt = getServicesResponse.Data.RefreshBtnText;
-                //    }
-
-                //    isMyServiceRefreshNeeded = true;
-                //    SetMyServiceRefreshScreen(contentTxt, buttonTxt);
-                //}
-
             }
             catch (System.OperationCanceledException cancelledException)
             {

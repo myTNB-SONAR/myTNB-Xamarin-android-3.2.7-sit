@@ -3003,6 +3003,15 @@
             "secondaryCTATitle": "",
             "isSuccess": true,
             "type": "none"
+          },
+          {
+            "code": "default",
+            "title": "",
+            "message": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
+            "primaryCTATitle": "'Refresh' Sekarang",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "refresh"
           }
         ]
       }

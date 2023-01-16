@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
@@ -14,7 +16,9 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Java.Security.Acl;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MyDrawer;
+using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.Utils;
 using static myTNB_Android.Src.MyDrawer.MyDrawerAdapter;
 
@@ -87,11 +91,10 @@ namespace myTNB_Android.Src.MyDrawer
                 currentImg.Height = imgHeight;
                 currentImg.Width = imgHeight;
 
-                //TODO: Need to download image from model
                 switch(model.ServiceType)
                 {
                     case ServiceEnum.CONNECTMYPREMISE:
-                        vh.myDrawerImg.SetImageResource(Resource.Drawable.Icon_Connect_My_Premise);
+                        DynamicIconHandling(vh, model, Resource.Drawable.Icon_Connect_My_Premise);
                         if (UserSessions.ConnectMyPremiseHasShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
                         {
                             vh.newLabel.Visibility = ViewStates.Gone;
@@ -112,6 +115,102 @@ namespace myTNB_Android.Src.MyDrawer
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void DynamicIconHandling(MyDrawerViewHolder vh, MyServiceModel model, int fallbackImgRes, bool isDisabled = false)
+        {
+            try
+            {
+                vh.myDrawerImg.SetImageResource(fallbackImgRes);
+
+                if (model != null)
+                {
+                    string timestamp = UserSessions.GetServicesTimeStamp(PreferenceManager.GetDefaultSharedPreferences(this.mActivity));
+                    MyServiceIconEntity iconEntity = new MyServiceIconEntity()
+                    {
+                        ServiceId = model.ServiceId,
+                        ServiceIconUrl = model.ServiceIconUrl,
+                        DisabledServiceIconUrl = model.DisabledServiceIconUrl,
+                        ServiceBannerUrl = model.ServiceBannerUrl,
+                        TimeStamp = timestamp
+                    };
+
+                    MyServiceIconEntity iconManager = new MyServiceIconEntity();
+                    MyServiceIconEntity myServiceIconEntity = iconManager.GetMyServiceItem(model.ServiceId);
+
+                    if (myServiceIconEntity != null)
+                    {
+                        string serviceIconURL = myServiceIconEntity.ServiceIconUrl;
+                        string serviceIconB64 = myServiceIconEntity.ServiceIconB64;
+                        string disableServiceIconURL = myServiceIconEntity.DisabledServiceIconUrl;
+                        string disableServiceIconB64 = myServiceIconEntity.DisabledServiceIconB64;
+
+                        if (timestamp != myServiceIconEntity.TimeStamp)
+                        {
+                            Task.Run(() =>
+                            {
+                                var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(isDisabled ? disableServiceIconURL : serviceIconURL);
+                                if (bitmapImage != null)
+                                {
+                                    vh.myDrawerImg.SetImageBitmap(bitmapImage);
+                                }
+                                else
+                                {
+                                    Bitmap convertedImage = ImageUtils.Base64ToBitmap(isDisabled ? disableServiceIconB64 : serviceIconB64);
+                                    if (convertedImage != null)
+                                    {
+                                        vh.myDrawerImg.SetImageBitmap(convertedImage);
+                                    }
+                                    else
+                                    {
+                                        vh.myDrawerImg.SetImageResource(fallbackImgRes);
+                                    }
+                                }
+                            });
+                        }
+                        else
+                        {
+                            Bitmap convertedImage = ImageUtils.Base64ToBitmap(isDisabled ? disableServiceIconB64 : serviceIconB64);
+                            if (convertedImage != null)
+                            {
+                                vh.myDrawerImg.SetImageBitmap(convertedImage);
+                            }
+                            else
+                            {
+                                vh.myDrawerImg.SetImageResource(fallbackImgRes);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Task.Run(() =>
+                        {
+                            var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(isDisabled ? model.DisabledServiceIconUrl : model.ServiceIconUrl);
+                            if (bitmapImage != null)
+                            {
+                                vh.myDrawerImg.SetImageBitmap(bitmapImage);
+                                string base64String = ImageUtils.GetBase64FromBitmapPNG(bitmapImage, 100);
+                                iconEntity.ServiceIconB64 = base64String;
+
+                                iconManager.InsertItem(iconEntity);
+                            }
+                            else
+                            {
+                                vh.myDrawerImg.SetImageResource(fallbackImgRes);
+                            }
+                        });
+                    }
+                }
+                else
+                {
+                    vh.myDrawerImg.SetImageResource(fallbackImgRes);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                vh.myDrawerImg.SetImageResource(fallbackImgRes);
             }
         }
 

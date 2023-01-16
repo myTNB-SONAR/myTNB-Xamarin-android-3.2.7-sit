@@ -1,6 +1,7 @@
 ﻿using Android.Graphics;
 using Android.Preferences;
 using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
@@ -12,7 +13,8 @@ using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
+using static Android.Graphics.ColorSpace;
 using ServiceEnum = myTNB.Mobile.MobileEnums.ServiceEnum;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
@@ -52,6 +54,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 MyServiceViewHolder vh = holder as MyServiceViewHolder;
 
                 MyServiceModel model = myServicesList[position];
+
+                string timestamp = UserSessions.GetServicesTimeStamp(PreferenceManager.GetDefaultSharedPreferences(this.mActivity));
+                MyServiceIconEntity iconEntity = new MyServiceIconEntity()
+                {
+                    ServiceId = model.ServiceId,
+                    ServiceIconUrl = model.ServiceIconUrl,
+                    DisabledServiceIconUrl = model.DisabledServiceIconUrl,
+                    ServiceBannerUrl = model.ServiceBannerUrl,
+                    TimeStamp = timestamp
+                };
+
                 try
                 {
                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
@@ -253,7 +266,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     switch (model.ServiceType)
                     {
                         case ServiceEnum.SELFMETERREADING:
-                            vh.serviceImg.SetImageResource(Resource.Drawable.submit_meter);
+                            DynamicIconHandling(vh, model, Resource.Drawable.submit_meter);
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                             {
                                 vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "selfMeterReading"), FromHtmlOptions.ModeLegacy);
@@ -268,7 +281,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             }
                             break;
                         case ServiceEnum.SUBMITFEEDBACK:
-                            vh.serviceImg.SetImageResource(Resource.Drawable.feedback);
+                            DynamicIconHandling(vh, model, Resource.Drawable.feedback);
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                             {
                                 vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitEnquiry"), FromHtmlOptions.ModeLegacy);
@@ -282,12 +295,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                         case ServiceEnum.PAYBILL:
                             if (Utility.IsEnablePayment() && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded())
                             {
-                                vh.serviceImg.SetImageResource(Resource.Drawable.bills);
+                                DynamicIconHandling(vh, model, Resource.Drawable.bills);
                                 vh.serviceTitle.SetTextColor(new Color(ContextCompat.GetColor(this.mActivity, Resource.Color.powerBlue)));
                             }
                             else
                             {
-                                vh.serviceImg.SetImageResource(Resource.Drawable.bills_disabled);
+                                DynamicIconHandling(vh, model, Resource.Drawable.bills_disabled, true);
                                 vh.serviceTitle.SetTextColor(new Color(ContextCompat.GetColor(this.mActivity, Resource.Color.grey_two)));
                             }
                             if (MyTNBAccountManagement.GetInstance().IsHasNonREAccountCount() > 1)
@@ -320,12 +333,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                         case ServiceEnum.VIEWBILL:
                             if (!isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded())
                             {
-                                vh.serviceImg.SetImageResource(Resource.Drawable.pdf_bill);
+                                DynamicIconHandling(vh, model, Resource.Drawable.pdf_bill);
                                 vh.serviceTitle.SetTextColor(new Color(ContextCompat.GetColor(this.mActivity, Resource.Color.powerBlue)));
                             }
                             else
                             {
-                                vh.serviceImg.SetImageResource(Resource.Drawable.pdf_bill_disabled);
+                                DynamicIconHandling(vh, model, Resource.Drawable.pdf_bill_disabled, true);
                                 vh.serviceTitle.SetTextColor(new Color(ContextCompat.GetColor(this.mActivity, Resource.Color.grey_two)));
                             }
 
@@ -369,7 +382,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             }
                             break;
                         case ServiceEnum.APPLICATIONSTATUS:
-                            vh.serviceImg.SetImageResource(Resource.Drawable.check_status);
+                            DynamicIconHandling(vh, model, Resource.Drawable.check_status);
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                             {
                                 vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "applicationStatus"), FromHtmlOptions.ModeLegacy);
@@ -386,12 +399,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                         case ServiceEnum.ENERGYBUDGET:
                             if (!isRefreshShown && Utility.IsMDMSDownEnergyBudget() && UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
                             {
-                                vh.serviceImg.SetImageResource(Resource.Drawable.Check_Status_Icon);
+                                DynamicIconHandling(vh, model, Resource.Drawable.Check_Status_Icon);
                                 vh.serviceTitle.SetTextColor(new Color(ContextCompat.GetColor(this.mActivity, Resource.Color.powerBlue)));
                             }
                             else
                             {
-                                vh.serviceImg.SetImageResource(Resource.Drawable.Energy_Budget_grey);
+                                DynamicIconHandling(vh, model, Resource.Drawable.Energy_Budget_grey, true);
                                 vh.serviceTitle.SetTextColor(new Color(ContextCompat.GetColor(this.mActivity, Resource.Color.grey_two)));
                             }
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
@@ -408,7 +421,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             }
                             break;
                         case ServiceEnum.MYHOME:
-                            vh.serviceImg.SetImageResource(Resource.Drawable.Icon_Quick_Access_MyHome);
+                            DynamicIconHandling(vh, model, Resource.Drawable.Icon_Quick_Access_MyHome);
+
                             if (UserSessions.MyHomeQuickLinkHasShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
                             {
                                 vh.newLabel.Visibility = ViewStates.Gone;
@@ -463,6 +477,102 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             catch (Exception ne)
             {
                 Utility.LoggingNonFatalError(ne);
+            }
+        }
+
+        private void DynamicIconHandling(MyServiceViewHolder vh, MyServiceModel model, int fallbackImgRes, bool isDisabled = false)
+        {
+            try
+            {
+                vh.serviceImg.SetImageResource(fallbackImgRes);
+
+                if (model != null)
+                {
+                    string timestamp = UserSessions.GetServicesTimeStamp(PreferenceManager.GetDefaultSharedPreferences(this.mActivity));
+                    MyServiceIconEntity iconEntity = new MyServiceIconEntity()
+                    {
+                        ServiceId = model.ServiceId,
+                        ServiceIconUrl = model.ServiceIconUrl,
+                        DisabledServiceIconUrl = model.DisabledServiceIconUrl,
+                        ServiceBannerUrl = model.ServiceBannerUrl,
+                        TimeStamp = timestamp
+                    };
+
+                    MyServiceIconEntity iconManager = new MyServiceIconEntity();
+                    MyServiceIconEntity myServiceIconEntity = iconManager.GetMyServiceItem(model.ServiceId);
+
+                    if (myServiceIconEntity != null)
+                    {
+                        string serviceIconURL = myServiceIconEntity.ServiceIconUrl;
+                        string serviceIconB64 = myServiceIconEntity.ServiceIconB64;
+                        string disableServiceIconURL = myServiceIconEntity.DisabledServiceIconUrl;
+                        string disableServiceIconB64 = myServiceIconEntity.DisabledServiceIconB64;
+
+                        if (timestamp != myServiceIconEntity.TimeStamp)
+                        {
+                            Task.Run(() =>
+                            {
+                                var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(isDisabled ? disableServiceIconURL : serviceIconURL);
+                                if (bitmapImage != null)
+                                {
+                                    vh.serviceImg.SetImageBitmap(bitmapImage);
+                                }
+                                else
+                                {
+                                    Bitmap convertedImage = ImageUtils.Base64ToBitmap(isDisabled ? disableServiceIconB64 : serviceIconB64);
+                                    if (convertedImage != null)
+                                    {
+                                        vh.serviceImg.SetImageBitmap(convertedImage);
+                                    }
+                                    else
+                                    {
+                                        vh.serviceImg.SetImageResource(fallbackImgRes);
+                                    }
+                                }
+                            });
+                        }
+                        else
+                        {
+                            Bitmap convertedImage = ImageUtils.Base64ToBitmap(isDisabled ? disableServiceIconB64 : serviceIconB64);
+                            if (convertedImage != null)
+                            {
+                                vh.serviceImg.SetImageBitmap(convertedImage);
+                            }
+                            else
+                            {
+                                vh.serviceImg.SetImageResource(fallbackImgRes);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Task.Run(() =>
+                        {
+                            var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(isDisabled ? model.DisabledServiceIconUrl : model.ServiceIconUrl);
+                            if (bitmapImage != null)
+                            {
+                                vh.serviceImg.SetImageBitmap(bitmapImage);
+                                string base64String = ImageUtils.GetBase64FromBitmapPNG(bitmapImage, 100);
+                                iconEntity.ServiceIconB64 = base64String;
+
+                                iconManager.InsertItem(iconEntity);
+                            }
+                            else
+                            {
+                                vh.serviceImg.SetImageResource(fallbackImgRes);
+                            }
+                        });
+                    }
+                }
+                else
+                {
+                    vh.serviceImg.SetImageResource(fallbackImgRes);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                vh.serviceImg.SetImageResource(fallbackImgRes);
             }
         }
 

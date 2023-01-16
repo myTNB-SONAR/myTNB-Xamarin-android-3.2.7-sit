@@ -41,13 +41,13 @@ namespace myTNB.Mobile
 
         private const string SIT_AWS = "https://stagingapi.mytnb.com.my/asmx";
         //ASMX
-        private const string SIT = "https://mobiletestingws.tnb.com.my";
+        //private const string SIT = "https://mobiletestingws.tnb.com.my";
         //AWS ASMX Copy
         //private const string SIT = "https://stagingapi.mytnb.com.my/asmx-97";
-        //myHome On Prem
-        //private const string SIT = "http://10.215.128.162:99";
         //AWS OVIS
         //private const string SIT = "http://mytnbwsovisstg.ap.ngrok.io";
+        //myHome
+        private const string SIT = "http://10.215.128.162:99";
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
         //Mark: http://tnbcsdevapp.tnb.my/
