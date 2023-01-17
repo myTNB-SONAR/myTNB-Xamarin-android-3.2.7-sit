@@ -63,7 +63,8 @@ namespace myTNB.Mobile
             public struct SSO
             {
                 public const string DBR = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
-                public const string MyHome = "https://52.76.106.232/Sso?s={0}";
+                //public const string MyHome = "https://52.76.106.232/Sso?s={0}";
+                public const string MyHome = "https://devmyhome.mytnb.com.my/Sso?s={0}";
                 //public const string MyHome = "https://stagingmyhome.mytnb.com.my/Sso?s={0}";
             }
 #else

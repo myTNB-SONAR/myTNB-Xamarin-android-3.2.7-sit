@@ -98,7 +98,7 @@ namespace myTNB_Android.Src.MyHome.Activity
             {
                 //STUB
                 string originURL = "mytnbapp://action=backToApp";
-                string redirectURL = "https://52.76.106.232/Application/Offerings";
+                string redirectURL = "https://devmyhome.mytnb.com.my/Application/Offerings";
 
                 UserEntity user = UserEntity.GetActive();
                 string myTNBAccountName = user?.DisplayName ?? string.Empty;
@@ -129,6 +129,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                 micrositeWebview.Settings.JavaScriptCanOpenWindowsAutomatically = true;
                 micrositeWebview.Settings.DomStorageEnabled = true;
                 micrositeWebview.Settings.MediaPlaybackRequiresUserGesture = false;
+                micrositeWebview.Settings.SetSupportZoom(false);
 
                 micrositeWebview.LoadUrl(ssoURL);
             }
@@ -178,7 +179,7 @@ namespace myTNB_Android.Src.MyHome.Activity
 
             public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error)
             {
-                handler.Proceed();
+                //handler.Proceed();
             }
         }
     }
