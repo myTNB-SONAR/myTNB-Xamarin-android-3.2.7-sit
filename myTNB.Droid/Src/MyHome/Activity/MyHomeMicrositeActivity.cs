@@ -1,19 +1,12 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
-using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Webkit;
-using Android.Widget;
 using CheeseBind;
 using myTNB;
 using myTNB.Mobile;
@@ -21,7 +14,6 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.DigitalBill.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
 
@@ -111,8 +103,8 @@ namespace myTNB_Android.Src.MyHome.Activity
                 , user.UserID
                 , myTNB.Mobile.MobileConstants.OSType.int_Android
                 , user.Email);
-                
-                string ssoURL = string.Format(AWSConstants.Domains.MyHomeSSO, signature);
+
+                string ssoURL = string.Format(AWSConstants.Domains.SSO.MyHome, signature);
 
                 micrositeWebview.SetWebChromeClient(new WebChromeClient());
                 micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
@@ -155,7 +147,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                         mActivity.OnBackPressed();
                         shouldOverride = true;
                     }
-                    else if(url.Contains("mytnbapp://action=backToHome"))
+                    else if (url.Contains("mytnbapp://action=backToHome"))
                     {
                         mActivity.OnShowDashboard();
                         shouldOverride = true;
@@ -182,4 +174,3 @@ namespace myTNB_Android.Src.MyHome.Activity
         }
     }
 }
-

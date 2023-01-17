@@ -102,7 +102,7 @@ namespace myTNB.Mobile
                     UserID = userID,
                     IdType = null,
                     IdNo = string.Empty,
-                    TransactionType = string.Empty,
+                    TransactionType = "MyHome",
                     InitiateTime = DateTime.UtcNow,
                     QRMappingID = null,
                     OSType = osType,

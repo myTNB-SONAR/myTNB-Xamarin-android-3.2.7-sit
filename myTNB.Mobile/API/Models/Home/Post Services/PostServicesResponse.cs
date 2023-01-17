@@ -55,8 +55,6 @@ namespace myTNB.Mobile.API.Models.Home.PostServices
             {
                 ServiceEnum servicetType = default(ServiceEnum);
 
-
-
                 if (!string.IsNullOrEmpty(ServiceId))
                 {
                     switch (ServiceId)

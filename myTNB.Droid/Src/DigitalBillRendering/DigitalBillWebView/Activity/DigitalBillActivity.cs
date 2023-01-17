@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Content.Res;
@@ -241,7 +240,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     , BillRendering.Content.RedirectURL
                     , _accountNumber);
 
-                    string ssoURL = string.Format(AWSConstants.Domains.SSO, signature);
+                    string ssoURL = string.Format(AWSConstants.Domains.SSO.DBR, signature);
 
                     micrositeWebView.SetWebChromeClient(new WebChromeClient());
                     micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));

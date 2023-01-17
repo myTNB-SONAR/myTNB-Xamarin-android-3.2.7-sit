@@ -1,7 +1,7 @@
 ﻿using Android.OS;
-using myTNB.Mobile;
 using Constant = myTNB_Android.Src.Utils.Notification.Notification.Constants;
 using Type = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
+using NotificationTypes = myTNB.Mobile.Constants.NotificationTypes;
 
 namespace myTNB_Android.Src.Utils.Notification
 {
@@ -40,28 +40,28 @@ namespace myTNB_Android.Src.Utils.Notification
             {
                 switch (type.ToUpper())
                 {
-                    case MobileConstants.PushNotificationTypes.APP_UPDATE:
+                    case NotificationTypes.APP_UPDATE:
                         Type = Type.AppUpdate;
                         break;
-                    case MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT:
+                    case NotificationTypes.DBR.ACCOUNT_STATEMENT:
                         Type = Type.AccountStatement;
                         break;
-                    case MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN:
+                    case NotificationTypes.DBR.NEW_BILL_DESIGN:
                         Type = Type.NewBillDesign;
                         break;
-                    case MobileConstants.PushNotificationTypes.MYHOME_NC_ADDRESS_SEARCH_COMPLETED:
+                    case NotificationTypes.MyHome.MYHOME_NC_ADDRESS_SEARCH_COMPLETED:
                         Type = Type.NCAddressSearchCompleted;
                         break;
-                    case MobileConstants.PushNotificationTypes.MYHOME_NC_RESUME_APPLICATION:
+                    case NotificationTypes.MyHome.MYHOME_NC_RESUME_APPLICATION:
                         Type = Type.NCResumeApplication;
                         break;
-                    case MobileConstants.PushNotificationTypes.MYHOME_NC_APPLICATION_COMPLETED:
+                    case NotificationTypes.MyHome.MYHOME_NC_APPLICATION_COMPLETED:
                         Type = Type.NCApplicationCompleted;
                         break;
-                    case MobileConstants.PushNotificationTypes.MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED:
+                    case NotificationTypes.MyHome.MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED:
                         Type = Type.NCApplicationContractorCompleted;
                         break;
-                    case MobileConstants.PushNotificationTypes.MYHOME_NC_OTP_VERIFY:
+                    case NotificationTypes.MyHome.MYHOME_NC_OTP_VERIFY:
                         Type = Type.NCOTPVerify;
                         break;
                     default:

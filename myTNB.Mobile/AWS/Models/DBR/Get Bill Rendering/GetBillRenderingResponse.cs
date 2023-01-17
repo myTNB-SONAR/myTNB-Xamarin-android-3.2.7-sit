@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using static myTNB.Mobile.AWSConstants;
 using static myTNB.Mobile.MobileConstants;
@@ -47,7 +46,6 @@ namespace myTNB.Mobile.AWS.Models
         /// <summary>
         /// Use this in deciding which UI to show.
         /// </summary>
-        [JsonIgnore]
         public MobileEnums.DBRTypeEnum DBRType
         {
             get
@@ -103,21 +101,18 @@ namespace myTNB.Mobile.AWS.Models
         /// <summary>
         /// Use to display message in Bills and Bill Details
         /// </summary>
-        [JsonIgnore]
         public string SegmentMessage
         {
             get
             {
                 string message = string.Empty;
-                //if (DBRType == MobileEnums.DBRTypeEnum.Paper)
-                //{
-                //    message = LanguageManager.Instance.GetCommonValue(IsOwner
-                //        ? I18NConstants.DBR_PaperBillOwner
-                //        : I18NConstants.DBR_PaperBillTenant);
-
-                //   // message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_PaperBillOwner); //owner and tenant using the same copywriting
-                //}
-                if (DBRType == MobileEnums.DBRTypeEnum.Email
+                if (DBRType == MobileEnums.DBRTypeEnum.Paper)
+                {
+                    message = LanguageManager.Instance.GetCommonValue(IsOwner
+                        ? I18NConstants.DBR_PaperBillOwner
+                        : I18NConstants.DBR_PaperBillTenant);
+                }
+                else if (DBRType == MobileEnums.DBRTypeEnum.Email
                     || DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
                 {
                     message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_Email);
@@ -140,7 +135,6 @@ namespace myTNB.Mobile.AWS.Models
         /// Use to display icon image in Bill and Bill Details
         /// Please make sure that assets are named accordingly
         /// </summary>
-        [JsonIgnore]
         public string SegmentIcon
         {
             get
@@ -164,7 +158,6 @@ namespace myTNB.Mobile.AWS.Models
             }
         }
 
-        [JsonIgnore]
         public List<EmailModel> EmailList
         {
             get
@@ -214,7 +207,6 @@ namespace myTNB.Mobile.AWS.Models
         /// <summary>
         /// Use this as the Redirect URL to generate signature
         /// </summary>
-        [JsonIgnore]
         public string RedirectURL
         {
             get
@@ -228,7 +220,6 @@ namespace myTNB.Mobile.AWS.Models
         /// <summary>
         /// Origin URL
         /// </summary>
-        [JsonIgnore]
         public string OriginURL
         {
             get
@@ -259,7 +250,6 @@ namespace myTNB.Mobile.AWS.Models
         /// True - Post
         /// False - Pre
         /// </summary>
-        [JsonIgnore]
         public bool IsPostConversion
         {
             get
@@ -268,7 +258,6 @@ namespace myTNB.Mobile.AWS.Models
             }
         }
 
-        [JsonIgnore]
         public MobileEnums.RenderingMethodEnum CurrentRenderingMethod
         {
             get
@@ -350,7 +339,6 @@ namespace myTNB.Mobile.AWS.Models
             }
         }
 
-        [JsonIgnore]
         public MobileEnums.RenderingMethodEnum PreviousRenderingMethod
         {
             get

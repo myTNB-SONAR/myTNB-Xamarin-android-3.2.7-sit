@@ -30,20 +30,11 @@ using myTNB_Android.Src.MyTNBService.Request;
 using Android.Text;
 using Android.OS;
 using System.Globalization;
-using Java.Util;
-using Android.Content.Res;
-using System.IO;
-using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile.AWS.Managers.Home;
 using myTNB.Mobile.API.Models.Home.PostServices;
-using myTNB;
 using Android.Util;
-using Castle.Core.Internal;
 using myTNB_Android.Src.MyHome.Model;
-
 using ServiceEnum = myTNB.Mobile.MobileEnums.ServiceEnum;
-using iTextSharp.text;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1752,7 +1743,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
 
 
-                PostServicesResponse servicesResponse = await HomeManager.Instance.PostServices(string.Empty, string.Empty);
+                PostServicesResponse servicesResponse = await HomeManager.Instance.PostServices(string.Empty);
 
                 if (servicesResponse != null
                     && servicesResponse.Data != null
@@ -1768,7 +1759,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                     if (servicesList.Count > 0)
                     {
-                        foreach(ServicesModel service in servicesList)
+                        foreach (ServicesModel service in servicesList)
                         {
                             MyServiceModel model = new MyServiceModel()
                             {
@@ -2023,7 +2014,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         ServiceBannerUrl = myService.ServiceBannerUrl,
                         Children = myServiceChildList
                     });
-                }                              
+                }
             }
 
             myServicesList = cachedList;
@@ -2824,8 +2815,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 isHomeMenuTutorialShown = true;
                 HomeMenuUtils.SetIsLoadedHomeMenu(true);
-                
-                if(!UserSessions.HasHomeTutorialShown(this.mPref))
+
+                if (!UserSessions.HasHomeTutorialShown(this.mPref))
                 {
                     if (HomeMenuUtils.GetIsRestartHomeMenu())
                     {
@@ -2848,7 +2839,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }
         }
-       
+
         public List<NewAppModel> OnGeneraNewAppTutorialList()
         {
             int ncAcc = UserSessions.GetNCFlag(this.mPref);

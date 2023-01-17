@@ -42,110 +42,25 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Business\Managers\" />
     <Folder Include="Resources\" />
-    <Folder Include="Resources\TnC\" />
-    <Folder Include="Resources\FAQ\" />
-    <Folder Include="Resources\Language\" />
-    <Folder Include="Resources\Country\" />
     <Folder Include="API\" />
-    <Folder Include="API\Managers\" />
-    <Folder Include="API\Models\" />
-    <Folder Include="API\Base\" />
-    <Folder Include="API\Models\Application Status\" />
-    <Folder Include="API\Services\" />
-    <Folder Include="API\Services\Application Status\" />
     <Folder Include="Sitecore\" />
-    <Folder Include="Sitecore\Services\" />
-    <Folder Include="Sitecore\Manager\" />
-    <Folder Include="Sitecore\Services\Auth\" />
-    <Folder Include="Sitecore\Base\" />
-    <Folder Include="Sitecore\Model\" />
-    <Folder Include="Sitecore\Model\Login\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="API\Models\Application Status\Get Search Application Type\" />
-    <Folder Include="API\Managers\Application Status\" />
-    <Folder Include="API\Models\Application Status\Get Application Status\" />
-    <Folder Include="API\Models\Application Status\Post Save Application\" />
-    <Folder Include="API\Managers\Application Status\Utilities\" />
-    <Folder Include="API\Display Model\" />
-    <Folder Include="API\Display Model\Application Status\" />
-    <Folder Include="API\Models\Application Status\Get All Applications\" />
     <Folder Include="Session Cache\" />
-    <Folder Include="API\Models\Application Status\Get Application Details\" />
-    <Folder Include="API\Managers\Payment\" />
-    <Folder Include="API\Services\Payment\" />
-    <Folder Include="API\Models\Payment\" />
-    <Folder Include="API\Models\Payment\Post Application Payment\" />
-    <Folder Include="Helpers\Application Status\" />
-    <Folder Include="API\Models\Application Status\Post Remove Application\" />
-    <Folder Include="API\Models\Application Status\Get Applications By CA\" />
-    <Folder Include="API\Models\Payment\Post Applications Paid Details\" />
-    <Folder Include="API\Models\Payment\Get Tax Invoice\" />
-    <Folder Include="API\Models\Notification\" />
-    <Folder Include="API\Models\Notification\Application Status\" />
-    <Folder Include="API\Managers\Rating\" />
-    <Folder Include="API\Services\Rating\" />
-    <Folder Include="API\Models\Rating\" />
-    <Folder Include="API\Models\Rating\Get Customer Rating Master\" />
-    <Folder Include="API\Models\Rating\Post Submit Rating\" />
-    <Folder Include="API\Models\Scheduler\" />
-    <Folder Include="API\Models\Scheduler\Get Available Appointment\" />
-    <Folder Include="API\Services\Scheduler\" />
-    <Folder Include="API\Managers\Scheduler\" />
-    <Folder Include="API\Models\Scheduler\Post Set Appointment\" />
-    <Folder Include="API\Display Model\Scheduler\" />
-    <Folder Include="API\Managers\Scheduler\Utilities\" />
-    <Folder Include="API\Models\Application Status\Post Sync SR Application\" />
-    <Folder Include="API\Models\Notification\Notification Details\" />
     <Folder Include="AWS\" />
     <Folder Include="AWS\Managers\" />
     <Folder Include="AWS\Models\" />
-    <Folder Include="AWS\Models\Access Token\" />
-    <Folder Include="AWS\Models\SSO\" />
     <Folder Include="AWS\Services\" />
-    <Folder Include="AWS\Managers\SSO\" />
     <Folder Include="AWS\Services\Access Token\" />
-    <Folder Include="AWS\Models\DBR\" />
-    <Folder Include="AWS\Models\DBR\Get Bill Rendering\" />
-    <Folder Include="AWS\Managers\DBR\" />
     <Folder Include="AWS\Services\DBR\" />
-    <Folder Include="AWS\Managers\Eligibility\" />
-    <Folder Include="AWS\Models\DBR\Post Multi Bill Rendering\" />
-    <Folder Include="AWS\Models\DBR\Post Multi Installation Details\" />
-    <Folder Include="API\Managers\Feature Info\" />
-    <Folder Include="API\Models\Feature Info\" />
-    <Folder Include="AWS\Managers\EB\" />
-    <Folder Include="AWS\Managers\Bill Redesign\" />
-    <Folder Include="AWS\Models\Eligibility\" />
-    <Folder Include="AWS\Models\Eligibility\Get Eligibility\" />
-    <Folder Include="AWS\Managers\Account Statement\" />
-    <Folder Include="AWS\Models\Account Statement\" />
     <Folder Include="AWS\Services\Account Statement\" />
-    <Folder Include="AWS\Models\Account Statement\Statement\" />
-    <Folder Include="AWS\Models\Account Statement\Notification\" />
-    <Folder Include="AWS\Models\Eligibility\Post Eligibility\" />
-    <Folder Include="API\Services\Feature Info\" />
-    <Folder Include="API\Models\Base Model\" />
-    <Folder Include="AWS\Managers\ServiceDistruption\" />
     <Folder Include="Constants\" />
-    <Folder Include="Constants\myHome\" />
-    <Folder Include="AWS\Models\DBR\Auto OptIn \" />
-    <Folder Include="API\Managers\Home\" />
-    <Folder Include="API\Models\Home\" />
-    <Folder Include="API\Models\Home\Post Services\" />
-    <Folder Include="API\Services\Home\" />
-    <Folder Include="Business\Utility\" />
-    <Folder Include="Business\Utility\myHome\" />
-    <Folder Include="Constants\Marketing Popup\" />
-    <Folder Include="Constants\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -197,36 +112,11 @@
     <None Remove="Resources\Notification\NotificationInfo_10071.json" />
     <None Remove="Resources\Notification\NotificationInfo_10072.json" />
     <None Remove="AWS\Models\DBR\Get Multi Bill Rendering\" />
-    <None Remove="AWS\Models\DBR\Post Multi Installation Details\" />
-    <None Remove="API\Models\Notification\Notification Details\" />
     <None Remove="API\Managers\FeatureInfo\" />
-    <None Remove="API\Models\Feature Info\" />
-    <None Remove="AWS\Managers\EB\" />
-    <None Remove="AWS\Managers\Bill Redesign\" />
-    <None Remove="AWS\Models\Eligibility\" />
-    <None Remove="AWS\Models\Eligibility\Get Eligibility\" />
-    <None Remove="AWS\Managers\Account Statement\" />
-    <None Remove="AWS\Models\Account Statement\" />
     <None Remove="AWS\Services\Account Statement\" />
     <None Remove="Xamarin.Essentials" />
-    <None Remove="AWS\Models\Account Statement\Statement\" />
-    <None Remove="AWS\Models\Account Statement\Notification\" />
-    <None Remove="AWS\Models\Eligibility\Post Eligibility\" />
-    <None Remove="API\Services\Feature Info\" />
-    <None Remove="API\Models\Base Model\" />
-    <None Remove="AWS\Managers\ServiceDistruption\" />
     <None Remove="API\Models\myHome\" />
     <None Remove="Constants\" />
-    <None Remove="Constants\myHome\" />
-    <None Remove="AWS\Models\DBR\Auto OptIn \" />
-    <None Remove="API\Managers\Home\" />
-    <None Remove="API\Models\Home\" />
-    <None Remove="API\Models\Home\Post Services\" />
-    <None Remove="API\Services\Home\" />
-    <None Remove="Business\Utility\" />
-    <None Remove="Business\Utility\myHome\" />
-    <None Remove="Constants\Marketing Popup\" />
-    <None Remove="Constants\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />

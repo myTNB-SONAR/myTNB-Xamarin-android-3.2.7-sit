@@ -225,7 +225,7 @@
     "tutorialQuickActionDesc": "Ciri baharu diketengahkan untuk anda mendapatkan semua perkhidmatan yang ditawarkan oleh myTNB!",
     "tutorialNeedHelpDesc": "Kami ketengahkan soalan lazim untuk anda ketahui.",
     "gotIt": "Ok!",
-    "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
+    "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
     "receivedExtra": "terima lebih",
     "applicationStatus": "Status<br>Permohonan",
     "later": "Tangguhkan",
@@ -3003,6 +3003,15 @@
             "secondaryCTATitle": "",
             "isSuccess": true,
             "type": "none"
+          },
+          {
+            "code": "default",
+            "title": "",
+            "message": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
+            "primaryCTATitle": "'Refresh' Sekarang",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "refresh"
           }
         ]
       }

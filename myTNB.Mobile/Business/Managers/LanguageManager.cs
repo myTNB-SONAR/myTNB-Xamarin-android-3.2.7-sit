@@ -145,7 +145,6 @@ namespace myTNB
         {
             return GetValuesByPage(MarketingPopup);
         }
-
         /// <summary>
         /// Gets the key-value pair of texts of a page.
         /// Advisable to call on intialisation of the page.

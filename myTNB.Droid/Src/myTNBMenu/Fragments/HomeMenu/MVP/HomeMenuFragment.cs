@@ -54,10 +54,7 @@ using myTNB_Android.Src.ManageBillDelivery.MVP;
 using System.Linq;
 using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile.AWS.Models;
-using myTNB_Android.Src.SessionCache;
 using myTNB_Android.Src.EBPopupScreen.Activity;
-using AndroidX.CardView.Widget;
-using System.Globalization;
 using DynatraceAndroid;
 using myTNB_Android.Src.ServiceDistruption.Activity;
 using System.Threading.Tasks;
@@ -66,6 +63,7 @@ using myTNB_Android.Src.MyHome;
 using myTNB.Mobile.Business;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.MyDrawer;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -352,7 +350,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         NewFAQAdapter newFAQAdapter;
 
         CustomerBillingAccount selectedAccount;
-        GetBillRenderingTenantResponse billRenderingTenantResponse;
+        PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
 
         const string PAGE_ID = "DashboardHome";
 
@@ -726,7 +724,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
                 }
                 List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
 
 
                 HideProgressDialog();
@@ -825,7 +823,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     , AccessTokenCache.Instance.GetAccessToken(this.Activity), isOwner);
 
                 HideProgressDialog();
-               // List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+                // List<string> dBRCAs = DBRUtility.Instance.GetCAList();
                 //Nullity Check
                 if (billRenderingResponse != null
                    && billRenderingResponse.StatusDetail != null
@@ -834,14 +832,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                   )
                 {
                     //For tenant checking DBR | Get a single data for specific ca from response list
-                   // billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                    // billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
 
                     Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                     intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
                     intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                     intent.PutExtra("accountNumber", caNumber);
                     StartActivity(intent);
-                    
+
                 }
                 else
                 {
@@ -1361,70 +1359,70 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         //if (IsAccountDBREligible)
                         //{
 
-                            if (IsAccountDBREligible && CustomerBillingAccount.HasOwnerCA())
+                        if (IsAccountDBREligible && CustomerBillingAccount.HasOwnerCA())
+                        {
+                            SetupDiscoverView();
+                            discovercontainer.Visibility = ViewStates.Visible;
+                            discoverView.Visibility = ViewStates.Visible;
+                            img_discover_digital_bill.Visibility = ViewStates.Visible;
+                            discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+
+                        }
+                        else
+                        {
+                            //GetBillTenantRendering();
+                            int countCA = 0;
+                            bool flagOwner = false;
+                            List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+                            List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+                            CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
+
+                            //TenantDBR
+
+                            foreach (CustomerBillingAccount item in accounts)
+                            {
+                                if (item.AccountHasOwner == true)
+                                {
+                                    flagOwner = true;
+                                }
+                            }
+
+                            for (int j = 0; j < accounts.Count; j++)
+                            {
+                                for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
+                                {
+                                    if (flagOwner
+                                        && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
+                                        && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
+                                        && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
+                                        && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
+                                    {
+                                        countCA++;
+                                    }
+                                }
+
+                            }
+
+                            if (countCA > 0)
                             {
                                 SetupDiscoverView();
                                 discovercontainer.Visibility = ViewStates.Visible;
                                 discoverView.Visibility = ViewStates.Visible;
                                 img_discover_digital_bill.Visibility = ViewStates.Visible;
                                 discoverMoreSectionTitle.Visibility = ViewStates.Visible;
-
                             }
                             else
                             {
-                                //GetBillTenantRendering();
-                                int countCA = 0;
-                                bool flagOwner = false;
-                                List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                                List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
-                                CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
-
-                                //TenantDBR
-
-                                foreach (CustomerBillingAccount item in accounts)
-                                {
-                                    if (item.AccountHasOwner == true)
-                                    {
-                                        flagOwner = true;
-                                    }
-                                }
-
-                                for (int j = 0; j < accounts.Count; j++)
-                                {
-                                    for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
-                                    {
-                                        if (flagOwner
-                                            && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
-                                            && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
-                                            && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
-                                            && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
-                                        {
-                                            countCA++;
-                                        }
-                                    }
-
-                                }
-
-                                if (countCA > 0)
-                                {
-                                    SetupDiscoverView();
-                                    discovercontainer.Visibility = ViewStates.Visible;
-                                    discoverView.Visibility = ViewStates.Visible;
-                                    img_discover_digital_bill.Visibility = ViewStates.Visible;
-                                    discoverMoreSectionTitle.Visibility = ViewStates.Visible;
-                                }
-                                else
-                                {
-                                    discovercontainer.Visibility = ViewStates.Gone;
-                                }
+                                discovercontainer.Visibility = ViewStates.Gone;
                             }
+                        }
                         //}
                         //else
                         //{
                         //    discovercontainer.Visibility = ViewStates.Gone;
 
                         //}
-                        
+
                     }
                     catch (System.Exception ex)
                     {
@@ -2001,7 +1999,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                         {
                                             EnergyBudgetPage();
                                         }
-                                    }                                   
+                                    }
                                     else
                                     {
                                         EnergyBudgetPage();

@@ -25,8 +25,7 @@ namespace myTNB.Mobile.AWS.Managers.Home
 
         public HomeManager() { }
 
-        public async Task<PostServicesResponse> PostServices(string timeStamp
-            , string accessToken)
+        public async Task<PostServicesResponse> PostServices(string timeStamp)
         {
             PostServicesResponse response = new PostServicesResponse();
 
@@ -56,7 +55,7 @@ namespace myTNB.Mobile.AWS.Managers.Home
                     }
                 };
 
-                IHomeService service = RestService.For<IHomeService>(MobileConstants.DEV5);
+                IHomeService service = RestService.For<IHomeService>(MobileConstants.ApiDomain);
                 HttpResponseMessage rawResponse = await service.PostServices(request
                     , API.NetworkService.GetCancellationToken()
                     , AppInfoManager.Instance.GetUserInfo()

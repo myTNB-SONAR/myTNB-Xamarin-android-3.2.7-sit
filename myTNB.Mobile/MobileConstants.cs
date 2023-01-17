@@ -37,15 +37,13 @@ namespace myTNB.Mobile
         private const string DEV2 = "http://10.215.128.191:89";
         private const string DEV3 = "http://10.215.128.191:99";
         private const string DEV4 = "http://10.215.128.191:97";
-        internal const string DEV5 = "http://10.215.128.162:99";
+        private const string DEV5 = "http://10.215.128.162:99";
 
         private const string SIT_AWS = "https://stagingapi.mytnb.com.my/asmx";
         //ASMX
         private const string SIT = "https://mobiletestingws.tnb.com.my";
         //AWS ASMX Copy
         //private const string SIT = "https://stagingapi.mytnb.com.my/asmx-97";
-        //myHome On Prem
-        //private const string SIT = "http://10.215.128.162:99";
         //AWS OVIS
         //private const string SIT = "http://mytnbwsovisstg.ap.ngrok.io";
         private const string PROD = "https://mytnbapp.tnb.com.my";
@@ -80,7 +78,7 @@ namespace myTNB.Mobile
         public static string OvisWebviewBaseUrlPROD = "https://mytnbappwv.ovis.tnb.com.my";
 
 #if DEBUG
-        public static string ApiDomain = SIT;
+        public static string ApiDomain = DEV5;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;
@@ -88,7 +86,7 @@ namespace myTNB.Mobile
         public static string AWSApiDomain = AWSApiDomainSIT;
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlSTG;
 #elif MASTER || SIT || DEBUG
-        public static string ApiDomain = SIT;
+        public static string ApiDomain = DEV5;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;
@@ -146,23 +144,6 @@ namespace myTNB.Mobile
             public const string GetEligibilityTimeStamp = "GetEligibilityTimeStamp";
             public const string GetEligibilityData = "GetEligibilityData";
             public const string AccessToken = "AccessToken";
-        }
-
-        public struct PushNotificationTypes
-        {
-            public const string DBR_Owner = "DBROWNER";
-            public const string DBR_NonOwner = "DBRNONOWNER";
-            public const string APPLICATIONSTATUS = "APPLICATIONSTATUS";
-            public const string APP_UPDATE = "APPUPDATE";
-            public const string ACCOUNT_STATEMENT = "ACCOUNTSTATEMENT";
-            public const string NEW_BILL_DESIGN = "NEWBILLDESIGN";
-
-            //myHome
-            public const string MYHOME_NC_ADDRESS_SEARCH_COMPLETED = "NCADDDRESSSEARCHCOMPLETED";
-            public const string MYHOME_NC_RESUME_APPLICATION = "NCRESUMEAPPLICATION";
-            public const string MYHOME_NC_APPLICATION_COMPLETED = "NCAPPLICATIONCOMPLETED";
-            public const string MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED = "NCAPPLICATIONCONTRACTORCOMPLETED";
-            public const string MYHOME_NC_OTP_VERIFY = "NCOTPVERIFY";
         }
 
         public struct OSType
