@@ -340,7 +340,7 @@ namespace myTNB_Android.Src.Billing.MVP
                             }
                             else
                             {
-                                if (tenantAllowOptIn == true)
+                                if (tenantAllowOptIn)
                                 {
                                     paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
                                 }

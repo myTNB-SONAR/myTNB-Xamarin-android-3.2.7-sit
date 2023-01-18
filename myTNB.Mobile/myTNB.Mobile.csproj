@@ -136,6 +136,7 @@
     <Folder Include="API\Models\Base Model\" />
     <Folder Include="AWS\Managers\ServiceDistruption\" />
     <Folder Include="AWS\Models\DBR\Auto OptIn \" />
+    <Folder Include="AWS\Managers\TNG\" />
     <Folder Include="AWS\Managers\DS\" />
     <Folder Include="AWS\Services\DS\" />
     <Folder Include="AWS\Models\DS\" />
@@ -211,6 +212,7 @@
     <None Remove="API\Models\Base Model\" />
     <None Remove="AWS\Managers\ServiceDistruption\" />
     <None Remove="AWS\Models\DBR\Auto OptIn \" />
+    <None Remove="AWS\Managers\TNG\" />
     <None Remove="AWS\Managers\DS\" />
     <None Remove="AWS\Services\DS\" />
     <None Remove="AWS\Models\DS\" />

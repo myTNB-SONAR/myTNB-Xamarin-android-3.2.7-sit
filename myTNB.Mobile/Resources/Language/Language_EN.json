@@ -632,13 +632,16 @@
     "otherPaymentMethods": "Other Payment Methods",
     "maxCCAmountMessage": "For payments more than RM 5000, please use FPX payment mode.",
     "addCard": "Add Card",
-    "fpxTitle": "Online Banking via FPX"
+    "fpxTitle": "Online Banking via FPX",
+    "eWalletPaymentMethods": "eWallet",
+    "tngTitle": "TNG eWallet"
   },
   "MakePayment": {
     "enterOTP": "Enter the OTP",
     "onlineBanking": "Online Banking",
     "abortTitle": "Cancel Payment",
-    "abortMessage": "Are you sure you want to cancel payment?"
+    "abortMessage": "Are you sure you want to cancel payment?",
+    "tngEwallet": "Touch'n Go"
   },
   "PushNotificationList": {
     "allNotifications": "All Notifications",

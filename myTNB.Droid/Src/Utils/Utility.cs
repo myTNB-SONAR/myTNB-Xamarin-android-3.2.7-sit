@@ -557,20 +557,45 @@ namespace myTNB_Android.Src.Utils
 
             DownTimeEntity smartmeterdailyEntity = DownTimeEntity.GetByCode(Constants.Smart_Meter_Daily_SYSTEM);
             DownTimeEntity smartmeter = DownTimeEntity.GetByCode(Constants.SMART_METER_SYSTEM);
+            DownTimeEntity ebdowntime = DownTimeEntity.GetByCode(Constants.EB_SYSTEM);
+
+            //if (smartmeterdailyEntity != null && smartmeterdailyEntity.IsDown)
+            //{
+            //    isMDMSEnable = false;
+            //}
+            //else
+            //{
+            //    if (smartmeter != null && smartmeter != null)
+            //    {
+            //        if (smartmeter.IsDown || smartmeterdailyEntity.IsDown)
+            //        {
+            //            isMDMSEnable = false;
+            //        }
+            //    }
+            //}
 
             if (smartmeterdailyEntity != null && smartmeterdailyEntity.IsDown)
             {
-                isMDMSEnable = false;
+                isMDMSEnable = false; //smart meter daily is down
+            }
+            else if (smartmeter != null && smartmeter.IsDown)
+            {
+                isMDMSEnable = false; //smart meter is down
             }
             else
             {
-                if (smartmeter != null && smartmeter != null)
+                if (ebdowntime != null)
                 {
-                    if (smartmeter.IsDown || smartmeterdailyEntity.IsDown)
+                    if (ebdowntime.IsDown)
                     {
-                        isMDMSEnable = false;
+                        isMDMSEnable = false; //energy budget is down
+                    }
+                    else
+                    {
+                        isMDMSEnable = true; //energy budget is not down
                     }
                 }
+                
             }
 
             return isMDMSEnable;
@@ -633,6 +658,7 @@ namespace myTNB_Android.Src.Utils
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+                DownTimeEntity pgTNGEntity = DownTimeEntity.GetByCode(Constants.PG_TNG_SYSTEM);
 
                 if (bcrmEntity != null && bcrmEntity.IsDown)
                 {
@@ -640,9 +666,9 @@ namespace myTNB_Android.Src.Utils
                 }
                 else
                 {
-                    if (pgCCEntity != null && pgFPXEntity != null)
+                    if (pgCCEntity != null && pgFPXEntity != null && pgTNGEntity != null)
                     {
-                        if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                        if (pgCCEntity.IsDown && pgFPXEntity.IsDown && pgTNGEntity.IsDown)
                         {
                             isPaymentEnable = false;
                         }
