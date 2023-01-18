@@ -94,7 +94,11 @@ namespace myTNB_Android.Src.MyDrawer
                 switch(model.ServiceType)
                 {
                     case ServiceEnum.CONNECTMYPREMISE:
-                        DynamicIconHandling(vh, model, Resource.Drawable.Icon_Connect_My_Premise);
+                        this.mActivity.RunOnUiThread(() =>
+                        {
+                            DynamicIconHandling(vh, model, Resource.Drawable.Icon_Connect_My_Premise);
+                        });
+                        
                         if (UserSessions.ConnectMyPremiseHasShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
                         {
                             vh.newLabel.Visibility = ViewStates.Gone;
@@ -122,8 +126,6 @@ namespace myTNB_Android.Src.MyDrawer
         {
             try
             {
-                vh.myDrawerImg.SetImageResource(fallbackImgRes);
-
                 if (model != null)
                 {
                     string timestamp = UserSessions.GetServicesTimeStamp(PreferenceManager.GetDefaultSharedPreferences(this.mActivity));
@@ -141,23 +143,38 @@ namespace myTNB_Android.Src.MyDrawer
 
                     if (myServiceIconEntity != null)
                     {
-                        string serviceIconURL = myServiceIconEntity.ServiceIconUrl;
-                        string serviceIconB64 = myServiceIconEntity.ServiceIconB64;
-                        string disableServiceIconURL = myServiceIconEntity.DisabledServiceIconUrl;
-                        string disableServiceIconB64 = myServiceIconEntity.DisabledServiceIconB64;
+                        string iconURL = isDisabled ? myServiceIconEntity.DisabledServiceIconUrl : myServiceIconEntity.ServiceIconUrl;
+                        string iconB64 = isDisabled ? myServiceIconEntity.DisabledServiceIconB64 : myServiceIconEntity.ServiceIconB64;
+
+                        if (iconB64.IsValid())
+                        {
+                            Bitmap convertedImage = ImageUtils.Base64ToBitmap(iconB64);
+                            if (convertedImage != null)
+                            {
+                                vh.myDrawerImg.SetImageBitmap(convertedImage);
+                            }
+                            else
+                            {
+                                vh.myDrawerImg.SetImageResource(fallbackImgRes);
+                            }
+                        }
+                        else
+                        {
+                            vh.myDrawerImg.SetImageResource(fallbackImgRes);
+                        }
 
                         if (timestamp != myServiceIconEntity.TimeStamp)
                         {
                             Task.Run(() =>
                             {
-                                var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(isDisabled ? disableServiceIconURL : serviceIconURL);
+                                var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(iconURL);
                                 if (bitmapImage != null)
                                 {
                                     vh.myDrawerImg.SetImageBitmap(bitmapImage);
                                 }
                                 else
                                 {
-                                    Bitmap convertedImage = ImageUtils.Base64ToBitmap(isDisabled ? disableServiceIconB64 : serviceIconB64);
+                                    Bitmap convertedImage = ImageUtils.Base64ToBitmap(iconB64);
                                     if (convertedImage != null)
                                     {
                                         vh.myDrawerImg.SetImageBitmap(convertedImage);
@@ -171,7 +188,7 @@ namespace myTNB_Android.Src.MyDrawer
                         }
                         else
                         {
-                            Bitmap convertedImage = ImageUtils.Base64ToBitmap(isDisabled ? disableServiceIconB64 : serviceIconB64);
+                            Bitmap convertedImage = ImageUtils.Base64ToBitmap(iconB64);
                             if (convertedImage != null)
                             {
                                 vh.myDrawerImg.SetImageBitmap(convertedImage);
@@ -184,6 +201,8 @@ namespace myTNB_Android.Src.MyDrawer
                     }
                     else
                     {
+                        vh.myDrawerImg.SetImageResource(fallbackImgRes);
+
                         Task.Run(() =>
                         {
                             var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(isDisabled ? model.DisabledServiceIconUrl : model.ServiceIconUrl);

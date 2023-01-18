@@ -48,7 +48,7 @@ namespace myTNB_Android.Src.MyHome.Activity
 
             SetToolBarTitle(Utility.GetLocalizedLabel("ConnectMyPremise", "title"));
 
-            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+            SetStatusBarBackground(Resource.Drawable.Background_Status_Bar);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             HideTopNavBar();
@@ -163,7 +163,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                     }
                     else if(url.Contains("mytnbapp://action=backToHome"))
                     {
-                        mActivity.OnShowDashboard();
+                        mActivity.Finish();
                         shouldOverride = true;
                     }
                 }

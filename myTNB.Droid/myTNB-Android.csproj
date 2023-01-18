@@ -7428,6 +7428,26 @@
     <Compile Include="Src\MyHome\Model\MyServiceIconModel.cs" />
     <Compile Include="Src\MyHome\Model\MyServiceModel.cs" />
     <Compile Include="Src\Database\Model\MyServiceChildEntity.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\Background_Status_Bar.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Background_Status_Bar.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Background_Status_Bar.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Background_Status_Bar.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Background_Status_Bar.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">

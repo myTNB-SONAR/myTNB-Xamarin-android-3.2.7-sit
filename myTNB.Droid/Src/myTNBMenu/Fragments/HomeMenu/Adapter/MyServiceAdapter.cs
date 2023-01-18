@@ -482,98 +482,116 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
         private void DynamicIconHandling(MyServiceViewHolder vh, MyServiceModel model, int fallbackImgRes, bool isDisabled = false)
         {
-            try
+            this.mActivity.RunOnUiThread(() =>
             {
-                vh.serviceImg.SetImageResource(fallbackImgRes);
-
-                if (model != null)
+                try
                 {
-                    string timestamp = UserSessions.GetServicesTimeStamp(PreferenceManager.GetDefaultSharedPreferences(this.mActivity));
-                    MyServiceIconEntity iconEntity = new MyServiceIconEntity()
+                    if (model != null)
                     {
-                        ServiceId = model.ServiceId,
-                        ServiceIconUrl = model.ServiceIconUrl,
-                        DisabledServiceIconUrl = model.DisabledServiceIconUrl,
-                        ServiceBannerUrl = model.ServiceBannerUrl,
-                        TimeStamp = timestamp
-                    };
-
-                    MyServiceIconEntity iconManager = new MyServiceIconEntity();
-                    MyServiceIconEntity myServiceIconEntity = iconManager.GetMyServiceItem(model.ServiceId);
-
-                    if (myServiceIconEntity != null)
-                    {
-                        string serviceIconURL = myServiceIconEntity.ServiceIconUrl;
-                        string serviceIconB64 = myServiceIconEntity.ServiceIconB64;
-                        string disableServiceIconURL = myServiceIconEntity.DisabledServiceIconUrl;
-                        string disableServiceIconB64 = myServiceIconEntity.DisabledServiceIconB64;
-
-                        if (timestamp != myServiceIconEntity.TimeStamp)
+                        string timestamp = UserSessions.GetServicesTimeStamp(PreferenceManager.GetDefaultSharedPreferences(this.mActivity));
+                        MyServiceIconEntity iconEntity = new MyServiceIconEntity()
                         {
-                            Task.Run(() =>
+                            ServiceId = model.ServiceId,
+                            ServiceIconUrl = model.ServiceIconUrl,
+                            DisabledServiceIconUrl = model.DisabledServiceIconUrl,
+                            ServiceBannerUrl = model.ServiceBannerUrl,
+                            TimeStamp = timestamp
+                        };
+
+                        MyServiceIconEntity iconManager = new MyServiceIconEntity();
+                        MyServiceIconEntity myServiceIconEntity = iconManager.GetMyServiceItem(model.ServiceId);
+
+                        if (myServiceIconEntity != null)
+                        {
+                            string iconURL = isDisabled ? myServiceIconEntity.DisabledServiceIconUrl : myServiceIconEntity.ServiceIconUrl;
+                            string iconB64 = isDisabled ? myServiceIconEntity.DisabledServiceIconB64 : myServiceIconEntity.ServiceIconB64;
+
+                            if (iconB64.IsValid())
                             {
-                                var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(isDisabled ? disableServiceIconURL : serviceIconURL);
-                                if (bitmapImage != null)
+                                Bitmap convertedImage = ImageUtils.Base64ToBitmap(iconB64);
+                                if (convertedImage != null)
                                 {
-                                    vh.serviceImg.SetImageBitmap(bitmapImage);
+                                    vh.serviceImg.SetImageBitmap(convertedImage);
                                 }
                                 else
                                 {
-                                    Bitmap convertedImage = ImageUtils.Base64ToBitmap(isDisabled ? disableServiceIconB64 : serviceIconB64);
-                                    if (convertedImage != null)
-                                    {
-                                        vh.serviceImg.SetImageBitmap(convertedImage);
-                                    }
-                                    else
-                                    {
-                                        vh.serviceImg.SetImageResource(fallbackImgRes);
-                                    }
+                                    vh.serviceImg.SetImageResource(fallbackImgRes);
                                 }
-                            });
-                        }
-                        else
-                        {
-                            Bitmap convertedImage = ImageUtils.Base64ToBitmap(isDisabled ? disableServiceIconB64 : serviceIconB64);
-                            if (convertedImage != null)
-                            {
-                                vh.serviceImg.SetImageBitmap(convertedImage);
                             }
                             else
                             {
                                 vh.serviceImg.SetImageResource(fallbackImgRes);
                             }
+
+                            if (timestamp != myServiceIconEntity.TimeStamp)
+                            {
+                                Task.Run(() =>
+                                {
+                                    var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(iconURL);
+                                    if (bitmapImage != null)
+                                    {
+                                        vh.serviceImg.SetImageBitmap(bitmapImage);
+                                    }
+                                    else
+                                    {
+                                        Bitmap convertedImage = ImageUtils.Base64ToBitmap(iconB64);
+                                        if (convertedImage != null)
+                                        {
+                                            vh.serviceImg.SetImageBitmap(convertedImage);
+                                        }
+                                        else
+                                        {
+                                            vh.serviceImg.SetImageResource(fallbackImgRes);
+                                        }
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                Bitmap convertedImage = ImageUtils.Base64ToBitmap(iconB64);
+                                if (convertedImage != null)
+                                {
+                                    vh.serviceImg.SetImageBitmap(convertedImage);
+                                }
+                                else
+                                {
+                                    vh.serviceImg.SetImageResource(fallbackImgRes);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            vh.serviceImg.SetImageResource(fallbackImgRes);
+
+                            Task.Run(() =>
+                            {
+                                var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(isDisabled ? model.DisabledServiceIconUrl : model.ServiceIconUrl);
+                                if (bitmapImage != null)
+                                {
+                                    vh.serviceImg.SetImageBitmap(bitmapImage);
+                                    string base64String = ImageUtils.GetBase64FromBitmapPNG(bitmapImage, 100);
+                                    iconEntity.ServiceIconB64 = base64String;
+
+                                    iconManager.InsertItem(iconEntity);
+                                }
+                                else
+                                {
+                                    vh.serviceImg.SetImageResource(fallbackImgRes);
+                                }
+                            });
                         }
                     }
                     else
                     {
-                        Task.Run(() =>
-                        {
-                            var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(isDisabled ? model.DisabledServiceIconUrl : model.ServiceIconUrl);
-                            if (bitmapImage != null)
-                            {
-                                vh.serviceImg.SetImageBitmap(bitmapImage);
-                                string base64String = ImageUtils.GetBase64FromBitmapPNG(bitmapImage, 100);
-                                iconEntity.ServiceIconB64 = base64String;
-
-                                iconManager.InsertItem(iconEntity);
-                            }
-                            else
-                            {
-                                vh.serviceImg.SetImageResource(fallbackImgRes);
-                            }
-                        });
+                        vh.serviceImg.SetImageResource(fallbackImgRes);
                     }
                 }
-                else
+                catch (Exception e)
                 {
+                    Utility.LoggingNonFatalError(e);
                     vh.serviceImg.SetImageResource(fallbackImgRes);
                 }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-                vh.serviceImg.SetImageResource(fallbackImgRes);
-            }
+            });
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
