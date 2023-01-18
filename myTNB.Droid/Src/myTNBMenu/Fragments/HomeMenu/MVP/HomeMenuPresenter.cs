@@ -44,6 +44,7 @@ using myTNB_Android.Src.MyHome.Model;
 using ServiceEnum = myTNB.Mobile.MobileEnums.ServiceEnum;
 using iTextSharp.text;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -2952,7 +2953,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     NeedHelpHide = isNeedHelpHide,
                     IsButtonShow = false,
-                    Feature = FeatureType.MyHome
+                    Feature = FeatureType.MyHome,
+                    DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
+                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
                 });
 
                 if (!isNeedHelpHide)
@@ -3060,7 +3063,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     NeedHelpHide = isNeedHelpHide,
                     IsButtonShow = false,
-                    Feature = FeatureType.MyHome
+                    Feature = FeatureType.MyHome,
+                    DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
+                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
                 });
 
                 if (!isNeedHelpHide)

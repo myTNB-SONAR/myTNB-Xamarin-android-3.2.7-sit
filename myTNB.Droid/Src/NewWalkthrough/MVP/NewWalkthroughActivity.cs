@@ -59,7 +59,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         private Snackbar mLanguageSnackbar;
 
         List<NewWalkthroughModel> walkthroughModelList;
-        string _dynatraceSkipActionTag;
+        string dynatraceSkipActionTag;
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)
         {
@@ -85,7 +85,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 if (walkthroughModel != null)
                 {
                     DynatraceHelper.OnTrack(walkthroughModel.DynatraceVisitTag);
-                    _dynatraceSkipActionTag = walkthroughModel.DynatraceActionTag;
+                    dynatraceSkipActionTag = walkthroughModel.DynatraceActionTag;
                 }
 
                 for (int i = 0; i < newWalkthroughAdapter.Count; i++)
@@ -185,7 +185,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             }
             btnSkip.Click += delegate
             {
-                DynatraceHelper.OnTrack(_dynatraceSkipActionTag);
+                DynatraceHelper.OnTrack(dynatraceSkipActionTag);
                 UserSessions.DoSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
                 UserSessions.DoUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
                 StartActivity();
@@ -201,6 +201,17 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 btnStart.Text = Utility.GetLocalizedLabel("Onboarding", "setSize");
             }
             btnStart.Visibility = ViewStates.Gone;
+
+            if (walkthroughModelList.Count > 0)
+            {
+                NewWalkthroughModel walkthroughModel = walkthroughModelList[0];
+
+                if (walkthroughModel != null)
+                {
+                    DynatraceHelper.OnTrack(walkthroughModel.DynatraceVisitTag);
+                    dynatraceSkipActionTag = walkthroughModel.DynatraceActionTag;
+                }
+            }
         }
 
         private void ShowSubmitButton(bool isShow)

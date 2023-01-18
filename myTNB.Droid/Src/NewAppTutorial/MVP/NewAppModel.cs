@@ -30,5 +30,7 @@
         public bool IsButtonUpdateShow { get; set; }
         public string DisplayMode { get; set; }
         public bool NeedHelpHide { get; set; }
+        public string DynatraceVisitTag { set; get; }
+        public string DynatraceActionTag { set; get; }
     }
 }

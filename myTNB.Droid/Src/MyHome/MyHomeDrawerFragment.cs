@@ -35,6 +35,8 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.MyHome.Activity;
 using AndroidX.CoordinatorLayout.Widget;
+using myTNB.Mobile;
+using Color = Android.Graphics.Color;
 
 namespace myTNB_Android.Src.MyHome
 {
@@ -166,7 +168,9 @@ namespace myTNB_Android.Src.MyHome
                 ContentShowPosition = ContentType.TopLeft,
                 ContentTitle = Utility.GetLocalizedLabel("Tutorial", "connectMyPremiseTitle"),
                 ContentMessage = Utility.GetLocalizedLabel("Tutorial", "connectMyPremiseMessage"),
-                Feature = FeatureType.MyHome
+                Feature = FeatureType.MyHome,
+                DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Drawer_Start_Your_Application,
+                DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Drawer_Start_Your_Application_Skip
             });
 
             return tutorialList;

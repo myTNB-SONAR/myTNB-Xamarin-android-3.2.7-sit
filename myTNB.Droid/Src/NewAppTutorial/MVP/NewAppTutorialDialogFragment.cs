@@ -30,6 +30,7 @@ using myTNB_Android.Src.ManageSupplyAccount.Activity;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile;
 using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.NewWalkthrough.MVP;
 
 namespace myTNB_Android.Src.NewAppTutorial.MVP
 {
@@ -50,7 +51,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         private Fragment mFragment;
         private ISharedPreferences mPref;
         private bool IndicationShowTop = false;
-
+        public string DynatraceSkipActionTag;
 
         public NewAppTutorialDialogFragment(Android.App.Activity ctx, Fragment fragment, ISharedPreferences pref, List<NewAppModel> list, bool mIndicationShowTop = false)
         {
@@ -130,8 +131,6 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     //     txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
                     //     txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
                 }
-
-
 
                 if (this.mFragment != null)
                 {
@@ -306,6 +305,13 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                 if (NewAppTutorialList.Count > 0)
                 {
+                    NewAppModel newAppModel = NewAppTutorialList[0];
+                    if (newAppModel != null)
+                    {
+                        DynatraceHelper.OnTrack(newAppModel.DynatraceVisitTag);
+                        DynatraceSkipActionTag = newAppModel.DynatraceActionTag;
+                    }
+
                     if (NewAppTutorialList.Count > 1)
                     {
                         if (IndicationShowTop)
@@ -439,8 +445,6 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         }
                     }
 
-
-
                     if (NewAppTutorialList.Count > 1)
                     {
                         for (int i = 0; i < NewAppTutorialList.Count; i++)
@@ -488,6 +492,13 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     {
                         pager.PageSelected += (object sender, ViewPager.PageSelectedEventArgs e) =>
                         {
+                            NewAppModel newAppModel = NewAppTutorialList[e.Position];
+                            if (newAppModel != null)
+                            {
+                                DynatraceHelper.OnTrack(newAppModel.DynatraceVisitTag);
+                                DynatraceSkipActionTag = newAppModel.DynatraceActionTag;
+                            }
+                            
                             for (int i = 0; i < NewAppTutorialList.Count; i++)
                             {
                                 ImageView selectedDot = (ImageView)indicator.GetChildAt(i);
@@ -966,6 +977,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
             {
                 this.mDialog.DismissAllowingStateLoss();
                 NewAppTutorialUtils.CloseNewAppTutorial();
+
+                string dynatraceSkipActionTag = ((NewAppTutorialDialogFragment)this.mDialog).DynatraceSkipActionTag;
+                DynatraceHelper.OnTrack(dynatraceSkipActionTag);
+
                 if (this.mFragment != null)
                 {
                     if (this.mFragment is HomeMenuFragment)
