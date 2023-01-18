@@ -210,5 +210,33 @@
                 }
             }
         }
+
+        public struct MyHome
+        {
+            public struct Screens
+            {
+                public struct OnBoarding
+                {
+                    public const string Enhance = "App_OnboardingComms_myHomeGTM1_Enhance";
+                    public const string Connect = "App_OnboardingComms_myHomeGTM1_Connect";
+                    public const string Manage = "App_OnboardingComms_myHomeGTM1_Manage";
+                }
+
+                public struct Tutorial
+                {
+                    public const string Dashboard_QuickLinks_MyHome = "App_OverlayTutorial_myHomeGTM1_IntroducingmyHome";
+                    public const string MyHome_Drawer_Connect_My_Premise = "App_OverlayTutorial_myHomeGTM1_StartYourApplication";
+                }
+
+                public struct Drawer
+                {
+
+                }
+            }
+            public struct CTAs
+            {
+                public const string Update = "App_Action_InAppPreGTM_UpdateNow";
+            }
+        }
     }
 }

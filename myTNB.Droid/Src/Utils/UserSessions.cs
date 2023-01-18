@@ -1208,13 +1208,13 @@ namespace myTNB_Android.Src.Utils
 
         public static string GetServicesTimeStamp(ISharedPreferences prefs)
         {
-            return prefs.GetString("getServicesTimeStamp", string.Empty);
+            return prefs.GetString(PreferenceKey.Home.QuickLinkImagesTimestamp, string.Empty);
         }
 
         public static void SetGetServicesTimeStamp(ISharedPreferences prefs, string timeStamp)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutString("getServicesTimeStamp", timeStamp);
+            editor.PutString(PreferenceKey.Home.QuickLinkImagesTimestamp, timeStamp);
             editor.Apply();
         }
     }
