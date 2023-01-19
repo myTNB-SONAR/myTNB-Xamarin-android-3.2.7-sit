@@ -23,8 +23,11 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.DigitalBill.Activity;
+using myTNB_Android.Src.MyDrawer;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.MyHome.Activity
 {
@@ -38,21 +41,39 @@ namespace myTNB_Android.Src.MyHome.Activity
         [BindView(Resource.Id.micrositeWebview)]
         WebView micrositeWebview;
 
+        MyDrawerModel model;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            SetTheme(TextViewUtils.IsLargeFonts
+            try
+            {
+                SetTheme(TextViewUtils.IsLargeFonts
                 ? Resource.Style.Theme_DashboardLarge
                 : Resource.Style.Theme_Dashboard);
 
-            SetToolBarTitle(Utility.GetLocalizedLabel("ConnectMyPremise", "title"));
+                SetToolBarTitle(Utility.GetLocalizedLabel("ConnectMyPremise", "title"));
 
-            SetStatusBarBackground(Resource.Drawable.Background_Status_Bar);
-            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                SetStatusBarBackground(Resource.Drawable.Background_Status_Bar);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
-            HideTopNavBar();
-            SetUpWebView();
+                HideTopNavBar();
+
+                Bundle extras = Intent.Extras;
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(MyHomeConstants.DRAWER_MODEL))
+                    {
+                        model = JsonConvert.DeserializeObject<MyDrawerModel>(extras.GetString(MyHomeConstants.DRAWER_MODEL));
+                        SetUpWebView();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnStart()
@@ -96,9 +117,8 @@ namespace myTNB_Android.Src.MyHome.Activity
         {
             try
             {
-                //STUB
-                string originURL = "mytnbapp://action=backToApp";
-                string redirectURL = "https://devmyhome.mytnb.com.my/Application/Offerings";
+                string originURL = model?.OriginURL ?? string.Empty;
+                string redirectURL = model?.RedirectURL ?? string.Empty;
 
                 UserEntity user = UserEntity.GetActive();
                 string myTNBAccountName = user?.DisplayName ?? string.Empty;
@@ -114,10 +134,10 @@ namespace myTNB_Android.Src.MyHome.Activity
                 , originURL
                 , redirectURL
                 , user.UserID
-                , myTNB.Mobile.MobileConstants.OSType.int_Android
+                , MobileConstants.OSType.int_Android
                 , user.Email);
-                
-                string ssoURL = string.Format(AWSConstants.Domains.SSO.MyHome, signature);
+
+                string ssoURL = string.Format(model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
 
                 micrositeWebview.SetWebChromeClient(new WebChromeClient());
                 micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));

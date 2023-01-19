@@ -7448,6 +7448,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\MyHome\MyHomeConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">
