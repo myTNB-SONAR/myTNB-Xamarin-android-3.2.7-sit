@@ -81,15 +81,22 @@ namespace myTNB_Android.Src.MyHome
                 {
                     Dialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.Transparent));
                     Dialog.Window.SetDimAmount(0.75f);
-                    Dialog.SetCancelable(false);
+                    Dialog.SetCancelable(true);
                     Dialog.SetCanceledOnTouchOutside(true);
                     Dialog.Window.SetLayout(WindowManagerLayoutParams.MatchParent, WindowManagerLayoutParams.WrapContent);
+                    Dialog.SetOnDismissListener(new OnDismissListener(() =>
+                    {
+                        DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Dismiss);
+                    }));
                 }
 
                 Task.Run(async () =>
                 {
                     await Task.Delay(200);
                     bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+
+                    DynatraceHelper.OnTrack(DynatraceConstants.MyHome.Screens.Home.Drawer);
+                    DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Open);
 
                     if (!UserSessions.MyHomeDrawerTutorialHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                     {
@@ -145,6 +152,8 @@ namespace myTNB_Android.Src.MyHome
 
         private void OnClickChanged(object sender, int position)
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Connect_My_Premise);
+
             if (!UserSessions.ConnectMyPremiseHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
             {
                 UserSessions.SetShownConnectMyPremise(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
@@ -157,6 +166,7 @@ namespace myTNB_Android.Src.MyHome
         private void CloseOnClick(object sender, EventArgs e)
         {
             bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+            DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Cancel);
         }
 
         private List<NewAppModel> OnGeneraMyHomeDrawerTutorialList()
@@ -218,10 +228,26 @@ namespace myTNB_Android.Src.MyHome
                 if (slideOffset < -1 || slideOffset == -1)
                 {
                     this.fragment.Dismiss();
+                    DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Dismiss);
                 }
             }
 
             public override void OnStateChanged(View bottomSheet, int newState) { }
+        }
+
+        private sealed class OnDismissListener : Java.Lang.Object, IDialogInterfaceOnDismissListener
+        {
+            private readonly Action action;
+
+            public OnDismissListener(Action action)
+            {
+                this.action = action;
+            }
+
+            public void OnDismiss(IDialogInterface dialog)
+            {
+                this.action();
+            }
         }
     }
 }
