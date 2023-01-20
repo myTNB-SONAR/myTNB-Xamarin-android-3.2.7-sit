@@ -28,6 +28,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using MyHomeModel = myTNB_Android.Src.MyDrawer.MyHomeModel;
 
 namespace myTNB_Android.Src.MyHome.Activity
 {
@@ -41,7 +42,7 @@ namespace myTNB_Android.Src.MyHome.Activity
         [BindView(Resource.Id.micrositeWebview)]
         WebView micrositeWebview;
 
-        MyDrawerModel model;
+        MyHomeModel model;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -53,8 +54,6 @@ namespace myTNB_Android.Src.MyHome.Activity
                 ? Resource.Style.Theme_DashboardLarge
                 : Resource.Style.Theme_Dashboard);
 
-                SetToolBarTitle(Utility.GetLocalizedLabel("ConnectMyPremise", "title"));
-
                 SetStatusBarBackground(Resource.Drawable.Background_Status_Bar);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
@@ -65,7 +64,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                 {
                     if (extras.ContainsKey(MyHomeConstants.DRAWER_MODEL))
                     {
-                        model = JsonConvert.DeserializeObject<MyDrawerModel>(extras.GetString(MyHomeConstants.DRAWER_MODEL));
+                        model = JsonConvert.DeserializeObject<MyHomeModel>(extras.GetString(MyHomeConstants.DRAWER_MODEL));
                         SetUpWebView();
                     }
                 }
@@ -120,6 +119,9 @@ namespace myTNB_Android.Src.MyHome.Activity
                 string originURL = model?.OriginURL ?? string.Empty;
                 string redirectURL = model?.RedirectURL ?? string.Empty;
 
+                //stub
+                //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
+
                 UserEntity user = UserEntity.GetActive();
                 string myTNBAccountName = user?.DisplayName ?? string.Empty;
                 string signature = SSOManager.Instance.GetMyHomeSignature(myTNBAccountName
@@ -138,6 +140,9 @@ namespace myTNB_Android.Src.MyHome.Activity
                 , user.Email);
 
                 string ssoURL = string.Format(model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
+
+                //stub
+                //string ssoURL = string.Format("https://stagingmyhome.mytnb.com.my/Sso?s={0}", signature);
 
                 micrositeWebview.SetWebChromeClient(new WebChromeClient());
                 micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
@@ -159,6 +164,12 @@ namespace myTNB_Android.Src.MyHome.Activity
             }
         }
 
+        public override void OnBackPressed()
+        {
+            micrositeWebview = null;
+            Finish();
+        }
+
         public class MyHomeWebViewClient : WebViewClient
         {
             private MyHomeMicrositeActivity mActivity;
@@ -176,12 +187,12 @@ namespace myTNB_Android.Src.MyHome.Activity
                 {
                     string url = request.Url.ToString();
                     Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
-                    if (url.Contains("mytnbapp://action=backToApp"))
+                    if (url.Contains(MyHomeConstants.BACK_TO_APP))
                     {
                         mActivity.OnBackPressed();
                         shouldOverride = true;
                     }
-                    else if(url.Contains("mytnbapp://action=backToHome"))
+                    else if(url.Contains(MyHomeConstants.BACK_TO_HOME))
                     {
                         mActivity.Finish();
                         shouldOverride = true;
@@ -197,10 +208,7 @@ namespace myTNB_Android.Src.MyHome.Activity
 
             public override void OnReceivedError(WebView view, IWebResourceRequest request, WebResourceError error) { }
 
-            public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error)
-            {
-                //handler.Proceed();
-            }
+            public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error) { }
         }
     }
 }

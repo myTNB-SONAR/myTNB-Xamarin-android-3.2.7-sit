@@ -38,6 +38,7 @@ using AndroidX.CoordinatorLayout.Widget;
 using myTNB.Mobile;
 using Color = Android.Graphics.Color;
 using Newtonsoft.Json;
+using MyHomeModel = myTNB_Android.Src.MyDrawer.MyHomeModel;
 
 namespace myTNB_Android.Src.MyHome
 {
@@ -161,9 +162,17 @@ namespace myTNB_Android.Src.MyHome
             }
 
             MyDrawerModel model = myDrawerList[position];
+            MyHomeModel myHomeModel = new MyHomeModel()
+            {
+                ServiceId = model.ServiceId,
+                ServiceName = model.ServiceName,
+                SSODomain = model.SSODomain,
+                OriginURL = model.OriginURL,
+                RedirectURL = model.RedirectURL
+            };
 
             Intent micrositeActivity = new Intent(this.Activity, typeof(MyHomeMicrositeActivity));
-            micrositeActivity.PutExtra(MyHomeConstants.DRAWER_MODEL, JsonConvert.SerializeObject(model));
+            micrositeActivity.PutExtra(MyHomeConstants.DRAWER_MODEL, JsonConvert.SerializeObject(myHomeModel));
             StartActivity(micrositeActivity);
         }
 
