@@ -53,7 +53,6 @@ namespace myTNB_Android.Src.Base
         private bool IsCOMCLandNEM = false;
         private bool IsNCAcc = false;
         private bool IsSDUser = false;
-        private bool IsTNGEnable = false;
 
         private MyTNBAccountManagement()
         {
@@ -783,16 +782,6 @@ namespace myTNB_Android.Src.Base
         public bool IsSDUserVerify()
         {
             return IsSDUser;
-        }
-
-        public void SetIsTNGEnable(bool TNGEnable)
-        {
-            IsTNGEnable = TNGEnable;
-        }
-
-        public bool IsTNGEnableVerify()
-        {
-            return IsTNGEnable;
         }
     }
 }

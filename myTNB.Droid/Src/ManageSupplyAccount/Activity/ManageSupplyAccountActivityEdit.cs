@@ -449,6 +449,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                                 tenantAllowOptIn = true;
                             }
                         }
+                       
                         manageBillTitle.Text = Utility.GetLocalizedLabel("ManageAccount", _isOwner || tenantAllowOptIn
                             ? "dbrManageDeliveryMethod"
                             : "dbrViewBillDelivery");
@@ -458,6 +459,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         //{
                         //    ManageBill_container.Visibility = ViewStates.Visible;
                         //}
+
+
 
                         Handler handler = new Handler();
                         Action myAction = () =>
@@ -472,7 +475,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     }
                     else
                     {
-                        ManageBill_container.Visibility = ViewStates.Gone;
+                      ManageBill_container.Visibility = ViewStates.Gone;
                     }
                 }
             }

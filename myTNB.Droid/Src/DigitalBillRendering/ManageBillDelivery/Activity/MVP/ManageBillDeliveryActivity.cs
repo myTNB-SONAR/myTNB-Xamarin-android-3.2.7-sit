@@ -202,6 +202,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     UpdateAccountListIndicator();
                 }
 
+
                 List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
                 bool tenantAllowOptIn = false;
                 if (_billRenderingTenantResponse != null

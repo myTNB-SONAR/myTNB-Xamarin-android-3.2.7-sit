@@ -63,7 +63,6 @@
     <BundleAssemblies>false</BundleAssemblies>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
-    <RunWithWarnings>true</RunWithWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
     <DebugType></DebugType>
@@ -7528,26 +7527,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_3.png">
       <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\tng.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\tng.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\tng.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\tng.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\tng.png">
-          <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
   </ItemGroup>

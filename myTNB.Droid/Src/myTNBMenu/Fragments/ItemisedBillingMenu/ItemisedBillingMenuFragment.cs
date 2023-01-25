@@ -691,6 +691,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                         }
                                         else
                                         {
+                                            
                                             if (tenantAllowOptIn)
                                             {
                                                 paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
@@ -699,7 +700,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                             {
                                                 paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBillNonOwner"));
                                             }
-                                            
+                                           
                                         }
                                     }
                                     SetDynatraceScreenTags();
