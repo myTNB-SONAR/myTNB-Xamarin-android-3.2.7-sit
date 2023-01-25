@@ -125,32 +125,6 @@
                         android:gravity="center_vertical|left"
                         android:id="@+id/btnFPXPayment" />
                 </LinearLayout>
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="32dp"
-                    android:paddingRight="32dp"
-                    android:paddingBottom="16dp"
-                    android:paddingTop="16dp">
-                    <TextView
-                        android:id="@+id/lblTNGPayment"
-                        android:text="eWallet"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:paddingBottom="16dp"
-                        android:textColor="@color/blue" />
-                    <Button
-                        style="@style/Theme.OnlinePaymentButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/fpx_online_payment"
-                        android:drawablePadding="4dp"
-                        android:padding="16dp"
-                        android:gravity="center_vertical|left"
-                        android:id="@+id/btnTNGPayment" />
-                </LinearLayout>
             </LinearLayout>
             <View
                 android:id="@+id/overlay"

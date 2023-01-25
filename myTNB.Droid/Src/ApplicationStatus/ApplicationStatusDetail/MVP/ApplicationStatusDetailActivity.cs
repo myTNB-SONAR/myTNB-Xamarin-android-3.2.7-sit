@@ -705,7 +705,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         applicationDetailDisplay = new GetApplicationStatusDisplay();
                         applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationStatusResponse"));
                         applicationDetailDisplay.IsSchedulerEnable = !MyTNBAccountManagement.GetInstance().IsAppointmentDisabled;
-                        MyTNBAccountManagement.GetInstance().SetIsTNGEnable(applicationDetailDisplay.IsTNGEnableApplicationStatus);
 
                         if (applicationDetailDisplay != null)
                         {

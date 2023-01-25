@@ -44,8 +44,6 @@ namespace myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails
         public string RefreshBtnText { set; get; } = string.Empty;
         [JsonProperty("IsPayEnabled")]
         public bool IsPayEnabled { set; get; }
-        [JsonProperty("IsTngDisableAtApplicationPayment")]
-        public bool IsTngDisableAtApplicationPayment { set; get; }
     }
 
     public class PostApplicationsPaidDetailsDataModel

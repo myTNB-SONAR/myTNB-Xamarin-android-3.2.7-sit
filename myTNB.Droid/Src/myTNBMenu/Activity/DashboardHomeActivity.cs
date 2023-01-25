@@ -310,6 +310,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     alreadyStarted = true;
                 }
             }
+           
 
             // if (extras != null && extras.ContainsKey("urlSchemaData"))
             // {
@@ -758,9 +759,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
 
                         if (billRenderingTenantResponse != null
-                           && billRenderingTenantResponse.StatusDetail != null
-                           && billRenderingTenantResponse.StatusDetail.IsSuccess
-                           && billRenderingTenantResponse.Content != null)
+                            && billRenderingTenantResponse.StatusDetail != null
+                            && billRenderingTenantResponse.StatusDetail.IsSuccess
+                            && billRenderingTenantResponse.Content != null
+                           )
                         {
                             foreach (CustomerBillingAccount item in accounts)
                             {
@@ -1754,6 +1756,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
                 bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
+
                 bool popupID = UserSessions.GetUpdateIdPopUp(this.mPref);
                 if (!dbrPopUpHasShown && loginCount == 1 && DBRUtility.Instance.ShouldShowHomeCard && popupID)
                 {
