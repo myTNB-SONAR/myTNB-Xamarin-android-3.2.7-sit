@@ -38,6 +38,7 @@ using myTNB_Android.Src.Utils.Deeplink;
 using myTNB.Mobile;
 using myTNB_Android.Src.Utils.Notification;
 using myTNB_Android.Src.Base.Response;
+using System.Net.Http;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {

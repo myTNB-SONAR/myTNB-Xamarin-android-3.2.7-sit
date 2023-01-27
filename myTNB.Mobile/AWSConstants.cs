@@ -63,8 +63,12 @@
             internal const string PatchUpdateAutoOptInCa = "https://stagingapi.mytnb.com.my/StagedData/api/v1";
             public struct SSO
             {
-                public const string DBR = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
-                public const string MyHome = "https://stagingmyhome.mytnb.com.my/Sso?s={0}";
+                //public const string DBR = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
+                //public const string MyHome = "https://stagingmyhome.mytnb.com.my/Sso?s={0}";
+                //public const string MyHome = "https://52.76.106.232/Sso?s={0}";
+
+                public const string DBR = "https://devdbr.mytnb.com.my/Sso?s={0}";
+                public const string MyHome = "https://devmyhome.mytnb.com.my/Sso?s={0}";
             }
 #else
             internal const string Domain = "https://api.mytnb.com.my";

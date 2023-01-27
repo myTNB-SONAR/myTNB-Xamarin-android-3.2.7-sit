@@ -45,6 +45,7 @@ namespace myTNB.Mobile
         /// <param name="accessToken">Generated Token</param>
         /// <returns></returns>
         public async Task<GetEligibilityResponse> PostEligibility(string userID
+            , string email
             , List<ContractAccountModel> caList
             , string accessToken)
         {
@@ -62,6 +63,7 @@ namespace myTNB.Mobile
                     PostEligibilityRequest request = new PostEligibilityRequest
                     {
                         UserID = userID ?? string.Empty,
+                        Email = email,
                         ContractAccounts = caList
                     };
                     Debug.WriteLine("[DEBUG] PostEligibility Request: " + JsonConvert.SerializeObject(request));

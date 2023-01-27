@@ -50,6 +50,7 @@ using System.Text.RegularExpressions;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.Utils.Notification;
 using myTNB.Mobile.AWS.Models.DBR;
+using Firebase.Iid;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {

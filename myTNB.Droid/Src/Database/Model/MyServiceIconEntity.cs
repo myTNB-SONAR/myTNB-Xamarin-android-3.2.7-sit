@@ -34,9 +34,8 @@ namespace myTNB_Android.Src.Database.Model
         [Column("TimeStamp")]
         public string TimeStamp { set; get; }
 
-        public void CreateTable()
+        public static void CreateTable()
         {
-
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
@@ -99,6 +98,27 @@ namespace myTNB_Android.Src.Database.Model
                 Utility.LoggingNonFatalError(e);
             }
             return itemList;
+        }
+
+        public MyServiceIconEntity GetMyServiceItem(string serviceId)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                var record = db.Query<MyServiceIconEntity>("SELECT * FROM MyServiceIconEntity WHERE ServiceId = ? ", serviceId);
+
+                if (record != null && record.Count > 0)
+                {
+                    return record[0];
+                }
+
+                return null;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                return null;
+            }
         }
 
         public void DeleteTable()

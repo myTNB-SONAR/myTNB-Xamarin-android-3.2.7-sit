@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Preferences;
-using Android.Util;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.SessionCache;
 using myTNB_Android.Src.Utils;
-using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Async
 {
@@ -115,8 +112,10 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                         AccessTokenCache.Instance.SaveAccessToken(mView, accessToken);
                     }
 
-                    GetEligibilityResponse response = await EligibilityManager.Instance.PostEligibility(UserEntity.GetActive().UserID ?? string.Empty,
-                        GetContractAccountList(), AccessTokenCache.Instance.GetAccessToken(mView));
+                    GetEligibilityResponse response = await EligibilityManager.Instance.PostEligibility(UserEntity.GetActive().UserID ?? string.Empty
+                        , UserEntity.GetActive().Email ?? string.Empty
+                        , GetContractAccountList()
+                        , AccessTokenCache.Instance.GetAccessToken(mView));
 
                     //Nullity Check
                     if (response != null

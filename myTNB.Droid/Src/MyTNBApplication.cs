@@ -67,6 +67,7 @@ namespace myTNB_Android.Src
             SelectBillsEntity.CreateTable();
             MyServiceEntity.CreateTable();
             MyServiceChildEntity.CreateTable();
+            MyServiceIconEntity.CreateTable();
             SitecoreCmsEntity.CreateTable();
             AccountSortingEntity.CreateTable();
             TooltipImageDirectEntity.CreateTable();   // syahmi add

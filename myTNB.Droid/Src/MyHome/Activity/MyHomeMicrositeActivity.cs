@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Net.Http;
 using Android.OS;
 using Android.Util;
 using Android.Views;
@@ -16,6 +17,8 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using MyHomeModel = myTNB_Android.Src.MyDrawer.MyHomeModel;
 
 namespace myTNB_Android.Src.MyHome.Activity
 {
@@ -29,17 +32,37 @@ namespace myTNB_Android.Src.MyHome.Activity
         [BindView(Resource.Id.micrositeWebview)]
         WebView micrositeWebview;
 
+        MyHomeModel model;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            SetTheme(TextViewUtils.IsLargeFonts
+            try
+            {
+                SetTheme(TextViewUtils.IsLargeFonts
                 ? Resource.Style.Theme_DashboardLarge
                 : Resource.Style.Theme_Dashboard);
 
-            SetToolBarTitle(Utility.GetLocalizedLabel("ConnectMyPremise", "title"));
-            HideTopNavBar();
-            SetUpWebView();
+                SetStatusBarBackground(Resource.Drawable.Background_Status_Bar);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
+                HideTopNavBar();
+
+                Bundle extras = Intent.Extras;
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(MyHomeConstants.DRAWER_MODEL))
+                    {
+                        model = JsonConvert.DeserializeObject<MyHomeModel>(extras.GetString(MyHomeConstants.DRAWER_MODEL));
+                        SetUpWebView();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnStart()
@@ -83,9 +106,11 @@ namespace myTNB_Android.Src.MyHome.Activity
         {
             try
             {
-                //STUB
-                string accessTokenStub = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6IntcIkNoYW5uZWxcIjpcIm15VE5CX0FQSV9Nb2JpbGVcIixcIlVzZXJJZFwiOlwiOGNjM2JmNGYtOGRjNi00YjFkLWI2ZTgtOGNhOGMwZDE0N2Y1XCIsXCJVc2VyTmFtZVwiOlwidGVzdGVyMi50bmJAZ21haWwuY29tXCIsXCJSb2xlSWRzXCI6WzE2LDIsMzZdfSIsIm5iZiI6MTYyNzI2MjAwNCwiZXhwIjoxNjI3MjY1NjA0LCJpYXQiOjE2MjcyNjIwMDQsImlzcyI6Im15VE5CIiwiYXVkIjoibXlUTkIgQXVkaWVuY2UifQ.p8Fs71PU0YNyetjGKdy6yKlCMGSQt1dNkqdSyyGdDS9gKeYl-RnmmGif5vPHSoM1RC8oucYf7CX4LoFYysz9xw";
-                string redirectURL = "https://52.76.106.232/Application/Offerings";
+                string originURL = model?.OriginURL ?? string.Empty;
+                string redirectURL = model?.RedirectURL ?? string.Empty;
+
+                //stub
+                //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
 
                 UserEntity user = UserEntity.GetActive();
                 string myTNBAccountName = user?.DisplayName ?? string.Empty;
@@ -98,13 +123,18 @@ namespace myTNB_Android.Src.MyHome.Activity
                 ? LanguageManager.Language.MS
                 : LanguageManager.Language.EN).ToString()
                 , TextViewUtils.FontInfo ?? "N"
-                , "mytnbapp://action=backToApp"
+                , originURL
                 , redirectURL
                 , user.UserID
-                , myTNB.Mobile.MobileConstants.OSType.int_Android
-                , user.Email);
+                , MobileConstants.OSType.int_Android
+                , user.Email
+                , string.Empty
+                , null
+                , string.Empty);
 
-                string ssoURL = string.Format(AWSConstants.Domains.SSO.MyHome, signature);
+                string ssoURL = string.Format(model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
+                //stub
+                //string ssoURL = string.Format("https://stagingmyhome.mytnb.com.my/Sso?s={0}", signature);
 
                 micrositeWebview.SetWebChromeClient(new WebChromeClient());
                 micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
@@ -116,6 +146,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                 micrositeWebview.Settings.JavaScriptCanOpenWindowsAutomatically = true;
                 micrositeWebview.Settings.DomStorageEnabled = true;
                 micrositeWebview.Settings.MediaPlaybackRequiresUserGesture = false;
+                micrositeWebview.Settings.SetSupportZoom(false);
 
                 micrositeWebview.LoadUrl(ssoURL);
             }
@@ -123,6 +154,12 @@ namespace myTNB_Android.Src.MyHome.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override void OnBackPressed()
+        {
+            micrositeWebview = null;
+            Finish();
         }
 
         public class MyHomeWebViewClient : WebViewClient
@@ -142,14 +179,14 @@ namespace myTNB_Android.Src.MyHome.Activity
                 {
                     string url = request.Url.ToString();
                     Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
-                    if (url.Contains("mytnbapp://action=backToApp"))
+                    if (url.Contains(MyHomeConstants.BACK_TO_APP))
                     {
                         mActivity.OnBackPressed();
                         shouldOverride = true;
                     }
-                    else if (url.Contains("mytnbapp://action=backToHome"))
+                    else if (url.Contains(MyHomeConstants.BACK_TO_HOME))
                     {
-                        mActivity.OnShowDashboard();
+                        mActivity.Finish();
                         shouldOverride = true;
                     }
                 }
@@ -157,20 +194,13 @@ namespace myTNB_Android.Src.MyHome.Activity
                 return shouldOverride;
             }
 
-            public override void OnPageStarted(WebView view, string url, Bitmap favicon)
-            {
-                base.OnPageStarted(view, url, favicon);
-            }
+            public override void OnPageStarted(WebView view, string url, Bitmap favicon) { }
 
-            public override void OnPageFinished(WebView view, string url)
-            {
-                base.OnPageFinished(view, url);
-            }
+            public override void OnPageFinished(WebView view, string url) { }
 
-            public override void OnReceivedError(WebView view, IWebResourceRequest request, WebResourceError error)
-            {
-                base.OnReceivedError(view, request, error);
-            }
+            public override void OnReceivedError(WebView view, IWebResourceRequest request, WebResourceError error) { }
+
+            public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error) { }
         }
     }
 }

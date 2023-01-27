@@ -210,5 +210,49 @@
                 }
             }
         }
+
+        public struct MyHome
+        {
+            public struct Screens
+            {
+                public struct OnBoarding
+                {
+                    public const string Enhance = "App_Visit_OnboardingComms_myHomeGTM1_Enhance";
+                    public const string Connect = "App_Visit_OnboardingComms_myHomeGTM1_Connect";
+                    public const string Manage = "App_Visit_OnboardingComms_myHomeGTM1_Manage";
+                }
+                public struct Tutorial
+                {
+                    public const string Dashboard_QuickLinks_MyHome = "App_Visit_OverlayTutorial_myHomeGTM1_IntroducingMyHome";
+                    public const string Drawer_Start_Your_Application = "App_Visit_OverlayTutorial_myHomeGTM1_StartYourApplication";
+                }
+                public struct Home
+                {
+                    public const string Dashboard = "App_Visit_AppHomepage";
+                    public const string Drawer = "App_Visit_Drawer_myHome";
+                }
+            }
+            public struct CTAs
+            {
+                public struct OnBoarding
+                {
+                    public const string Enhance_Skip = "App_Action_myHomeGTM1_Enhance_Skip";
+                    public const string Connect_Skip = "App_Action_myHomeGTM1_Connect_Skip";
+                    public const string Manage_Skip = "App_Action_myHomeGTM1_Manage_Skip";
+                }
+                public struct Tutorial
+                {
+                    public const string Dashboard_QuickLinks_MyHome_Skip = "App_Action_myHomeGTM1_IntroducingMyHome_Skip";
+                    public const string Drawer_Start_Your_Application_Skip = "App_Action_myHomeGTM1_StartYourApplication_Skip";
+                }
+                public struct Home
+                {
+                    public const string Drawer_Open = "App_Action_Home_myHome_Drawer_Open";
+                    public const string Drawer_Connect_My_Premise = "App_Action_Drawer_myHome_ConnectMyPremise";
+                    public const string Drawer_Cancel = "App_Action_Drawer_myHome_Cancel";
+                    public const string Drawer_Dismiss = "App_Action_Drawer_myHome_Dismiss";
+                }
+            }
+        }
     }
 }

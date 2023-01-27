@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using myTNB.Mobile;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
@@ -115,21 +116,27 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Title = Utility.GetLocalizedLabel("Onboarding", "title12"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description12"),
                     Image = "walkthrough_img_install_10",
-                    Background = GetBackgroundName(newWalkthroughList)
+                    Background = GetBackgroundName(newWalkthroughList),
+                    DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Enhance,
+                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Enhance_Skip
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
                     Title = Utility.GetLocalizedLabel("Onboarding", "title13"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description13"),
                     Image = "walkthrough_img_install_11",
-                    Background = GetBackgroundName(newWalkthroughList)
+                    Background = GetBackgroundName(newWalkthroughList),
+                    DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Connect,
+                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Connect_Skip
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
                     Title = Utility.GetLocalizedLabel("Onboarding", "title14"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description14"),
                     Image = "walkthrough_img_install_6",
-                    Background = GetBackgroundName(newWalkthroughList)
+                    Background = GetBackgroundName(newWalkthroughList),
+                    DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Manage,
+                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Manage_Skip
                 });
             }
             else
@@ -194,21 +201,27 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Title = Utility.GetLocalizedLabel("Onboarding", "title12"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description12"),
                     Image = "walkthrough_img_install_10",
-                    Background = GetBackgroundName(newWalkthroughList)
+                    Background = GetBackgroundName(newWalkthroughList),
+                    DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Enhance,
+                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Enhance_Skip
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
                     Title = Utility.GetLocalizedLabel("Onboarding", "title13"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description13"),
                     Image = "walkthrough_img_install_11",
-                    Background = GetBackgroundName(newWalkthroughList)
+                    Background = GetBackgroundName(newWalkthroughList),
+                    DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Connect,
+                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Connect_Skip
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
                     Title = Utility.GetLocalizedLabel("Onboarding", "title14"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description14"),
                     Image = "walkthrough_img_install_6",
-                    Background = GetBackgroundName(newWalkthroughList)
+                    Background = GetBackgroundName(newWalkthroughList),
+                    DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Manage,
+                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Manage_Skip
                 });
                 
                 /* UserEntity activeUser = UserEntity.GetActive();
