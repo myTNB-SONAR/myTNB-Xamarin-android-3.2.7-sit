@@ -31,10 +31,9 @@ using System.Globalization;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile;
-using myTNB_Android.Src.SessionCache;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.Common.Model;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -91,7 +90,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         private bool isClicked = false;
-        GetBillRenderingTenantResponse billRenderingTenantResponse;
+        PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
         bool tenantDBR = false;
         //Mark: Application Payment
         private bool IsApplicationPayment;
@@ -101,7 +100,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         private string ApplicationSystem = string.Empty;
         private string StatusId = string.Empty;
         private string StatusCode = string.Empty;
-        
+
         public bool IsActive()
         {
             return IsVisible;
@@ -213,7 +212,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         && multiBillRenderingResponse.Content != null
                                         && multiBillRenderingResponse.Content.Count > 0)
                                     {
-                                        billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dbrCAForPaymentList, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(Activity));
+                                        billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dbrCAForPaymentList, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(Activity));
 
                                         for (int j = 0; j < dbrCAForPaymentList.Count; j++)
                                         {
@@ -227,12 +226,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                                && billRenderingTenantResponse.StatusDetail.IsSuccess
                                                && billRenderingTenantResponse.Content != null)
                                             {
-                                               int indexTenant = billRenderingTenantResponse.Content.FindIndex(x =>
-                                               x.CaNo == dbrCAForPaymentList[j]
-                                               && x.IsOwnerAlreadyOptIn == false
-                                               && x.IsOwnerOverRule == false
-                                               && x.IsTenantAlreadyOptIn == false
-                                               );
+                                                int indexTenant = billRenderingTenantResponse.Content.FindIndex(x =>
+                                                x.CaNo == dbrCAForPaymentList[j]
+                                                && x.IsOwnerAlreadyOptIn == false
+                                                && x.IsOwnerOverRule == false
+                                                && x.IsTenantAlreadyOptIn == false
+                                                );
 
 
                                                 if (indexTenant > -1)
@@ -240,16 +239,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                                     tenantDBR = true;
                                                 }
                                             }
-                                           
+
 
                                             if (index > -1)
                                             {
                                                 PaymentActivity.CAsWithPaperBillList.Add(dbrCAForPaymentList[index]);
                                             }
-                                            
+
 
                                         }
-                                        
+
                                     }
                                 }
                             }

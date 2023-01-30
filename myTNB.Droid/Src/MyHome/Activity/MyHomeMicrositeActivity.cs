@@ -1,20 +1,13 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.Net.Http;
 using Android.OS;
-using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Webkit;
-using Android.Widget;
 using CheeseBind;
 using myTNB;
 using myTNB.Mobile;
@@ -22,10 +15,7 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.DigitalBill.Activity;
-using myTNB_Android.Src.MyDrawer;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using MyHomeModel = myTNB_Android.Src.MyDrawer.MyHomeModel;
@@ -137,10 +127,12 @@ namespace myTNB_Android.Src.MyHome.Activity
                 , redirectURL
                 , user.UserID
                 , MobileConstants.OSType.int_Android
-                , user.Email);
+                , user.Email
+                , string.Empty
+                , null
+                , string.Empty);
 
                 string ssoURL = string.Format(model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
-
                 //stub
                 //string ssoURL = string.Format("https://stagingmyhome.mytnb.com.my/Sso?s={0}", signature);
 
@@ -192,7 +184,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                         mActivity.OnBackPressed();
                         shouldOverride = true;
                     }
-                    else if(url.Contains(MyHomeConstants.BACK_TO_HOME))
+                    else if (url.Contains(MyHomeConstants.BACK_TO_HOME))
                     {
                         mActivity.Finish();
                         shouldOverride = true;
@@ -212,4 +204,3 @@ namespace myTNB_Android.Src.MyHome.Activity
         }
     }
 }
-

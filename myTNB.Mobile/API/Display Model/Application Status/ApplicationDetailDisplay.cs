@@ -33,6 +33,8 @@ namespace myTNB.Mobile
 
         public ApplicationAppointmentDetail ApplicationAppointmentDetail { set; get; }
 
+        public MyHomeDetails MyHomeDetails { set; get; }
+
         /// <summary>
         /// List of Title and Value used for payment details
         /// </summary>
@@ -306,6 +308,30 @@ namespace myTNB.Mobile
                 if (IsSaveMessageDisplayed)
                 {
                     type = DetailCTAType.Save;
+                }
+                else if (ApplicationTypeCode == "ASR"
+                    && !SavedApplicationID.IsValid()
+                    && ApplicationStatusDetail != null
+                    && ApplicationStatusDetail.CurrentStatus.IsValid()
+                    && ApplicationStatusDetail.CurrentStatus.ToUpper() == "COMPLETED")
+                {
+                    type = DetailCTAType.StartApplication;
+                }
+                else if (ApplicationTypeCode == "NC"
+                    && !SavedApplicationID.IsValid()
+                    && ApplicationStatusDetail != null
+                    && ApplicationStatusDetail.CurrentStatus.IsValid()
+                    && ApplicationStatusDetail.CurrentStatus.ToUpper() == "VERIFICATIONFAILED")
+                {
+                    type = DetailCTAType.DeleteAppication;
+                }
+                else if (ApplicationTypeCode == "NC"
+                    && !SavedApplicationID.IsValid()
+                    && ApplicationStatusDetail != null
+                    && ApplicationStatusDetail.CurrentStatus.IsValid()
+                    && ApplicationStatusDetail.CurrentStatus.ToUpper() == "RESUME")
+                {
+                    type = DetailCTAType.ResumeApplication;
                 }
                 else if (IsPayment && IsOffLine)
                 {
@@ -682,6 +708,7 @@ namespace myTNB.Mobile
         public string StatusCode { set; get; }
         public string StatusDescription { set; get; }
         public string StatusDescriptionColor { set; get; }
+        public string CurrentStatus { set; get; }
         public string StatusMessage { set; get; }
         public string UserAction { set; get; }
         public bool IsPostPayment { set; get; }
@@ -968,7 +995,10 @@ namespace myTNB.Mobile
         PayOffline,
         Reschedule,
         Save,
-        RescheduleDisabled
+        RescheduleDisabled,
+        StartApplication,
+        DeleteAppication,
+        ResumeApplication
     }
 
     public enum DetailTutorialType

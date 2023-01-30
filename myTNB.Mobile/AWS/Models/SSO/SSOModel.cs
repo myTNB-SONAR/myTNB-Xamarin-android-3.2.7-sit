@@ -38,5 +38,6 @@ namespace myTNB.Mobile
         [JsonProperty("appRef")]
         public string AppRef { set; get; }
         public int? ApplicationModuleID { set; get; }
+        public string MobileNo { get; set; }
     }
 }

@@ -698,7 +698,8 @@
     "continueApplication": "Teruskan Permohonan",
     "submitNow": "Hantar Sekarang",
     "viewApplicationDetails": "Lihat Butiran Permohonan",
-    "otpVerifyNow": "Sah Sekarang"
+    "otpVerifyNow": "Sah Sekarang",
+    "reapplyNow": "Mohon Sekali Lagi"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",

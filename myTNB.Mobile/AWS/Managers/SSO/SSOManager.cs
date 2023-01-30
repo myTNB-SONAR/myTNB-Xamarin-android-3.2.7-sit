@@ -83,7 +83,10 @@ namespace myTNB.Mobile
             , string redirectURL
             , string userID
             , int osType
-            , string email)
+            , string email
+            , string appReference
+            , int? applicationModuleID
+            , string mobileNumber)
         {
             try
             {
@@ -109,8 +112,9 @@ namespace myTNB.Mobile
                     Email = email,
                     IsContractorApplied = false,
                     IsNonLogin = false,
-                    AppRef = string.Empty,
-                    ApplicationModuleID = null
+                    AppRef = appReference,
+                    ApplicationModuleID = applicationModuleID,
+                    MobileNo = mobileNumber
                 };
                 Debug.WriteLine("[DEBUG] SSO ssoModel: " + JsonConvert.SerializeObject(ssoModel));
                 string signature = SecurityManager.Instance.AES256_Encrypt(AWSConstants.SaltKey

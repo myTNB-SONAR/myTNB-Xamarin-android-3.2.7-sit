@@ -46,23 +46,16 @@ using myTNB;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile;
 using myTNB_Android.Src.myTNBMenu.Async;
-using Android.Content.Res;
-using myTNB_Android.Src.ForgetPassword.Activity;
-using myTNB_Android.Src.UpdateID.Activity;
 using myTNB_Android.Src.ManageSupplyAccount.Activity;
 using myTNB_Android.Src.MyAccount.Activity;
-using Google.Android.Material.Snackbar;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Utils.Deeplink;
-using Android.Content.Res;
-using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.Bills.AccountStatement;
 using myTNB_Android.Src.Utils.Notification;
-
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.Login.Models;
 using myTNB.Mobile.Business;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -138,7 +131,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         ISharedPreferences mPref;
 
-        GetBillRenderingTenantResponse billRenderingTenantResponse;
+        PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
 
         public bool IsActive()
         {
@@ -312,7 +305,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     alreadyStarted = true;
                 }
             }
-           
+
 
             // if (extras != null && extras.ContainsKey("urlSchemaData"))
             // {
@@ -357,7 +350,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 RouteToApplicationLanding();
             }
 
-             GetBillTenantRenderingAsync();
+            GetBillTenantRenderingAsync();
             try
             {
                 new SyncSRApplicationAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
@@ -379,7 +372,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
                 }
                 List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+                billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
 
 
                 HideProgressDialog();
@@ -785,7 +778,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             bool flagOwner = false;
             List<string> dBRCAs = DBRUtility.Instance.GetCAList();
             List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
-            GetBillRenderingTenantModel tenantInfo = new GetBillRenderingTenantModel();
             CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
 
 

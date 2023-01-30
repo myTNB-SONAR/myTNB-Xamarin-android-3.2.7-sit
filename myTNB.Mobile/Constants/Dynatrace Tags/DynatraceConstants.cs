@@ -221,13 +221,11 @@
                     public const string Connect = "App_Visit_OnboardingComms_myHomeGTM1_Connect";
                     public const string Manage = "App_Visit_OnboardingComms_myHomeGTM1_Manage";
                 }
-
                 public struct Tutorial
                 {
                     public const string Dashboard_QuickLinks_MyHome = "App_Visit_OverlayTutorial_myHomeGTM1_IntroducingMyHome";
                     public const string Drawer_Start_Your_Application = "App_Visit_OverlayTutorial_myHomeGTM1_StartYourApplication";
                 }
-
                 public struct Home
                 {
                     public const string Dashboard = "App_Visit_AppHomepage";
@@ -242,13 +240,11 @@
                     public const string Connect_Skip = "App_Action_myHomeGTM1_Connect_Skip";
                     public const string Manage_Skip = "App_Action_myHomeGTM1_Manage_Skip";
                 }
-
                 public struct Tutorial
                 {
                     public const string Dashboard_QuickLinks_MyHome_Skip = "App_Action_myHomeGTM1_IntroducingMyHome_Skip";
                     public const string Drawer_Start_Your_Application_Skip = "App_Action_myHomeGTM1_StartYourApplication_Skip";
                 }
-
                 public struct Home
                 {
                     public const string Drawer_Open = "App_Action_Home_myHome_Drawer_Open";

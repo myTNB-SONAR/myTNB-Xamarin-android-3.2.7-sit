@@ -141,7 +141,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                             StatusMessage = response.Content.ApplicationStatusDetail.StatusMessage,
                             UserAction = response.Content.ApplicationStatusDetail.UserAction,
                             IsPostPayment = response.Content.ApplicationStatusDetail.IsPostPayment,
-                            StatusDescriptionColor = response.Content.ApplicationStatusDetail.StatusDescriptionColor
+                            StatusDescriptionColor = response.Content.ApplicationStatusDetail.StatusDescriptionColor,
+                            CurrentStatus = response.Content.ApplicationStatusDetail.CurrentStatus
                         };
                         if (response.Content.ApplicationStatusDetail.StatusTracker != null)
                         {
@@ -233,6 +234,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     if (response.Content.ApplicationAppointmentDetail != null)
                     {
                         displayModel.Content.ApplicationAppointmentDetail = response.Content.ApplicationAppointmentDetail;
+                    }
+                    if (response.Content.MyHomeDetails != null)
+                    {
+                        displayModel.Content.MyHomeDetails = response.Content.MyHomeDetails;
                     }
                     SetPaymentDisplay(ref displayModel);
                     displayModel.Content.IsDeleteEnable = isSavedApplication && !displayModel.Content.IsOwnApplication;

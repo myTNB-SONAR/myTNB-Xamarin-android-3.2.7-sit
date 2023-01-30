@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.Extensions;
 using Newtonsoft.Json.Linq;
 using static myTNB.Mobile.EligibilitySessionCache;
 
@@ -163,15 +165,18 @@ namespace myTNB.Mobile
 
         public bool IsResidential(string rateCategory)
         {
-            List<string> residentialRateCategoryList = LanguageManager.Instance.GetConfigProperty<List<string>>(LanguageManager.ConfigPropertyEnum.ResidentialRateCategory);
-            if (residentialRateCategoryList != null && !string.IsNullOrEmpty(rateCategory))
+            if (rateCategory.IsValid())
             {
-                for (int i = 0; i < residentialRateCategoryList.Count; i++)
+                List<string> residentialRateCategoryList = LanguageManager.Instance.GetConfigProperty<List<string>>(LanguageManager.ConfigPropertyEnum.ResidentialRateCategory);
+                if (residentialRateCategoryList != null)
                 {
-                    string item = residentialRateCategoryList[i].ToLower();
-                    if (item == rateCategory.ToLower())
+                    for (int i = 0; i < residentialRateCategoryList.Count; i++)
                     {
-                        return true;
+                        string item = residentialRateCategoryList[i]?.ToLower();
+                        if (item == rateCategory?.ToLower())
+                        {
+                            return true;
+                        }
                     }
                 }
             }

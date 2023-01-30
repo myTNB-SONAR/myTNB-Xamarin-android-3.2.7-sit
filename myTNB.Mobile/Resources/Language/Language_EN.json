@@ -698,7 +698,8 @@
     "continueApplication": "Continue Application",
     "submitNow": "Submit Now",
     "viewApplicationDetails": "View Application Details",
-    "otpVerifyNow": "Verify Now"
+    "otpVerifyNow": "Verify Now",
+    "reapplyNow": "Reapply Now"
   },
   "AddAccount": {
     "title": "Add Electricity Account",

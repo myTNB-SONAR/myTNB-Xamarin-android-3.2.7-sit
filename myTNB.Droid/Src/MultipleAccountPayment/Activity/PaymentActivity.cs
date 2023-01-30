@@ -13,6 +13,7 @@ using myTNB.Mobile.API.DisplayModel.Scheduler;
 using myTNB.Mobile.API.Managers.Scheduler;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.AWS.Models.DBR;
 using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -63,7 +64,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private string StatusCode = string.Empty;
         internal GetApplicationStatusDisplay ApplicationDetailDisplay;
         private GetBillRenderingResponse billRenderingResponse;
-        private GetBillRenderingTenantResponse billRenderingTenantResponse;
+        private PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
         public bool paymentReceiptGenerated = false;
 
         internal bool ShouldBackToHome { set; get; } = false;
@@ -458,7 +459,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                        && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
                     {
 
-                        billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(CAsWithPaperBillList, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+                        billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(CAsWithPaperBillList, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
 
                         Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                         intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));

@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
-using myTNB.Mobile.AWS.Services.DBR;
+using myTNB.Mobile.AWS.Services.Eligibility;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -45,6 +45,7 @@ namespace myTNB.Mobile
         /// <param name="accessToken">Generated Token</param>
         /// <returns></returns>
         public async Task<GetEligibilityResponse> PostEligibility(string userID
+            , string email
             , List<ContractAccountModel> caList
             , string accessToken)
         {
@@ -57,11 +58,12 @@ namespace myTNB.Mobile
             {
                 try
                 {
-                    IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.Domain);
+                    IEligibilityService service = RestService.For<IEligibilityService>(AWSConstants.Domains.Domain);
 
                     PostEligibilityRequest request = new PostEligibilityRequest
                     {
                         UserID = userID ?? string.Empty,
+                        Email = email,
                         ContractAccounts = caList
                     };
                     Debug.WriteLine("[DEBUG] PostEligibility Request: " + JsonConvert.SerializeObject(request));

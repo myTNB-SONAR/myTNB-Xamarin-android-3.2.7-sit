@@ -32,6 +32,9 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
 
         [JsonProperty("applicationAppointmentDetail")]
         public ApplicationAppointmentDetail ApplicationAppointmentDetail { set; get; }
+
+        [JsonProperty("myHomeDetails")]
+        public MyHomeDetails MyHomeDetails { set; get; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
@@ -371,5 +374,15 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
                 return string.Empty;
             }
         }
+    }
+
+    public class MyHomeDetails
+    {
+        [JsonProperty("ssoDomain")]
+        public string SSODomain { set; get; }
+        [JsonProperty("originURL")]
+        public string OriginURL { set; get; }
+        [JsonProperty("redirectURL")]
+        public string RedirectURL { set; get; }
     }
 }
