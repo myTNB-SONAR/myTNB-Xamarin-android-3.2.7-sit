@@ -459,11 +459,6 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 }
             }
 
-            public override void OnReceivedSslError(Android.Webkit.WebView view, SslErrorHandler handler, SslError error)
-            {
-                handler.Proceed();
-            }
-
             public override void OnLoadResource(Android.Webkit.WebView view, string url)
             {
                 if (!ConnectionUtils.HasInternetConnection(mActivity))
