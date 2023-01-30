@@ -18,7 +18,7 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using MyHomeModel = myTNB_Android.Src.MyDrawer.MyHomeModel;
+using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
 
 namespace myTNB_Android.Src.MyHome.Activity
 {
@@ -52,9 +52,9 @@ namespace myTNB_Android.Src.MyHome.Activity
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
-                    if (extras.ContainsKey(MyHomeConstants.DRAWER_MODEL))
+                    if (extras.ContainsKey(MyHomeConstants.MYHOME_MODEL))
                     {
-                        model = JsonConvert.DeserializeObject<MyHomeModel>(extras.GetString(MyHomeConstants.DRAWER_MODEL));
+                        model = JsonConvert.DeserializeObject<MyHomeModel>(extras.GetString(MyHomeConstants.MYHOME_MODEL));
                         SetUpWebView();
                     }
                 }
@@ -109,8 +109,9 @@ namespace myTNB_Android.Src.MyHome.Activity
                 string originURL = model?.OriginURL ?? string.Empty;
                 string redirectURL = model?.RedirectURL ?? string.Empty;
 
-                //stub
+                //STUB
                 //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
+                redirectURL = "https://52.76.106.232/Application/Offerings";
 
                 UserEntity user = UserEntity.GetActive();
                 string myTNBAccountName = user?.DisplayName ?? string.Empty;
@@ -133,8 +134,10 @@ namespace myTNB_Android.Src.MyHome.Activity
                 , string.Empty);
 
                 string ssoURL = string.Format(model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
-                //stub
+
+                //STUB
                 //string ssoURL = string.Format("https://stagingmyhome.mytnb.com.my/Sso?s={0}", signature);
+                ssoURL = string.Format("https://52.76.106.232/Sso?s={0}", signature);
 
                 micrositeWebview.SetWebChromeClient(new WebChromeClient());
                 micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
@@ -200,7 +203,12 @@ namespace myTNB_Android.Src.MyHome.Activity
 
             public override void OnReceivedError(WebView view, IWebResourceRequest request, WebResourceError error) { }
 
-            public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error) { }
+            public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error)
+            {
+                //STUB
+                //TODO: Remove for final release
+                handler.Proceed();
+            }
         }
     }
 }

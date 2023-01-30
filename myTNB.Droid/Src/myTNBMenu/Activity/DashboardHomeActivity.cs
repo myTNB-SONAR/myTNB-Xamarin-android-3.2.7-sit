@@ -1041,7 +1041,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             bool isLoggedInEmail = loggedInEmail.Equals(UserSessions.GetUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this)));
             if (hasNotification &&
                 isLoggedInEmail &&
-                NotificationUtil.Instance.Type != NotificationType.None)
+                NotificationUtil.Instance.IsDirectPush)
             {
                 this.NotificationValidation();
             }

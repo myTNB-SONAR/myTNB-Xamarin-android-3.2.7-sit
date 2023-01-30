@@ -281,21 +281,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         internal static void NotificationValidation(this DashboardHomeActivity mainActivity)
         {
-            if (NotificationUtil.Instance.IsDirectPush)
+            if (NotificationUtil.Instance.Type == Notification.TypeEnum.NewBillDesign)
             {
-                if (NotificationUtil.Instance.Type == Notification.TypeEnum.NewBillDesign)
-                {
-                    NavigateToBillRedesign(mainActivity);
-                }
-                else if (NotificationUtil.Instance.PushMapId.IsValid())
-                {
-                    UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
-                    OnGetNotificationDetails(mainActivity);
-                }
-                else
-                {
-                    NotificationUtil.Instance.ClearData();
-                }
+                NavigateToBillRedesign(mainActivity);
+            }
+            else if (NotificationUtil.Instance.PushMapId.IsValid())
+            {
+                UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
+                OnGetNotificationDetails(mainActivity);
+            }
+            else
+            {
+                NotificationUtil.Instance.ClearData();
             }
         }
 

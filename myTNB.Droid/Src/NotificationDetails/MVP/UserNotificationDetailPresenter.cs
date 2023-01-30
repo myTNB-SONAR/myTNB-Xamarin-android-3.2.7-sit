@@ -8,13 +8,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Text;
+using myTNB.Mobile;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.EnergyBudgetRating.Request;
+using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -30,7 +33,9 @@ using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
+using static Android.Graphics.ColorSpace;
 using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
+using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
 
 namespace myTNB_Android.Src.NotificationDetails.MVP
 {
@@ -411,8 +416,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED:
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Application Details",
-                                   delegate () { NCViewApplicationDetails(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewApplicationDetails"),
+                                   delegate () { ViewApplicationDetails(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
@@ -421,8 +426,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Now",
-                                   delegate () { NCSubmitNow(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitNow"),
+                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
@@ -431,8 +436,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_ADDRESS_SEARCH_COMPLETED:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Continue Application",
-                                   delegate () { NCContinueApplication(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "continueApplication"),
+                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
@@ -441,12 +446,54 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Verify Now",
-                                   delegate () { NCVerifyNow(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "otpVerifyNow"),
+                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
                             imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_OTP_Verify;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_ACCEPTED:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewApplicationDetails"),
+                                   delegate () { ViewApplicationDetails(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Contractor_Accepted;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED:
+                        {
+                            //STUB static copy
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reapplyNow"),
+                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Contractor_Rejected;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_NO_RESPONSE:
+                        {
+                            //STUB static copy
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reapplyNow"),
+                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Contractor_Rejected;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_REQUIRES_UPDATE:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewApplicationDetails"),
+                                   delegate () { ViewApplicationDetails(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Application_Requires_Update;
                             break;
                         }
                     default:
@@ -673,24 +720,73 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             }
         }
 
-        private void NCViewApplicationDetails()
+        private void ViewMyHomeMicrosite(Models.NotificationDetails notificationDetails)
         {
+            if (notificationDetails != null && notificationDetails.MyHomeDetails != null)
+            {
+                MyHomeModel myHomeModel = new MyHomeModel()
+                {
+                    SSODomain = notificationDetails.MyHomeDetails.SSODomain,
+                    OriginURL = notificationDetails.MyHomeDetails.OriginURL,
+                    RedirectURL = notificationDetails.MyHomeDetails.RedirectURL
+                };
 
+                this.mView.NavigateToMyHomeMicrosite(myHomeModel);
+            }
         }
 
-        private void NCVerifyNow()
+        private void ViewApplicationDetails(Models.NotificationDetails notificationDetails)
         {
-
+            Task.Run(() =>
+            {
+                _ = OnGetApplicationDetail(notificationDetails);
+            });
         }
 
-        private void NCSubmitNow()
+        private async Task OnGetApplicationDetail(Models.NotificationDetails notificationDetails)
         {
+            try
+            {
+                if (notificationDetails != null && notificationDetails.ApplicationStatusDetail != null)
+                {
+                    if (ConnectionUtils.HasInternetConnection(this.mActivity))
+                    {
+                        this.mActivity.RunOnUiThread(() =>
+                        {
+                            this.mView.ShowProgressDialog();
+                        });
 
-        }
+                        ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(notificationDetails.ApplicationStatusDetail.SaveApplicationId
+                            , notificationDetails.ApplicationStatusDetail.ApplicationID
+                            , notificationDetails.ApplicationStatusDetail.ApplicationType
+                            , notificationDetails.ApplicationStatusDetail.System);
 
-        private void NCContinueApplication()
-        {
-
+                        this.mActivity.RunOnUiThread(() =>
+                        {
+                            if (response.StatusDetail.IsSuccess)
+                            {
+                                this.mView.NavigateToApplicationDetails(response.Content);
+                            }
+                            else
+                            {
+                                this.mView.ShowApplicationPopupMessage(response.StatusDetail);
+                            }
+                            this.mView.HideProgressDialog();
+                        });
+                    }
+                    else
+                    {
+                        this.mActivity.RunOnUiThread(() =>
+                        {
+                            this.mView.ShowNoInternetSnackbar();
+                        });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private void ViewAccountStatement(Models.NotificationDetails notificationDetails)

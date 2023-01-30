@@ -378,6 +378,10 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED = "41004";
         public const string BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED = "41003";
         public const string BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY = "41005";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_ACCEPTED = "41007";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED = "41008";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_NO_RESPONSE = "41009";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_REQUIRES_UPDATE = "41010";
 
         //Bill Estimation
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";

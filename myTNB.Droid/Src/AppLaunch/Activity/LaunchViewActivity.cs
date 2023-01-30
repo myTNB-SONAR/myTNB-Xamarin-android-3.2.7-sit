@@ -127,13 +127,13 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 if (Intent != null && Intent.Extras != null)
                 {
+                    if (UserEntity.IsCurrentlyActive())
+                    {
+                        NotificationUtil.Instance.SaveData(Intent.Extras);
+                    }
+
                     if (Intent.Extras.ContainsKey("Type"))
                     {
-                        if (UserEntity.IsCurrentlyActive())
-                        {
-                            NotificationUtil.Instance.SaveData(Intent.Extras);
-                        }
-
                         string notifType = Intent.Extras.GetString("Type");
                         UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
                         if (notifType.ToUpper() == myTNB.Mobile.Constants.NotificationTypes.APPLICATIONSTATUS

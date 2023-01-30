@@ -38,7 +38,7 @@ using AndroidX.CoordinatorLayout.Widget;
 using myTNB.Mobile;
 using Color = Android.Graphics.Color;
 using Newtonsoft.Json;
-using MyHomeModel = myTNB_Android.Src.MyDrawer.MyHomeModel;
+using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
 
 namespace myTNB_Android.Src.MyHome
 {
@@ -172,7 +172,7 @@ namespace myTNB_Android.Src.MyHome
             };
 
             Intent micrositeActivity = new Intent(this.Activity, typeof(MyHomeMicrositeActivity));
-            micrositeActivity.PutExtra(MyHomeConstants.DRAWER_MODEL, JsonConvert.SerializeObject(myHomeModel));
+            micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
             StartActivity(micrositeActivity);
         }
 

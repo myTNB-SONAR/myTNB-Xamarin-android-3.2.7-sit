@@ -52,12 +52,18 @@ using Newtonsoft.Json;
 using Refit;
 using Constant = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.Constants;
 using Screen = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.ScreenEnum;
+using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
 using System.Linq;
 using myTNB.Mobile.AWS.Models.DBR;
+using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.MyHome.Activity;
+using myTNB_Android.Src.MyHome.Model;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity
 {
@@ -1714,5 +1720,74 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             //    ? Resources.Assets : base.Assets;
         }
 
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private Snackbar mNoInternetSnackbar;
+        public void ShowNoInternetSnackbar()
+        {
+            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
+
+            mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mNoInternetSnackbar.Dismiss();
+            }
+            );
+            View v = mNoInternetSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mNoInternetSnackbar.Show();
+            this.SetIsClicked(false);
+        }
+
+        public void ShowApplicationPopupMessage(StatusDetail statusDetail)
+        {
+            MyTNBAppToolTipBuilder popUpMessage = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(statusDetail.Title)
+                .SetMessage(statusDetail.Message)
+                .SetCTALabel(statusDetail.PrimaryCTATitle)
+                .Build();
+            popUpMessage.Show();
+        }
+
+        public void NavigateToMyHomeMicrosite(MyHomeModel model)
+        {
+            Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
+            micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(model));
+            StartActivity(micrositeActivity);
+        }
+
+        public void NavigateToApplicationDetails(GetApplicationStatusDisplay application)
+        {
+            Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+            applicationStatusDetailIntent.PutExtra(MyHomeConstants.APPLICATION_DETAIL_RESPONSE, JsonConvert.SerializeObject(application));
+            StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE);
+        }
     }
 }

@@ -1,10 +1,18 @@
 ﻿using System;
+using myTNB;
+using myTNB.Mobile;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.MyHome.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
+
+using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
 
 namespace myTNB_Android.Src.NotificationDetails.MVP
 {
@@ -75,6 +83,18 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void showFeedbackSDStatus(bool showWLTYPage);
             
             void FeedbackQuestionCall();
+
+            void ShowProgressDialog();
+
+            void HideProgressDialog();
+
+            void ShowNoInternetSnackbar();
+
+            void ShowApplicationPopupMessage(StatusDetail statusDetail);
+
+            void NavigateToMyHomeMicrosite(MyHomeModel model);
+
+            void NavigateToApplicationDetails(GetApplicationStatusDisplay application);
         }
     }
 }

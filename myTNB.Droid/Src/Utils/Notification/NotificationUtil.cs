@@ -97,28 +97,9 @@ namespace myTNB_Android.Src.Utils.Notification
             }
         }
 
-        /*
-         * Add here the Type which is expected to navigate from push notif banner
-         * directly to notification detials
-         */
         private void SetIsDirectPush()
         {
-            switch (Type)
-            {
-                case Type.AppUpdate:
-                case Type.AccountStatement:
-                case Type.NewBillDesign:
-                case Type.NCAddressSearchCompleted:
-                case Type.NCResumeApplication:
-                case Type.NCApplicationCompleted:
-                case Type.NCApplicationContractorCompleted:
-                case Type.NCOTPVerify:
-                    IsDirectPush = true;
-                    break;
-                default:
-                    IsDirectPush = false;
-                    break;
-            }
+            IsDirectPush = Type == Type.NewBillDesign || PushMapId.IsValid();
         }
 
         public void ClearData()
