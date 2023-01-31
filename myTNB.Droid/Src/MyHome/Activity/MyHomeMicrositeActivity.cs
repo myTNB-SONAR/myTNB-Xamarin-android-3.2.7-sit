@@ -111,7 +111,8 @@ namespace myTNB_Android.Src.MyHome.Activity
 
                 //STUB
                 //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
-                redirectURL = "https://52.76.106.232/Application/Offerings";
+                //redirectURL = "https://52.76.106.232/Application/Offerings";
+                //redirectURL = "https://devmyhome.mytnb.com.my/Application/Offerings";
 
                 UserEntity user = UserEntity.GetActive();
                 string myTNBAccountName = user?.DisplayName ?? string.Empty;
@@ -137,7 +138,8 @@ namespace myTNB_Android.Src.MyHome.Activity
 
                 //STUB
                 //string ssoURL = string.Format("https://stagingmyhome.mytnb.com.my/Sso?s={0}", signature);
-                ssoURL = string.Format("https://52.76.106.232/Sso?s={0}", signature);
+                //ssoURL = string.Format("https://52.76.106.232/Sso?s={0}", signature);
+                //ssoURL = string.Format("https://devmyhome.mytnb.com.my/Sso?s={0}", signature);
 
                 micrositeWebview.SetWebChromeClient(new WebChromeClient());
                 micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
