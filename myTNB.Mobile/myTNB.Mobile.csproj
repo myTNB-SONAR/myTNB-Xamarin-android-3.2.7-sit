@@ -136,6 +136,7 @@
     <Folder Include="API\Models\Base Model\" />
     <Folder Include="AWS\Managers\ServiceDistruption\" />
     <Folder Include="AWS\Models\DBR\Auto OptIn \" />
+    <Folder Include="AWS\Managers\TNG\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -206,6 +207,7 @@
     <None Remove="API\Models\Base Model\" />
     <None Remove="AWS\Managers\ServiceDistruption\" />
     <None Remove="AWS\Models\DBR\Auto OptIn \" />
+    <None Remove="AWS\Managers\TNG\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />

@@ -632,13 +632,16 @@
     "otherPaymentMethods": "Kaedah Pembayaran Lain",
     "maxCCAmountMessage": "Untuk bayaran lebih daripada RM 5000, sila gunakan mod pembayaran FPX.",
     "addCard": "Tambah kad",
-    "fpxTitle": "Perbankan dalam talian melalui FPX"
+    "fpxTitle": "Perbankan dalam talian melalui FPX",
+    "eWalletPaymentMethods": "e-Dompet",
+    "tngTitle": "TNG eWallet"
   },
   "MakePayment": {
     "enterOTP": "Masukkan Kod OTP",
     "onlineBanking": "Perbankan Dalam Talian",
     "abortTitle": "Batalkan Pembayaran",
-    "abortMessage": "Anda pasti anda ingin membatalkan pembayaran?"
+    "abortMessage": "Anda pasti anda ingin membatalkan pembayaran?",
+    "tngEwallet": "Touch'n Go"
   },
   "PushNotificationList": {
     "allNotifications": "Semua Pemberitahuan",
@@ -3009,7 +3012,7 @@
     "userExistedDetails": "Pengguna ini sudah mempunyai akses untuk akaun ini. Cuba alamat e-mel yang lain."
   },
   "EnregyBudgetListing": {
-    "title": "Pilih Akaun Meter Pintar",
+    "title": "Pilih Akaun Smart Meter",
     "tootltipTitle": "Kenapa sesetengah akaun saya yang tidak tersenarai?",
     "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
     "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"

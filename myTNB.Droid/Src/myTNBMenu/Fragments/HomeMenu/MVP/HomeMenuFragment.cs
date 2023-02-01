@@ -2025,7 +2025,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             {
                                 DownTimeEntity SMEntity = DownTimeEntity.GetByCode(Constants.SMART_METER_SYSTEM);
                                 DownTimeEntity EBEntity = DownTimeEntity.GetByCode(Constants.EB_SYSTEM);
-                                if (SMEntity != null && EBEntity != null && SMEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
+                                //if (SMEntity != null && EBEntity != null && SMEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
+                                if (SMEntity != null && EBEntity != null && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
                                 {
                                     Utility.ShowBCRMDOWNTooltip(this.Activity, EBEntity, () =>
                                     {
