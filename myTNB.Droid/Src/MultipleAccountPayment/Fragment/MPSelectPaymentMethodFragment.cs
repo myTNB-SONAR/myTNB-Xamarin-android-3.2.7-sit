@@ -1024,7 +1024,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         isValid = false;
                         //txtTotalAmount.Error = "For payments more than RM 5000, please use FPX payment mode.";
-                        ShowErrorMessage(Utility.GetLocalizedLabel("SelectPaymentMethod", "maxCCAmountMessage"));
+                        //ShowErrorMessage(Utility.GetLocalizedLabel("SelectPaymentMethod", "maxCCAmountMessage"));
+                        ErrorDialog(Utility.GetLocalizedLabel("SelectPaymentMethod", "maxCCAmountMessage"));
                     }
 
                 }
@@ -1337,7 +1338,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         {
                             txt = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
                         }
-                        ShowErrorMessage(response.Response.DisplayMessage);
+                        //ShowErrorMessage(response.Response.DisplayMessage);
+                        ErrorDialog(txt);
                     }
 
                 }
@@ -1350,6 +1352,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void ErrorDialog(string message)
+        {
+            MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    .SetTitle("")
+                    .SetMessage(message)
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                    .SetCTAaction(() => { isClicked = false; })
+                    .Build();
+            eppTooltip.Show();
         }
     }
 }
