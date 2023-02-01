@@ -2763,6 +2763,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SetBottmLayoutParams(21f);
                 }
 
+                if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                {
+                    List<CustomerBillingAccount> eligibleSMRBillingAccountsWithTenant = CustomerBillingAccount.EligibleSMRAccountListWithTenant();
+                    List<CustomerBillingAccount> currentSMRBillingAccountsWithTenant = CustomerBillingAccount.CurrentSMRAccountListWithTenant();
+
+                    if (eligibleSMRBillingAccountsWithTenant.Count > 0)
+                    {
+                        foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccountsWithTenant)
+                        {
+                            SMRAccount smrAccount = new SMRAccount();
+                            smrAccount.accountNumber = billingAccount.AccNum;
+                            smrAccount.accountName = billingAccount.AccDesc;
+                            smrAccount.accountAddress = billingAccount.AccountStAddress;
+                            smrAccount.accountSelected = false;
+                            eligibleSmrAccountList.Add(smrAccount);
+                        }
+                    }
+
+                    if (currentSMRBillingAccountsWithTenant.Count > 0)
+                    {
+                        foreach (CustomerBillingAccount billingAccount in currentSMRBillingAccountsWithTenant)
+                        {
+                            SMRAccount smrAccount = new SMRAccount();
+                            smrAccount.accountNumber = billingAccount.AccNum;
+                            smrAccount.accountName = billingAccount.AccDesc;
+                            smrAccount.accountAddress = billingAccount.AccountStAddress;
+                            smrAccount.accountSelected = false;
+                            currentSmrAccountList.Add(smrAccount);
+                        }
+                    }
+                }
+
                 List<SMRAccount> allSMRBlillingAccounts = new List<SMRAccount>();       //energy budget
                 allSMRBlillingAccounts.AddRange(SMeterAccountList);
 
@@ -2873,6 +2905,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SetBottmLayoutParams(21f);
                 }
 
+                if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                {
+                    List<CustomerBillingAccount> eligibleSMRBillingAccountsWithTenant = CustomerBillingAccount.EligibleSMRAccountListWithTenant();
+                    List<CustomerBillingAccount> currentSMRBillingAccountsWithTenant = CustomerBillingAccount.CurrentSMRAccountListWithTenant();
+
+                    if (eligibleSMRBillingAccountsWithTenant.Count > 0)
+                    {
+                        foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccountsWithTenant)
+                        {
+                            SMRAccount smrAccount = new SMRAccount();
+                            smrAccount.accountNumber = billingAccount.AccNum;
+                            smrAccount.accountName = billingAccount.AccDesc;
+                            smrAccount.accountAddress = billingAccount.AccountStAddress;
+                            smrAccount.accountSelected = false;
+                            eligibleSmrAccountList.Add(smrAccount);
+                        }
+                    }
+
+                    if (currentSMRBillingAccountsWithTenant.Count > 0)
+                    {
+                        foreach (CustomerBillingAccount billingAccount in currentSMRBillingAccountsWithTenant)
+                        {
+                            SMRAccount smrAccount = new SMRAccount();
+                            smrAccount.accountNumber = billingAccount.AccNum;
+                            smrAccount.accountName = billingAccount.AccDesc;
+                            smrAccount.accountAddress = billingAccount.AccountStAddress;
+                            smrAccount.accountSelected = false;
+                            currentSmrAccountList.Add(smrAccount);
+                        }
+                    }
+                }
+
                 List<SMRAccount> allSMRBlillingAccounts = new List<SMRAccount>();                   //energy budget
                 allSMRBlillingAccounts.AddRange(SMeterAccountList);
 
@@ -2933,6 +2997,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void UpdateEligibilitySMRAccountList()
         {
             List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+
+            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+            {
+                List<CustomerBillingAccount> eligibleSMRBillingAccountsWithTenant = CustomerBillingAccount.EligibleSMRAccountListWithTenant();
+                if (eligibleSMRBillingAccountsWithTenant != null && eligibleSMRBillingAccountsWithTenant.Count > 0)
+                {
+                    eligibleSMRBillingAccounts.AddRange(eligibleSMRBillingAccountsWithTenant);
+                }
+            }
+
             List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
             if (eligibleSMRBillingAccounts.Count > 0)
             {
@@ -2953,6 +3027,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void UpdateCurrentSMRAccountList()
         {
             List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+
+            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+            {
+                List<CustomerBillingAccount> currentSMRBillingAccountsWithTenant = CustomerBillingAccount.CurrentSMRAccountListWithTenant();
+                if (currentSMRBillingAccountsWithTenant != null && currentSMRBillingAccountsWithTenant.Count > 0)
+                {
+                    currentSMRBillingAccounts.AddRange(currentSMRBillingAccountsWithTenant);
+                }
+            }
+
             List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
             if (currentSMRBillingAccounts.Count > 0)
             {

@@ -333,6 +333,11 @@ namespace myTNB_Android.Src.Base
             return appMasterDataResponse.IsSMRFeatureDisabled;
         }
 
+        public bool IsSMROpenToTenant()
+        {
+            return appMasterDataResponse.IsSMROpenToTenant;
+        }
+
         public bool IsOCRDown()
         {
             return appMasterDataResponse.IsOCRDown;

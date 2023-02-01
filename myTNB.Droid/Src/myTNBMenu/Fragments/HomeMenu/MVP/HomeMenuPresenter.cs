@@ -1658,6 +1658,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (IsSMRFeatureDisabled)
                 {
                     List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.CurrentSMRAccountList();
+
+                    if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                    {
+                        List<CustomerBillingAccount> customerBillingAccountListWithTenant = CustomerBillingAccount.CurrentSMRAccountListWithTenant();
+                        if (customerBillingAccountListWithTenant != null && customerBillingAccountListWithTenant.Count > 0)
+                        {
+                            customerBillingAccountList.AddRange(customerBillingAccountListWithTenant);
+                        }
+                    }
+
                     if (customerBillingAccountList != null && customerBillingAccountList.Count > 0)
                     {
                         for (int i = 0; i < customerBillingAccountList.Count; i++)
@@ -1672,6 +1682,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else
                 {
                     List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
+
+                    if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                    {
+                        List<CustomerBillingAccount> customerBillingAccountListWithTenant = CustomerBillingAccount.GetEligibleAndSMRAccountListWithTenant();
+                        if (customerBillingAccountListWithTenant != null && customerBillingAccountListWithTenant.Count > 0)
+                        {
+                            customerBillingAccountList.AddRange(customerBillingAccountListWithTenant);
+                        }
+                    }
 
                     List<string> smrAccountList = new List<string>();
                     for (int i = 0; i < customerBillingAccountList.Count; i++)
@@ -2034,9 +2053,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 if (isSMRApplyResponse.Data.ErrorCode == "7200" && isSMRApplyResponse.Data.Data.Count > 0)
                 {
+                    List<CustomerBillingAccount> eligibleSMRBillingAccounts = new List<CustomerBillingAccount>();
+                    bool isTenantSMREnable = MyTNBAccountManagement.GetInstance().IsSMROpenToTenant();
+                    if (isTenantSMREnable)
+                    {
+                        eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+                    }
+
                     for (int i = 0; i < isSMRApplyResponse.Data.Data.Count; i++)
                     {
-                        if (isSMRApplyResponse.Data.Data[i].AllowApply)
+                        if (isTenantSMREnable)
+                        {
+                            bool isOwnerExist = eligibleSMRBillingAccounts.Exists(s => s.AccNum == isSMRApplyResponse.Data.Data[i].ContractAccount);
+                            if (isSMRApplyResponse.Data.Data[i].AllowApply && isOwnerExist)
+                            {
+                                isSMRApplyAllowFlag = true;
+                                break;
+                            }
+                        }
+                        else if (isSMRApplyResponse.Data.Data[i].AllowApply)
                         {
                             isSMRApplyAllowFlag = true;
                             break;

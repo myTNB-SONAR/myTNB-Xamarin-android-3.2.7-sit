@@ -790,6 +790,14 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     }
 
                     List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+                    if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                    {
+                        List<CustomerBillingAccount> currentSMRBillingAccountsWithTenant = CustomerBillingAccount.CurrentSMRAccountListWithTenant();
+                        if (currentSMRBillingAccountsWithTenant != null && currentSMRBillingAccountsWithTenant.Count > 0)
+                        {
+                            currentSMRBillingAccounts.AddRange(currentSMRBillingAccountsWithTenant);
+                        }
+                    }
                     List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
                     if (currentSMRBillingAccounts.Count > 0)
                     {
@@ -806,6 +814,14 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     UserSessions.SetSMRAccountList(currentSmrAccountList);
 
                     List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+                    if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                    {
+                        List<CustomerBillingAccount> eligibleSMRBillingAccountsWithTenant = CustomerBillingAccount.EligibleSMRAccountListWithTenant();
+                        if (eligibleSMRBillingAccountsWithTenant != null && eligibleSMRBillingAccountsWithTenant.Count > 0)
+                        {
+                            eligibleSMRBillingAccounts.AddRange(eligibleSMRBillingAccountsWithTenant);
+                        }
+                    }
                     List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
                     if (eligibleSMRBillingAccounts.Count > 0)
                     {

@@ -104,6 +104,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
         [JsonProperty(PropertyName = "ShowWLTYPage")]
         public bool ShowWLTYPage { get; set; }
 
+        [JsonProperty(PropertyName = "IsSMROpenToTenant")]
+        public bool IsSMROpenToTenant { get; set; }
+
         public class AppLaunchMasterDataModel : BaseResponseV2<AppLaunchMasterDataResponse.AppLaunchMasterDataModel>
         {
             [JsonProperty(PropertyName = "AppVersionList")]
