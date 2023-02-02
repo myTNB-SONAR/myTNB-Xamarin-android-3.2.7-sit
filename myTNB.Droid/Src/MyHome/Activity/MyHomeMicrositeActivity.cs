@@ -106,8 +106,8 @@ namespace myTNB_Android.Src.MyHome.Activity
         {
             try
             {
-                string originURL = model?.OriginURL ?? string.Empty;
-                string redirectURL = model?.RedirectURL ?? string.Empty;
+                string originURL = "mytnbapp://action=backToApp";// model?.OriginURL ?? string.Empty;
+                string redirectURL = "https://devmyhome.mytnb.com.my/Application/Offerings";// model?.RedirectURL ?? string.Empty;
 
                 //STUB
                 //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
@@ -132,9 +132,10 @@ namespace myTNB_Android.Src.MyHome.Activity
                 , user.Email
                 , string.Empty
                 , null
-                , string.Empty);
+                , user.MobileNo);
 
-                string ssoURL = string.Format(model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
+                //string ssoURL = string.Format(model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
+                string ssoURL = string.Format("https://devmyhome.mytnb.com.my/Sso?s={0}", signature);
 
                 //STUB
                 //string ssoURL = string.Format("https://stagingmyhome.mytnb.com.my/Sso?s={0}", signature);
