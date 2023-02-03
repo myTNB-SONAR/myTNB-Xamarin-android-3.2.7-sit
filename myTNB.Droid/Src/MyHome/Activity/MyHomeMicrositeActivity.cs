@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -55,7 +57,11 @@ namespace myTNB_Android.Src.MyHome.Activity
                     if (extras.ContainsKey(MyHomeConstants.MYHOME_MODEL))
                     {
                         model = JsonConvert.DeserializeObject<MyHomeModel>(extras.GetString(MyHomeConstants.MYHOME_MODEL));
-                        SetUpWebView();
+                        Task.Run(async () =>
+                        {
+                            await Task.Delay(200);
+                            SetUpWebView();
+                        });
                     }
                 }
             }
@@ -106,55 +112,64 @@ namespace myTNB_Android.Src.MyHome.Activity
         {
             try
             {
-                string originURL = "mytnbapp://action=backToApp";// model?.OriginURL ?? string.Empty;
-                string redirectURL = "https://devmyhome.mytnb.com.my/Application/Offerings";// model?.RedirectURL ?? string.Empty;
+                RunOnUiThread(() =>
+                {
+                    string originURL = model?.OriginURL ?? MyHomeConstants.BACK_TO_APP;
+                    string redirectURL = model?.RedirectURL ?? string.Empty;
 
-                //STUB
-                //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
-                //redirectURL = "https://52.76.106.232/Application/Offerings";
-                //redirectURL = "https://devmyhome.mytnb.com.my/Application/Offerings";
+                    //STUB
+                    //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
+                    //redirectURL = "https://52.76.106.232/Application/Offerings";
+                    //redirectURL = "https://devmyhome.mytnb.com.my/Application/Offerings";
 
-                UserEntity user = UserEntity.GetActive();
-                string myTNBAccountName = user?.DisplayName ?? string.Empty;
-                string signature = SSOManager.Instance.GetMyHomeSignature(myTNBAccountName
-                , AccessTokenCache.Instance.GetAccessToken(this)
-                , user.DeviceId ?? string.Empty
-                , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
-                , 16
-                , (LanguageUtil.GetAppLanguage() == "MS"
-                ? LanguageManager.Language.MS
-                : LanguageManager.Language.EN).ToString()
-                , TextViewUtils.FontInfo ?? "N"
-                , originURL
-                , redirectURL
-                , user.UserID
-                , MobileConstants.OSType.int_Android
-                , user.Email
-                , string.Empty
-                , null
-                , user.MobileNo);
+                    UserEntity user = UserEntity.GetActive();
+                    string myTNBAccountName = user?.DisplayName ?? string.Empty;
+                    string signature = SSOManager.Instance.GetMyHomeSignature(myTNBAccountName
+                    , AccessTokenCache.Instance.GetAccessToken(this)
+                    , user.DeviceId ?? string.Empty
+                    , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
+                    , 16
+                    , (LanguageUtil.GetAppLanguage() == "MS"
+                    ? LanguageManager.Language.MS
+                    : LanguageManager.Language.EN).ToString()
+                    , TextViewUtils.FontInfo ?? "N"
+                    , originURL
+                    , redirectURL
+                    , user.UserID
+                    , MobileConstants.OSType.int_Android
+                    , user.Email
+                    , string.Empty
+                    , null
+                    , user.MobileNo);
 
-                //string ssoURL = string.Format(model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
-                string ssoURL = string.Format("https://devmyhome.mytnb.com.my/Sso?s={0}", signature);
+                    string ssoURL = string.Format(model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
 
-                //STUB
-                //string ssoURL = string.Format("https://stagingmyhome.mytnb.com.my/Sso?s={0}", signature);
-                //ssoURL = string.Format("https://52.76.106.232/Sso?s={0}", signature);
-                //ssoURL = string.Format("https://devmyhome.mytnb.com.my/Sso?s={0}", signature);
+                    //STUB
+                    //string ssoURL = string.Format("https://stagingmyhome.mytnb.com.my/Sso?s={0}", signature);
+                    //ssoURL = string.Format("https://52.76.106.232/Sso?s={0}", signature);
+                    //ssoURL = string.Format("https://devmyhome.mytnb.com.my/Sso?s={0}", signature);
 
-                micrositeWebview.SetWebChromeClient(new WebChromeClient());
-                micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
-                micrositeWebview.Settings.JavaScriptEnabled = true;
-                micrositeWebview.Settings.AllowFileAccess = true;
-                micrositeWebview.Settings.AllowFileAccessFromFileURLs = true;
-                micrositeWebview.Settings.AllowUniversalAccessFromFileURLs = true;
-                micrositeWebview.Settings.AllowContentAccess = true;
-                micrositeWebview.Settings.JavaScriptCanOpenWindowsAutomatically = true;
-                micrositeWebview.Settings.DomStorageEnabled = true;
-                micrositeWebview.Settings.MediaPlaybackRequiresUserGesture = false;
-                micrositeWebview.Settings.SetSupportZoom(false);
+                    //micrositeWebview.SetWebChromeClient(new WebChromeClient());
+                    //micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
+                    //micrositeWebview.Settings.JavaScriptEnabled = true;
+                    //micrositeWebview.Settings.AllowFileAccess = true;
+                    //micrositeWebview.Settings.AllowFileAccessFromFileURLs = true;
+                    //micrositeWebview.Settings.AllowUniversalAccessFromFileURLs = true;
+                    //micrositeWebview.Settings.AllowContentAccess = true;
+                    //micrositeWebview.Settings.JavaScriptCanOpenWindowsAutomatically = true;
+                    //micrositeWebview.Settings.DomStorageEnabled = true;
+                    //micrositeWebview.Settings.MediaPlaybackRequiresUserGesture = false;
+                    //micrositeWebview.Settings.SetSupportZoom(false);
 
-                micrositeWebview.LoadUrl(ssoURL);
+                    micrositeWebview.SetWebChromeClient(new WebChromeClient());
+                    micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
+                    micrositeWebview.Settings.JavaScriptEnabled = true;
+                    micrositeWebview.Settings.AllowFileAccess = true;
+                    micrositeWebview.Settings.DomStorageEnabled = true;
+                    micrositeWebview.Settings.SetSupportZoom(false);
+
+                    micrositeWebview.LoadUrl(ssoURL);
+                });
             }
             catch (System.Exception e)
             {
@@ -166,6 +181,13 @@ namespace myTNB_Android.Src.MyHome.Activity
         {
             micrositeWebview = null;
             Finish();
+        }
+
+        public void LoadToExternalBrowser(string url)
+        {
+            Intent intent = new Intent(Intent.ActionView);
+            intent.SetData(Android.Net.Uri.Parse(url));
+            StartActivity(intent);
         }
 
         public class MyHomeWebViewClient : WebViewClient
@@ -181,19 +203,33 @@ namespace myTNB_Android.Src.MyHome.Activity
             {
                 bool shouldOverride = false;
 
-                if (ConnectionUtils.HasInternetConnection(mActivity) && request != null)
+                string url = request.Url.ToString();
+                Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
+                if (url.Contains(MyHomeConstants.BACK_TO_APP))
                 {
-                    string url = request.Url.ToString();
-                    Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
-                    if (url.Contains(MyHomeConstants.BACK_TO_APP))
+                    shouldOverride = true;
+                    mActivity.OnBackPressed();
+                }
+                else if (url.Contains(MyHomeConstants.BACK_TO_HOME))
+                {
+                    shouldOverride = true;
+                    mActivity.Finish();
+                }
+                else if (url.Contains(MyHomeConstants.EXTERNAL_BROWSER))
+                {
+                    shouldOverride = true;
+
+                    string value = string.Empty;
+                    string pattern = string.Format(MyHomeConstants.PATTERN, MyHomeConstants.EXTERNAL_BROWSER);
+                    Regex regex = new Regex(pattern);
+                    Match match = regex.Match(url);
+                    if (match.Success)
                     {
-                        mActivity.OnBackPressed();
-                        shouldOverride = true;
-                    }
-                    else if (url.Contains(MyHomeConstants.BACK_TO_HOME))
-                    {
-                        mActivity.Finish();
-                        shouldOverride = true;
+                        value = match.Value.Replace(string.Format(MyHomeConstants.REPLACE_KEY, MyHomeConstants.EXTERNAL_BROWSER), string.Empty);
+                        if (value.IsValid())
+                        {
+                            mActivity.LoadToExternalBrowser(value);
+                        }
                     }
                 }
 
