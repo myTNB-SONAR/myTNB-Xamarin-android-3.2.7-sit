@@ -10,6 +10,7 @@
                 public const string I18N_SubmitNow = "submitNow";
                 public const string I18N_ViewApplicationDetails = "viewApplicationDetails";
                 public const string I18N_OTPVerifyNow = "otpVerifyNow";
+                public const string I18N_ReapplyNow = "reapplyNow";
             }
         }
     }

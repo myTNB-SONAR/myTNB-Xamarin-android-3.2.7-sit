@@ -85,8 +85,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         StatusMessage = response.Content.ApplicationStatusDetail.StatusMessage,
                         UserAction = response.Content.ApplicationStatusDetail.UserAction,
                         IsPostPayment = response.Content.ApplicationStatusDetail.IsPostPayment,
-                        StatusDescriptionColor = response.Content.ApplicationStatusDetail.StatusDescriptionColor,
-                        CurrentStatus = response.Content.ApplicationStatusDetail.CurrentStatus
+                        StatusDescriptionColor = response.Content.ApplicationStatusDetail.StatusDescriptionColor
                     };
                     if (response.Content.ApplicationStatusDetail.StatusTracker != null)
                     {

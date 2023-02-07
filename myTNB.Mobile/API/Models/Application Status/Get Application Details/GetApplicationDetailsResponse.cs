@@ -384,5 +384,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string OriginURL { set; get; }
         [JsonProperty("redirectURL")]
         public string RedirectURL { set; get; }
+        [JsonProperty("isOTPFailed")]
+        public bool IsOTPFailed { set; get; }
     }
 }

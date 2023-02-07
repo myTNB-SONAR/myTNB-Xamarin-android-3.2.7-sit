@@ -312,24 +312,25 @@ namespace myTNB.Mobile
                 else if (ApplicationTypeCode == "ASR"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
-                    && ApplicationStatusDetail.CurrentStatus.IsValid()
-                    && ApplicationStatusDetail.CurrentStatus.ToUpper() == "COMPLETED")
+                    && ApplicationStatusDetail.StatusId == 127)
                 {
                     type = DetailCTAType.StartApplication;
                 }
                 else if (ApplicationTypeCode == "NC"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
-                    && ApplicationStatusDetail.CurrentStatus.IsValid()
-                    && ApplicationStatusDetail.CurrentStatus.ToUpper() == "VERIFICATIONFAILED")
+                    && ApplicationStatusDetail.StatusId == 1
+                    && MyHomeDetails != null
+                    && MyHomeDetails.IsOTPFailed)
                 {
                     type = DetailCTAType.DeleteAppication;
                 }
                 else if (ApplicationTypeCode == "NC"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
-                    && ApplicationStatusDetail.CurrentStatus.IsValid()
-                    && ApplicationStatusDetail.CurrentStatus.ToUpper() == "RESUME")
+                    && ApplicationStatusDetail.StatusId == 1
+                    && MyHomeDetails != null
+                    && !MyHomeDetails.IsOTPFailed)
                 {
                     type = DetailCTAType.ResumeApplication;
                 }
@@ -708,7 +709,6 @@ namespace myTNB.Mobile
         public string StatusCode { set; get; }
         public string StatusDescription { set; get; }
         public string StatusDescriptionColor { set; get; }
-        public string CurrentStatus { set; get; }
         public string StatusMessage { set; get; }
         public string UserAction { set; get; }
         public bool IsPostPayment { set; get; }

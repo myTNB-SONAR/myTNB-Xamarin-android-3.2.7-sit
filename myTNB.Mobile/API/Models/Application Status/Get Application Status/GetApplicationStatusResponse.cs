@@ -132,9 +132,6 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
         [JsonProperty("statusDescriptionColor")]
         public string StatusDescriptionColor { set; get; }
 
-        [JsonProperty("currentStatus")]
-        public string CurrentStatus { set; get; }
-
         [JsonProperty("statusMessage")]
         public string StatusMessage { set; get; }
 
