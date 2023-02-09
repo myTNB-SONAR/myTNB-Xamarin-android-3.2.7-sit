@@ -305,6 +305,7 @@ namespace myTNB.Mobile
             get
             {
                 DetailCTAType type = DetailCTAType.None;
+
                 if (IsSaveMessageDisplayed)
                 {
                     type = DetailCTAType.Save;

@@ -282,6 +282,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     {
                         displayModel.Content.PremisesAddress = premiseAddress;
                     }
+                    if (GetObjectValue(props, "applicationModuleId") is string applicationModuleId && applicationModuleId.IsValid())
+                    {
+                        displayModel.Content.ApplicationDetail.ApplicationModuleId = applicationModuleId;
+                    }
                     bool shouldShowLinkedWith = false;
 
                     for (int i = 0; i < additionalDisplayConfig.Count; i++)
