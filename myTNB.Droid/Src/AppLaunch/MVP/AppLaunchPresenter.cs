@@ -570,6 +570,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     bool isForceCall = !UserSessions.HasUpdateSkipped(this.mSharedPref);
                     _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, isForceCall);
 
+                    await CustomEligibility.EvaluateEligibilityTenantDBR((Context)this.mView);
+
                     UserInfo usrinf = new UserInfo();
                     usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
 
@@ -915,6 +917,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     bool isForceCall = !UserSessions.HasUpdateSkipped(this.mSharedPref);
                     _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, isForceCall);
+
+                    await CustomEligibility.EvaluateEligibilityTenantDBR((Context)this.mView);
 
                     UserInfo usrinf = new UserInfo();
                     usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";

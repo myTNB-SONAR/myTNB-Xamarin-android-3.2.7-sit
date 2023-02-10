@@ -35,6 +35,9 @@ using myTNB_Android.Src.SessionCache;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.Base;
+using Android.Preferences;
+using myTNB_Android.Src.myTNBMenu.Async;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -92,6 +95,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         private bool isClicked = false;
         GetBillRenderingTenantResponse billRenderingTenantResponse;
+
+        private static ISharedPreferences mPreferences;
         bool tenantDBR = false;
         //Mark: Application Payment
         private bool IsApplicationPayment;
@@ -213,43 +218,37 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         && multiBillRenderingResponse.Content != null
                                         && multiBillRenderingResponse.Content.Count > 0)
                                     {
-                                        billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dbrCAForPaymentList, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(Activity));
+                                        List<GetBillRenderingTenantModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
 
-                                        for (int j = 0; j < dbrCAForPaymentList.Count; j++)
+                                        if (tenantList != null && tenantList.Count > 0)
                                         {
-                                            int index = multiBillRenderingResponse.Content.FindIndex(x =>
-                                                x.ContractAccountNumber == dbrCAForPaymentList[j]
-                                                && x.DBRType == MobileEnums.DBRTypeEnum.Paper
-                                                );
-
-                                            if (billRenderingTenantResponse != null
-                                               && billRenderingTenantResponse.StatusDetail != null
-                                               && billRenderingTenantResponse.StatusDetail.IsSuccess
-                                               && billRenderingTenantResponse.Content != null)
+                                            for (int j = 0; j < dbrCAForPaymentList.Count; j++)
                                             {
-                                               int indexTenant = billRenderingTenantResponse.Content.FindIndex(x =>
-                                               x.CaNo == dbrCAForPaymentList[j]
-                                               && x.IsOwnerAlreadyOptIn == false
-                                               && x.IsOwnerOverRule == false
-                                               && x.IsTenantAlreadyOptIn == false
-                                               );
+                                                int index = multiBillRenderingResponse.Content.FindIndex(x =>
+                                                            x.ContractAccountNumber == dbrCAForPaymentList[j]
+                                                            && x.DBRType == MobileEnums.DBRTypeEnum.Paper
+                                                            );
+
+
+                                                int indexTenant = tenantList.FindIndex(x =>
+                                                            x.CaNo == dbrCAForPaymentList[j]
+                                                            && x.IsOwnerAlreadyOptIn == false
+                                                            && x.IsOwnerOverRule == false
+                                                            && x.IsTenantAlreadyOptIn == false
+                                                            );
 
 
                                                 if (indexTenant > -1)
                                                 {
                                                     tenantDBR = true;
                                                 }
-                                            }
-                                           
 
-                                            if (index > -1)
-                                            {
-                                                PaymentActivity.CAsWithPaperBillList.Add(dbrCAForPaymentList[index]);
+                                                if (index > -1)
+                                                {
+                                                    PaymentActivity.CAsWithPaperBillList.Add(dbrCAForPaymentList[index]);
+                                                }
                                             }
-                                            
-
                                         }
-                                        
                                     }
                                 }
                             }
@@ -944,7 +943,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         isValid = false;
                         //txtTotalAmount.Error = "For payments more than RM 5000, please use FPX payment mode.";
-                        ShowErrorMessage(Utility.GetLocalizedLabel("SelectPaymentMethod", "maxCCAmountMessage"));
+                        //ShowErrorMessage(Utility.GetLocalizedLabel("SelectPaymentMethod", "maxCCAmountMessage"));
+                        ErrorDialog(Utility.GetLocalizedLabel("SelectPaymentMethod", "maxCCAmountMessage"));
                     }
 
                 }
@@ -1253,7 +1253,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         {
                             txt = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
                         }
-                        ShowErrorMessage(response.Response.DisplayMessage);
+                        //ShowErrorMessage(response.Response.DisplayMessage);
+                        ErrorDialog(txt);
                     }
 
                 }
@@ -1266,6 +1267,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void ErrorDialog(string message)
+        {
+            MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    .SetTitle("")
+                    .SetMessage(message)
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                    .SetCTAaction(() => { isClicked = false; })
+                    .Build();
+            eppTooltip.Show();
         }
     }
 }
