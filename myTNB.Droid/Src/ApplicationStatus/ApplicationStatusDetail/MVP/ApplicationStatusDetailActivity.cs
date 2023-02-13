@@ -35,6 +35,12 @@ using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
 using Android.Text;
 using Android.Content.PM;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.NotificationDetails.Models;
+
+using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
+using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.MyHome.Activity;
+using static Android.Graphics.ColorSpace;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -239,6 +245,22 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         webIntent.PutExtra("action", "contractorRating");
                         StartActivityForResult(webIntent, Constants.APPLICATION_STATUS_RATING_REQUEST_CODE);
                         FirebaseAnalyticsUtils.LogClickEvent(this, "Contractor Rating Button Clicked");
+                    }
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.StartApplication)
+                    {
+                        if (applicationDetailDisplay != null && applicationDetailDisplay.MyHomeDetails != null)
+                        {
+                            MyHomeModel myHomeModel = new MyHomeModel()
+                            {
+                                SSODomain = applicationDetailDisplay.MyHomeDetails.SSODomain,
+                                OriginURL = applicationDetailDisplay.MyHomeDetails.OriginURL,
+                                RedirectURL = applicationDetailDisplay.MyHomeDetails.RedirectURL
+                            };
+
+                            Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
+                            micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
+                            StartActivity(micrositeActivity);
+                        }
                     }
                 }
             }
@@ -878,6 +900,25 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
                             }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.StartApplication)
+                            {
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+                                btnPrimaryCTA.Text = "Start Application";
+                                btnPrimaryCTA.Enabled = true;
+                                btnPrimaryCTA.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_round_button_background);
+                            }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteAppication)
+                            {
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+                                btnPrimaryCTA.Text = "Delete";
+                                btnPrimaryCTA.Enabled = true;
+                                btnPrimaryCTA.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.tomato));
+                                btnPrimaryCTA.Background = ContextCompat.GetDrawable(this, Resource.Drawable.red_outline_round_button_background);
+                            }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.ResumeApplication)
+                            {
+                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Visible;
+                            }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.None)
                             {
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
@@ -885,7 +926,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Gone;
                                 ctaParentLayout.Visibility = ViewStates.Gone;
                             }
-
                             TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle);
                             TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote, txtBCRMDownMessage, txtAppointmentSet);
 
@@ -926,7 +966,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     }
                 }
 
-                TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle);
+                TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle, btnViewActivityLog, howDoISeeApplicaton, btnPrimaryCTA);
                 TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote);
                 TextViewUtils.SetTextSize10(txtLinkedWithHeader);
                 TextViewUtils.SetTextSize12(txtApplicationStatusUpdated, txtApplicationStatusDetail, txtLinkedWithView

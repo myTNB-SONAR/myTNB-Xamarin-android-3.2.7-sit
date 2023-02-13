@@ -53,6 +53,20 @@
 		<item name="android:stateListAnimator">@null</item>
 		<item name="android:background">@drawable/light_green_outline_button_background</item>
 	</style>
+	<style name="Theme.FreshGreenOutlineButton" parent="@android:style/Widget.Button">
+		<item name="android:textColor">@color/freshGreen</item>
+		<item name="android:hint">@color/freshGreen</item>
+		<item name="android:textSize">16dp</item>
+		<item name="android:stateListAnimator">@null</item>
+		<item name="android:background">@drawable/light_green_outline_round_button_background</item>
+	</style>
+	<style name="Theme.RedOutlineButton" parent="@android:style/Widget.Button">
+		<item name="android:textColor">@color/tomato</item>
+		<item name="android:hint">@color/tomato</item>
+		<item name="android:textSize">16dp</item>
+		<item name="android:stateListAnimator">@null</item>
+		<item name="android:background">@drawable/red_outline_round_button_background</item>
+	</style>
 	<style name="Theme.AppointmentAddCalendarButton" parent="@android:style/Widget.Button">
 		<item name="android:textColor">@color/white</item>
 		<item name="android:textSize">16dp</item>

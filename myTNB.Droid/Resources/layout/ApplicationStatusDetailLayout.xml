@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/rootView"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -462,7 +463,7 @@ will be recorded. Check back again later to view its update."/>
 							android:layout_marginRight="16dp"
 							android:layout_marginBottom="16dp"
 							android:textSize="16dp"
-							style="@style/Theme.ApplicationStatusLandingButton" />
+							style="@style/Theme.FreshGreenOutlineButton" />
 					</LinearLayout>
 					<View
 						android:layout_height="1dp"
@@ -537,16 +538,6 @@ will be recorded. Check back again later to view its update."/>
 				android:padding="16dp"
 				android:orientation="vertical"
 				android:background="@color/white">
-				<TextView
-					android:id="@+id/txtApplicationStatusBottomNote"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:textColor="@color/charcoalGrey"
-					android:textSize="14dp"
-					android:lineSpacingExtra="3dp"
-					android:layout_marginBottom="16dp"
-					android:visibility="gone"
-					android:text="UI - Save this application to keep track of its up-to-date status in My Applications."/>
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -601,6 +592,7 @@ will be recorded. Check back again later to view its update."/>
 					android:orientation="vertical"
 					android:weightSum="1"
 					android:visibility="gone"
+					tools:visibility="visible"
 					android:id="@+id/applicationStatusDetailSingleButtonLayout"
 					android:background="@color/white">
 					<TextView
@@ -610,6 +602,7 @@ will be recorded. Check back again later to view its update."/>
 						android:layout_marginBottom="16dp"
 						android:layout_marginTop="16dp"
 						android:visibility="gone"
+						tools:visibility="visible"
 						android:text="You have an appointment set for 19 Sep 2020, between 9:00 AM - 1:00 PM. "
 						android:textColor="@color/charcoalGrey"
 						android:textSize="14dp" />

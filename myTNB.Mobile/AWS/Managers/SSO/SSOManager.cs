@@ -82,6 +82,7 @@ namespace myTNB.Mobile
             , string originURL
             , string redirectURL
             , string userID
+            , string idNumber
             , int osType
             , string email
             , string appReference
@@ -104,7 +105,7 @@ namespace myTNB.Mobile
                     CaNo = string.Empty,
                     UserID = userID,
                     IdType = null,
-                    IdNo = string.Empty,
+                    IdNo = idNumber,
                     TransactionType = "MyHome",
                     InitiateTime = DateTime.UtcNow,
                     QRMappingID = null,
