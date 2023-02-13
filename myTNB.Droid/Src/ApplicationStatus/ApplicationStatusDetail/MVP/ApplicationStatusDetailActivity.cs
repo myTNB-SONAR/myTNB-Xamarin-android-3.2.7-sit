@@ -279,6 +279,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [OnClick(Resource.Id.btnApplicationStatusViewBill)]
         internal void OnPaymentViewDetails(object sender, EventArgs e)
         {
+            if (applicationDetailDisplay != null)
+            {
+                if (applicationDetailDisplay.CTAType == DetailCTAType.ResumeApplication)
+                {
+                    return;
+                }
+            }
+
             Intent applicationStatusDetailPaymentIntent = new Intent(this, typeof(ApplicationStatusDetailPaymentActivity));
             applicationStatusDetailPaymentIntent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
 
@@ -288,6 +296,27 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [OnClick(Resource.Id.btnApplicationStatusPay)]
         internal void OnPay(object sender, EventArgs e)
         {
+            if (applicationDetailDisplay != null)
+            {
+                if (applicationDetailDisplay.CTAType == DetailCTAType.ResumeApplication)
+                {
+                    if (applicationDetailDisplay.MyHomeDetails != null)
+                    {
+                        MyHomeModel myHomeModel = new MyHomeModel()
+                        {
+                            SSODomain = applicationDetailDisplay.MyHomeDetails.SSODomain,
+                            OriginURL = applicationDetailDisplay.MyHomeDetails.OriginURL,
+                            RedirectURL = applicationDetailDisplay.MyHomeDetails.RedirectURL
+                        };
+
+                        Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
+                        micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
+                        StartActivity(micrositeActivity);
+                    }
+                    return;
+                }
+            }
+
             System.Diagnostics.Debug.WriteLine("[DEBUG] OnPay");
             if (!this.GetIsClicked())
             {
@@ -918,6 +947,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.ResumeApplication)
                             {
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Visible;
+
+                                btnApplicationStatusViewBill.Text = "Delete";
+                                btnApplicationStatusViewBill.Enabled = true;
+                                btnApplicationStatusViewBill.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.tomato));
+                                btnApplicationStatusViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.red_outline_round_button_background);
+
+                                btnApplicationStatusPay.Text = "Resume";
+                                btnApplicationStatusPay.Enabled = true;
+                                btnApplicationStatusPay.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_round_button_background);
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.None)
                             {
@@ -966,7 +1004,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     }
                 }
 
-                TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle, btnViewActivityLog, howDoISeeApplicaton, btnPrimaryCTA);
+                TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle, btnViewActivityLog, howDoISeeApplicaton, btnPrimaryCTA
+                    , btnApplicationStatusViewBill, btnApplicationStatusPay);
                 TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote);
                 TextViewUtils.SetTextSize10(txtLinkedWithHeader);
                 TextViewUtils.SetTextSize12(txtApplicationStatusUpdated, txtApplicationStatusDetail, txtLinkedWithView
