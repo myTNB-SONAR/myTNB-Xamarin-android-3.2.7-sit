@@ -1167,6 +1167,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 SummaryDashBoardAccountEntity.RemoveAll();
 
                 _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this, true);
+                await CustomEligibility.EvaluateEligibilityTenantDBR((Context)this);
 
                 List<string> newCAList = new List<string>();
 
