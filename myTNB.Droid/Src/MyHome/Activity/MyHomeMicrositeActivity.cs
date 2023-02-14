@@ -17,6 +17,7 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.Login.Models;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -30,7 +31,6 @@ namespace myTNB_Android.Src.MyHome.Activity
       , Theme = "@style/Theme.Dashboard")]
     public class MyHomeMicrositeActivity : BaseToolbarAppCompatActivity
     {
-
         [BindView(Resource.Id.micrositeWebview)]
         WebView micrositeWebview;
 
@@ -57,10 +57,10 @@ namespace myTNB_Android.Src.MyHome.Activity
                     if (extras.ContainsKey(MyHomeConstants.MYHOME_MODEL))
                     {
                         model = JsonConvert.DeserializeObject<MyHomeModel>(extras.GetString(MyHomeConstants.MYHOME_MODEL));
-                        Task.Run(async () =>
+                        ShowProgressDialog();
+                        Task.Run(() =>
                         {
-                            await Task.Delay(200);
-                            SetUpWebView();
+                            _ = GetAccessToken();
                         });
                     }
                 }
@@ -108,7 +108,22 @@ namespace myTNB_Android.Src.MyHome.Activity
             StartActivity(DashboardIntent);
         }
 
-        private void SetUpWebView()
+        private async Task GetAccessToken()
+        {
+            UserEntity user = UserEntity.GetActive();
+            string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
+            if (accessToken.IsValid())
+            {
+                SetUpWebView(accessToken);
+            }
+            else
+            {
+                Finish();
+            }
+            HideProgressDialog();
+        }
+
+        private void SetUpWebView(string accessToken)
         {
             try
             {
@@ -120,12 +135,12 @@ namespace myTNB_Android.Src.MyHome.Activity
                     //STUB
                     //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
                     //redirectURL = "https://52.76.106.232/Application/Offerings";
-                    redirectURL = "https://devmyhome.mytnb.com.my/Application/Offerings";
+                    //redirectURL = "https://devmyhome.mytnb.com.my/Application/Offerings";
 
                     UserEntity user = UserEntity.GetActive();
                     string myTNBAccountName = user?.DisplayName ?? string.Empty;
                     string signature = SSOManager.Instance.GetMyHomeSignature(myTNBAccountName
-                    , AccessTokenCache.Instance.GetAccessToken(this)
+                    , accessToken//AccessTokenCache.Instance.GetAccessToken(this)
                     , user.DeviceId ?? string.Empty
                     , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
                     , 16
@@ -148,7 +163,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                     //STUB
                     //string ssoURL = string.Format("https://stagingmyhome.mytnb.com.my/Sso?s={0}", signature);
                     //ssoURL = string.Format("https://52.76.106.232/Sso?s={0}", signature);
-                    ssoURL = string.Format("https://devmyhome.mytnb.com.my/Sso?s={0}", signature);
+                    //ssoURL = string.Format("https://devmyhome.mytnb.com.my/Sso?s={0}", signature);
 
                     //micrositeWebview.SetWebChromeClient(new WebChromeClient());
                     //micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
@@ -189,6 +204,30 @@ namespace myTNB_Android.Src.MyHome.Activity
             Intent intent = new Intent(Intent.ActionView);
             intent.SetData(Android.Net.Uri.Parse(url));
             StartActivity(intent);
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public class MyHomeWebViewClient : WebViewClient
