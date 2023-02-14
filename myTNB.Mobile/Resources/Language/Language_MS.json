@@ -2878,6 +2878,17 @@
             "type": "none"
           }
         ],
+        "GetUserServiceAccessToken": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
         "BillRendering": [
           {
             "code": "7200",
@@ -3016,6 +3027,17 @@
             "secondaryCTATitle": "",
             "isSuccess": false,
             "type": "refresh"
+          }
+        ],
+        "DeleteNCDraft": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
           }
         ]
       }

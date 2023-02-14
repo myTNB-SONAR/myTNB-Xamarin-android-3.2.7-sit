@@ -286,6 +286,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     {
                         displayModel.Content.ApplicationDetail.ApplicationModuleId = applicationModuleId;
                     }
+                    if (GetObjectValue(props, "referenceNo") is string referenceNo && referenceNo.IsValid())
+                    {
+                        displayModel.Content.ApplicationDetail.ReferenceNo = referenceNo;
+                    }
                     bool shouldShowLinkedWith = false;
 
                     for (int i = 0; i < additionalDisplayConfig.Count; i++)

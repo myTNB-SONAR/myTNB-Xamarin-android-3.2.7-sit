@@ -53,13 +53,13 @@ namespace myTNB.Mobile
                 AccessTokenResponse response = await rawResponse.ParseAsync<AccessTokenResponse>();
                 if (response != null && response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                 {
-                    response.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(response.StatusDetail.Code);
+                    response.StatusDetail = AWSConstants.Services.GenerateAccessToken.GetStatusDetails(response.StatusDetail.Code);
                 }
                 else
                 {
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        response.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = AWSConstants.Services.GenerateAccessToken.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
@@ -67,7 +67,7 @@ namespace myTNB.Mobile
                         {
                             StatusDetail = new StatusDetail()
                         };
-                        response.StatusDetail = AWSConstants.Services.GetEligibility.GetStatusDetails(MobileConstants.DEFAULT);
+                        response.StatusDetail = AWSConstants.Services.GenerateAccessToken.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                 }
                 Debug.WriteLine("[DEBUG] GenerateAccessToken: " + JsonConvert.SerializeObject(response));
@@ -90,6 +90,76 @@ namespace myTNB.Mobile
             {
 #if DEBUG
                 Debug.WriteLine("[DEBUG][GenerateAccessToken]General Exception: " + ex.Message);
+#endif
+            }
+            return string.Empty;
+        }
+
+
+        /// <summary>
+        /// Generates access token used to access services and in webview SSO
+        /// Channel and Role Id are hard coded as it is used only in mobile App
+        /// </summary>
+        /// <param name="userID">myTNB account's user Id</param>
+        /// <returns>Access Token</returns>
+        public async Task<string> GetUserServiceAccessToken(string userID)
+        {
+            try
+            {
+                IAccessTokenService service = RestService.For<IAccessTokenService>("https://devapi.mytnb.com.my");// AWSConstants.Domains.Domain);
+                AccessTokenRequest request = new AccessTokenRequest
+                {
+                    Channel = AWSConstants.Channel,
+                    UserId = userID ?? string.Empty
+                };
+
+                HttpResponseMessage rawResponse = await service.GetUserServiceAccessToken(request
+                    , NetworkService.GetCancellationToken());
+                //Mark: Check for 404 First
+                if ((int)rawResponse.StatusCode != 200)
+                {
+                    return string.Empty;
+                }
+                AccessTokenResponse response = await rawResponse.ParseAsync<AccessTokenResponse>();
+                if (response != null && response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                {
+                    response.StatusDetail = AWSConstants.Services.GetUserServiceAccessToken.GetStatusDetails(response.StatusDetail.Code);
+                }
+                else
+                {
+                    if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    {
+                        response.StatusDetail = AWSConstants.Services.GetUserServiceAccessToken.GetStatusDetails(response.StatusDetail.Code);
+                    }
+                    else
+                    {
+                        response = new AccessTokenResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
+                        response.StatusDetail = AWSConstants.Services.GetUserServiceAccessToken.GetStatusDetails(MobileConstants.DEFAULT);
+                    }
+                }
+                Debug.WriteLine("[DEBUG] GetUserServiceAccessToken: " + JsonConvert.SerializeObject(response));
+                if (response.StatusDetail.IsSuccess)
+                {
+                    return response?.Content?.AccessToken ?? string.Empty;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+            catch (ApiException apiEx)
+            {
+#if DEBUG
+                Debug.WriteLine("[DEBUG][GetUserServiceAccessToken]Refit Exception: " + apiEx.Message);
+#endif
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                Debug.WriteLine("[DEBUG][GetUserServiceAccessToken]General Exception: " + ex.Message);
 #endif
             }
             return string.Empty;

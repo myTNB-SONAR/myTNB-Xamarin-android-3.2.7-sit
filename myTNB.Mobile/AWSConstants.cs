@@ -117,6 +117,7 @@
         public struct Services
         {
             internal const string GenerateAccessToken = "GenerateAccessToken";
+            internal const string GetUserServiceAccessToken = "GetUserServiceAccessToken";
             internal const string GetBillRendering = "BillRendering";
             internal const string PostMultiBillRendering = "MultiBillRendering";
             internal const string PostInstallationDetails = "InstallationDetails";
@@ -129,6 +130,7 @@
             internal const string PostBREligibilityIndicators = "BREligibilityIndicators";
             internal const string GetAutoOptInCa = "GetAutoOptInCa";
             internal const string PatchUpdateAutoOptInCa = "PatchUpdateAutoOptInCa";
+            internal const string PostDeleteNCDraft = "DeleteNCDraft";
         }
     }
 }
