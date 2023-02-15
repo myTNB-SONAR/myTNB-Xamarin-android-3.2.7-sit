@@ -1930,6 +1930,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 ServiceIconUrl = myServiceChild.ServiceIconUrl,
                                 DisabledServiceIconUrl = myServiceChild.DisabledServiceIconUrl,
                                 ServiceBannerUrl = myServiceChild.ServiceBannerUrl,
+                                OriginURL = myServiceChild.OriginURL,
+                                RedirectURL = myServiceChild.RedirectURL
                             });
                         }
                     }
@@ -1949,6 +1951,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 ServiceIconUrl = myService.ServiceIconUrl,
                                 DisabledServiceIconUrl = myService.DisabledServiceIconUrl,
                                 ServiceBannerUrl = myService.ServiceBannerUrl,
+                                OriginURL = myService.OriginURL,
+                                RedirectURL = myService.RedirectURL,
                                 Children = myServiceChildList
                             });
                         }
@@ -1964,6 +1968,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         ServiceIconUrl = myService.ServiceIconUrl,
                         DisabledServiceIconUrl = myService.DisabledServiceIconUrl,
                         ServiceBannerUrl = myService.ServiceBannerUrl,
+                        OriginURL = myService.OriginURL,
+                        RedirectURL = myService.RedirectURL,
                         Children = myServiceChildList
                     });
                 }

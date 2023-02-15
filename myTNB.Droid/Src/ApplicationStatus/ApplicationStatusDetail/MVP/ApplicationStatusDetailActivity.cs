@@ -41,6 +41,11 @@ using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
 using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.MyHome.Activity;
 using static Android.Graphics.ColorSpace;
+using myTNB_Android.Src.DeviceCache;
+using System.Threading.Tasks;
+using System.Reflection;
+using myTNB.Mobile.Constants;
+using Xamarin.Facebook;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -208,6 +213,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         private bool IsFromLinkedWith = false;
         private Snackbar mNoInternetSnackbar;
+        private Snackbar mErrorSnackbar;
         private bool IsPush = false;
 
         [OnClick(Resource.Id.btnPrimaryCTA)]
@@ -264,23 +270,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteAppication)
                     {
-                        //Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_TITLE)
-                        MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                        MyTNBAppToolTipBuilder deleteDraftPopUp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                             .SetSecondaryHeaderImage(Resource.Drawable.ic_display_validation_success)
-                            .SetTitle("Are you sure you want to delete this draft?")
-                            .SetMessage("Your draft will be permanently deleted.")
+                            .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftTitle))
+                            .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftMessage))
                             .SetPrimaryButtonDrawable(Resource.Drawable.blue_button_solid_background)
                             .SetSecondaryButtonDrawable(Resource.Drawable.blue_outline_round_button_background)
-                            .SetCTALabel("Yes, I’m Sure")
+                            .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftSure))
                             .SetCTAaction(() => OnDeleteDraft())
-                            .SetSecondaryCTALabel("Cancel")
+                            .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftCancel))
                             .SetSecondaryCTAaction(() =>
                             {
                                 this.SetIsClicked(false);
-                                DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_GotIt);
                             })
                             .Build();
-                        marketingTooltip.Show();
+                        deleteDraftPopUp.Show();
                     }
                 }
             }
@@ -292,7 +296,44 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         private void OnDeleteDraft()
         {
+            ShowProgressDialog();
+            Task.Run(() =>
+            {
+                _ = PostDeleteDraft();
+            });
+        }
 
+        private async Task PostDeleteDraft()
+        {
+            if (applicationDetailDisplay.ApplicationDetail != null &&
+                applicationDetailDisplay.ApplicationDetail.ReferenceNo.IsValid())
+            {
+                string refNo = applicationDetailDisplay.ApplicationDetail.ReferenceNo;
+                UserEntity user = UserEntity.GetActive();
+                var response = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostDeleteNCDraft(refNo, user.UserID, AccessTokenCache.Instance.GetUserServiceAccessToken(this));
+                if (response != null &&
+                    response.StatusDetail != null &&
+                    response.StatusDetail.IsSuccess)
+                {
+                    AccessTokenCache.Instance.SaveUserServiceAccessToken(this, response.StatusDetail.AccessToken);
+                    RunOnUiThread(() =>
+                    {
+                        HideProgressDialog();
+                        Intent intent = new Intent();
+                        intent.PutExtra(Constants.DELETE_DRAFT_MESSAGE, response.StatusDetail.Message);
+                        SetResult(Result.Ok, intent);
+                        Finish();
+                    });
+                }
+                else
+                {
+                    RunOnUiThread(() =>
+                    {
+                        HideProgressDialog();
+                        ShowErrorSnackbar(response.StatusDetail.Message);
+                    });
+                }
+            }
         }
 
         [OnClick(Resource.Id.btnViewActivityLog)]
@@ -308,6 +349,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             {
                 if (applicationDetailDisplay.CTAType == DetailCTAType.ResumeApplication)
                 {
+                    MyTNBAppToolTipBuilder deleteDraftPopUp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                            .SetSecondaryHeaderImage(Resource.Drawable.ic_display_validation_success)
+                            .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftTitle))
+                            .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftMessage))
+                            .SetPrimaryButtonDrawable(Resource.Drawable.blue_button_solid_background)
+                            .SetSecondaryButtonDrawable(Resource.Drawable.blue_outline_round_button_background)
+                            .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftSure))
+                            .SetCTAaction(() => OnDeleteDraft())
+                            .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftCancel))
+                            .SetSecondaryCTAaction(() =>
+                            {
+                                this.SetIsClicked(false);
+                            })
+                            .Build();
+                    deleteDraftPopUp.Show();
                     return;
                 }
             }
@@ -643,6 +699,29 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
             mNoInternetSnackbar.Show();
+            this.SetIsClicked(false);
+        }
+
+        public void ShowErrorSnackbar(string message)
+        {
+            if (mErrorSnackbar != null && mErrorSnackbar.IsShown)
+            {
+                mErrorSnackbar.Dismiss();
+            }
+
+            mErrorSnackbar = Snackbar.Make(rootview, message, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+                mErrorSnackbar.Dismiss();
+            }
+            );
+            View v = mErrorSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            TextView tvA = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_action);
+            TextViewUtils.SetMuseoSans500Typeface(tv, tvA);
+            TextViewUtils.SetTextSize16(tv, tvA);
+            tv.SetMaxLines(5);
+            mErrorSnackbar.Show();
             this.SetIsClicked(false);
         }
 

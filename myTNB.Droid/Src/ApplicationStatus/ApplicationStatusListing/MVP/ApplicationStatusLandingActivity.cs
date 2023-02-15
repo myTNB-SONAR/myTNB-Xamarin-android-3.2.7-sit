@@ -397,6 +397,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE || requestCode == Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE)
             {
                 UpdateUI();
+                if (resultCode == Result.Ok)
+                {
+                    string message = data.Extras.GetString(Constants.DELETE_DRAFT_MESSAGE);
+                    ShowSuccessDeleteDraftSnackbar(message);
+                }
             }
             HideProgressDialog();
         }
@@ -1204,6 +1209,29 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
             mNoInternetSnackbar.Show();
+            this.SetIsClicked(false);
+        }
+        private Snackbar mDeleteDraftSnackbar;
+        public void ShowSuccessDeleteDraftSnackbar(string message)
+        {
+            if (mDeleteDraftSnackbar != null && mDeleteDraftSnackbar.IsShown)
+            {
+                mDeleteDraftSnackbar.Dismiss();
+            }
+
+            mDeleteDraftSnackbar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+                mDeleteDraftSnackbar.Dismiss();
+            }
+            );
+            View v = mDeleteDraftSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            TextView tvA = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_action);
+            TextViewUtils.SetMuseoSans500Typeface(tv, tvA);
+            TextViewUtils.SetTextSize16(tv, tvA);
+            tv.SetMaxLines(5);
+            mDeleteDraftSnackbar.Show();
             this.SetIsClicked(false);
         }
     }

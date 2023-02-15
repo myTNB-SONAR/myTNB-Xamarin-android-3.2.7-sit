@@ -91,6 +91,8 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string ACCT_STMNT_PDF_FILE_PATH = ".accountStatementFilePath";
         internal static readonly string BILL_HISTORY_IS_EMPTY = ".billHistoryIsEmpty";
 
+        internal static readonly string DELETE_DRAFT_MESSAGE = ".deleteDraftMessage";
+
         /// <summary>
         /// BARCODE REQUEST TYPE
         /// </summary>

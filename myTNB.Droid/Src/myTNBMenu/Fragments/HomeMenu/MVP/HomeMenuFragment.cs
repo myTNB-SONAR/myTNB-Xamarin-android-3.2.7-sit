@@ -2052,12 +2052,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                         ServiceType = child.ServiceType
                                     });
                                 }
+
+                                MyHomeDrawerFragment myHomeBottomSheetDialog = new MyHomeDrawerFragment(this.Activity, drawerList);
+
+                                myHomeBottomSheetDialog.Cancelable = true;
+                                myHomeBottomSheetDialog.Show(this.Activity.SupportFragmentManager, "My Home Dialog");
                             }
-
-                            MyHomeDrawerFragment myHomeBottomSheetDialog = new MyHomeDrawerFragment(this.Activity, drawerList);
-
-                            myHomeBottomSheetDialog.Cancelable = true;
-                            myHomeBottomSheetDialog.Show(this.Activity.SupportFragmentManager, "My Home Dialog");
 
                             this.SetIsClicked(false);
                         }

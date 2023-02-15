@@ -3037,11 +3037,11 @@
           {
             "code": "7200",
             "title": "",
-            "message": "",
+            "message": "MS_Your application has been deleted.",
             "primaryCTATitle": "",
             "secondaryCTATitle": "",
             "isSuccess": true,
-            "type": "none"
+            "type": "toast"
           }
         ]
       }
