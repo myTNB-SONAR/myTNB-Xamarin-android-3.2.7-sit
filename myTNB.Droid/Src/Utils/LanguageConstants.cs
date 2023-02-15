@@ -29,6 +29,7 @@
             internal static readonly string REFRESH_NOW = "refreshNow";
             internal static readonly string OK = "ok";
             internal static readonly string SUBMIT = "submit";
+            internal static readonly string IMSURE = "";
         }
 
         internal struct Error
@@ -145,6 +146,8 @@
         internal struct ApplicationStatusDetails
         {
             internal static readonly string STATUS_LABEL = "status";
+            internal static readonly string DELETE_DRAFT_TITLE = "";
+            internal static readonly string DELETE_DRAFT_MSG = "";
         }
 
         internal struct Gsl

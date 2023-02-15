@@ -30,6 +30,7 @@ namespace myTNB_Android.Src.Utils
 
         private ToolTipType toolTipType;
         private int imageResource;
+        private int secondaryImageResource;
         private string headertitle;
         private string title;
         private string subtitle;
@@ -49,6 +50,8 @@ namespace myTNB_Android.Src.Utils
         private GravityFlags mGravityFlag;
         private Bitmap imageResourceBitmap;
         private bool isIconImage = false;
+        private int primaryButtonDrawable;
+        private int secondaryButtonDrawable;
 
         private MyTNBAppToolTipBuilder(Android.App.Activity context)
         {
@@ -135,6 +138,24 @@ namespace myTNB_Android.Src.Utils
         public MyTNBAppToolTipBuilder SetHeaderImage(int imageResource)
         {
             this.imageResource = imageResource;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetSecondaryHeaderImage(int imageResource)
+        {
+            this.secondaryImageResource = imageResource;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetPrimaryButtonDrawable(int drawable)
+        {
+            this.primaryButtonDrawable = drawable;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetSecondaryButtonDrawable(int drawable)
+        {
+            this.secondaryButtonDrawable = drawable;
             return this;
         }
 
@@ -727,30 +748,48 @@ namespace myTNB_Android.Src.Utils
             else if (this.toolTipType == ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
             {
                 ImageView tooltipImageHeader = this.dialog.FindViewById<ImageView>(Resource.Id.dialogHeaderImg);
+                ImageView tooltipSecondaryImageHeader = this.dialog.FindViewById<ImageView>(Resource.Id.dialogSecondaryHeaderImg);
                 TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.dialogTitle);
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.dialogMessage);
-                TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.dialogPrimaryBtn);
-                TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.dialogSecondaryBtn);
+                Button tooltipPrimaryCTA = this.dialog.FindViewById<Button>(Resource.Id.dialogPrimaryBtn);
+                Button tooltipSecondaryCTA = this.dialog.FindViewById<Button>(Resource.Id.dialogSecondaryBtn);
 
                 TextViewUtils.SetTextSize14(tooltipMessage);
                 TextViewUtils.SetTextSize16(tooltipTitle, tooltipPrimaryCTA);
-                TextViewUtils.SetTextSize12(tooltipSecondaryCTA);
+                TextViewUtils.SetTextSize16(tooltipSecondaryCTA);
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
                 tooltipTitle.Gravity = this.mGravityFlag;
                 tooltipMessage.Gravity = this.mGravityFlag;
 
-                if (this.imageResourceBitmap != null)
+                if (this.imageResource > 0)
                 {
-                    tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
-                }
-                else if (this.imageResource > 0)
-                {
+                    tooltipImageHeader.Visibility = ViewStates.Visible;
                     tooltipImageHeader.SetImageResource(this.imageResource);
                 }
                 else
                 {
                     tooltipImageHeader.Visibility = ViewStates.Gone;
+                }
+
+                if (this.secondaryImageResource > 0)
+                {
+                    tooltipSecondaryImageHeader.Visibility = ViewStates.Visible;
+                    tooltipSecondaryImageHeader.SetImageResource(this.secondaryImageResource);
+                }
+                else
+                {
+                    tooltipSecondaryImageHeader.Visibility = ViewStates.Gone;
+                }
+
+                if (this.primaryButtonDrawable > 0)
+                {
+                    tooltipPrimaryCTA.Background = ContextCompat.GetDrawable(this.mContext, this.primaryButtonDrawable);
+                }
+
+                if (this.secondaryButtonDrawable > 0)
+                {
+                    tooltipSecondaryCTA.Background = ContextCompat.GetDrawable(this.mContext, this.secondaryButtonDrawable);
                 }
 
                 tooltipPrimaryCTA.Click += delegate

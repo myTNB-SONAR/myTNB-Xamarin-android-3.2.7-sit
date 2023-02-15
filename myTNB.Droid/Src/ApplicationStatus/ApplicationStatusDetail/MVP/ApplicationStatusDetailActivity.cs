@@ -262,12 +262,37 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             StartActivity(micrositeActivity);
                         }
                     }
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteAppication)
+                    {
+                        //Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_TITLE)
+                        MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                            .SetSecondaryHeaderImage(Resource.Drawable.ic_display_validation_success)
+                            .SetTitle("Are you sure you want to delete this draft?")
+                            .SetMessage("Your draft will be permanently deleted.")
+                            .SetPrimaryButtonDrawable(Resource.Drawable.blue_button_solid_background)
+                            .SetSecondaryButtonDrawable(Resource.Drawable.blue_outline_round_button_background)
+                            .SetCTALabel("Yes, I’m Sure")
+                            .SetCTAaction(() => OnDeleteDraft())
+                            .SetSecondaryCTALabel("Cancel")
+                            .SetSecondaryCTAaction(() =>
+                            {
+                                this.SetIsClicked(false);
+                                DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_GotIt);
+                            })
+                            .Build();
+                        marketingTooltip.Show();
+                    }
                 }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void OnDeleteDraft()
+        {
+
         }
 
         [OnClick(Resource.Id.btnViewActivityLog)]
