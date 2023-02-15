@@ -673,7 +673,7 @@
       <HintPath>..\packages\Microsoft.Net.Http.Headers.2.2.8\lib\netstandard2.0\Microsoft.Net.Http.Headers.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Encodings.Web">
-      <HintPath>..\packages\System.Text.Encodings.Web.4.7.1\lib\netstandard2.1\System.Text.Encodings.Web.dll</HintPath>
+      <HintPath>..\packages\System.Text.Encodings.Web.4.7.2\lib\netstandard2.1\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.WebUtilities">
       <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
@@ -782,6 +782,21 @@
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Tasks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Tasks.117.2.1\lib\monoandroid90\Xamarin.GooglePlayServices.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Abstractions">
+      <HintPath>..\packages\Microsoft.IdentityModel.Abstractions.6.26.1\lib\netstandard2.0\Microsoft.IdentityModel.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.26.1\lib\netstandard2.0\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.26.1\lib\netstandard2.0\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.26.1\lib\netstandard2.0\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel.Tokens.Jwt">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.26.1\lib\netstandard2.0\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

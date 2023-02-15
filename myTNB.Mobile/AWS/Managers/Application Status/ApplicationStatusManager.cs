@@ -25,10 +25,12 @@ namespace myTNB.Mobile.AWS
         public ApplicationStatusManager() { }
 
         public async Task<PostDeleteNCDraftResponse> PostDeleteNCDraft(string applicationNumber
-            , string userID)
+            , string userID
+            , string token)
         {
             PostDeleteNCDraftResponse response = new PostDeleteNCDraftResponse();
-            string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(userID);
+            string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(userID
+                , token);
             if (accessToken.IsValid())
             {
                 try
@@ -55,12 +57,14 @@ namespace myTNB.Mobile.AWS
                         && response.StatusDetail.Code.IsValid())
                     {
                         response.StatusDetail = AWSConstants.Services.PostDeleteNCDraft.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail.AccessToken = accessToken;
                     }
                     else
                     {
                         if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                         {
                             response.StatusDetail = AWSConstants.Services.PostDeleteNCDraft.GetStatusDetails(response.StatusDetail.Code);
+                            response.StatusDetail.AccessToken = accessToken;
                         }
                         else
                         {
@@ -69,6 +73,7 @@ namespace myTNB.Mobile.AWS
                                 StatusDetail = new StatusDetail()
                             };
                             response.StatusDetail = AWSConstants.Services.PostDeleteNCDraft.GetStatusDetails(MobileConstants.DEFAULT);
+                            response.StatusDetail.AccessToken = accessToken;
                         }
                     }
                     Debug.WriteLine("[DEBUG] [PostDeleteNCDraft]: " + JsonConvert.SerializeObject(response));
@@ -92,6 +97,7 @@ namespace myTNB.Mobile.AWS
                 StatusDetail = new StatusDetail()
             };
             response.StatusDetail = AWSConstants.Services.PostDeleteNCDraft.GetStatusDetails(MobileConstants.DEFAULT);
+            response.StatusDetail.AccessToken = accessToken;
             return response;
         }
     }

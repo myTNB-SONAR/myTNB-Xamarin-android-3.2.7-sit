@@ -9,6 +9,9 @@ using myTNB.Mobile.AWS.Services.AccessToken;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using Refit;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace myTNB.Mobile
 {
@@ -101,11 +104,44 @@ namespace myTNB.Mobile
         /// Channel and Role Id are hard coded as it is used only in mobile App
         /// </summary>
         /// <param name="userID">myTNB account's user Id</param>
+        /// <param name="accessToken">Saved Access token</param>
         /// <returns>Access Token</returns>
-        public async Task<string> GetUserServiceAccessToken(string userID)
+        public async Task<string> GetUserServiceAccessToken(string userID
+        , string accessToken = "")
         {
             try
             {
+                if (accessToken.IsValid())
+                {
+                    DateTime currentLocalTime = DateTime.Now.ToLocalTime();
+                    byte[] signKey = Encoding.ASCII.GetBytes(MobileConstants.SignKey);
+                    TokenValidationParameters tokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = "myTNB",
+                        ValidAudience = "myTNB Audience",
+                        IssuerSigningKey = new SymmetricSecurityKey(signKey),
+                        SaveSigninToken = true,
+                        RequireAudience = true,
+                        RequireSignedTokens = true,
+                        RequireExpirationTime = false,
+                        ValidateActor = true,
+                        ValidateAudience = true,
+                        ValidateIssuer = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateTokenReplay = true,
+                        ValidateLifetime = false,
+                    };
+                    JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+                    System.Security.Claims.ClaimsPrincipal claimsPrincipal = handler.ValidateToken(accessToken
+                        , tokenValidationParameters
+                        , out SecurityToken validatedToken);
+                    DateTime tokenExpiresAt = validatedToken.ValidTo.ToLocalTime();
+                    int timeDiff = (tokenExpiresAt - currentLocalTime).Minutes;
+                    if (timeDiff > 2)
+                    {
+                        return accessToken;
+                    }
+                }
                 IAccessTokenService service = RestService.For<IAccessTokenService>("https://devapi.mytnb.com.my");// AWSConstants.Domains.Domain);
                 AccessTokenRequest request = new AccessTokenRequest
                 {

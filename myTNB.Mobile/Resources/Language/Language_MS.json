@@ -1649,9 +1649,13 @@
     "cannotReschedule": "Mengapakah saya tidak boleh mengubah butiran janji temu?",
     "cannotRescheduleTitle": "Janji temu tidak boleh diubah pada hari janji temu.",
     "cannotRescheduleMessage": "Anda tidak boleh mengubah janji temu pada hari janji temu tersebut. Sila ambil maklum bahawa anda tidak perlu hadir sekiranya kawasan pemasangan meter anda boleh diakses tanpa memasuki premis.<br><br>Hubungi <a href=\"tel: 1300885454\">TNB Careline</a> sekiranya anda perlu mengubah  atau membatalkan janji temu.",
-    "startApplication": "MS_Start Application",
-    "delete": "MS_Delete",
-    "resume": "MS_Resume"
+    "startApplication": "Mulakan Permohonan",
+    "delete": "Padam",
+    "resume": "Resume",
+    "deleteNCDraftTitle": "Adakah anda pasti untuk padam draf ini?",
+    "deleteNCDraftMessage": "Draf anda akan dipadamkan secara kekal.",
+    "deleteNCDraftSure": "Ya, Saya Pasti",
+    "deleteNCDraftCancel": "Batal"
   },
   "UserAccess": {
     "title": "Urus Pengguna",
@@ -3365,8 +3369,8 @@
     "moveInDescription": "Saya ingin membuka akaun untuk premis baharu atau sedia ada. "
   },
   "MarketingPopup": {
-    "myHomeTitle": "MS_Check out myHome today!",
-    "myHomeMessage": "MS_You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, track your application status and even organise your moving plans with ease using myHome.",
-    "myHomeCTA": "MS_Got It!"
+    "myHomeTitle": "Kenali ciri-ciri  MyHome hari ini!",
+    "myHomeMessage": "Anda kini boleh menghantar permohonan untuk akaun elektrik, menukar penghuni, menutup akaun elektrik, edit permohonan dan juga mengatur rancangan perpindahan anda dengan menggunakan myHome.",
+    "myHomeCTA": "Faham!"
   }
 }

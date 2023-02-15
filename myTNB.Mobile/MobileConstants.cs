@@ -56,6 +56,10 @@ namespace myTNB.Mobile
         private const string ApiKeyIdDEV = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         private const string ApiKeyIdPROD = "E6148656-205B-494C-BC95-CC241423E72F";
 
+        //Access Token
+        private const string SignKey_Staging = "2276B01152D94DF8A65944D3EFD70378";
+        private const string SignKey_Prod = "134CED76E57C41C8B97E76D174B58B40";
+
         //Encrypt / Decrypt
         private const string SaltKey_DEV = "Salt-4NHF1XP910G8NN6GRH23PD12N9X6T5DW";
         private const string SaltKey_PROD = "Salt-IT9LJQ3LJEAK5G2R35L5V6A5FUDO7A5B";
@@ -85,6 +89,7 @@ namespace myTNB.Mobile
         internal const string PassPhrase = Passphrase_DEV;
         public static string AWSApiDomain = AWSApiDomainSIT;
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlSTG;
+        internal const string SignKey = SignKey_Staging;
 #elif MASTER || SIT || DEBUG
         public static string ApiDomain = DEV5;
         public const string ApiKeyId = ApiKeyIdDEV;
@@ -93,6 +98,7 @@ namespace myTNB.Mobile
         internal const string PassPhrase = Passphrase_DEV;
         public static string AWSApiDomain = AWSApiDomainSIT;
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlSTG;
+        internal const string SignKey = SignKey_Staging;
 #else
         public static string ApiDomain = PROD;
         public const string ApiKeyId = ApiKeyIdPROD;
@@ -101,6 +107,7 @@ namespace myTNB.Mobile
         internal const string PassPhrase = Passphrase_PROD;
         public static string AWSApiDomain = AWSApiDomainPROD;
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlPROD;
+        internal const string SignKey = SignKey_Prod;
 #endif
 
         //Service Name
@@ -144,6 +151,7 @@ namespace myTNB.Mobile
             public const string GetEligibilityTimeStamp = "GetEligibilityTimeStamp";
             public const string GetEligibilityData = "GetEligibilityData";
             public const string AccessToken = "AccessToken";
+            public const string UserServiceAccessToken = "UserServiceAccessToken";
         }
 
         public struct OSType

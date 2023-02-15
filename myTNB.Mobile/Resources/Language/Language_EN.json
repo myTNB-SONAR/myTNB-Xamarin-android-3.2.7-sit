@@ -1651,7 +1651,11 @@
     "cannotRescheduleMessage": "You can’t reschedule your appointment anymore as it is coming up later today. Please note that you don’t have to be present if your meter installation area is accessible without entering the premises.<br><br>You may contact <a href=\"tel: 1300885454\">TNB Careline</a> if you have to reschedule or cancel.",
     "startApplication": "Start Application",
     "delete": "Delete",
-    "resume": "Resume"
+    "resume": "Resume",
+    "deleteNCDraftTitle": "Are you sure you want to delete this draft?",
+    "deleteNCDraftMessage": "Your draft will be permanently deleted.",
+    "deleteNCDraftSure": "Yes, I’m Sure",
+    "deleteNCDraftCancel": "Cancel"
   },
   "UserAccess": {
     "title": "User Access",
@@ -3366,7 +3370,7 @@
   },
   "MarketingPopup": {
     "myHomeTitle": "Check out myHome today!",
-    "myHomeMessage": "You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, track your application status and even organise your moving plans with ease using myHome.",
+    "myHomeMessage": "You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, edit your applications and even organise your moving plans with ease using myHome.",
     "myHomeCTA": "Got It!"
   }
 }
