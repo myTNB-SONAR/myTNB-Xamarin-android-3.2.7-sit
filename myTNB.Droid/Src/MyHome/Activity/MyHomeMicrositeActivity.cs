@@ -34,7 +34,8 @@ namespace myTNB_Android.Src.MyHome.Activity
         [BindView(Resource.Id.micrositeWebview)]
         WebView micrositeWebview;
 
-        MyHomeModel model;
+        MyHomeModel _model;
+        string _accessToken;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -56,12 +57,9 @@ namespace myTNB_Android.Src.MyHome.Activity
                 {
                     if (extras.ContainsKey(MyHomeConstants.MYHOME_MODEL))
                     {
-                        model = JsonConvert.DeserializeObject<MyHomeModel>(extras.GetString(MyHomeConstants.MYHOME_MODEL));
-                        ShowProgressDialog();
-                        Task.Run(() =>
-                        {
-                            _ = GetAccessToken();
-                        });
+                        _model = JsonConvert.DeserializeObject<MyHomeModel>(extras.GetString(MyHomeConstants.MYHOME_MODEL));
+                        _accessToken = extras.GetString(MyHomeConstants.ACCESS_TOKEN);
+                        SetUpWebView(_accessToken);
                     }
                 }
             }
@@ -108,30 +106,14 @@ namespace myTNB_Android.Src.MyHome.Activity
             StartActivity(DashboardIntent);
         }
 
-        private async Task GetAccessToken()
-        {
-            UserEntity user = UserEntity.GetActive();
-            string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
-            AccessTokenCache.Instance.SaveUserServiceAccessToken(this, accessToken);
-            if (accessToken.IsValid())
-            {
-                SetUpWebView(accessToken);
-            }
-            else
-            {
-                Finish();
-            }
-            HideProgressDialog();
-        }
-
         private void SetUpWebView(string accessToken)
         {
             try
             {
                 RunOnUiThread(() =>
                 {
-                    string originURL = model?.OriginURL ?? MyHomeConstants.BACK_TO_APP;
-                    string redirectURL = model?.RedirectURL ?? string.Empty;
+                    string originURL = _model?.OriginURL ?? MyHomeConstants.BACK_TO_APP;
+                    string redirectURL = _model?.RedirectURL ?? string.Empty;
 
                     //STUB
                     //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
@@ -159,7 +141,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                     , null
                     , user.MobileNo);
 
-                    string ssoURL = string.Format(model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
+                    string ssoURL = string.Format(_model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
 
                     //STUB
                     //string ssoURL = string.Format("https://stagingmyhome.mytnb.com.my/Sso?s={0}", signature);
@@ -205,30 +187,6 @@ namespace myTNB_Android.Src.MyHome.Activity
             Intent intent = new Intent(Intent.ActionView);
             intent.SetData(Android.Net.Uri.Parse(url));
             StartActivity(intent);
-        }
-
-        public void ShowProgressDialog()
-        {
-            try
-            {
-                LoadingOverlayUtils.OnRunLoadingAnimation(this);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void HideProgressDialog()
-        {
-            try
-            {
-                LoadingOverlayUtils.OnStopLoadingAnimation(this);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public class MyHomeWebViewClient : WebViewClient

@@ -64,6 +64,7 @@ using myTNB_Android.Src.MyHome.Activity;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB;
+using Xamarin.Facebook;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity
 {
@@ -264,7 +265,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             try
             {
-                mPresenter = new UserNotificationDetailPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+                mPresenter = new UserNotificationDetailPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this), this);
                 base.OnCreate(savedInstanceState);
                 SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
                 SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
@@ -1776,9 +1777,10 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             popUpMessage.Show();
         }
 
-        public void NavigateToMyHomeMicrosite(MyHomeModel model)
+        public void NavigateToMyHomeMicrosite(MyHomeModel model, string accessToken)
         {
             Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
+            micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
             micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(model));
             StartActivity(micrositeActivity);
         }

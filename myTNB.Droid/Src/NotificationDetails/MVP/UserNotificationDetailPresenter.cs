@@ -14,9 +14,13 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.EnergyBudgetRating.Request;
+using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.MyHome.Activity;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service;
@@ -50,13 +54,14 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         bool isTaggedSMR = true;
         bool isSixHaveQuestion = false;
         bool isSevenHaveQuestion = false;
-        private Android.App.Activity mActivity;
+        private BaseAppCompatActivity mActivity;
 
-        public UserNotificationDetailPresenter(UserNotificationDetailContract.IView view, ISharedPreferences mSharedPref)
+        public UserNotificationDetailPresenter(UserNotificationDetailContract.IView view, ISharedPreferences mSharedPref, BaseAppCompatActivity activity)
         {
             mView = view;
             this.mSharedPref = mSharedPref;
             terminationApi = new SSMRTerminateImpl();
+            mActivity = activity;
         }
 
         public void EvaluateDetail(Models.NotificationDetails notificationDetails)
@@ -724,6 +729,21 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         {
             if (notificationDetails != null && notificationDetails.MyHomeDetails != null)
             {
+                this.mView.ShowProgressDialog();
+                Task.Run(() =>
+                {
+                    _ = GetAccessToken(notificationDetails);
+                });
+            }
+        }
+
+        private async Task GetAccessToken(Models.NotificationDetails notificationDetails)
+        {
+            UserEntity user = UserEntity.GetActive();
+            string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
+            AccessTokenCache.Instance.SaveUserServiceAccessToken(this.mActivity, accessToken);
+            if (accessToken.IsValid())
+            {
                 MyHomeModel myHomeModel = new MyHomeModel()
                 {
                     SSODomain = notificationDetails.MyHomeDetails.SSODomain,
@@ -731,8 +751,21 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     RedirectURL = notificationDetails.MyHomeDetails.RedirectURL
                 };
 
-                this.mView.NavigateToMyHomeMicrosite(myHomeModel);
+                this.mActivity.RunOnUiThread(()=>
+                {
+                    this.mView.HideProgressDialog();
+                    this.mView.NavigateToMyHomeMicrosite(myHomeModel, accessToken);
+                });
             }
+            else
+            {
+                //TODO: Show error if accessToken is invalid
+                this.mActivity.RunOnUiThread(() =>
+                {
+                    this.mView.HideProgressDialog();
+                });
+            }
+            
         }
 
         private void ViewApplicationDetails(Models.NotificationDetails notificationDetails)

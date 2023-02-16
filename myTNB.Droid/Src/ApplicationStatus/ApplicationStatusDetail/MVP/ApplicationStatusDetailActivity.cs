@@ -256,16 +256,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     {
                         if (applicationDetailDisplay != null && applicationDetailDisplay.MyHomeDetails != null)
                         {
-                            MyHomeModel myHomeModel = new MyHomeModel()
+                            ShowProgressDialog();
+                            Task.Run(() =>
                             {
-                                SSODomain = applicationDetailDisplay.MyHomeDetails.SSODomain,
-                                OriginURL = applicationDetailDisplay.MyHomeDetails.OriginURL,
-                                RedirectURL = applicationDetailDisplay.MyHomeDetails.RedirectURL
-                            };
-
-                            Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
-                            micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
-                            StartActivity(micrositeActivity);
+                                _ = GetAccessToken();
+                            });
                         }
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteAppication)
@@ -292,6 +287,32 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private async Task GetAccessToken()
+        {
+            UserEntity user = UserEntity.GetActive();
+            string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
+            AccessTokenCache.Instance.SaveUserServiceAccessToken(this, accessToken);
+            if (accessToken.IsValid())
+            {
+                MyHomeModel myHomeModel = new MyHomeModel()
+                {
+                    SSODomain = applicationDetailDisplay.MyHomeDetails.SSODomain,
+                    OriginURL = applicationDetailDisplay.MyHomeDetails.OriginURL,
+                    RedirectURL = applicationDetailDisplay.MyHomeDetails.RedirectURL
+                };
+
+                Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
+                micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
+                micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
+                StartActivity(micrositeActivity);
+            }
+            else
+            {
+                //TODO: Show error if accessToken is invalid
+            }
+            HideProgressDialog();
         }
 
         private void OnDeleteDraft()
@@ -383,16 +404,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     if (applicationDetailDisplay.MyHomeDetails != null)
                     {
-                        MyHomeModel myHomeModel = new MyHomeModel()
+                        ShowProgressDialog();
+                        Task.Run(() =>
                         {
-                            SSODomain = applicationDetailDisplay.MyHomeDetails.SSODomain,
-                            OriginURL = applicationDetailDisplay.MyHomeDetails.OriginURL,
-                            RedirectURL = applicationDetailDisplay.MyHomeDetails.RedirectURL
-                        };
-
-                        Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
-                        micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
-                        StartActivity(micrositeActivity);
+                            _ = GetAccessToken();
+                        });
                     }
                     return;
                 }

@@ -39,6 +39,7 @@ using myTNB.Mobile;
 using Color = Android.Graphics.Color;
 using Newtonsoft.Json;
 using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
+using myTNB_Android.Src.DeviceCache;
 
 namespace myTNB_Android.Src.MyHome
 {
@@ -161,19 +162,40 @@ namespace myTNB_Android.Src.MyHome
                 UserSessions.SetShownConnectMyPremise(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
             }
 
-            MyDrawerModel model = myDrawerList[position];
-            MyHomeModel myHomeModel = new MyHomeModel()
+            ShowProgressDialog();
+            Task.Run(() =>
             {
-                ServiceId = model.ServiceId,
-                ServiceName = model.ServiceName,
-                SSODomain = model.SSODomain,
-                OriginURL = model.OriginURL,
-                RedirectURL = model.RedirectURL
-            };
+                _ = GetAccessToken(position);
+            });
+        }
 
-            Intent micrositeActivity = new Intent(this.Activity, typeof(MyHomeMicrositeActivity));
-            micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
-            StartActivity(micrositeActivity);
+        private async Task GetAccessToken(int pos)
+        {
+            UserEntity user = UserEntity.GetActive();
+            string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
+            AccessTokenCache.Instance.SaveUserServiceAccessToken(this.Activity, accessToken);
+            if (accessToken.IsValid())
+            {
+                MyDrawerModel model = myDrawerList[pos];
+                MyHomeModel myHomeModel = new MyHomeModel()
+                {
+                    ServiceId = model.ServiceId,
+                    ServiceName = model.ServiceName,
+                    SSODomain = model.SSODomain,
+                    OriginURL = model.OriginURL,
+                    RedirectURL = model.RedirectURL
+                };
+
+                Intent micrositeActivity = new Intent(this.Activity, typeof(MyHomeMicrositeActivity));
+                micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
+                micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
+                StartActivity(micrositeActivity);
+            }
+            else
+            {
+                //TODO: Show error if accessToken is invalid
+            }
+            HideProgressDialog();
         }
 
         private void CloseOnClick(object sender, EventArgs e)
@@ -225,6 +247,30 @@ namespace myTNB_Android.Src.MyHome
             }
 
             return i;
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this.Activity);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this.Activity);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private class MyHomeBottomSheetCallBack : BottomSheetBehavior.BottomSheetCallback

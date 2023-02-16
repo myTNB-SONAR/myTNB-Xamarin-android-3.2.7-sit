@@ -92,7 +92,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
             void ShowApplicationPopupMessage(StatusDetail statusDetail);
 
-            void NavigateToMyHomeMicrosite(MyHomeModel model);
+            void NavigateToMyHomeMicrosite(MyHomeModel model, string accessToken);
 
             void NavigateToApplicationDetails(GetApplicationStatusDisplay application);
         }
