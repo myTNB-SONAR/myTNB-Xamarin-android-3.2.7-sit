@@ -31,6 +31,7 @@ using Newtonsoft.Json;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Database.Model;
 using static myTNB_Android.Src.CompoundView.ExpandableTextViewComponent;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -134,7 +135,7 @@ namespace myTNB_Android.Src.Billing.MVP
         ImageView bill_paperless_icon;
 
         GetBillRenderingResponse billRenderingResponse;
-        GetBillRenderingTenantResponse billRenderingTenantResponse;
+        PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
@@ -285,20 +286,18 @@ namespace myTNB_Android.Src.Billing.MVP
             if (extras.ContainsKey("billrenderingresponse"))
             {
                 billRenderingResponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
-                
+
             }
             if (extras.ContainsKey("billRenderingTenantResponse"))
             {
-                
-                billRenderingTenantResponse = JsonConvert.DeserializeObject<GetBillRenderingTenantResponse>(extras.GetString("billRenderingTenantResponse"));
-               
+                billRenderingTenantResponse = JsonConvert.DeserializeObject<PostBREligibilityIndicatorsResponse>(extras.GetString("billRenderingTenantResponse"));
                 List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
                 bool tenantAllowOptIn = false;
                 if (billRenderingTenantResponse != null)
                 {
-                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerOverRule;
-                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerAlreadyOptIn;
-                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsTenantAlreadyOptIn;
+                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccountData.AccountNum).IsOwnerOverRule;
+                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccountData.AccountNum).IsOwnerAlreadyOptIn;
+                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccountData.AccountNum).IsTenantAlreadyOptIn;
                     bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccountData.AccountNum).AccountHasOwner;
 
                     if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
@@ -350,7 +349,7 @@ namespace myTNB_Android.Src.Billing.MVP
                                 }
                             }
                         }
-                       
+
                         SetDynatraceScreenTags();
                     }
                 }

@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Graphics;
 using Android.Net.Http;
 using Android.OS;
 using Android.Preferences;
-using Android.Text;
-using Android.Text.Method;
-using Android.Text.Style;
 using Android.Runtime;
 using Android.Views;
 using Android.Webkit;
@@ -32,7 +28,6 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.EnergyBudgetRating.Activity;
 using myTNB_Android.Src.EnergyBudgetRating.Fargment;
 using myTNB_Android.Src.FAQ.Activity;
-using myTNB_Android.Src.ManageAccess.Activity;
 using myTNB_Android.Src.ManageSupplyAccount.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -55,7 +50,6 @@ using myTNB_Android.Src.ViewReceipt.Activity;
 using myTNB_Android.Src.WhatsNewDetail.MVP;
 using Newtonsoft.Json;
 using Refit;
-
 using Constant = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.Constants;
 using Screen = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.ScreenEnum;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
@@ -63,6 +57,7 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
 using System.Linq;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity
 {
@@ -86,7 +81,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         [BindView(Resource.Id.webViewNoti)]
         WebView webView;
-        
+
         [BindView(Resource.Id.notify_check)]
         CheckBox notify_check;
 
@@ -160,7 +155,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             if (fromPushDirectNotification)
             {
-                if (notificationDetails  != null)
+                if (notificationDetails != null)
                 {
                     if (notificationDetails.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_SD || notificationDetails.NotificationTypeId == Constants.NOTIFICATION_TYPE_ID_EB)
                     {
@@ -307,7 +302,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 TextViewUtils.SetTextSize12(txtCallsBottom);
                 TextViewUtils.SetTextSize14(notificationDetailMessage);
                 TextViewUtils.SetTextSize16(notificationDetailTitle);
-                
+
                 if (notificationDetails != null && notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID)
                 {
                     notificationMainLayout.SetBackgroundColor(Android.Graphics.Color.ParseColor("#ffffff"));
@@ -395,7 +390,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 try
                 {
                     if (notificationDetails.SDStatusDetails.NotificationTimestamp != null)
-                    {                        
+                    {
                         if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK
                            || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK2
                            || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SERVICE_DISTRUPT_HEARTBEAT_FEEDBACK3)
@@ -1148,7 +1143,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         public void ViewManageBillDelivery()
         {
-           OnShowManageBillDelivery();
+            OnShowManageBillDelivery();
         }
 
         public async void OnShowManageBillDelivery()
@@ -1193,7 +1188,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             {
                 //For tenant checking DBR
                 List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                GetBillRenderingTenantResponse billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+                PostBREligibilityIndicatorsResponse billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
 
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));

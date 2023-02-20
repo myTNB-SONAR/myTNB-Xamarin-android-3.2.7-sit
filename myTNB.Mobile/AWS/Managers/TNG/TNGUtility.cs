@@ -28,12 +28,12 @@ namespace myTNB.Mobile
             List<string> caList = new List<string>();
             try
             {
-                BaseCAListModel tngContent = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.TNG);
-                if (tngContent != null
-                    && tngContent.ContractAccounts != null
-                    && tngContent.ContractAccounts.Count > 0)
+                BaseCAListModel ebContent = EligibilitySessionCache.Instance.GetFeatureContent<BaseCAListModel>(Features.TNG);
+                if (ebContent != null
+                    && ebContent.ContractAccounts != null
+                    && ebContent.ContractAccounts.Count > 0)
                 {
-                    caList = tngContent.ContractAccounts.Select(x => x.ContractAccount).ToList();
+                    caList = ebContent.ContractAccounts.Select(x => x.ContractAccount).ToList();
                 }
             }
             catch (Exception e)

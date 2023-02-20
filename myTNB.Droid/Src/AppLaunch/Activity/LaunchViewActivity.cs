@@ -19,7 +19,6 @@ using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Notifications.Activity;
 using myTNB_Android.Src.PreLogin.Activity;
-using myTNB_Android.Src.ResetPassword.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
 using myTNB_Android.Src.Utils;
 using Refit;
@@ -48,15 +47,9 @@ using myTNB_Android.Src.Utils.Deeplink;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Login.Activity;
 using System.Text.RegularExpressions;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Notifications.Models;
-using myTNB_Android.Src.NotificationDetails.Models;
-using myTNB_Android.Src.Notifications.Adapter;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.Utils.Notification;
-using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
-using Firebase.Iid;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -443,7 +436,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         //For tenant checking DBR
                         List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                        GetBillRenderingTenantResponse billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+                        PostBREligibilityIndicatorsResponse billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
 
                         Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                         intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
