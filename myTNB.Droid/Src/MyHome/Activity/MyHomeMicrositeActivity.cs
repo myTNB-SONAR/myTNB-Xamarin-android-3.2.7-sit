@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.Net.Http;
 using Android.OS;
+using Android.Runtime;
+using Android.Support.V4.Content;
 using Android.Util;
 using Android.Views;
 using Android.Webkit;
+using Android.Widget;
 using CheeseBind;
 using myTNB;
 using myTNB.Mobile;
@@ -36,6 +40,8 @@ namespace myTNB_Android.Src.MyHome.Activity
 
         MyHomeModel _model;
         string _accessToken;
+
+        private Action<int, Result, Intent> _resultCallbackvalue;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -115,15 +121,10 @@ namespace myTNB_Android.Src.MyHome.Activity
                     string originURL = _model?.OriginURL ?? MyHomeConstants.BACK_TO_APP;
                     string redirectURL = _model?.RedirectURL ?? string.Empty;
 
-                    //STUB
-                    //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
-                    //redirectURL = "https://52.76.106.232/Application/Offerings";
-                    //redirectURL = "https://devmyhome.mytnb.com.my/Application/Offerings";
-
                     UserEntity user = UserEntity.GetActive();
                     string myTNBAccountName = user?.DisplayName ?? string.Empty;
                     string signature = SSOManager.Instance.GetMyHomeSignature(myTNBAccountName
-                    , accessToken//AccessTokenCache.Instance.GetAccessToken(this)
+                    , accessToken
                     , user.DeviceId ?? string.Empty
                     , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
                     , 16
@@ -143,30 +144,20 @@ namespace myTNB_Android.Src.MyHome.Activity
 
                     string ssoURL = string.Format(_model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
 
-                    //STUB
-                    //string ssoURL = string.Format("https://stagingmyhome.mytnb.com.my/Sso?s={0}", signature);
-                    //ssoURL = string.Format("https://52.76.106.232/Sso?s={0}", signature);
-                    //ssoURL = string.Format("https://devmyhome.mytnb.com.my/Sso?s={0}", signature);
-
-                    //micrositeWebview.SetWebChromeClient(new WebChromeClient());
-                    //micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
-                    //micrositeWebview.Settings.JavaScriptEnabled = true;
-                    //micrositeWebview.Settings.AllowFileAccess = true;
-                    //micrositeWebview.Settings.AllowFileAccessFromFileURLs = true;
-                    //micrositeWebview.Settings.AllowUniversalAccessFromFileURLs = true;
-                    //micrositeWebview.Settings.AllowContentAccess = true;
-                    //micrositeWebview.Settings.JavaScriptCanOpenWindowsAutomatically = true;
-                    //micrositeWebview.Settings.DomStorageEnabled = true;
-                    //micrositeWebview.Settings.MediaPlaybackRequiresUserGesture = false;
-                    //micrositeWebview.Settings.SetSupportZoom(false);
-
-                    micrositeWebview.SetWebChromeClient(new WebChromeClient());
+                    micrositeWebview.SetWebChromeClient(new MyHomeWebChromeClient(this));
                     micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
                     micrositeWebview.Settings.JavaScriptEnabled = true;
                     micrositeWebview.Settings.AllowFileAccess = true;
+                    micrositeWebview.Settings.AllowFileAccessFromFileURLs = true;
+                    micrositeWebview.Settings.AllowUniversalAccessFromFileURLs = true;
+                    micrositeWebview.Settings.AllowContentAccess = true;
+                    micrositeWebview.Settings.JavaScriptCanOpenWindowsAutomatically = true;
                     micrositeWebview.Settings.DomStorageEnabled = true;
+                    micrositeWebview.Settings.MediaPlaybackRequiresUserGesture = false;
                     micrositeWebview.Settings.SetSupportZoom(false);
 
+                    //STUB
+                    //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
                     micrositeWebview.LoadUrl(ssoURL);
                 });
             }
@@ -187,6 +178,90 @@ namespace myTNB_Android.Src.MyHome.Activity
             Intent intent = new Intent(Intent.ActionView);
             intent.SetData(Android.Net.Uri.Parse(url));
             StartActivity(intent);
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        public void StartsActivity(Intent intent, int requestCode, Action<int, Result, Intent> resultCallback)
+        {
+            this._resultCallbackvalue = resultCallback;
+            StartActivityForResult(intent, requestCode);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (this._resultCallbackvalue != null)
+            {
+                this._resultCallbackvalue(requestCode, resultCode, data);
+                this._resultCallbackvalue = null;
+            }
+        }
+
+        internal class MyHomeWebChromeClient : WebChromeClient
+        {
+            MyHomeMicrositeActivity _micrositeWebViewActivity;
+
+            private static int filechooser = 1;
+            private IValueCallback message;
+
+            public MyHomeWebChromeClient(MyHomeMicrositeActivity webViewActivity)
+            {
+                _micrositeWebViewActivity = webViewActivity;
+            }
+
+            public override bool OnShowFileChooser(WebView webView, IValueCallback filePathCallback, FileChooserParams fileChooserParams)
+            {
+                this.message = filePathCallback;
+                Intent captureIntent = fileChooserParams.CreateIntent();
+                Intent contentSelectionIntent = new Intent(Intent.ActionGetContent);
+                contentSelectionIntent.AddCategory(Intent.CategoryOpenable);
+                contentSelectionIntent.SetType("*/*");
+                Intent[] intentArray;
+                if (captureIntent != null)
+                {
+                    intentArray = new Intent[] { captureIntent };
+                }
+                else
+                {
+                    intentArray = new Intent[0];
+                }
+
+                this._micrositeWebViewActivity.StartsActivity(contentSelectionIntent, filechooser, this.OnActivityResult);
+
+                return true;
+            }
+
+            private void OnActivityResult(int requestCode, Result resultCode, Intent data)
+            {
+                if (data != null)
+                {
+                    if (requestCode == filechooser)
+                    {
+                        if (null == this.message)
+                        {
+                            return;
+                        }
+                        this.message.OnReceiveValue(WebChromeClient.FileChooserParams.ParseResult((int)resultCode, data));
+                        this.message = null;
+                    }
+                }
+                else
+                {
+                    this.message.OnReceiveValue(null);
+                    this.message = null;
+                    return;
+                }
+            }
+
+            public override void OnPermissionRequest(PermissionRequest? request)
+            {
+                request?.Grant(new String[] { PermissionRequest.ResourceVideoCapture});
+            }
         }
 
         public class MyHomeWebViewClient : WebViewClient
@@ -244,8 +319,7 @@ namespace myTNB_Android.Src.MyHome.Activity
             public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error)
             {
                 //STUB
-                //TODO: Remove for final release
-                handler.Proceed();
+                //handler.Proceed();
             }
         }
     }
