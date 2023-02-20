@@ -27,6 +27,11 @@ namespace myTNB_Android.Src.Utils.Deeplink
             }
         }
 
+        public void SetTargetScreen(Screen screen)
+        {
+            TargetScreen = screen;
+        }
+
         private void SaveDeeplinkDetails(Screen deeplinkScreen, Uri deeplink)
         {
             switch (deeplinkScreen)

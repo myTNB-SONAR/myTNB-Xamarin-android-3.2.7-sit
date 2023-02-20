@@ -112,13 +112,21 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        private static async void DeeplinkAppListingValidation(DashboardHomeActivity mainActivity)
+        private static void DeeplinkAppListingValidation(DashboardHomeActivity mainActivity)
         {
             DeeplinkUtil.Instance.ClearDeeplinkData();
+            mainActivity.ShowProgressDialog();
+            Task.Run(() =>
+            {
+                _ = SearchApplicationType(mainActivity);
+            });
+        }
+
+        private static async Task SearchApplicationType(DashboardHomeActivity mainActivity)
+        {
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
-                mainActivity.ShowProgressDialog();
                 searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
                 if (searchApplicationTypeResponse != null
                     && searchApplicationTypeResponse.StatusDetail != null
@@ -126,26 +134,31 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
                 }
-                mainActivity.HideProgressDialog();
             }
-            if (searchApplicationTypeResponse != null
+
+            mainActivity.RunOnUiThread(() =>
+            {
+                mainActivity.HideProgressDialog();
+
+                if (searchApplicationTypeResponse != null
                 && searchApplicationTypeResponse.StatusDetail != null
                 && searchApplicationTypeResponse.StatusDetail.IsSuccess)
-            {
-                AllApplicationsCache.Instance.Clear();
-                AllApplicationsCache.Instance.Reset();
-                Intent applicationLandingIntent = new Intent(mainActivity, typeof(ApplicationStatusLandingActivity));
-                mainActivity.StartActivity(applicationLandingIntent);
-            }
-            else
-            {
-                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
-                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
-                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
-                     .Build();
-                errorPopup.Show();
-            }
+                {
+                    AllApplicationsCache.Instance.Clear();
+                    AllApplicationsCache.Instance.Reset();
+                    Intent applicationLandingIntent = new Intent(mainActivity, typeof(ApplicationStatusLandingActivity));
+                    mainActivity.StartActivity(applicationLandingIntent);
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                         .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
+                         .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
+                         .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
+                         .Build();
+                    errorPopup.Show();
+                }
+            });
         }
 
         private static async void DeeplinkAppDetailsValidation(DashboardHomeActivity mainActivity)

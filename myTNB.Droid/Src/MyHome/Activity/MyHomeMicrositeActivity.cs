@@ -24,6 +24,7 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Login.Models;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Deeplink;
 using Newtonsoft.Json;
 using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
 
@@ -287,7 +288,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                 else if (url.Contains(MyHomeConstants.BACK_TO_HOME))
                 {
                     shouldOverride = true;
-                    mActivity.Finish();
+                    mActivity.OnShowDashboard();
                 }
                 else if (url.Contains(MyHomeConstants.EXTERNAL_BROWSER))
                 {
@@ -305,6 +306,12 @@ namespace myTNB_Android.Src.MyHome.Activity
                             mActivity.LoadToExternalBrowser(value);
                         }
                     }
+                }
+                else if (url.Contains(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
+                {
+                    shouldOverride = true;
+                    DeeplinkUtil.Instance.SetTargetScreen(Deeplink.ScreenEnum.ApplicationListing);
+                    mActivity.OnShowDashboard();
                 }
 
                 return shouldOverride;
