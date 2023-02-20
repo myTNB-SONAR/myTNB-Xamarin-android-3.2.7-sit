@@ -572,9 +572,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                 {
                                     if (NewAppTutorialList.Count > 0)
                                     {
+                                        var feature = e.Position < NewAppTutorialList.Count ? NewAppTutorialList[e.Position].Feature : FeatureType.None;
+
                                         if (e.Position == NewAppTutorialList.Count - 1 && !NewAppTutorialList[0].NeedHelpHide)
                                         {
-                                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable() && feature != FeatureType.MyHome)
                                             {
                                                 ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
                                             }
@@ -987,6 +989,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     {
                         ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
                         UserSessions.DoHomeTutorialShown(this.mPref);
+                        UserSessions.SetShownMyHomeDashboardTutorial(this.mPref);
                         ((HomeMenuFragment)this.mFragment).RestartHomeMenu();
                     }
                     else if (this.mFragment is ItemisedBillingMenuFragment)
@@ -1095,6 +1098,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     {
                         ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
                         UserSessions.DoHomeTutorialShown(this.mPref);
+                        UserSessions.SetShownMyHomeDashboardTutorial(this.mPref);
                         ((HomeMenuFragment)this.mFragment).RestartHomeMenu();
                     }
                     else if (this.mFragment is ItemisedBillingMenuFragment)

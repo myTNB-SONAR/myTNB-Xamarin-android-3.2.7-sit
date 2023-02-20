@@ -64,6 +64,7 @@ using myTNB.Mobile.Business;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.MyDrawer;
 using myTNB.Mobile.AWS.Models.DBR;
+using Android.Graphics;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -3710,6 +3711,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             leftPosition = column * GetMyServiceItemWidth();
 
             return leftPosition;
+        }
+
+        public int GetMyServiceRecycleViewYLocation()
+        {
+            int i = 0;
+
+            try
+            {
+                int[] location = new int[2];
+                myServiceListRecycleView.GetLocationOnScreen(location);
+                i = location[1];
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
         }
 
         public int GetAccountContainerHeight()

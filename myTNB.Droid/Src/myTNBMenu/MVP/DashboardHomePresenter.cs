@@ -1922,12 +1922,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }            
             return newList;
         }
-
-
-        public void DisableWalkthrough()
-        {
-            UserSessions.DoHomeTutorialShown(this.mSharedPref);
-        }
         
         public void OnGetBillEligibilityCheck(string accountNumber)
         {

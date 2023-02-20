@@ -346,7 +346,38 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static bool MyHomeDashboardTutorialHasShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("myHomeDashboardTutorialHasShown", false);
+        }
+
+        public static void SetShownMyHomeDashboardTutorial(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("myHomeDashboardTutorialHasShown", true);
+            editor.Apply();
+        }
+
+        public static bool HomeDashboardTutorialHasShownBefore(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("HomeDashboardTutorialHasShownBefore", false);
+        }
+
+        public static void SetShownBeforeHomeDashboardTutorial(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("HomeDashboardTutorialHasShownBefore", true);
+            editor.Apply();
+        }
+
         internal static void UpdateNCTutorialShown(ISharedPreferences mSharedPref)       //for update flag overlay
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("hasHomeTutorialShown");
+            editor.Apply();
+        }
+
+        internal static void UpdateHomeTutorialShown(ISharedPreferences mSharedPref) //to show home tutorial again for myHome
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();
             editor.Remove("hasHomeTutorialShown");

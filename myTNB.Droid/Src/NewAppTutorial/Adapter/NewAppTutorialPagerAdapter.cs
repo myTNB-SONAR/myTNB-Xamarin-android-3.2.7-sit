@@ -99,7 +99,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             btnTopGotIt.Click += BtnGotIt_Click;
 
             TextViewUtils.SetMuseoSans300Typeface(txtBottomContent, txtTopContent);
-            TextViewUtils.SetMuseoSans500Typeface(txtBottomTitle, txtTopTitle, btnBottomGotIt, btnTopGotIt);
+            TextViewUtils.SetMuseoSans500Typeface(txtBottomTitle, txtTopTitle, btnBottomGotIt, btnTopGotIt, btnTopUpdateNickname);
             TextViewUtils.SetTextSize14(txtTopTitle, txtTopContent, txtBottomTitle, txtBottomContent);
             TextViewUtils.SetTextSize16(btnTopGotIt, btnBottomGotIt, btnTopUpdateNickname);
 
@@ -437,6 +437,108 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                                 innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                                 innerTxtBtnBottomLayout.RequestLayout();
+                            }
+                        }
+                        else if (model.Feature == FeatureType.MyHome)
+                        {
+                            if (model.ItemCount > 1)
+                            {
+                                int addtlTopPadding = (int)DPUtils.ConvertDPToPx(65f);
+                                int topHeight = ((HomeMenuFragment)this.mFragment).GetMyServiceRecycleViewYLocation() - GetStatusBarHeight() + (addtlTopPadding/2);
+
+                                var padding = (int)DPUtils.ConvertDPToPx(16f);
+                                var screenWidth = this.mContext.Resources.DisplayMetrics.WidthPixels;
+                                var myHomeTopHeight = ((HomeMenuFragment)this.mFragment).GetMyServiceItemTopPosition("1008");
+                                var myHomeWidth = ((HomeMenuFragment)this.mFragment).GetMyServiceItemWidth();
+                                var myHomeHeight = ((HomeMenuFragment)this.mFragment).GetMyServiceItemHeight();
+                                var myHomeLeftPosition = ((HomeMenuFragment)this.mFragment).GetMyServiceItemLeftPosition("1008");
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight + myHomeTopHeight;
+                                topLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = myHomeHeight;
+                                middleLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = padding + myHomeLeftPosition;
+                                highlightedLeftLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = myHomeWidth;
+                                highlightedLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+
+                                highlightedRightLayoutParam.Width = screenWidth - (padding + myHomeLeftPosition + myHomeWidth);
+                                highlightedRightLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                                if (model.NeedHelpHide)
+                                {
+                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
+                                }
+                                else
+                                {
+                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
+                                }
+                                innerTopLayoutParam.LeftMargin = padding;
+                                innerTopLayoutParam.RightMargin = padding + (myHomeWidth / 2) - 8;
+                                innerTopLayout.RequestLayout();
+                            }
+                            else
+                            {
+                                int topHeight = ((HomeMenuFragment)this.mFragment).GetMyServiceRecycleViewYLocation() - GetStatusBarHeight();
+
+                                var padding = (int)DPUtils.ConvertDPToPx(16f);
+                                var screenWidth = this.mContext.Resources.DisplayMetrics.WidthPixels;
+                                var myHomeTopHeight = ((HomeMenuFragment)this.mFragment).GetMyServiceItemTopPosition("1008");
+                                var myHomeWidth = ((HomeMenuFragment)this.mFragment).GetMyServiceItemWidth();
+                                var myHomeHeight = ((HomeMenuFragment)this.mFragment).GetMyServiceItemHeight();
+                                var myHomeLeftPosition = ((HomeMenuFragment)this.mFragment).GetMyServiceItemLeftPosition("1008");
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight + myHomeTopHeight;
+                                topLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = myHomeHeight;
+                                middleLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = padding + myHomeLeftPosition;
+                                highlightedLeftLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = myHomeWidth;
+                                highlightedLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+
+                                highlightedRightLayoutParam.Width = screenWidth - (padding + myHomeLeftPosition + myHomeWidth);
+                                highlightedRightLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                                if (model.NeedHelpHide)
+                                {
+                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
+                                }
+                                else
+                                {
+                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
+                                }
+                                innerTopLayoutParam.LeftMargin = padding;
+                                innerTopLayoutParam.RightMargin = padding + (myHomeWidth / 2) - 8;
+                                innerTopLayout.RequestLayout();
                             }
                         }
                     }
@@ -4264,6 +4366,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 {
                     ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
                     UserSessions.DoHomeTutorialShown(this.mPref);
+                    UserSessions.SetShownMyHomeDashboardTutorial(this.mPref);
                     ((HomeMenuFragment)this.mFragment).RestartHomeMenu();
                 }
                 else if (this.mFragment is ItemisedBillingMenuFragment)
@@ -4358,6 +4461,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 nextIntent.PutExtra("fromDashboard", true);
                 this.mContext.StartActivityForResult(nextIntent, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
                 UserSessions.DoHomeTutorialShown(this.mPref);
+                UserSessions.SetShownMyHomeDashboardTutorial(this.mPref);
             }
             catch (Exception ex)
             {

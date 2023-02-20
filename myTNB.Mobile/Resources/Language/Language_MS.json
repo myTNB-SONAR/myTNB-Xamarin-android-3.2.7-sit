@@ -258,7 +258,7 @@
     "DiscoverMoreDate": "07 May 2021",
     //myHome
     "myHome": "myHome",
-    "connectMyPremise": "Connect My<br>Premise",
+    "connectMyPremise": "Connect My<br>Premises",
     "myHomeDrawerTitle": "myHome"
   },
   "Tabbar": {
@@ -3037,7 +3037,7 @@
           {
             "code": "7200",
             "title": "",
-            "message": "MS_Your application has been deleted.",
+            "message": "Permohonan anda telah dipadamkan.",
             "primaryCTATitle": "",
             "secondaryCTATitle": "",
             "isSuccess": true,
