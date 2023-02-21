@@ -499,7 +499,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                        
 
                         _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
-                        await CustomEligibility.EvaluateEligibilityTenantDBR((Context)this.mView);
 
                         UserInfo usrinf = new UserInfo();
                         usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
