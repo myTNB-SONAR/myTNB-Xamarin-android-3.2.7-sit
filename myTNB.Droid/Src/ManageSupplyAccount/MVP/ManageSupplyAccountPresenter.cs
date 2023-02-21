@@ -119,7 +119,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                     HomeMenuUtils.ResetAll();
 
                     _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
-                    await CustomEligibility.EvaluateEligibilityTenantDBR((Context)this.mView);
 
                     if (mView.IsActive())
                     {
