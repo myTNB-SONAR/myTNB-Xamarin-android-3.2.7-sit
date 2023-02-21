@@ -16,21 +16,19 @@ namespace myTNB.Mobile.SessionCache
             }
         }
 
-        public EnquiryDetailsDeeplinkCache()
-        {
-        }
+        private EnquiryDetailsDeeplinkCache() { }
         public bool IsListingDeepLink { private set; get; } = false;
         public bool IsDetailsDeepLink { private set; get; } = false;
+        public string SRNO { private set; get; } = string.Empty;
         public string ClaimID { private set; get; } = string.Empty;
         public string UserID { private set; get; } = string.Empty;
-        public string SRNumber { private set; get; } = string.Empty;
-        public string Type { private set; get; } = string.Empty;
-        public string System { private set; get; } = string.Empty;
+        public string url;
 
         public void SetData(string deepLinkURL)
         {
             if (deepLinkURL.IsValid())
             {
+                url = deepLinkURL;
                 string[] claimIdArray = deepLinkURL.Split(new string[] { "overvoltageClaimDetails/" }, StringSplitOptions.None);
                 if (claimIdArray.Length > 1)
                 {
@@ -38,7 +36,7 @@ namespace myTNB.Mobile.SessionCache
                     if (detailsArray.Length > 1)
                     {
                         UserID = detailsArray[0];
-                        SRNumber = detailsArray[2];
+                        SRNO = detailsArray[2];
                         ClaimID = detailsArray[4];
                     }
                 }

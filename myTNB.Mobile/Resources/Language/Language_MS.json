@@ -641,7 +641,7 @@
     "onlineBanking": "Perbankan Dalam Talian",
     "abortTitle": "Batalkan Pembayaran",
     "abortMessage": "Anda pasti anda ingin membatalkan pembayaran?",
-    "tngEwallet": "Touch'n Go"
+    "tngEwallet": "Touch 'n Go"
   },
   "PushNotificationList": {
     "allNotifications": "Semua Pemberitahuan",
@@ -1087,7 +1087,7 @@
     "paymentType": "JENIS PEMBAYARAN",
     "trnBankReference": "NOMBOR RUJUKAN BANK",
     "trnAcquirerBank": "BANK PEMEROLEH",
-    "emptyValue": "--"
+    "emptyValue":  "--"
   },
   "FeedbackList": {
     "title": "Maklum Balas"
@@ -3012,7 +3012,7 @@
     "userExistedDetails": "Pengguna ini sudah mempunyai akses untuk akaun ini. Cuba alamat e-mel yang lain."
   },
   "EnregyBudgetListing": {
-    "title": "Pilih Akaun Smart Meter",
+    "title": "Pilih Akaun Meter Pintar",
     "tootltipTitle": "Kenapa sesetengah akaun saya yang tidak tersenarai?",
     "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
     "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"

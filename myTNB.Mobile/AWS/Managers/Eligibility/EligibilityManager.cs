@@ -54,7 +54,7 @@ namespace myTNB.Mobile
             maxAccountList = maxAccountList == 0 ? MobileConstants.MaxAccountList : maxAccountList;
             if (caList != null
                 && caList.Count <= maxAccountList)
-            {
+            { 
                 try
                 {
                     IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.Domain);
@@ -65,6 +65,7 @@ namespace myTNB.Mobile
                         ContractAccounts = caList
                     };
                     Debug.WriteLine("[DEBUG] PostEligibility Request: " + JsonConvert.SerializeObject(request));
+                    Debug.WriteLine("[DEBUG] PostEligibility ViewInfo: " + AppInfoManager.Instance.ViewInfo);
 
                     HttpResponseMessage rawResponse = await service.PostEligibility(request
                        , NetworkService.GetCancellationToken()

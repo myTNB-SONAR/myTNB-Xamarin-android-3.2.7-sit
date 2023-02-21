@@ -31,13 +31,11 @@ using System.Globalization;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile;
-using myTNB_Android.Src.SessionCache;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.Common.Model;
 using myTNB_Android.Src.Base;
-using Android.Preferences;
 using myTNB_Android.Src.myTNBMenu.Async;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -97,7 +95,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         private bool isClicked = false;
-        GetBillRenderingTenantResponse billRenderingTenantResponse;
 
         private static ISharedPreferences mPreferences;
         bool tenantDBR = false;
@@ -109,7 +106,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         private string ApplicationSystem = string.Empty;
         private string StatusId = string.Empty;
         private string StatusCode = string.Empty;
-        
+
         public bool IsActive()
         {
             return IsVisible;
@@ -221,26 +218,20 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         && multiBillRenderingResponse.Content != null
                                         && multiBillRenderingResponse.Content.Count > 0)
                                     {
-                                        List<GetBillRenderingTenantModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
-
+                                        List<PostBREligibilityIndicatorsModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
                                         if (tenantList != null && tenantList.Count > 0)
                                         {
                                             for (int j = 0; j < dbrCAForPaymentList.Count; j++)
                                             {
                                                 int index = multiBillRenderingResponse.Content.FindIndex(x =>
                                                             x.ContractAccountNumber == dbrCAForPaymentList[j]
-                                                            && x.DBRType == MobileEnums.DBRTypeEnum.Paper
-                                                            );
-
+                                                            && x.DBRType == MobileEnums.DBRTypeEnum.Paper);
 
                                                 int indexTenant = tenantList.FindIndex(x =>
-                                                            x.CaNo == dbrCAForPaymentList[j]
+                                                            x.caNo == dbrCAForPaymentList[j]
                                                             && x.IsOwnerAlreadyOptIn == false
                                                             && x.IsOwnerOverRule == false
-                                                            && x.IsTenantAlreadyOptIn == false
-                                                            );
-
-
+                                                            && x.IsTenantAlreadyOptIn == false);
                                                 if (indexTenant > -1)
                                                 {
                                                     tenantDBR = true;
@@ -421,7 +412,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 btnTNGPayment.Click += delegate
                 {
                     DownTimeEntity pgTNGEntity = DownTimeEntity.GetByCode(Constants.PG_TNG_SYSTEM);
-                    if (pgTNGEntity != null  && pgTNGEntity.IsDown)
+                    if (pgTNGEntity != null && pgTNGEntity.IsDown)
                     {
                         Utility.ShowBCRMDOWNTooltip(this.Activity, pgTNGEntity, () =>
                         {
@@ -490,7 +481,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     btnTNGPayment.Visibility = ViewStates.Gone;
                     lblTNGPayment.Visibility = ViewStates.Gone;
                 }
-                
+
                 //if(selectedAccount != null){
 
                 //    txtTotalAmount.Text = decimalFormat.Format(selectedAccount.AmtCustBal).Replace(",","");
