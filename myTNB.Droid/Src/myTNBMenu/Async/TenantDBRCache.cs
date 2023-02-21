@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
-using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.myTNBMenu.Async
 {
@@ -19,19 +17,19 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             }
         }
 
-        
+
 
         public TenantDBRCache()
         {
         }
 
-        private GetBillRenderingTenantResponse Data { set; get; }
+        private PostBREligibilityIndicatorsResponse Data { set; get; }
 
         /// <summary>
         /// Sets the Session Data for eligibility
         /// </summary>
         /// <param name="response">GetEligibilityResponse</param>
-        public void SetData(GetBillRenderingTenantResponse response)
+        public void SetData(PostBREligibilityIndicatorsResponse response)
         {
             if (response != null)
             {
@@ -47,9 +45,9 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         /// <param name="feature">myTNB App Feature</param>
         /// <param name="featureProperty">property</param>
         /// <returns></returns>
-        public List<GetBillRenderingTenantModel> IsTenantDBREligible()
+        public List<PostBREligibilityIndicatorsModel> IsTenantDBREligible()
         {
-            List<GetBillRenderingTenantModel> tenantList = new List<GetBillRenderingTenantModel>();
+            List<PostBREligibilityIndicatorsModel> tenantList = new List<PostBREligibilityIndicatorsModel>();
 
             if (Data != null
                 && Data.StatusDetail != null
@@ -59,9 +57,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             {
                 for (int i = 0; i < Data.Content.Count; i++)
                 {
-                    GetBillRenderingTenantModel data = new GetBillRenderingTenantModel();
-                  
-                    data.CaNo = Data.Content[i].CaNo;
+                    PostBREligibilityIndicatorsModel data = new PostBREligibilityIndicatorsModel();
+                    data.caNo = Data.Content[i].caNo;
                     data.IsOwnerAlreadyOptIn = Data.Content[i].IsOwnerAlreadyOptIn;
                     data.IsOwnerOverRule = Data.Content[i].IsOwnerOverRule;
                     data.IsTenantAlreadyOptIn = Data.Content[i].IsTenantAlreadyOptIn;
@@ -81,4 +78,3 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         }
     }
 }
-

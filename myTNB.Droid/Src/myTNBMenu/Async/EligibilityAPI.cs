@@ -3,19 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Preferences;
-using Android.Util;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
-using myTNB_Android.Src.AddAccount.Models;
+using myTNB.Mobile.AWS.Models.DBR;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.SessionCache;
 using myTNB_Android.Src.Utils;
-using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Async
 {
@@ -118,7 +113,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                         AccessTokenCache.Instance.SaveAccessToken(mView, accessToken);
                     }
 
-                    
+
                     GetEligibilityResponse response = await EligibilityManager.Instance.PostEligibility(UserEntity.GetActive().UserID ?? string.Empty,
                         GetContractAccountList(), AccessTokenCache.Instance.GetAccessToken(mView));
 
@@ -175,15 +170,14 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                 string eligibilityTimeStamp = preferences.GetString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, string.Empty);
                 List<string> dbrCAList = DBRUtility.Instance.GetCAList();
 
-                
+
                 if (!AccessTokenCache.Instance.HasTokenSaved(mView))
                 {
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
                     AccessTokenCache.Instance.SaveAccessToken(mView, accessToken);
                 }
 
-                GetBillRenderingTenantResponse response = new GetBillRenderingTenantResponse();
-                response = await DBRManager.Instance.GetBillRenderingTenant(dbrCAList, UserEntity.GetActive().UserID ?? string.Empty, AccessTokenCache.Instance.GetAccessToken(mView));
+                PostBREligibilityIndicatorsResponse response = await DBRManager.Instance.PostBREligibilityIndicators(dbrCAList, UserEntity.GetActive().UserID ?? string.Empty, AccessTokenCache.Instance.GetAccessToken(mView));
 
                 //Nullity Check
                 if (response != null

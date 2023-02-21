@@ -48,7 +48,6 @@ using myTNB_Android.Src.myTNBMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.ChartRenderer;
 using myTNB_Android.Src.myTNBMenu.Charts.Formatter;
 using myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Listener;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
@@ -70,13 +69,11 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using System.Linq;
-using myTNB_Android.Src.SessionCache;
 using System.Threading.Tasks;
-using myTNB.Mobile.AWS.Models.DBR.AutoOptIn;
 using myTNB_Android.Src.DigitalBill.Activity;
-
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.EnergyBudget.Activity;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -723,8 +720,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         ScaleGestureDetector mScaleDetector;
 
         GetBillRenderingResponse _billRenderingResponse;
-        GetBillRenderingTenantResponse billRenderingTenantResponse;
-        GetAutoOptInCaResponse getAutoOptInCaResponse;
+        PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
+        PostGetAutoOptInCaResponse getAutoOptInCaResponse;
 
         public override int ResourceId()
         {
@@ -1793,11 +1790,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
-                           //nothing
+                            //nothing
                         }
                     }
                 }
-                
+
             }
             //else if (!Utility.IsMDMSDownEnergyBudget())
             //{
@@ -1848,14 +1845,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     //}
                     //else
                     //{
-                        try
-                        {
-                            ((DashboardHomeActivity)Activity).NavigateToDashBoardFragment();
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
+                    try
+                    {
+                        ((DashboardHomeActivity)Activity).NavigateToDashBoardFragment();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
                     //}
                 }
             }
@@ -8169,7 +8166,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             }
                                             energyBudgetMDMSContainer.Visibility = ViewStates.Invisible;
                                         }
-                                        else if (energyBudgetMDMSContainer.Visibility == ViewStates.Visible && isEBUser && !Utility.IsMDMSDownEnergyBudget()) 
+                                        else if (energyBudgetMDMSContainer.Visibility == ViewStates.Visible && isEBUser && !Utility.IsMDMSDownEnergyBudget())
                                         {
                                             rootView.SetBackgroundResource(0);
                                             scrollViewContent.SetBackgroundResource(0);
@@ -11709,7 +11706,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             //    marketingTooltip.Show();
             //});
 
-            if (getAutoOptInCaResponse.Content.currentMonthCount == 1) //copywriting for first month
+            if (getAutoOptInCaResponse.Content.CurrentMonthCount == 1) //copywriting for first month
             {
                 this.Activity.RunOnUiThread(() =>
                 {
@@ -11729,7 +11726,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     marketingTooltip.Show();
                 });
             }
-            else if (getAutoOptInCaResponse.Content.currentMonthCount == 2) //copywriting for second month
+            else if (getAutoOptInCaResponse.Content.CurrentMonthCount == 2) //copywriting for second month
             {
                 this.Activity.RunOnUiThread(() =>
                 {
@@ -11876,7 +11873,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 _billRenderingResponse = await DBRManager.Instance.GetBillRendering(contractAccount,
                     AccessTokenCache.Instance.GetAccessToken(this.Activity), GetSelectedAccount().IsOwner); //cek balik sini
                 List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                GetBillRenderingTenantModel tenantInfo = new GetBillRenderingTenantModel();
                 CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
                 List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
 
@@ -11887,8 +11883,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                    && _billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
                    && _billRenderingResponse.Content.IsInProgress == false)
                 {
-                    billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
-
+                    billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
                     if (_billRenderingResponse.Content.IsOwner)
                     {
                         ShowMarketingTooltip();
@@ -11901,9 +11896,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                            && billRenderingTenantResponse.StatusDetail.IsSuccess
                            && billRenderingTenantResponse.Content != null)
                         {
-                            bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
-                            bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
-                            bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
+                            bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccount.AccountNum).IsOwnerOverRule;
+                            bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
+                            bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
                             bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccount.AccountNum).AccountHasOwner;
 
                             if (AccountHasOwner == true && !isOwnerAlreadyOptIn && !isOwnerOverRule && !isTenantAlreadyOptIn)
@@ -11935,7 +11930,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
                     AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
                 }
-                getAutoOptInCaResponse = await DBRManager.Instance.GetAutoOptInCaDBR(contractAccount, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity)); //cek balik sini
+                getAutoOptInCaResponse = await DBRManager.Instance.PostGetAutoOptInCa(contractAccount
+                    , UserEntity.GetActive().UserID
+                    , AccessTokenCache.Instance.GetAccessToken(this.Activity)); //cek balik sini
 
                 if (getAutoOptInCaResponse != null
                    && getAutoOptInCaResponse.StatusDetail != null
@@ -11943,16 +11940,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                    && _billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.Paper
                    && _billRenderingResponse.Content.IsOwner == true
                    && _billRenderingResponse.Content.IsInProgress == false
-                   && getAutoOptInCaResponse.Content.isPopupSeen == false
+                   && getAutoOptInCaResponse.Content.IsPopupSeen == false
                    )
                 {
                     ShowAutoOptInTooltip();
                     MarketingPopUpEntity.InsertOrReplace(contractAccount, true);
 
                     //update the flag of isPopupSeen
-                    getAutoOptInCaResponse = await DBRManager.Instance.UpdateAutoOptInCaDBR(contractAccount, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity)); //cek balik sini
+                    PatchUpdateAutoOptInCaResponse patchUpdateResponse = await DBRManager.Instance.PatchUpdateAutoOptInCa(contractAccount
+                        , UserEntity.GetActive().UserID
+                        , AccessTokenCache.Instance.GetAccessToken(this.Activity)); //cek balik sini
+                    if (patchUpdateResponse != null
+                        && patchUpdateResponse.Content != null
+                        && patchUpdateResponse.StatusDetail != null
+                        && patchUpdateResponse.StatusDetail.IsSuccess)
+                    {
+                        getAutoOptInCaResponse.Content.AccountNumber = patchUpdateResponse.Content.AccountNumber;
+                        getAutoOptInCaResponse.Content.AutoOptInDate = patchUpdateResponse.Content.AutoOptInDate;
+                        getAutoOptInCaResponse.Content.CurrentMonthCount = patchUpdateResponse.Content.CurrentMonthCount;
+                        getAutoOptInCaResponse.Content.Email = patchUpdateResponse.Content.Email;
+                        getAutoOptInCaResponse.Content.IsPopupSeen = bool.Parse(patchUpdateResponse.Content.IsPopupSeen);
+                        getAutoOptInCaResponse.Content.popupSeenDate = patchUpdateResponse.Content.popupSeenDate;
+                        getAutoOptInCaResponse.Content.UserId = patchUpdateResponse.Content.UserId;
+                    }
 
-
+                    /*getAutoOptInCaResponse = await DBRManager.Instance.PatchUpdateAutoOptInCa(contractAccount
+                        , UserEntity.GetActive().UserID
+                        , AccessTokenCache.Instance.GetAccessToken(this.Activity)); //cek balik sini
+                    */
                     //flag
                 }
             }

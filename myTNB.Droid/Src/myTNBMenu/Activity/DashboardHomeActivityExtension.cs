@@ -30,6 +30,7 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using System.Linq;
 using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -458,8 +459,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     //For tenant checking DBR
                     List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                    GetBillRenderingTenantResponse billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(mainActivity));
-
+                    PostBREligibilityIndicatorsResponse billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(mainActivity));
 
                     Intent intent = new Intent(mainActivity, typeof(ManageBillDeliveryActivity));
                     intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));

@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.AWS.Models.DBR;
-using myTNB.Mobile.AWS.Models.DBR.AutoOptIn;
-using myTNB.Mobile.AWS.Models.DBR.GetBillRendering;
 using myTNB.Mobile.AWS.Services.DBR;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
@@ -137,7 +135,6 @@ namespace myTNB.Mobile
                     }
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
-                    string dt = JsonConvert.SerializeObject(request);
                     response = JsonConvert.DeserializeObject<PostMultiBillRenderingResponse>(responseString);
                     if (response != null
                         && response.Content != null
@@ -185,28 +182,30 @@ namespace myTNB.Mobile
             return response;
         }
 
-
         /// <summary>
-        /// Gets Bill Rendering Method for Tenant
+        /// Post BR Eligibility Indicators
         /// </summary>
-        /// <param name="ca">Electricity Account Number</param>
+        /// <param name="CaNos">Electricity Account Number</param>
+        /// <param name="userId">User ID Login</param>
         /// <param name="accessToken">Generated Access Token</param>
-        /// <returns>Rendeting method of CA</returns>
-        public async Task<GetBillRenderingTenantResponse> GetBillRenderingTenant(List<string> CaNo, string userId
-           , string accessToken)
+        /// <returns>BR Eligibility Indicators of CA</returns>
+        public async Task<PostBREligibilityIndicatorsResponse> PostBREligibilityIndicators(List<string> caList
+            , string userId
+            , string accessToken)
         {
-            GetBillRenderingTenantResponse response = new GetBillRenderingTenantResponse();
+            PostBREligibilityIndicatorsResponse response = new PostBREligibilityIndicatorsResponse();
             if (IsBillRenderingEnabled)
             {
                 try
                 {
-                    GetBillRenderingTenantRequest request = new GetBillRenderingTenantRequest
+                    PostBREligibilityIndicatorsRequest request = new PostBREligibilityIndicatorsRequest
                     {
-                        UserId = userId ?? string.Empty,
-                        CaNos = CaNo
+                        CaNos = caList
+                        , UserID = userId
                     };
-                    IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.GetBillRenderingTenant);
-                    HttpResponseMessage rawResponse = await service.GetBillRenderingTenant(request
+
+                    IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.PostBREligibilityIndicators);
+                    HttpResponseMessage rawResponse = await service.PostBREligibilityIndicators(request
                        , NetworkService.GetCancellationToken()
                        , accessToken
                        , AppInfoManager.Instance.ViewInfo);
@@ -214,82 +213,83 @@ namespace myTNB.Mobile
                     if ((int)rawResponse.StatusCode != 200)
                     {
                         response.StatusDetail = new StatusDetail();
-                        response.StatusDetail = AWSConstants.Services.GetBillRenderingTenant.GetStatusDetails(MobileConstants.DEFAULT);
+                        response.StatusDetail = AWSConstants.Services.PostBREligibilityIndicators.GetStatusDetails(MobileConstants.DEFAULT);
                         response.StatusDetail.IsSuccess = false;
                         return response;
                     }
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
-                    string dt = JsonConvert.SerializeObject(request);
-                    response = JsonConvert.DeserializeObject<GetBillRenderingTenantResponse>(responseString);
+                    response = JsonConvert.DeserializeObject<PostBREligibilityIndicatorsResponse>(responseString);
                     if (response != null
                         && response.Content != null
                         && response.StatusDetail != null
                         && response.StatusDetail.Code.IsValid())
                     {
-                        //response.Content.IsOwner = isOwner;
-                        response.StatusDetail = AWSConstants.Services.GetBillRenderingTenant.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = AWSConstants.Services.PostBREligibilityIndicators.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
                         if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                         {
-                            response.StatusDetail = AWSConstants.Services.GetBillRenderingTenant.GetStatusDetails(response.StatusDetail.Code);
+                            response.StatusDetail = AWSConstants.Services.PostBREligibilityIndicators.GetStatusDetails(response.StatusDetail.Code);
                         }
                         else
                         {
-                            response = new GetBillRenderingTenantResponse
+                            response = new PostBREligibilityIndicatorsResponse
                             {
                                 StatusDetail = new StatusDetail()
                             };
-                            response.StatusDetail = AWSConstants.Services.GetBillRenderingTenant.GetStatusDetails(MobileConstants.DEFAULT);
+                            response.StatusDetail = AWSConstants.Services.PostBREligibilityIndicators.GetStatusDetails(MobileConstants.DEFAULT);
                         }
                     }
-                    Debug.WriteLine("[DEBUG] [GetBillRendering]: " + JsonConvert.SerializeObject(response));
+                    Debug.WriteLine("[DEBUG] [PostMultiBillRendering]: " + JsonConvert.SerializeObject(response));
                     return response;
                 }
                 catch (ApiException apiEx)
                 {
-#if DEBUG || SIT
-                    Debug.WriteLine("[DEBUG] [GetBillRendering] Refit Exception: " + apiEx.Message);
+#if DEBUG
+                    Debug.WriteLine("[DEBUG] [PostMultiBillRendering] Refit Exception: " + apiEx.Message);
 #endif
                 }
                 catch (Exception ex)
                 {
-#if DEBUG || SIT
-                    Debug.WriteLine("[DEBUG] [GetBillRendering] General Exception: " + ex.Message);
+#if DEBUG
+                    Debug.WriteLine("[DEBUG] [PostMultiBillRendering] General Exception: " + ex.Message);
 #endif
                 }
             }
-            response = new GetBillRenderingTenantResponse
+            response = new PostBREligibilityIndicatorsResponse
             {
                 StatusDetail = new StatusDetail()
             };
-            response.StatusDetail = AWSConstants.Services.GetBillRenderingTenant.GetStatusDetails(MobileConstants.DEFAULT);
+            response.StatusDetail = AWSConstants.Services.PostBREligibilityIndicators.GetStatusDetails(MobileConstants.DEFAULT);
             return response;
         }
 
         /// <summary>
-        /// Gets Bill Rendering Method for Tenant
+        /// Gets Auto Opt In CA Indicators
         /// </summary>
         /// <param name="ca">Electricity Account Number</param>
+        /// <param name="userId">User ID Login</param>
         /// <param name="accessToken">Generated Access Token</param>
-        /// <returns>Rendeting method of CA</returns>
-        public async Task<GetAutoOptInCaResponse> GetAutoOptInCaDBR(string Cano, string userId
-           , string accessToken)
+        /// <returns>Auto Opt In Indicators of CA</returns>
+        public async Task<PostGetAutoOptInCaResponse> PostGetAutoOptInCa(string ca
+            , string userId
+            , string accessToken)
         {
-            GetAutoOptInCaResponse response = new GetAutoOptInCaResponse();
+            PostGetAutoOptInCaResponse response = new PostGetAutoOptInCaResponse();
             if (IsBillRenderingEnabled)
             {
                 try
                 {
-                    GetAutoOptInCaRequest autoOptInCaRequest = new GetAutoOptInCaRequest
+                    PostGetAutoOptInCaRequest request = new PostGetAutoOptInCaRequest
                     {
-                        UserId = userId ?? string.Empty,
-                        Cano = Cano
+                        CaNo = ca,
+                        UserId = userId
                     };
+
                     IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.GetAutoOptInCa);
-                    HttpResponseMessage rawResponse = await service.GetAutoOptInCaDBR(autoOptInCaRequest
+                    HttpResponseMessage rawResponse = await service.PostGetAutoOptInCa(request
                        , NetworkService.GetCancellationToken()
                        , accessToken
                        , AppInfoManager.Instance.ViewInfo);
@@ -297,82 +297,84 @@ namespace myTNB.Mobile
                     if ((int)rawResponse.StatusCode != 200)
                     {
                         response.StatusDetail = new StatusDetail();
-                        response.StatusDetail = AWSConstants.Services.GetAutoOptInCaDBR.GetStatusDetails(MobileConstants.DEFAULT);
+                        response.StatusDetail = AWSConstants.Services.GetAutoOptInCa.GetStatusDetails(MobileConstants.DEFAULT);
                         response.StatusDetail.IsSuccess = false;
                         return response;
                     }
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
-                    string dt = JsonConvert.SerializeObject(autoOptInCaRequest);
-                    response = JsonConvert.DeserializeObject<GetAutoOptInCaResponse>(responseString);
+                    response = JsonConvert.DeserializeObject<PostGetAutoOptInCaResponse>(responseString);
                     if (response != null
                         && response.Content != null
                         && response.StatusDetail != null
                         && response.StatusDetail.Code.IsValid())
                     {
                         //response.Content.IsOwner = isOwner;
-                        response.StatusDetail = AWSConstants.Services.GetAutoOptInCaDBR.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = AWSConstants.Services.GetAutoOptInCa.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
                         if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                         {
-                            response.StatusDetail = AWSConstants.Services.GetAutoOptInCaDBR.GetStatusDetails(response.StatusDetail.Code);
+                            response.StatusDetail = AWSConstants.Services.GetAutoOptInCa.GetStatusDetails(response.StatusDetail.Code);
                         }
                         else
                         {
-                            response = new GetAutoOptInCaResponse
+                            response = new PostGetAutoOptInCaResponse
                             {
                                 StatusDetail = new StatusDetail()
                             };
-                            response.StatusDetail = AWSConstants.Services.GetAutoOptInCaDBR.GetStatusDetails(MobileConstants.DEFAULT);
+                            response.StatusDetail = AWSConstants.Services.GetAutoOptInCa.GetStatusDetails(MobileConstants.DEFAULT);
                         }
                     }
-                    Debug.WriteLine("[DEBUG] [GetBillRendering]: " + JsonConvert.SerializeObject(response));
+                    Debug.WriteLine("[DEBUG] [PostGetAutoOptInCa]: " + JsonConvert.SerializeObject(response));
                     return response;
                 }
                 catch (ApiException apiEx)
                 {
-#if DEBUG || SIT
+#if DEBUG
                     Debug.WriteLine("[DEBUG] [GetBillRendering] Refit Exception: " + apiEx.Message);
 #endif
                 }
                 catch (Exception ex)
                 {
-#if DEBUG || SIT
+#if DEBUG
                     Debug.WriteLine("[DEBUG] [GetBillRendering] General Exception: " + ex.Message);
 #endif
                 }
             }
-            response = new GetAutoOptInCaResponse
+            response = new PostGetAutoOptInCaResponse
             {
                 StatusDetail = new StatusDetail()
             };
-            response.StatusDetail = AWSConstants.Services.GetAutoOptInCaDBR.GetStatusDetails(MobileConstants.DEFAULT);
+            response.StatusDetail = AWSConstants.Services.GetAutoOptInCa.GetStatusDetails(MobileConstants.DEFAULT);
             return response;
         }
 
-        //        /// <summary>
-        //        /// Gets Bill Rendering Method for Tenant
-        //        /// </summary>
-        //        /// <param name="ca">Electricity Account Number</param>
-        //        /// <param name="accessToken">Generated Access Token</param>
-        //        /// <returns>Rendeting method of CA</returns>
-        public async Task<GetAutoOptInCaResponse> UpdateAutoOptInCaDBR(string Cano, string userId
-           , string accessToken)
+        /// <summary>
+        /// Patch Auto Opt In CA Indicators
+        /// </summary>
+        /// <param name="ca">Electricity Account Number</param>
+        /// <param name="userId">User ID Login</param>
+        /// <param name="accessToken">Generated Access Token</param>
+        /// <returns>Patch Auto Opt In Indicators of CA</returns>
+        public async Task<PatchUpdateAutoOptInCaResponse> PatchUpdateAutoOptInCa(string ca
+            , string userId
+            , string accessToken)
         {
-            GetAutoOptInCaResponse response = new GetAutoOptInCaResponse();
+            PatchUpdateAutoOptInCaResponse response = new PatchUpdateAutoOptInCaResponse();
             if (IsBillRenderingEnabled)
             {
                 try
                 {
-                    GetAutoOptInCaRequest updateAutoOptInCaRequest = new GetAutoOptInCaRequest
+                    PatchUpdateAutoOptInCaRequest request = new PatchUpdateAutoOptInCaRequest
                     {
-                        UserId = userId ?? string.Empty,
-                        Cano = Cano
+                        CaNo = ca,
+                        UserId = userId
                     };
-                    IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.UpdateAutoOptInCa);
-                    HttpResponseMessage rawResponse = await service.UpdateAutoOptInCaDBR(updateAutoOptInCaRequest
+
+                    IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.PatchUpdateAutoOptInCa);
+                    HttpResponseMessage rawResponse = await service.PatchUpdateAutoOptInCa(request
                        , NetworkService.GetCancellationToken()
                        , accessToken
                        , AppInfoManager.Instance.ViewInfo);
@@ -380,58 +382,57 @@ namespace myTNB.Mobile
                     if ((int)rawResponse.StatusCode != 200)
                     {
                         response.StatusDetail = new StatusDetail();
-                        response.StatusDetail = AWSConstants.Services.UpdateAutoOptInCaDBR.GetStatusDetails(MobileConstants.DEFAULT);
+                        response.StatusDetail = AWSConstants.Services.PatchUpdateAutoOptInCa.GetStatusDetails(MobileConstants.DEFAULT);
                         response.StatusDetail.IsSuccess = false;
                         return response;
                     }
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
-                    string dt = JsonConvert.SerializeObject(updateAutoOptInCaRequest);
-                    response = JsonConvert.DeserializeObject<GetAutoOptInCaResponse>(responseString);
+                    response = JsonConvert.DeserializeObject<PatchUpdateAutoOptInCaResponse>(responseString);
                     if (response != null
                         && response.Content != null
                         && response.StatusDetail != null
                         && response.StatusDetail.Code.IsValid())
                     {
                         //response.Content.IsOwner = isOwner;
-                        response.StatusDetail = AWSConstants.Services.UpdateAutoOptInCaDBR.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = AWSConstants.Services.PatchUpdateAutoOptInCa.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
                         if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                         {
-                            response.StatusDetail = AWSConstants.Services.UpdateAutoOptInCaDBR.GetStatusDetails(response.StatusDetail.Code);
+                            response.StatusDetail = AWSConstants.Services.PatchUpdateAutoOptInCa.GetStatusDetails(response.StatusDetail.Code);
                         }
                         else
                         {
-                            response = new GetAutoOptInCaResponse
+                            response = new PatchUpdateAutoOptInCaResponse
                             {
                                 StatusDetail = new StatusDetail()
                             };
-                            response.StatusDetail = AWSConstants.Services.UpdateAutoOptInCaDBR.GetStatusDetails(MobileConstants.DEFAULT);
+                            response.StatusDetail = AWSConstants.Services.PatchUpdateAutoOptInCa.GetStatusDetails(MobileConstants.DEFAULT);
                         }
                     }
-                    Debug.WriteLine("[DEBUG] [GetBillRendering]: " + JsonConvert.SerializeObject(response));
+                    Debug.WriteLine("[DEBUG] [PatchUpdateAutoOptInCa]: " + JsonConvert.SerializeObject(response));
                     return response;
                 }
                 catch (ApiException apiEx)
                 {
-#if DEBUG || SIT
+#if DEBUG
                     Debug.WriteLine("[DEBUG] [GetBillRendering] Refit Exception: " + apiEx.Message);
 #endif
                 }
                 catch (Exception ex)
                 {
-#if DEBUG || SIT
+#if DEBUG
                     Debug.WriteLine("[DEBUG] [GetBillRendering] General Exception: " + ex.Message);
 #endif
                 }
             }
-            response = new GetAutoOptInCaResponse
+            response = new PatchUpdateAutoOptInCaResponse
             {
                 StatusDetail = new StatusDetail()
             };
-            response.StatusDetail = AWSConstants.Services.UpdateAutoOptInCaDBR.GetStatusDetails(MobileConstants.DEFAULT);
+            response.StatusDetail = AWSConstants.Services.PatchUpdateAutoOptInCa.GetStatusDetails(MobileConstants.DEFAULT);
             return response;
         }
 
