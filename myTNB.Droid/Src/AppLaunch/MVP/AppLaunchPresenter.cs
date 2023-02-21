@@ -146,6 +146,34 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             return false;
         }
 
+        private bool IsAppNeedsRecommendRangeUpdate(RecommendUpdateInfo recommendUpdateInfo)
+        {
+            if (recommendUpdateInfo != null && recommendUpdateInfo.rangeAndroidRecommendUpdate)
+            {
+                if (int.Parse(recommendUpdateInfo.AndroidLastRecommendVersion) > int.Parse(DeviceIdUtils.GetAppVersionName())
+                    && int.Parse(DeviceIdUtils.GetAppVersionName()) < int.Parse(recommendUpdateInfo.AndroidLatestRecommendVersion))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool IsAppNeedsRecommendSelectUpdate(RecommendUpdateInfo recommendUpdateInfo)
+        {
+            bool updateAllow = false;
+            if (recommendUpdateInfo != null && recommendUpdateInfo.selectAndroidRecommendUpdate)
+            {
+                List<string> versionList = new List<string>();
+                if (recommendUpdateInfo.AndroidSVersionToUpdate != null)
+                {
+                    versionList = recommendUpdateInfo.AndroidSVersionToUpdate;
+                    updateAllow = versionList.Exists(x => x == DeviceIdUtils.GetAppVersionName());
+                }
+            }
+            return updateAllow;
+        }
+
         private async void LoadAppMasterData()
         {
             //For Testing Start
@@ -201,7 +229,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest());
                 /*AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
                       (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));*/
-                string dt = JsonConvert.SerializeObject(new AppLaunchMasterDataRequest());
                 if (masterDataResponse != null && masterDataResponse.ErrorCode != null)
                 {
                     if (masterDataResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
@@ -211,6 +238,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         bool proceed = true;
 
                         bool appUpdateAvailable = false;
+                        bool appUpdateRecommendedRange = false;
+                        bool appUpdateRecommendedSelect = false;
                         //AppLaunchMasterDataModel responseData = masterDataResponse.GetData();
                         bool updateDetail = masterDataResponse.Data.IsFeedbackUpdateDetailDisabled;
 
@@ -225,6 +254,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         if (responseData.AppVersionList != null && responseData.AppVersionList.Count > 0)
                         {
                             appUpdateAvailable = IsAppNeedsUpdate(responseData.ForceUpdateInfo);
+                            appUpdateRecommendedRange = IsAppNeedsRecommendRangeUpdate(responseData.RecommendUpdateInfo);
+                            appUpdateRecommendedSelect = IsAppNeedsRecommendSelectUpdate(responseData.RecommendUpdateInfo);
+                            bool userCancelUpdate = this.mView.UserCancelUpdate();
                             if (appUpdateAvailable)
                             {
                                 DeeplinkUtil.Instance.ClearDeeplinkData();
@@ -232,6 +264,15 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 string modalMessage = responseData.ForceUpdateInfo.ModalBody;
                                 string modalBtnLabel = responseData.ForceUpdateInfo.ModalBtnText;
                                 this.mView.ShowUpdateAvailable(modalTitle, modalMessage, modalBtnLabel);
+                            }
+                            else if (((appUpdateRecommendedRange && !appUpdateRecommendedSelect) || (!appUpdateRecommendedRange && appUpdateRecommendedSelect)) && !userCancelUpdate)
+                            {
+                                DeeplinkUtil.Instance.ClearDeeplinkData();
+                                string modalTitle = responseData.RecommendUpdateInfo.ModalRecommendTitle;
+                                string modalMessage = responseData.RecommendUpdateInfo.ModalRecommendBody;
+                                string modalBtnYes = responseData.RecommendUpdateInfo.ModalRecommendBtnYesText;
+                                string modalBtnNo = responseData.RecommendUpdateInfo.ModalRecommendBtnNoText;
+                                this.mView.ShowUpdateAvailableWithRequirement(modalTitle, modalMessage, modalBtnYes, modalBtnNo);
                             }
                             else
                             {

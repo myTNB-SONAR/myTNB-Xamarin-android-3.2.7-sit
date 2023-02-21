@@ -150,6 +150,10 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [AliasAs("ForceUpdateInfo")]
             public ForceUpdateInfoData ForceUpdateInfo { get; set; }
 
+            [JsonProperty(PropertyName = "RecommendUpdateInfo")]
+            [AliasAs("RecommendUpdateInfo")]
+            public RecommendUpdateInfo RecommendUpdateInfo { get; set; }
+
             [JsonProperty(PropertyName = "IsFeedbackUpdateDetailDisabled")]
             [AliasAs("IsFeedbackUpdateDetailDisabled")]
             public bool IsFeedbackUpdateDetailDisabled { get; set; }
@@ -184,6 +188,49 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "ModalBtnText")]
             [AliasAs("ModalBtnText")]
             public string ModalBtnText { get; set; }
+        }
+
+        public class RecommendUpdateInfo
+        {
+            [JsonProperty(PropertyName = "isAndroidRecommendUpdateOn")]
+            [AliasAs("isAndroidRecommendUpdateOn")]
+            public bool isAndroidRecommendUpdateOn { get; set; }
+
+            [JsonProperty(PropertyName = "rangeAndroidRecommendUpdate")]
+            [AliasAs("rangeAndroidRecommendUpdate")]
+            public bool rangeAndroidRecommendUpdate { get; set; }
+
+            [JsonProperty(PropertyName = "AndroidLastRecommendVersion")]
+            [AliasAs("AndroidLastRecommendVersion")]
+            public string AndroidLastRecommendVersion { get; set; }
+
+            [JsonProperty(PropertyName = "AndroidLatestRecommendVersion")]
+            [AliasAs("AndroidLatestRecommendVersion")]
+            public string AndroidLatestRecommendVersion { get; set; }
+
+            [JsonProperty(PropertyName = "selectAndroidRecommendUpdate")]
+            [AliasAs("selectAndroidRecommendUpdate")]
+            public bool selectAndroidRecommendUpdate { get; set; }
+
+            [JsonProperty(PropertyName = "AndroidSVersionToUpdate")]
+            [AliasAs("AndroidSVersionToUpdate")]
+            public List<string> AndroidSVersionToUpdate { get; set; }
+
+            [JsonProperty(PropertyName = "ModalRecommendTitle")]
+            [AliasAs("ModalRecommendTitle")]
+            public string ModalRecommendTitle { get; set; }
+
+            [JsonProperty(PropertyName = "ModalRecommendBody")]
+            [AliasAs("ModalRecommendBody")]
+            public string ModalRecommendBody { get; set; }
+
+            [JsonProperty(PropertyName = "ModalRecommendBtnYesText")]
+            [AliasAs("ModalRecommendBtnYesText")]
+            public string ModalRecommendBtnYesText { get; set; }
+
+            [JsonProperty(PropertyName = "ModalRecommendBtnNoText")]
+            [AliasAs("ModalRecommendBtnNoText")]
+            public string ModalRecommendBtnNoText { get; set; }
         }
     }
 }

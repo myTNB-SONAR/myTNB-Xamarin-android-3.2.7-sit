@@ -92,6 +92,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private bool isAppLaunchSiteCoreDone = false;
         private bool isAppLaunchLoadSuccessful = false;
         private bool isAppLaunchDone = false;
+        private bool userClick = false;
 
         private AppLaunchMasterDataResponseAWS cacheResponseData = null;
 
@@ -1040,6 +1041,68 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowUpdateAvailableWithRequirement(string title, string message, string btnYes, string btnNo)
+        {
+            try
+            {
+                appUpdateDialog = new MaterialDialog.Builder(this)
+                    .CustomView(Resource.Layout.AppUpdateDialogYesNo, false)
+                    .Cancelable(false)
+                    .CanceledOnTouchOutside(false)
+                    .Build();
+
+                View dialogView = appUpdateDialog.Window.DecorView;
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+
+                TextView txtDialogTitle = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtTitle);
+                TextView txtDialogMessage = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtMessage);
+                TextView btnNolabel = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
+                TextView btnYeslabel = appUpdateDialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
+                txtDialogTitle.Text = title;
+                txtDialogMessage.Text = message;
+                btnNolabel.Text = btnNo;
+                btnYeslabel.Text = btnYes;
+
+                TextViewUtils.SetTextSize14(txtDialogMessage);
+                TextViewUtils.SetTextSize16(txtDialogTitle);
+                TextViewUtils.SetTextSize18(btnNolabel, btnYeslabel);
+
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                {
+                    txtDialogMessage.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtDialogMessage.TextFormatted = Html.FromHtml(message);
+                }
+                TextViewUtils.SetMuseoSans300Typeface(txtDialogMessage);
+                TextViewUtils.SetMuseoSans500Typeface(txtDialogTitle, btnYeslabel);
+                btnYeslabel.Click += delegate
+                {
+                    OnAppUpdateClick();
+                };
+                btnNolabel.Click += delegate
+                {
+                    appUpdateDialog.Dismiss();
+                    userClick = true;
+                    mPresenter.Start();
+                };
+                if (IsActive())
+                {
+                    appUpdateDialog.Show();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public bool UserCancelUpdate()
+        {
+            return userClick;
         }
 
         public void OnAppUpdateClick()
