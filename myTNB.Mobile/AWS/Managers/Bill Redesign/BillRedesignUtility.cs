@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using myTNB.Mobile.AWS.Models;
 using Newtonsoft.Json.Linq;
@@ -164,12 +165,12 @@ namespace myTNB.Mobile
         public bool IsResidential(string rateCategory)
         {
             List<string> residentialRateCategoryList = LanguageManager.Instance.GetConfigProperty<List<string>>(LanguageManager.ConfigPropertyEnum.ResidentialRateCategory);
-            if (residentialRateCategoryList != null && !string.IsNullOrEmpty(rateCategory))
+            if (residentialRateCategoryList != null)
             {
                 for (int i = 0; i < residentialRateCategoryList.Count; i++)
                 {
-                    string item = residentialRateCategoryList[i].ToLower();
-                    if (item == rateCategory.ToLower())
+                    string item = residentialRateCategoryList[i]?.ToLower();
+                    if (item == rateCategory?.ToLower())
                     {
                         return true;
                     }

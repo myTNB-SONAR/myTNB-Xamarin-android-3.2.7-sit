@@ -641,7 +641,7 @@
     "onlineBanking": "Online Banking",
     "abortTitle": "Cancel Payment",
     "abortMessage": "Are you sure you want to cancel payment?",
-    "tngEwallet": "Touch'n Go"
+    "tngEwallet": "Touch 'n Go"
   },
   "PushNotificationList": {
     "allNotifications": "All Notifications",

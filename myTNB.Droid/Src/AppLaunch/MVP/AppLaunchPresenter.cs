@@ -31,29 +31,14 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
 using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponseAWS;
 using myTNB;
-using System.Net.Http;
-using DynatraceAndroid;
-using myTNB_Android.Src.myTNBMenu.Async;
-using myTNB_Android.Src.Notifications.Models;
-using myTNB_Android.Src.NotificationDetails.Models;
-using static myTNB_Android.Src.MyTNBService.Response.UserNotificationDetailsResponse;
-using myTNB_Android.Src.SummaryDashBoard.Models;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Async;
 using fbm = Firebase.Messaging;
 using Android.Gms.Extensions;
-using Android.Preferences;
 using myTNB_Android.Src.Utils.Deeplink;
 using myTNB.Mobile;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils.Notification;
-
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
-using System.Net.Http;
 using myTNB_Android.Src.Base.Response;
-using myTNB_Android.Src.DeviceCache;
-using myTNB.Mobile.AWS.Models;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -118,7 +103,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.S)      //Starting android 12 disable bluetooth.address checking deviceId
                         {
-                            if (UserSessions.GetDeviceId() != this.mView.GetDeviceId())         
+                            if (UserSessions.GetDeviceId() != this.mView.GetDeviceId())
                             {
                                 UserSessions.SaveDeviceId(this.mView.GetDeviceId());
                             }
@@ -1656,7 +1641,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             RateCategory = acc.RateCategory,
                             IsInManageAccessList = acc.IsInManageAccessList,
                             AccountHasOwner = acc.AccountHasOwner
-                            
+
                         };
 
                         if (index != -1)
