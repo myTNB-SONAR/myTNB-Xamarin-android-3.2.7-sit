@@ -42,32 +42,38 @@ namespace myTNB_Android.Src.ManageCards.Adapter
                 {
                     viewHolder.txtCardNumber.TextFormatted = Html.FromHtml(html, FromHtmlOptions.ModeLegacy);
                     TextViewUtils.SetTextSize16(viewHolder.txtCardNumber);
+                    TextViewUtils.SetTextSize12(viewHolder.txtExpiredCard);
                 }
                 else
                 {
                     viewHolder.txtCardNumber.TextFormatted = Html.FromHtml(html);
                     TextViewUtils.SetTextSize16(viewHolder.txtCardNumber);
+                    TextViewUtils.SetTextSize12(viewHolder.txtExpiredCard);
                 }
 
                 if (item.CardType.Equals("VISA") || item.CardType.Equals("V"))
                 {
-                    viewHolder.txtCardNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.visa,
-                        0, 0, 0);
+                    //viewHolder.txtCardNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.visa,
+                    //    0, 0, 0);
+                    viewHolder.imgCard.SetImageResource(Resource.Drawable.visa);
                 }
                 else if (item.CardType.Equals("MASTERCARD") || item.CardType.Equals("M"))
                 {
-                    viewHolder.txtCardNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.master,
-                        0, 0, 0);
+                    //viewHolder.txtCardNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.master,
+                    //    0, 0, 0);
+                    viewHolder.imgCard.SetImageResource(Resource.Drawable.master);
                 }
                 else if (item.CardType.Equals("AMEX") || item.CardType.Equals("A"))
                 {
-                    viewHolder.txtCardNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.ic_payment_card_amex,
-                        0, 0, 0);
+                    //viewHolder.txtCardNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.ic_payment_card_amex,
+                    //    0, 0, 0);
+                    viewHolder.imgCard.SetImageResource(Resource.Drawable.ic_payment_card_amex);
                 }
                 else if (item.CardType.Equals("JCB") || item.CardType.Equals("J"))
                 {
-                    viewHolder.txtCardNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.ic_payment_card_jcb,
-                        0, 0, 0);
+                    //viewHolder.txtCardNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.ic_payment_card_jcb,
+                    //    0, 0, 0);
+                    viewHolder.imgCard.SetImageResource(Resource.Drawable.ic_payment_card_jcb);
                 }
             }
             catch (Exception e)
@@ -95,6 +101,13 @@ namespace myTNB_Android.Src.ManageCards.Adapter
 
             [BindView(Resource.Id.imgCardNumberDelete)]
             public ImageView imgCardNumberDelete;
+
+            [BindView(Resource.Id.imgCard)]
+            public ImageView imgCard;
+
+            [BindView(Resource.Id.txtExpiredCard)]
+            public TextView txtExpiredCard;
+           
 
             public ManageCardsViewHolder(View itemView, Action<int> listener) : base(itemView)
             {
