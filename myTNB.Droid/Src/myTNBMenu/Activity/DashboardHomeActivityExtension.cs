@@ -161,10 +161,22 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             });
         }
 
-        private static async void DeeplinkAppDetailsValidation(DashboardHomeActivity mainActivity)
+        private static void DeeplinkAppDetailsValidation(DashboardHomeActivity mainActivity)
         {
             DeeplinkUtil.Instance.ClearDeeplinkData();
-            mainActivity.ShowProgressDialog();
+            mainActivity.RunOnUiThread(() =>
+            {
+                mainActivity.ShowProgressDialog();
+            });
+
+            Task.Run(() =>
+            {
+                _ = OnGetApplicationDetail(mainActivity);
+            });
+        }
+
+        private static async Task OnGetApplicationDetail(DashboardHomeActivity mainActivity)
+        {
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
@@ -185,32 +197,41 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     , ApplicationDetailsDeeplinkCache.Instance.Type
                     , ApplicationDetailsDeeplinkCache.Instance.System);
 
-                if (detailsResponse.StatusDetail.IsSuccess)
+                mainActivity.RunOnUiThread(() =>
                 {
-                    Intent applicationStatusDetailIntent = new Intent(mainActivity, typeof(ApplicationStatusDetailActivity));
-                    applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(detailsResponse.Content));
-                    mainActivity.StartActivity(applicationStatusDetailIntent);
-                }
-                else
-                {
-                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                     .SetTitle(detailsResponse.StatusDetail.Title)
-                     .SetMessage(detailsResponse.StatusDetail.Message)
-                     .SetCTALabel(detailsResponse.StatusDetail.PrimaryCTATitle)
-                     .Build();
-                    errorPopup.Show();
-                }
+                    mainActivity.HideProgressDialog();
+
+                    if (detailsResponse.StatusDetail.IsSuccess)
+                    {
+                        Intent applicationStatusDetailIntent = new Intent(mainActivity, typeof(ApplicationStatusDetailActivity));
+                        applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(detailsResponse.Content));
+                        mainActivity.StartActivity(applicationStatusDetailIntent);
+                    }
+                    else
+                    {
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                         .SetTitle(detailsResponse.StatusDetail.Title)
+                         .SetMessage(detailsResponse.StatusDetail.Message)
+                         .SetCTALabel(detailsResponse.StatusDetail.PrimaryCTATitle)
+                         .Build();
+                        errorPopup.Show();
+                    }
+                });
             }
             else
             {
-                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                mainActivity.RunOnUiThread(() =>
+                {
+                    mainActivity.HideProgressDialog();
+
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                      .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
                      .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
                      .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
                      .Build();
-                errorPopup.Show();
+                    errorPopup.Show();
+                });
             }
-            mainActivity.HideProgressDialog();
         }
 
         private static void DeeplinkOvervoltageFeedbackValidation(DashboardHomeActivity mainActivity)
