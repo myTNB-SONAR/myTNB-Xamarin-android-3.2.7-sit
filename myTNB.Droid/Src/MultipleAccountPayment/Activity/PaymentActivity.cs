@@ -458,9 +458,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                        && billRenderingResponse.Content != null
                        && billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
                     {
-
                         billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(CAsWithPaperBillList, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
-
                         Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                         intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
                         intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));

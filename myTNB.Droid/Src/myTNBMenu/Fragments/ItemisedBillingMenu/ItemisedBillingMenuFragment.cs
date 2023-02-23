@@ -649,9 +649,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                     && billRenderingTenantResponse.StatusDetail.IsSuccess
                                     && billRenderingTenantResponse.Content != null)
                                 {
-                                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerOverRule;
-                                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerAlreadyOptIn;
-                                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsTenantAlreadyOptIn;
+                                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.caNo == dbrAccount.AccountNum).IsOwnerOverRule;
+                                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == dbrAccount.AccountNum).IsOwnerAlreadyOptIn;
+                                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == dbrAccount.AccountNum).IsTenantAlreadyOptIn;
                                     bool AccountHasOwner = accounts.Find(x => x.AccNum == dbrAccount.AccountNum).AccountHasOwner;
 
                                     if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
@@ -691,7 +691,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                         }
                                         else
                                         {
-
                                             if (tenantAllowOptIn)
                                             {
                                                 paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));

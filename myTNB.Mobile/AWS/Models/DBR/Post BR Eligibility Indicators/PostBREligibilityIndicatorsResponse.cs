@@ -11,7 +11,7 @@ namespace myTNB.Mobile.AWS.Models.DBR
     public class PostBREligibilityIndicatorsModel
     {
         [JsonProperty("caNo")]
-        public string CaNo { get; set; }
+        public string caNo { get; set; }
         [JsonProperty("isOwnerOverRule")]
         public bool IsOwnerOverRule { get; set; } = false;
         [JsonProperty("isOwnerAlreadyOptIn")]

@@ -306,7 +306,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
             }
 
-
             // if (extras != null && extras.ContainsKey("urlSchemaData"))
             // {
             //     urlSchemaCalled = true;
@@ -373,7 +372,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 List<string> dBRCAs = DBRUtility.Instance.GetCAList();
                 billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
-
 
                 HideProgressDialog();
 
@@ -800,7 +798,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
                     {
                         if (flagOwner
-                            && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
+                            && billRenderingTenantResponse.Content[i].caNo == accounts[j].AccNum
                             && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
                             && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
                             && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
@@ -1784,7 +1782,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
                 bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
-
                 bool popupID = UserSessions.GetUpdateIdPopUp(this.mPref);
 
                 bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);

@@ -6,6 +6,7 @@ using Android.Preferences;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.AWS.Models.DBR;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
@@ -158,6 +159,40 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                 System.Diagnostics.Debug.WriteLine("[DEBUG] Eligibility API Error: " + e.Message);
             }
             return true;
+        }
+
+        public static async Task EvaluateEligibilityTenantDBR(Context mView)
+        {
+            try
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                ISharedPreferences preferences = PreferenceManager.GetDefaultSharedPreferences(mView);
+#pragma warning restore CS0618 // Type or member is obsolete
+                string eligibilityTimeStamp = preferences.GetString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, string.Empty);
+                List<string> dbrCAList = DBRUtility.Instance.GetCAList();
+
+
+                if (!AccessTokenCache.Instance.HasTokenSaved(mView))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(mView, accessToken);
+                }
+
+                PostBREligibilityIndicatorsResponse response = await DBRManager.Instance.PostBREligibilityIndicators(dbrCAList, UserEntity.GetActive().UserID ?? string.Empty, AccessTokenCache.Instance.GetAccessToken(mView));
+
+                //Nullity Check
+                if (response != null
+                    && response.StatusDetail != null
+                    && response.StatusDetail.IsSuccess)
+                {
+                    TenantDBRCache.Instance.SetData(response);
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] Eligibility API Error: " + e.Message);
+            }
+
         }
     }
 }

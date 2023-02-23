@@ -199,7 +199,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     UpdateAccountListIndicator();
                 }
 
-
                 List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
                 bool tenantAllowOptIn = false;
                 if (_billRenderingTenantResponse != null
@@ -207,9 +206,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     && _billRenderingTenantResponse.StatusDetail.IsSuccess
                     && _billRenderingTenantResponse.Content != null)
                 {
-                    bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
-                    bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
-                    bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
+                    bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccountNumber).IsOwnerOverRule;
+                    bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
+                    bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccountNumber).IsTenantAlreadyOptIn;
                     // bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
 
                     if (mSelectedAccountData.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
@@ -968,9 +967,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         {
                             //For tenant checking DBR | Get a single data for specific ca from response list
                             List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
-                            bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
-                            bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
-                            bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
+                            bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccountNumber).IsOwnerOverRule;
+                            bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
+                            bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccountNumber).IsTenantAlreadyOptIn;
                             bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
 
 

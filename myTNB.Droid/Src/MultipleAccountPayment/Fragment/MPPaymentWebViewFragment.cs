@@ -96,6 +96,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 {
                     paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "onlineBanking"));
                 }
+                else if (Arguments.ContainsKey("html_TnG"))
+                {
+                    paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "tngEwallet"));
+                }
                 else
                 {
                     paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "enterOTP"));
@@ -124,6 +128,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 if (Arguments.ContainsKey("html_fpx"))
                 {
                     mWebView.LoadUrl(Arguments.GetString("html_fpx"));
+                }
+                else if (Arguments.ContainsKey("html_TnG"))
+                {
+                    mWebView.LoadUrl(Arguments.GetString("html_TnG"));
                 }
                 else
                 {
@@ -273,6 +281,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             if (Arguments.ContainsKey("html_fpx"))
             {
                 paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "onlineBanking"));
+            }
+            else if (Arguments.ContainsKey("html_TnG"))
+            {
+                paymentActivity.SetToolBarTitle(Utility.GetLocalizedLabel("MakePayment", "tngEwallet"));
             }
             else
             {

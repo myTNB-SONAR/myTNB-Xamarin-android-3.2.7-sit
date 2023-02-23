@@ -65,6 +65,7 @@ using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.MyDrawer;
 using myTNB.Mobile.AWS.Models.DBR;
 using Android.Graphics;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -728,7 +729,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 List<string> dBRCAs = DBRUtility.Instance.GetCAList();
                 billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
 
-
                 HideProgressDialog();
 
                 //Nullity Check
@@ -742,7 +742,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 else
                 {
-
                     string title = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Title.IsValid()
                         ? billRenderingTenantResponse?.StatusDetail?.Title
                         : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE);
@@ -1394,7 +1393,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
                                 {
                                     if (flagOwner
-                                        && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
+                                        && billRenderingTenantResponse.Content[i].caNo == accounts[j].AccNum
                                         && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
                                         && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
                                         && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
@@ -2016,7 +2015,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             {
                                 DownTimeEntity SMEntity = DownTimeEntity.GetByCode(Constants.SMART_METER_SYSTEM);
                                 DownTimeEntity EBEntity = DownTimeEntity.GetByCode(Constants.EB_SYSTEM);
-                                if (SMEntity != null && EBEntity != null && SMEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
+                                //if (SMEntity != null && EBEntity != null && SMEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
+                                if (SMEntity != null && EBEntity != null && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
                                 {
                                     Utility.ShowBCRMDOWNTooltip(this.Activity, EBEntity, () =>
                                     {

@@ -37,8 +37,9 @@ using Android.Gms.Extensions;
 using myTNB_Android.Src.Utils.Deeplink;
 using myTNB.Mobile;
 using myTNB_Android.Src.Utils.Notification;
-using myTNB_Android.Src.Base.Response;
 using System.Net.Http;
+using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
+using myTNB_Android.Src.Base.Response;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -595,6 +596,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     bool isForceCall = !UserSessions.HasUpdateSkipped(this.mSharedPref);
                     _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, isForceCall);
 
+                    await CustomEligibility.EvaluateEligibilityTenantDBR((Context)this.mView);
+
                     UserInfo usrinf = new UserInfo();
                     usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
 
@@ -888,6 +891,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     bool isForceCall = !UserSessions.HasUpdateSkipped(this.mSharedPref);
                     _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, isForceCall);
+
+                    await CustomEligibility.EvaluateEligibilityTenantDBR((Context)this.mView);
 
                     UserInfo usrinf = new UserInfo();
                     usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
