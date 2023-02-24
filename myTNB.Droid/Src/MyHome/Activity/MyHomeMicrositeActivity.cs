@@ -159,6 +159,7 @@ namespace myTNB_Android.Src.MyHome.Activity
 
                     //STUB
                     //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
+                    Log.Debug("[DEBUG]", "ssoURL: " + ssoURL);
                     micrositeWebview.LoadUrl(ssoURL);
                 });
             }
