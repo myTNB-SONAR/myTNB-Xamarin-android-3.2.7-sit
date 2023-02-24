@@ -1393,7 +1393,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
                                 {
                                     if (flagOwner
-                                        && billRenderingTenantResponse.Content[i].caNo == accounts[j].AccNum
+                                        && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
                                         && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
                                         && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
                                         && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)

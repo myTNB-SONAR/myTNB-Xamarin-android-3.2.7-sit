@@ -58,7 +58,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                 for (int i = 0; i < Data.Content.Count; i++)
                 {
                     PostBREligibilityIndicatorsModel data = new PostBREligibilityIndicatorsModel();
-                    data.caNo = Data.Content[i].caNo;
+                    data.CaNo = Data.Content[i].CaNo;
                     data.IsOwnerAlreadyOptIn = Data.Content[i].IsOwnerAlreadyOptIn;
                     data.IsOwnerOverRule = Data.Content[i].IsOwnerOverRule;
                     data.IsTenantAlreadyOptIn = Data.Content[i].IsTenantAlreadyOptIn;

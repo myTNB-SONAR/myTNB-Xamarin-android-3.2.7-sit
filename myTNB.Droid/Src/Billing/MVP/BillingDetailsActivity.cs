@@ -295,9 +295,9 @@ namespace myTNB_Android.Src.Billing.MVP
                 bool tenantAllowOptIn = false;
                 if (billRenderingTenantResponse != null)
                 {
-                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccountData.AccountNum).IsOwnerOverRule;
-                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccountData.AccountNum).IsOwnerAlreadyOptIn;
-                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccountData.AccountNum).IsTenantAlreadyOptIn;
+                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerOverRule;
+                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerAlreadyOptIn;
+                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsTenantAlreadyOptIn;
                     bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccountData.AccountNum).AccountHasOwner;
 
                     if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)

@@ -122,6 +122,9 @@ namespace myTNB_Android.Src.MyHome.Activity
                     string originURL = _model?.OriginURL ?? MyHomeConstants.BACK_TO_APP;
                     string redirectURL = _model?.RedirectURL ?? string.Empty;
 
+                    //STUB
+                    //redirectURL = "https://https://18.139.216.169/Application/Offerings";
+
                     UserEntity user = UserEntity.GetActive();
                     string myTNBAccountName = user?.DisplayName ?? string.Empty;
                     string signature = SSOManager.Instance.GetMyHomeSignature(myTNBAccountName
@@ -145,6 +148,9 @@ namespace myTNB_Android.Src.MyHome.Activity
 
                     string ssoURL = string.Format(_model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
 
+                    //STUB
+                    //ssoURL = string.Format("https://18.139.216.169/Sso?s={0}", signature);
+
                     micrositeWebview.SetWebChromeClient(new MyHomeWebChromeClient(this));
                     micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
                     micrositeWebview.Settings.JavaScriptEnabled = true;
@@ -158,7 +164,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                     micrositeWebview.Settings.SetSupportZoom(false);
 
                     //STUB
-                    //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
+                    global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
                     Log.Debug("[DEBUG]", "ssoURL: " + ssoURL);
                     micrositeWebview.LoadUrl(ssoURL);
                 });

@@ -798,7 +798,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
                     {
                         if (flagOwner
-                            && billRenderingTenantResponse.Content[i].caNo == accounts[j].AccNum
+                            && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
                             && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
                             && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
                             && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)

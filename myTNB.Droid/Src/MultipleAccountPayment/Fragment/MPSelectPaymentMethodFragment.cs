@@ -226,7 +226,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                                             && x.DBRType == MobileEnums.DBRTypeEnum.Paper);
 
                                                 int indexTenant = tenantList.FindIndex(x =>
-                                                            x.caNo == dbrCAForPaymentList[j]
+                                                            x.CaNo == dbrCAForPaymentList[j]
                                                             && x.IsOwnerAlreadyOptIn == false
                                                             && x.IsOwnerOverRule == false
                                                             && x.IsTenantAlreadyOptIn == false);
