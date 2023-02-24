@@ -34,6 +34,7 @@ using myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity;
 using myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity;
 using myTNB.Mobile.AWS.Managers.DS;
 using myTNB_Android.Src.Notifications.Activity;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -231,6 +232,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 GetBillRendering(mainActivity);
             }
             DeeplinkUtil.Instance.ClearDeeplinkData();
+        }
+
+        private static void DeeplinkNewBillDesignValidation(DashboardHomeActivity mainActivity)
+        {
+            if (BillRedesignUtility.Instance.ShouldShowHomeCard && BillRedesignUtility.Instance.IsAccountEligible)
+            {
+                mainActivity.NavigateToNBR();
+            }
         }
 
         internal static void ShowAddAccount(this DashboardHomeActivity mainActivity)
@@ -495,8 +504,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     //For tenant checking DBR
                     List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                    GetBillRenderingTenantResponse billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(mainActivity));
-
+                    PostBREligibilityIndicatorsResponse billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(mainActivity));
 
                     Intent intent = new Intent(mainActivity, typeof(ManageBillDeliveryActivity));
                     intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));

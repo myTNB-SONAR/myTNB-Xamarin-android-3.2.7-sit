@@ -6,6 +6,7 @@
         public const string WEBVIEW_PAYMENT = "WebViewPayment";
         public const string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";
         public const string WEBVIEW_PAYMENT_CC = "WebViewPaymentCC";
+        public const string WEBVIEW_PAYMENT_TNG = "WebViewPaymentTNG";
         public const string WEBVIEW_PAYMENT_SUCCESS = "WebViewPayment_Success";
         public const string WEBVIEW_PAYMENT_FAIL = "WebViewPayment_Fail";
         public const string WEBVIEW_PAYMENT_FINISH_DASHBOARD = "WebViewPaymentFINISH_DASHBOARD";

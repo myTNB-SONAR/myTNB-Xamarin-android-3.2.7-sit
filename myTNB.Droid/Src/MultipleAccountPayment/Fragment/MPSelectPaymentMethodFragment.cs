@@ -31,10 +31,12 @@ using System.Globalization;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile;
-using myTNB_Android.Src.SessionCache;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.Base;
+using myTNB_Android.Src.myTNBMenu.Async;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -49,6 +51,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         private static string METHOD_CREDIT_CARD = "CC";
         private static string METHOD_FPX = "FPX";
+        private static string METHOD_TNG = "TNG";
         private string param3 = "0";
         private string selectedPaymentMethod;
         private CreditCard selectedCard;
@@ -58,6 +61,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         TextView lblTotalAmount;
         TextView lblCreditDebitCard;
         TextView lblOtherPaymentMethods;
+        TextView lblTNGPayment;
 
         TextView lblCvvInfo;
         TextView lblBack;
@@ -82,6 +86,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         Button btnAddCard;
         Button btnFPXPayment;
+        Button btnTNGPayment;
 
         private MaterialDialog mRequestingPaymentDialog;
         private MaterialDialog mGetRegisteredCardsDialog;
@@ -91,7 +96,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         private bool isClicked = false;
-        GetBillRenderingTenantResponse billRenderingTenantResponse;
+
+        private static ISharedPreferences mPreferences;
         bool tenantDBR = false;
         //Mark: Application Payment
         private bool IsApplicationPayment;
@@ -101,7 +107,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         private string ApplicationSystem = string.Empty;
         private string StatusId = string.Empty;
         private string StatusCode = string.Empty;
-        
+
         public bool IsActive()
         {
             return IsVisible;
@@ -213,43 +219,31 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         && multiBillRenderingResponse.Content != null
                                         && multiBillRenderingResponse.Content.Count > 0)
                                     {
-                                        billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dbrCAForPaymentList, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(Activity));
-
-                                        for (int j = 0; j < dbrCAForPaymentList.Count; j++)
+                                        List<PostBREligibilityIndicatorsModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
+                                        if (tenantList != null && tenantList.Count > 0)
                                         {
-                                            int index = multiBillRenderingResponse.Content.FindIndex(x =>
-                                                x.ContractAccountNumber == dbrCAForPaymentList[j]
-                                                && x.DBRType == MobileEnums.DBRTypeEnum.Paper
-                                                );
-
-                                            if (billRenderingTenantResponse != null
-                                               && billRenderingTenantResponse.StatusDetail != null
-                                               && billRenderingTenantResponse.StatusDetail.IsSuccess
-                                               && billRenderingTenantResponse.Content != null)
+                                            for (int j = 0; j < dbrCAForPaymentList.Count; j++)
                                             {
-                                               int indexTenant = billRenderingTenantResponse.Content.FindIndex(x =>
-                                               x.CaNo == dbrCAForPaymentList[j]
-                                               && x.IsOwnerAlreadyOptIn == false
-                                               && x.IsOwnerOverRule == false
-                                               && x.IsTenantAlreadyOptIn == false
-                                               );
+                                                int index = multiBillRenderingResponse.Content.FindIndex(x =>
+                                                            x.ContractAccountNumber == dbrCAForPaymentList[j]
+                                                            && x.DBRType == MobileEnums.DBRTypeEnum.Paper);
 
-
+                                                int indexTenant = tenantList.FindIndex(x =>
+                                                            x.caNo == dbrCAForPaymentList[j]
+                                                            && x.IsOwnerAlreadyOptIn == false
+                                                            && x.IsOwnerOverRule == false
+                                                            && x.IsTenantAlreadyOptIn == false);
                                                 if (indexTenant > -1)
                                                 {
                                                     tenantDBR = true;
                                                 }
-                                            }
-                                           
 
-                                            if (index > -1)
-                                            {
-                                                PaymentActivity.CAsWithPaperBillList.Add(dbrCAForPaymentList[index]);
+                                                if (index > -1)
+                                                {
+                                                    PaymentActivity.CAsWithPaperBillList.Add(dbrCAForPaymentList[index]);
+                                                }
                                             }
-                                            
-
                                         }
-                                        
                                     }
                                 }
                             }
@@ -343,6 +337,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 lblTotalAmount = rootView.FindViewById<TextView>(Resource.Id.lblTotalAmount);
                 lblCreditDebitCard = rootView.FindViewById<TextView>(Resource.Id.lblCreditDebitCard);
                 lblOtherPaymentMethods = rootView.FindViewById<TextView>(Resource.Id.lblOtherPayment);
+                lblTNGPayment = rootView.FindViewById<TextView>(Resource.Id.lblTNGPayment);
 
                 lblCvvInfo = rootView.FindViewById<TextView>(Resource.Id.lblCVVInfo);
                 lblBack = rootView.FindViewById<TextView>(Resource.Id.lblBack);
@@ -414,18 +409,38 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                 };
 
+                btnTNGPayment = rootView.FindViewById<Button>(Resource.Id.btnTNGPayment);
+                btnTNGPayment.Click += delegate
+                {
+                    DownTimeEntity pgTNGEntity = DownTimeEntity.GetByCode(Constants.PG_TNG_SYSTEM);
+                    if (pgTNGEntity != null && pgTNGEntity.IsDown)
+                    {
+                        Utility.ShowBCRMDOWNTooltip(this.Activity, pgTNGEntity, () =>
+                        {
+                        });
+                    }
+                    else
+                    {
+                        HideErrorMessageSnakebar();
+                        selectedPaymentMethod = METHOD_TNG;
+                        selectedCard = null;
+                        InitiatePaymentRequest();
+                        DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_TNG);
+                    }
+                };
+
                 listAddedCards = rootView.FindViewById<ListView>(Resource.Id.listAddedCards);
                 cardAdapter = new MPAddCardAdapter(Activity, registerdCards);
                 listAddedCards.Adapter = cardAdapter;
                 cardAdapter.OnItemClick += OnItemClick;
 
                 TextViewUtils.SetMuseoSans300Typeface(lblTotalAmount);
-                TextViewUtils.SetMuseoSans500Typeface(lblCreditDebitCard, lblOtherPaymentMethods, txtTotalAmount);
-                TextViewUtils.SetMuseoSans300Typeface(btnAddCard, btnFPXPayment);
+                TextViewUtils.SetMuseoSans500Typeface(lblCreditDebitCard, lblOtherPaymentMethods, txtTotalAmount, lblTNGPayment);
+                TextViewUtils.SetMuseoSans300Typeface(btnAddCard, btnFPXPayment, btnTNGPayment);
 
                 TextViewUtils.SetTextSize10(lblTotalAmount);
-                TextViewUtils.SetTextSize16(txtTotalAmount, btnFPXPayment, btnAddCard);
-                TextViewUtils.SetTextSize18(lblCreditDebitCard, lblOtherPaymentMethods);
+                TextViewUtils.SetTextSize16(txtTotalAmount, btnFPXPayment, btnAddCard, btnTNGPayment);
+                TextViewUtils.SetTextSize18(lblCreditDebitCard, lblOtherPaymentMethods, lblTNGPayment);
                 TextViewUtils.SetTextSize22(edtNumber1, edtNumber2, edtNumber3, edtNumber4);
 
                 TextViewUtils.SetMuseoSans300Typeface(lblCvvInfo);
@@ -434,8 +449,39 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 lblCreditDebitCard.Text = Utility.GetLocalizedLabel("Common", "cards");
                 lblOtherPaymentMethods.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "otherPaymentMethods");
                 lblTotalAmount.Text = Utility.GetLocalizedLabel("Common", "totalAmountRM").ToUpper();
+                lblTNGPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "eWalletPaymentMethods");
+                btnTNGPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "tngTitle");
                 btnAddCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "addCard");
                 btnFPXPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "fpxTitle");
+
+                if (TNGUtility.Instance.IsAccountEligible)
+                {
+                    if (IsApplicationPayment)
+                    {
+                        if (!MyTNBAccountManagement.GetInstance().IsTNGEnableVerify())
+                        {
+                            btnTNGPayment.Visibility = ViewStates.Gone;
+                            lblTNGPayment.Visibility = ViewStates.Gone;
+                        }
+                        else
+                        {
+                            btnTNGPayment.Visibility = ViewStates.Visible;
+                            lblTNGPayment.Visibility = ViewStates.Visible;
+                            btnTNGPayment.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.tng, 0, 0, 0);
+                        }
+                    }
+                    else
+                    {
+                        btnTNGPayment.Visibility = ViewStates.Visible;
+                        lblTNGPayment.Visibility = ViewStates.Visible;
+                        btnTNGPayment.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.tng, 0, 0, 0);
+                    }
+                }
+                else
+                {
+                    btnTNGPayment.Visibility = ViewStates.Gone;
+                    lblTNGPayment.Visibility = ViewStates.Gone;
+                }
 
                 //if(selectedAccount != null){
 
@@ -920,6 +966,29 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         }
 
+        public void InitiateTNGPayment(PaymentTransactionIdResponse response)
+        {
+            try
+            {
+                PaymentTransactionIdResponse.InitiatePaymentResult initiatePaymentResult = response.GetData();
+                string parameter1 = "Param1=18";         //Touch N Go = 18
+                string parameter2 = "Param2=" + initiatePaymentResult.payMerchant_transID;
+                string parameter3 = "Param3=" + param3;
+                string langProp = "lang=" + LanguageUtil.GetAppLanguage().ToUpper();
+                var uri = Android.Net.Uri.Parse(initiatePaymentResult.action +
+                    "?" + parameter1 + "&" + parameter2 + "&" + parameter3 + "&" + langProp);
+
+                Bundle bundle = new Bundle();
+                bundle.PutString("html_TnG", uri.ToString());
+                bundle.PutString("SummaryDashBoardRequest", JsonConvert.SerializeObject(summaryDashBoardRequest));
+                ((PaymentActivity)Activity).NextFragment(this, bundle);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public bool IsValidPayableAmount()
         {
             bool isValid = true;
@@ -944,7 +1013,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         isValid = false;
                         //txtTotalAmount.Error = "For payments more than RM 5000, please use FPX payment mode.";
-                        ShowErrorMessage(Utility.GetLocalizedLabel("SelectPaymentMethod", "maxCCAmountMessage"));
+                        //ShowErrorMessage(Utility.GetLocalizedLabel("SelectPaymentMethod", "maxCCAmountMessage"));
+                        ErrorDialog(Utility.GetLocalizedLabel("SelectPaymentMethod", "maxCCAmountMessage"));
                     }
 
                 }
@@ -1220,6 +1290,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         {
                             InitiateSubmitPayment(response, cardDetails);
                         }
+                        else if (selectedPaymentMethod.Equals(METHOD_TNG))
+                        {
+                            InitiateTNGPayment(response);
+                        }
                         else
                         {
                             InitiateFPXPayment(response);
@@ -1253,7 +1327,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         {
                             txt = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
                         }
-                        ShowErrorMessage(response.Response.DisplayMessage);
+                        //ShowErrorMessage(response.Response.DisplayMessage);
+                        ErrorDialog(txt);
                     }
 
                 }
@@ -1266,6 +1341,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private void ErrorDialog(string message)
+        {
+            MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    .SetTitle("")
+                    .SetMessage(message)
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                    .SetCTAaction(() => { isClicked = false; })
+                    .Build();
+            eppTooltip.Show();
         }
     }
 }

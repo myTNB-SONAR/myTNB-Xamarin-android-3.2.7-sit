@@ -549,6 +549,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     detail.Content.IsPaymentAllowed = paymentResponse.D.AllowApplicationPayment;
                     detail.Content.IsPaymentEnabled = !paymentResponse.D.ApplicationPaymentDisabled;
                     detail.Content.IsPaymentAvailable = !paymentResponse.D.ApplicationPaymentUnavailable;
+                    detail.Content.IsTNGEnableApplicationStatus = !paymentResponse.D.IsTngDisableAtApplicationPayment;
+
                 }
             }
             catch (Exception ex)
