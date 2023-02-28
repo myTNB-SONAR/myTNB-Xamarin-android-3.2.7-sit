@@ -183,7 +183,8 @@ namespace myTNB_Android.Src.MyHome
                     ServiceName = model.ServiceName,
                     SSODomain = model.SSODomain,
                     OriginURL = model.OriginURL,
-                    RedirectURL = model.RedirectURL
+                    RedirectURL = model.RedirectURL,
+                    CancelURL = string.Empty
                 };
 
                 Intent micrositeActivity = new Intent(this.Activity, typeof(MyHomeMicrositeActivity));

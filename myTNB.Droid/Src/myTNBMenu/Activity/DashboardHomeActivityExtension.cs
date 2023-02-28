@@ -31,6 +31,7 @@ using myTNB_Android.Src.ManageBillDelivery.MVP;
 using System.Linq;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.AWS.Models.DBR;
+using myTNB_Android.Src.MyHome;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -40,6 +41,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             switch (DeeplinkUtil.Instance.TargetScreen)
             {
+                case Deeplink.ScreenEnum.Home:
+                    DeeplinkHomeValidation(mainActivity);
+                    break;
                 case Deeplink.ScreenEnum.Rewards:
                     DeeplinkRewardValidation(mainActivity);
                     break;
@@ -64,6 +68,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 default:
                     break;
             }
+        }
+
+        private static void DeeplinkHomeValidation(DashboardHomeActivity mainActivity)
+        {
+            string message = DeeplinkUtil.Instance.ToastMessage;
+            if (message.IsValid())
+            {
+                ToastUtils.OnDisplayToast(mainActivity, message);
+            }
+            DeeplinkUtil.Instance.ClearDeeplinkData();
         }
 
         private static void DeeplinkRewardValidation(this DashboardHomeActivity mainActivity)
@@ -114,15 +128,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private static void DeeplinkAppListingValidation(DashboardHomeActivity mainActivity)
         {
-            DeeplinkUtil.Instance.ClearDeeplinkData();
             mainActivity.ShowProgressDialog();
             Task.Run(() =>
             {
-                _ = SearchApplicationType(mainActivity);
+                _ = SearchApplicationType(mainActivity, DeeplinkUtil.Instance.ToastMessage);
+                DeeplinkUtil.Instance.ClearDeeplinkData();
             });
         }
 
-        private static async Task SearchApplicationType(DashboardHomeActivity mainActivity)
+        private static async Task SearchApplicationType(DashboardHomeActivity mainActivity, string toastMessage = "")
         {
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
@@ -147,6 +161,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     AllApplicationsCache.Instance.Clear();
                     AllApplicationsCache.Instance.Reset();
                     Intent applicationLandingIntent = new Intent(mainActivity, typeof(ApplicationStatusLandingActivity));
+                    applicationLandingIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
                     mainActivity.StartActivity(applicationLandingIntent);
                 }
                 else

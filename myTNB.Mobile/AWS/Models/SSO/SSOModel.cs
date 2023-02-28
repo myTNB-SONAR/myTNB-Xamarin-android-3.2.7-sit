@@ -39,5 +39,6 @@ namespace myTNB.Mobile
         public string AppRef { set; get; }
         public int? ApplicationModuleID { set; get; }
         public string MobileNo { get; set; }
+        public string CancelUrl { set; get; }
     }
 }

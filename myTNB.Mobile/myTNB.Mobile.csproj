@@ -43,7 +43,7 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />
@@ -130,6 +130,15 @@
     <None Remove="AWS\Models\DBR\Get Multi Bill Rendering\" />
     <None Remove="API\Managers\FeatureInfo\" />
     <None Remove="AWS\Services\Account Statement\" />
+    <None Remove="Xamarin.Essentials" />
+    <None Remove="API\Models\myHome\" />
+    <None Remove="Constants\" />
+    <None Remove="Constants\Application Status\" />
+    <None Remove="AWS\Services\Application Status\" />
+    <None Remove="AWS\Managers\Application Status\" />
+    <None Remove="AWS\Models\Application Status\" />
+    <None Remove="AWS\Models\Application Status\Delete NC Draft\" />
+    <None Remove="System.IdentityModel.Tokens.Jwt" />
     <None Remove="AWS\Models\Account Statement\Statement\" />
     <None Remove="AWS\Models\Account Statement\Notification\" />
     <None Remove="AWS\Models\Eligibility\Post Eligibility\" />

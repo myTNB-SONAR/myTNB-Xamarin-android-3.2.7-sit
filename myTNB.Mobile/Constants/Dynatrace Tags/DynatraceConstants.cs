@@ -255,5 +255,82 @@
                 }
             }
         }
+
+        public struct PushNotification
+        {
+            public struct Screens
+            {
+                public struct Landing
+                {
+                    public const string Visit = "App_Visit_AllNotification";
+                }
+                public struct Details
+                {
+                    public const string Visit = "App_Visit_Notification";
+                    public const string Contractor_Completed = "App_Visit_ContractorCompletedNotificationScreen";
+                    public const string Non_Contractor_Completed = "App_Visit_NonContractorCompletedNotificationScreen";
+                }
+            }
+
+            public struct CTAs
+            {
+                public struct Landing
+                {
+                    public const string Back = "App_Action_AllNotification_Back";
+                }
+                public struct Details
+                {
+                    public const string Back = "App_Action_Notification_Back";
+                    public const string Verify_Now = "App_Action_VerifyAgainNotification_VerifyNow";
+                    public const string Back_Contractor_Completed = "App_Action_ContractorCompletedNotificationScreen_Back";
+                    public const string Back_Non_Contractor_Completed = "App_Action_NonContractorCompletedNotificationScreen_Back";
+                    public const string View_Application_Details_Contractor_Completed = "App_Action_ContractorCompletedNotificationScreen_ViewApplicationDetails";
+                    public const string View_Application_Details_Non_Contractor_Completed = "App_Action_NonContractorCompletedNotificationScreen_ViewApplicationDetails";
+                    public const string Submit_Now = "App_Action_Notification_SubmitNow";
+                }
+            }
+
+            public struct Banner
+            {
+                public const string myHome_Reminder = "App_Visit_PushNotificationReminder";
+            }
+        }
+
+        public struct ApplicationStatus
+        {
+            public struct Screens
+            {
+                public struct Landing
+                {
+                    public const string Visit = "App_Visit_StartYourElectricity_ApplicationStatus";
+                }
+                public struct Details
+                {
+                    public const string Visit = "App_Visit_StartYourElectricity_ApplicationDetails";
+                    public const string Cancel_Application = "App_Visit_ApplicationDetails_Cancel";
+                }
+            }
+            public struct CTAs
+            {
+                public struct Landing
+                {
+                    public const string Back = "App_Action_ApplicationStatus_Back";
+                    public const string Search_Applications = "App_Action_ApplicationStatus_SearchApplicationStatus";
+                    public const string Filter_Applications = "App_Action_ApplicationStatus_Filter";
+                }
+
+                public struct Details
+                {
+                    public const string Back = "App_Action_ApplicationDetails_Back";
+                    public const string Start_Application = "App_Action_ApplicationDetails_StartApplication";
+                    public const string Activity_Log = "App_Action_ApplicationDetails_ViewActivityLog";
+                    public const string Delete = "App_Action_ApplicationDetails_Delete";
+                    public const string Resume = "App_Action_ApplicationDetails_Resume";
+                    public const string Cancel_Application_Im_Sure = "App_Action_ApplicationDetails_Cancel_YesImSure";
+                    public const string Cancel_Application_Cancel = "App_Action_ApplicationDetails_Cancel_Cancel";
+                    public const string Continue_Application = "App_Action_ApplicationDetails_Continue";
+                }
+            }
+        }
     }
 }

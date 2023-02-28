@@ -259,7 +259,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             ShowProgressDialog();
                             Task.Run(() =>
                             {
-                                _ = GetAccessToken();
+                                _ = GetAccessToken(string.Empty);
                             });
                         }
                     }
@@ -289,7 +289,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
         }
 
-        private async Task GetAccessToken()
+        private async Task GetAccessToken(string cancelUrl)
         {
             UserEntity user = UserEntity.GetActive();
             string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
@@ -300,7 +300,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     SSODomain = applicationDetailDisplay.MyHomeDetails.SSODomain,
                     OriginURL = applicationDetailDisplay.MyHomeDetails.OriginURL,
-                    RedirectURL = applicationDetailDisplay.MyHomeDetails.RedirectURL
+                    RedirectURL = applicationDetailDisplay.MyHomeDetails.RedirectURL,
+                    CancelURL = cancelUrl
                 };
 
                 Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
@@ -407,7 +408,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         ShowProgressDialog();
                         Task.Run(() =>
                         {
-                            _ = GetAccessToken();
+                            _ = GetAccessToken(AWSConstants.ApplicationStatusLandingCancelURL);
                         });
                     }
                     return;
@@ -825,7 +826,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 }
                 if (extras != null)
                 {
-                    if (extras.ContainsKey("applicationStatusResponse"))
+                    if (extras.ContainsKey(MyHomeConstants.APPLICATION_DETAIL_RESPONSE))
                     {
                         ctaSelection.Visibility = ViewStates.Gone;
                         txtApplicationStatusUpdated.Visibility = ViewStates.Gone;

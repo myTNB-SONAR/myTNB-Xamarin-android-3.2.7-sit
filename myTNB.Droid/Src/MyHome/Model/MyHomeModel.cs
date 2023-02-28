@@ -19,6 +19,7 @@ namespace myTNB_Android.Src.MyHome.Model
         public string OriginURL { get; set; }
         public string RedirectURL { get; set; }
         public int DisplayType { get; set; }
+        public string CancelURL { get; set; }
         public List<MyServiceModel> Children { get; set; }
         public ServiceEnum ServiceType { get; set; }
     }

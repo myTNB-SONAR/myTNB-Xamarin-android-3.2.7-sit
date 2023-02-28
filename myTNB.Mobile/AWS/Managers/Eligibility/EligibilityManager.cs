@@ -55,7 +55,7 @@ namespace myTNB.Mobile
             maxAccountList = maxAccountList == 0 ? MobileConstants.MaxAccountList : maxAccountList;
             if (caList != null
                 && caList.Count <= maxAccountList)
-            { 
+            {
                 try
                 {
                     IEligibilityService service = RestService.For<IEligibilityService>(AWSConstants.Domains.Domain);

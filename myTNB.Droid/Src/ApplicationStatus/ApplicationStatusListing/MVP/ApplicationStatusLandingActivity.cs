@@ -29,6 +29,7 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
@@ -400,7 +401,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 if (resultCode == Result.Ok)
                 {
                     string message = data.Extras.GetString(Constants.DELETE_DRAFT_MESSAGE);
-                    ToastUtils.OnDisplayToast(this, message ?? string.Empty);
+                    if (message.IsValid())
+                    {
+                        ToastUtils.OnDisplayToast(this, message ?? string.Empty);
+                    }
                 }
             }
             HideProgressDialog();
@@ -540,6 +544,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                         TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                         tv.SetMaxLines(5);
                         mRemoveSnackbar.Show();
+                    }
+                }
+                if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                {
+                    string message = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                    if (message.IsValid())
+                    {
+                        ToastUtils.OnDisplayToast(this, message ?? string.Empty);
                     }
                 }
             }

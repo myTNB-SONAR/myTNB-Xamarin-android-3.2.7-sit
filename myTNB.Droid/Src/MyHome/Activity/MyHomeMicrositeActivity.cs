@@ -121,6 +121,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                 {
                     string originURL = _model?.OriginURL ?? MyHomeConstants.BACK_TO_APP;
                     string redirectURL = _model?.RedirectURL ?? string.Empty;
+                    string cancelURL = _model?.CancelURL ?? string.Empty;
 
                     //STUB
                     //redirectURL = "https://https://18.139.216.169/Application/Offerings";
@@ -144,7 +145,8 @@ namespace myTNB_Android.Src.MyHome.Activity
                     , user.Email
                     , string.Empty
                     , null
-                    , user.MobileNo);
+                    , user.MobileNo
+                    , cancelURL);
 
                     string ssoURL = string.Format(_model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
 
@@ -164,7 +166,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                     micrositeWebview.Settings.SetSupportZoom(false);
 
                     //STUB
-                    global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
+                    //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
                     Log.Debug("[DEBUG]", "ssoURL: " + ssoURL);
                     micrositeWebview.LoadUrl(ssoURL);
                 });
@@ -214,7 +216,7 @@ namespace myTNB_Android.Src.MyHome.Activity
         {
             MyHomeMicrositeActivity _micrositeWebViewActivity;
 
-            private static int filechooser = 1;
+            private static readonly int _fileChooser = 1;
             private IValueCallback message;
 
             public MyHomeWebChromeClient(MyHomeMicrositeActivity webViewActivity)
@@ -239,7 +241,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                     intentArray = new Intent[0];
                 }
 
-                this._micrositeWebViewActivity.StartsActivity(contentSelectionIntent, filechooser, this.OnActivityResult);
+                this._micrositeWebViewActivity.StartsActivity(contentSelectionIntent, _fileChooser, this.OnActivityResult);
 
                 return true;
             }
@@ -248,7 +250,7 @@ namespace myTNB_Android.Src.MyHome.Activity
             {
                 if (data != null)
                 {
-                    if (requestCode == filechooser)
+                    if (requestCode == _fileChooser)
                     {
                         if (null == this.message)
                         {
@@ -292,11 +294,6 @@ namespace myTNB_Android.Src.MyHome.Activity
                     shouldOverride = true;
                     mActivity.OnBackPressed();
                 }
-                else if (url.Contains(MyHomeConstants.BACK_TO_HOME))
-                {
-                    shouldOverride = true;
-                    mActivity.OnShowDashboard();
-                }
                 else if (url.Contains(MyHomeConstants.EXTERNAL_BROWSER))
                 {
                     shouldOverride = true;
@@ -314,10 +311,29 @@ namespace myTNB_Android.Src.MyHome.Activity
                         }
                     }
                 }
+                else if (url.Contains(AWSConstants.BackToHomeCancelURL))
+                {
+                    shouldOverride = true;
+                    DeeplinkUtil.Instance.SetTargetScreen(Deeplink.ScreenEnum.Home);
+                    DeeplinkUtil.Instance.SetToastMessage(Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application));
+                    mActivity.OnShowDashboard();
+                }
+                else if (url.Contains(AWSConstants.ApplicationStatusLandingCancelURL))
+                {
+                    shouldOverride = true;
+                    DeeplinkUtil.Instance.SetTargetScreen(Deeplink.ScreenEnum.ApplicationListing);
+                    DeeplinkUtil.Instance.SetToastMessage(Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application));
+                    mActivity.OnShowDashboard();
+                }
                 else if (url.Contains(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
                 {
                     shouldOverride = true;
                     DeeplinkUtil.Instance.SetTargetScreen(Deeplink.ScreenEnum.ApplicationListing);
+                    mActivity.OnShowDashboard();
+                }
+                else if (url.Contains(MyHomeConstants.BACK_TO_HOME))
+                {
+                    shouldOverride = true;
                     mActivity.OnShowDashboard();
                 }
 

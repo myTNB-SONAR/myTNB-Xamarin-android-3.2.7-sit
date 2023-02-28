@@ -107,7 +107,8 @@
     "dbrPaperBillNonOwner": "Anda menerima <b>Bil Bercetak</b> untuk akaun ini.",
     "dbrEmail": "Anda menerima Bil <b>myTNB & E-mel</b> untuk akaun ini.",
     "dbrWhatsApp": "Anda menerima Bil <b>myTNB & Whatsapp</b> untuk akaun ini.",
-    "dbrViaMyTNB": "Akaun anda adalah mesra alam dengan <b>Bil myTNB!</b>"
+    "dbrViaMyTNB": "Akaun anda adalah mesra alam dengan <b>Bil myTNB!</b>",
+    "applicationCancelledMessage": "Permohonan anda telah dipadamkan."
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",

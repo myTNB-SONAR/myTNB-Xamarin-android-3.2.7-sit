@@ -30,6 +30,8 @@
         //WEB Actions
         internal const string BackToApp = "mytnbapp://action=backToApp";
         internal const string BackToHome = "mytnbapp://action=backToHome";
+        public const string BackToHomeCancelURL = "mytnbapp://action=backToHomeWithCancelToast";
+        public const string ApplicationStatusLandingCancelURL = "mytnbapp://action=applicationStatusLandingWithCancelToast";
 
         //Domains
         public struct Domains

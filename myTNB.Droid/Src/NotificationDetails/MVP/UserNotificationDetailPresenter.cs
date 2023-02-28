@@ -432,7 +432,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitNow"),
-                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
+                                   delegate () { ViewMyHomeMicrosite(notificationDetails, AWSConstants.BackToHomeCancelURL); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
@@ -452,7 +452,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "otpVerifyNow"),
-                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
+                                   delegate () { ViewMyHomeMicrosite(notificationDetails, AWSConstants.BackToHomeCancelURL); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
@@ -725,19 +725,19 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             }
         }
 
-        private void ViewMyHomeMicrosite(Models.NotificationDetails notificationDetails)
+        private void ViewMyHomeMicrosite(Models.NotificationDetails notificationDetails, string cancelUrl = "")
         {
             if (notificationDetails != null && notificationDetails.MyHomeDetails != null)
             {
                 this.mView.ShowProgressDialog();
                 Task.Run(() =>
                 {
-                    _ = GetAccessToken(notificationDetails);
+                    _ = GetAccessToken(notificationDetails, cancelUrl);
                 });
             }
         }
 
-        private async Task GetAccessToken(Models.NotificationDetails notificationDetails)
+        private async Task GetAccessToken(Models.NotificationDetails notificationDetails, string cancelUrl)
         {
             UserEntity user = UserEntity.GetActive();
             string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
@@ -748,7 +748,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 {
                     SSODomain = notificationDetails.MyHomeDetails.SSODomain,
                     OriginURL = notificationDetails.MyHomeDetails.OriginURL,
-                    RedirectURL = notificationDetails.MyHomeDetails.RedirectURL
+                    RedirectURL = notificationDetails.MyHomeDetails.RedirectURL,
+                    CancelURL = cancelUrl
                 };
 
                 this.mActivity.RunOnUiThread(()=>
