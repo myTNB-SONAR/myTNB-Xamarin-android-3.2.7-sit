@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -29,8 +30,10 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Deeplink;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
@@ -740,7 +743,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        private async void GetApplicationStatus(int position)
+        private void GetApplicationStatus(int position)
         {
             try
             {
@@ -748,22 +751,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 {
                     ShowProgressDialog();
                     ApplicationModel application = GetAllApplications[position];
-                    ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(application.SavedApplicationId
-                        , application.ApplicationId
-                        , application.ApplicationType
-                        , application.System);
 
-                    if (response.StatusDetail.IsSuccess)
+                    Task.Run(() =>
                     {
-                        Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
-                        applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(response.Content));
-                        StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE);
-                    }
-                    else
-                    {
-                        ShowApplicaitonPopupMessage(this, response.StatusDetail);
-                    }
-                    HideProgressDialog();
+                        _ = OnGetApplicationStatus(application);
+                    });
                 }
                 else
                 {
@@ -775,7 +767,31 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public async void ShowApplicaitonPopupMessage(Activity context, StatusDetail statusDetail)
+
+        private async Task OnGetApplicationStatus(ApplicationModel application)
+        {
+            ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(application.SavedApplicationId
+                , application.ApplicationId
+                , application.ApplicationType
+                , application.System);
+
+            this.RunOnUiThread(() =>
+            {
+                if (response.StatusDetail.IsSuccess)
+                {
+                    Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                    applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(response.Content));
+                    StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE);
+                }
+                else
+                {
+                    ShowApplicationPopupMessage(this, response.StatusDetail);
+                }
+                HideProgressDialog();
+            });
+        }
+
+        public void ShowApplicationPopupMessage(Activity context, StatusDetail statusDetail)
         {
             MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                 .SetTitle(statusDetail.Title)

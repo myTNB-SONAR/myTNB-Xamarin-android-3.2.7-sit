@@ -55,7 +55,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [BindView(Resource.Id.rootview)]
         LinearLayout rootview;
 
-        const string PAGE_ID = "ApplicationStatus";
+        const string PAGE_ID = "ApplicationStatusDetails";
         public ApplicationStatusDetailProgressAdapter adapter;
         ApplicationStatusDetailSubDetailAdapter subAdapter;
         RecyclerView.LayoutManager layoutManager;
@@ -1054,14 +1054,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.StartApplication)
                             {
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
-                                btnPrimaryCTA.Text = "Start Application";
+                                btnPrimaryCTA.Text = GetLabelByLanguage(ApplicationStatusDetails.CTATitles.I18N_StartApplication);
                                 btnPrimaryCTA.Enabled = true;
                                 btnPrimaryCTA.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_round_button_background);
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteAppication)
                             {
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
-                                btnPrimaryCTA.Text = "Delete";
+                                btnPrimaryCTA.Text = GetLabelByLanguage(ApplicationStatusDetails.CTATitles.I18N_Delete);
                                 btnPrimaryCTA.Enabled = true;
                                 btnPrimaryCTA.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.tomato));
                                 btnPrimaryCTA.Background = ContextCompat.GetDrawable(this, Resource.Drawable.red_outline_round_button_background);
@@ -1070,12 +1070,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             {
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Visible;
 
-                                btnApplicationStatusViewBill.Text = "Delete";
+                                btnApplicationStatusViewBill.Text = GetLabelByLanguage(ApplicationStatusDetails.CTATitles.I18N_Delete);
                                 btnApplicationStatusViewBill.Enabled = true;
                                 btnApplicationStatusViewBill.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.tomato));
                                 btnApplicationStatusViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.red_outline_round_button_background);
 
-                                btnApplicationStatusPay.Text = "Resume";
+                                btnApplicationStatusPay.Text = GetLabelByLanguage(ApplicationStatusDetails.CTATitles.I18N_Resume);
                                 btnApplicationStatusPay.Enabled = true;
                                 btnApplicationStatusPay.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_round_button_background);
                             }
