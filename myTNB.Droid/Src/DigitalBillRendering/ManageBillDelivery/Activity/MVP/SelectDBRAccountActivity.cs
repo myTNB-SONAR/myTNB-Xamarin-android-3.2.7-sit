@@ -11,6 +11,7 @@ using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.AWS.Models.DBR;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DBR.DBRApplication.Adapter;
@@ -208,7 +209,7 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                     AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
                 }
 
-                
+
                 GetBillRenderingResponse response = await DBRManager.Instance.GetBillRendering(accountNumber, AccessTokenCache.Instance.GetAccessToken(this), isOwner);
 
                 HideProgressDialog();
@@ -219,7 +220,7 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                 {
                     //For tenant checking DBR
                     List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                    GetBillRenderingTenantResponse billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+                    PostBREligibilityIndicatorsResponse billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
 
                     Intent returnIntent = new Intent();
                     returnIntent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(response));

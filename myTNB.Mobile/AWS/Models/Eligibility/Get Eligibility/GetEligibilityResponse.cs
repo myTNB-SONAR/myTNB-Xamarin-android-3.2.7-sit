@@ -21,6 +21,8 @@ namespace myTNB.Mobile.AWS.Models
         public BaseCAListModel BR { set; get; }
         [JsonProperty("sd")]
         public BaseCAListModel SD { set; get; }
+        [JsonProperty("tng")]
+        public BaseCAListModel TNG { set; get; }
         [JsonProperty("ds")]
         public BaseCAListModel DS { set; get; }
     }
@@ -46,6 +48,21 @@ namespace myTNB.Mobile.AWS.Models
         [JsonProperty("contractAccounts")]
         public List<ContractAccountsModel> ContractAccounts { set; get; }
     }
+
+    /*
+    public class DBRModel
+    {
+        [JsonProperty("contractAccounts")]
+        public List<ContractAccountsModel> ContractAccounts { set; get; }
+    }
+
+    public class EBModel
+
+    {
+        [JsonProperty("contractAccounts")]
+        public List<ContractAccountsModel> ContractAccounts { set; get; }
+    }
+    */
 
     public class ContractAccountsModel
     {

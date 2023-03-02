@@ -109,15 +109,14 @@ namespace myTNB.Mobile.AWS.Models
             get
             {
                 string message = string.Empty;
-                //if (DBRType == MobileEnums.DBRTypeEnum.Paper)
-                //{
-                //    message = LanguageManager.Instance.GetCommonValue(IsOwner
-                //        ? I18NConstants.DBR_PaperBillOwner
-                //        : I18NConstants.DBR_PaperBillTenant);
+                if (DBRType == MobileEnums.DBRTypeEnum.Paper)
+                {
+                    message = LanguageManager.Instance.GetCommonValue(IsOwner
+                        ? I18NConstants.DBR_PaperBillOwner
+                        : I18NConstants.DBR_PaperBillTenant);
 
-                //   // message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_PaperBillOwner); //owner and tenant using the same copywriting
-                //}
-                if (DBRType == MobileEnums.DBRTypeEnum.Email
+                }
+                else if (DBRType == MobileEnums.DBRTypeEnum.Email
                     || DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
                 {
                     message = LanguageManager.Instance.GetCommonValue(I18NConstants.DBR_Email);
@@ -131,6 +130,7 @@ namespace myTNB.Mobile.AWS.Models
             }
         }
 
+        [JsonIgnore]
         public bool IsOwner
         {
             set; get;

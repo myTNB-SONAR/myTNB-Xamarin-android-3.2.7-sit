@@ -170,12 +170,12 @@ namespace myTNB.Mobile
             }
 
             List<string> residentialRateCategoryList = LanguageManager.Instance.GetConfigProperty<List<string>>(LanguageManager.ConfigPropertyEnum.ResidentialRateCategory);
-            if (residentialRateCategoryList != null && !string.IsNullOrEmpty(rateCategory))
+            if (residentialRateCategoryList != null)
             {
                 for (int i = 0; i < residentialRateCategoryList.Count; i++)
                 {
-                    string item = residentialRateCategoryList[i].ToLower();
-                    if (item == rateCategory.ToLower())
+                    string item = residentialRateCategoryList[i]?.ToLower();
+                    if (item == rateCategory?.ToLower())
                     {
                         return true;
                     }

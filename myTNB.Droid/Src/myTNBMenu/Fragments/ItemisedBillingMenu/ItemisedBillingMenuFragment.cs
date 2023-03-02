@@ -34,8 +34,8 @@ using myTNB.Mobile;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Database.Model;
 using myTNB.Mobile.AWS.Models;
-using myTNB_Android.Src.SessionCache;
 using myTNB_Android.Src.Bills.AccountStatement.Activity;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
@@ -166,7 +166,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         AccountData mSelectedAccountData;
 
         GetBillRenderingResponse billRenderingResponse;
-        GetBillRenderingTenantResponse billRenderingTenantResponse;
+        PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
         List<AccountChargeModel> selectedAccountChargesModelList;
         List<Item> itemFilterList = new List<Item>();
         List<AccountBillPayHistoryModel> selectedBillingHistoryModelList;
@@ -548,7 +548,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             base.OnViewCreated(view, savedInstanceState);
             itemisedBillingInfoShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.itemisedBillingInfoShimmer);
             paperlessTitle = view.FindViewById<TextView>(Resource.Id.paperlessTitle);
-           // paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
+            // paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
             itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
             itemisedBillingInfoShimmer.StartShimmer();
             billFilterIcon.Enabled = false;
@@ -641,7 +641,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                 //For tenant checking DBR 
                                 List<string> dBRCAs = DBRUtility.Instance.GetCAList();
                                 List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
-                                billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                                billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
                                 bool tenantAllowOptIn = false;
 
                                 if (billRenderingTenantResponse != null
@@ -649,9 +649,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                     && billRenderingTenantResponse.StatusDetail.IsSuccess
                                     && billRenderingTenantResponse.Content != null)
                                 {
-                                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerOverRule;
-                                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerAlreadyOptIn;
-                                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsTenantAlreadyOptIn;
+                                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.caNo == dbrAccount.AccountNum).IsOwnerOverRule;
+                                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == dbrAccount.AccountNum).IsOwnerAlreadyOptIn;
+                                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == dbrAccount.AccountNum).IsTenantAlreadyOptIn;
                                     bool AccountHasOwner = accounts.Find(x => x.AccNum == dbrAccount.AccountNum).AccountHasOwner;
 
                                     if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
@@ -700,7 +700,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                             {
                                                 paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBillNonOwner"));
                                             }
-                                           
                                         }
                                     }
                                     SetDynatraceScreenTags();

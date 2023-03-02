@@ -4,12 +4,10 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using Google.Android.Material.TextField;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ManageSupplyAccount.MVP;
@@ -21,19 +19,15 @@ using Refit;
 using System;
 using System.Runtime;
 using System.Collections.Generic;
-using myTNB_Android.Src.UpdatePassword.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using Org.BouncyCastle.Crypto.Signers;
-using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.ManageAccess.Activity;
 using myTNB_Android.Src.Database.Model;
 using Android.Preferences;
 using myTNB.Mobile;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile.AWS.Models;
-using myTNB_Android.Src.SessionCache;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 {
@@ -104,7 +98,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         const string PAGE_ID = "ManageAccount";
         private bool _isOwner;
         private GetBillRenderingResponse _billRenderingResponse;
-        private GetBillRenderingTenantResponse billRenderingTenantResponse;
+        private PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
 
         ISharedPreferences mPref;
 
@@ -426,7 +420,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
                     List<string> dBRCAs = DBRUtility.Instance.GetCAList();
                     bool tenantAllowOptIn = false;
-                    billRenderingTenantResponse = await DBRManager.Instance.GetBillRenderingTenant(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+                    billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
 
                     //Nullity Check
                     if (_billRenderingResponse != null
@@ -440,9 +434,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                            && billRenderingTenantResponse.StatusDetail.IsSuccess
                            && billRenderingTenantResponse.Content != null)
                         {
-                            bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
-                            bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
-                            bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
+                            bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccount.AccountNum).IsOwnerOverRule;
+                            bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
+                            bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
 
                             if (selectedAccount.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
                             {
@@ -459,8 +453,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         //{
                         //    ManageBill_container.Visibility = ViewStates.Visible;
                         //}
-
-
 
                         Handler handler = new Handler();
                         Action myAction = () =>
