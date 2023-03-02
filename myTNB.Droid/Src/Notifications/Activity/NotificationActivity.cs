@@ -27,6 +27,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.Snackbar;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.Notifications.Activity
 {
@@ -175,6 +176,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Landing.Visit);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -796,6 +799,8 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details, UserNotificationData notificationData, int position)
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Landing.View_Notification_Detail);
+
             Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_LIST_ITEM, JsonConvert.SerializeObject(notificationData));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
@@ -1019,6 +1024,8 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             try
             {
+                DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Landing.Back);
+
                 if (MyTNBAccountManagement.GetInstance().IsUsageFromNotification())
                 {
                     MyTNBAccountManagement.GetInstance().SetIsAccessUsageFromNotification(false);

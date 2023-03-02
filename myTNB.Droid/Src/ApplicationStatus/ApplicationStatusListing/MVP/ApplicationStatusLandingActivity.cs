@@ -110,6 +110,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         [OnClick(Resource.Id.btnSearchApplicationStatus)]
         void OnClickSearchApplicationStatus(object sender, EventArgs eventArgs)
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Landing.Search_Applications);
             GetSearchApplicationTypeAsync();
         }
         private void GetSearchApplicationTypeAsync()
@@ -187,6 +188,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         {
             return true;
         }
+
+        public override void OnBackPressed()
+        {
+            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Landing.Back);
+            base.OnBackPressed();
+        }
+
         public int GetTopHeight()
         {
             int i = 0;
@@ -263,6 +271,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             switch (item.ItemId)
             {
                 case Resource.Id.action_notification:
+                    DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Landing.Filter_Applications);
                     OnNavigateToApplicationStatusFilter();
                     return true;
             }
@@ -565,6 +574,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 btnSearchApplicationStatus.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_outline);
                 btnSearchApplicationStatus.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.silverChalice));
             }
+
+            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Landing.Visit);
         }
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)

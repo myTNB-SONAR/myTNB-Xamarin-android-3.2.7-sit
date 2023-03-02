@@ -256,6 +256,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     {
                         if (applicationDetailDisplay != null && applicationDetailDisplay.MyHomeDetails != null)
                         {
+                            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Start_Application);
                             ShowProgressDialog();
                             Task.Run(() =>
                             {
@@ -265,6 +266,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteAppication)
                     {
+                        this.SetIsClicked(true);
+                        DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.Cancel_Application);
+
                         MyTNBAppToolTipBuilder deleteDraftPopUp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                             .SetSecondaryHeaderImage(Resource.Drawable.ic_display_validation_success)
                             .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftTitle))
@@ -276,6 +280,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftCancel))
                             .SetSecondaryCTAaction(() =>
                             {
+                                DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Cancel_Application_Cancel);
                                 this.SetIsClicked(false);
                             })
                             .Build();
@@ -318,6 +323,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         private void OnDeleteDraft()
         {
+            this.SetIsClicked(false);
+            
+            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Cancel_Application_Im_Sure);
+
             ShowProgressDialog();
             Task.Run(() =>
             {
@@ -361,6 +370,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [OnClick(Resource.Id.btnViewActivityLog)]
         internal void OnViewActivityLog(object sender, EventArgs e)
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Activity_Log);
             ViewActivityLog();
         }
 
@@ -371,6 +381,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             {
                 if (applicationDetailDisplay.CTAType == DetailCTAType.ResumeApplication)
                 {
+                    this.SetIsClicked(true);
+                    DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Resume);
+
                     MyTNBAppToolTipBuilder deleteDraftPopUp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                             .SetSecondaryHeaderImage(Resource.Drawable.ic_display_validation_success)
                             .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftTitle))
@@ -382,6 +395,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftCancel))
                             .SetSecondaryCTAaction(() =>
                             {
+                                DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Cancel_Application_Cancel);
                                 this.SetIsClicked(false);
                             })
                             .Build();
@@ -772,6 +786,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         public override void OnBackPressed()
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Back);
             if (IsPush)
             {
                 Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
@@ -1139,6 +1154,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     , btnPrimaryCTA, btnApplicationStatusViewBill, btnApplicationStatusPay);
                 TextViewUtils.SetTextSize25(txtApplicationStatusBottomPayable);
             }
+
+            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.Visit);
         }
 
         private void EvaluateReceipts()
@@ -1481,6 +1498,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     case Resource.Id.action_notification:
                         {
+                            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Delete);
                             MyTNBAppToolTipBuilder removeApp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                                 .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusDetails", "removeTitle"))
                                 .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusDetails", "removeMessage"))

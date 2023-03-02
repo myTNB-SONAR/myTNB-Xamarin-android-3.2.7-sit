@@ -277,6 +277,7 @@
                 public struct Landing
                 {
                     public const string Back = "App_Action_AllNotification_Back";
+                    public const string View_Notification_Detail = "App_Action_AllNotification_Detail";
                 }
                 public struct Details
                 {

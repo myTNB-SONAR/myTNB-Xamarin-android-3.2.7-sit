@@ -160,6 +160,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         public override void OnBackPressed()
         {
+            OnBackPressedDynatraceTracking();
+
             if (fromPushDirectNotification)
             {
                 if (notificationDetails != null)
@@ -181,6 +183,29 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 result.PutExtra(Constants.ACTION_IS_READ, true);
                 SetResult(Result.Ok, result);
                 base.OnBackPressed();
+            }
+        }
+        
+        private void OnBackPressedDynatraceTracking()
+        {
+            if (notificationDetails != null)
+            {
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.Back_Non_Contractor_Completed);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.Back_Contractor_Completed);
+                }
+                else
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.Back);
+                }
+            }
+            else
+            {
+                DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.Back);
             }
         }
 
@@ -350,6 +375,31 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+
+            OnScreenVisitDynatraceTracking();
+        }
+
+        private void OnScreenVisitDynatraceTracking()
+        {
+            if (notificationDetails != null)
+            {
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.Contractor_Completed);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.Non_Contractor_Completed);
+                }
+                else
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.Visit);
+                }
+            }
+            else
+            {
+                DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.Visit);
             }
         }
 

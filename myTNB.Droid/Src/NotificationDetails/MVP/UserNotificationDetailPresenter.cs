@@ -755,6 +755,10 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 this.mActivity.RunOnUiThread(()=>
                 {
                     this.mView.HideProgressDialog();
+                    if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION)
+                    {
+                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.Submit_Now);
+                    }
                     this.mView.NavigateToMyHomeMicrosite(myHomeModel, accessToken);
                 });
             }
@@ -799,6 +803,17 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             if (response.StatusDetail.IsSuccess)
                             {
+                                if (notificationDetails != null)
+                                {
+                                    if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED)
+                                    {
+                                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.View_Application_Details_Non_Contractor_Completed);
+                                    }
+                                    else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED)
+                                    {
+                                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.View_Application_Details_Contractor_Completed);
+                                    }
+                                }
                                 this.mView.NavigateToApplicationDetails(response.Content);
                             }
                             else
