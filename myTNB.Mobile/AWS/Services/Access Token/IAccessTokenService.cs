@@ -17,7 +17,7 @@ namespace myTNB.Mobile.AWS.Services.AccessToken
         [Post("/general/user-svc/api/v1/token/GetAccessToken")]
         Task<HttpResponseMessage> GetUserServiceAccessToken([Body] AccessTokenRequest request
             , CancellationToken cancelToken
-            , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = "KqNPPaCgl913pSLSHBgVT8NjJvTfTdYH6W0R1w78"//AWSConstants.XAPIKey
+            , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
             , string environment = AWSConstants.Environment);
     }
 }

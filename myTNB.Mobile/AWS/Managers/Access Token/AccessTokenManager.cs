@@ -142,7 +142,7 @@ namespace myTNB.Mobile
                         return accessToken;
                     }
                 }
-                IAccessTokenService service = RestService.For<IAccessTokenService>("https://devapi.mytnb.com.my");// AWSConstants.Domains.Domain);
+                IAccessTokenService service = RestService.For<IAccessTokenService>(AWSConstants.Domains.Domain);
                 AccessTokenRequest request = new AccessTokenRequest
                 {
                     Channel = AWSConstants.Channel,
