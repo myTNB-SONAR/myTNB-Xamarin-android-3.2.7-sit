@@ -39,6 +39,7 @@ using myTNB.Mobile;
 using myTNB_Android.Src.Utils.Notification;
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 using myTNB_Android.Src.Base.Response;
+using System.Linq;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -133,12 +134,23 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         private bool IsAppNeedsRecommendRangeUpdate(RecommendUpdateInfo recommendUpdateInfo)
         {
-            if (recommendUpdateInfo != null && recommendUpdateInfo.rangeAndroidRecommendUpdate)
+            if (recommendUpdateInfo != null && recommendUpdateInfo.isAndroidRecommendUpdateOn && recommendUpdateInfo.rangeAndroidRecommendUpdate)
             {
-                if (int.Parse(recommendUpdateInfo.AndroidLastRecommendVersion) > int.Parse(DeviceIdUtils.GetAppVersionName())
-                    && int.Parse(DeviceIdUtils.GetAppVersionName()) < int.Parse(recommendUpdateInfo.AndroidLatestRecommendVersion))
+                var versionLast = recommendUpdateInfo?.AndroidLastRecommendVersion;
+                var versionLatest = recommendUpdateInfo?.AndroidLatestRecommendVersion;
+                var versionNow = new string(DeviceIdUtils.GetAppVersionName().Where(c => !char.IsLetter(c)).ToArray());
+
+                int result1 = versionNow.CompareTo(versionLast);
+                int result2 = versionNow.CompareTo(versionLatest);
+
+                if (result1 >= 0 && result2 <= 0)
                 {
+                    Console.WriteLine("need update");
                     return true;
+                }
+                else
+                {
+                    Console.WriteLine("already latest update");
                 }
             }
             return false;
@@ -147,13 +159,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         private bool IsAppNeedsRecommendSelectUpdate(RecommendUpdateInfo recommendUpdateInfo)
         {
             bool updateAllow = false;
-            if (recommendUpdateInfo != null && recommendUpdateInfo.selectAndroidRecommendUpdate)
+            if (recommendUpdateInfo != null && recommendUpdateInfo.isAndroidRecommendUpdateOn && recommendUpdateInfo.selectAndroidRecommendUpdate)
             {
                 List<string> versionList = new List<string>();
                 if (recommendUpdateInfo.AndroidSVersionToUpdate != null)
                 {
                     versionList = recommendUpdateInfo.AndroidSVersionToUpdate;
-                    updateAllow = versionList.Exists(x => x == DeviceIdUtils.GetAppVersionName());
+                    var versionNow = new string(DeviceIdUtils.GetAppVersionName().Where(c => !char.IsLetter(c)).ToArray());
+                    updateAllow = versionList.Exists(x => x == versionNow);
                 }
             }
             return updateAllow;
