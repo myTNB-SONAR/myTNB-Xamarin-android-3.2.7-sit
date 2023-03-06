@@ -69,7 +69,7 @@
                 //public const string MyHome = "https://stagingmyhome.mytnb.com.my/Sso?s={0}";
 
                 public const string DBR = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
-                public const string MyHome = "https://devmyhome.mytnb.com.my/Sso?s={0}";
+                public const string MyHome = "https://stagingmyhome.mytnb.com.my/Sso?s={0}";
             }
 #else
             internal const string Domain = "https://api.mytnb.com.my";
