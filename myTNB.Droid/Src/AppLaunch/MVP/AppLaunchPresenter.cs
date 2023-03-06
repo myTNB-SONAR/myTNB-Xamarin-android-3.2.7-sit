@@ -39,6 +39,7 @@ using myTNB.Mobile;
 using myTNB_Android.Src.Utils.Notification;
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 using myTNB_Android.Src.Base.Response;
+using System.Linq;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -131,6 +132,46 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             return false;
         }
 
+        private bool IsAppNeedsRecommendRangeUpdate(RecommendUpdateInfo recommendUpdateInfo)
+        {
+            if (recommendUpdateInfo != null && recommendUpdateInfo.isAndroidRecommendUpdateOn && recommendUpdateInfo.rangeAndroidRecommendUpdate)
+            {
+                var versionLast = recommendUpdateInfo?.AndroidLastRecommendVersion;
+                var versionLatest = recommendUpdateInfo?.AndroidLatestRecommendVersion;
+                var versionNow = new string(DeviceIdUtils.GetAppVersionName().Where(c => !char.IsLetter(c)).ToArray());
+
+                int result1 = versionNow.CompareTo(versionLast);
+                int result2 = versionNow.CompareTo(versionLatest);
+
+                if (result1 >= 0 && result2 <= 0)
+                {
+                    Console.WriteLine("need update");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("already latest update");
+                }
+            }
+            return false;
+        }
+
+        private bool IsAppNeedsRecommendSelectUpdate(RecommendUpdateInfo recommendUpdateInfo)
+        {
+            bool updateAllow = false;
+            if (recommendUpdateInfo != null && recommendUpdateInfo.isAndroidRecommendUpdateOn && recommendUpdateInfo.selectAndroidRecommendUpdate)
+            {
+                List<string> versionList = new List<string>();
+                if (recommendUpdateInfo.AndroidSVersionToUpdate != null)
+                {
+                    versionList = recommendUpdateInfo.AndroidSVersionToUpdate;
+                    var versionNow = new string(DeviceIdUtils.GetAppVersionName().Where(c => !char.IsLetter(c)).ToArray());
+                    updateAllow = versionList.Exists(x => x == versionNow);
+                }
+            }
+            return updateAllow;
+        }
+
         private async void LoadAppMasterData()
         {
             //For Testing Start
@@ -186,7 +227,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest());
                 /*AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
                       (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));*/
-                string dt = JsonConvert.SerializeObject(new AppLaunchMasterDataRequest());
                 if (masterDataResponse != null && masterDataResponse.ErrorCode != null)
                 {
                     if (masterDataResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
@@ -196,6 +236,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         bool proceed = true;
 
                         bool appUpdateAvailable = false;
+                        bool appUpdateRecommendedRange = false;
+                        bool appUpdateRecommendedSelect = false;
                         //AppLaunchMasterDataModel responseData = masterDataResponse.GetData();
                         bool updateDetail = masterDataResponse.Data.IsFeedbackUpdateDetailDisabled;
 
@@ -210,6 +252,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         if (responseData.AppVersionList != null && responseData.AppVersionList.Count > 0)
                         {
                             appUpdateAvailable = IsAppNeedsUpdate(responseData.ForceUpdateInfo);
+                            appUpdateRecommendedRange = IsAppNeedsRecommendRangeUpdate(responseData.RecommendUpdateInfo);
+                            appUpdateRecommendedSelect = IsAppNeedsRecommendSelectUpdate(responseData.RecommendUpdateInfo);
+                            bool userCancelUpdate = this.mView.UserCancelUpdate();
                             if (appUpdateAvailable)
                             {
                                 DeeplinkUtil.Instance.ClearDeeplinkData();
@@ -217,6 +262,15 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 string modalMessage = responseData.ForceUpdateInfo.ModalBody;
                                 string modalBtnLabel = responseData.ForceUpdateInfo.ModalBtnText;
                                 this.mView.ShowUpdateAvailable(modalTitle, modalMessage, modalBtnLabel);
+                            }
+                            else if (((appUpdateRecommendedRange && !appUpdateRecommendedSelect) || (!appUpdateRecommendedRange && appUpdateRecommendedSelect)) && !userCancelUpdate)
+                            {
+                                DeeplinkUtil.Instance.ClearDeeplinkData();
+                                string modalTitle = responseData.RecommendUpdateInfo.ModalRecommendTitle;
+                                string modalMessage = responseData.RecommendUpdateInfo.ModalRecommendBody;
+                                string modalBtnYes = responseData.RecommendUpdateInfo.ModalRecommendBtnYesText;
+                                string modalBtnNo = responseData.RecommendUpdateInfo.ModalRecommendBtnNoText;
+                                this.mView.ShowUpdateAvailableWithRequirement(modalTitle, modalMessage, modalBtnYes, modalBtnNo);
                             }
                             else
                             {
