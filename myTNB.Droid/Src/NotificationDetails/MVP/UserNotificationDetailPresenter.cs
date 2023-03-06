@@ -191,9 +191,13 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             Task.Run(async () => await GetSMRAccountStatus(notificationDetails.AccountNum)).Wait();
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
                             //pageTitle = "Smart Meter Reading";
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reenableSSMR"), delegate () { EnableSelfMeterReading(notificationDetails); });
-                            primaryCTA.SetEnabled(!isTaggedSMR);
-                            ctaList.Add(primaryCTA);
+                            var account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+                            if (account.isOwned != null && account.isOwned)
+                            {
+                                primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reenableSSMR"), delegate () { EnableSelfMeterReading(notificationDetails); });
+                                primaryCTA.SetEnabled(!isTaggedSMR);
+                                ctaList.Add(primaryCTA);
+                            }
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID:
