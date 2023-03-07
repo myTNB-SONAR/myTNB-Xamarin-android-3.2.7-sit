@@ -4071,8 +4071,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         middleHeight = (int)DPUtils.ConvertDPToPx(170);
                     }
 
-
-
                     int leftWidth = 0;
                     int rightWidth = 0;
                     int middleWidth = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
@@ -4095,6 +4093,16 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
                     bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
                     bottomLayout.RequestLayout();
+
+                    LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(24f);
+                    innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
+                    innerUpperBottomLayout.RequestLayout();
+
+                    LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(24f);
+                    innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(24f);
+                    innerTxtBtnBottomLayout.RequestLayout();
 
                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
                     float innerHeight = TextViewUtils.IsLargeFonts ? 130f : 100f;

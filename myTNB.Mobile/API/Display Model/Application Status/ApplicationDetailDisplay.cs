@@ -456,7 +456,10 @@ namespace myTNB.Mobile
                    || CTAType == DetailCTAType.ContractorRating
                    || CTAType == DetailCTAType.NewAppointment
                    || CTAType == DetailCTAType.Reschedule
-                   || CTAType == DetailCTAType.Pay)
+                   || CTAType == DetailCTAType.Pay
+                   || CTAType == DetailCTAType.StartApplication
+                   || CTAType == DetailCTAType.DeleteAppication
+                   || CTAType == DetailCTAType.ResumeApplication)
                 {
                     type = DetailTutorialType.Action;
                 }

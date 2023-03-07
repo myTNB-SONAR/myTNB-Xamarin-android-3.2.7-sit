@@ -1236,12 +1236,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
             if (applicationDetailDisplay != null && applicationDetailDisplay.TutorialType != null)
             {
-                if (!UserSessions.HasApplicationDetailShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+                if (!UserSessions.HasApplicationDetailShown(PreferenceManager.GetDefaultSharedPreferences(this)))//STUB
                 {
                     Handler h = new Handler();
                     Action myAction = () =>
                     {
-
                         if (applicationDetailDisplay.TutorialType == DetailTutorialType.NoAction)
                         {
                             NewAppTutorialUtils.OnShowNewAppTutorial(this, null, PreferenceManager.GetDefaultSharedPreferences(this)
@@ -1380,33 +1379,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 Utility.LoggingNonFatalError(e);
             }
             return i;
-        }
-
-        public void OnShowApplicationDetailTutorial(DetailTutorialType tutorialType)
-        {
-            if (UserSessions.HasApplicationDetailShown(PreferenceManager.GetDefaultSharedPreferences(this)))
-            {
-                Handler h = new Handler();
-                Action myAction = () =>
-                {
-                    if (tutorialType == DetailTutorialType.NoAction)
-                    {
-                        NewAppTutorialUtils.OnShowNewAppTutorial(this, null, PreferenceManager.GetDefaultSharedPreferences(this)
-                            , this.presenter.OnGeneraNewAppTutorialNoActionList(), true);
-                    }
-                    else if (tutorialType == DetailTutorialType.Action)
-                    {
-                        NewAppTutorialUtils.OnShowNewAppTutorial(this, null, PreferenceManager.GetDefaultSharedPreferences(this)
-                            , this.presenter.OnGeneraNewAppTutorialActionList(), true);
-                    }
-                    else if (tutorialType == DetailTutorialType.InProgress)
-                    {
-                        NewAppTutorialUtils.OnShowNewAppTutorial(this, null, PreferenceManager.GetDefaultSharedPreferences(this)
-                           , this.presenter.OnGeneraNewAppTutorialInProgressList(), true);
-                    }
-                };
-                h.PostDelayed(myAction, 100);
-            }
         }
 
         private void OnTaxInvoiceClick(string srNumber)
