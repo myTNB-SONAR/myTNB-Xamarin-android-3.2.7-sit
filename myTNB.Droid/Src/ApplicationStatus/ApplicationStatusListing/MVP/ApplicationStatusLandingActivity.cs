@@ -100,6 +100,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
         bool isFilter = false;
         bool isFilterVisible = false;
+        bool isDeleted = false;
         [OnClick(Resource.Id.btnRefresh)]
         void OnDetailRefresh(object sender, EventArgs eventArgs)
         {
@@ -409,15 +410,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             }
             if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE || requestCode == Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE)
             {
-                UpdateUI();
                 if (resultCode == Result.Ok)
                 {
                     string message = data.Extras.GetString(Constants.DELETE_DRAFT_MESSAGE);
                     if (message.IsValid())
                     {
+                        isDeleted = true;
                         ToastUtils.OnDisplayToast(this, message ?? string.Empty);
                     }
                 }
+                UpdateUI();
+                isDeleted = false;
             }
             HideProgressDialog();
         }
@@ -482,6 +485,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             base.OnCreate(savedInstanceState);
             isFilter = false;
             isFilterVisible = false;
+            isDeleted = false;
             mPresenter = new ApplicationStatusLandingPresenter(this);
             // applicationStatusLandingEmptyLayout.Visibility = ViewStates.Visible;
             viewMoreContainer.Visibility = ViewStates.Gone;
@@ -1075,7 +1079,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                     btnSearchApplicationStatus.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
                                     btnSearchApplicationStatus.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
                                 }
-                                if (!isFilter)
+                                if (!isFilter || isDeleted)
                                 {
                                     applicationStatusRefreshContainer.Visibility = ViewStates.Gone;
                                     applicationStatusLandingRecyclerView.Visibility = ViewStates.Gone;

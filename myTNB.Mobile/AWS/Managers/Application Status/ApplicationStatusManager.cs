@@ -35,7 +35,7 @@ namespace myTNB.Mobile.AWS
             {
                 try
                 {
-                    IApplicationStatusService service = RestService.For<IApplicationStatusService>("https://devapi.mytnb.com.my");// AWSConstants.Domains.Domain);
+                    IApplicationStatusService service = RestService.For<IApplicationStatusService>(AWSConstants.Domains.Domain);
                     HttpResponseMessage rawResponse = await service.PostDeleteNCDraft(applicationNumber
                        , NetworkService.GetCancellationToken()
                        , "Bearer " + accessToken

@@ -478,6 +478,7 @@ namespace myTNB.Mobile
                          , AppInfoManager.Instance.Language.ToString());
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
+                    Debug.WriteLine("[DEBUG] GetApplicationDetail response: " + responseString);
                     //Mark: Check for 404 First
                     NotFoundModel notFoundModel = JsonConvert.DeserializeObject<NotFoundModel>(responseString);
                     if (notFoundModel != null && notFoundModel.Status.IsValid())
