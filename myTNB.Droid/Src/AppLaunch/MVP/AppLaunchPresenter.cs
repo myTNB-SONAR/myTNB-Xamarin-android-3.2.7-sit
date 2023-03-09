@@ -162,9 +162,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             if (recommendUpdateInfo != null && recommendUpdateInfo.isAndroidRecommendUpdateOn && recommendUpdateInfo.selectAndroidRecommendUpdate)
             {
                 List<string> versionList = new List<string>();
-                if (recommendUpdateInfo.AndroidSVersionToUpdate != null)
+                if (recommendUpdateInfo.AndroidVersionToUpdate != null)
                 {
-                    versionList = recommendUpdateInfo.AndroidSVersionToUpdate;
+                    versionList = recommendUpdateInfo.AndroidVersionToUpdate;
                     var versionNow = new string(DeviceIdUtils.GetAppVersionName().Where(c => !char.IsLetter(c)).ToArray());
                     updateAllow = versionList.Exists(x => x == versionNow);
                 }

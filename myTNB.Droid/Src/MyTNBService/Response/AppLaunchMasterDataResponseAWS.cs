@@ -215,9 +215,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [AliasAs("selectAndroidRecommendUpdate")]
             public bool selectAndroidRecommendUpdate { get; set; }
 
-            [JsonProperty(PropertyName = "AndroidSVersionToUpdate")]
-            [AliasAs("AndroidSVersionToUpdate")]
-            public List<string> AndroidSVersionToUpdate { get; set; }
+            [JsonProperty(PropertyName = "AndroidVersionToUpdate")]
+            [AliasAs("AndroidVersionToUpdate")]
+            public List<string> AndroidVersionToUpdate { get; set; }
 
             [JsonProperty(PropertyName = "ModalRecommendTitle")]
             [AliasAs("ModalRecommendTitle")]
