@@ -176,6 +176,11 @@ namespace myTNB_Android.Src.MyHome
             AccessTokenCache.Instance.SaveUserServiceAccessToken(this.Activity, accessToken);
             if (accessToken.IsValid())
             {
+                this.Activity.RunOnUiThread(() =>
+                {
+                    HideProgressDialog();
+                });
+
                 MyDrawerModel model = myDrawerList[pos];
                 MyHomeModel myHomeModel = new MyHomeModel()
                 {
@@ -194,9 +199,23 @@ namespace myTNB_Android.Src.MyHome
             }
             else
             {
-                //TODO: Show error if accessToken is invalid
+                this.Activity.RunOnUiThread(() =>
+                {
+                    HideProgressDialog();
+                    ShowGenericErrorPopUp();
+                });
             }
             HideProgressDialog();
+        }
+
+        private void ShowGenericErrorPopUp()
+        {
+            MyTNBAppToolTipBuilder errorPopUp = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(Utility.GetLocalizedErrorLabel(LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+                .SetMessage(Utility.GetLocalizedErrorLabel(LanguageConstants.Error.DEFAULT_ERROR_MSG))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.OK))
+                .Build();
+            errorPopUp.Show();
         }
 
         private void CloseOnClick(object sender, EventArgs e)

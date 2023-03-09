@@ -32,7 +32,7 @@ namespace myTNB_Android.Src.MyHome.Activity
 {
     [Activity(Label = "MyHomeMicrositeActivity"
       , ScreenOrientation = ScreenOrientation.Portrait
-              , WindowSoftInputMode = SoftInput.AdjustPan
+        , WindowSoftInputMode = SoftInput.AdjustResize
       , Theme = "@style/Theme.Dashboard")]
     public class MyHomeMicrositeActivity : BaseToolbarAppCompatActivity
     {

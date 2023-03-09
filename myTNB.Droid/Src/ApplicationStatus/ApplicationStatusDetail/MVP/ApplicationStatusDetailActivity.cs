@@ -301,6 +301,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             AccessTokenCache.Instance.SaveUserServiceAccessToken(this, accessToken);
             if (accessToken.IsValid())
             {
+                this.RunOnUiThread(() =>
+                {
+                    HideProgressDialog();
+                });
+
                 MyHomeModel myHomeModel = new MyHomeModel()
                 {
                     SSODomain = applicationDetailDisplay.MyHomeDetails.SSODomain,
@@ -316,9 +321,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
             else
             {
-                //TODO: Show error if accessToken is invalid
+                this.RunOnUiThread(() =>
+                {
+                    HideProgressDialog();
+                    ShowGenericErrorPopUp();
+                });
             }
-            HideProgressDialog();
         }
 
         private void OnDeleteDraft()

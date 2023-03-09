@@ -1795,6 +1795,11 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
+        public void ShowErrorPopUp()
+        {
+            ShowGenericErrorPopUp();
+        }
+
         private Snackbar mNoInternetSnackbar;
         public void ShowNoInternetSnackbar()
         {

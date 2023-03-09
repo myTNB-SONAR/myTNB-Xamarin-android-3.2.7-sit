@@ -764,10 +764,10 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             }
             else
             {
-                //TODO: Show error if accessToken is invalid
                 this.mActivity.RunOnUiThread(() =>
                 {
                     this.mView.HideProgressDialog();
+                    this.mView.ShowErrorPopUp();
                 });
             }
             

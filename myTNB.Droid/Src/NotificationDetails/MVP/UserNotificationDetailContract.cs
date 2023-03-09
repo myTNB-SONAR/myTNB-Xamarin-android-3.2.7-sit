@@ -90,6 +90,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
             void ShowNoInternetSnackbar();
 
+            void ShowErrorPopUp();
+
             void ShowApplicationPopupMessage(StatusDetail statusDetail);
 
             void NavigateToMyHomeMicrosite(MyHomeModel model, string accessToken);
