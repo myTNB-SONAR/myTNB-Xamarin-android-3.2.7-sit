@@ -269,6 +269,8 @@
                     public const string Visit = "App_Visit_Notification";
                     public const string Contractor_Completed = "App_Visit_ContractorCompletedNotificationScreen";
                     public const string Non_Contractor_Completed = "App_Visit_NonContractorCompletedNotificationScreen";
+                    public const string EB_Reaching = "EB_view_notification_duration_reaching";
+                    public const string EB_Reached = "EB_view_notification_duration_reached";
                 }
             }
 

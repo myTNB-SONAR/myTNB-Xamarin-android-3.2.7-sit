@@ -1659,7 +1659,12 @@
     "deleteNCDraftTitle": "Are you sure you want to delete this draft?",
     "deleteNCDraftMessage": "Your draft will be permanently deleted.",
     "deleteNCDraftSure": "Yes, I’m Sure",
-    "deleteNCDraftCancel": "Cancel"
+    "deleteNCDraftCancel": "Cancel",
+    "reapplyNow": "Reapply Now",
+    "reapplyContractorRejectCTAMessage": "Reapply your application because the contractor has rejected your request.",
+    "reapplyNoResponseCTAMessage": "Reapply your application because we didn’t receive any response from the contractor you appointed.",
+    "updateNow": "Update Now",
+    "updateNowCTAMessage": "Update your information by re-uploading your document(s) for us to review again."
   },
   "UserAccess": {
     "title": "User Access",

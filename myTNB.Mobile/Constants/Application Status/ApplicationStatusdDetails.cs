@@ -8,6 +8,8 @@
             public const string I18N_StartApplication = "startApplication";
             public const string I18N_Delete = "delete";
             public const string I18N_Resume = "resume";
+            public const string I18N_ReaapplyNow = "reapplyNow";
+            public const string I18N_UpdateNow = "updateNow";
         }
 
         public struct PopUps

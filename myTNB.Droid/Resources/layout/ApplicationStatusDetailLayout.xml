@@ -600,7 +600,6 @@ will be recorded. Check back again later to view its update."/>
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="16dp"
-						android:layout_marginTop="16dp"
 						android:visibility="gone"
 						tools:visibility="visible"
 						android:text="You have an appointment set for 19 Sep 2020, between 9:00 AM - 1:00 PM. "

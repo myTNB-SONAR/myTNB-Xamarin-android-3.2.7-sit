@@ -44,6 +44,7 @@ namespace myTNB.Mobile.API.Models.Home.PostServices
         public string SSODomain { set; get; }
         public string OriginURL { set; get; }
         public string RedirectURL { set; get; }
+        public string AppVersion { set; get; }
 
         public string ServiceBannerPreferenceKey { get { return string.Format("QuicklinksBanner{0}", ServiceId); } }
         public string ServiceIconPreferenceKey { get { return string.Format("Quicklinks{0}", ServiceId); } }

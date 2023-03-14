@@ -246,6 +246,25 @@ namespace myTNB.Mobile
                             , ApplicationAppointmentDetail.AppointmentDateDisplay
                             , ApplicationAppointmentDetail.TimeSlotDisplay);
                     }
+
+                }
+                else if (CTAType == DetailCTAType.ReapplyNow
+                      && ApplicationStatusDetail != null)
+                {
+                    string key = string.Empty;
+                    if (ApplicationStatusDetail.StatusId == 7)
+                    {
+                        key = "reapplyContractorRejectCTAMessage";
+                    }
+                    else if (ApplicationStatusDetail.StatusId == 18)
+                    {
+                        key = "reapplyNoResponseCTAMessage";
+                    }
+                    message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", key);
+                }
+                else if (CTAType == DetailCTAType.ReuploadDocument)
+                {
+                    message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "updateNowCTAMessage");
                 }
                 return message;
             }
@@ -333,6 +352,23 @@ namespace myTNB.Mobile
                     && !MyHomeDetails.IsOTPFailed)
                 {
                     type = DetailCTAType.ResumeApplication;
+                }
+                else if (ApplicationTypeCode == "NC"
+                    && !SavedApplicationID.IsValid()
+                    && ApplicationStatusDetail != null
+                    && (ApplicationStatusDetail.StatusId == 7
+                        || ApplicationStatusDetail.StatusId == 18)
+                    && MyHomeDetails != null)
+                {
+                    type = DetailCTAType.ReapplyNow;
+                }
+                else if (ApplicationTypeCode == "NC"
+                    && !SavedApplicationID.IsValid()
+                    && ApplicationStatusDetail != null
+                    && ApplicationStatusDetail.StatusId == 130
+                    && MyHomeDetails != null)
+                {
+                    type = DetailCTAType.ReuploadDocument;
                 }
                 else if (IsPayment && IsOffLine)
                 {
@@ -459,7 +495,9 @@ namespace myTNB.Mobile
                    || CTAType == DetailCTAType.Pay
                    || CTAType == DetailCTAType.StartApplication
                    || CTAType == DetailCTAType.DeleteAppication
-                   || CTAType == DetailCTAType.ResumeApplication)
+                   || CTAType == DetailCTAType.ResumeApplication
+                   || CTAType == DetailCTAType.ReapplyNow
+                   || CTAType == DetailCTAType.ReuploadDocument)
                 {
                     type = DetailTutorialType.Action;
                 }
@@ -1006,7 +1044,9 @@ namespace myTNB.Mobile
         RescheduleDisabled,
         StartApplication,
         DeleteAppication,
-        ResumeApplication
+        ResumeApplication,
+        ReapplyNow,
+        ReuploadDocument
     }
 
     public enum DetailTutorialType

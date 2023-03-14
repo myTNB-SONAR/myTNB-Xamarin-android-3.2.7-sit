@@ -252,11 +252,30 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         StartActivityForResult(webIntent, Constants.APPLICATION_STATUS_RATING_REQUEST_CODE);
                         FirebaseAnalyticsUtils.LogClickEvent(this, "Contractor Rating Button Clicked");
                     }
-                    else if (applicationDetailDisplay.CTAType == DetailCTAType.StartApplication)
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.StartApplication
+                        || applicationDetailDisplay.CTAType == DetailCTAType.ReapplyNow
+                        || applicationDetailDisplay.CTAType == DetailCTAType.ReuploadDocument)
                     {
                         if (applicationDetailDisplay != null && applicationDetailDisplay.MyHomeDetails != null)
                         {
-                            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Start_Application);
+                            string dynatraceCTA = string.Empty;
+                            switch(applicationDetailDisplay.CTAType)
+                            {
+                                case DetailCTAType.StartApplication:
+                                    dynatraceCTA = DynatraceConstants.ApplicationStatus.CTAs.Details.Start_Application;
+                                    break;
+                                case DetailCTAType.ReapplyNow:
+                                    //TODO: Add dynatraceCTA for Reapply Now
+                                    break;
+                                case DetailCTAType.ReuploadDocument:
+                                    //TODO: Add dynatraceCTA for Reupload Document
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            DynatraceHelper.OnTrack(dynatraceCTA);
+
                             ShowProgressDialog();
                             Task.Run(() =>
                             {
@@ -1076,13 +1095,59 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.StartApplication)
                             {
+                                if (applicationDetailDisplay.CTAMessage.IsValid())
+                                {
+                                    txtAppointmentSet.Visibility = ViewStates.Visible;
+                                    txtAppointmentSet.Text = Build.VERSION.SdkInt >= BuildVersionCodes.N
+                                   ? Html.FromHtml(applicationDetailDisplay.CTAMessage, FromHtmlOptions.ModeLegacy).ToString()
+                                   : Html.FromHtml(applicationDetailDisplay.CTAMessage).ToString();
+                                }
+
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
                                 btnPrimaryCTA.Text = GetLabelByLanguage(ApplicationStatusDetails.CTATitles.I18N_StartApplication);
                                 btnPrimaryCTA.Enabled = true;
                                 btnPrimaryCTA.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_round_button_background);
                             }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.ReapplyNow)
+                            {
+                                if (applicationDetailDisplay.CTAMessage.IsValid())
+                                {
+                                    txtAppointmentSet.Visibility = ViewStates.Visible;
+                                    txtAppointmentSet.Text = Build.VERSION.SdkInt >= BuildVersionCodes.N
+                                   ? Html.FromHtml(applicationDetailDisplay.CTAMessage, FromHtmlOptions.ModeLegacy).ToString()
+                                   : Html.FromHtml(applicationDetailDisplay.CTAMessage).ToString();
+                                }
+
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+                                btnPrimaryCTA.Text = GetLabelByLanguage(ApplicationStatusDetails.CTATitles.I18N_ReaapplyNow);
+                                btnPrimaryCTA.Enabled = true;
+                                btnPrimaryCTA.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_round_button_background);
+                            }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.ReuploadDocument)
+                            {
+                                if (applicationDetailDisplay.CTAMessage.IsValid())
+                                {
+                                    txtAppointmentSet.Visibility = ViewStates.Visible;
+                                    txtAppointmentSet.Text = Build.VERSION.SdkInt >= BuildVersionCodes.N
+                                   ? Html.FromHtml(applicationDetailDisplay.CTAMessage, FromHtmlOptions.ModeLegacy).ToString()
+                                   : Html.FromHtml(applicationDetailDisplay.CTAMessage).ToString();
+                                }
+
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+                                btnPrimaryCTA.Text = GetLabelByLanguage(ApplicationStatusDetails.CTATitles.I18N_UpdateNow);
+                                btnPrimaryCTA.Enabled = true;
+                                btnPrimaryCTA.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_round_button_background);
+                            }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteAppication)
                             {
+                                if (applicationDetailDisplay.CTAMessage.IsValid())
+                                {
+                                    txtAppointmentSet.Visibility = ViewStates.Visible;
+                                    txtAppointmentSet.Text = Build.VERSION.SdkInt >= BuildVersionCodes.N
+                                   ? Html.FromHtml(applicationDetailDisplay.CTAMessage, FromHtmlOptions.ModeLegacy).ToString()
+                                   : Html.FromHtml(applicationDetailDisplay.CTAMessage).ToString();
+                                }
+
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
                                 btnPrimaryCTA.Text = GetLabelByLanguage(ApplicationStatusDetails.CTATitles.I18N_Delete);
                                 btnPrimaryCTA.Enabled = true;

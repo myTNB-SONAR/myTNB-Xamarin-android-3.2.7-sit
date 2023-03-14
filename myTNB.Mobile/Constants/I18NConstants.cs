@@ -7,6 +7,7 @@
         public const string DBR_PaperBillTenant = "dbrPaperBillNonOwner";
         public const string DBR_Email = "dbrEmail";
         public const string DBR_EBill = "dbrViaMyTNB";
+
         public const string Cancelled_Application = "applicationCancelledMessage";
     }
 }

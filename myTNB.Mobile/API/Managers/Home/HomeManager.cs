@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using myTNB.Mobile.API.Managers.Home.Utilities;
 using myTNB.Mobile.API.Models.Home.PostServices;
 using myTNB.Mobile.API.Services.Home;
 using myTNB.Mobile.Extensions;
@@ -109,6 +110,8 @@ namespace myTNB.Mobile.AWS.Managers.Home
                     }
                 }
                 Debug.WriteLine("[DEBUG] [PostServices]: " + JsonConvert.SerializeObject(response));
+                HomeUtility.UpdateResponse(ref response, AppInfoManager.Instance.ViewInfoHeader.AppVersion);
+                Debug.WriteLine("[DEBUG] [PostServices] Parsed: " + JsonConvert.SerializeObject(response));
                 return response;
             }
             catch (ApiException apiEx)

@@ -1103,7 +1103,7 @@
     "paymentType": "JENIS PEMBAYARAN",
     "trnBankReference": "NOMBOR RUJUKAN BANK",
     "trnAcquirerBank": "BANK PEMEROLEH",
-    "emptyValue":  "--"
+    "emptyValue": "--"
   },
   "FeedbackList": {
     "title": "Maklum Balas"
@@ -1659,7 +1659,12 @@
     "deleteNCDraftTitle": "Adakah anda pasti untuk padam draf ini?",
     "deleteNCDraftMessage": "Draf anda akan dipadamkan secara kekal.",
     "deleteNCDraftSure": "Ya, Saya Pasti",
-    "deleteNCDraftCancel": "Batal"
+    "deleteNCDraftCancel": "Batal",
+    "reapplyNow": "Mohon Sekali Lagi",
+    "reapplyContractorRejectCTAMessage": "Mohon semula permohonan anda kerana kontraktor telah menolak permintaan anda.",
+    "reapplyNoResponseCTAMessage": "Mohon semula permohonan anda kerana kami tidak menerima sebarang maklum balas daripada kontraktor yang anda lantik.",
+    "updateNow": "Kemas kini Sekarang",
+    "updateNowCTAMessage": "Kemas kini maklumat anda dengan memuat naik semula dokumen anda untuk kami semak semula."
   },
   "UserAccess": {
     "title": "Urus Pengguna",
