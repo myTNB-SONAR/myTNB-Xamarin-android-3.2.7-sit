@@ -452,7 +452,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "otpVerifyNow"),
-                                   delegate () { ViewMyHomeMicrosite(notificationDetails, AWSConstants.BackToHomeCancelURL); });
+                                   delegate () { ViewApplicationDetails(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
@@ -471,9 +471,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED:
                         {
-                            //STUB static copy
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reapplyNow"),
-                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
+                                   delegate () { ViewApplicationDetails(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
@@ -482,9 +481,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_NO_RESPONSE:
                         {
-                            //STUB static copy
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reapplyNow"),
-                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
+                                   delegate () { ViewApplicationDetails(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
