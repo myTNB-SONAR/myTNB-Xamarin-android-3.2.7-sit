@@ -87,6 +87,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             base.OnCreate(savedInstanceState);
             SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             TextViewUtils.SetTextSize14(noEligibleAccountMessage);
+            noEligibleAccountMessage.Text = GetLabelByLanguage("noEligibleAccount");
             Bundle extras = Intent.Extras;
             if (extras != null && extras.ContainsKey("SMR_ELIGIBLE_ACCOUNT_LIST"))
             {

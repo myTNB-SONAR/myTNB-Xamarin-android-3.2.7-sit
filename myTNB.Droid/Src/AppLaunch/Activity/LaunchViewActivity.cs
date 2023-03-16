@@ -186,6 +186,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                     UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                                 }
                             }
+                            else if (Intent.Extras.ContainsKey("AccountNum"))
+                            {
+                                UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                            }
                         }
                     }
 

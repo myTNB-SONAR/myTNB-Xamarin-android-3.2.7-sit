@@ -480,8 +480,8 @@
     "accountTypeDialogMessage": "Anda boleh log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> myTNB menggunakan maklumat log masuk yang sama dan nikmati akses penuh untuk akaun tersebut.",
     //EnergyBudget
     "myMonthlyBudget": "Energy Budget saya adalah",
-    "whyIsAmountDiff": "Adakah ini akan menjadi jumlah bil saya?",
-    "whyIsAmountDiffBody": "Jumlah penggunaan terkini anda adalah jumlah tenaga yang anda telah guna setakat ini. Oleh kerana jumlah ini belum dibilkan mengikuti kitaran pembilan anda, ia belum tertakluk kepada cukai, diskaun atau caj tambahan dari kami.",
+    "whyIsAmountDiff": "Adakah ini bill sebenar saya?",
+    "whyIsAmountDiffBody": "Tidak semestinya. Jumlah yang dipaparkan adalah berdasarkan kepada penggunaan elektrik anda setakat ini bagi bulan semasa. Bil anda boleh termasuk caj-caj seperti sumbangan KWTBB 1.6%, cukai perkhidmatan 6%, rebat/surcaj ICPT (di mana berkenaan).",
     "editEnergyButton": "Tetapkan Energy Budget anda",
     "setEnergyButton": "Tetapkan Sekarang",
     "saveEnergyButton": "Simpan Energy Budget baharu",
@@ -507,7 +507,7 @@
     "dbrReminderAutoPopupTitle": "Bil elektrik anda kini 'paperless'!",
     "dbrReminderAutoPopupMessageFirstMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
     "dbrReminderAutoPopupMessageSecondMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 2 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
-    "dbrReminderAutoPopupMessageThirdMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 1 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopupMessageThirdMonth": "Sebagai pelanggan lestari myTNB, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB.<br>Anda akan masih masih akan menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
     "dbrReminderAutoPopUpBtn": "Urus Cara Penghantaran Bil"
   },
   "Bills": {
@@ -641,7 +641,7 @@
     "onlineBanking": "Perbankan Dalam Talian",
     "abortTitle": "Batalkan Pembayaran",
     "abortMessage": "Anda pasti anda ingin membatalkan pembayaran?",
-    "tngEwallet": "Touch 'n Go"
+    "tngEwallet": "Touch 'n Go eWallet"
   },
   "PushNotificationList": {
     "allNotifications": "Semua Pemberitahuan",
@@ -1087,7 +1087,7 @@
     "paymentType": "JENIS PEMBAYARAN",
     "trnBankReference": "NOMBOR RUJUKAN BANK",
     "trnAcquirerBank": "BANK PEMEROLEH",
-    "emptyValue":  "--"
+    "emptyValue": "--"
   },
   "FeedbackList": {
     "title": "Maklum Balas"

@@ -31,6 +31,9 @@ using Android.Text;
 using Android.OS;
 using System.Globalization;
 using Java.Util;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using myTNB_Android.Src.SSMR.SMRApplication.Api;
+using myTNB_Android.Src.SSMRMeterHistory.Api;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -76,6 +79,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private ISharedPreferences mPref;
 
+        private SMRregistrationApi api;
+
         private CancellationTokenSource normalTokenSource = new CancellationTokenSource();
 
         public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view, ISharedPreferences pref)
@@ -83,6 +88,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             this.mView = view;
             this.mPref = pref;
             this.serviceApi = new HomeMenuServiceImpl();
+            this.api = new SMRregistrationApiImpl();
         }
 
         public string GetAccountDisplay()
@@ -2024,6 +2030,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        private async Task CheckSMRAccountEligibility(List<string> accountList)
+        {
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                GetAccountsSMREligibilityResponse response = await this.api.GetAccountsSMREligibility(new GetAccountListSMREligibilityRequest(accountList));
+
+                if (response != null && response.Response != null && response.Response.ErrorCode == "7200" && response.Response.Data.SMREligibilityList.Count > 0)
+                {
+                    isSMRApplyAllowFlag = response.Response.Data.SMREligibilityList.Any(x => x?.SMREligibility == "true");
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                isSMRApplyAllowFlag = false;
+                this.mView.HideProgressDialog();
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                isSMRApplyAllowFlag = false;
+                this.mView.HideProgressDialog();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                isSMRApplyAllowFlag = false;
+                this.mView.HideProgressDialog();
+                Utility.LoggingNonFatalError(unknownException);
+            }
+        }
 
         private async Task GetIsSmrApplyAllowedService(List<string> accountList)
         {
@@ -2064,11 +2101,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         if (isTenantSMREnable)
                         {
+                            List<string> contractAccountList = new List<string> { isSMRApplyResponse.Data.Data[i].ContractAccount };
                             bool isOwnerExist = eligibleSMRBillingAccounts.Exists(s => s.AccNum == isSMRApplyResponse.Data.Data[i].ContractAccount);
                             if (isSMRApplyResponse.Data.Data[i].AllowApply && isOwnerExist)
                             {
-                                isSMRApplyAllowFlag = true;
-                                break;
+                                await CheckSMRAccountEligibility(contractAccountList);
                             }
                         }
                         else if (isSMRApplyResponse.Data.Data[i].AllowApply)
