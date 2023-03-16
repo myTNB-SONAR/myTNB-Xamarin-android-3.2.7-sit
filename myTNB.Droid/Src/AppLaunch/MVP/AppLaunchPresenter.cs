@@ -273,12 +273,19 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 {
                                     dateRefreshPopup = UserSessions.GetSavePopUpDateReset(mSharedPref) ?? "";
                                     dateTime = DateTime.ParseExact(dateString, formatString, System.Globalization.CultureInfo.InvariantCulture);
-                                    dateTimeReset = DateTime.ParseExact(dateRefreshPopup, formatString, System.Globalization.CultureInfo.InvariantCulture);
-
-                                    if ((dateTimeReset.Hour != dateTime.Hour && dateTimeReset.Date == dateTime.Date) ||
-                                        (dateTimeReset.Hour != dateTime.Hour && dateTimeReset.Date != dateTime.Date))
+                                    if (!string.IsNullOrEmpty(dateRefreshPopup))
                                     {
-                                        resetCount = true;
+                                        dateTimeReset = DateTime.ParseExact(dateRefreshPopup, formatString, System.Globalization.CultureInfo.InvariantCulture);
+                                    }
+                                    else
+                                    {
+                                        dateTimeReset = dateTime;
+                                        UserSessions.SavePopUpDateReset(mSharedPref, dateString);
+                                    }
+
+                                    if (dateTimeReset != dateTime && DateTime.Now > dateTime)
+                                    {
+                                       resetCount = true;
                                     }
 
                                     if (resetCount)
