@@ -1655,7 +1655,7 @@
     "cannotRescheduleMessage": "Anda tidak boleh mengubah janji temu pada hari janji temu tersebut. Sila ambil maklum bahawa anda tidak perlu hadir sekiranya kawasan pemasangan meter anda boleh diakses tanpa memasuki premis.<br><br>Hubungi <a href=\"tel: 1300885454\">TNB Careline</a> sekiranya anda perlu mengubah  atau membatalkan janji temu.",
     "startApplication": "Mulakan Permohonan",
     "delete": "Padam",
-    "resume": "Resume",
+    "resume": "Teruskan",
     "deleteNCDraftTitle": "Adakah anda pasti untuk padam draf ini?",
     "deleteNCDraftMessage": "Draf anda akan dipadamkan secara kekal.",
     "deleteNCDraftSure": "Ya, Saya Pasti",
