@@ -55,10 +55,11 @@ using System.Linq;
 using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.EBPopupScreen.Activity;
-using DynatraceAndroid;
+using Dynatrace.Xamarin;
 using myTNB_Android.Src.ServiceDistruption.Activity;
 using System.Threading.Tasks;
 using myTNB.Mobile.AWS.Models.DBR;
+using Dynatrace.Xamarin.Binding.Android;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -2167,9 +2168,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             //Dynatrace
 
-            IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_SUBMIT_AND_TRACK_ENQUIRY);  // DYNA
-            dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
-            dynaTrace.LeaveAction();
+            var myAction = Agent.Instance.EnterAction(Constants.TOUCH_ON_SUBMIT_AND_TRACK_ENQUIRY);  // DYNA
+            myAction.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
+            myAction.LeaveAction();
 
             ShowBackButton(true);
             FeedbackMenuFragment fragment = new FeedbackMenuFragment();

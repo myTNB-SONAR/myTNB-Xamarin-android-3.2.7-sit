@@ -34,6 +34,7 @@ using Java.Util;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.SSMRMeterHistory.Api;
+using Dynatrace.Xamarin;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -104,7 +105,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {   //dynatrace infomation for logged user
                 try
                 {
-                    DynatraceAndroid.Dynatrace.IdentifyUser(userEmail);
+                    Agent.Instance.IdentifyUser(userEmail);
                 }
                 catch (System.Exception e)
                 {

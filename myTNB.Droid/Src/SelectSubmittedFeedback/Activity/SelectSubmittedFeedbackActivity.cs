@@ -8,7 +8,8 @@ using Android.Preferences;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using DynatraceAndroid;
+using Dynatrace.Xamarin;
+using Dynatrace.Xamarin.Binding.Android;
 using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
@@ -104,10 +105,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
                     SubmittedFeedback feedback = adapter.GetItemObject(e.Position);
                     srNumber = feedback.FeedbackId;
                     //dynatrace 
-                    IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_VIEW_OVERVOLTAGE_CLAIM_FROM_LIST);  // DYNA
-                    dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
-                    dynaTrace.ReportValue("sr_number", feedback.FeedbackId.ToString());
-                    dynaTrace.LeaveAction();
+                    var myAction = Agent.Instance.EnterAction(Constants.TOUCH_ON_VIEW_OVERVOLTAGE_CLAIM_FROM_LIST);  // DYNA
+                    myAction.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
+                    myAction.ReportValue("sr_number", feedback.FeedbackId.ToString());
+                    myAction.LeaveAction();
                     this.userActionsListener.OnSelect(feedback);
                 }
             }

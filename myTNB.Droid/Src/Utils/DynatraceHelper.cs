@@ -1,5 +1,6 @@
 ﻿using Android.Util;
-using DynatraceAndroid;
+using Dynatrace.Xamarin;
+using Dynatrace.Xamarin.Binding.Android;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 
@@ -16,10 +17,10 @@ namespace myTNB_Android
                     Log.Debug("[DEBUG]", "[Warning] Dynatrace Track: actionName is Empty");
                     return;
                 }
-                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(actionName);
-                if (dynaTrace != null)
+                var myAction = Agent.Instance.EnterAction(actionName);
+                if (myAction != null)
                 {
-                    dynaTrace.LeaveAction();
+                    myAction.LeaveAction();
                     Log.Debug("[DEBUG]", "[Success] Dynatrace Track: " + actionName);
                 }
                 else
@@ -42,7 +43,7 @@ namespace myTNB_Android
                 string userEmail = loggedUser.Email;
                 if (userEmail.IsValid())
                 {
-                    DynatraceAndroid.Dynatrace.IdentifyUser(userEmail);
+                    Agent.Instance.IdentifyUser(userEmail);
                     Log.Debug("[DEBUG]", "[Success] Dynatrace IdentifyUser: " + userEmail);
                 }
             }

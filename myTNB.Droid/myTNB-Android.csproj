@@ -168,12 +168,6 @@
     <Reference Include="crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.8.1.1\lib\netstandard1.3\crypto.dll</HintPath>
     </Reference>
-    <Reference Include="Dynatrace.OneAgent.Android, Version=7.2.7.1233, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Dynatrace.OneAgent.Forms.Android, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Forms.Android.dll</HintPath>
-    </Reference>
     <Reference Include="FastAndroidCamera, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FastAndroidCamera.2.0.0\lib\MonoAndroid403\FastAndroidCamera.dll</HintPath>
     </Reference>
@@ -776,14 +770,23 @@
     <Reference Include="Sitecore.MobileSDK.PasswordProvider.Android, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.MobileSDK.PasswordProvider.1.3.0\lib\MonoAndroid\Sitecore.MobileSDK.PasswordProvider.Android.dll</HintPath>
     </Reference>
-    <Reference Include="Dynatrace.OneAgent.Forms, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\lib\monoandroid410\Dynatrace.OneAgent.Forms.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Arch.Lifecycle.Common">
       <HintPath>..\packages\Xamarin.Android.Arch.Lifecycle.Common.1.1.1.3\lib\monoandroid90\Xamarin.Android.Arch.Lifecycle.Common.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Tasks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Tasks.117.2.1\lib\monoandroid90\Xamarin.GooglePlayServices.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.Xamarin.Abstraction">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Abstraction.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.Xamarin.Android">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.Xamarin.Base">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.Xamarin.Binding.Android">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Binding.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -9337,6 +9340,7 @@
       </Generator>
     </AndroidResource>
     <Compile Include="Src\Device Cache\DeviceSizeCache.cs" />
+    <AndroidAsset Include="Assets\dynatrace.config.json" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\OnBoardingStyle.axml" />
@@ -13398,4 +13402,5 @@
   <Import Project="..\packages\Xamarin.Firebase.Auth.121.0.1\build\MonoAndroid90\Xamarin.Firebase.Auth.targets" Condition="Exists('..\packages\Xamarin.Firebase.Auth.121.0.1\build\MonoAndroid90\Xamarin.Firebase.Auth.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Dynamic.Links.120.1.0\build\MonoAndroid90\Xamarin.Firebase.Dynamic.Links.targets" Condition="Exists('..\packages\Xamarin.Firebase.Dynamic.Links.120.1.0\build\MonoAndroid90\Xamarin.Firebase.Dynamic.Links.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Iid.121.1.0\build\MonoAndroid90\Xamarin.Firebase.Iid.targets" Condition="Exists('..\packages\Xamarin.Firebase.Iid.121.1.0\build\MonoAndroid90\Xamarin.Firebase.Iid.targets')" />
+  <Import Project="..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets" Condition="Exists('..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets')" />
 </Project>
