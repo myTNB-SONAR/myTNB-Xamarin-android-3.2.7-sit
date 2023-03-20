@@ -445,14 +445,13 @@ namespace myTNB.Mobile
         public async Task<GetAllApplicationsResponse> GetNCDraftApplications(int page)
         {
             GetAllApplicationsResponse response = await AllApplications(page
-            , "NC"
-            , "Draft"
-            , string.Empty
-            , string.Empty
-            , true);
+               , "NC"
+               , "Draft"
+               , string.Empty
+               , string.Empty
+               , true);
             return response;
         }
-
         #endregion
 
         #region GetApplicationDetail
@@ -489,7 +488,6 @@ namespace myTNB.Mobile
                          , AppInfoManager.Instance.Language.ToString());
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
-                    Debug.WriteLine("[DEBUG] GetApplicationDetail response: " + responseString);
                     //Mark: Check for 404 First
                     NotFoundModel notFoundModel = JsonConvert.DeserializeObject<NotFoundModel>(responseString);
                     if (notFoundModel != null && notFoundModel.Status.IsValid())

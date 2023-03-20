@@ -60,12 +60,10 @@ using myTNB_Android.Src.ServiceDistruption.Activity;
 using System.Threading.Tasks;
 using AndroidX.Fragment.App;
 using myTNB_Android.Src.MyHome;
-using myTNB.Mobile.Business;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.MyDrawer;
 using myTNB.Mobile.AWS.Models.DBR;
 using Android.Graphics;
-using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -4274,7 +4272,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             Activity.RunOnUiThread(() =>
             {
-                if (!MyHomeUtility.IsBannerHidden)
+                if (!MyHomeUtility.Instance.IsBannerHidden)
                 {
                     discoverMoreSectionTitle.Visibility = ViewStates.Visible;
                     discoverMoreMyHomeContainer.Visibility = ViewStates.Visible;

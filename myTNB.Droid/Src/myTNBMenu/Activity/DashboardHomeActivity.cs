@@ -54,7 +54,6 @@ using myTNB_Android.Src.Bills.AccountStatement;
 using myTNB_Android.Src.Utils.Notification;
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 using myTNB_Android.Src.DeviceCache;
-using myTNB.Mobile.Business;
 using myTNB.Mobile.AWS.Models.DBR;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
@@ -740,7 +739,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
                         bool myHomeMarketingPopUpHasShown = UserSessions.MyHomeMarketingPopUpHasShown(this.mPref);
 
-                        if (!myHomeHasBeenTapped && !myHomeMarketingPopUpHasShown && MyHomeUtility.IsMarketingPopupEnabled)
+                        if (!myHomeHasBeenTapped && !myHomeMarketingPopUpHasShown && MyHomeUtility.Instance.IsMarketingPopupEnabled)
                         {
                             ShowMyHomeMarketingPopUp();
                             UserSessions.SetShownMyHomeMarketingPopUp(this.mPref);
@@ -1811,7 +1810,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
                 bool myHomeMarketingPopUpHasShown = UserSessions.MyHomeMarketingPopUpHasShown(this.mPref);
 
-                if (!myHomeMarketingPopUpHasShown && !myHomeHasBeenTapped && popupID && MyHomeUtility.IsMarketingPopupEnabled)
+                if (!myHomeMarketingPopUpHasShown && !myHomeHasBeenTapped && popupID && MyHomeUtility.Instance.IsMarketingPopupEnabled)
                 {
                     ShowMyHomeMarketingPopUp();
                     UserSessions.SetShownMyHomeMarketingPopUp(this.mPref);

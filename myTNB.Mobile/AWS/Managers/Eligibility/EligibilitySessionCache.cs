@@ -25,14 +25,16 @@ namespace myTNB.Mobile
             EB,
             BR,
             SD,
-            TNG
+            TNG,
+            MyHome
             //Add Other Features
         }
 
         public enum FeatureProperty
         {
             Enabled,
-            TargetGroup
+            TargetGroup,
+            ValidateCriteria
             //Add Other Properties
         }
 

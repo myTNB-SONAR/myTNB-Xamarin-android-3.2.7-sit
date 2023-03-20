@@ -25,7 +25,7 @@ namespace myTNB.Mobile
         {
         }
 
-        public string AES256_Encrypt(string saltKey
+        internal string AES256_Encrypt(string saltKey
             , string passPhrase
             , string plainText)
         {

@@ -85,6 +85,7 @@ namespace myTNB.Mobile
                     }
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
+                    Debug.WriteLine("[DEBUG] PostEligibility responseString: " + responseString);
                     postResponse = JsonConvert.DeserializeObject<PostEligibilityResponse>(responseString);
                     if (postResponse != null
                         && postResponse.Content != null
@@ -164,6 +165,8 @@ namespace myTNB.Mobile
                         x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.SD.ToString().ToUpper()).ToList();
                     List<FeatureCAModel> tng = postEligibilityResponse.Content.FeatureCAList.FindAll(
                         x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.TNG.ToString().ToUpper()).ToList();
+                    List<FeatureCAModel> myHome = postEligibilityResponse.Content.FeatureCAList.FindAll(
+                        x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.MyHome.ToString().ToUpper()).ToList();
 
                     if (dbr != null && dbr.Count > 0)
                     {
@@ -258,6 +261,25 @@ namespace myTNB.Mobile
                             });
                         }
                         eligibilityResponse.Content.TNG = baseContent;
+                    }
+
+                    if (myHome != null && myHome.Count > 0)
+                    {
+                        BaseCAListModel baseContent = new BaseCAListModel
+                        {
+                            ContractAccounts = new List<ContractAccountsModel>()
+                        };
+                        for (int i = 0; i < myHome.Count; i++)
+                        {
+                            FeatureCAModel item = myHome[i];
+                            baseContent.ContractAccounts.Add(new ContractAccountsModel
+                            {
+                                ContractAccount = item.ContractAccount,
+                                Acted = item.Acted,
+                                ModifiedDate = item.ModifiedDate
+                            });
+                        }
+                        eligibilityResponse.Content.MyHome = baseContent;
                     }
                 }
             }

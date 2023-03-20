@@ -3380,6 +3380,10 @@
   "MarketingPopup": {
     "myHomeTitle": "Kenali ciri-ciri  MyHome hari ini!",
     "myHomeMessage": "Anda kini boleh menghantar permohonan untuk akaun elektrik, menukar penghuni, menutup akaun elektrik, edit permohonan dan juga mengatur rancangan perpindahan anda dengan menggunakan myHome.",
-    "myHomeCTA": "Faham!"
+    "myHomeCTA": "Faham!",
+    "myHomeResumeApplicationTitle": "MS_Resume your Start Electricity Application",
+    "myHomeResumeApplicationMessage": "MS_You have an unfinished Start Electricity Application waiting to be completed. You can click on the button below to resume you application on myTNB app. Submit your Start Electricity application on myTNB app now!",
+    "myHomeResumeApplicationPrimaryCTA": "Teruskan",
+    "myHomeResumeApplicationSecondaryCTA": "MS_I’ll do it later."
   }
 }

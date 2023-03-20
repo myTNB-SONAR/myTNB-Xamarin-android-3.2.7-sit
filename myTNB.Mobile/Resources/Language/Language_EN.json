@@ -3380,6 +3380,10 @@
   "MarketingPopup": {
     "myHomeTitle": "Check out myHome today!",
     "myHomeMessage": "You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, edit your applications and even organise your moving plans with ease using myHome.",
-    "myHomeCTA": "Got It!"
+    "myHomeCTA": "Got It!",
+    "myHomeResumeApplicationTitle": "Resume your Start Electricity Application",
+    "myHomeResumeApplicationMessage": "You have an unfinished Start Electricity Application waiting to be completed. You can click on the button below to resume you application on myTNB app. Submit your Start Electricity application on myTNB app now!",
+    "myHomeResumeApplicationPrimaryCTA": "Continue",
+    "myHomeResumeApplicationSecondaryCTA": "I’ll do it later."
   }
 }

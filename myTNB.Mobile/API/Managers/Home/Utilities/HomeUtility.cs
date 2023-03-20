@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using myTNB.Mobile.API.Models.Home.PostServices;
 using myTNB.Mobile.Extensions;
@@ -23,7 +22,12 @@ namespace myTNB.Mobile.API.Managers.Home.Utilities
                 for (int i = servicesCount - 1; i > -1; i--)
                 {
                     ServicesModel service = services[i];
-                    if (!IsServiceIncluded(appVersion, service.AppVersion))
+                    if (service.ServiceType == MobileEnums.ServiceEnum.MYHOME
+                        && !MyHomeUtility.Instance.IsAccountEligible)
+                    {
+                        services.RemoveAt(i);
+                    }
+                    else if (!IsServiceIncluded(appVersion, service.AppVersion))
                     {
                         services.RemoveAt(i);
                     }
@@ -68,10 +72,6 @@ namespace myTNB.Mobile.API.Managers.Home.Utilities
             }
             int nAppVersion = GetNumericVersion(appVersion);
             int nServiceVersion = GetNumericVersion(serviceVersion);
-            Debug.WriteLine("[DEBUg] IsServiceIncluded nAppVersion: " + nAppVersion);
-            Debug.WriteLine("[DEBUg] IsServiceIncluded nServiceVersion: " + nServiceVersion);
-            Debug.WriteLine("[DEBUg] IsServiceIncluded result: " + (nAppVersion >= nServiceVersion).ToString());
-
             return nAppVersion >= nServiceVersion;
         }
 

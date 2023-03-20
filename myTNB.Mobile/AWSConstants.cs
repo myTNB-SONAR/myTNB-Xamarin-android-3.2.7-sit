@@ -16,11 +16,13 @@
         private const string SaltKey_DEV = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
         private const string SaltKey_SIT = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
         private const string SaltKey_PROD = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
+        public const string MyHome_SaltKey = "Salt-9F586DF42C58-4753-8FCE7113EBFAACCF";
 
         //Passphrase
         private const string Passphrase_DEV = "PW-myTNBDbrSso";
         private const string Passphrase_SIT = "PW-myTNBDbrSso";
         private const string Passphrase_PROD = "PW-myTNBDbrSso";
+        public const string MyHome_Passphrase = "PW-myTNBMyHomeSso";
 
         //Environment
         private const string Environment_DEV = "Prod";

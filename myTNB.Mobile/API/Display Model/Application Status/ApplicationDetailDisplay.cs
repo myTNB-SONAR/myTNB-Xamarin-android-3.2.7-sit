@@ -328,14 +328,16 @@ namespace myTNB.Mobile
                 {
                     type = DetailCTAType.Save;
                 }
-                else if (ApplicationTypeCode == "ASR"
+                else if (MyHomeUtility.Instance.IsAccountEligible
+                    && ApplicationTypeCode == "ASR"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
                     && ApplicationStatusDetail.StatusId == 127)
                 {
                     type = DetailCTAType.StartApplication;
                 }
-                else if (ApplicationTypeCode == "NC"
+                else if (MyHomeUtility.Instance.IsAccountEligible
+                    && ApplicationTypeCode == "NC"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
                     && ApplicationStatusDetail.StatusId == 1
@@ -344,7 +346,8 @@ namespace myTNB.Mobile
                 {
                     type = DetailCTAType.DeleteAppication;
                 }
-                else if (ApplicationTypeCode == "NC"
+                else if (MyHomeUtility.Instance.IsAccountEligible
+                    && ApplicationTypeCode == "NC"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
                     && ApplicationStatusDetail.StatusId == 1
@@ -353,7 +356,8 @@ namespace myTNB.Mobile
                 {
                     type = DetailCTAType.ResumeApplication;
                 }
-                else if (ApplicationTypeCode == "NC"
+                else if (MyHomeUtility.Instance.IsAccountEligible
+                    && ApplicationTypeCode == "NC"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
                     && (ApplicationStatusDetail.StatusId == 7
@@ -362,7 +366,8 @@ namespace myTNB.Mobile
                 {
                     type = DetailCTAType.ReapplyNow;
                 }
-                else if (ApplicationTypeCode == "NC"
+                else if (MyHomeUtility.Instance.IsAccountEligible
+                    && ApplicationTypeCode == "NC"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
                     && ApplicationStatusDetail.StatusId == 130
@@ -442,6 +447,7 @@ namespace myTNB.Mobile
                 return type;
             }
         }
+
         /// <summary>
         /// Returns the type of tutorial to display
         /// </summary>
@@ -468,7 +474,13 @@ namespace myTNB.Mobile
                                 if (CTAType == DetailCTAType.CustomerRating
                                     || CTAType == DetailCTAType.ContractorRating
                                     || CTAType == DetailCTAType.NewAppointment
-                                    || CTAType == DetailCTAType.Reschedule)
+                                    || CTAType == DetailCTAType.Reschedule
+                                    || CTAType == DetailCTAType.Pay
+                                    || CTAType == DetailCTAType.StartApplication
+                                    || CTAType == DetailCTAType.DeleteAppication
+                                    || CTAType == DetailCTAType.ResumeApplication
+                                    || CTAType == DetailCTAType.ReapplyNow
+                                    || CTAType == DetailCTAType.ReuploadDocument)
                                 {
                                     type = DetailTutorialType.Action;
                                 }
@@ -489,15 +501,15 @@ namespace myTNB.Mobile
                     }
                 }
                 else if (CTAType == DetailCTAType.CustomerRating
-                   || CTAType == DetailCTAType.ContractorRating
-                   || CTAType == DetailCTAType.NewAppointment
-                   || CTAType == DetailCTAType.Reschedule
-                   || CTAType == DetailCTAType.Pay
-                   || CTAType == DetailCTAType.StartApplication
-                   || CTAType == DetailCTAType.DeleteAppication
-                   || CTAType == DetailCTAType.ResumeApplication
-                   || CTAType == DetailCTAType.ReapplyNow
-                   || CTAType == DetailCTAType.ReuploadDocument)
+                    || CTAType == DetailCTAType.ContractorRating
+                    || CTAType == DetailCTAType.NewAppointment
+                    || CTAType == DetailCTAType.Reschedule
+                    || CTAType == DetailCTAType.Pay
+                    || CTAType == DetailCTAType.StartApplication
+                    || CTAType == DetailCTAType.DeleteAppication
+                    || CTAType == DetailCTAType.ResumeApplication
+                    || CTAType == DetailCTAType.ReapplyNow
+                    || CTAType == DetailCTAType.ReuploadDocument)
                 {
                     type = DetailTutorialType.Action;
                 }
