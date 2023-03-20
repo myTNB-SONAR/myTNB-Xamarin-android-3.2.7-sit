@@ -442,6 +442,17 @@ namespace myTNB.Mobile
             return response;
         }
 
+        public async Task<GetAllApplicationsResponse> GetNCDraftApplications(int page)
+        {
+            GetAllApplicationsResponse response = await AllApplications(page
+            , "NC"
+            , "Draft"
+            , string.Empty
+            , string.Empty
+            , true);
+            return response;
+        }
+
         #endregion
 
         #region GetApplicationDetail

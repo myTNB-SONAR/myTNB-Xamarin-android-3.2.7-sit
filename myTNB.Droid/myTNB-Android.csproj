@@ -7617,6 +7617,14 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Database\Model\MyHomeNCPopUpEntity.cs" />
+    <Compile Include="Src\MyHome\MVP\MyHomeMicrositeContract.cs" />
+    <Compile Include="Src\MyHome\MVP\MyHomeMicrositePresenter.cs" />
+    <AndroidResource Include="Resources\layout\CustomPDFImageView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Utils\PDFImageViewer\CustomPDFImageViewerActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">
@@ -10106,6 +10114,8 @@
     <Folder Include="Src\MyDrawer\" />
     <Folder Include="Src\MyHome\Activity\" />
     <Folder Include="Src\MyHome\Model\" />
+    <Folder Include="Src\MyHome\MVP\" />
+    <Folder Include="Src\Utils\PDFImageViewer\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

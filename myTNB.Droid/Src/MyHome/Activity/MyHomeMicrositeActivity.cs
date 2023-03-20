@@ -19,13 +19,18 @@ using myTNB;
 using myTNB.Mobile;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Bills.AccountStatement.Activity;
+using myTNB_Android.Src.Bills.AccountStatement.MVP;
+using myTNB_Android.Src.Bills.NewBillRedesign.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Login.Models;
+using myTNB_Android.Src.MyHome.MVP;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Deeplink;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Crmf;
 using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
 
 namespace myTNB_Android.Src.MyHome.Activity
@@ -34,7 +39,7 @@ namespace myTNB_Android.Src.MyHome.Activity
       , ScreenOrientation = ScreenOrientation.Portrait
         , WindowSoftInputMode = SoftInput.AdjustResize
       , Theme = "@style/Theme.Dashboard")]
-    public class MyHomeMicrositeActivity : BaseToolbarAppCompatActivity
+    public class MyHomeMicrositeActivity : BaseToolbarAppCompatActivity, MyHomeMicrositeContract.IView
     {
         [BindView(Resource.Id.micrositeWebview)]
         WebView micrositeWebview;
@@ -43,6 +48,7 @@ namespace myTNB_Android.Src.MyHome.Activity
         string _accessToken;
 
         private Action<int, Result, Intent> _resultCallbackvalue;
+        private MyHomeMicrositeContract.IUserActionsListener presenter;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -50,6 +56,8 @@ namespace myTNB_Android.Src.MyHome.Activity
 
             try
             {
+                _ = new MyHomeMicrositePresenter(this, this, this);
+
                 SetTheme(TextViewUtils.IsLargeFonts
                 ? Resource.Style.Theme_DashboardLarge
                 : Resource.Style.Theme_Dashboard);
@@ -66,7 +74,8 @@ namespace myTNB_Android.Src.MyHome.Activity
                     {
                         _model = JsonConvert.DeserializeObject<MyHomeModel>(extras.GetString(MyHomeConstants.MYHOME_MODEL));
                         _accessToken = extras.GetString(MyHomeConstants.ACCESS_TOKEN);
-                        SetUpWebView(_accessToken);
+
+                        this.presenter?.OnInitialize();
                     }
                 }
             }
@@ -74,6 +83,16 @@ namespace myTNB_Android.Src.MyHome.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void SetPresenter(MyHomeMicrositeContract.IUserActionsListener userActionListener)
+        {
+            this.presenter = userActionListener;
+        }
+
+        public void SetUpViews()
+        {
+            SetUpWebView(_accessToken);
         }
 
         protected override void OnStart()
@@ -102,6 +121,44 @@ namespace myTNB_Android.Src.MyHome.Activity
             {
                 this.SupportActionBar.Hide();
             }
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ViewDownloadedFile(string filePath, string fileExtension, string fileTitle)
+        {
+            var pdfViewActivity = new Intent(this, typeof(CustomPDFImageViewerActivity));
+            pdfViewActivity.PutExtra(Constants.PDF_FILE_TITLE, fileTitle);
+            pdfViewActivity.PutExtra(Constants.PDF_IMAGE_VIWER_FILE_PATH, filePath);
+            pdfViewActivity.PutExtra(Constants.PDF_IMAGE_VIEWER_EXTENSION, fileExtension);
+            StartActivity(pdfViewActivity);
+        }
+
+        public void InterceptDownloadWithURL(string url)
+        {
+            this.presenter.GetFile(url);
         }
 
         internal void OnShowDashboard()
@@ -288,8 +345,23 @@ namespace myTNB_Android.Src.MyHome.Activity
                 bool shouldOverride = false;
 
                 string url = request.Url.ToString();
+
+                //STUB
+                //string pdf = "https://stagingmyhome.mytnb.com.my/Utility/FileUploadWithoutAuth/GetFileByFileID?fileID=59324d20-2089-427a-ab10-27ca87119620";
+                //string image = "https://stagingmyhome.mytnb.com.my/Utility/FileUploadWithoutAuth/GetFileByFileID?fileID=4ac61fbf-1c94-4ac8-a21f-9d0bcc88c50c";
+                //var encrypted = SecurityManager.Instance.AES256_Encrypt("Salt-9F586DF42C58-4753-8FCE7113EBFAACCF"
+                //, "PW-myTNBMyHomeSso"
+                //        , pdf);
+                //url = "mytnbapp://action=openPDF&extension=pdf&&title=ICCopy_202211.pdf&file=" + encrypted;
+
                 Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
-                if (url.Contains(MyHomeConstants.BACK_TO_APP))
+
+                if (url.Contains(MyHomeConstants.OPEN_FILE))
+                {
+                    shouldOverride = true;
+                    this.mActivity.InterceptDownloadWithURL(url);
+                }
+                else if (url.Contains(MyHomeConstants.BACK_TO_APP))
                 {
                     shouldOverride = true;
                     mActivity.OnBackPressed();

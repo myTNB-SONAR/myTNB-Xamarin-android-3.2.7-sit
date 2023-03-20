@@ -93,6 +93,11 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly string DELETE_DRAFT_MESSAGE = ".deleteDraftMessage";
 
+        internal static readonly string PDF_IMAGE_VIWER_FILE_PATH = ".pdfImageViewerfilePath";
+        internal static readonly string PDF_IMAGE_VIEWER_EXTENSION = ".pdfImageViewerFileExtension";
+        internal static readonly string PDF_FILE_TITLE = ".pdfImageViewerFileTitle";
+        internal static readonly string PDF_FILE_EXTENSION = "pdf";
+
         /// <summary>
         /// BARCODE REQUEST TYPE
         /// </summary>
@@ -514,6 +519,11 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string DYNA_SITECORE_REFFER_ONLINE = "sitecore_refer_online";
         internal static readonly string DYNA_WHATS_NEW_DEFAULT = "WhatsNewClicked";
 
+        //Utility
+        internal static readonly string PATTERN = "\\b{0}.*\\b";
+        internal static readonly string REPLACE_KEY = "{0}=";
+        internal static readonly string SLASH = "/";
+        internal static readonly string AMPERSAND = "&";
 
 #if MASTER || SIT || DEBUG
         internal static readonly string EB_in_app_notification = "EB_in_app_notification";

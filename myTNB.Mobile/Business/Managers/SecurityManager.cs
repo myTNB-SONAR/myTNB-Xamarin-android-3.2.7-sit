@@ -25,7 +25,7 @@ namespace myTNB.Mobile
         {
         }
 
-        internal string AES256_Encrypt(string saltKey
+        public string AES256_Encrypt(string saltKey
             , string passPhrase
             , string plainText)
         {
@@ -60,7 +60,7 @@ namespace myTNB.Mobile
             return Convert.ToBase64String(cipherTextBytes);
         }
 
-        internal string AES256_Decrypt(string saltKey
+        public string AES256_Decrypt(string saltKey
             , string passPhrase
             , string cipherText)
         {

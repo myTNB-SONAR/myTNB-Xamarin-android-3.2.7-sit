@@ -829,7 +829,30 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     ShowMarketingTooltip();
                     UserSessions.SaveDBRPopUpFlag(this.mPref, true);
                 }
+                else
+                {
+                    LogicCheckForMyHomeNCResumePopUp();
+                }
             }
+        }
+
+        private void LogicCheckForMyHomeNCResumePopUp()
+        {
+            //MyTNBAppToolTipBuilder ncResumeTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+            //    .SetHeaderImage(Resource.Drawable.Banner_Notif_MyHome_NC_Resume_Application)
+            //    .SetTitle("Resume your Start Electricity Application")
+            //    .SetMessage("You have an unfinished Start Electricity Application (Application No.: NC-000-000-7658) waiting to be completed. You can click on the button below to resume you application on myTNB app. \n\nSubmit your Start Electricity application on myTNB app now!")
+            //    .SetCTALabel("Continue")
+            //    .SetCTAaction(() => ShowManageBill())
+            //    .SetSecondaryCTALabel("I’ll do it later.")
+            //    .SetSecondaryCTAaction(() =>
+            //    {
+            //        this.SetIsClicked(false);
+            //        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
+            //        LogicCheckForMyHomeNCResumePopUp();
+            //    })
+            //    .Build();
+            //ncResumeTooltip.Show();
         }
 
         public void ShowMarketingTooltip()
@@ -848,6 +871,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         this.SetIsClicked(false);
                         DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
+                        LogicCheckForMyHomeNCResumePopUp();
                     })
                     .Build();
                 marketingTooltip.Show();
@@ -1796,6 +1820,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     ShowMarketingTooltip();
                     UserSessions.SaveDBRPopUpFlag(this.mPref, true);
+                }
+                else
+                {
+                    LogicCheckForMyHomeNCResumePopUp();
                 }
             }
 
