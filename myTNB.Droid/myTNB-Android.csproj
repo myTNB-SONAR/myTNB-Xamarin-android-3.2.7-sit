@@ -9341,6 +9341,8 @@
     </AndroidResource>
     <Compile Include="Src\Device Cache\DeviceSizeCache.cs" />
     <AndroidAsset Include="Assets\dynatrace.config.json" />
+    <AndroidAsset Include="Assets\dynatraceRelease.config.json" />
+    <AndroidAsset Include="Assets\dynatraceSIT.config.json" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\OnBoardingStyle.axml" />
