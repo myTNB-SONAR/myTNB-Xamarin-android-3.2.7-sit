@@ -135,6 +135,7 @@
             internal const string GetAutoOptInCa = "GetAutoOptInCa";
             internal const string PatchUpdateAutoOptInCa = "PatchUpdateAutoOptInCa";
             internal const string PostDeleteNCDraft = "DeleteNCDraft";
+            internal const string PostGetNCDraftApplications = "GetNCDraftApplications";
         }
     }
 }

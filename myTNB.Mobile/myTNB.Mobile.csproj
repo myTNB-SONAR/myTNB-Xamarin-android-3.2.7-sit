@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
-    <IntermediateOutputPath>obj\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</IntermediateOutputPath>
+    <IntermediateOutputPath>obj\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</IntermediateOutputPath>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
@@ -16,7 +16,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,7 +31,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -43,7 +43,7 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />
@@ -78,16 +78,7 @@
     <Folder Include="AWS\Managers\TNG\" />
     <Folder Include="API\Managers\Home\Utilities\" />
     <Folder Include="AWS\Managers\MyHome\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
-    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1004.json" />
-    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1003.json" />
-    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1099.json" />
-    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10011.json" />
-    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10010.json" />
-    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10009.json" />
-    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10051.json" />
+    <Folder Include="AWS\Models\Application Status\Post NC Draft Applications\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Language\Language_MS.json" />
@@ -108,26 +99,9 @@
     <None Remove="Resources\Language\Language_MS.json" />
     <None Remove="Resources\TnC\TermsAndConditions_EN.txt" />
     <None Remove="Resources\TnC\TermsAndConditions_MS.txt" />
-    <None Remove="Resources\Usage\AccountUsageSmart.json" />
-    <None Remove="Resources\Notification\GetUserNotifications.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10009.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1001.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10010.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10011.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1002.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1003.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1004.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1005.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10050.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10051.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10052.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10053.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1099.json" />
     <None Remove="Resources\Language\Language_MS.json" />
     <None Remove="Resources\Language\Language_EN.json" />
     <None Remove="Resources\Country\CountryList.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10071.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10072.json" />
     <None Remove="AWS\Models\DBR\Get Multi Bill Rendering\" />
     <None Remove="API\Managers\FeatureInfo\" />
     <None Remove="AWS\Services\Account Statement\" />
@@ -151,9 +125,9 @@
     <None Remove="AWS\Managers\TNG\" />
     <None Remove="API\Managers\Home\Utilities\" />
     <None Remove="AWS\Managers\MyHome\" />
+    <None Remove="AWS\Models\Application Status\Post NC Draft Applications\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />
     <Compile Remove="Business\Managers\AccountUsageManager.cs" />
   </ItemGroup>

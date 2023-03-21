@@ -9,6 +9,8 @@
             public const string I18N_CTA = "myHomeCTA";
             public const string I18N_ResumeApplicationTitle = "myHomeResumeApplicationTitle";
             public const string I18N_ResumeApplicationMessage = "myHomeResumeApplicationMessage";
+            public const string I18N_ResumeApplicationsTitle = "myHomeResumeApplicationsTitle";
+            public const string I18N_ResumeApplicationsMessage = "myHomeResumeApplicationsMessage";
             public const string I18N_ResumeApplicationPrimaryCTA = "myHomeResumeApplicationPrimaryCTA";
             public const string I18N_ResumeApplicationSecondaryCTA = "myHomeResumeApplicationSecondaryCTA";
         }

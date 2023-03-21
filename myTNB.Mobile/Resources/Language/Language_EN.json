@@ -3052,6 +3052,17 @@
             "isSuccess": true,
             "type": "toast"
           }
+        ],
+        "GetNCDraftApplications": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": ".",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -3382,7 +3393,9 @@
     "myHomeMessage": "You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, edit your applications and even organise your moving plans with ease using myHome.",
     "myHomeCTA": "Got It!",
     "myHomeResumeApplicationTitle": "Resume your Start Electricity Application",
-    "myHomeResumeApplicationMessage": "You have an unfinished Start Electricity Application waiting to be completed. You can click on the button below to resume you application on myTNB app. Submit your Start Electricity application on myTNB app now!",
+    "myHomeResumeApplicationMessage": "You have an unfinished Start Electricity Application (Application No.: {0}) waiting to be completed. You can click on the button below to resume your application on myTNB app.<br><br>Submit your Start Electricity application on myTNB app now!",
+    "myHomeResumeApplicationsTitle": "Resume your Start Electricity Applications",
+    "myHomeResumeApplicationsMessage": "You have unfinished Start Electricity Applications (Application Nos.: {0}) waiting to be completed. You can click on the button below to resume your applications on myTNB app.<br><br>Submit your Start Electricity applications on myTNB app now!",
     "myHomeResumeApplicationPrimaryCTA": "Continue",
     "myHomeResumeApplicationSecondaryCTA": "I’ll do it later."
   }

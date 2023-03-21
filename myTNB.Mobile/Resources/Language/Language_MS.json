@@ -3052,6 +3052,17 @@
             "isSuccess": true,
             "type": "toast"
           }
+        ],
+        "GetNCDraftApplications": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": ".",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -3381,9 +3392,11 @@
     "myHomeTitle": "Kenali ciri-ciri  MyHome hari ini!",
     "myHomeMessage": "Anda kini boleh menghantar permohonan untuk akaun elektrik, menukar penghuni, menutup akaun elektrik, edit permohonan dan juga mengatur rancangan perpindahan anda dengan menggunakan myHome.",
     "myHomeCTA": "Faham!",
-    "myHomeResumeApplicationTitle": "MS_Resume your Start Electricity Application",
-    "myHomeResumeApplicationMessage": "MS_You have an unfinished Start Electricity Application waiting to be completed. You can click on the button below to resume you application on myTNB app. Submit your Start Electricity application on myTNB app now!",
+    "myHomeResumeApplicationTitle": "Sambung semula Permohonan Mula Bekalan Elektrik anda",
+    "myHomeResumeApplicationMessage": "Anda mempunyai Permohonan Mula Bekalan Elektrik yang belum selesai (No. Permohonan: {0}). Anda boleh klik pada butang di bawah untuk sambung semula permohonan anda di aplikasi myTNB.<br><br>Hantar permohonan Mula Bekalan Elektrik anda pada aplikasi myTNB sekarang!",
+    "myHomeResumeApplicationsTitle": "Sambung semula Permohonan-permohonan Mula Bekalan Elektrik anda",
+    "myHomeResumeApplicationsMessage": "Anda mempunyai Permohonan-permohonan Mula Bekalan Elektrik yang belum selesai (No. Permohonan: {0}). Anda boleh klik pada butang di bawah untuk sambung semula permohonan-permohonan anda di aplikasi myTNB.<br><br>Hantar permohonan-permohonan Mula Bekalan Elektrik anda pada aplikasi myTNB sekarang!",
     "myHomeResumeApplicationPrimaryCTA": "Teruskan",
-    "myHomeResumeApplicationSecondaryCTA": "MS_I’ll do it later."
+    "myHomeResumeApplicationSecondaryCTA": "Sambung Nanti."
   }
 }
