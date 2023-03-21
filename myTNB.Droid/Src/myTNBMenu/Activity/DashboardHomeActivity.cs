@@ -738,8 +738,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
                         bool myHomeMarketingPopUpHasShown = UserSessions.MyHomeMarketingPopUpHasShown(this.mPref);
+                        //GTM-1 Force Hide myHome Marketing Pop Up
+                        bool forceHide = true;
 
-                        if (!myHomeHasBeenTapped && !myHomeMarketingPopUpHasShown && MyHomeUtility.Instance.IsMarketingPopupEnabled)
+                        if (!myHomeHasBeenTapped && !myHomeMarketingPopUpHasShown &&
+                            MyHomeUtility.Instance.IsMarketingPopupEnabled &&
+                            MyHomeUtility.Instance.IsAccountEligible &&
+                            !forceHide)
                         {
                             ShowMyHomeMarketingPopUp();
                             UserSessions.SetShownMyHomeMarketingPopUp(this.mPref);
@@ -887,8 +892,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     .SetCTAaction(() =>
                     {
                         this.SetIsClicked(false);
-                        //DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
-
                         LogicCheckForDBRMarketingPopUp();
                     })
                     .Build();
@@ -1809,8 +1812,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                 bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
                 bool myHomeMarketingPopUpHasShown = UserSessions.MyHomeMarketingPopUpHasShown(this.mPref);
+                //GTM-1 Force Hide myHome Marketing Pop Up
+                bool forceHide = true;
 
-                if (!myHomeMarketingPopUpHasShown && !myHomeHasBeenTapped && popupID && MyHomeUtility.Instance.IsMarketingPopupEnabled)
+                if (!myHomeMarketingPopUpHasShown &&
+                    !myHomeHasBeenTapped &&
+                    popupID &&
+                    MyHomeUtility.Instance.IsMarketingPopupEnabled &&
+                    MyHomeUtility.Instance.IsAccountEligible &&
+                    !forceHide)
                 {
                     ShowMyHomeMarketingPopUp();
                     UserSessions.SetShownMyHomeMarketingPopUp(this.mPref);

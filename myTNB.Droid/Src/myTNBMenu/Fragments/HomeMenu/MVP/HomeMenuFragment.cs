@@ -4272,13 +4272,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             Activity.RunOnUiThread(() =>
             {
-                if (!MyHomeUtility.Instance.IsBannerHidden)
+                if (!MyHomeUtility.Instance.IsBannerHidden && MyHomeUtility.Instance.IsAccountEligible)
                 {
-                    discoverMoreSectionTitle.Visibility = ViewStates.Visible;
-                    discoverMoreMyHomeContainer.Visibility = ViewStates.Visible;
-                    myHomeBanner.Visibility = ViewStates.Visible;
-                    myHomeBanner.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.Banner_Home_MyHome_MS
-                        : Resource.Drawable.Banner_Home_MyHome_EN);
+                    //GTM-1 Force Hide myHome Banner
+                    discoverMoreSectionTitle.Visibility = ViewStates.Gone;
+                    discoverMoreMyHomeContainer.Visibility = ViewStates.Gone;
+
+                    //discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+                    //discoverMoreMyHomeContainer.Visibility = ViewStates.Visible;
+                    //myHomeBanner.Visibility = ViewStates.Visible;
+                    //myHomeBanner.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.Banner_Home_MyHome_MS
+                    //    : Resource.Drawable.Banner_Home_MyHome_EN);
                 }
             });
         }

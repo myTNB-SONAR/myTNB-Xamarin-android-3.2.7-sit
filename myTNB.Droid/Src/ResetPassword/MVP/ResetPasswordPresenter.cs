@@ -151,10 +151,10 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                                     Utility.LoggingNonFatalError(ne);
                                 }
 
-                                if (response.GetData() != null && response.GetData().UserNotificationList != null &&
-                                    response.GetData().UserNotificationList.Count > 0)
+                                if (response.GetData() != null && response.GetData().FilteredUserNotificationList != null &&
+                                    response.GetData().FilteredUserNotificationList.Count > 0)
                                 {
-                                    foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                                    foreach (UserNotification userNotification in response.GetData().FilteredUserNotificationList)
                                     {
                                         // tODO : SAVE ALL NOTIFICATIONs
                                         int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);

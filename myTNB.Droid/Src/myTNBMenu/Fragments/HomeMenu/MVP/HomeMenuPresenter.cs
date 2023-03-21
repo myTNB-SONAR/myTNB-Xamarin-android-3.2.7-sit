@@ -2668,7 +2668,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new MyTNBService.Request.BaseRequest());
                 if (response.IsSuccessResponse())
                 {
-                    if (response.GetData() != null && response.GetData().UserNotificationList != null)
+                    if (response.GetData() != null && response.GetData().FilteredUserNotificationList != null)
                     {
                         try
                         {
@@ -2679,7 +2679,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Utility.LoggingNonFatalError(ne);
                         }
 
-                        foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                        foreach (UserNotification userNotification in response.GetData().FilteredUserNotificationList)
                         {
                             try
                             {
@@ -2851,9 +2851,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Feature = FeatureType.AccountsNC
                 });
 
-                if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref))
+                if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref) && MyHomeUtility.Instance.IsAccountEligible)
                 {
-                    //  TODO: Add condition for visibility of myHome
                     newList.Add(new NewAppModel()
                     {
                         ContentShowPosition = ContentType.TopRight,
@@ -2984,9 +2983,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Feature = FeatureType.QuickActions
                 });
 
-                if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref))
+                if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref) && MyHomeUtility.Instance.IsAccountEligible)
                 {
-                    //  TODO: Add condition for visibility of myHome
                     newList.Add(new NewAppModel()
                     {
                         ContentShowPosition = ContentType.TopRight,
@@ -3021,19 +3019,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 if (UserSessions.HomeDashboardTutorialHasShownBefore(this.mPref) && !UserSessions.MyHomeDashboardTutorialHasShown(this.mPref))
                 {
-                    //  TODO: Add condition for visibility of myHome
-                    newList.Add(new NewAppModel()
+                    if (MyHomeUtility.Instance.IsAccountEligible)
                     {
-                        ContentShowPosition = ContentType.TopRight,
-                        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
-                        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
-                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                        NeedHelpHide = isNeedHelpHide,
-                        IsButtonShow = false,
-                        Feature = FeatureType.MyHome,
-                        DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
-                        DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
-                    });
+                        newList.Add(new NewAppModel()
+                        {
+                            ContentShowPosition = ContentType.TopRight,
+                            ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
+                            ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
+                            ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                            NeedHelpHide = isNeedHelpHide,
+                            IsButtonShow = false,
+                            Feature = FeatureType.MyHome,
+                            DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
+                            DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
+                        });
+                    }
                 }
                 else
                 {
@@ -3115,19 +3115,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         Feature = FeatureType.QuickActions
                     });
 
-                    //  TODO: Add condition for visibility of myHome
-                    newList.Add(new NewAppModel()
+                    if (MyHomeUtility.Instance.IsAccountEligible)
                     {
-                        ContentShowPosition = ContentType.TopRight,
-                        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
-                        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
-                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                        NeedHelpHide = isNeedHelpHide,
-                        IsButtonShow = false,
-                        Feature = FeatureType.MyHome,
-                        DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
-                        DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
-                    });
+                        newList.Add(new NewAppModel()
+                        {
+                            ContentShowPosition = ContentType.TopRight,
+                            ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
+                            ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
+                            ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                            NeedHelpHide = isNeedHelpHide,
+                            IsButtonShow = false,
+                            Feature = FeatureType.MyHome,
+                            DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
+                            DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
+                        });
+                    }
 
                     if (!isNeedHelpHide)
                     {

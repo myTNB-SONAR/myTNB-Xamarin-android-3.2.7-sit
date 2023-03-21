@@ -301,7 +301,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 string dt = JsonConvert.SerializeObject(new BaseRequest());
                                 if (response != null && response.Response != null && response.Response.ErrorCode == "7200")
                                 {
-                                    if (response.GetData() != null && response.GetData().UserNotificationList != null)
+                                    if (response.GetData() != null && response.GetData().FilteredUserNotificationList != null)
                                     {
                                         try
                                         {
@@ -312,7 +312,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                             Utility.LoggingNonFatalError(ne);
                                         }
 
-                                        foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                                        foreach (UserNotification userNotification in response.GetData().FilteredUserNotificationList)
                                         {
                                             try
                                             {

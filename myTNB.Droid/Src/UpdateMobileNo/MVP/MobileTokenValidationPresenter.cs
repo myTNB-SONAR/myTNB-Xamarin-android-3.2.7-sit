@@ -443,7 +443,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                     Utility.LoggingNonFatalError(ne);
                                 }
 
-                                foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                                foreach (UserNotification userNotification in response.GetData().FilteredUserNotificationList)
                                 {
                                     // TODO : SAVE ALL NOTIFICATIONs
                                     int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
@@ -671,10 +671,10 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new MyTNBService.Request.BaseRequest());
                     if (response.IsSuccessResponse())
                     {
-                        if (response.GetData() != null && response.GetData().UserNotificationList != null &&
-                            response.GetData().UserNotificationList.Count > 0)
+                        if (response.GetData() != null && response.GetData().FilteredUserNotificationList != null &&
+                            response.GetData().FilteredUserNotificationList.Count > 0)
                         {
-                            foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                            foreach (UserNotification userNotification in response.GetData().FilteredUserNotificationList)
                             {
                                 // TODO : SAVE ALL NOTIFICATIONs
                                 int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
