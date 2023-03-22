@@ -1986,7 +1986,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         public void OnCheckNCDraftForResume(ISharedPreferences prefs)
         {
-            this.CheckNCDraftForResume(prefs);
+            if (MyHomeUtility.Instance.IsAccountEligible)
+            {
+                this.CheckNCDraftForResume(prefs);
+            }
         }
     }
 
