@@ -999,7 +999,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             bool hasNotification = UserSessions.HasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
             string loggedInEmail = UserEntity.GetActive() != null ? UserEntity.GetActive().Email : string.Empty;
-            bool isLoggedInEmail = loggedInEmail.Equals(UserSessions.GetUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this)));
+            bool isLoggedInEmail = loggedInEmail.Equals(UserSessions.GetUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this)), StringComparison.OrdinalIgnoreCase);
             if (hasNotification &&
                 isLoggedInEmail &&
                 NotificationUtil.Instance.Type != NotificationType.None)
