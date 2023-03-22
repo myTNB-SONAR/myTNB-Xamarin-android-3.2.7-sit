@@ -1983,6 +1983,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
             return account;
         }
+
+        public void OnCheckNCDraftForResume(ISharedPreferences prefs)
+        {
+            this.CheckNCDraftForResume(prefs);
+        }
     }
 
 }

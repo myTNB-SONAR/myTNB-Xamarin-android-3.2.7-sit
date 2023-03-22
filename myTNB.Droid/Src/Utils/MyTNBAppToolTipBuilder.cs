@@ -52,6 +52,7 @@ namespace myTNB_Android.Src.Utils
         private bool isIconImage = false;
         private int primaryButtonDrawable;
         private int secondaryButtonDrawable;
+        private int secondaryButtonTextSize;
 
         private MyTNBAppToolTipBuilder(Android.App.Activity context)
         {
@@ -195,6 +196,12 @@ namespace myTNB_Android.Src.Utils
         public MyTNBAppToolTipBuilder SetSecondaryCTALabel(string secondaryCTALabel)
         {
             this.secondaryCTALabel = secondaryCTALabel;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetSecondaryCTATextSize(int size)
+        {
+            this.secondaryButtonTextSize = size;
             return this;
         }
 
@@ -756,7 +763,13 @@ namespace myTNB_Android.Src.Utils
 
                 TextViewUtils.SetTextSize14(tooltipMessage);
                 TextViewUtils.SetTextSize16(tooltipTitle, tooltipPrimaryCTA);
+
                 TextViewUtils.SetTextSize16(tooltipSecondaryCTA);
+                if (secondaryButtonTextSize == 12)
+                {
+                    TextViewUtils.SetTextSize12(tooltipSecondaryCTA);
+                }
+
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
                 tooltipTitle.Gravity = this.mGravityFlag;

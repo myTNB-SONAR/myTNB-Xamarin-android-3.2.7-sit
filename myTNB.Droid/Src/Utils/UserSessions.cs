@@ -12,6 +12,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using Newtonsoft.Json;
+using myTNB_Android.Src.MyHome;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -1246,6 +1247,18 @@ namespace myTNB_Android.Src.Utils
         {
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutString(PreferenceKey.Home.QuickLinkImagesTimestamp, timeStamp);
+            editor.Apply();
+        }
+
+        public static string GetNCResumePopUpRefNos(ISharedPreferences prefs)
+        {
+            return prefs.GetString(MyHomeConstants.USER_SESSION_NC_RESUME_POPUP_KEY, string.Empty);
+        }
+
+        public static void SetNCResumePopUpRefNos(ISharedPreferences prefs, string refNos)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString(MyHomeConstants.USER_SESSION_NC_RESUME_POPUP_KEY, refNos);
             editor.Apply();
         }
     }

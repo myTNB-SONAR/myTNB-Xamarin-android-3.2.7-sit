@@ -55,6 +55,8 @@ using myTNB_Android.Src.Utils.Notification;
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile.AWS.Models.DBR;
+using myTNB_Android.Src.MyHome.Model;
+using myTNB.Mobile.AWS;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -419,7 +421,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (searchApplicationTypeResponse == null)
             {
                 ShowProgressDialog();
-                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                searchApplicationTypeResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
                 if (searchApplicationTypeResponse != null
                     && searchApplicationTypeResponse.StatusDetail != null
                     && searchApplicationTypeResponse.StatusDetail.IsSuccess)
@@ -835,28 +837,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 else
                 {
-                    LogicCheckForMyHomeNCResumePopUp();
+                    this.userActionsListener.OnCheckNCDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
                 }
             }
-        }
-
-        private void LogicCheckForMyHomeNCResumePopUp()
-        {
-            //MyTNBAppToolTipBuilder ncResumeTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
-            //    .SetHeaderImage(Resource.Drawable.Banner_Notif_MyHome_NC_Resume_Application)
-            //    .SetTitle("Resume your Start Electricity Application")
-            //    .SetMessage("You have an unfinished Start Electricity Application (Application No.: NC-000-000-7658) waiting to be completed. You can click on the button below to resume you application on myTNB app. \n\nSubmit your Start Electricity application on myTNB app now!")
-            //    .SetCTALabel("Continue")
-            //    .SetCTAaction(() => ShowManageBill())
-            //    .SetSecondaryCTALabel("I’ll do it later.")
-            //    .SetSecondaryCTAaction(() =>
-            //    {
-            //        this.SetIsClicked(false);
-            //        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
-            //        LogicCheckForMyHomeNCResumePopUp();
-            //    })
-            //    .Build();
-            //ncResumeTooltip.Show();
         }
 
         public void ShowMarketingTooltip()
@@ -871,11 +854,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_START_NOW))
                     .SetCTAaction(() => ShowManageBill())
                     .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.GOT_IT))
+                    .SetSecondaryCTATextSize(12)
                     .SetSecondaryCTAaction(() =>
                     {
                         this.SetIsClicked(false);
                         DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
-                        LogicCheckForMyHomeNCResumePopUp();
+                        this.userActionsListener.OnCheckNCDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
                     })
                     .Build();
                 marketingTooltip.Show();
@@ -884,6 +868,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowMyHomeMarketingPopUp()
         {
+            //STUB myHome
             MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                     .SetHeaderImage(Resource.Drawable.Banner_MyHome_Marketing)
                     .SetTitle("Check out myHome today!")
@@ -1062,7 +1047,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             bool hasNotification = UserSessions.HasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
             string loggedInEmail = UserEntity.GetActive() != null ? UserEntity.GetActive().Email : string.Empty;
-            bool isLoggedInEmail = loggedInEmail.Equals(UserSessions.GetUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this)));
+            bool isLoggedInEmail = loggedInEmail.Equals(UserSessions.GetUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this)), StringComparison.OrdinalIgnoreCase);
             if (hasNotification &&
                 isLoggedInEmail &&
                 NotificationUtil.Instance.IsDirectPush)
@@ -1832,7 +1817,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 else
                 {
-                    LogicCheckForMyHomeNCResumePopUp();
+                    this.userActionsListener.OnCheckNCDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
                 }
             }
 
@@ -3246,6 +3231,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void NavigateToGSL()
         {
             this.ShowGSLInfoScreen();
+        }
+
+        public void OnShowNCDraftResumePopUp(MyHomeToolTipModel toolTipModel, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft)
+        {
+            this.ShowNCDraftResumePopUp(toolTipModel, newNCList, isMultipleDraft);
         }
     }
 }

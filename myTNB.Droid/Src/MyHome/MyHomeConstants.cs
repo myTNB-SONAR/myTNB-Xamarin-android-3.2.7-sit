@@ -23,6 +23,7 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string EXTENSION_PDF = "pdf";
         internal static readonly string EXTENSION_PNG = "png";
         internal static readonly string EXTENSION_JPG = "jpg";
+        internal static readonly string USER_SESSION_NC_RESUME_POPUP_KEY = "userSessionNCResumePopUpKey";
     }
 }
 

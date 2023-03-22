@@ -1,9 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Android.Content;
+using Android.OS;
+using Android.Preferences;
 using myTNB;
 using myTNB.Mobile;
+using myTNB.Mobile.AWS;
+using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP
 {
@@ -80,6 +90,77 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             else
             {
                 presenter.mView.TriggerIneligiblePopUp();
+            }
+        }
+
+        internal static void CheckNCDraftForResume(this DashboardHomePresenter presenter, ISharedPreferences prefs)
+        {
+            Task.Run(() =>
+            {
+                _ = GetNCDraftApplications(presenter, prefs);
+            });
+        }
+
+        private static async Task GetNCDraftApplications(this DashboardHomePresenter presenter, ISharedPreferences prefs)
+        {
+            List<string> refNosOldList = new List<string>();
+            string currentRefNos = UserSessions.GetNCResumePopUpRefNos(prefs);
+
+            if (currentRefNos.IsValid())
+            {
+                refNosOldList = JsonConvert.DeserializeObject<List<string>>(currentRefNos);
+                if (refNosOldList == null)
+                {
+                    refNosOldList = new List<string>();
+                }
+            }
+
+            UserEntity user = UserEntity.GetActive();
+            var response = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostGetNCDraftApplications(user.UserID, user.Email, refNosOldList);
+            if (response != null &&
+                response.StatusDetail != null &&
+                response.StatusDetail.IsSuccess)
+            {
+                if (response.Content != null &&
+                    response.Content.ReminderTitle.IsValid() &&
+                    response.Content.ReminderMessage.IsValid())
+                {
+                    List<string> newRefNosList = new List<string>();
+                    if (response.Content.NCApplicationList != null &&
+                        response.Content.NCApplicationList.Count > 0)
+                    {
+                        string newSetOfRefNos = JsonConvert.SerializeObject(response.Content.NCApplicationList);
+                        UserSessions.SetNCResumePopUpRefNos(prefs, newSetOfRefNos);
+
+                        newRefNosList = response.Content.NCApplicationList.Except(refNosOldList).ToList();
+                    }
+
+                    List<PostGetNCDraftResponseItemModel> newNCDraftObjList = new List<PostGetNCDraftResponseItemModel>();
+
+                    if (response.Content.Applications != null &&
+                        response.Content.Applications.Count > 0)
+                    {
+                        newNCDraftObjList = response.Content.Applications;
+                        foreach (string refNo in refNosOldList)
+                        {
+                            int index = response.Content.Applications.FindIndex(x => x.ReferenceNo == refNo);
+                            if (index != -1)
+                            {
+                                newNCDraftObjList.RemoveAt(index);
+                            }
+                        }
+                    }
+
+                    MyHomeToolTipModel tooltipModel = new MyHomeToolTipModel()
+                    {
+                        Title = response.Content.ReminderTitle,
+                        Message = response.Content.ReminderMessage,
+                        PrimaryCTA = response.Content.PrimaryCTA,
+                        SecondaryCTA = response.Content.SecondaryCTA
+                    };
+
+                    presenter.mView.OnShowNCDraftResumePopUp(tooltipModel, newNCDraftObjList, response.Content.IsMultipleDraft);
+                }
             }
         }
     }

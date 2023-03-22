@@ -17,6 +17,7 @@ namespace myTNB.Mobile.AWS
         public string ReminderMessage { set; get; } = string.Empty;
         public string PrimaryCTA { set; get; } = string.Empty;
         public string SecondaryCTA { set; get; } = string.Empty;
+        public bool IsMultipleDraft { set; get; }
         public List<string> NCApplicationList { set; get; }
     }
 

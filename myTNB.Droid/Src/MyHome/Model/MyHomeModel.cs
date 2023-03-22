@@ -44,5 +44,13 @@ namespace myTNB_Android.Src.MyHome.Model
     }
 
     public class MyHomeModel : MyServiceModel { }
+
+    public class MyHomeToolTipModel
+    {
+        public string Title { get; set; }
+        public string Message { get; set; }
+        public string PrimaryCTA { get; set; }
+        public string SecondaryCTA { get; set; }
+    }
 }
 

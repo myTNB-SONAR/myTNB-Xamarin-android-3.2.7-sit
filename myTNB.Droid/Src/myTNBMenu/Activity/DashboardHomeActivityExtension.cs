@@ -32,6 +32,8 @@ using System.Linq;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.AWS.Models.DBR;
 using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.MyHome.Model;
+using myTNB.Mobile.AWS;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -141,7 +143,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
-                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                searchApplicationTypeResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
                 if (searchApplicationTypeResponse != null
                     && searchApplicationTypeResponse.StatusDetail != null
                     && searchApplicationTypeResponse.StatusDetail.IsSuccess)
@@ -195,7 +197,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
-                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                searchApplicationTypeResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
                 if (searchApplicationTypeResponse != null
                     && searchApplicationTypeResponse.StatusDetail != null
                     && searchApplicationTypeResponse.StatusDetail.IsSuccess)
@@ -207,7 +209,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 && searchApplicationTypeResponse.StatusDetail != null
                 && searchApplicationTypeResponse.StatusDetail.IsSuccess)
             {
-                ApplicationDetailDisplay detailsResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(ApplicationDetailsDeeplinkCache.Instance.SaveID
+                ApplicationDetailDisplay detailsResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.GetApplicationDetail(ApplicationDetailsDeeplinkCache.Instance.SaveID
                     , ApplicationDetailsDeeplinkCache.Instance.ID
                     , ApplicationDetailsDeeplinkCache.Instance.Type
                     , ApplicationDetailsDeeplinkCache.Instance.System);
@@ -544,6 +546,53 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        internal static void ShowNCDraftResumePopUp(this DashboardHomeActivity mainActivity, MyHomeToolTipModel toolTipModel, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft)
+        {
+            mainActivity.RunOnUiThread(() =>
+            {
+                MyTNBAppToolTipBuilder ncResumeTooltip = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                .SetHeaderImage(Resource.Drawable.Banner_MyHome_NC_Resume)
+                .SetTitle(toolTipModel.Title)
+                .SetMessage(toolTipModel.Message)
+                .SetCTALabel(toolTipModel.PrimaryCTA)
+                .SetCTAaction(() => OnCheckNCList(mainActivity, newNCList, isMultipleDraft))
+                .SetSecondaryCTALabel(toolTipModel.SecondaryCTA)
+                .SetSecondaryCTATextSize(12)
+                .SetSecondaryCTAaction(() =>
+                {
+                    mainActivity.SetIsClicked(false);
+                    DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
+                })
+                .Build();
+                ncResumeTooltip.Show();
+            });
+        }
+
+        private static void OnCheckNCList(this DashboardHomeActivity mainActivity, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft)
+        {
+            if (isMultipleDraft)
+            {
+                DeeplinkAppListingValidation(mainActivity);
+            }
+            else
+            {
+                if (newNCList != null && newNCList.Count == 1)
+                {
+                    PostGetNCDraftResponseItemModel ncObj = newNCList[0];
+
+                    if (ncObj != null)
+                    {
+                        ApplicationDetailsDeeplinkCache.Instance.SaveID = "";
+                        ApplicationDetailsDeeplinkCache.Instance.ID = ncObj.ApplicationID.ToString();
+                        ApplicationDetailsDeeplinkCache.Instance.Type = ncObj.ApplicationType;
+                        ApplicationDetailsDeeplinkCache.Instance.System = ncObj.System;
+
+                        DeeplinkAppDetailsValidation(mainActivity);
+                    }
+                }
             }
         }
     }

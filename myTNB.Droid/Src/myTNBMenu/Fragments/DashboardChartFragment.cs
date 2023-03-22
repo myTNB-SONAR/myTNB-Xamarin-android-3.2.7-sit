@@ -11676,6 +11676,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_POPUP_VIEW_MORE))
                 .SetCTAaction(() => ShowManageBill())
                 .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                .SetSecondaryCTATextSize(12)
                 .SetSecondaryCTAaction(() =>
                 {
                     this.SetIsClicked(false);
@@ -11717,6 +11718,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_BTN))
                     .SetCTAaction(() => ShowGoToPaperlessMicrosite())
                     .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                    .SetSecondaryCTATextSize(12)
                     .SetSecondaryCTAaction(() =>
                     {
                         this.SetIsClicked(false);
@@ -11737,6 +11739,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_BTN))
                     .SetCTAaction(() => ShowGoToPaperlessMicrosite())
                     .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                    .SetSecondaryCTATextSize(12)
                     .SetSecondaryCTAaction(() =>
                     {
                         this.SetIsClicked(false);
@@ -11757,6 +11760,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_BTN))
                     .SetCTAaction(() => ShowGoToPaperlessMicrosite())
                     .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                    .SetSecondaryCTATextSize(12)
                     .SetSecondaryCTAaction(() =>
                     {
                         this.SetIsClicked(false);

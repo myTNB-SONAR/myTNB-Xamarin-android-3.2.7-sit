@@ -33,6 +33,7 @@ namespace myTNB.Mobile.AWS.Managers.ApplicationStatus
                 }
                 if (newLocalNCList.Count > 1)
                 {
+                    response.Content.IsMultipleDraft = true;
                     string ncString = string.Empty;
                     for (int i = 0; i < newLocalNCList.Count; i++)
                     {
