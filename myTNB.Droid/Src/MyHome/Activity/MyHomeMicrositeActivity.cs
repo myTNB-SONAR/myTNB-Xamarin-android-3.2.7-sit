@@ -50,6 +50,9 @@ namespace myTNB_Android.Src.MyHome.Activity
         private Action<int, Result, Intent> _resultCallbackvalue;
         private MyHomeMicrositeContract.IUserActionsListener presenter;
 
+        private string _dowloadedFilePath;
+        private string _downloadedFileExt;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -92,6 +95,8 @@ namespace myTNB_Android.Src.MyHome.Activity
 
         public void SetUpViews()
         {
+            _dowloadedFilePath = string.Empty;
+            _downloadedFileExt = string.Empty;
             SetUpWebView(_accessToken);
         }
 
@@ -156,9 +161,55 @@ namespace myTNB_Android.Src.MyHome.Activity
             StartActivity(pdfViewActivity);
         }
 
-        public void InterceptDownloadWithURL(string url)
+        public void ShareDownloadedFile(string filePath, string fileExtension, string fileTitle)
         {
-            this.presenter.GetFile(url);
+            _dowloadedFilePath = filePath;
+            _downloadedFileExt = fileExtension;
+            OnSharePermission();
+        }
+
+        private void OnSharePermission()
+        {
+            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
+            {
+                RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+            }
+            else
+            {
+                OnShareFile();
+            }
+        }
+
+        private void OnShareFile()
+        {
+            try
+            {
+                if (_dowloadedFilePath.IsValid())
+                {
+                    Java.IO.File file = new Java.IO.File(_dowloadedFilePath);
+                    Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
+                                                ApplicationContext.PackageName + ".fileprovider", file);
+
+                    Intent shareIntent = new Intent(Intent.ActionSend);
+                    shareIntent.SetType("application/" + _downloadedFileExt.ToLower());
+                    shareIntent.PutExtra(Intent.ExtraStream, fileUri);
+                    StartActivity(Intent.CreateChooser(shareIntent, Utility.GetLocalizedLabel("Profile", "share")));
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void InterceptViewFileWithURL(string url)
+        {
+            this.presenter.ViewFile(url);
+        }
+
+        public void InterceptDownloadFileWithURL(string url)
+        {
+            this.presenter.DownloadFile(url);
         }
 
         internal void OnShowDashboard()
@@ -251,6 +302,27 @@ namespace myTNB_Android.Src.MyHome.Activity
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            try
+            {
+                if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
+                {
+                    if (Utility.IsPermissionHasCount(grantResults))
+                    {
+                        if (grantResults[0] == Permission.Granted)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                OnShareFile();
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void StartsActivity(Intent intent, int requestCode, Action<int, Result, Intent> resultCallback)
@@ -331,7 +403,7 @@ namespace myTNB_Android.Src.MyHome.Activity
             }
         }
 
-        public class MyHomeWebViewClient : WebViewClient
+        internal class MyHomeWebViewClient : WebViewClient
         {
             private MyHomeMicrositeActivity mActivity;
 
@@ -349,17 +421,19 @@ namespace myTNB_Android.Src.MyHome.Activity
                 //STUB
                 //string pdf = "https://stagingmyhome.mytnb.com.my/Utility/FileUploadWithoutAuth/GetFileByFileID?fileID=59324d20-2089-427a-ab10-27ca87119620";
                 //string image = "https://stagingmyhome.mytnb.com.my/Utility/FileUploadWithoutAuth/GetFileByFileID?fileID=4ac61fbf-1c94-4ac8-a21f-9d0bcc88c50c";
-                //var encrypted = SecurityManager.Instance.AES256_Encrypt("Salt-9F586DF42C58-4753-8FCE7113EBFAACCF"
-                //, "PW-myTNBMyHomeSso"
-                //        , pdf);
+                //var encrypted = SecurityManager.Instance.AES256_Encrypt(AWSConstants.MyHome_SaltKey, AWSConstants.MyHome_Passphrase, pdf);
                 //url = "mytnbapp://action=openPDF&extension=pdf&&title=ICCopy_202211.pdf&file=" + encrypted;
 
                 Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
-
-                if (url.Contains(MyHomeConstants.OPEN_FILE))
+                if (url.Contains(MyHomeConstants.DOWNLOAD_FILE))
                 {
                     shouldOverride = true;
-                    this.mActivity.InterceptDownloadWithURL(url);
+                    this.mActivity.InterceptDownloadFileWithURL(url);
+                }
+                else if (url.Contains(MyHomeConstants.OPEN_FILE))
+                {
+                    shouldOverride = true;
+                    this.mActivity.InterceptViewFileWithURL(url);
                 }
                 else if (url.Contains(MyHomeConstants.BACK_TO_APP))
                 {

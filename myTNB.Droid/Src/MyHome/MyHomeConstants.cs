@@ -12,6 +12,7 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string BACK_TO_APPLICATION_STATUS_LANDING = "mytnbapp://action=applicationStatusLanding";
         internal static readonly string EXTERNAL_BROWSER = "mytnbapp://action=externalBrowser";
         internal static readonly string OPEN_FILE = "mytnbapp://action=openPDF";
+        internal static readonly string DOWNLOAD_FILE = "mytnbapp://action=downloadPDF";
         internal static readonly string PATTERN = "\\b{0}.*\\b";
         internal static readonly string REPLACE_KEY = "{0}/";
         internal static readonly string FULL_STOP = ".";

@@ -31,6 +31,14 @@ namespace myTNB_Android.Src.MyHome.MVP
             /// <param name="fileExtension"></param>
             /// <param name="fileTitle"></param>
             void ViewDownloadedFile(string filePath, string fileExtension, string fileTitle);
+
+            /// <summary>
+            /// Triggers the share functionality for the downloaded file
+            /// </summary>
+            /// <param name="filePath"></param>
+            /// <param name="fileExtension"></param>
+            /// <param name="fileTitle"></param>
+            void ShareDownloadedFile(string filePath, string fileExtension, string fileTitle);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -42,11 +50,18 @@ namespace myTNB_Android.Src.MyHome.MVP
 
 
             /// <summary>
+            /// Task to download and view file from webURL
+            /// </summary>
+            /// <param name="webURL"></param>
+            /// <returns></returns>
+            Task ViewFile(string webURL);
+
+            /// <summary>
             /// Task to download file from webURL
             /// </summary>
             /// <param name="webURL"></param>
             /// <returns></returns>
-            Task GetFile(string webURL);
+            Task DownloadFile(string webURL);
 
             /// <summary>
             /// Gets the file path value for the downloaded file

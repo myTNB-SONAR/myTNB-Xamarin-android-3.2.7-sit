@@ -52,15 +52,11 @@ namespace myTNB_Android.Src.MyHome.MVP
         private string GetDecryptedDownloadURL(string encryptedValue)
         {
             string url = string.Empty;
-            //STUB
-            url = SecurityManager.Instance.AES256_Decrypt("Salt-9F586DF42C58-4753-8FCE7113EBFAACCF"
-                    , "PW-myTNBMyHomeSso"
-                    , encryptedValue);
-
+            url = SecurityManager.Instance.AES256_Decrypt(AWSConstants.MyHome_SaltKey, AWSConstants.MyHome_Passphrase, encryptedValue);
             return url;
         }
 
-        public async Task GetFile(string webURL)
+        public async Task ViewFile(string webURL)
         {
             this.mView.ShowProgressDialog();
 
@@ -72,6 +68,23 @@ namespace myTNB_Android.Src.MyHome.MVP
             if (_filePath.IsValid() && _fileExtension.IsValid())
             {
                 this.mView.ViewDownloadedFile(_filePath, _fileExtension, _fileTitle);
+            }
+
+            this.mView.HideProgressDialog();
+        }
+
+        public async Task DownloadFile(string webURL)
+        {
+            this.mView.ShowProgressDialog();
+
+            await Task.Run(() =>
+            {
+                _filePath = GetFilePathOnDownload(webURL);
+            }, cts.Token);
+
+            if (_filePath.IsValid() && _fileExtension.IsValid())
+            {
+                this.mView.ShareDownloadedFile(_filePath, _fileExtension, _fileTitle);
             }
 
             this.mView.HideProgressDialog();

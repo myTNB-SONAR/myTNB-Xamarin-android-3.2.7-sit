@@ -81,7 +81,6 @@
 						android:layout_marginLeft="16dp"
 						android:layout_marginRight="16dp"
 						android:layout_marginTop="12dp"
-						android:maxLines="100"
 						android:scrollbars="vertical"
 						tools:text="Be the first to make an impact today and choose to go paperless for your next bill onwards! With myTNB, you have a better and more environmentally friendly way to receive your paperless bills digitally via myTNB App and Portal."
 						android:textSize="14dp"
