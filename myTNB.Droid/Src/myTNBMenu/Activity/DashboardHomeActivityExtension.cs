@@ -553,6 +553,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             mainActivity.RunOnUiThread(() =>
             {
+                MyTNBAccountManagement.GetInstance().SetPostGetNCDraftResponse(null);
+                UserSessions.SetNCResumePopUpRefNos(PreferenceManager.GetDefaultSharedPreferences(mainActivity), MyTNBAccountManagement.GetInstance().GetNCResumeDraftRefNos());
+
                 MyTNBAppToolTipBuilder ncResumeTooltip = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                 .SetHeaderImage(Resource.Drawable.Banner_MyHome_NC_Resume)
                 .SetTitle(toolTipModel.Title)

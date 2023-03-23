@@ -8,6 +8,7 @@ using myTNB;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS;
 using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.MyTNBService.Request;
@@ -95,14 +96,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         internal static void CheckNCDraftForResume(this DashboardHomePresenter presenter, ISharedPreferences prefs)
         {
-            Task.Run(() =>
-            {
-                _ = GetNCDraftApplications(presenter, prefs);
-            });
-        }
+            var response = MyTNBAccountManagement.GetInstance().GetPostGetNCDraftResponse();
 
-        private static async Task GetNCDraftApplications(this DashboardHomePresenter presenter, ISharedPreferences prefs)
-        {
             List<string> refNosOldList = new List<string>();
             string currentRefNos = UserSessions.GetNCResumePopUpRefNos(prefs);
 
@@ -115,8 +110,31 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 }
             }
 
+            if (response != null)
+            {
+                OnProcessGetNCDraftApplications(presenter, refNosOldList, response);
+                MyTNBAccountManagement.GetInstance().SetPostGetNCDraftResponse(null);
+            }
+            else
+            {
+                Task.Run(() =>
+                {
+                    _ = GetNCDraftApplications(presenter, refNosOldList, prefs);
+                });
+            }
+        }
+
+        private static async Task GetNCDraftApplications(this DashboardHomePresenter presenter, List<string> refNosOldList, ISharedPreferences prefs)
+        {
             UserEntity user = UserEntity.GetActive();
             var response = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostGetNCDraftApplications(user.UserID, user.Email, refNosOldList);
+
+            MyTNBAccountManagement.GetInstance().SetPostGetNCDraftResponse(response);
+            OnProcessGetNCDraftApplications(presenter, refNosOldList, response);
+        }
+
+        private static void OnProcessGetNCDraftApplications(this DashboardHomePresenter presenter, List<string> refNosOldList, PostGetNCDraftResponse response)
+        {
             if (response != null &&
                 response.StatusDetail != null &&
                 response.StatusDetail.IsSuccess)
@@ -130,7 +148,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         response.Content.NCApplicationList.Count > 0)
                     {
                         string newSetOfRefNos = JsonConvert.SerializeObject(response.Content.NCApplicationList);
-                        UserSessions.SetNCResumePopUpRefNos(prefs, newSetOfRefNos);
+                        MyTNBAccountManagement.GetInstance().SetNCResumeDraftRefNos(newSetOfRefNos);
 
                         newRefNosList = response.Content.NCApplicationList.Except(refNosOldList).ToList();
                     }

@@ -3233,9 +3233,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.ShowGSLInfoScreen();
         }
 
+        public void OnCheckNCDraftResumePopUp()
+        {
+            this.userActionsListener.OnCheckNCDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
+        }
+
         public void OnShowNCDraftResumePopUp(MyHomeToolTipModel toolTipModel, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft)
         {
-            this.ShowNCDraftResumePopUp(toolTipModel, newNCList, isMultipleDraft);
+            if (currentFragment.GetType() == typeof(HomeMenuFragment))
+            {
+                this.ShowNCDraftResumePopUp(toolTipModel, newNCList, isMultipleDraft);
+            }
         }
     }
 }

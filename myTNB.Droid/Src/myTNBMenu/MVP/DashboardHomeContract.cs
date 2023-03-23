@@ -206,6 +206,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void NavigateToNBR();
 
+            void OnCheckNCDraftResumePopUp();
+
             void OnShowNCDraftResumePopUp(MyHomeToolTipModel toolTipModel, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft);
         }
 

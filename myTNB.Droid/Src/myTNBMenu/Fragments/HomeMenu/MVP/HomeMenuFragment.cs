@@ -1806,6 +1806,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            if (MyTNBAccountManagement.GetInstance().GetPostGetNCDraftResponse() != null)
+            {
+                ((DashboardHomeActivity)Activity).OnCheckNCDraftResumePopUp();
+            }
         }
 
         public void CallOnCheckShowHomeTutorial()
