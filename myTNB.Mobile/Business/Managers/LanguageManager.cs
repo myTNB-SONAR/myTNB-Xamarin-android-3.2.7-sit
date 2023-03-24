@@ -185,7 +185,7 @@ namespace myTNB
             return GetValues<Dictionary<string, List<PopupSelectorModel>>>(pageName);
         }
 
-        private T GetValues<T>(string pageName) where T : new()
+        internal T GetValues<T>(string pageName) where T : new()
         {
             T valuesDictionary = new T();
             if (string.IsNullOrEmpty(pageName) || string.IsNullOrWhiteSpace(pageName))

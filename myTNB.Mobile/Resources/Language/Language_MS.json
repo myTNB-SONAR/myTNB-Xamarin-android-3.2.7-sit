@@ -250,7 +250,7 @@
     "dbrReminderPopupStartNow": "Ketahui Lanjut",
     "dbrReminderPopupGotIt": "Ok!",
     //EnergyBudget
-    "energyBudget": "Energy <br> Budget Saya",
+    "energyBudget": "Energy<br>Budget Saya",
     "tutorialEnergyBudgetTitle": "Mulakan langkah untuk menguruskan tenaga anda",
     "tutorialEnergyBudgetDesc": "Anda boleh mengakses Energy Budget dari laman utama untuk mula menetapkan jumlah bil yang anda inginkan",
     //DiscoverMore
@@ -258,8 +258,6 @@
     "DiscoverMoreTitle": "Energy Budget kini telah tiba!",
     "DiscoverMoreDate": "07 May 2021",
     //myHome
-    "myHome": "myHome",
-    "connectMyPremise": "Connect My<br>Premises",
     "myHomeDrawerTitle": "myHome"
   },
   "Tabbar": {
@@ -1664,7 +1662,8 @@
     "reapplyContractorRejectCTAMessage": "Mohon semula permohonan anda kerana kontraktor telah menolak permintaan anda.",
     "reapplyNoResponseCTAMessage": "Mohon semula permohonan anda kerana kami tidak menerima sebarang maklum balas daripada kontraktor yang anda lantik.",
     "updateNow": "Kemas kini Sekarang",
-    "updateNowCTAMessage": "Kemas kini maklumat anda dengan memuat naik semula dokumen anda untuk kami semak semula."
+    "updateNowCTAMessage": "Kemas kini maklumat anda dengan memuat naik semula dokumen anda untuk kami semak semula.",
+    "ncSubmissionRateUs": "Nilai Perkhidmatan Kami"
   },
   "UserAccess": {
     "title": "Urus Pengguna",
@@ -3185,7 +3184,11 @@
     "AccountStatementTimeout": 5000,
     "ShouldShowAccountStatementToNonOwner": true,
     "MaxAccountList": 100000,
-    "ResidentialRateCategory": [ "A_LV", "A_LV_D", "A_MV" ],
+    "ResidentialRateCategory": [
+      "A_LV",
+      "A_LV_D",
+      "A_MV"
+    ],
     "IsMyHomeMarketingPopupEnable": false,
     "ForceHidemyHomeBanner": true
   },
@@ -3391,5 +3394,26 @@
     "myHomeResumeApplicationsMessage": "Anda mempunyai Permohonan-permohonan Mula Bekalan Elektrik yang belum selesai (No. Permohonan: {0}). Anda boleh klik pada butang di bawah untuk sambung semula permohonan-permohonan anda di aplikasi myTNB.<br><br>Hantar permohonan-permohonan Mula Bekalan Elektrik anda pada aplikasi myTNB sekarang!",
     "myHomeResumeApplicationPrimaryCTA": "Teruskan",
     "myHomeResumeApplicationSecondaryCTA": "Sambung Nanti."
+  },
+  "ApplicationStatusID": {
+    "ASRCompleted": [ 127 ],
+    "NCDraft": [ 1 ],
+    "NCReapplyNow": [
+      7,
+      18
+    ],
+    "NCReuploadDocument": [ 130 ],
+    "SubmitNCApplicationRating": [
+      28,
+      34,
+      44,
+      53,
+      60,
+      68,
+      73,
+      81,
+      119,
+      132
+    ]
   }
 }

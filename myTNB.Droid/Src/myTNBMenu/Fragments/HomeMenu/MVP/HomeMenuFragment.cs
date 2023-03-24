@@ -2057,7 +2057,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                     });
                                 }
 
-                                MyHomeDrawerFragment myHomeBottomSheetDialog = new MyHomeDrawerFragment(this.Activity, drawerList);
+                                MyHomeDrawerFragment myHomeBottomSheetDialog = new MyHomeDrawerFragment(this.Activity, drawerList, selectedService.ServiceName);
 
                                 myHomeBottomSheetDialog.Cancelable = true;
                                 myHomeBottomSheetDialog.Show(this.Activity.SupportFragmentManager, "My Home Dialog");

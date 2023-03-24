@@ -316,6 +316,22 @@ namespace myTNB.Mobile
         /// Additional information list that contains Title and Value
         /// </summary>
         public List<TitleValueModel> AdditionalInfoList { set; get; } = new List<TitleValueModel>();
+
+        private bool IsActionableStatusID(int statusID
+            , string statusIDListName)
+        {
+            Dictionary<string, List<int>> statusIDDIctionary = LanguageManager.Instance.GetValues<Dictionary<string, List<int>>>("ApplicationStatusID");
+            if (statusIDDIctionary != null
+                && statusIDDIctionary.ContainsKey(statusIDListName)
+                && statusIDDIctionary[statusIDListName] is List<int> statusIDList
+                && statusIDList != null
+                && statusIDList.Count > 0)
+            {
+                return statusIDList.Contains(statusID);
+            }
+            return false;
+        }
+
         /// <summary>
         /// Determines the CTA to display
         /// </summary>
@@ -332,7 +348,7 @@ namespace myTNB.Mobile
                     && ApplicationTypeCode == "ASR"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
-                    && ApplicationStatusDetail.StatusId == 127)
+                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "ASRCompleted"))
                 {
                     type = DetailCTAType.StartApplication;
                 }
@@ -340,7 +356,7 @@ namespace myTNB.Mobile
                     && ApplicationTypeCode == "NC"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
-                    && ApplicationStatusDetail.StatusId == 1
+                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCDraft")
                     && MyHomeDetails != null
                     && MyHomeDetails.IsOTPFailed)
                 {
@@ -350,7 +366,7 @@ namespace myTNB.Mobile
                     && ApplicationTypeCode == "NC"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
-                    && ApplicationStatusDetail.StatusId == 1
+                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCDraft")
                     && MyHomeDetails != null
                     && !MyHomeDetails.IsOTPFailed)
                 {
@@ -360,8 +376,7 @@ namespace myTNB.Mobile
                     && ApplicationTypeCode == "NC"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
-                    && (ApplicationStatusDetail.StatusId == 7
-                        || ApplicationStatusDetail.StatusId == 18)
+                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCReapplyNow")
                     && MyHomeDetails != null)
                 {
                     type = DetailCTAType.ReapplyNow;
@@ -370,10 +385,18 @@ namespace myTNB.Mobile
                     && ApplicationTypeCode == "NC"
                     && !SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
-                    && ApplicationStatusDetail.StatusId == 130
+                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCReuploadDocument")
                     && MyHomeDetails != null)
                 {
                     type = DetailCTAType.ReuploadDocument;
+                }
+                else if (MyHomeUtility.Instance.IsAccountEligible
+                   && ApplicationTypeCode == "NC"
+                   && !SavedApplicationID.IsValid()
+                   && ApplicationStatusDetail != null
+                   && IsActionableStatusID(ApplicationStatusDetail.StatusId, "SubmitNCApplicationRating"))
+                {
+                    type = DetailCTAType.SubmitApplicationRating;
                 }
                 else if (IsPayment && IsOffLine)
                 {
@@ -1058,7 +1081,8 @@ namespace myTNB.Mobile
         DeleteAppication,
         ResumeApplication,
         ReapplyNow,
-        ReuploadDocument
+        ReuploadDocument,
+        SubmitApplicationRating
     }
 
     public enum DetailTutorialType

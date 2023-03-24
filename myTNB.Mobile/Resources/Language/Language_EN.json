@@ -258,8 +258,6 @@
     "DiscoverMoreTitle": "The new Energy Budget feature is here!",
     "DiscoverMoreDate": "07 May 2021",
     //myHome
-    "myHome": "myHome",
-    "connectMyPremise": "Connect My<br>Premises",
     "myHomeDrawerTitle": "myHome"
   },
   "Tabbar": {
@@ -1664,7 +1662,8 @@
     "reapplyContractorRejectCTAMessage": "Reapply your application because the contractor has rejected your request.",
     "reapplyNoResponseCTAMessage": "Reapply your application because we didn’t receive any response from the contractor you appointed.",
     "updateNow": "Update Now",
-    "updateNowCTAMessage": "Update your information by re-uploading your document(s) for us to review again."
+    "updateNowCTAMessage": "Update your information by re-uploading your document(s) for us to review again.",
+    "ncSubmissionRateUs": "Rate Our Service"
   },
   "UserAccess": {
     "title": "User Access",
@@ -3185,7 +3184,11 @@
     "AccountStatementTimeout": 5000,
     "ShouldShowAccountStatementToNonOwner": true,
     "MaxAccountList": 100000,
-    "ResidentialRateCategory": [ "A_LV", "A_LV_D", "A_MV" ],
+    "ResidentialRateCategory": [
+      "A_LV",
+      "A_LV_D",
+      "A_MV"
+    ],
     "IsMyHomeMarketingPopupEnable": false,
     "ForceHidemyHomeBanner": true
   },
@@ -3391,5 +3394,26 @@
     "myHomeResumeApplicationsMessage": "You have unfinished Start Electricity Applications (Application Nos.: {0}) waiting to be completed. You can click on the button below to resume your applications on myTNB app.<br><br>Submit your Start Electricity applications on myTNB app now!",
     "myHomeResumeApplicationPrimaryCTA": "Continue",
     "myHomeResumeApplicationSecondaryCTA": "I’ll do it later."
+  },
+  "ApplicationStatusID": {
+    "ASRCompleted": [ 127 ],
+    "NCDraft": [ 1 ],
+    "NCReapplyNow": [
+      7,
+      18
+    ],
+    "NCReuploadDocument": [ 130 ],
+    "SubmitNCApplicationRating": [
+      28,
+      34,
+      44,
+      53,
+      60,
+      68,
+      73,
+      81,
+      119,
+      132
+    ]
   }
 }

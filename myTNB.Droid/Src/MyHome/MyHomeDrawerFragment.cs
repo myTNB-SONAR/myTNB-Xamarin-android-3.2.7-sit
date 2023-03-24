@@ -59,8 +59,9 @@ namespace myTNB_Android.Src.MyHome
         MyDrawerAdapter myHomeDrawerAdapter;
 
         List<MyDrawerModel> myDrawerList;
+        string _drawerTitle;
 
-        public MyHomeDrawerFragment(Android.App.Activity ctx, List<MyDrawerModel> modelList)
+        public MyHomeDrawerFragment(Android.App.Activity ctx, List<MyDrawerModel> modelList, string drawerTitle)
         {
             this.mContext = ctx;
             this.myDrawerList = modelList;
@@ -68,6 +69,7 @@ namespace myTNB_Android.Src.MyHome
             {
                 this.mActivity = ((DashboardHomeActivity)this.mContext);
             }
+            _drawerTitle = drawerTitle;
         }
 
         public override void OnCreate (Bundle savedInstanceState)
@@ -140,7 +142,7 @@ namespace myTNB_Android.Src.MyHome
         {
             TextViewUtils.SetMuseoSans500Typeface(titleLabel);
             TextViewUtils.SetTextSize16(titleLabel);
-            titleLabel.Text = Utility.GetLocalizedLabel("DashboardHome", "myHome");
+            titleLabel.Text = _drawerTitle;
 
             closeIcon.Click += CloseOnClick;
 
