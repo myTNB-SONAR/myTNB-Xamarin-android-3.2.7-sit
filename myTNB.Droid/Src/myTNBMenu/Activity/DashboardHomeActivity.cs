@@ -736,7 +736,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         UserSessions.SetUpdateIdPopUp(this.mPref);
                     }
-                    else
+                    else if (UserSessions.MyHomeDashboardTutorialHasShown(this.mPref) && MyHomeUtility.Instance.IsAccountEligible)
                     {
                         bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
                         bool myHomeMarketingPopUpHasShown = UserSessions.MyHomeMarketingPopUpHasShown(this.mPref);
@@ -745,7 +745,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         if (!myHomeHasBeenTapped && !myHomeMarketingPopUpHasShown &&
                             MyHomeUtility.Instance.IsMarketingPopupEnabled &&
-                            MyHomeUtility.Instance.IsAccountEligible &&
                             !forceHide)
                         {
                             ShowMyHomeMarketingPopUp();

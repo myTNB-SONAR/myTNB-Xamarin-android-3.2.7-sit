@@ -354,9 +354,12 @@ namespace myTNB_Android.Src.Utils
 
         public static void SetShownMyHomeDashboardTutorial(ISharedPreferences prefs)
         {
-            ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutBoolean("myHomeDashboardTutorialHasShown", true);
-            editor.Apply();
+            if (MyHomeUtility.Instance.IsAccountEligible)
+            {
+                ISharedPreferencesEditor editor = prefs.Edit();
+                editor.PutBoolean("myHomeDashboardTutorialHasShown", true);
+                editor.Apply();
+            }
         }
 
         public static bool HomeDashboardTutorialHasShownBefore(ISharedPreferences prefs)
