@@ -3381,13 +3381,6 @@
     "thumbUpYes": "Yes, absolutely!",
     "thumbDownNo": "Not really"
   },
-  "ConnectMyPremise": {
-    "title": "Connect My Home",
-    "description": "Submit application for an electricity connection account.",
-    "iWantTo": "I want to:",
-    "moveInTitle": "Move In",
-    "moveInDescription": "I want to open an account for new or existing permise."
-  },
   "MarketingPopup": {
     "myHomeTitle": "Check out myHome today!",
     "myHomeMessage": "You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, edit your applications and even organise your moving plans with ease using myHome.",

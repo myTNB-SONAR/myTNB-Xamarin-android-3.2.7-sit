@@ -13,16 +13,6 @@
             public const string I18N_myHomeDrawerTitle = "myHomeDrawerTitle";
         }
 
-        public struct ConnectMyPremise
-        {
-            public const string Pagename_ConnectMyPremise = "ConnectMyPremise";
-            public const string I18N_Title = "title";
-            public const string I18N_Description = "description";
-            public const string I18N_IWantTo = "iWantTo";
-            public const string I18N_MoveInTitle = "moveInTitle";
-            public const string I18N_MoveInDescription = "moveInDescription";
-        }
-
         public struct TutorialOverlay
         {
             public const string I18N_myHomeTitle = "myHomeTitle";

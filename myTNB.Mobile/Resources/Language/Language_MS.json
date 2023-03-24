@@ -3381,15 +3381,8 @@
     "thumbUpYes": "Ya, sangat membantu!",
     "thumbDownNo": "Kurang membantu"
   },
-  "ConnectMyPremise": {
-    "title": "Connect My Home",
-    "description": "Membuat permohonan bekalan elektrik di premis.",
-    "iWantTo": "Saya ingin:",
-    "moveInTitle": "Move In",
-    "moveInDescription": "Saya ingin membuka akaun untuk premis baharu atau sedia ada. "
-  },
   "MarketingPopup": {
-    "myHomeTitle": "Kenali ciri-ciri  MyHome hari ini!",
+    "myHomeTitle": "Kenali ciri-ciri MyHome hari ini!",
     "myHomeMessage": "Anda kini boleh menghantar permohonan untuk akaun elektrik, menukar penghuni, menutup akaun elektrik, edit permohonan dan juga mengatur rancangan perpindahan anda dengan menggunakan myHome.",
     "myHomeCTA": "Faham!",
     "myHomeResumeApplicationTitle": "Sambung semula Permohonan Mula Bekalan Elektrik anda",
