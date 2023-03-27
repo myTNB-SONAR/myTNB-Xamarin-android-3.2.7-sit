@@ -20,5 +20,11 @@
             public const string I18N_ConnectMyPremiseTitle = "connectMyPremiseTitle";
             public const string I18N_ConnectMyPremiseMessage = "connectMyPremiseMessage";
         }
+
+        public struct Rating
+        {
+            public const string I18N_NCSubmittedRatingTitle = "ncSubmittedTitle";
+            public const string I18N_NCSubmittedDesc = "ncSubmittedDesc";
+        }
     }
 }

@@ -1,19 +1,19 @@
 ﻿using Android.App;
 using Android.OS;
-
-
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.Snackbar;
+using myTNB_Android.Src.MyHome;
+using myTNB.Mobile;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Adapter;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.Rating.MVP;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -42,6 +42,8 @@ namespace myTNB_Android.Src.Rating.Fargment
         private string deviceID;
         private int selectedRating;
         private string questionCatId;
+
+        private DetailCTAType _ctaType;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -73,10 +75,17 @@ namespace myTNB_Android.Src.Rating.Fargment
                 {
                     selectedRating = Arguments.GetInt(Constants.SELECTED_RATING);
                 }
+                if (Arguments.ContainsKey(MyHomeConstants.CTA_TYPE))
+                {
+                    _ctaType = JsonConvert.DeserializeObject<DetailCTAType>(Arguments.GetString(MyHomeConstants.CTA_TYPE));
+                }
 
                 recyclerView = mainView.FindViewById<RecyclerView>(Resource.Id.question_recycler_view);
                 rootView = mainView.FindViewById<FrameLayout>(Resource.Id.baseView);
                 btnSubmit = mainView.FindViewById<Button>(Resource.Id.btnSubmit);
+
+                TextViewUtils.SetMuseoSans300Typeface(btnSubmit);
+                TextViewUtils.SetTextSize16(btnSubmit);
 
                 btnSubmit.Text = Utility.GetLocalizedCommonLabel("submit");
 
@@ -85,8 +94,6 @@ namespace myTNB_Android.Src.Rating.Fargment
                 recyclerView.SetLayoutManager(layoutManager);
                 recyclerView.SetAdapter(adapter);
                 adapter.RatingUpdate += OnRatingUpdate;
-
-
 
                 this.userActionsListener.GetQuestions(questionCatId);
 
@@ -221,8 +228,15 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         public void ShowSumitRateUsSuccess()
         {
-            Bundle bundle = new Bundle();
-            ratingActivity.nextFragment(this, bundle);
+            if (_ctaType == DetailCTAType.SubmitApplicationRating)
+            {
+                ratingActivity.OnNavigateToApplicationDetails();
+            }
+            else
+            {
+                Bundle bundle = new Bundle();
+                ratingActivity.nextFragment(this, bundle);
+            }
         }
     }
 }

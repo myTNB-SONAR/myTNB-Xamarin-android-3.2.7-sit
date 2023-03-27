@@ -2534,7 +2534,9 @@
     "submit": "Submit",
     "freeTextPlaceHolder": "Write your message here.",
     "freeTextTitle": "YOUR MESSAGE (OPTIONAL)",
-    "rateContractor": "Rate Contractor"
+    "rateContractor": "Rate Contractor",
+    "ncSubmittedTitle": "Rate Your Experience",
+    "ncSubmittedDesc": "Let us know how your application went. Your feedback is valuable to us and we’ll use it to improve our service."
   },
   "ApplicationStatusScheduler": {
     "title": "Set an Appointment",

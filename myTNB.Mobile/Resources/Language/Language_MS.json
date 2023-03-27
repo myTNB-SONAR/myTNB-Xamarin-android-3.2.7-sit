@@ -2534,7 +2534,9 @@
     "submit": "Hantar",
     "freeTextPlaceHolder": "Tulis mesej anda di sini",
     "freeTextTitle": "MESEJ ANDA (TIDAK WAJIB)",
-    "rateContractor": "Nilaikan Kontraktor"
+    "rateContractor": "Nilaikan Kontraktor",
+    "ncSubmittedTitle": "Nilaikan Pengalaman Kami",
+    "ncSubmittedDesc": "Kongsikan pengalaman permohonan anda. Pendapat anda amat kami hargai untuk menambah baik perkhidmatan kami."
   },
   "ApplicationStatusScheduler": {
     "title": "Tetapkan Janji Temu",

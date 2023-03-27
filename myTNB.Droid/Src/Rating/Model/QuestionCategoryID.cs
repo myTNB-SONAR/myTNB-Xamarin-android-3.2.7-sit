@@ -4,7 +4,8 @@
     {
         BillRelated = 1,
         FaultyStreetLamp = 2,
-        Payment = 3
+        Payment = 3,
+        SubmitNCApplication = 3 //TODO: Need to assign new questionCategoryID for myHome NC Submitted Rating
     }
 
 }

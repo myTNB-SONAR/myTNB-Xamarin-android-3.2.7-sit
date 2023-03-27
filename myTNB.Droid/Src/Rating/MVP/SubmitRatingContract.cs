@@ -1,4 +1,5 @@
-﻿using myTNB_Android.Src.Base.MVP;
+﻿using myTNB.Mobile;
+using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Rating.Request;
 using myTNB_Android.Src.Rating.Response;

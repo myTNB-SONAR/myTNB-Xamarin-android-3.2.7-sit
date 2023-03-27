@@ -2,6 +2,7 @@
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:layout_alignParentBottom="true"
@@ -17,12 +18,27 @@
 		android:layout_width="match_parent"
 		android:layout_below="@+id/toolbar"
 		android:layout_above="@+id/bottomLayout"
-		android:background="@color/white">
+		android:background="@color/background_pale_grey">
 		<LinearLayout
 			android:orientation="vertical"
-			android:background="@color/greyBackground"
+			android:background="@color/background_pale_grey"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@color/white"
+				android:layout_marginBottom="16dp"
+				android:id="@+id/ratingDescContainer">
+				<TextView
+					tools:text="Your freshly improved TNB bill is now in an easy-to-read and simplified 2-page format! Here’s how you can understand your new bill:"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:padding="16dp"
+					android:textColor="@color/charcoalGrey"
+					android:id="@+id/txtRatingDescription" />
+			</LinearLayout>
 			<LinearLayout
 				android:id="@+id/main_layout"
 				android:orientation="vertical"

@@ -499,6 +499,8 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string APPLICATION_STATUS_FILTER_REQUEST_KEY = "filterRequest";
         internal static readonly string APPLICATION_STATUS_FILTER_INDIVIDUAL_CLEAR_KEY = "individualClear";
         internal static readonly string APPLICATION_STATUS_DETAIL_TITLE_KEY = "applicationStatusTitle";
+        internal static readonly string APPLICATION_STATUS_DETAIL_RELOAD = "applicationStatusToBeReloaded";
+        internal static readonly string APPLICATION_STATUS_DETAIL_RATED_TOAST_MESSAGE = "applicationStatusRatedToastMessage";
         internal static readonly int APPLICATION_STATUS_FILTER_REQUEST_CODE = 29800;
         internal static readonly int APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE = 29801;
         internal static readonly int APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE = 29802;
@@ -508,6 +510,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APPLICATION_STATUS_RATING_REQUEST_CODE = 29806;
         internal static readonly int APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE = 29807;
         internal static readonly int APPLICATION_STATUS_DETAILS_SCHEDULER_REQUEST_CODE = 29808;
+        internal static readonly int APPLICATION_STATUS_SUBMIT_APPLICATION_RATING_REQUEST_CODE = 29809;
 
         internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
         internal static readonly string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";
