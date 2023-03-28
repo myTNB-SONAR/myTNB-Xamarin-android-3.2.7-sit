@@ -196,6 +196,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void ShowUpdateAvailable(string title, string message, string btnLabel);
 
             ///<summary>
+            /// Update recommend app version
+            ///</summary>
+            void ShowUpdateAvailableWithRequirement(string title, string message, string btnYes, string btnNo);
+
+            ///<summary>
             /// Lgout function created to update device id after removing persmissin
             ///</summary>
             void OnAppUpdateClick();
@@ -228,6 +233,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void ShowSomethingWrongException();
             //void OnShowNotificationDetails();
             void ShowNotificationDetails();
+
+            ///<summary>
+            /// Track user cancel update
+            ///</summary>
+            bool UserCancelUpdate();
         }
 
         public interface IUserActionsListener : IBasePresenter

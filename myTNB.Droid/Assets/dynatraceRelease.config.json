@@ -1,0 +1,12 @@
+{
+    "android": {
+        "autoStart": {
+            "applicationId": "f620fa77-9b70-4cb7-a6f8-587e1da8cb0f",
+            "beaconUrl": "https://mytnbapp.tnb.com.my/dtmb"
+        },
+        "userOptIn": false,
+        "agentBehavior": {
+            "startupLoadBalancing": true
+        }
+    }
+}

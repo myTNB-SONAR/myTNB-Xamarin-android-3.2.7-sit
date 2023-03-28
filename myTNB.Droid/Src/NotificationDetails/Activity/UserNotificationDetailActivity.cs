@@ -14,7 +14,7 @@ using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
-using DynatraceAndroid;
+using Dynatrace.Xamarin;
 using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -65,6 +65,7 @@ using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB;
 using Xamarin.Facebook;
+using Dynatrace.Xamarin.Binding.Android;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity
 {
@@ -1050,12 +1051,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             {
                 if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80)
                 {
-                    dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_view_notification_duration_reaching);
+                    Agent.Instance.EnterAction(Constants.EB_view_notification_duration_reaching);
                     FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_notification_duration_reaching);
                 }
                 else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
                 {
-                    dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_view_notification_duration_reached);
+                    Agent.Instance.EnterAction(Constants.EB_view_notification_duration_reached);
                     FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_view_notification_duration_reached);
                 }
                 //dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_view_notification_duration);

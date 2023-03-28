@@ -14,7 +14,8 @@ using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
-using DynatraceAndroid;
+using Dynatrace.Xamarin;
+using Dynatrace.Xamarin.Binding.Android;
 using myTNB.Mobile;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
@@ -89,10 +90,10 @@ namespace myTNB_Android.Src.OverVoltageClaim.Activity
                
                 }
                 //Dyanatrace
-                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_SUBMIT_OVERVOLTAGE_CLAIM);  // DYNA
-                dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
-                dynaTrace.ReportValue("ca_number", accNo);
-                dynaTrace.LeaveAction();
+                var myAction = Agent.Instance.EnterAction(Constants.TOUCH_ON_SUBMIT_OVERVOLTAGE_CLAIM);  // DYNA
+                myAction.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
+                myAction.ReportValue("ca_number", accNo);
+                myAction.LeaveAction();
 
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
                 SetUI();

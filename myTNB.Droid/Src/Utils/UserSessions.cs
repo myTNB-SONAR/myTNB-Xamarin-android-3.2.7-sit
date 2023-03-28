@@ -881,6 +881,42 @@ namespace myTNB_Android.Src.Utils
             return preferences.GetString("popupEB", "");
         }
 
+        public static void SavePopUpCountUpdate(ISharedPreferences prefs, string count)    //count Update App popup
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("popupUpdate", count);
+            editor.Apply();
+        }
+
+        public static string GetSavePopUpCountUpdate(ISharedPreferences preferences)    //count Update App popup
+        {
+            return preferences.GetString("popupUpdate", "");
+        }
+
+        public static void SaveNeedPopup(ISharedPreferences prefs, bool flag)           //Save need reset App popup
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("IsNeedResetPopup", flag);
+            editor.Apply();
+        }
+
+        public static bool GetSaveNeedPopup(ISharedPreferences preferences)             //Get need reset App popup
+        {
+            return preferences.GetBoolean("IsNeedResetPopup", false);
+        }
+
+        public static void SavePopUpDateReset(ISharedPreferences prefs, string date)    //count reset date update App popup
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("popupUpdateDate", date);
+            editor.Apply();
+        }
+
+        public static string GetSavePopUpDateReset(ISharedPreferences preferences)    //count reset date update App popup
+        {
+            return preferences.GetString("popupUpdateDate", "");
+        }
+
         public static int GetPrevAppVersionCode(ISharedPreferences preferences)
         {
             return preferences.GetInt("PREV_APP_VERSION_CODE", 0);

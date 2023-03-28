@@ -4,7 +4,8 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using DynatraceAndroid;
+using Dynatrace.Xamarin;
+using Dynatrace.Xamarin.Binding.Android;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,8 @@ namespace myTNB_Android.Src.Utils
         {
             try
             {
-                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(screenName);
-                dynaTrace.LeaveAction();
+                var myAction = Agent.Instance.EnterAction(screenName);
+                myAction.LeaveAction();
             }
             catch (System.Exception)
             {

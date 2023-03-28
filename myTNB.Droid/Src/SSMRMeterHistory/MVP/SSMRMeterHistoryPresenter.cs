@@ -282,6 +282,24 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         public List<SMRAccount> GetEligibleSMRAccountList()
         {
             List<CustomerBillingAccount> eligibleSMRAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
+
+            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+            {
+                List<CustomerBillingAccount> eligibleSMRAccountListWithTenant = CustomerBillingAccount.GetEligibleAndSMRAccountListWithTenant();
+                List<CustomerBillingAccount> NewEligibleSMRAccountListWithTenant = new List<CustomerBillingAccount>();
+                if (eligibleSMRAccountListWithTenant != null && eligibleSMRAccountListWithTenant.Count > 0)
+                {
+                    foreach (var ca in eligibleSMRAccountListWithTenant)
+                    {
+                        if (ca.IsTaggedSMR)
+                        {
+                            NewEligibleSMRAccountListWithTenant.Add(ca);
+                        }
+                    }
+                }
+                eligibleSMRAccountList.AddRange(NewEligibleSMRAccountListWithTenant);
+            }
+
             List<SMRAccount> smrEligibleAccountList = new List<SMRAccount>();
             SMRAccount smrEligibleAccount;
             eligibleSMRAccountList.ForEach(account =>
@@ -293,6 +311,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 smrEligibleAccount.isTaggedSMR = account.IsTaggedSMR;
                 smrEligibleAccount.accountAddress = account.AccountStAddress;
                 smrEligibleAccount.accountOwnerName = account.OwnerName;
+                smrEligibleAccount.IsTenant = account.isOwned ? false:true;
                 smrEligibleAccountList.Add(smrEligibleAccount);
             });
             return smrEligibleAccountList;

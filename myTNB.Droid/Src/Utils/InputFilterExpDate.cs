@@ -54,7 +54,7 @@ namespace myTNB_Android.Src.Utils
                     }
                     else if (dstart == 2)
                     {
-                        if (currentDigit < 1 || currentDigit > 3)
+                        if (currentDigit < 1)
                         {
                             return empty;
                         }
@@ -80,7 +80,7 @@ namespace myTNB_Android.Src.Utils
                     }
                     else if (dstart == 3)
                     {
-                        if (currentDigit < 1 || currentDigit > 2)
+                        if (currentDigit < 1)
                         {
                             return empty;
                         }
