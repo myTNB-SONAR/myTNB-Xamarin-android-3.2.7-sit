@@ -5,15 +5,12 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.Snackbar;
-using myTNB_Android.Src.MyHome;
-using myTNB.Mobile;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Adapter;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.Rating.MVP;
 using myTNB_Android.Src.Utils;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -42,8 +39,6 @@ namespace myTNB_Android.Src.Rating.Fargment
         private string deviceID;
         private int selectedRating;
         private string questionCatId;
-
-        private DetailCTAType _ctaType;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -74,10 +69,6 @@ namespace myTNB_Android.Src.Rating.Fargment
                 if (Arguments.ContainsKey(Constants.SELECTED_RATING))
                 {
                     selectedRating = Arguments.GetInt(Constants.SELECTED_RATING);
-                }
-                if (Arguments.ContainsKey(MyHomeConstants.CTA_TYPE))
-                {
-                    _ctaType = JsonConvert.DeserializeObject<DetailCTAType>(Arguments.GetString(MyHomeConstants.CTA_TYPE));
                 }
 
                 recyclerView = mainView.FindViewById<RecyclerView>(Resource.Id.question_recycler_view);
@@ -228,15 +219,8 @@ namespace myTNB_Android.Src.Rating.Fargment
 
         public void ShowSumitRateUsSuccess()
         {
-            if (_ctaType == DetailCTAType.SubmitApplicationRating)
-            {
-                ratingActivity.OnNavigateToApplicationDetails();
-            }
-            else
-            {
-                Bundle bundle = new Bundle();
-                ratingActivity.nextFragment(this, bundle);
-            }
+            Bundle bundle = new Bundle();
+            ratingActivity.nextFragment(this, bundle);
         }
     }
 }

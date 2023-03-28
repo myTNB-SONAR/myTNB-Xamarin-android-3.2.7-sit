@@ -46,13 +46,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using myTNB.Mobile.Constants;
 using Xamarin.Facebook;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Rating.Model;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.FindUs.Activity;
-using myTNB_Android.Src.Utils.Deeplink;
-using myTNB_Android.Src.Rating.Activity;
+using static myTNB_Android.Src.myTNBMenu.Models.SMUsageHistoryData;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -574,7 +568,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
         }
 
-        public async void ShowApplicationPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
+        public void ShowApplicationPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
         {
             MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                 .SetTitle(statusDetail.Title)
@@ -599,34 +593,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     Intent rating_activity = new Intent(this, typeof(ApplicationRatingActivity));
                     rating_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
                     rating_activity.PutExtra("customerRatingMasterResponse", JsonConvert.SerializeObject(customerRatingMasterResponse));
-                    rating_activity.PutExtra(MyHomeConstants.CTA_TYPE, JsonConvert.SerializeObject(applicationDetailDisplay.CTAType));
                     StartActivityForResult(rating_activity, Constants.APPLICATION_STATUS_RATING_REQUEST_CODE);
-                }
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
-            }
-            HideProgressDialog();
-        }
-
-        public async void OnSubmitApplicationRating()
-        {
-            ShowProgressDialog();
-            try
-            {
-                GetRateUsQuestionResponse submitApplicationRateResponse = await ServiceApiImpl.Instance.GetRateUsQuestions(new GetRateUsQuestionRequest(((int)QuestionCategoryID.SubmitNCApplication).ToString()));
-                if (!submitApplicationRateResponse.IsSuccessResponse())
-                {
-                    ShowErrorSnackbar(submitApplicationRateResponse.Response.DisplayMessage ?? Utility.GetLocalizedErrorLabel(LanguageConstants.Error.DEFAULT_ERROR_MSG));
-                }
-                else
-                {
-                    Intent rating_activity = new Intent(this, typeof(ApplicationRatingActivity));
-                    rating_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
-                    rating_activity.PutExtra("submitApplicationRateResponse", JsonConvert.SerializeObject(submitApplicationRateResponse));
-                    rating_activity.PutExtra("ctaType", JsonConvert.SerializeObject(applicationDetailDisplay.CTAType));
-                    StartActivityForResult(rating_activity, Constants.APPLICATION_STATUS_SUBMIT_APPLICATION_RATING_REQUEST_CODE);
                 }
             }
             catch (System.Exception ne)
@@ -680,7 +647,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             HideProgressDialog();
         }
 
-        private async void ViewActivityLog()
+        private void ViewActivityLog()
         {
             ShowProgressDialog();
             Intent applicationDetailActivityLogIntent = new Intent(this, typeof(ApplicationDetailActivityLogActivity));
@@ -1281,17 +1248,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
 
             DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.Visit);
-            CheckForToastFromDeeplink();
-        }
-
-        private void CheckForToastFromDeeplink()
-        {
-            string message = DeeplinkUtil.Instance.ToastMessage;
-            if (message.IsValid())
-            {
-                ToastUtils.OnDisplayToast(this, message);
-            }
-            DeeplinkUtil.Instance.ClearDeeplinkData();
         }
 
         private void EvaluateReceipts()
@@ -1694,7 +1650,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 }
                 else
                 {
-                    ShowProgressDialog();
+                    this.RunOnUiThread(() =>
+                    {
+                        ShowProgressDialog();
+                    });
+
                     Task.Run(() =>
                     {
                         _ = GetApplicationDetail(UpdateType.ContractorRating);
@@ -1783,6 +1743,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Gone;
                             ctaParentLayout.Visibility = ViewStates.Gone;
                         }
+                    }
+                    else if (updateType == UpdateType.SubmitApplicationRating)
+                    {
+                        applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                        applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                        applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Gone;
+                        ctaParentLayout.Visibility = ViewStates.Gone;
                     }
                 }
                 else

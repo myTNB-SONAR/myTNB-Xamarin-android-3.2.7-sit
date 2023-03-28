@@ -6,16 +6,9 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Google.Android.Material.AppBar;
-using myTNB.Mobile;
-using myTNB.Mobile.SessionCache;
-using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.MyHome;
-using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Rating.Fargment;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Deeplink;
-using Newtonsoft.Json;
 using System;
 using System.Runtime;
 
@@ -39,8 +32,6 @@ namespace myTNB_Android.Src.Rating.Activity
         private string deviceID;
         private int selectedRating;
         private string PAGE_ID = "Rating";
-
-        private DetailCTAType _ctaType;
 
         public override int ResourceId()
         {
@@ -126,10 +117,6 @@ namespace myTNB_Android.Src.Rating.Activity
                     {
                         selectedRating = extras.GetInt(Constants.SELECTED_RATING, 1);
                     }
-                    if (extras.ContainsKey(MyHomeConstants.CTA_TYPE))
-                    {
-                        _ctaType = JsonConvert.DeserializeObject<DetailCTAType>(extras.GetString(MyHomeConstants.CTA_TYPE));
-                    }
                 }
 
                 OnLoadMainFragment();
@@ -161,7 +148,6 @@ namespace myTNB_Android.Src.Rating.Activity
             bundle.PutInt(Constants.SELECTED_RATING, selectedRating);
             bundle.PutString(Constants.MERCHANT_TRANS_ID, merchantTransID);
             bundle.PutString(Constants.DEVICE_ID_PARAM, deviceID);
-            bundle.PutString(MyHomeConstants.CTA_TYPE, JsonConvert.SerializeObject(_ctaType));
             submitRatingFragment.Arguments = bundle;
             var fragmentTransaction = SupportFragmentManager.BeginTransaction();
             fragmentTransaction.Add(Resource.Id.fragment_container, submitRatingFragment);
@@ -181,16 +167,6 @@ namespace myTNB_Android.Src.Rating.Activity
                 fragmentTransaction.Commit();
                 currentFragment = thankYouFragment;
             }
-        }
-
-        public void OnNavigateToApplicationDetails()
-        {
-            Intent finishRateIntent = new Intent();
-            finishRateIntent.PutExtra(Constants.APPLICATION_STATUS_DETAIL_RELOAD, true);
-            finishRateIntent.PutExtra(Constants.APPLICATION_STATUS_DETAIL_RATED_TOAST_MESSAGE, RatingCache.Instance.GetRatingToastMessage());
-            RatingCache.Instance.Clear();
-            SetResult(Result.Ok, finishRateIntent);
-            Finish();
         }
 
         public override void OnBackPressed()

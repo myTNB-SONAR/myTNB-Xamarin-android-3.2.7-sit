@@ -1,6 +1,4 @@
 ﻿using Android.Util;
-using myTNB.Mobile;
-using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
@@ -157,8 +155,6 @@ namespace myTNB_Android.Src.Rating.MVP
                 }
                 else
                 {
-                    RatingCache.Instance.Clear();
-                    RatingCache.Instance.SetRatingToast(string.Empty);
                     this.mView.ShowSumitRateUsSuccess();
                 }
             }

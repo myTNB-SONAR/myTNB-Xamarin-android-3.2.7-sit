@@ -25,21 +25,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 			<LinearLayout
-				android:orientation="vertical"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@color/white"
-				android:layout_marginBottom="16dp"
-				android:id="@+id/ratingDescContainer">
-				<TextView
-					tools:text="Your freshly improved TNB bill is now in an easy-to-read and simplified 2-page format! Here’s how you can understand your new bill:"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:padding="16dp"
-					android:textColor="@color/charcoalGrey"
-					android:id="@+id/txtRatingDescription" />
-			</LinearLayout>
-			<LinearLayout
 				android:id="@+id/main_layout"
 				android:orientation="vertical"
 				android:paddingTop="72dp"
