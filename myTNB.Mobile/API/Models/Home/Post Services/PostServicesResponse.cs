@@ -13,11 +13,11 @@ namespace myTNB.Mobile.API.Models.Home.PostServices
     public class PostServicesModel
     {
         [JsonProperty("timestamp")]
-        public string TimeStamp { set; get; }
+        public string TimeStamp { set; get; } = string.Empty;
         [JsonProperty("services")]
         public List<ServicesModel> Services { set; get; }
 
-        public string SavedTimeStamp { set; get; }
+        public string SavedTimeStamp { set; get; } = string.Empty;
         public bool ShouldUpdateImages
         {
             get

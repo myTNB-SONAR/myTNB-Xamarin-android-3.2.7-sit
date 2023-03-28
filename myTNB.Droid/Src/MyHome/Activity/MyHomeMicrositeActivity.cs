@@ -244,6 +244,7 @@ namespace myTNB_Android.Src.MyHome.Activity
 
                     //STUB
                     //redirectURL = "https://https://18.139.216.169/Application/Offerings";
+                    //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
 
                     UserEntity user = UserEntity.GetActive();
                     string myTNBAccountName = user?.DisplayName ?? string.Empty;
@@ -434,8 +435,9 @@ namespace myTNB_Android.Src.MyHome.Activity
                 //string image = "https://stagingmyhome.mytnb.com.my/Utility/FileUploadWithoutAuth/GetFileByFileID?fileID=4ac61fbf-1c94-4ac8-a21f-9d0bcc88c50c";
                 //var encrypted = SecurityManager.Instance.AES256_Encrypt(AWSConstants.MyHome_SaltKey, AWSConstants.MyHome_Passphrase, pdf);
                 //url = "mytnbapp://action=openPDF&extension=pdf&&title=ICCopy_202211.pdf&file=" + encrypted;
-                url = MyHomeConstants.RATE_SUCCESSFUL;
+                //url = MyHomeConstants.RATE_SUCCESSFUL;
                 Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
+
                 if (url.Contains(MyHomeConstants.RATE_SUCCESSFUL))
                 {
                     shouldOverride = true;
