@@ -291,6 +291,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 _ = GetAccessToken(string.Empty);
                             });
                         }
+                        else
+                        {
+                            ShowGenericErrorPopUp();
+                        }
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteAppication)
                     {
