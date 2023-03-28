@@ -248,6 +248,8 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public CustomerRating CustomerRating { set; get; }
         [JsonProperty("contractorRating")]
         public ContractorRating ContractorRating { set; get; }
+        [JsonProperty("submissionRating")]
+        public SubmissionRating SubmissionRating { set; get; }
     }
 
     public class CustomerRating
@@ -266,6 +268,12 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string ContractorRatingUrl { set; get; }
         [JsonProperty("transactionId")]
         public string TransactionId { set; get; }
+    }
+
+    public class SubmissionRating
+    {
+        [JsonProperty("isSubmissionSurveyCompleted")]
+        public bool IsSubmissionSurveyCompleted { set; get; }
     }
 
     public class ApplicationAppointmentDetail

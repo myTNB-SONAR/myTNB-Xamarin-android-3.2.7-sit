@@ -17,6 +17,7 @@ using Android.Widget;
 using CheeseBind;
 using myTNB;
 using myTNB.Mobile;
+using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Bills.AccountStatement.Activity;
@@ -210,6 +211,16 @@ namespace myTNB_Android.Src.MyHome.Activity
         public void InterceptDownloadFileWithURL(string url)
         {
             this.presenter.DownloadFile(url);
+        }
+
+        public void InterceptForSuccessfulRating()
+        {
+            Intent finishRateIntent = new Intent();
+            finishRateIntent.PutExtra(Constants.APPLICATION_STATUS_DETAIL_RELOAD, true);
+            finishRateIntent.PutExtra(Constants.APPLICATION_STATUS_DETAIL_RATED_TOAST_MESSAGE, RatingCache.Instance.GetRatingToastMessage());
+            RatingCache.Instance.Clear();
+            SetResult(Result.Ok, finishRateIntent);
+            Finish();
         }
 
         internal void OnShowDashboard()
@@ -423,8 +434,15 @@ namespace myTNB_Android.Src.MyHome.Activity
                 //string image = "https://stagingmyhome.mytnb.com.my/Utility/FileUploadWithoutAuth/GetFileByFileID?fileID=4ac61fbf-1c94-4ac8-a21f-9d0bcc88c50c";
                 //var encrypted = SecurityManager.Instance.AES256_Encrypt(AWSConstants.MyHome_SaltKey, AWSConstants.MyHome_Passphrase, pdf);
                 //url = "mytnbapp://action=openPDF&extension=pdf&&title=ICCopy_202211.pdf&file=" + encrypted;
-
+                url = MyHomeConstants.RATE_SUCCESSFUL;
                 Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
+                if (url.Contains(MyHomeConstants.RATE_SUCCESSFUL))
+                {
+                    shouldOverride = true;
+                    RatingCache.Instance.Clear();
+                    RatingCache.Instance.SetRatingToast(string.Empty);
+                    this.mActivity.InterceptForSuccessfulRating();
+                }
                 if (url.Contains(MyHomeConstants.DOWNLOAD_FILE))
                 {
                     shouldOverride = true;

@@ -52,6 +52,7 @@ using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.Utils.Deeplink;
+using myTNB_Android.Src.Rating.Activity;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -251,7 +252,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.SubmitApplicationRating)
                     {
-                        OnSubmitApplicationRating();
+                        ShowProgressDialog();
+                        Task.Run(() =>
+                        {
+                            _ = GetAccessToken(string.Empty);
+                        });
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.ContractorRating)
                     {
@@ -346,7 +351,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
                 micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
                 micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
-                StartActivity(micrositeActivity);
+                StartActivityForResult(micrositeActivity, Constants.APPLICATION_STATUS_SUBMIT_APPLICATION_RATING_REQUEST_CODE);
             }
             else
             {
@@ -1748,7 +1753,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 if (response.StatusDetail.IsSuccess && response.Content != null)
                 {
                     applicationDetailDisplay.ApplicationRatingDetail = response.Content.ApplicationRatingDetail;
-                    if (updateType == UpdateType.ContractorRating || updateType == UpdateType.SubmitApplicationRating)
+                    if (updateType == UpdateType.ContractorRating)
                     {
                         if (response.Content.RatingDisplay != null
                             && response.Content.RatingDisplay != string.Empty)

@@ -394,7 +394,9 @@ namespace myTNB.Mobile
                    && ApplicationTypeCode == "NC"
                    && !SavedApplicationID.IsValid()
                    && ApplicationStatusDetail != null
-                   && IsActionableStatusID(ApplicationStatusDetail.StatusId, "SubmitNCApplicationRating"))
+                   && ApplicationRatingDetail != null
+                   && ApplicationRatingDetail.SubmissionRating != null
+                   && ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
                 {
                     type = DetailCTAType.SubmitApplicationRating;
                 }
@@ -532,7 +534,8 @@ namespace myTNB.Mobile
                     || CTAType == DetailCTAType.DeleteAppication
                     || CTAType == DetailCTAType.ResumeApplication
                     || CTAType == DetailCTAType.ReapplyNow
-                    || CTAType == DetailCTAType.ReuploadDocument)
+                    || CTAType == DetailCTAType.ReuploadDocument
+                    || CTAType == DetailCTAType.SubmitApplicationRating)
                 {
                     type = DetailTutorialType.Action;
                 }
