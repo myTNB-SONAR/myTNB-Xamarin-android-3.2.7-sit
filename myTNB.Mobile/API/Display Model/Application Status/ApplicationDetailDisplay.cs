@@ -396,7 +396,7 @@ namespace myTNB.Mobile
                    && ApplicationStatusDetail != null
                    && ApplicationRatingDetail != null
                    && ApplicationRatingDetail.SubmissionRating != null
-                   && ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
+                   && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
                 {
                     type = DetailCTAType.SubmitApplicationRating;
                 }
