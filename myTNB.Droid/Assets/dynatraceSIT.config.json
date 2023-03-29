@@ -1,0 +1,12 @@
+{
+    "android": {
+        "autoStart": {
+            "applicationId": "5b09ff95-58a7-4dc6-97e7-33f6a01ec895",
+            "beaconUrl": "https://mobiletestingws.tnb.com.my/dtmb"
+        },
+        "userOptIn": false,
+        "agentBehavior": {
+            "startupLoadBalancing": true
+        }
+    }
+}

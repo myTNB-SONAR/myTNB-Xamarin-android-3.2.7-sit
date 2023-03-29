@@ -9,7 +9,8 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using DynatraceAndroid;
+using Dynatrace.Xamarin;
+using Dynatrace.Xamarin.Binding.Android;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.EBPopupScreen.MVP;
@@ -183,7 +184,7 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
             try
             {
                 FirebaseAnalyticsUtils.SetScreenName(this, Constants.EB_initiate_Duration);
-                dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_initiate_Duration);
+                Agent.Instance.EnterAction(Constants.EB_initiate_Duration);
             }
             catch (Exception e)
             {

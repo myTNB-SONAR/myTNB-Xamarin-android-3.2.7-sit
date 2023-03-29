@@ -17,7 +17,8 @@ using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
 using Com.Davemorrissey.Labs.Subscaleview;
-using DynatraceAndroid;
+using Dynatrace.Xamarin;
+using Dynatrace.Xamarin.Binding.Android;
 using Facebook.Shimmer;
 using Firebase.DynamicLinks;
 using Google.Android.Material.Snackbar;
@@ -164,7 +165,7 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
         {
             try
             {
-                this.DynAction = DynatraceAndroid.Dynatrace.EnterAction(eventName);
+                Agent.Instance.EnterAction(eventName);
             }
             catch (System.Exception e)
             {
