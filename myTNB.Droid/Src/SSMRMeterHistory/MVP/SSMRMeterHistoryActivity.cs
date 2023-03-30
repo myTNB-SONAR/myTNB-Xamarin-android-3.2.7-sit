@@ -21,6 +21,7 @@ using AndroidX.Core.Content;
 using AndroidX.Core.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -60,6 +61,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         private bool isTutorialShown = false;
         private bool isSMR = false;
         private bool noMeterAccess = false;
+        private bool IsTenant = false;
 
         SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
 
@@ -217,8 +219,10 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                             selectedAccountNickName = selectedAccount.AccountNickName;
                             CustomerBillingAccount.RemoveSelected();
                             CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
+                            SMRAccount smrSelectedAccount = smrAccountList.Find(account => account.accountNumber == selectedAccountNumber);
                             if (extras.ContainsKey(Constants.SMR_RESPONSE_KEY))
                             {
+                                IsTenant = smrSelectedAccount.IsTenant;
                                 smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
                                 UpdateUIForSMR(smrResponse);
                                 this.mPresenter.CheckIsBtnSubmitHide(smrResponse);
@@ -228,6 +232,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
                             if (extras.ContainsKey("fromNotificationDetails"))
                             {
+                                IsTenant = smrSelectedAccount.IsTenant;
                                 UpdateUIForNonSMR();
                                 isSMR = false;
                                 isTutorialShown = true;
@@ -251,6 +256,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                             if (smrSelectedAccount != null)
                             {
                                 selectedAccountNickName = smrSelectedAccount.accountName;
+                                IsTenant = smrSelectedAccount.IsTenant;
                                 if (smrSelectedAccount.isTaggedSMR)
                                 {
                                     isSMR = true;
@@ -298,6 +304,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                         if (smrSelectedAccount != null)
                         {
                             selectedAccountNickName = smrSelectedAccount.accountName;
+                            IsTenant = smrSelectedAccount.IsTenant;
                             if (smrSelectedAccount.isTaggedSMR)
                             {
                                 isSMR = true;
@@ -341,6 +348,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             //Checking for no tagged SMR
             NonSMRActionContainer.Visibility = hasNoSMREligibleAccount ? ViewStates.Visible : ViewStates.Gone;
             bottomLayout.Visibility = hasNoSMREligibleAccount ? ViewStates.Visible : ViewStates.Gone;
+
+            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant() && IsTenant)
+            {
+                DisableSMRBtnContainer.Visibility = ViewStates.Gone;
+                NonSMRActionContainer.Visibility = ViewStates.Gone;
+            }
 
             btnNo.Enabled = true;
             btnNo.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
@@ -510,6 +523,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     selectedAccountNickName = selectedEligibleAccount.accountName;
                     CustomerBillingAccount.RemoveSelected();
                     CustomerBillingAccount.SetSelected(selectedEligibleAccount.accountNumber);
+                    IsTenant = selectedEligibleAccount.IsTenant;
                     if (selectedEligibleAccount.isTaggedSMR)
                     {
                         isTutorialShown = false;

@@ -39,6 +39,8 @@ using myTNB.Mobile;
 using myTNB_Android.Src.Utils.Notification;
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 using myTNB_Android.Src.Base.Response;
+using System.Linq;
+using Android.Preferences;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -131,6 +133,46 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             return false;
         }
 
+        private bool IsAppNeedsRecommendRangeUpdate(RecommendUpdateInfo recommendUpdateInfo)
+        {
+            if (recommendUpdateInfo != null && recommendUpdateInfo.isAndroidRecommendUpdateOn && recommendUpdateInfo.rangeAndroidRecommendUpdate)
+            {
+                var versionLast = recommendUpdateInfo?.AndroidLastRecommendVersion;
+                var versionLatest = recommendUpdateInfo?.AndroidLatestRecommendVersion;
+                var versionNow = new string(DeviceIdUtils.GetAppVersionName().Where(c => !char.IsLetter(c)).ToArray());
+
+                int result1 = versionNow.CompareTo(versionLast);
+                int result2 = versionNow.CompareTo(versionLatest);
+
+                if (result1 >= 0 && result2 <= 0)
+                {
+                    Console.WriteLine("need update");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("already latest update");
+                }
+            }
+            return false;
+        }
+
+        private bool IsAppNeedsRecommendSelectUpdate(RecommendUpdateInfo recommendUpdateInfo)
+        {
+            bool updateAllow = false;
+            if (recommendUpdateInfo != null && recommendUpdateInfo.isAndroidRecommendUpdateOn && recommendUpdateInfo.selectAndroidRecommendUpdate)
+            {
+                List<string> versionList = new List<string>();
+                if (recommendUpdateInfo.AndroidVersionToUpdate != null)
+                {
+                    versionList = recommendUpdateInfo.AndroidVersionToUpdate;
+                    var versionNow = new string(DeviceIdUtils.GetAppVersionName().Where(c => !char.IsLetter(c)).ToArray());
+                    updateAllow = versionList.Exists(x => x == versionNow);
+                }
+            }
+            return updateAllow;
+        }
+
         private async void LoadAppMasterData()
         {
             //For Testing Start
@@ -186,7 +228,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest());
                 /*AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
                       (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));*/
-                string dt = JsonConvert.SerializeObject(new AppLaunchMasterDataRequest());
                 if (masterDataResponse != null && masterDataResponse.ErrorCode != null)
                 {
                     if (masterDataResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
@@ -196,6 +237,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         bool proceed = true;
 
                         bool appUpdateAvailable = false;
+                        bool appUpdateRecommendedRange = false;
+                        bool appUpdateRecommendedSelect = false;
                         //AppLaunchMasterDataModel responseData = masterDataResponse.GetData();
                         bool updateDetail = masterDataResponse.Data.IsFeedbackUpdateDetailDisabled;
 
@@ -210,6 +253,55 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         if (responseData.AppVersionList != null && responseData.AppVersionList.Count > 0)
                         {
                             appUpdateAvailable = IsAppNeedsUpdate(responseData.ForceUpdateInfo);
+                            appUpdateRecommendedRange = IsAppNeedsRecommendRangeUpdate(responseData.RecommendUpdateInfo);
+                            appUpdateRecommendedSelect = IsAppNeedsRecommendSelectUpdate(responseData.RecommendUpdateInfo);
+                            bool userCancelUpdate = this.mView.UserCancelUpdate();
+                            var countPopup = UserSessions.GetSavePopUpCountUpdate(mSharedPref) ?? "0";
+                            bool refreshCountPopup = UserSessions.GetSaveNeedPopup(mSharedPref);
+                            string dateRefreshPopup= UserSessions.GetSavePopUpDateReset(mSharedPref) ?? "";
+                            int countTotalPopup = 0;
+                            if (!string.IsNullOrEmpty(countPopup))
+                            {
+                                countTotalPopup = int.Parse(countPopup);
+                                string dateString = responseData.RecommendUpdateInfo?.PublishDateTimeRecommendUpdate;
+                                //string dateString = "15/3/2023 16:20";
+                                string formatString = "dd/M/yyyy HH:mm";
+                                DateTime dateTimeReset;
+                                DateTime dateTime;
+                                bool resetCount = false;
+                                if (!string.IsNullOrEmpty(dateString) && !userCancelUpdate)
+                                {
+                                    dateRefreshPopup = UserSessions.GetSavePopUpDateReset(mSharedPref) ?? "";
+                                    dateTime = DateTime.ParseExact(dateString, formatString, System.Globalization.CultureInfo.InvariantCulture);
+                                    if (!string.IsNullOrEmpty(dateRefreshPopup))
+                                    {
+                                        dateTimeReset = DateTime.ParseExact(dateRefreshPopup, formatString, System.Globalization.CultureInfo.InvariantCulture);
+                                    }
+                                    else
+                                    {
+                                        dateTimeReset = dateTime;
+                                        UserSessions.SavePopUpDateReset(mSharedPref, dateString);
+                                    }
+
+                                    if (dateTimeReset != dateTime && DateTime.Now > dateTime)
+                                    {
+                                       resetCount = true;
+                                    }
+
+                                    if (resetCount)
+                                    {
+                                        countTotalPopup = 0;
+                                        UserSessions.SaveNeedPopup(mSharedPref, resetCount);
+                                        UserSessions.SavePopUpDateReset(mSharedPref, dateRefreshPopup);
+                                        UserSessions.SavePopUpCountUpdate(mSharedPref, countTotalPopup.ToString());
+                                    }
+                                }
+                                else if (!string.IsNullOrEmpty(dateString))
+                                {
+                                    UserSessions.SavePopUpDateReset(mSharedPref, dateString);
+                                }
+                            }
+
                             if (appUpdateAvailable)
                             {
                                 DeeplinkUtil.Instance.ClearDeeplinkData();
@@ -217,6 +309,20 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 string modalMessage = responseData.ForceUpdateInfo.ModalBody;
                                 string modalBtnLabel = responseData.ForceUpdateInfo.ModalBtnText;
                                 this.mView.ShowUpdateAvailable(modalTitle, modalMessage, modalBtnLabel);
+                            }
+                            else if (((appUpdateRecommendedRange && !appUpdateRecommendedSelect) || (!appUpdateRecommendedRange && appUpdateRecommendedSelect)) && !userCancelUpdate
+                                && countTotalPopup < responseData.RecommendUpdateInfo?.RecommendUpdatePopUpCount)
+                            {
+                                DeeplinkUtil.Instance.ClearDeeplinkData();
+                                string modalTitle = responseData.RecommendUpdateInfo.ModalRecommendTitle;
+                                string modalMessage = responseData.RecommendUpdateInfo.ModalRecommendBody;
+                                string modalBtnYes = responseData.RecommendUpdateInfo.ModalRecommendBtnYesText;
+                                string modalBtnNo = responseData.RecommendUpdateInfo.ModalRecommendBtnNoText;
+
+                                countTotalPopup++;
+                                Log.Debug("Update popup count", countTotalPopup.ToString());
+                                UserSessions.SavePopUpCountUpdate(mSharedPref, countTotalPopup.ToString());
+                                this.mView.ShowUpdateAvailableWithRequirement(modalTitle, modalMessage, modalBtnYes, modalBtnNo);
                             }
                             else
                             {
@@ -508,7 +614,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                 baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                 baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                string dt = JsonConvert.SerializeObject(baseRequest);
+                //string dt = JsonConvert.SerializeObject(baseRequest);
                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
                 if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null && customerAccountListResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
@@ -654,7 +760,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                 baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                 baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                string dt = JsonConvert.SerializeObject(baseRequest);
+                //string dt = JsonConvert.SerializeObject(baseRequest);
                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
                 if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null && customerAccountListResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
@@ -816,7 +922,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 try
                                 {
                                     NCAutoAddAccountsRequest ncAccountRequest = new NCAutoAddAccountsRequest(UserEntity.GetActive().IdentificationNo);
-                                    string s = JsonConvert.SerializeObject(ncAccountRequest);
+                                    //string s = JsonConvert.SerializeObject(ncAccountRequest);
                                     var ncAccountResponse = await ServiceApiImpl.Instance.NCAutoAddAccounts(ncAccountRequest);
 
                                     if (mView.IsActive())
@@ -851,7 +957,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             try
                             {
                                 NCAutoAddAccountsRequest ncAccountRequest = new NCAutoAddAccountsRequest(UserEntity.GetActive().IdentificationNo);
-                                string s = JsonConvert.SerializeObject(ncAccountRequest);
+                                //string s = JsonConvert.SerializeObject(ncAccountRequest);
                                 var ncAccountResponse = await ServiceApiImpl.Instance.NCAutoAddAccounts(ncAccountRequest);
 
                                 if (mView.IsActive())
@@ -896,7 +1002,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 this.mView.ShowProgress();
                 UserNotificationDetailsRequestNew request = new UserNotificationDetailsRequestNew(NotificationTypeId, BCRMNotificationTypeId, NotificationRequestId);
-                string dt = JsonConvert.SerializeObject(request);
+                //string dt = JsonConvert.SerializeObject(request);
                 UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetailsByRequestId(request);
                 if (response.IsSuccessResponse())
                 {
@@ -1817,7 +1923,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 }
 
                 UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid, lang);
-                string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
+                //string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
                 var updateUserStatusActivateResponse = await ServiceApiImpl.Instance.UpdateUserStatusActivate(updateUserStatusActivateRequest);
 
 
@@ -1887,7 +1993,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 }
 
                 UpdateUserStatusActivateRequest updateUserStatusActivateRequest = new UpdateUserStatusActivateRequest(userid, lang);
-                string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
+                //string s = JsonConvert.SerializeObject(updateUserStatusActivateRequest);
                 var updateUserStatusActivateResponse = await ServiceApiImpl.Instance.UpdateUserStatusDeactivate(updateUserStatusActivateRequest);
 
 

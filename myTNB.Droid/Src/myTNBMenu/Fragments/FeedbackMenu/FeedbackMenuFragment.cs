@@ -10,7 +10,8 @@ using AndroidX.AppCompat.App;
 using AndroidX.ConstraintLayout.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
-using DynatraceAndroid;
+using Dynatrace.Xamarin;
+using Dynatrace.Xamarin.Binding.Android;
 using Google.Android.Material.Snackbar;
 using Java.Lang;
 using myTNB_Android.Src.AppLaunch.Activity;
@@ -280,9 +281,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             {
                 try
                 {
-                    IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_SUBMIT_NEW_ENQUIRY);  // DYNA
-                    dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
-                    dynaTrace.LeaveAction();
+                    var myAction = Agent.Instance.EnterAction(Constants.TOUCH_ON_SUBMIT_NEW_ENQUIRY);  // DYNA
+                    myAction.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
+                    myAction.LeaveAction();
                 }
                 catch (System.Exception e)
                 {
@@ -345,9 +346,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             {
                 try
                 {
-                    IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.TOUCH_ON_VIEW_SUBMITTED_ENQUIRY);  // DYNA
-                    dynaTrace.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
-                    dynaTrace.LeaveAction();
+                    var myAction = Agent.Instance.EnterAction(Constants.TOUCH_ON_VIEW_SUBMITTED_ENQUIRY);  // DYNA
+                    myAction.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
+                    myAction.LeaveAction();
                 }
                 catch (System.Exception e)
                 {

@@ -19,7 +19,7 @@ using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using DynatraceAndroid;
+using Dynatrace.Xamarin;
 using Facebook.Shimmer;
 using Google.Android.Material.BottomSheet;
 using Google.Android.Material.Snackbar;
@@ -74,6 +74,7 @@ using myTNB_Android.Src.DigitalBill.Activity;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.EnergyBudget.Activity;
 using myTNB.Mobile.AWS.Models.DBR;
+using Dynatrace.Xamarin.Binding.Android;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -7135,7 +7136,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (isEBUser)
                 {
-                    dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.EB_view_budget_duration);
+                    Agent.Instance.EnterAction(Constants.EB_view_budget_duration);
                     FirebaseAnalyticsUtils.LogFragmentClickEvent(this, Constants.EB_view_budget_duration);
                 }
             }

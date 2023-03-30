@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+  <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginLeft="24dp"
+      android:layout_marginRight="24dp"
+      android:id="@+id/rootView"
+      android:background="@drawable/custom_round_white_dialog_shadow">
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:text="New Update!"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/tunaGrey"
+        android:textSize="14dp"
+        android:lineSpacingExtra="3dp"/>
+    <TextView
+        android:id="@+id/txtMessage"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:textColor="@color/tunaGrey"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="9dp"
+        android:maxLines="12"
+        android:scrollbars="vertical"
+        android:text="New update available! Download now!"
+        android:textSize="14dp"
+        android:lineSpacingExtra="3dp"/>
+    <LinearLayout
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:clickable="true"
+          android:id="@+id/btnFirst">
+        <View
+            android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:alpha="0.2"
+            android:background="@color/tunaGrey" />
+        <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txtBtnPrimary"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/divider"
+            android:gravity="center"
+            android:textColor="@color/powerBlue"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/itemized_bill_got_it"
+            android:textSize="16dp" />
+        <View
+            android:id="@id/divider"
+            android:layout_width="1dp"
+            android:alpha="0.2"
+            android:layout_height="53dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/tunaGrey" />
+        <TextView
+            android:id="@+id/txtBtnSecondary"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/divider"
+            android:gravity="center"
+            android:textColor="@color/powerBlue"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/itemized_bill_bring_me_there"
+            android:textSize="16dp" />
+    </RelativeLayout>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

@@ -18,5 +18,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         public string BudgetAmount { get; set; }
         public string InstallationType { get; set; }
         public string AMSIDCategory { get; set; }
+        public bool IsTenant { get; set; }
     }
 }

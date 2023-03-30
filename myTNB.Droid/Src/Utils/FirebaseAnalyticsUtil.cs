@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Android.OS;
 using Android.Widget;
-using DynatraceAndroid;
+using Dynatrace.Xamarin.Binding.Android;
+using Dynatrace.Xamarin;
 using Firebase.Analytics;
 
 namespace myTNB_Android.Src.Utils
@@ -42,8 +43,8 @@ namespace myTNB_Android.Src.Utils
 		{
             try
             {
-				IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(screenName);
-				dynaTrace.LeaveAction();
+				var myAction = Agent.Instance.EnterAction(screenName);
+				myAction.LeaveAction();
 			}
             catch (System.Exception)
             {
