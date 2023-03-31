@@ -256,9 +256,7 @@
     //DiscoverMore
     "DiscoverMore": "Terokai",
     "DiscoverMoreTitle": "Energy Budget kini telah tiba!",
-    "DiscoverMoreDate": "07 May 2021",
-    //myHome
-    "myHomeDrawerTitle": "myHome"
+    "DiscoverMoreDate": "07 May 2021"
   },
   "Tabbar": {
     "home": "Utama",

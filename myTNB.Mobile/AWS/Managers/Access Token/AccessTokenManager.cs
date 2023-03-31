@@ -45,9 +45,13 @@ namespace myTNB.Mobile
                     Channel = AWSConstants.Channel,
                     UserId = userID ?? string.Empty
                 };
-
+#if MASTER || SIT || DEBUG
+                HttpResponseMessage rawResponse = await service.GenerateAccessToken(request
+                    , NetworkService.GetCancellationToken(AWSConstants.DebugTimeOut));
+#else
                 HttpResponseMessage rawResponse = await service.GenerateAccessToken(request
                     , NetworkService.GetCancellationToken());
+#endif
                 //Mark: Check for 404 First
                 if ((int)rawResponse.StatusCode != 200)
                 {
@@ -107,7 +111,7 @@ namespace myTNB.Mobile
         /// <param name="accessToken">Saved Access token</param>
         /// <returns>Access Token</returns>
         public async Task<string> GetUserServiceAccessToken(string userID
-        , string accessToken = "")
+            , string accessToken = "")
         {
             try
             {

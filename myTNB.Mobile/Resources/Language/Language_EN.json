@@ -256,9 +256,7 @@
     //DiscoverMore
     "DiscoverMore": "Discover More",
     "DiscoverMoreTitle": "The new Energy Budget feature is here!",
-    "DiscoverMoreDate": "07 May 2021",
-    //myHome
-    "myHomeDrawerTitle": "myHome"
+    "DiscoverMoreDate": "07 May 2021"
   },
   "Tabbar": {
     "home": "Home",

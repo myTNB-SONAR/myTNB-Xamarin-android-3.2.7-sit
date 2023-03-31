@@ -3,6 +3,7 @@
     public static class AWSConstants
     {
         internal const int TimeOut = 10000;
+        internal const int DebugTimeOut = 20000; //DO NOT USE IN PROD
         internal const int AccountStatementTimeOut = 5000;
         internal const string Channel = "myTNB_API_Mobile";
         internal const int RoleID = 16;
