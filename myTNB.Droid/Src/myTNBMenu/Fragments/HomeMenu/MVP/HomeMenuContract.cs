@@ -113,6 +113,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void OnSetNotificationNewLabel(bool hasNoti, int noticount);
 
             void FilterCOMCLandNEM();
+
+            void SetupMyHomeBanner();
         }
 
         public interface IHomeMenuPresenter

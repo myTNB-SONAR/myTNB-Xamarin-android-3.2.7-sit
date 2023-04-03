@@ -1228,16 +1228,16 @@ namespace myTNB_Android.Src.Utils
         {
             return preferences.GetBoolean("DBRMarketingPopUpHasShown", false);
         }
-        
-        public static bool MyHomeDrawerTutorialHasShown(ISharedPreferences prefs)
+
+        public static bool MyHomeDrawerTutorialHasShown(ISharedPreferences prefs, string key)
         {
-            return prefs.GetBoolean("myHomeDrawerTutorialHasShown", false);
+            return prefs.GetBoolean(key, false);
         }
 
-        public static void SetShownMyHomeDrawerTutorial(ISharedPreferences prefs)
+        public static void SetShownMyHomeDrawerTutorial(ISharedPreferences prefs, string key)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutBoolean("myHomeDrawerTutorialHasShown", true);
+            editor.PutBoolean(key, true);
             editor.Apply();
         }
 
@@ -1274,6 +1274,18 @@ namespace myTNB_Android.Src.Utils
         {
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutBoolean("connectMyPremiseHasShown", true);
+            editor.Apply();
+        }
+
+        public static bool HMOHasShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("HMOHasShown", false);
+        }
+
+        public static void SetShownHMO(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("HMOHasShown", true);
             editor.Apply();
         }
 

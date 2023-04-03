@@ -59,6 +59,7 @@ namespace myTNB_Android.Src.MyHome
         MyDrawerAdapter myHomeDrawerAdapter;
 
         List<MyDrawerModel> myDrawerList;
+        List<NewAppModel> _tutorialList;
         string _drawerTitle;
 
         public MyHomeDrawerFragment(Android.App.Activity ctx, List<MyDrawerModel> modelList, string drawerTitle)
@@ -70,6 +71,7 @@ namespace myTNB_Android.Src.MyHome
                 this.mActivity = ((DashboardHomeActivity)this.mContext);
             }
             _drawerTitle = drawerTitle;
+            _tutorialList = new List<NewAppModel>();
         }
 
         public override void OnCreate (Bundle savedInstanceState)
@@ -103,11 +105,8 @@ namespace myTNB_Android.Src.MyHome
                     DynatraceHelper.OnTrack(DynatraceConstants.MyHome.Screens.Home.Drawer);
                     DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Open);
 
-                    if (!UserSessions.MyHomeDrawerTutorialHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
-                    {
-                        await Task.Delay(300);
-                        NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), OnGeneraMyHomeDrawerTutorialList(), true);
-                    }
+                    await Task.Delay(300);
+                    OnCheckTutorial();
                 });
             }
             catch (System.Exception e)
@@ -155,13 +154,80 @@ namespace myTNB_Android.Src.MyHome
             myHomeDrawerListRecycleView.SetAdapter(myHomeDrawerAdapter);
         }
 
+        private void OnCheckTutorial()
+        {
+            foreach (MyDrawerModel myDrawer in myDrawerList)
+            {
+                if (!UserSessions.MyHomeDrawerTutorialHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity), myDrawer.ServiceId))
+                {
+                    UpdateTutorialList(myDrawer);
+                }
+            }
+
+            if (_tutorialList.Count > 0)
+            {
+                NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), _tutorialList, true);
+            }
+        }
+
+        private void UpdateTutorialList(MyDrawerModel myDrawer)
+        {
+            if (myDrawer.ServiceId == "1009")
+            {
+                _tutorialList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = Utility.GetLocalizedLabel("Tutorial", "connectMyPremiseTitle"),
+                    ContentMessage = Utility.GetLocalizedLabel("Tutorial", "connectMyPremiseMessage"),
+                    DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Drawer_Start_Your_Application,
+                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Drawer_Start_Your_Application_Skip,
+                    Tag = myDrawer.ServiceId
+                });
+            }
+            else if (myDrawer.ServiceId == "1010")
+            {
+                _tutorialList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeChecklistTitle"),
+                    ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeChecklistMessage"),
+                    //DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Drawer_Start_Your_Application, //TODO: Replace with the correct tagging
+                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Drawer_Start_Your_Application_Skip,
+                    Tag = myDrawer.ServiceId
+                });
+            }
+        }
+
         private void OnClickChanged(object sender, int position)
         {
-            DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Connect_My_Premise);
-
-            if (!UserSessions.ConnectMyPremiseHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+            if (myDrawerList != null && myDrawerList.Count > 0)
             {
-                UserSessions.SetShownConnectMyPremise(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                MyDrawerModel drawerItem = myDrawerList[position];
+                if (drawerItem != null)
+                {
+                    switch(drawerItem.ServiceType)
+                    {
+                        case MobileEnums.ServiceEnum.CONNECTMYPREMISE:
+                            DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Connect_My_Premise);
+
+                            if (!UserSessions.ConnectMyPremiseHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            {
+                                UserSessions.SetShownConnectMyPremise(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                            }
+                            break;
+                        case MobileEnums.ServiceEnum.HMO:
+                            //TODO: Replace with correct dynatrace tag for HMO
+                            //DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Connect_My_Premise);
+
+                            if (!UserSessions.HMOHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            {
+                                UserSessions.SetShownHMO(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
 
             ShowProgressDialog();
@@ -226,23 +292,6 @@ namespace myTNB_Android.Src.MyHome
             DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Cancel);
         }
 
-        private List<NewAppModel> OnGeneraMyHomeDrawerTutorialList()
-        {
-            List<NewAppModel> tutorialList = new List<NewAppModel>();
-
-            tutorialList.Add(new NewAppModel()
-            {
-                ContentShowPosition = ContentType.TopLeft,
-                ContentTitle = Utility.GetLocalizedLabel("Tutorial", "connectMyPremiseTitle"),
-                ContentMessage = Utility.GetLocalizedLabel("Tutorial", "connectMyPremiseMessage"),
-                Feature = FeatureType.MyHome,
-                DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Drawer_Start_Your_Application,
-                DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Drawer_Start_Your_Application_Skip
-            });
-
-            return tutorialList;
-        }
-
         public int GetRecyclerViewWidth()
         {
             return myHomeDrawerListRecycleView.Width;
@@ -269,6 +318,50 @@ namespace myTNB_Android.Src.MyHome
             }
 
             return i;
+        }
+
+        public int GetMyDrawerItemHeight()
+        {
+            var servicesList = myDrawerList;
+
+            int a = (int)System.Math.Ceiling((double)servicesList.Count / 3);
+            var itemHeight = myHomeDrawerListRecycleView.Height / a;
+
+            return itemHeight;
+        }
+
+        public int GetMyDrawerItemWidth()
+        {
+            var itemWidth = myHomeDrawerListRecycleView.Width / 3;
+            return itemWidth;
+        }
+
+        public int GetMyDrawerItemTopPosition(string id)
+        {
+            var topPosition = 0;
+            var servicesList = myDrawerList;
+            int itemPosition = servicesList.FindIndex(x => x.ServiceId == id) + 1;
+
+            int row = (int)System.Math.Ceiling((double)itemPosition / 3);
+            int rowIndex = row - 1;
+            topPosition = rowIndex * GetMyDrawerItemHeight();
+
+            return topPosition;
+        }
+
+        public int GetMyDrawerItemLeftPosition(string id)
+        {
+            var leftPosition = 0;
+
+            int column = 0;
+
+            var servicesList = myDrawerList;
+            int itemIndex = servicesList.FindIndex(x => x.ServiceId == id);
+
+            column = (itemIndex % 3);
+            leftPosition = column * GetMyDrawerItemWidth();
+
+            return leftPosition;
         }
 
         public void ShowProgressDialog()

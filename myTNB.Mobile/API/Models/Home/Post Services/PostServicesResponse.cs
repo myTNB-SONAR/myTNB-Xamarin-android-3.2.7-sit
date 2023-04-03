@@ -84,6 +84,9 @@ namespace myTNB.Mobile.API.Models.Home.PostServices
                         case "1009":
                             servicetType = ServiceEnum.CONNECTMYPREMISE;
                             break;
+                        case "1010":
+                            servicetType = ServiceEnum.HMO;
+                            break;
                         default:
                             servicetType = ServiceEnum.None;
                             break;

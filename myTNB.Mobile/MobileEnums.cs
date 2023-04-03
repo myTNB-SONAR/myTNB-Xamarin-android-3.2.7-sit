@@ -35,7 +35,8 @@
             APPLICATIONSTATUS,
             ENERGYBUDGET,
             MYHOME,
-            CONNECTMYPREMISE
+            CONNECTMYPREMISE,
+            HMO
         }
     }
 }

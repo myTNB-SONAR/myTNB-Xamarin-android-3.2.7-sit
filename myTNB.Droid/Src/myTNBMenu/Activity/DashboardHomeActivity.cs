@@ -53,6 +53,7 @@ using myTNB_Android.Src.Utils.Deeplink;
 using myTNB_Android.Src.Bills.AccountStatement;
 using myTNB_Android.Src.Utils.Notification;
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
+using MarketingPopUp = myTNB.Mobile.Constants.MarketingPopup;
 using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile.AWS.Models.DBR;
 using myTNB_Android.Src.MyHome.Model;
@@ -738,14 +739,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                     else if (UserSessions.MyHomeDashboardTutorialHasShown(this.mPref) && MyHomeUtility.Instance.IsAccountEligible)
                     {
-                        bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
                         bool myHomeMarketingPopUpHasShown = UserSessions.MyHomeMarketingPopUpHasShown(this.mPref);
-                        //GTM-1 Force Hide myHome Marketing Pop Up
-                        bool forceHide = true;
 
-                        if (!myHomeHasBeenTapped && !myHomeMarketingPopUpHasShown &&
+                        if (!myHomeMarketingPopUpHasShown &&
                             MyHomeUtility.Instance.IsMarketingPopupEnabled &&
-                            !forceHide)
+                            MyHomeUtility.Instance.IsAccountEligible)
                         {
                             ShowMyHomeMarketingPopUp();
                             UserSessions.SetShownMyHomeMarketingPopUp(this.mPref);
@@ -867,12 +865,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowMyHomeMarketingPopUp()
         {
-            //STUB myHome
             MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                     .SetHeaderImage(Resource.Drawable.Banner_MyHome_Marketing)
-                    .SetTitle("Check out myHome today!")
-                    .SetMessage("You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, track your application status and even organise your moving plans with ease using myHome.")
-                    .SetCTALabel("Got It!")
+                    .SetTitle(Utility.GetLocalizedLabel("MarketingPopup", MarketingPopUp.MyHome.I18N_Title))
+                    .SetMessage(Utility.GetLocalizedLabel("MarketingPopup", MarketingPopUp.MyHome.I18N_Message))
+                    .SetCTALabel(Utility.GetLocalizedLabel("MarketingPopup", MarketingPopUp.MyHome.I18N_CTA))
                     .SetCTAaction(() =>
                     {
                         this.SetIsClicked(false);
@@ -1794,17 +1791,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 bool dbrPopUpHasShown = UserSessions.GetDBRPopUpFlag(this.mPref);
                 bool popupID = UserSessions.GetUpdateIdPopUp(this.mPref);
 
-                bool myHomeHasBeenTapped = UserSessions.MyHomeQuickLinkHasShown(this.mPref);
                 bool myHomeMarketingPopUpHasShown = UserSessions.MyHomeMarketingPopUpHasShown(this.mPref);
-                //GTM-1 Force Hide myHome Marketing Pop Up
-                bool forceHide = true;
 
                 if (!myHomeMarketingPopUpHasShown &&
-                    !myHomeHasBeenTapped &&
                     popupID &&
                     MyHomeUtility.Instance.IsMarketingPopupEnabled &&
-                    MyHomeUtility.Instance.IsAccountEligible &&
-                    !forceHide)
+                    MyHomeUtility.Instance.IsAccountEligible)
                 {
                     ShowMyHomeMarketingPopUp();
                     UserSessions.SetShownMyHomeMarketingPopUp(this.mPref);

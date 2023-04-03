@@ -104,6 +104,19 @@ namespace myTNB_Android.Src.MyDrawer
                             vh.newLabel.Visibility = ViewStates.Gone;
                         }
                         break;
+                    case ServiceEnum.HMO:
+                        this.mActivity.RunOnUiThread(() =>
+                        {
+                            DynamicIconHandling(vh, model, Resource.Drawable.Icon_HMO);
+                        });
+
+                        if (UserSessions.HMOHasShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
+                        {
+                            vh.newLabel.Visibility = ViewStates.Gone;
+                        }
+                        break;
+                    default:
+                        break;
                 }
 
                 RelativeLayout.LayoutParams currentNewLabel = vh.newLabel.LayoutParameters as RelativeLayout.LayoutParams;

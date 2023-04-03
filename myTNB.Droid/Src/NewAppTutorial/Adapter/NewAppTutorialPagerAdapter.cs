@@ -3456,28 +3456,33 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
                 else if (this.mFragment is MyHomeDrawerFragment)
                 {
-                    var padding = (int)DPUtils.ConvertDPToPx(16f);
-                    var itemWidth = (((MyHomeDrawerFragment)this.mFragment).GetRecyclerViewWidth() / 3);
                     int topHeight = ((MyHomeDrawerFragment)this.mFragment).GetTopHeight() - GetStatusBarHeight();
+                    var padding = (int)DPUtils.ConvertDPToPx(16f);
+                    var screenWidth = this.mContext.Resources.DisplayMetrics.WidthPixels;
+                    var myHomeTopHeight = ((MyHomeDrawerFragment)this.mFragment).GetMyDrawerItemTopPosition(model.Tag);
+                    var myHomeWidth = ((MyHomeDrawerFragment)this.mFragment).GetMyDrawerItemWidth();
+                    var myHomeHeight = ((MyHomeDrawerFragment)this.mFragment).GetMyDrawerItemHeight();
+                    var myHomeLeftPosition = ((MyHomeDrawerFragment)this.mFragment).GetMyDrawerItemLeftPosition(model.Tag);
 
                     LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                    topLayoutParam.Height = topHeight;
+                    topLayoutParam.Height = topHeight + myHomeTopHeight;
                     topLayout.RequestLayout();
 
                     LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                    middleLayoutParam.Height = ((MyHomeDrawerFragment)this.mFragment).GetRecyclerViewHeight();
+                    middleLayoutParam.Height = myHomeHeight;
                     middleLayout.RequestLayout();
 
                     LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                    highlightedLeftLayoutParam.Width = padding + (int)DPUtils.ConvertDPToPx(1f);
+                    highlightedLeftLayoutParam.Width = padding + myHomeLeftPosition;
                     highlightedLeftLayout.RequestLayout();
 
                     LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                    highlightedLayoutParam.Width = itemWidth;
+                    highlightedLayoutParam.Width = myHomeWidth;
                     highlightedLayout.RequestLayout();
 
                     LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                    highlightedRightLayoutParam.Width = (itemWidth * 2) + padding;
+
+                    highlightedRightLayoutParam.Width = screenWidth - (padding + myHomeLeftPosition + myHomeWidth);
                     highlightedRightLayout.RequestLayout();
 
                     LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
@@ -3485,16 +3490,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     bottomLayout.RequestLayout();
 
                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                    if (model.NeedHelpHide)
-                    {
-                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
-                    }
-                    else
-                    {
-                        innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
-                    }
-                    innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
+                    innerTopLayoutParam.LeftMargin = myHomeLeftPosition + (int)DPUtils.ConvertDPToPx(20f);
+                    innerTopLayoutParam.RightMargin = padding;
                     innerTopLayout.RequestLayout();
                 }
             }
@@ -4407,7 +4405,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
                 else if (this.mFragment is MyHomeDrawerFragment)
                 {
-                    UserSessions.SetShownMyHomeDrawerTutorial(this.mPref);
+                    foreach (NewAppModel model in list)
+                    {
+                        UserSessions.SetShownMyHomeDrawerTutorial(this.mPref, model.Tag);
+                    }
                 }
             }
             else

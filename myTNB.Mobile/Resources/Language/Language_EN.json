@@ -1009,8 +1009,9 @@
     "title10": "Set your appointment with us!",
     "title11": "Enhanced access controls to safeguard your information.",
     "title12": "Enhance your moving experience with myHome!",
-    "title13": "Connect your premises to electricity with ease.",
-    "title14": "Manage your applications with ease!",
+    "title13": "Start your application with Connect My Premises.",
+    "title14": "Hassle-free planning whenever you decide to relocate.",
+    "title15": "Manage your applications with ease!",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
@@ -1022,9 +1023,10 @@
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
     "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot.",
     "description11": "Stay in control of your account information and permissions by defining what you let others access as an owner of an electricity account.",
-    "description12": "Planning to move in to your home? You can now apply for your electricity account easily and edit your applications with our new feature.",
-    "description13": "Create new applications and manage your existing electricity accounts anytime!",
-    "description14": "You can now edit, manage and track all your application status with zero hassle, anytime and anywhere."
+    "description12": "Planning to move in and out of your home? You can now easily apply for your electricity account, edit your applications and take note of your moving plans with our new feature.",
+    "description13": "Apply for new electricity accounts, change account ownership and terminate your electricity accounts anytime!",
+    "description14": "Moving homes? Plan your move conveniently with our myHome Checklist that includes useful moving eco tips and home-moving tasks lists to ensure a smooth moving experience.",
+    "description15": "You can now edit, manage and track all your application status with zero hassle, anytime and anywhere."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -1534,7 +1536,9 @@
     "myHomeTitle": "Introducing myHome.",
     "myHomeMessage": "Manage your electricity connection accounts and applications by selecting the myHome feature.",
     "connectMyPremiseTitle": "Start Your Application",
-    "connectMyPremiseMessage": "Apply for new electricity connections, change of account ownership and close your electricity accounts here."
+    "connectMyPremiseMessage": "Apply for new electricity connections, change of account ownership and close your electricity accounts here.",
+    "myHomeChecklistTitle": "Plan your move",
+    "myHomeChecklistMessage": "Organise your moving <br>task list for a smoother <br>moving experience."
   },
   "Tnb_Profile": {
     "title": "myTNB Profile",
@@ -3187,8 +3191,8 @@
       "A_LV_D",
       "A_MV"
     ],
-    "IsMyHomeMarketingPopupEnable": false,
-    "ForceHidemyHomeBanner": true
+    "IsMyHomeMarketingPopupEnable": true,
+    "ForceHidemyHomeBanner": false
   },
   "StatementPeriod": {
     "title": "Account Statement",

@@ -527,9 +527,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 GetIndicatorTenantDBR();
                 //SetDBRDiscoverView();
-                SetUpNBRView();
+
+                Task.Run(async () =>
+                {
+                    await Task.Delay(200);
+                    SetUpNBRView();
+                });
+
                 SetupNewFAQView();
-                SetUpMyHomeBanner();
 
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
@@ -4358,23 +4363,62 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             ((DashboardHomeActivity)Activity).NavigateToNBR();
         }
 
-        private void SetUpMyHomeBanner()
+        public void SetupMyHomeBanner()
         {
             Activity.RunOnUiThread(() =>
             {
                 if (!MyHomeUtility.Instance.IsBannerHidden && MyHomeUtility.Instance.IsAccountEligible)
                 {
-                    //GTM-1 Force Hide myHome Banner
-                    discoverMoreSectionTitle.Visibility = ViewStates.Gone;
-                    discoverMoreMyHomeContainer.Visibility = ViewStates.Gone;
-
-                    //discoverMoreSectionTitle.Visibility = ViewStates.Visible;
-                    //discoverMoreMyHomeContainer.Visibility = ViewStates.Visible;
-                    //myHomeBanner.Visibility = ViewStates.Visible;
-                    //myHomeBanner.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.Banner_Home_MyHome_MS
-                    //    : Resource.Drawable.Banner_Home_MyHome_EN);
+                    discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+                    discoverMoreMyHomeContainer.Visibility = ViewStates.Visible;
+                    myHomeBanner.Visibility = ViewStates.Visible;
+                    myHomeBanner.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.Banner_Home_MyHome_MS
+                        : Resource.Drawable.Banner_Home_MyHome_EN);
                 }
             });
+        }
+
+        [OnClick(Resource.Id.myHomeBanner)]
+        void MyHomeBannerOnClick(object sender, EventArgs eventArgs)
+        {
+            List<MyServiceModel> serviceList = myServicesList;
+            if (serviceList != null && serviceList.Count > 0)
+            {
+                int index = serviceList.FindIndex(x => x.ServiceType == MobileEnums.ServiceEnum.MYHOME);
+                if (index > -1)
+                {
+                    MyServiceModel myService = serviceList[index];
+                    if (myService != null)
+                    {
+                        List<MyDrawerModel> drawerList = new List<MyDrawerModel>();
+
+                        if (myService.Children != null
+                            && myService.Children.Count > 0)
+                        {
+                            foreach (MyServiceModel child in myService.Children)
+                            {
+                                drawerList.Add(new MyDrawerModel()
+                                {
+                                    ParentServiceId = child.ParentServiceId,
+                                    ServiceId = child.ServiceId,
+                                    ServiceName = child.ServiceName,
+                                    ServiceIconUrl = child.ServiceIconUrl,
+                                    DisabledServiceIconUrl = child.DisabledServiceIconUrl,
+                                    SSODomain = child.SSODomain,
+                                    OriginURL = child.OriginURL,
+                                    RedirectURL = child.RedirectURL,
+                                    ServiceType = child.ServiceType
+                                });
+                            }
+
+                            MyHomeDrawerFragment myHomeBottomSheetDialog = new MyHomeDrawerFragment(this.Activity, drawerList, myService.ServiceName);
+
+                            myHomeBottomSheetDialog.Cancelable = true;
+                            myHomeBottomSheetDialog.Show(this.Activity.SupportFragmentManager, "My Home Dialog");
+                        }
+                    }
+                }
+            }
         }
     }
 }

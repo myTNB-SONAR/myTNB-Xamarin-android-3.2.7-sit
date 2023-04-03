@@ -1022,7 +1022,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     }
                     else if (this.mFragment is MyHomeDrawerFragment)
                     {
-                        UserSessions.SetShownMyHomeDrawerTutorial(this.mPref);
+                        foreach (NewAppModel model in NewAppTutorialList)
+                        {
+                            UserSessions.SetShownMyHomeDrawerTutorial(this.mPref, model.Tag);
+                        }
                     }
                 }
                 else
@@ -1131,7 +1134,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     }
                     else if (this.mFragment is MyHomeDrawerFragment)
                     {
-                        UserSessions.SetShownMyHomeDrawerTutorial(this.mPref);
+                        foreach (NewAppModel model in NewAppTutorialList)
+                        {
+                            UserSessions.SetShownMyHomeDrawerTutorial(this.mPref, model.Tag);
+                        }
                     }
                 }
                 else
