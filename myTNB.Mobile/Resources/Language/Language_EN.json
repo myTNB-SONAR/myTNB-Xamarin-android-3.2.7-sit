@@ -1661,7 +1661,9 @@
     "reapplyNoResponseCTAMessage": "Reapply your application because we didn’t receive any response from the contractor you appointed.",
     "updateNow": "Update Now",
     "updateNowCTAMessage": "Update your information by re-uploading your document(s) for us to review again.",
-    "ncSubmissionRateUs": "Rate Our Service"
+    "ncSubmissionRateUs": "Rate Our Service",
+    "otpReadyMessage": "We will let you know once your application's OTP is ready to be verified again.",
+    "ncActionMessage": "You can take the action to continue or update your application using the myTNB Portal or App."
   },
   "UserAccess": {
     "title": "User Access",

@@ -103,8 +103,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// <summary>
             /// Action to logout
             /// </summary>
-            /// <param name="deviceId">string</param>
-            void OnLogout(string deviceId);
+            void OnLogout();
         }
     }
 }

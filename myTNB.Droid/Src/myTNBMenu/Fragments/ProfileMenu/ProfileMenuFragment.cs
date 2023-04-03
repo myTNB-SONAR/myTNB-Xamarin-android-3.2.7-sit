@@ -120,7 +120,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                         .SetTitle(GetLabelByLanguage("logout"))
                         .SetMessage(GetLabelByLanguage("logoutMessage"))
                         .SetCTALabel(GetLabelCommonByLanguage("ok"))
-                        .SetCTAaction(() => { mPresenter.OnLogout(this.DeviceId()); })
+                        .SetCTAaction(() => { mPresenter.OnLogout(); })
                         .SetSecondaryCTALabel(GetLabelCommonByLanguage("cancel"))
                         .Build();
 

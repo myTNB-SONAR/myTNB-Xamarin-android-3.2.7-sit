@@ -16,6 +16,7 @@ using myTNB_Android.Src.AppLaunch.Models;
 using Android.Content;
 using myTNB.Mobile;
 using myTNB_Android.Src.DeviceCache;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -220,104 +221,74 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             }
         }
 
-        public async void OnLogout(string deviceId)
+        public void OnLogout()
         {
             if (mView.IsActive())
             {
                 this.mView.ShowNotificationsProgressDialog();
             }
 
+            Task.Run(() =>
+            {
+                _ = Logout();
+            });
+
+            EligibilitySessionCache.Instance.Clear();
+
             UserEntity userEntity = UserEntity.GetActive();
-            try
+            if (userEntity != null)
             {
+                if (mView.IsActive())
+                {
+                    this.mView.HideNotificationsProgressDialog();
+                }
+
+                AppInfoManager.Instance.SetUserInfo("0"
+                    , string.Empty
+                    , string.Empty
+                    , UserSessions.GetDeviceId()
+                    , DeviceIdUtils.GetAppVersionName()
+                    , MobileConstants.OSType.Android
+                    , DeviceIdUtils.GetAndroidVersion()
+                    , FirebaseTokenEntity.GetLatest().FBToken
+                    , TextViewUtils.FontInfo
+                    , LanguageUtil.GetAppLanguage() == "MS"
+                        ? LanguageManager.Language.MS
+                        : LanguageManager.Language.EN);
+
+                UserSessions.UpdateLoginflag(mPref);
+                //UserSessions.UpdateNCFlag(mSharedPref);
+                UserSessions.RemoveEligibleData(mPref);
                 EligibilitySessionCache.Instance.Clear();
-                if (userEntity != null)
-                {
-                    var logoutResponse = await ServiceApiImpl.Instance.LogoutUser(new LogoutUserRequest());
+                FeatureInfoManager.Instance.Clear();
+                AccessTokenCache.Instance.Clear();
+                UserEntity.RemoveActive();
+                UserRegister.RemoveActive();
+                CustomerBillingAccount.RemoveActive();
+                UserManageAccessAccount.RemoveActive();
+                LogUserAccessEntity.RemoveAll();
+                NotificationFilterEntity.RemoveAll();
+                UserNotificationEntity.RemoveAll();
+                SubmittedFeedbackEntity.Remove();
+                SMUsageHistoryEntity.RemoveAll();
+                UsageHistoryEntity.RemoveAll();
+                BillHistoryEntity.RemoveAll();
+                PaymentHistoryEntity.RemoveAll();
+                REPaymentHistoryEntity.RemoveAll();
+                AccountDataEntity.RemoveAll();
+                SummaryDashBoardAccountEntity.RemoveAll();
+                SelectBillsEntity.RemoveAll();
+                LanguageUtil.SetIsLanguageChanged(false);
+                UserLoginCountEntity.RemoveAll();
+                UserSessions.SaveDBRPopUpFlag(mPref, false);
+                MarketingPopUpEntity.RemoveAll();
+                this.mView.ShowLogout();
+            }
+        }
 
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideNotificationsProgressDialog();
-                    }
-                    AppInfoManager.Instance.SetUserInfo("0"
-                        , string.Empty
-                        , string.Empty
-                        , UserSessions.GetDeviceId()
-                        , DeviceIdUtils.GetAppVersionName()
-                        , MobileConstants.OSType.Android
-                        , DeviceIdUtils.GetAndroidVersion()
-                        , FirebaseTokenEntity.GetLatest().FBToken
-                        , TextViewUtils.FontInfo
-                        , LanguageUtil.GetAppLanguage() == "MS"
-                            ? LanguageManager.Language.MS
-                            : LanguageManager.Language.EN);
-
-                    if (logoutResponse.IsSuccessResponse())
-                    {
-                        UserSessions.UpdateLoginflag(mPref);
-                        //UserSessions.UpdateNCFlag(mSharedPref);
-                        UserSessions.RemoveEligibleData(mPref);
-                        EligibilitySessionCache.Instance.Clear();
-                        FeatureInfoManager.Instance.Clear();
-                        AccessTokenCache.Instance.Clear();
-                        UserEntity.RemoveActive();
-                        UserRegister.RemoveActive();
-                        CustomerBillingAccount.RemoveActive();
-                        UserManageAccessAccount.RemoveActive();
-                        LogUserAccessEntity.RemoveAll();
-                        NotificationFilterEntity.RemoveAll();
-                        UserNotificationEntity.RemoveAll();
-                        SubmittedFeedbackEntity.Remove();
-                        SMUsageHistoryEntity.RemoveAll();
-                        UsageHistoryEntity.RemoveAll();
-                        BillHistoryEntity.RemoveAll();
-                        PaymentHistoryEntity.RemoveAll();
-                        REPaymentHistoryEntity.RemoveAll();
-                        AccountDataEntity.RemoveAll();
-                        SummaryDashBoardAccountEntity.RemoveAll();
-                        SelectBillsEntity.RemoveAll();
-                        LanguageUtil.SetIsLanguageChanged(false);
-                        UserLoginCountEntity.RemoveAll();
-                        UserSessions.SaveDBRPopUpFlag(mPref, false);
-                        MarketingPopUpEntity.RemoveAll();
-                        this.mView.ShowLogout();
-                    }
-                    else
-                    {
-                        this.mView.ShowLogoutErrorMessage(logoutResponse.Response.DisplayMessage);
-                    }
-                }
-            }
-            catch (System.OperationCanceledException e)
-            {
-                if (mView.IsActive())
-                {
-                    this.mView.HideNotificationsProgressDialog();
-                }
-                // ADD OPERATION CANCELLED HERE
-                this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
-            }
-            catch (ApiException apiException)
-            {
-                if (mView.IsActive())
-                {
-                    this.mView.HideNotificationsProgressDialog();
-                }
-                // ADD HTTP CONNECTION EXCEPTION HERE
-                this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
-            }
-            catch (Exception e)
-            {
-                if (mView.IsActive())
-                {
-                    this.mView.HideNotificationsProgressDialog();
-                }
-                // ADD UNKNOWN EXCEPTION HERE
-                this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
-            }
+        public async Task Logout()
+        {
+            _ = await ServiceApiImpl.Instance.LogoutUser(new LogoutUserRequest());
         }
 
         public void UpdateCardList(CreditCardData creditCard)
