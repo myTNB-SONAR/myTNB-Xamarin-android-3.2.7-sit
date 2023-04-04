@@ -1665,7 +1665,9 @@
     "reapplyNoResponseCTAMessage": "Mohon semula permohonan anda kerana kami tidak menerima sebarang maklum balas daripada kontraktor yang anda lantik.",
     "updateNow": "Kemas kini Sekarang",
     "updateNowCTAMessage": "Kemas kini maklumat anda dengan memuat naik semula dokumen anda untuk kami semak semula.",
-    "ncSubmissionRateUs": "Nilai Perkhidmatan Kami"
+    "ncSubmissionRateUs": "Nilai Perkhidmatan Kami",
+    "otpReadyMessage": "Anda akan dimaklumkan apabila OTP untuk permohonan anda sudah sedia untuk disahkan semula.",
+    "ncActionMessage": "Anda boleh pilih untuk meneruskan atau kemas kini permohonan anda di Portal atau App myTNB."
   },
   "UserAccess": {
     "title": "Urus Pengguna",

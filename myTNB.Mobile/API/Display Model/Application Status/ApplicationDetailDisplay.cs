@@ -201,7 +201,19 @@ namespace myTNB.Mobile
         {
             get
             {
-                return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "portalMessage");
+                string message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "portalMessage");
+                if (ApplicationTypeCode == "NC")
+                {
+                    if (CTAType == DetailCTAType.DeleteAppication)
+                    {
+                        message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "otpReadyMessage");
+                    }
+                    else
+                    {
+                        message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "ncActionMessage");
+                    }
+                }
+                return message;
             }
         }
         /// <summary>
