@@ -113,8 +113,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title12"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description12"),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title15"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description15"),
                     Image = "walkthrough_img_install_10",
                     Background = GetBackgroundName(newWalkthroughList),
                     DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Enhance,
@@ -122,8 +122,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title13"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description13"),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title16"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description16"),
                     Image = "walkthrough_img_install_11",
                     Background = GetBackgroundName(newWalkthroughList),
                     DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Connect,
@@ -131,21 +131,21 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title14"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description13"),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title17"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description17"),
                     Image = "walkthrough_img_install_12",
                     Background = GetBackgroundName(newWalkthroughList),
-                    //DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Connect,//TODO Replace with correct tag
-                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Connect_Skip
+                    //DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Connect, //TODO Replace with correct tag
+                    //DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Connect_Skip //TODO Replace with correct tag
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title15"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description15"),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title18"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description18"),
                     Image = "walkthrough_img_install_6",
                     Background = GetBackgroundName(newWalkthroughList),
-                    DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Manage,
-                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Manage_Skip
+                    //DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Manage, //TODO Replace with correct tag
+                    //DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Manage_Skip //TODO Replace with correct tag
                 });
             }
             else
@@ -207,8 +207,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title12"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description12"),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title15"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description15"),
                     Image = "walkthrough_img_install_10",
                     Background = GetBackgroundName(newWalkthroughList),
                     DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Enhance,
@@ -216,8 +216,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title13"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description13"),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title16"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description16"),
                     Image = "walkthrough_img_install_11",
                     Background = GetBackgroundName(newWalkthroughList),
                     DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Connect,
@@ -225,21 +225,21 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title14"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description13"),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title17"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description17"),
                     Image = "walkthrough_img_install_12",
                     Background = GetBackgroundName(newWalkthroughList),
                     //DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Connect,//TODO Replace with correct tag
-                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Connect_Skip
+                    //DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Connect_Skip //TODO Replace with correct tag
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title15"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description15"),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title18"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description18"),
                     Image = "walkthrough_img_install_6",
                     Background = GetBackgroundName(newWalkthroughList),
-                    DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Manage,
-                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Manage_Skip
+                    //DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Manage, //TODO Replace with correct tag
+                    //DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Manage_Skip //TODO Replace with correct tag
                 });
 
                 /* UserEntity activeUser = UserEntity.GetActive();

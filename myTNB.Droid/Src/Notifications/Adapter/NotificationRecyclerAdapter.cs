@@ -206,6 +206,34 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_Resume_Application));
                 }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_COA_APPLICATION_COMPLETED))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_Application_Success));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_COA_APPLICATION_CANCELLED))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_COA_Cancelled));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_COA_OTP_VERIFY))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_OTP_Verify));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_SUBMITTED))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_COT_Submitted));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_COT_OTP_VERIFY))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_OTP_Verify));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_COT_Requested));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_COT_REMINDER))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_COT_Requested));
+                }
                 else
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_generic));

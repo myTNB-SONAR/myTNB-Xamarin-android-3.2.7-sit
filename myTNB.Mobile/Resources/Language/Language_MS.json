@@ -1008,10 +1008,13 @@
     "title9": "Pilih Saiz Teks Paparan Anda.",
     "title10": "Tetapkan janji temu anda!",
     "title11": "Peningkatan kawalan akses untuk melindungi maklumat anda.",
-    "title12": "Mulakan Permohonan dengan Connect My Premises.",
+    "title12": "Tingkatkan pengalaman berpindah anda dengan myHome!",
     "title13": "Sambung elektrik ke premis anda dengan mudah.",
-    "title14": "Rancang perpindahan kediaman dengan lebih mudah.",
-    "title15": "Urus permohonan anda dengan mudah!",
+    "title14": "Urus permohonan anda dengan mudah!",
+    "title15": "Dapatkan pengalaman perpindahan yang lebih baik dengan myHome!",
+    "title16": "Mulakan Permohonan dengan Connect My Premises.",
+    "title17": "Rancang perpindahan kediaman dengan lebih mudah.",
+    "title18": "Urus permohonan anda dengan mudah!",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
@@ -1023,10 +1026,13 @@
     "description9": "Ubah suai myTNB anda dengan saiz teks paparan bersesuaian untuk pengendalian yang lebih selesa. Anda boleh memilih antara saiz normal atau besar dan boleh mengubah tetapan ini pada bila-bila masa di Profil anda.",
     "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai.",
     "description11": "Sebagai pemilik akaun elektrik, pastikan anda mempunyai kawalan terhadap maklumat dan permintaan akaun dengan menetapkan akses yang anda beri kepada pihak lain.",
-    "description12": "Bercadang untuk berpindah? Kini anda boleh memohon bekalan elektrik dengan mudah, edit permohonan, serta merancang pelan perpindahan anda dengan lebih teratur dengan ciri baharu kami. ",
-    "description13": "Mohon bekalan elektrik baharu, pertukaran penghuni atau tamatkan bekalan elektrik pada bila-bila masa!",
-    "description14": "Berpindah rumah? Rancang perpindahan kini lebih mudah menggunakan myHome Checklist. Lihat senarai tugasan untuk melancarkan urusan perpindahan dan eco tips yang tersedia untuk anda.",
-    "description15": "Kini anda boleh edit, mengurus dan memantau semua status aplikasi anda tanpa sebarang kerumitan, pada bila-bila masa dan di mana-mana sahaja."
+    "description12": "Bercadang untuk berpindah? Kini anda boleh memohon bekalan elektrik dengan mudah dan edit permohonan anda dengan ciri baharu kami.",
+    "description13": "Lakukan permohonan baharu dan urus akaun elektrik sedia ada anda pada bila-bila masa.",
+    "description14": "Kini anda boleh mengedit, mengurus dan memantau semua status aplikasi anda tanpa sebarang kerumitan, pada bila-bila masa dan di mana-mana sahaja.",
+    "description15": "Bercadang untuk berpindah? Kini anda boleh memohon bekalan elektrik dengan mudah, edit permohonan, serta merancang pelan perpindahan anda dengan lebih teratur dengan ciri baharu kami.",
+    "description16": "Mohon bekalan elektrik baharu, pertukaran penghuni atau tamatkan bekalan elektrik pada bila-bila masa!",
+    "description17": "Berpindah rumah? Rancang perpindahan kini lebih mudah menggunakan myHome Checklist. Lihat senarai tugasan untuk melancarkan urusan perpindahan dan eco tips yang tersedia untuk anda.",
+    "description18": "Kini anda boleh edit, mengurus dan memantau semua status aplikasi anda tanpa sebarang kerumitan, pada bila-bila masa dan di mana-mana sahaja."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -1538,7 +1544,7 @@
     "connectMyPremiseTitle": "Mulakan Permohonan Anda",
     "connectMyPremiseMessage": "Mohon bekalan elekrik baharu, petukaran penghuni dan penamatan akaun elektrik anda di sini.",
     "myHomeChecklistTitle": "Rancang pemindahan anda",
-    "myHomeChecklistMessage": "Rancang senarai pemindahan <br>anda untuk process pemindahan <br>yang lebih teratur."
+    "myHomeChecklistMessage": "Rancang senarai pemindahan anda untuk process pemindahan yang lebih teratur."
   },
   "Tnb_Profile": {
     "title": "Profil myTNB",

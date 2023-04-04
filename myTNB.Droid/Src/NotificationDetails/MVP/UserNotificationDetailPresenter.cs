@@ -503,6 +503,76 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Application_Requires_Update;
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_COA_APPLICATION_COMPLETED:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewApplicationDetails"),
+                                   delegate () { ViewApplicationDetails(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Success;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_COA_APPLICATION_CANCELLED:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewApplicationDetails"),
+                                   delegate () { ViewApplicationDetails(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_COA_Application_Cancelled;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_COA_OTP_VERIFY:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "otpVerifyNow"),
+                                   delegate () { ViewApplicationDetails(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_OTP_Verify;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_SUBMITTED:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewApplicationDetails"),
+                                   delegate () { ViewApplicationDetails(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Application_Requires_Update;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_COT_OTP_VERIFY:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "otpVerifyNow"),
+                                   delegate () { ViewApplicationDetails(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_OTP_Verify;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitNow"),
+                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_COT_Reminder;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_COT_REMINDER:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitNow"),
+                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_COT_Reminder;
+                            break;
+                        }
                     default:
                         imageResourceBanner = Resource.Drawable.notification_generic_banner;
                         break;
