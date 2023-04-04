@@ -1826,7 +1826,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
 
                         ProcessMyServices();
-                        this.mView.SetupMyHomeBanner();
                         FirstTimeMyServiceInitiate = false;
                     }
                     else

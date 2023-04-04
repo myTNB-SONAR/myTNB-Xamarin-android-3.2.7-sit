@@ -527,13 +527,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 GetIndicatorTenantDBR();
                 //SetDBRDiscoverView();
-
-                Task.Run(async () =>
-                {
-                    await Task.Delay(200);
-                    SetUpNBRView();
-                });
-
                 SetupNewFAQView();
 
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
@@ -653,6 +646,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
+                SetUpNBRView();
                 ShowDiscoverMoreLayout();
                 ShowDiscoverMoreSDLayout();
             }
@@ -1131,13 +1125,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetMyServiceRecycleView()
         {
-            myServiceShimmerAdapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(3), this.Activity);
-            myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
+            this.Activity.RunOnUiThread(() =>
+            {
+                myServiceShimmerAdapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(3), this.Activity);
+                myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
 
-            myServiceShimmerView.Visibility = ViewStates.Visible;
-            myServiceView.Visibility = ViewStates.Gone;
+                myServiceShimmerView.Visibility = ViewStates.Visible;
+                myServiceView.Visibility = ViewStates.Gone;
+            });
 
-            this.presenter.InitiateMyService();
+            Task.Run(() =>
+            {
+                this.presenter.InitiateMyService();
+            });
         }
 
         public void SetMyServicesResult(List<MyServiceModel> list)
@@ -1167,7 +1167,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         myServiceView.Visibility = ViewStates.Visible;
 
-
+                        SetupMyHomeBanner();
                     }
                     catch (System.Exception ex)
                     {
