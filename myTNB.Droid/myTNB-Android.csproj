@@ -28,7 +28,7 @@
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>false</DebugSymbols>
     <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
@@ -7621,7 +7621,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\Database\Model\MyHomeNCPopUpEntity.cs" />
     <Compile Include="Src\MyHome\MVP\MyHomeMicrositeContract.cs" />
     <Compile Include="Src\MyHome\MVP\MyHomeMicrositePresenter.cs" />
     <AndroidResource Include="Resources\layout\CustomPDFImageView.xml">

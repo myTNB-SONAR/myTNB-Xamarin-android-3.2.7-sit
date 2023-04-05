@@ -32,5 +32,6 @@
         public bool NeedHelpHide { get; set; }
         public string DynatraceVisitTag { set; get; }
         public string DynatraceActionTag { set; get; }
+        public string Tag { set; get; }
     }
 }

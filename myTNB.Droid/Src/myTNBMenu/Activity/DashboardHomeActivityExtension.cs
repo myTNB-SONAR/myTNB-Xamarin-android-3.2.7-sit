@@ -130,7 +130,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private static void DeeplinkAppListingValidation(DashboardHomeActivity mainActivity)
         {
-            mainActivity.ShowProgressDialog();
+            mainActivity.RunOnUiThread(() =>
+            {
+                mainActivity.ShowProgressDialog();
+            });
+
             Task.Run(() =>
             {
                 _ = SearchApplicationType(mainActivity, DeeplinkUtil.Instance.ToastMessage);
@@ -339,7 +343,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             else if (NotificationUtil.Instance.PushMapId.IsValid())
             {
                 UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
-                OnGetNotificationDetails(mainActivity);
+                mainActivity.RunOnUiThread(() =>
+                {
+                    mainActivity.ShowProgressDialog();
+                });
+                Task.Run(() =>
+                {
+                    _ = OnGetNotificationDetails(mainActivity);
+                });
             }
             else
             {
@@ -355,9 +366,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        private async static void OnGetNotificationDetails(DashboardHomeActivity mainActivity)
+        private async static Task OnGetNotificationDetails(DashboardHomeActivity mainActivity)
         {
-            mainActivity.ShowProgressDialog();
             try
             {
                 string notifType = NotificationUtil.Instance.NotificationType;
@@ -367,16 +377,21 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     PushMapId = pushMapId
                 };
                 UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetails(request);
-                if (response.IsSuccessResponse())
+
+                mainActivity.RunOnUiThread(() =>
                 {
-                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
-                    ShowNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
-                    mainActivity.HideProgressDialog();
-                }
-                else
-                {
-                    mainActivity.HideProgressDialog();
-                }
+                    if (response.IsSuccessResponse())
+                    {
+                        Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
+                        ShowNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+                        mainActivity.HideProgressDialog();
+                    }
+                    else
+                    {
+                        mainActivity.HideProgressDialog();
+                    }
+                });
+                
                 NotificationUtil.Instance.ClearData();
             }
             catch (System.OperationCanceledException e)

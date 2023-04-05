@@ -527,7 +527,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 GetIndicatorTenantDBR();
                 //SetDBRDiscoverView();
-                SetUpNBRView();
                 SetupNewFAQView();
                 SetUpMyHomeBanner();
 
@@ -648,6 +647,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
+                SetUpNBRView();
                 ShowDiscoverMoreLayout();
                 ShowDiscoverMoreSDLayout();
             }
@@ -1126,13 +1126,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetMyServiceRecycleView()
         {
-            myServiceShimmerAdapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(3), this.Activity);
-            myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
+            this.Activity.RunOnUiThread(() =>
+            {
+                myServiceShimmerAdapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(3), this.Activity);
+                myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
 
-            myServiceShimmerView.Visibility = ViewStates.Visible;
-            myServiceView.Visibility = ViewStates.Gone;
+                myServiceShimmerView.Visibility = ViewStates.Visible;
+                myServiceView.Visibility = ViewStates.Gone;
+            });
 
-            this.presenter.InitiateMyService();
+            Task.Run(() =>
+            {
+                this.presenter.InitiateMyService();
+            });
         }
 
         public void SetMyServicesResult(List<MyServiceModel> list)

@@ -1229,15 +1229,15 @@ namespace myTNB_Android.Src.Utils
             return preferences.GetBoolean("DBRMarketingPopUpHasShown", false);
         }
         
-        public static bool MyHomeDrawerTutorialHasShown(ISharedPreferences prefs)
+        public static bool MyHomeDrawerTutorialHasShown(ISharedPreferences prefs, string key)
         {
-            return prefs.GetBoolean("myHomeDrawerTutorialHasShown", false);
+            return prefs.GetBoolean(key, false);
         }
 
-        public static void SetShownMyHomeDrawerTutorial(ISharedPreferences prefs)
+        public static void SetShownMyHomeDrawerTutorial(ISharedPreferences prefs, string key)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutBoolean("myHomeDrawerTutorialHasShown", true);
+            editor.PutBoolean(key, true);
             editor.Apply();
         }
 
