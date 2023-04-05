@@ -342,7 +342,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             else if (NotificationUtil.Instance.PushMapId.IsValid())
             {
                 UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
-                mainActivity.ShowProgressDialog();
+                mainActivity.RunOnUiThread(() =>
+                {
+                    mainActivity.ShowProgressDialog();
+                });
                 Task.Run(() =>
                 {
                     _ = OnGetNotificationDetails(mainActivity);

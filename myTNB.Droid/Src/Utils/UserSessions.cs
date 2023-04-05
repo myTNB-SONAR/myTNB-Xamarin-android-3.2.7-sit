@@ -1228,7 +1228,7 @@ namespace myTNB_Android.Src.Utils
         {
             return preferences.GetBoolean("DBRMarketingPopUpHasShown", false);
         }
-
+        
         public static bool MyHomeDrawerTutorialHasShown(ISharedPreferences prefs, string key)
         {
             return prefs.GetBoolean(key, false);

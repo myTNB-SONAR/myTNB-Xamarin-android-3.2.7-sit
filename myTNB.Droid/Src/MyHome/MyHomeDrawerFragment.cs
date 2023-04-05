@@ -43,7 +43,7 @@ using myTNB_Android.Src.DeviceCache;
 
 namespace myTNB_Android.Src.MyHome
 {
-	public class MyHomeDrawerFragment : AndroidX.Fragment.App.DialogFragment
+    public class MyHomeDrawerFragment : AndroidX.Fragment.App.DialogFragment
     {
         private Android.App.Activity mContext;
         private DashboardHomeActivity mActivity;
@@ -74,9 +74,9 @@ namespace myTNB_Android.Src.MyHome
             _tutorialList = new List<NewAppModel>();
         }
 
-        public override void OnCreate (Bundle savedInstanceState)
-		{
-			base.OnCreate (savedInstanceState);
+        public override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
         }
 
         public override void OnStart()
@@ -205,7 +205,7 @@ namespace myTNB_Android.Src.MyHome
                 MyDrawerModel drawerItem = myDrawerList[position];
                 if (drawerItem != null)
                 {
-                    switch(drawerItem.ServiceType)
+                    switch (drawerItem.ServiceType)
                     {
                         case MobileEnums.ServiceEnum.CONNECTMYPREMISE:
                             DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Connect_My_Premise);

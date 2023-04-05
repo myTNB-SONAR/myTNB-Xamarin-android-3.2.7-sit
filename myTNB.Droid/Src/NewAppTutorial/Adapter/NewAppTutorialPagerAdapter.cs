@@ -3481,7 +3481,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     highlightedLayout.RequestLayout();
 
                     LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-
                     highlightedRightLayoutParam.Width = screenWidth - (padding + myHomeLeftPosition + myHomeWidth);
                     highlightedRightLayout.RequestLayout();
 

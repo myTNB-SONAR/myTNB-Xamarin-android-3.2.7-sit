@@ -49,6 +49,17 @@
 					android:layout_marginBottom="23dp"
 					tools:visibility="visible"/>
 			</LinearLayout>
+			<TextView
+				android:id="@+id/dialogTitle"
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				tools:text="Go paperless with myTNB Bill today!"
+				android:layout_marginLeft="16dp"
+				android:layout_marginRight="16dp"
+				android:layout_marginBottom="12dp"
+				android:textColor="@color/charcoalGrey"
+				android:textSize="16dp"
+				android:lineSpacingExtra="3dp"/>
 			<ScrollView
 				android:layout_width="match_parent"
 				android:layout_weight="1"
@@ -64,23 +75,12 @@
 					android:layout_height="wrap_content"
 					android:id="@+id/scrollView">
 					<TextView
-						android:id="@+id/dialogTitle"
-						android:layout_height="wrap_content"
-						android:layout_width="match_parent"
-						tools:text="Go paperless with myTNB Bill today!"
-						android:layout_marginLeft="16dp"
-						android:layout_marginRight="16dp"
-						android:textColor="@color/charcoalGrey"
-						android:textSize="16dp"
-						android:lineSpacingExtra="3dp"/>
-					<TextView
 						android:id="@+id/dialogMessage"
 						android:layout_height="wrap_content"
 						android:layout_width="match_parent"
 						android:textColor="@color/charcoalGrey"
 						android:layout_marginLeft="16dp"
 						android:layout_marginRight="16dp"
-						android:layout_marginTop="12dp"
 						android:scrollbars="vertical"
 						tools:text="Be the first to make an impact today and choose to go paperless for your next bill onwards! With myTNB, you have a better and more environmentally friendly way to receive your paperless bills digitally via myTNB App and Portal."
 						android:textSize="14dp"
