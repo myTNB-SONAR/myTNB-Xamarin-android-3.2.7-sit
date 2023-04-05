@@ -434,6 +434,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     this.SetIsClicked(true);
                     DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Delete);
                     DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Delete_Draft_PopUp);
+                    
                     MyTNBAppToolTipBuilder deleteDraftPopUp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                             .SetSecondaryHeaderImage(Resource.Drawable.ic_display_validation_success)
                             .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftTitle))
@@ -840,7 +841,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             string dynatraceTag = DynatraceConstants.ApplicationStatus.CTAs.Details.Back;
             if (applicationDetailDisplay != null)
             {
-                switch(applicationDetailDisplay.CTAType)
+                switch (applicationDetailDisplay.CTAType)
                 {
                     case DetailCTAType.ReapplyNow:
                         dynatraceTag = DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Reappoint_Contractor_Back;
