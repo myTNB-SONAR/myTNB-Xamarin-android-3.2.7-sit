@@ -218,19 +218,21 @@
             {
                 public struct OnBoarding
                 {
-                    public const string Enhance = "myHome_App_Visit_OnboardingComms_myHomeGTM1_Enhance";
-                    public const string Connect = "myHome_App_Visit_OnboardingComms_myHomeGTM1_Connect";
-                    public const string Manage = "myHome_App_Visit_OnboardingComms_myHomeGTM1_Manage";
+                    public const string Enhance = "myHome_App_Visit_OnboardingComms_myHomeGTM2_Enhance";
+                    public const string Start = "myHome_App_Visit_OnboardingComms_myHomeGTM2_Start";
+                    public const string Hassle = "myHome_App_Visit_OnboardingComms_myHomeGTM2_Hassle";
+                    public const string Manage = "myHome_App_Visit_OnboardingComms_myHomeGTM2_Manage";
                 }
                 public struct Tutorial
                 {
                     public const string Dashboard_QuickLinks_MyHome = "myHome_App_Visit_OverlayTutorial_myHomeGTM1_IntroducingMyHome";
-                    public const string Drawer_Start_Your_Application = "myHome_App_Visit_OverlayTutorial_myHomeGTM1_StartYourApplication";
+                    public const string Drawer_Start_Your_Application = "myHome_App_Visit_OverlayTutorial_myHomeGTM2a_StartYourApplication";
+                    public const string Drawer_MyHome_Checklist = "myHome_App_Visit_OverlayTutorial_myHomeGTM2a_PlanYourMove";
                 }
                 public struct Home
                 {
-                    public const string Dashboard = "myHome_App_Visit_AppHomepage";
-                    public const string Drawer = "myHome_App_Visit_Drawer_myHome";
+                    public const string Dashboard = "myHome_App_Visit_AppHomepages_myHomeGTM2";
+                    public const string Drawer = "myHome_App_Visit_Drawer_myHomeGTM2";
                     public const string Resume_Reminder = "myHome_App_Visit_ApplicationReminder";
                 }
             }
@@ -238,22 +240,24 @@
             {
                 public struct OnBoarding
                 {
-                    public const string Enhance_Skip = "myHome_App_Action_myHomeGTM1_Enhance_Skip";
-                    public const string Connect_Skip = "myHome_App_Action_myHomeGTM1_Connect_Skip";
-                    public const string Manage_Skip = "myHome_App_Action_myHomeGTM1_Manage_Skip";
+                    public const string Enhance_Skip = "myHome_App_Action_myHomeGTM2_Enhance_Skip";
+                    public const string Start_Skip = "myHome_App_Action_myHomeGTM2_Start_Skip";
+                    public const string Hassle_Skip = "myHome_App_Action_myHomeGTM2_Hassle_Skip";
+                    public const string Manage_Skip = "myHome_App_Action_myHomeGTM2_Manage_Skip";
                 }
                 public struct Tutorial
                 {
                     public const string Dashboard_QuickLinks_MyHome_Skip = "myHome_App_Action_myHomeGTM1_IntroducingMyHome_Skip";
-                    public const string Drawer_Start_Your_Application_Skip = "myHome_App_Action_myHomeGTM1_StartYourApplication_Skip";
+                    public const string Drawer_Start_Your_Application_Skip = "myHome_App_Action_myHomeGTM2a_StartYourApplication_Skip";
+                    public const string Drawer_MyHome_Checklist_Skip = "myHome_App_Action_myHomeGTM2a_PlanYourMove_Skip";
                 }
                 public struct Home
                 {
-                    public const string Drawer_Open = "myHome_App_Action_Home_myHome_Drawer_Open";
-                    public const string Drawer_Connect_My_Premise = "myHome_App_Action_Drawer_myHome_ConnectMyPremise";
-                    public const string Drawer_Cancel = "myHome_App_Action_Drawer_myHome_Cancel";
-                    public const string Drawer_Dismiss = "myHome_App_Action_Drawer_myHome_Dismiss";
-                    public const string Drawer_Checklist = "myHome_App_Action_Drawer_myHome_myHomeChecklist";
+                    public const string Drawer_Open = "myHome_App_Action_AppHomepages_myHomeGTM2_Drawer_Open";
+                    public const string Drawer_Connect_My_Premise = "myHome_App_Action_Drawer_myHomeGTM2_ConnectMyPremise";
+                    public const string Drawer_Cancel = "myHome_App_Action_Drawer_myHomeGTM2_Cancel";
+                    public const string Drawer_Dismiss = "myHome_App_Action_Drawer_myHomeGTM2_Dismiss";
+                    public const string Drawer_Checklist = "myHome_App_Action_Drawer_myHomeGTM2_myHomeChecklist";
                     public const string Resume_Reminder_Continue = "myHome_App_Action_ApplicationReminder_Continue";
                     public const string Resume_Reminder_IllDoItLater = "myHome_App_Action_ApplicationReminder_IllDoItLater";
                 }

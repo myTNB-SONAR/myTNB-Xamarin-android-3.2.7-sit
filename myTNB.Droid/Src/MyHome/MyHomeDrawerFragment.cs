@@ -193,8 +193,8 @@ namespace myTNB_Android.Src.MyHome
                     ContentShowPosition = ContentType.TopLeft,
                     ContentTitle = Utility.GetLocalizedLabel("Tutorial", myHome.TutorialOverlay.I18N_myHomeChecklistTitle),
                     ContentMessage = Utility.GetLocalizedLabel("Tutorial", myHome.TutorialOverlay.I18N_myHomeChecklistMessage),
-                    //DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Drawer_Start_Your_Application, //TODO: Replace with the correct tagging
-                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Drawer_Start_Your_Application_Skip,
+                    DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Drawer_MyHome_Checklist,
+                    DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Drawer_MyHome_Checklist_Skip,
                     Tag = myDrawer.ServiceId
                 });
             }
