@@ -246,6 +246,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.SubmitApplicationRating)
                     {
+                        DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Rate_Our_Service);
+
                         ShowProgressDialog();
                         Task.Run(() =>
                         {
@@ -254,6 +256,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.ContractorRating)
                     {
+                        DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Contractor_Rating);
+
                         Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
                         webIntent.PutExtra(Constants.IN_APP_LINK, applicationDetailDisplay.ContractorRatingURL);
                         webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateContractor"));
@@ -271,13 +275,19 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             switch(applicationDetailDisplay.CTAType)
                             {
                                 case DetailCTAType.StartApplication:
-                                    dynatraceCTA = DynatraceConstants.ApplicationStatus.CTAs.Details.Start_Application;
+                                    dynatraceCTA = DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Start_Application;
                                     break;
                                 case DetailCTAType.ReapplyNow:
-                                    //TODO: Add dynatraceCTA for Reapply Now
+                                    dynatraceCTA = DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Reappoint_Contractor_Reapply_Now;
                                     break;
                                 case DetailCTAType.ReuploadDocument:
                                     //TODO: Add dynatraceCTA for Reupload Document
+                                    break;
+                                case DetailCTAType.ContractorRating:
+                                    dynatraceCTA = DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Contractor_Rating;
+                                    break;
+                                case DetailCTAType.CustomerRating:
+                                    dynatraceCTA = DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Customer_Rating;
                                     break;
                                 default:
                                     break;
@@ -299,7 +309,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteAppication)
                     {
                         this.SetIsClicked(true);
-                        DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.Cancel_Application);
+                        DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Delete_Draft_PopUp);
 
                         MyTNBAppToolTipBuilder deleteDraftPopUp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                             .SetSecondaryHeaderImage(Resource.Drawable.ic_display_validation_success)
@@ -312,7 +322,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftCancel))
                             .SetSecondaryCTAaction(() =>
                             {
-                                DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Cancel_Application_Cancel);
+                                DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Delete_Draft_Cancel);
                                 this.SetIsClicked(false);
                             })
                             .Build();
@@ -365,7 +375,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         {
             this.SetIsClicked(false);
             
-            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Cancel_Application_Im_Sure);
+            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Delete_Draft_Im_Sure);
 
             ShowProgressDialog();
             Task.Run(() =>
@@ -422,8 +432,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 if (applicationDetailDisplay.CTAType == DetailCTAType.ResumeApplication)
                 {
                     this.SetIsClicked(true);
-                    DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Resume);
-
+                    DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Delete);
+                    DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Delete_Draft_PopUp);
                     MyTNBAppToolTipBuilder deleteDraftPopUp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                             .SetSecondaryHeaderImage(Resource.Drawable.ic_display_validation_success)
                             .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftTitle))
@@ -435,7 +445,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftCancel))
                             .SetSecondaryCTAaction(() =>
                             {
-                                DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Cancel_Application_Cancel);
+                                DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Delete_Draft_Cancel);
                                 this.SetIsClicked(false);
                             })
                             .Build();
@@ -459,6 +469,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     if (applicationDetailDisplay.MyHomeDetails != null)
                     {
+                        DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Resume);
                         ShowProgressDialog();
                         Task.Run(() =>
                         {
@@ -826,7 +837,30 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         public override void OnBackPressed()
         {
-            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Back);
+            string dynatraceTag = DynatraceConstants.ApplicationStatus.CTAs.Details.Back;
+            if (applicationDetailDisplay != null)
+            {
+                switch(applicationDetailDisplay.CTAType)
+                {
+                    case DetailCTAType.ReapplyNow:
+                        dynatraceTag = DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Reappoint_Contractor_Back;
+                        break;
+                    case DetailCTAType.SubmitApplicationRating:
+                        dynatraceTag = DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Rate_Our_Servie_Back;
+                        break;
+                    case DetailCTAType.CustomerRating:
+                        dynatraceTag = DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Customer_Rating_Back;
+                        break;
+                    case DetailCTAType.ContractorRating:
+                        dynatraceTag = DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Contractor_Rating_Back;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            DynatraceHelper.OnTrack(dynatraceTag);
+
             if (IsPush)
             {
                 Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
@@ -1105,6 +1139,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
                                 applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+
+                                if (applicationDetailDisplay.CTAType == DetailCTAType.CustomerRating)
+                                {
+                                    DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Customer_Rating);
+                                }
+                                else if (applicationDetailDisplay.CTAType == DetailCTAType.ContractorRating)
+                                {
+                                    DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Contractor_Rating);
+                                }
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.StartApplication)
                             {
@@ -1120,6 +1163,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 btnPrimaryCTA.Text = GetLabelByLanguage(ApplicationStatusDetails.CTATitles.I18N_StartApplication);
                                 btnPrimaryCTA.Enabled = true;
                                 btnPrimaryCTA.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_round_button_background);
+
+                                DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Start_Electricity);
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.ReapplyNow)
                             {
@@ -1135,6 +1180,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 btnPrimaryCTA.Text = GetLabelByLanguage(ApplicationStatusDetails.CTATitles.I18N_ReaapplyNow);
                                 btnPrimaryCTA.Enabled = true;
                                 btnPrimaryCTA.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_round_button_background);
+
+                                DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Reappoint_Contractor);
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.ReuploadDocument)
                             {
@@ -1189,6 +1236,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
                                 applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+
+                                DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Rate_Our_Service);
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.None)
                             {
@@ -1250,8 +1299,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     , btnPrimaryCTA, btnApplicationStatusViewBill, btnApplicationStatusPay);
                 TextViewUtils.SetTextSize25(txtApplicationStatusBottomPayable);
             }
-
-            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.Visit);
         }
 
         private void EvaluateReceipts()
@@ -1566,7 +1613,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     case Resource.Id.action_notification:
                         {
-                            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.Delete);
                             MyTNBAppToolTipBuilder removeApp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                                 .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusDetails", "removeTitle"))
                                 .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusDetails", "removeMessage"))

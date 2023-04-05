@@ -218,8 +218,7 @@ namespace myTNB_Android.Src.MyHome
                             }
                             break;
                         case MobileEnums.ServiceEnum.HMO:
-                            //TODO: Replace with correct dynatrace tag for HMO
-                            //DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Connect_My_Premise);
+                            DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Checklist);
 
                             if (!UserSessions.HMOHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {

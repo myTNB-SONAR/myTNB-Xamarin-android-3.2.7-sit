@@ -193,11 +193,23 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             {
                 if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED)
                 {
-                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.Back_Non_Contractor_Completed);
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Non_Contractor_Completed_Back);
                 }
                 else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED)
                 {
-                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.Back_Contractor_Completed);
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Contractor_Completed_Back);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Reappoint_Contractor_Back);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.COT_Request_Back);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_OTP_VERIFY)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.COT_OTP_Verify_Back);
                 }
                 else
                 {
@@ -387,11 +399,31 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             {
                 if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED)
                 {
-                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.Contractor_Completed);
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.NC_Non_Contractor_Completed);
                 }
                 else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED)
                 {
-                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.Non_Contractor_Completed);
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.NC_Contractor_Completed);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.NC_OTP_Verify);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.NC_Reappoint_Contractor);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_OTP_VERIFY)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.COT_OTP_Verify);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_SUBMITTED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.COT_Submitted);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.COT_Request);
                 }
                 else
                 {
