@@ -218,40 +218,44 @@
             {
                 public struct OnBoarding
                 {
-                    public const string Enhance = "App_Visit_OnboardingComms_myHomeGTM1_Enhance";
-                    public const string Connect = "App_Visit_OnboardingComms_myHomeGTM1_Connect";
-                    public const string Manage = "App_Visit_OnboardingComms_myHomeGTM1_Manage";
+                    public const string Enhance = "myHome_App_Visit_OnboardingComms_myHomeGTM1_Enhance";
+                    public const string Connect = "myHome_App_Visit_OnboardingComms_myHomeGTM1_Connect";
+                    public const string Manage = "myHome_App_Visit_OnboardingComms_myHomeGTM1_Manage";
                 }
                 public struct Tutorial
                 {
-                    public const string Dashboard_QuickLinks_MyHome = "App_Visit_OverlayTutorial_myHomeGTM1_IntroducingMyHome";
-                    public const string Drawer_Start_Your_Application = "App_Visit_OverlayTutorial_myHomeGTM1_StartYourApplication";
+                    public const string Dashboard_QuickLinks_MyHome = "myHome_App_Visit_OverlayTutorial_myHomeGTM1_IntroducingMyHome";
+                    public const string Drawer_Start_Your_Application = "myHome_App_Visit_OverlayTutorial_myHomeGTM1_StartYourApplication";
                 }
                 public struct Home
                 {
-                    public const string Dashboard = "App_Visit_AppHomepage";
-                    public const string Drawer = "App_Visit_Drawer_myHome";
+                    public const string Dashboard = "myHome_App_Visit_AppHomepage";
+                    public const string Drawer = "myHome_App_Visit_Drawer_myHome";
+                    public const string Resume_Reminder = "myHome_App_Visit_ApplicationReminder";
                 }
             }
             public struct CTAs
             {
                 public struct OnBoarding
                 {
-                    public const string Enhance_Skip = "App_Action_myHomeGTM1_Enhance_Skip";
-                    public const string Connect_Skip = "App_Action_myHomeGTM1_Connect_Skip";
-                    public const string Manage_Skip = "App_Action_myHomeGTM1_Manage_Skip";
+                    public const string Enhance_Skip = "myHome_App_Action_myHomeGTM1_Enhance_Skip";
+                    public const string Connect_Skip = "myHome_App_Action_myHomeGTM1_Connect_Skip";
+                    public const string Manage_Skip = "myHome_App_Action_myHomeGTM1_Manage_Skip";
                 }
                 public struct Tutorial
                 {
-                    public const string Dashboard_QuickLinks_MyHome_Skip = "App_Action_myHomeGTM1_IntroducingMyHome_Skip";
-                    public const string Drawer_Start_Your_Application_Skip = "App_Action_myHomeGTM1_StartYourApplication_Skip";
+                    public const string Dashboard_QuickLinks_MyHome_Skip = "myHome_App_Action_myHomeGTM1_IntroducingMyHome_Skip";
+                    public const string Drawer_Start_Your_Application_Skip = "myHome_App_Action_myHomeGTM1_StartYourApplication_Skip";
                 }
                 public struct Home
                 {
-                    public const string Drawer_Open = "App_Action_Home_myHome_Drawer_Open";
-                    public const string Drawer_Connect_My_Premise = "App_Action_Drawer_myHome_ConnectMyPremise";
-                    public const string Drawer_Cancel = "App_Action_Drawer_myHome_Cancel";
-                    public const string Drawer_Dismiss = "App_Action_Drawer_myHome_Dismiss";
+                    public const string Drawer_Open = "myHome_App_Action_Home_myHome_Drawer_Open";
+                    public const string Drawer_Connect_My_Premise = "myHome_App_Action_Drawer_myHome_ConnectMyPremise";
+                    public const string Drawer_Cancel = "myHome_App_Action_Drawer_myHome_Cancel";
+                    public const string Drawer_Dismiss = "myHome_App_Action_Drawer_myHome_Dismiss";
+                    public const string Drawer_Checklist = "myHome_App_Action_Drawer_myHome_myHomeChecklist";
+                    public const string Resume_Reminder_Continue = "myHome_App_Action_ApplicationReminder_Continue";
+                    public const string Resume_Reminder_IllDoItLater = "myHome_App_Action_ApplicationReminder_IllDoItLater";
                 }
             }
         }
@@ -267,10 +271,16 @@
                 public struct Details
                 {
                     public const string Visit = "App_Visit_Notification";
-                    public const string Contractor_Completed = "App_Visit_ContractorCompletedNotificationScreen";
-                    public const string Non_Contractor_Completed = "App_Visit_NonContractorCompletedNotificationScreen";
+                    public const string NC_Contractor_Completed = "myHome_App_Visit_ContractorCompletedNotificationScreen";
+                    public const string NC_Non_Contractor_Completed = "myHome_App_Visit_NonContractorCompletedNotificationScreen";
                     public const string EB_Reaching = "EB_view_notification_duration_reaching";
                     public const string EB_Reached = "EB_view_notification_duration_reached";
+                    public const string NC_OTP_Verify = "myHome_App_Visit_VerifyAgainNotification";
+                    
+                    public const string NC_Reappoint_Contractor = "myHome_App_Visit_ReappointContractorNotificationScreen";
+                    public const string COT_OTP_Verify = "myHome_App_Visit_VerifyAgainNotification_COT";
+                    public const string COT_Submitted = "myHome_App_Visit_ApplicationSubmittedAppNotification_ExistingOwner_COT";
+                    public const string COT_Request = "myHome_App_Visit_ExistingOwner_COTRequest_WithTNB_AppNotification";
                 }
             }
 
@@ -284,12 +294,19 @@
                 public struct Details
                 {
                     public const string Back = "App_Action_Notification_Back";
-                    public const string Verify_Now = "App_Action_VerifyAgainNotification_VerifyNow";
-                    public const string Back_Contractor_Completed = "App_Action_ContractorCompletedNotificationScreen_Back";
-                    public const string Back_Non_Contractor_Completed = "App_Action_NonContractorCompletedNotificationScreen_Back";
-                    public const string View_Application_Details_Contractor_Completed = "App_Action_ContractorCompletedNotificationScreen_ViewApplicationDetails";
-                    public const string View_Application_Details_Non_Contractor_Completed = "App_Action_NonContractorCompletedNotificationScreen_ViewApplicationDetails";
-                    public const string Submit_Now = "App_Action_Notification_SubmitNow";
+                    public const string NC_Contractor_Completed_Back = "myHome_App_Action_ContractorCompletedNotificationScreen_Back";
+                    public const string NC_Non_Contractor_Completed_Back = "myHome_App_Action_NonContractorCompletedNotificationScreen_Back";
+                    public const string NC_Contractor_Completed_View_Application_Details = "myHome_App_Action_ContractorCompletedNotificationScreen_ViewApplicationDetails";
+                    public const string NC_Non_Contractor_Completed_View_Application_Details = "myHome_App_Action_NonContractorCompletedNotificationScreen_ViewApplicationDetails";
+                    public const string NC_Submit_Now = "myHome_App_Action_Notification_SubmitNow";
+                    public const string NC_Reappoint_Contractor_Reapply_Now = "myHome_App_Action_ReappointContractorNotificationScreen_ReapplyNow";
+                    public const string NC_Reappoint_Contractor_Back = "myHome_App_Action_ReappointContractorNotificationScreen_Back";
+                    public const string NC_OTP_Verify_Now = "myHome_App_Action_VerifyAgainNotification_VerifyNow";
+                    public const string COT_OTP_Verify_Now = "myHome_App_Action_VerifyAgainNotification_COT_VerifyNow";
+                    public const string COT_OTP_Verify_Back = "myHome_App_Action_VerifyAgainNotification_COT_Back";
+                    public const string COT_Submitted_View_Application_Details = "myHome_App_Action_ApplicationSubmittedAppNotification_ExistingOwner_COT_ViewApplicationDetails";
+                    public const string COT_Request_Submit_Now = "myHome_App_Action_ExistingOwner_COTRequest_WithTNB_AppNotification_SubmitNow";
+                    public const string COT_Request_Back = "myHome_App_Action_ExistingOwner_COTRequest_WithTNB_AppNotification_Back";
                 }
             }
 
@@ -303,14 +320,14 @@
         {
             public struct Screens
             {
-                public struct Landing
-                {
-                    public const string Visit = "App_Visit_StartYourElectricity_ApplicationStatus";
-                }
                 public struct Details
                 {
-                    public const string Visit = "App_Visit_StartYourElectricity_ApplicationDetails";
-                    public const string Cancel_Application = "App_Visit_ApplicationDetails_Cancel";
+                    public const string NC_Start_Electricity = "myHome_App_Visit_StartYourElectricity_ApplicationDetails";
+                    public const string NC_Delete_Draft_PopUp = "myHome_App_Visit_ApplicationDetails_Cancel";
+                    public const string NC_Reappoint_Contractor = "myHome_App_Visit_ReappointContractor_ReapplyApplication";
+                    public const string NC_Rate_Our_Service = "myHome_App_Visit_Application_Details_RateOurService";
+                    public const string NC_Contractor_Rating = "myHome_App_Visit_Application_DetailsCompletedWC_RateOurService";
+                    public const string NC_Customer_Rating = "myHome_App_Visit_Application_DetailsCompletedWthC_RateOurService";
                 }
             }
             public struct CTAs
@@ -325,13 +342,20 @@
                 public struct Details
                 {
                     public const string Back = "App_Action_ApplicationDetails_Back";
-                    public const string Start_Application = "App_Action_ApplicationDetails_StartApplication";
+                    public const string NC_Start_Application = "myHome_App_Action_ApplicationDetails_StartApplication";
                     public const string Activity_Log = "App_Action_ApplicationDetails_ViewActivityLog";
-                    public const string Delete = "App_Action_ApplicationDetails_Delete";
-                    public const string Resume = "App_Action_ApplicationDetails_Resume";
-                    public const string Cancel_Application_Im_Sure = "App_Action_ApplicationDetails_Cancel_YesImSure";
-                    public const string Cancel_Application_Cancel = "App_Action_ApplicationDetails_Cancel_Cancel";
-                    public const string Continue_Application = "App_Action_ApplicationDetails_Continue";
+                    public const string NC_Delete = "myHome_App_Action_ApplicationDetails_Delete";
+                    public const string NC_Resume = "myHome_App_Action_ApplicationDetails_Resume";
+                    public const string NC_Delete_Draft_Im_Sure = "myHome_App_Action_ApplicationDetails_Cancel_YesImSure";
+                    public const string NC_Delete_Draft_Cancel = "myHome_App_Action_ApplicationDetails_Cancel_Cancel";
+                    public const string NC_Reappoint_Contractor_Back = "myHome_App_Action_ReappointContractor_Application_Details_Back";
+                    public const string NC_Reappoint_Contractor_Reapply_Now = "myHome_App_Action_ReappointContractor_Application_Details_ReapplyNow";
+                    public const string NC_Rate_Our_Servie_Back = "myHome_App_Action_Application_Details_RateOurService_Back";
+                    public const string NC_Rate_Our_Service = "myHome_App_Action_Application_Details_RateOurService_RateOurService";
+                    public const string NC_Contractor_Rating_Back = "myHome_App_Action_Application_DetailsCompletedWC_RateOurService_Back";
+                    public const string NC_Customer_Rating_Back = "myHome_App_Action_Application_DetailsCompletedWthC_RateOurService_Back";
+                    public const string NC_Contractor_Rating = "myHome_App_Action_Application_DetailsCompletedWC_RateOurService_RateOurService";
+                    public const string NC_Customer_Rating = "myHome_App_Action_Application_DetailsCompletedWthC_RateOurService_RateOurService";
                 }
             }
         }

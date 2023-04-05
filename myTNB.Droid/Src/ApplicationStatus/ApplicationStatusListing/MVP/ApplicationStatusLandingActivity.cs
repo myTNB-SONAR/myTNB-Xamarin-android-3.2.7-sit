@@ -578,8 +578,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 btnSearchApplicationStatus.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_outline);
                 btnSearchApplicationStatus.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.silverChalice));
             }
-
-            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Landing.Visit);
         }
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)

@@ -456,7 +456,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "otpVerifyNow"),
-                                   delegate () { ViewApplicationDetails(notificationDetails); });
+                                   delegate ()
+                                   {
+                                       DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_OTP_Verify_Now);
+                                       ViewApplicationDetails(notificationDetails);
+                                   });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
@@ -476,7 +480,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reapplyNow"),
-                                   delegate () { ViewApplicationDetails(notificationDetails); });
+                                   delegate ()
+                                   {
+                                       DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Reappoint_Contractor_Reapply_Now);
+                                       ViewApplicationDetails(notificationDetails);
+                                   });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
@@ -759,7 +767,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     this.mView.HideProgressDialog();
                     if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION)
                     {
-                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.Submit_Now);
+                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Submit_Now);
                     }
                     this.mView.NavigateToMyHomeMicrosite(myHomeModel, accessToken);
                 });
@@ -809,11 +817,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                                 {
                                     if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED)
                                     {
-                                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.View_Application_Details_Non_Contractor_Completed);
+                                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Non_Contractor_Completed_View_Application_Details);
                                     }
                                     else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED)
                                     {
-                                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.View_Application_Details_Contractor_Completed);
+                                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Contractor_Completed_View_Application_Details);
                                     }
                                 }
                                 this.mView.NavigateToApplicationDetails(response.Content);
