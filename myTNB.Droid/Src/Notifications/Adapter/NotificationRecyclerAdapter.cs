@@ -232,7 +232,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 }
                 else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_COT_REMINDER))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_COT_Requested));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_COT_Reminder));
                 }
                 else
                 {

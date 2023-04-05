@@ -8,6 +8,8 @@
             public const string I18N_myHomeMessage = "myHomeMessage";
             public const string I18N_ConnectMyPremiseTitle = "connectMyPremiseTitle";
             public const string I18N_ConnectMyPremiseMessage = "connectMyPremiseMessage";
+            public const string I18N_myHomeChecklistTitle = "myHomeChecklistTitle";
+            public const string I18N_myHomeChecklistMessage = "myHomeChecklistMessage";
         }
 
         public struct Rating

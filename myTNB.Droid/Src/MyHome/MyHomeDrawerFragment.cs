@@ -40,6 +40,7 @@ using Color = Android.Graphics.Color;
 using Newtonsoft.Json;
 using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
 using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile.Constants;
 
 namespace myTNB_Android.Src.MyHome
 {
@@ -167,6 +168,7 @@ namespace myTNB_Android.Src.MyHome
             if (_tutorialList.Count > 0)
             {
                 NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), _tutorialList, true);
+                _tutorialList = new List<NewAppModel>();
             }
         }
 
@@ -177,8 +179,8 @@ namespace myTNB_Android.Src.MyHome
                 _tutorialList.Add(new NewAppModel()
                 {
                     ContentShowPosition = ContentType.TopLeft,
-                    ContentTitle = Utility.GetLocalizedLabel("Tutorial", "connectMyPremiseTitle"),
-                    ContentMessage = Utility.GetLocalizedLabel("Tutorial", "connectMyPremiseMessage"),
+                    ContentTitle = Utility.GetLocalizedLabel("Tutorial", myHome.TutorialOverlay.I18N_ConnectMyPremiseTitle),
+                    ContentMessage = Utility.GetLocalizedLabel("Tutorial", myHome.TutorialOverlay.I18N_ConnectMyPremiseMessage),
                     DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Drawer_Start_Your_Application,
                     DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Drawer_Start_Your_Application_Skip,
                     Tag = myDrawer.ServiceId
@@ -189,8 +191,8 @@ namespace myTNB_Android.Src.MyHome
                 _tutorialList.Add(new NewAppModel()
                 {
                     ContentShowPosition = ContentType.TopLeft,
-                    ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeChecklistTitle"),
-                    ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeChecklistMessage"),
+                    ContentTitle = Utility.GetLocalizedLabel("Tutorial", myHome.TutorialOverlay.I18N_myHomeChecklistTitle),
+                    ContentMessage = Utility.GetLocalizedLabel("Tutorial", myHome.TutorialOverlay.I18N_myHomeChecklistMessage),
                     //DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Drawer_Start_Your_Application, //TODO: Replace with the correct tagging
                     DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Drawer_Start_Your_Application_Skip,
                     Tag = myDrawer.ServiceId
