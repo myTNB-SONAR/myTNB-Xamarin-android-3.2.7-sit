@@ -317,15 +317,15 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                 // Check if last popup was in the same period
                                                 bool samePeriod = dateTimeLastPopup >= currentPeriod.Item1 && dateTimeLastPopup <= currentPeriod.Item2;
 
-                                                // Check if total popup count is less than the limit per period
-                                                bool limitNotReached = countTotalPopup != totalPerPeriodPopup;
-
-                                                isPopupDelayDone = samePeriod && limitNotReached;
                                                 if (!samePeriod || countTotalPopup > totalPerPeriodPopup)
                                                 {
                                                     isPopupDelayDone = false;
                                                     countTotalPopup = 0;
                                                     UserSessions.SavePopUpCountUpdate(mSharedPref, countTotalPopup.ToString() + " " + DateTime.Now.ToString("dd/M/yyyy HH:mm"));
+                                                }
+                                                else if (samePeriod && countTotalPopup < totalPerPeriodPopup)
+                                                {
+                                                    isPopupDelayDone = false;
                                                 }
                                             }
                                         }
