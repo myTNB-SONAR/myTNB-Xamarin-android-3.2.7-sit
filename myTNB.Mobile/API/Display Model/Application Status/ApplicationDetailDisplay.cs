@@ -661,7 +661,7 @@ namespace myTNB.Mobile
         public bool IsVerifyNow { set; get; }
         public bool IsContractorApplied { set; get; }
         public string IdentificationNo { set; get; }
-        public int IdentificationType { set; get; }
+        public int? IdentificationType { set; get; }
         public int? ApplicationModuleID { set; get; }
         public string Email { set; get; }
         public string IdentificationTypeDescription

@@ -473,6 +473,7 @@ namespace myTNB.Mobile
                 && displaymodel.Content != null)
             {
                 if (displaymodel.Content.ContractAccountNo is string accountNumber
+                    && displaymodel.Content.ApplicationDetail.IsContractorApplied != true
                     && accountNumber.IsValid()
                     && AppInfoManager.Instance.ContractAccountList != null
                     && AppInfoManager.Instance.ContractAccountList.Count > 0
