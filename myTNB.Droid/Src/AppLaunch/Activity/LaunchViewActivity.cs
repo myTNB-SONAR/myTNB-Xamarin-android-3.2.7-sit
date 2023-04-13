@@ -1079,6 +1079,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtDialogTitle, btnYeslabel);
                 btnYeslabel.Click += delegate
                 {
+                    userClick = true;
                     OnAppUpdateClick();
                 };
                 btnNolabel.Click += delegate

@@ -199,6 +199,14 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [AliasAs("isAndroidRecommendUpdateOn")]
             public bool isAndroidRecommendUpdateOn { get; set; }
 
+            [JsonProperty(PropertyName = "RecommendUpdatePopUpDayDelay")]
+            [AliasAs("RecommendUpdatePopUpDayDelay")]
+            public int RecommendUpdatePopUpDayDelay { get; set; }
+
+            [JsonProperty(PropertyName = "EndDateTimeRecommendUpdate")]
+            [AliasAs("EndDateTimeRecommendUpdate")]
+            public string EndDateTimeRecommendUpdate { get; set; }
+
             [JsonProperty(PropertyName = "RecommendUpdatePopUpCount")]
             [AliasAs("RecommendUpdatePopUpCount")]
             public int RecommendUpdatePopUpCount { get; set; }
