@@ -447,7 +447,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                     RatingCache.Instance.SetRatingToast(string.Empty);
                     this.mActivity.InterceptForSuccessfulRating();
                 }
-                if (url.Contains(MyHomeConstants.DOWNLOAD_FILE))
+                else if (url.Contains(MyHomeConstants.DOWNLOAD_FILE))
                 {
                     shouldOverride = true;
                     this.mActivity.InterceptDownloadFileWithURL(url);
