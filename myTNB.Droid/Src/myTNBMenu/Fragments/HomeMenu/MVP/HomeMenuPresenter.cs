@@ -2127,7 +2127,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private async Task CheckSMRAccountEligibility(List<string> accountList)
+        private async Task<bool> CheckSMRAccountEligibility(List<string> accountList)
         {
             try
             {
@@ -2136,26 +2136,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 if (response != null && response.Response != null && response.Response.ErrorCode == "7200" && response.Response.Data.SMREligibilityList.Count > 0)
                 {
-                    isSMRApplyAllowFlag = response.Response.Data.SMREligibilityList.Any(x => x?.SMREligibility == "true");
+                    return isSMRApplyAllowFlag = response.Response.Data.SMREligibilityList.Any(x => x?.SMREligibility == "true");
                 }
+                return isSMRApplyAllowFlag = false;
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                isSMRApplyAllowFlag = false;
                 this.mView.HideProgressDialog();
                 Utility.LoggingNonFatalError(cancelledException);
+                return isSMRApplyAllowFlag = false;
             }
             catch (ApiException apiException)
             {
-                isSMRApplyAllowFlag = false;
                 this.mView.HideProgressDialog();
                 Utility.LoggingNonFatalError(apiException);
+                return isSMRApplyAllowFlag = false;
             }
             catch (Exception unknownException)
             {
-                isSMRApplyAllowFlag = false;
                 this.mView.HideProgressDialog();
                 Utility.LoggingNonFatalError(unknownException);
+                return isSMRApplyAllowFlag = false;
             }
         }
 
@@ -2164,6 +2165,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 isSMRApplyAllowFlag = false;
+                bool isEligible = false;
 
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                 UserInterface currentUsrInf = new UserInterface()
@@ -2200,9 +2202,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             List<string> contractAccountList = new List<string> { isSMRApplyResponse.Data.Data[i].ContractAccount };
                             bool isOwnerExist = eligibleSMRBillingAccounts.Exists(s => s.AccNum == isSMRApplyResponse.Data.Data[i].ContractAccount);
-                            if (isSMRApplyResponse.Data.Data[i].AllowApply && isOwnerExist)
+                            if (isSMRApplyResponse.Data.Data[i].AllowApply && isOwnerExist && !isEligible)
                             {
-                                await CheckSMRAccountEligibility(contractAccountList);
+                                isEligible = await CheckSMRAccountEligibility(contractAccountList);
+                            }
+                            else if (isEligible)
+                            {
+                                break;
                             }
                         }
                         else if (isSMRApplyResponse.Data.Data[i].AllowApply)

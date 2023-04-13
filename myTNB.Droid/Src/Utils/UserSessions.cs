@@ -917,6 +917,18 @@ namespace myTNB_Android.Src.Utils
             return preferences.GetString("popupUpdateDate", "");
         }
 
+        public static void SavePopUpCountForTheCurrentPeriod(ISharedPreferences prefs, string count)    //count total for the current period
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("popupCountForTheCurrentPeriod", count);
+            editor.Apply();
+        }
+
+        public static string GetSavePopUpCountForTheCurrentPeriod(ISharedPreferences preferences)    //count total for the current period
+        {
+            return preferences.GetString("popupCountForTheCurrentPeriod", "");
+        }
+
         public static int GetPrevAppVersionCode(ISharedPreferences preferences)
         {
             return preferences.GetInt("PREV_APP_VERSION_CODE", 0);
