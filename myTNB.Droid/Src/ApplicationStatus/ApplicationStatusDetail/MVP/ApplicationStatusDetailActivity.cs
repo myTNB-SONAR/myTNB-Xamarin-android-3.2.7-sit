@@ -306,7 +306,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             ShowGenericErrorPopUp();
                         }
                     }
-                    else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteAppication)
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteApplication)
                     {
                         this.SetIsClicked(true);
                         DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Delete_Draft_PopUp);
@@ -1199,7 +1199,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 btnPrimaryCTA.Enabled = true;
                                 btnPrimaryCTA.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_round_button_background);
                             }
-                            else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteAppication)
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.DeleteApplication)
                             {
                                 if (applicationDetailDisplay.CTAMessage.IsValid())
                                 {

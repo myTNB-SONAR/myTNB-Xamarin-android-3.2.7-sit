@@ -3403,5 +3403,11 @@
       18
     ],
     "NCReuploadDocument": [ 130 ]
+  },
+  "AccountTypeID": {
+    "NC": [ 1 ]
+  },
+  "PremiseTypeHeaderID": {
+    "NC": [ 1 ]
   }
 }
