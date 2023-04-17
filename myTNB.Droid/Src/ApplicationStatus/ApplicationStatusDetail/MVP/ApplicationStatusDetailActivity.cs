@@ -243,6 +243,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     {
                         OnCustomerRating();
                         FirebaseAnalyticsUtils.LogClickEvent(this, "Customer Rating Button Clicked");
+                        DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Customer_Rating);
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.SubmitApplicationRating)
                     {
@@ -251,7 +252,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         ShowProgressDialog();
                         Task.Run(() =>
                         {
-                            _ = GetAccessToken(string.Empty);
+                            _ = GetAccessToken(Constants.APPLICATION_STATUS_SUBMIT_APPLICATION_RATING_REQUEST_CODE, string.Empty);
                         });
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.ContractorRating)
@@ -283,12 +284,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 case DetailCTAType.ReuploadDocument:
                                     //TODO: Add dynatraceCTA for Reupload Document
                                     break;
-                                case DetailCTAType.ContractorRating:
-                                    dynatraceCTA = DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Contractor_Rating;
-                                    break;
-                                case DetailCTAType.CustomerRating:
-                                    dynatraceCTA = DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Customer_Rating;
-                                    break;
                                 default:
                                     break;
                             }
@@ -298,7 +293,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             ShowProgressDialog();
                             Task.Run(() =>
                             {
-                                _ = GetAccessToken(string.Empty);
+                                _ = GetAccessToken(Constants.APPLICATION_STATUS_START_RESUME_REQUEST_CODE, string.Empty);
                             });
                         }
                         else
@@ -336,7 +331,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
         }
 
-        private async Task GetAccessToken(string cancelUrl)
+        private async Task GetAccessToken(int resultCode, string cancelUrl)
         {
             UserEntity user = UserEntity.GetActive();
             string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
@@ -346,20 +341,27 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 this.RunOnUiThread(() =>
                 {
                     HideProgressDialog();
+
+                    if (applicationDetailDisplay.MyHomeDetails != null)
+                    {
+                        MyHomeModel myHomeModel = new MyHomeModel()
+                        {
+                            SSODomain = applicationDetailDisplay.MyHomeDetails.SSODomain,
+                            OriginURL = applicationDetailDisplay.MyHomeDetails.OriginURL,
+                            RedirectURL = applicationDetailDisplay.MyHomeDetails.RedirectURL,
+                            CancelURL = cancelUrl
+                        };
+
+                        Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
+                        micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
+                        micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
+                        StartActivityForResult(micrositeActivity, resultCode);
+                    }
+                    else
+                    {
+                        ShowGenericErrorPopUp();
+                    }
                 });
-
-                MyHomeModel myHomeModel = new MyHomeModel()
-                {
-                    SSODomain = applicationDetailDisplay.MyHomeDetails.SSODomain,
-                    OriginURL = applicationDetailDisplay.MyHomeDetails.OriginURL,
-                    RedirectURL = applicationDetailDisplay.MyHomeDetails.RedirectURL,
-                    CancelURL = cancelUrl
-                };
-
-                Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
-                micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
-                micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
-                StartActivityForResult(micrositeActivity, Constants.APPLICATION_STATUS_SUBMIT_APPLICATION_RATING_REQUEST_CODE);
             }
             else
             {
@@ -474,7 +476,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         ShowProgressDialog();
                         Task.Run(() =>
                         {
-                            _ = GetAccessToken(AWSConstants.ApplicationStatusLandingCancelURL);
+                            _ = GetAccessToken(Constants.APPLICATION_STATUS_START_RESUME_REQUEST_CODE, AWSConstants.ApplicationStatusLandingCancelURL);
                         });
                     }
                     return;
@@ -1721,6 +1723,48 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             {
 
             }
+            else if (resultCode == Result.Ok && requestCode == Constants.APPLICATION_STATUS_START_RESUME_REQUEST_CODE)
+            {
+                if (data != null && data.Extras is Bundle extras && extras != null)
+                {
+                    if (extras.ContainsKey(MyHomeConstants.BACK_TO_HOME))
+                    {
+                        bool backToHome = extras.GetBoolean(MyHomeConstants.BACK_TO_HOME);
+                        if (backToHome)
+                        {
+                            string toastMessage = string.Empty;
+                            if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                            {
+                                toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                            }
+
+                            Intent resultIntent = new Intent();
+                            resultIntent.PutExtra(MyHomeConstants.BACK_TO_HOME, true);
+                            resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+                            SetResult(Result.Ok, resultIntent);
+                            Finish();
+                        }
+                    }
+                    else if (extras.ContainsKey(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
+                    {
+                        bool backToStatusLanding = extras.GetBoolean(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING);
+                        if (backToStatusLanding)
+                        {
+                            string toastMessage = string.Empty;
+                            if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                            {
+                                toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                            }
+
+                            Intent resultIntent = new Intent();
+                            resultIntent.PutExtra(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING, true);
+                            resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+                            SetResult(Result.Ok, resultIntent);
+                            Finish();
+                        }
+                    }
+                }
+            }
             else if (resultCode == Result.Ok && requestCode == Constants.APPLICATION_STATUS_SUBMIT_APPLICATION_RATING_REQUEST_CODE)
             {
                 if (data != null && data.Extras is Bundle extras && extras != null)
@@ -1735,22 +1779,23 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 ShowProgressDialog();
                             });
 
+                            string toastMessage = string.Empty;
+                            if (extras.ContainsKey(Constants.APPLICATION_STATUS_DETAIL_RATED_TOAST_MESSAGE))
+                            {
+                                toastMessage = extras.GetString(Constants.APPLICATION_STATUS_DETAIL_RATED_TOAST_MESSAGE);
+                            }
+
                             Task.Run(() =>
                             {
-                                _ = GetApplicationDetail(UpdateType.SubmitApplicationRating);
+                                _ = GetApplicationDetail(UpdateType.SubmitApplicationRating, toastMessage);
                             });
                         }
-                    }
-                    if (extras.ContainsKey(Constants.APPLICATION_STATUS_DETAIL_RATED_TOAST_MESSAGE))
-                    {
-                        string toastMessage = extras.GetString(Constants.APPLICATION_STATUS_DETAIL_RATED_TOAST_MESSAGE);
-                        ToastUtils.OnDisplayToast(this, toastMessage);
                     }
                 }
             }
         }
 
-        private async Task GetApplicationDetail(UpdateType updateType)
+        private async Task GetApplicationDetail(UpdateType updateType, string toastMessage = "")
         {
             ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(applicationDetailDisplay.SavedApplicationID
                 , applicationDetailDisplay.ApplicationDetail.ApplicationId
@@ -1760,6 +1805,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             this.RunOnUiThread(() =>
             {
                 HideProgressDialog();
+
+                if (toastMessage.IsValid())
+                {
+                    ToastUtils.OnDisplayToast(this, toastMessage);
+                }
 
                 if (response.StatusDetail.IsSuccess && response.Content != null)
                 {

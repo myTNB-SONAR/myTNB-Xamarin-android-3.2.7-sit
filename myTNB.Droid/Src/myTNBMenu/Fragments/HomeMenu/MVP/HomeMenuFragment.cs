@@ -589,7 +589,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             Utility.LoggingNonFatalError(err);
                         }
-                        StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
+                        this.Activity.StartActivityForResult(new Intent(this.Activity, typeof(NotificationActivity)), Constants.NOTIFICATION_LISTING_REQUEST_CODE);
                     }
                 };
 
@@ -2131,7 +2131,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     AllApplicationsCache.Instance.Clear();
                     AllApplicationsCache.Instance.Reset();
                     Intent applicationLandingIntent = new Intent(this.Activity, typeof(ApplicationStatusLandingActivity));
-                    StartActivity(applicationLandingIntent);
+                    this.Activity.StartActivityForResult(applicationLandingIntent, Constants.APPLICATION_STATUS_LANDING_FROM_DASHBOARD_REQUEST_CODE);
                 }
                 else
                 {

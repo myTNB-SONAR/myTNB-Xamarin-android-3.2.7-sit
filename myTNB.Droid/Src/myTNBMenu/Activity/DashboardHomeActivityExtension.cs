@@ -74,11 +74,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private static void DeeplinkHomeValidation(DashboardHomeActivity mainActivity)
         {
-            string message = DeeplinkUtil.Instance.ToastMessage;
-            if (message.IsValid())
-            {
-                ToastUtils.OnDisplayToast(mainActivity, message);
-            }
             DeeplinkUtil.Instance.ClearDeeplinkData();
         }
 
@@ -137,12 +132,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             Task.Run(() =>
             {
-                _ = SearchApplicationType(mainActivity, DeeplinkUtil.Instance.ToastMessage);
+                _ = SearchApplicationType(mainActivity);
                 DeeplinkUtil.Instance.ClearDeeplinkData();
             });
         }
 
-        private static async Task SearchApplicationType(DashboardHomeActivity mainActivity, string toastMessage = "")
+        private static async Task SearchApplicationType(DashboardHomeActivity mainActivity)
         {
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
@@ -167,8 +162,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     AllApplicationsCache.Instance.Clear();
                     AllApplicationsCache.Instance.Reset();
                     Intent applicationLandingIntent = new Intent(mainActivity, typeof(ApplicationStatusLandingActivity));
-                    applicationLandingIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
-                    mainActivity.StartActivity(applicationLandingIntent);
+                    mainActivity.StartActivityForResult(applicationLandingIntent, Constants.APPLICATION_STATUS_LANDING_FROM_DASHBOARD_REQUEST_CODE);
                 }
                 else
                 {
@@ -226,7 +220,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         Intent applicationStatusDetailIntent = new Intent(mainActivity, typeof(ApplicationStatusDetailActivity));
                         applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(detailsResponse.Content));
-                        mainActivity.StartActivity(applicationStatusDetailIntent);
+                        mainActivity.StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAIL_FROM_DASHBOARD_REQUEST_CODE);
                     }
                     else
                     {

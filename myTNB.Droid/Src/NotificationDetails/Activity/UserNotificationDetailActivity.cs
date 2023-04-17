@@ -968,6 +968,50 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     ShowBillsMenu();
                 }
             }
+            else if (resultCode == Result.Ok
+                && (requestCode == Constants.MYHOME_MICROSITE_REQUEST_CODE
+                || requestCode == Constants.APPLICATION_STATUS_DETAILS_FROM_NOTIFICATION_DETAILS_REQUEST_CODE))
+            {
+                if (data != null && data.Extras is Bundle extras && extras != null)
+                {
+                    if (extras.ContainsKey(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
+                    {
+                        bool backToApplicationStatusLanding = extras.GetBoolean(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING);
+                        if (backToApplicationStatusLanding)
+                        {
+                            string toastMessage = string.Empty;
+                            if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                            {
+                                toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                            }
+
+                            Intent resultIntent = new Intent();
+                            resultIntent.PutExtra(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING, true);
+                            resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+                            SetResult(Result.Ok, resultIntent);
+                            Finish();
+                        }
+                    }
+                    else if (extras.ContainsKey(MyHomeConstants.BACK_TO_HOME))
+                    {
+                        bool backToHome = extras.GetBoolean(MyHomeConstants.BACK_TO_HOME);
+                        if (backToHome)
+                        {
+                            string toastMessage = string.Empty;
+                            if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                            {
+                                toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                            }
+
+                            Intent resultIntent = new Intent();
+                            resultIntent.PutExtra(MyHomeConstants.BACK_TO_HOME, true);
+                            resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+                            SetResult(Result.Ok, resultIntent);
+                            Finish();
+                        }
+                    }
+                }
+            }
         }
 
         private void ShowBillsMenu()
@@ -1850,14 +1894,14 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
             micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
             micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(model));
-            StartActivity(micrositeActivity);
+            StartActivityForResult(micrositeActivity, Constants.MYHOME_MICROSITE_REQUEST_CODE);
         }
 
         public void NavigateToApplicationDetails(GetApplicationStatusDisplay application)
         {
             Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
             applicationStatusDetailIntent.PutExtra(MyHomeConstants.APPLICATION_DETAIL_RESPONSE, JsonConvert.SerializeObject(application));
-            StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE);
+            StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_FROM_NOTIFICATION_DETAILS_REQUEST_CODE);
         }
     }
 }

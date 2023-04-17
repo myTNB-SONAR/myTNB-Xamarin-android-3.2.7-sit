@@ -408,15 +408,51 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
                 }
             }
-            if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE || requestCode == Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE)
+            if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE || requestCode == Constants.APPLICATION_STATUS_DETAILS_REQUEST_CODE)
             {
                 if (resultCode == Result.Ok)
                 {
-                    string message = data.Extras.GetString(Constants.DELETE_DRAFT_MESSAGE);
-                    if (message.IsValid())
+                    if (data != null && data.Extras is Bundle extras && extras != null)
                     {
-                        isDeleted = true;
-                        ToastUtils.OnDisplayToast(this, message ?? string.Empty);
+                        if (extras.ContainsKey(Constants.DELETE_DRAFT_MESSAGE))
+                        {
+                            string message = data.Extras.GetString(Constants.DELETE_DRAFT_MESSAGE);
+                            if (message.IsValid())
+                            {
+                                isDeleted = true;
+                                ToastUtils.OnDisplayToast(this, message ?? string.Empty);
+                            }
+                        }
+                        else if (extras.ContainsKey(MyHomeConstants.BACK_TO_HOME))
+                        {
+                            bool backToHome = extras.GetBoolean(MyHomeConstants.BACK_TO_HOME);
+                            if (backToHome)
+                            {
+                                string toastMessage = string.Empty;
+                                if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                                {
+                                    toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                                }
+
+                                Intent resultIntent = new Intent();
+                                resultIntent.PutExtra(MyHomeConstants.BACK_TO_HOME, true);
+                                resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+                                SetResult(Result.Ok, resultIntent);
+                                Finish();
+                            }
+                        }
+                        else if (extras.ContainsKey(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
+                        {
+                            if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                            {
+                                string toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                                if (toastMessage.IsValid())
+                                {
+                                    isDeleted = true;
+                                    ToastUtils.OnDisplayToast(this, toastMessage);
+                                }
+                            }
+                        }
                     }
                 }
                 UpdateUI();
@@ -570,6 +606,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                         ToastUtils.OnDisplayToast(this, message ?? string.Empty);
                     }
                 }
+
             }
 
             if (ApplicationStatusSearchDetailCache.Instance.ShouldSave)
@@ -794,7 +831,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 {
                     Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
                     applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(response.Content));
-                    StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE);
+                    StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_REQUEST_CODE);
                 }
                 else
                 {

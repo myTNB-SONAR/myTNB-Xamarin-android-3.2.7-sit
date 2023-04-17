@@ -149,6 +149,8 @@ namespace myTNB_Android.Src.Notifications.MVP
             void ShowEditMode();
 
             void SetNotificationItemClickable(bool isClickable);
+
+            void NavigateToDashboardWithIntent(Intent intent);
         }
 
         public interface IUserActionsListener : IBasePresenter
