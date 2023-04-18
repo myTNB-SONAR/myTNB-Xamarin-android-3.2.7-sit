@@ -135,7 +135,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         private bool IsAppNeedsRecommendRangeUpdate(RecommendUpdateInfo recommendUpdateInfo)
         {
-            if (recommendUpdateInfo != null && recommendUpdateInfo.isAndroidRecommendUpdateOn && recommendUpdateInfo.rangeAndroidRecommendUpdate)
+            if (recommendUpdateInfo != null && recommendUpdateInfo.rangeAndroidRecommendUpdate)
             {
                 var versionLast = recommendUpdateInfo?.AndroidLastRecommendVersion;
                 var versionLatest = recommendUpdateInfo?.AndroidLatestRecommendVersion;
@@ -160,7 +160,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         private bool IsAppNeedsRecommendSelectUpdate(RecommendUpdateInfo recommendUpdateInfo)
         {
             bool updateAllow = false;
-            if (recommendUpdateInfo != null && recommendUpdateInfo.isAndroidRecommendUpdateOn && recommendUpdateInfo.selectAndroidRecommendUpdate)
+            if (recommendUpdateInfo != null && recommendUpdateInfo.selectAndroidRecommendUpdate)
             {
                 List<string> versionList = new List<string>();
                 if (recommendUpdateInfo.AndroidVersionToUpdate != null)
@@ -171,6 +171,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 }
             }
             return updateAllow;
+        }
+
+        private static bool TryParseDateTime(string input, string format, out DateTime result)
+        {
+            return DateTime.TryParseExact(input, format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out result);
         }
 
         private async void LoadAppMasterData()
@@ -253,52 +258,100 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         if (responseData.AppVersionList != null && responseData.AppVersionList.Count > 0)
                         {
                             appUpdateAvailable = IsAppNeedsUpdate(responseData.ForceUpdateInfo);
-                            appUpdateRecommendedRange = IsAppNeedsRecommendRangeUpdate(responseData.RecommendUpdateInfo);
-                            appUpdateRecommendedSelect = IsAppNeedsRecommendSelectUpdate(responseData.RecommendUpdateInfo);
-                            bool userCancelUpdate = this.mView.UserCancelUpdate();
-                            var countPopup = UserSessions.GetSavePopUpCountUpdate(mSharedPref) ?? "0";
-                            bool refreshCountPopup = UserSessions.GetSaveNeedPopup(mSharedPref);
-                            string dateRefreshPopup= UserSessions.GetSavePopUpDateReset(mSharedPref) ?? "";
                             int countTotalPopup = 0;
-                            if (!string.IsNullOrEmpty(countPopup))
+                            bool userCancelUpdate = this.mView.UserCancelUpdate();
+                            bool isPopupDelayDone = true;
+
+                            if (responseData.RecommendUpdateInfo != null && responseData.RecommendUpdateInfo.isAndroidRecommendUpdateOn)
                             {
-                                countTotalPopup = int.Parse(countPopup);
-                                string dateString = responseData.RecommendUpdateInfo?.PublishDateTimeRecommendUpdate;
-                                //string dateString = "15/3/2023 16:20";
+                                appUpdateRecommendedRange = IsAppNeedsRecommendRangeUpdate(responseData.RecommendUpdateInfo);
+                                appUpdateRecommendedSelect = IsAppNeedsRecommendSelectUpdate(responseData.RecommendUpdateInfo);
+                                var countPopup = UserSessions.GetSavePopUpCountUpdate(mSharedPref) ?? "0";
+                                bool refreshCountPopup = UserSessions.GetSaveNeedPopup(mSharedPref);
+                                string dateSetPopupEnable = UserSessions.GetSavePopUpDateReset(mSharedPref) ?? "";
+                                string datePublishTime = responseData.RecommendUpdateInfo?.PublishDateTimeRecommendUpdate;
+                                string dateEndPublishTime = responseData.RecommendUpdateInfo?.EndDateTimeRecommendUpdate;
                                 string formatString = "dd/M/yyyy HH:mm";
-                                DateTime dateTimeReset;
                                 DateTime dateTime;
-                                bool resetCount = false;
-                                if (!string.IsNullOrEmpty(dateString) && !userCancelUpdate)
+                                DateTime dateTimeEnd;
+
+                                if (!string.IsNullOrEmpty(countPopup) && (appUpdateRecommendedRange || appUpdateRecommendedSelect))
                                 {
-                                    dateRefreshPopup = UserSessions.GetSavePopUpDateReset(mSharedPref) ?? "";
-                                    dateTime = DateTime.ParseExact(dateString, formatString, System.Globalization.CultureInfo.InvariantCulture);
-                                    if (!string.IsNullOrEmpty(dateRefreshPopup))
+                                    string[] parts = countPopup.Split(' ');
+                                    string result = parts[0];
+                                    string dateLastPopup = parts[1] + " " + parts[2];
+                                    int.TryParse(result, out countTotalPopup);
+                                    int dayPeriod = responseData.RecommendUpdateInfo.RecommendUpdatePopUpDayDelay;
+                                    int totalPerPeriodPopup = responseData.RecommendUpdateInfo.RecommendUpdatePopUpCount;
+                                    DateTime dateTimePopupFirst;
+                                    DateTime dateTimeLastPopup;
+                                    bool resetCount = false;
+
+                                    if (!string.IsNullOrEmpty(datePublishTime) && !userCancelUpdate)
                                     {
-                                        dateTimeReset = DateTime.ParseExact(dateRefreshPopup, formatString, System.Globalization.CultureInfo.InvariantCulture);
+                                        dateSetPopupEnable = UserSessions.GetSavePopUpDateReset(mSharedPref) ?? "";
+
+                                        TryParseDateTime(dateSetPopupEnable, formatString, out dateTimePopupFirst);   //use for checking user popup date
+                                        TryParseDateTime(datePublishTime, formatString, out dateTime);                //use for set start time date for popup
+                                        TryParseDateTime(dateEndPublishTime, formatString, out dateTimeEnd);          //use for set end time date for popup
+                                        TryParseDateTime(dateLastPopup, formatString, out dateTimeLastPopup);         //use for checking user last popup date
+
+                                        if (dayPeriod > 0)
+                                        {
+                                            TimeSpan periodLength = TimeSpan.FromDays(dayPeriod);
+                                            List<Tuple<DateTime, DateTime>> popupPeriods = new List<Tuple<DateTime, DateTime>>();
+                                            DateTime periodStartDate = dateTime;
+
+                                            // Create list of popup periods
+                                            while (periodStartDate <= dateTimeEnd)
+                                            {
+                                                DateTime periodEndDate = periodStartDate + periodLength;
+                                                popupPeriods.Add(Tuple.Create(periodStartDate, periodEndDate));
+                                                periodStartDate = periodEndDate;
+                                            }
+
+                                            // Check if current time falls within a popup period
+                                            var currentPeriod = popupPeriods.FirstOrDefault(p => DateTime.Now >= p.Item1 && DateTime.Now <= p.Item2);
+                                            if (currentPeriod != null)
+                                            {
+                                                // Check if last popup was in the same period
+                                                bool samePeriod = dateTimeLastPopup >= currentPeriod.Item1 && dateTimeLastPopup <= currentPeriod.Item2;
+
+                                                if (!samePeriod || countTotalPopup > totalPerPeriodPopup)
+                                                {
+                                                    isPopupDelayDone = false;
+                                                    countTotalPopup = 0;
+                                                    UserSessions.SavePopUpCountUpdate(mSharedPref, countTotalPopup.ToString() + " " + DateTime.Now.ToString("dd/M/yyyy HH:mm"));
+                                                }
+                                                else if (samePeriod && countTotalPopup < totalPerPeriodPopup)
+                                                {
+                                                    isPopupDelayDone = false;
+                                                }
+                                            }
+                                        }
+
+                                        if (dateTimePopupFirst != dateTime && (DateTime.Now >= dateTime && DateTime.Now <= dateTimeEnd)
+                                            && DateTime.Now >= dateTime)
+                                        {
+                                            countTotalPopup = 0;
+                                            UserSessions.SaveNeedPopup(mSharedPref, resetCount);
+                                            UserSessions.SavePopUpDateReset(mSharedPref, datePublishTime);
+                                            UserSessions.SavePopUpCountUpdate(mSharedPref, countTotalPopup.ToString() + " " + DateTime.Now.ToString("dd/M/yyyy HH:mm"));
+                                        }
                                     }
                                     else
                                     {
-                                        dateTimeReset = dateTime;
-                                        UserSessions.SavePopUpDateReset(mSharedPref, dateString);
-                                    }
-
-                                    if (dateTimeReset != dateTime && DateTime.Now > dateTime)
-                                    {
-                                       resetCount = true;
-                                    }
-
-                                    if (resetCount)
-                                    {
-                                        countTotalPopup = 0;
-                                        UserSessions.SaveNeedPopup(mSharedPref, resetCount);
-                                        UserSessions.SavePopUpDateReset(mSharedPref, dateRefreshPopup);
-                                        UserSessions.SavePopUpCountUpdate(mSharedPref, countTotalPopup.ToString());
+                                        UserSessions.SavePopUpDateReset(mSharedPref, datePublishTime);
                                     }
                                 }
-                                else if (!string.IsNullOrEmpty(dateString))
+                                else
                                 {
-                                    UserSessions.SavePopUpDateReset(mSharedPref, dateString);
+                                    TryParseDateTime(datePublishTime, formatString, out dateTime);
+                                    TryParseDateTime(dateEndPublishTime, formatString, out dateTimeEnd);
+                                    if (DateTime.Now >= dateTime && DateTime.Now <= dateTimeEnd)
+                                    {
+                                        isPopupDelayDone = false;
+                                    }
                                 }
                             }
 
@@ -311,7 +364,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 this.mView.ShowUpdateAvailable(modalTitle, modalMessage, modalBtnLabel);
                             }
                             else if (((appUpdateRecommendedRange && !appUpdateRecommendedSelect) || (!appUpdateRecommendedRange && appUpdateRecommendedSelect)) && !userCancelUpdate
-                                && countTotalPopup < responseData.RecommendUpdateInfo?.RecommendUpdatePopUpCount)
+                                && !isPopupDelayDone)
                             {
                                 DeeplinkUtil.Instance.ClearDeeplinkData();
                                 string modalTitle = responseData.RecommendUpdateInfo.ModalRecommendTitle;
@@ -321,7 +374,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                                 countTotalPopup++;
                                 Log.Debug("Update popup count", countTotalPopup.ToString());
-                                UserSessions.SavePopUpCountUpdate(mSharedPref, countTotalPopup.ToString());
+                                UserSessions.SavePopUpCountUpdate(mSharedPref, countTotalPopup.ToString() + " " + DateTime.Now.ToString("dd/M/yyyy HH:mm"));
+                                UserSessions.SavePopUpDateReset(mSharedPref, responseData.RecommendUpdateInfo?.PublishDateTimeRecommendUpdate);
                                 this.mView.ShowUpdateAvailableWithRequirement(modalTitle, modalMessage, modalBtnYes, modalBtnNo);
                             }
                             else
