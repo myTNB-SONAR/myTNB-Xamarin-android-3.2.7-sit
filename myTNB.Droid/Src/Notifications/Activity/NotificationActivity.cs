@@ -1053,5 +1053,11 @@ namespace myTNB_Android.Src.Notifications.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        public void NavigateToDashboardWithIntent(Intent intent)
+        {
+            SetResult(Result.Ok, intent);
+            Finish();
+        }
     }
 }

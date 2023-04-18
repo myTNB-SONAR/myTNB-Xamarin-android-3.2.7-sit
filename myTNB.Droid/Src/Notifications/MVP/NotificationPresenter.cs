@@ -19,6 +19,8 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SummaryDashBoard.Models;
+using Android.OS;
+using myTNB_Android.Src.MyHome;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -153,7 +155,45 @@ namespace myTNB_Android.Src.Notifications.MVP
         {
             try
             {
-                if (resultCode == Result.Ok)
+                if (resultCode == Result.Ok && requestCode == Constants.NOTIFICATION_DETAILS_REQUEST_CODE)
+                {
+                    if (data != null && data.Extras is Bundle extras && extras != null)
+                    {
+                        if (extras.ContainsKey(MyHomeConstants.BACK_TO_HOME))
+                        {
+                            bool backToHome = extras.GetBoolean(MyHomeConstants.BACK_TO_HOME);
+                            if (backToHome)
+                            {
+                                string toastMessage = string.Empty;
+                                if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                                {
+                                    toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                                }
+                                Intent resultIntent = new Intent();
+                                resultIntent.PutExtra(MyHomeConstants.BACK_TO_HOME, true);
+                                resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+                                this.mView.NavigateToDashboardWithIntent(resultIntent);
+                            }
+                        }
+                        else if (extras.ContainsKey(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
+                        {
+                            bool backToApplicationStatusLanding = extras.GetBoolean(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING);
+                            if (backToApplicationStatusLanding)
+                            {
+                                string toastMessage = string.Empty;
+                                if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                                {
+                                    toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                                }
+                                Intent resultIntent = new Intent();
+                                resultIntent.PutExtra(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING, true);
+                                resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+                                this.mView.NavigateToDashboardWithIntent(resultIntent);
+                            }
+                        }
+                    }
+                }
+                else if (resultCode == Result.Ok)
                 {
                     this.mView.ClearAdapter();
                     this.ShowFilteredList();

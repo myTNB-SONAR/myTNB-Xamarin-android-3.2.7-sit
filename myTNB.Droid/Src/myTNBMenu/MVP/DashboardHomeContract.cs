@@ -209,6 +209,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void OnCheckNCDraftResumePopUp();
 
             void OnShowNCDraftResumePopUp(MyHomeToolTipModel toolTipModel, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft);
+
+            void RouteToApplicationLanding(string toastMessage = "");
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -226,8 +228,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// <summary>
             /// Action to select menu
             /// </summary>
-            /// <param name="resourceId">integer</param>
-            void OnMenuSelect(int resourceId, bool isIneligiblePopUpActive = false);
+            /// <param name="resourceId"></param>
+            /// <param name="isIneligiblePopUpActive"></param>
+            /// <param name="toastMessage"></param>
+            void OnMenuSelect(int resourceId, bool isIneligiblePopUpActive = false, string toastMessage = "");
 
             /// <summary>
             /// The returned result from another activity

@@ -108,7 +108,9 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int ACCTSTMNT_PDFVIEW_REQUEST_CODE = 0x14;
         internal static readonly int SELECT_FEEDBACK_STATE = 0x02;
         internal static readonly int SELECT_FEEDBACK_TYPE = 0x02;
+        internal static readonly int MYHOME_MICROSITE_REQUEST_CODE = 0x16;
 
+        internal static readonly int NOTIFICATION_LISTING_REQUEST_CODE = 29813;
         internal static readonly int NOTIFICATION_DETAILS_REQUEST_CODE = 0x03;
 
         internal static readonly int NOTIFICATION_FILTER_REQUEST_CODE = 0x04;
@@ -515,9 +517,13 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE = 29804;
         internal static readonly int APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE = 29805;
         internal static readonly int APPLICATION_STATUS_RATING_REQUEST_CODE = 29806;
-        internal static readonly int APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE = 29807;
+        internal static readonly int APPLICATION_STATUS_DETAILS_REQUEST_CODE = 29807;
         internal static readonly int APPLICATION_STATUS_DETAILS_SCHEDULER_REQUEST_CODE = 29808;
         internal static readonly int APPLICATION_STATUS_SUBMIT_APPLICATION_RATING_REQUEST_CODE = 29809;
+        internal static readonly int APPLICATION_STATUS_START_RESUME_REQUEST_CODE = 29810;
+        internal static readonly int APPLICATION_STATUS_DETAILS_FROM_NOTIFICATION_DETAILS_REQUEST_CODE = 29811;
+        internal static readonly int APPLICATION_STATUS_LANDING_FROM_DASHBOARD_REQUEST_CODE = 29812;
+        internal static readonly int APPLICATION_STATUS_DETAIL_FROM_DASHBOARD_REQUEST_CODE = 29814;
 
         internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
         internal static readonly string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";

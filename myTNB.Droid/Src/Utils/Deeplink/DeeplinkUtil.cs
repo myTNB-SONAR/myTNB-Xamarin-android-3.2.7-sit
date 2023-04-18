@@ -14,7 +14,6 @@ namespace myTNB_Android.Src.Utils.Deeplink
 
         public string ScreenKey = string.Empty;
         public Screen TargetScreen = Screen.None;
-        public string ToastMessage = string.Empty;
 
         public static DeeplinkUtil Instance
         {
@@ -31,11 +30,6 @@ namespace myTNB_Android.Src.Utils.Deeplink
         public void SetTargetScreen(Screen screen)
         {
             TargetScreen = screen;
-        }
-
-        public void SetToastMessage(string msg)
-        {
-            ToastMessage = msg;
         }
 
         private void SaveDeeplinkDetails(Screen deeplinkScreen, Uri deeplink)
@@ -122,7 +116,6 @@ namespace myTNB_Android.Src.Utils.Deeplink
         {
             TargetScreen = Screen.None;
             ScreenKey = string.Empty;
-            ToastMessage = string.Empty;
         }
 
         private void SaveDeeplinkDetailsForQR(Uri deeplink)

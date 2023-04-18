@@ -92,7 +92,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
     {
         public string newConnectionId { set; get; }
         public string contractAccountNo { set; get; }
-        public string accountType { set; get; }
+        public int accountType { set; get; }
         public string accountTypeDescription { set; get; }
         public string firstName { set; get; }
         public string lastName { set; get; }
@@ -104,6 +104,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string linkedAsrReferenceNo { set; get; }
         public bool? isPremiseServiceReady { set; get; } = false;
         public DateTime? electricityStartDate { set; get; }
+        public int premiseTypeHeaderId { set; get; }
         [JsonIgnore]
         public string electricityStartDateDisplay
         {

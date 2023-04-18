@@ -28,6 +28,7 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Login.Models;
 using myTNB_Android.Src.MyHome.MVP;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Deeplink;
 using Newtonsoft.Json;
@@ -223,13 +224,22 @@ namespace myTNB_Android.Src.MyHome.Activity
             Finish();
         }
 
-        internal void OnShowDashboard()
+        internal void OnShowDashboard(string toastMessage = "")
         {
-            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-            MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-            HomeMenuUtils.ResetAll();
-            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            StartActivity(DashboardIntent);
+            Intent resultIntent = new Intent();
+            resultIntent.PutExtra(MyHomeConstants.BACK_TO_HOME, true);
+            resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+            SetResult(Result.Ok, resultIntent);
+            Finish();
+        }
+
+        internal void OnShowApplicationStatusLanding(string toastMessage = "")
+        {
+            Intent resultIntent = new Intent();
+            resultIntent.PutExtra(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING, true);
+            resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+            SetResult(Result.Ok, resultIntent);
+            Finish();
         }
 
         private void SetUpWebView(string accessToken)
@@ -482,22 +492,17 @@ namespace myTNB_Android.Src.MyHome.Activity
                 else if (url.Contains(AWSConstants.BackToHomeCancelURL))
                 {
                     shouldOverride = true;
-                    DeeplinkUtil.Instance.SetTargetScreen(Deeplink.ScreenEnum.Home);
-                    DeeplinkUtil.Instance.SetToastMessage(Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application));
-                    mActivity.OnShowDashboard();
+                    mActivity.OnShowDashboard(Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application));
                 }
                 else if (url.Contains(AWSConstants.ApplicationStatusLandingCancelURL))
                 {
                     shouldOverride = true;
-                    DeeplinkUtil.Instance.SetTargetScreen(Deeplink.ScreenEnum.ApplicationListing);
-                    DeeplinkUtil.Instance.SetToastMessage(Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application));
-                    mActivity.OnShowDashboard();
+                    mActivity.OnShowApplicationStatusLanding(Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application));
                 }
                 else if (url.Contains(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
                 {
                     shouldOverride = true;
-                    DeeplinkUtil.Instance.SetTargetScreen(Deeplink.ScreenEnum.ApplicationListing);
-                    mActivity.OnShowDashboard();
+                    mActivity.OnShowApplicationStatusLanding();
                 }
                 else if (url.Contains(MyHomeConstants.BACK_TO_HOME))
                 {

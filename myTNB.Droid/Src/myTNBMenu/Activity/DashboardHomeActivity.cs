@@ -58,6 +58,9 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile.AWS.Models.DBR;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB.Mobile.AWS;
+using System.Threading.Tasks;
+using myTNB_Android.Src.FindUs.Activity;
+using myTNB_Android.Src.MyHome;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -258,7 +261,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 : Resource.Style.Theme_DashboardHome);
             dashboardHomeActivity = this;
             base.SetToolBarTitle(GetString(Resource.String.dashboard_activity_title));
-            mPresenter = new DashboardHomePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+            mPresenter = new DashboardHomePresenter(this, this, PreferenceManager.GetDefaultSharedPreferences(this));
             TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
@@ -413,42 +416,61 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
-        private async void RouteToApplicationLanding()
+        public void RouteToApplicationLanding(string toastMessage = "")
+        {
+            RunOnUiThread(() =>
+            {
+                ShowProgressDialog();
+            });
+
+            _ = OnSearchApplication(toastMessage);
+        }
+
+        private async Task OnSearchApplication(string toastMessage = "")
         {
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
-                ShowProgressDialog();
                 searchApplicationTypeResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
-                if (searchApplicationTypeResponse != null
+
+                RunOnUiThread(() =>
+                {
+                    if (searchApplicationTypeResponse != null
                     && searchApplicationTypeResponse.StatusDetail != null
                     && searchApplicationTypeResponse.StatusDetail.IsSuccess)
-                {
-                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
-                }
-                HideProgressDialog();
+                    {
+                        SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                    }
+                    HideProgressDialog();
+                });
             }
-            if (searchApplicationTypeResponse != null
+
+            RunOnUiThread(() =>
+            {
+                HideProgressDialog();
+
+                if (searchApplicationTypeResponse != null
                 && searchApplicationTypeResponse.StatusDetail != null
                 && searchApplicationTypeResponse.StatusDetail.IsSuccess)
-            {
-                AllApplicationsCache.Instance.Clear();
-                AllApplicationsCache.Instance.Reset();
-                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
-                StartActivity(applicationLandingIntent);
-            }
-            else
-            {
-                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
-                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
-                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
-                     .Build();
-                errorPopup.Show();
-            }
+                {
+                    AllApplicationsCache.Instance.Clear();
+                    AllApplicationsCache.Instance.Reset();
+                    Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+                    applicationLandingIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+                    StartActivityForResult(applicationLandingIntent, Constants.APPLICATION_STATUS_LANDING_FROM_DASHBOARD_REQUEST_CODE);
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                         .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
+                         .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
+                         .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
+                         .Build();
+                    errorPopup.Show();
+                }
+            });
         }
 
         public void ShowBackButton(bool flag)
@@ -591,8 +613,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             h.PostDelayed(myAction, 100);
         }
 
-
-
         public int GetViewBillButtonHeight()
         {
 
@@ -602,8 +622,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public int GetViewBillButtonWidth()
         {
-
-
             int width = ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).Icon.IntrinsicWidth;
             return width;
         }
@@ -685,7 +703,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
 
         public void ShowSelectSupplyAccount()
         {
@@ -899,7 +916,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             StartActivityForResult(updateICNo, Constants.UPDATE_IC_REQUEST);
         }
 
-
         public void ShowBillMenu(AccountData selectedAccount, bool isIneligiblePopUpActive = false)
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
@@ -914,7 +930,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 .Replace(Resource.Id.content_layout, currentFragment)
                 .CommitAllowingStateLoss();
         }
-
 
         public void SetToolbarTitle(int stringResourceId)
         {

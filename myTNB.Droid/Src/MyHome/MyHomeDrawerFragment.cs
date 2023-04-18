@@ -248,23 +248,25 @@ namespace myTNB_Android.Src.MyHome
                 this.Activity.RunOnUiThread(() =>
                 {
                     HideProgressDialog();
+
+                    MyDrawerModel model = myDrawerList[pos];
+                    MyHomeModel myHomeModel = new MyHomeModel()
+                    {
+                        ServiceId = model.ServiceId,
+                        ServiceName = model.ServiceName,
+                        SSODomain = model.SSODomain,
+                        OriginURL = model.OriginURL,
+                        RedirectURL = model.RedirectURL,
+                        CancelURL = string.Empty
+                    };
+
+                    bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+
+                    Intent micrositeActivity = new Intent(this.Activity, typeof(MyHomeMicrositeActivity));
+                    micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
+                    micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
+                    this.mActivity.StartActivityForResult(micrositeActivity, Constants.MYHOME_MICROSITE_REQUEST_CODE);
                 });
-
-                MyDrawerModel model = myDrawerList[pos];
-                MyHomeModel myHomeModel = new MyHomeModel()
-                {
-                    ServiceId = model.ServiceId,
-                    ServiceName = model.ServiceName,
-                    SSODomain = model.SSODomain,
-                    OriginURL = model.OriginURL,
-                    RedirectURL = model.RedirectURL,
-                    CancelURL = string.Empty
-                };
-
-                Intent micrositeActivity = new Intent(this.Activity, typeof(MyHomeMicrositeActivity));
-                micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
-                micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
-                StartActivity(micrositeActivity);
             }
             else
             {
