@@ -11,6 +11,7 @@
             public const string I18N_ReaapplyNow = "reapplyNow";
             public const string I18N_UpdateNow = "updateNow";
             public const string I18N_NCSubmissionRateUs = "ncSubmissionRateUs";
+            public const string I18N_DownloadApplication = "downloadApplication";
         }
 
         public struct PopUps

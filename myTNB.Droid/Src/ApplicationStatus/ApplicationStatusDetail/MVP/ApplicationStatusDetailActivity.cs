@@ -47,6 +47,7 @@ using System.Reflection;
 using myTNB.Mobile.Constants;
 using Xamarin.Facebook;
 using static myTNB_Android.Src.myTNBMenu.Models.SMUsageHistoryData;
+using Android;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -212,10 +213,19 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [BindView(Resource.Id.txtCannotRescheduleTooltip)]
         TextView txtCannotRescheduleTooltip;
 
+        [BindView(Resource.Id.downloadLayout)]
+        LinearLayout downloadLayout;
+
+        [BindView(Resource.Id.txtDownload)]
+        TextView txtDownload;
+
         private bool IsFromLinkedWith = false;
         private Snackbar mNoInternetSnackbar;
         private Snackbar mErrorSnackbar;
         private bool IsPush = false;
+
+        private string _dowloadedFilePath;
+        private string _downloadedFileExt;
 
         [OnClick(Resource.Id.btnPrimaryCTA)]
         internal void OnPrimaryCTAClick(object sender, EventArgs args)
@@ -273,7 +283,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         if (applicationDetailDisplay != null && applicationDetailDisplay.MyHomeDetails != null)
                         {
                             string dynatraceCTA = string.Empty;
-                            switch(applicationDetailDisplay.CTAType)
+                            switch (applicationDetailDisplay.CTAType)
                             {
                                 case DetailCTAType.StartApplication:
                                     dynatraceCTA = DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Start_Application;
@@ -376,7 +386,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         private void OnDeleteDraft()
         {
             this.SetIsClicked(false);
-            
+
             DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Delete_Draft_Im_Sure);
 
             ShowProgressDialog();
@@ -436,7 +446,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     this.SetIsClicked(true);
                     DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Delete);
                     DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Delete_Draft_PopUp);
-                    
+
                     MyTNBAppToolTipBuilder deleteDraftPopUp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                             .SetSecondaryHeaderImage(Resource.Drawable.ic_display_validation_success)
                             .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftTitle))
@@ -881,7 +891,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             base.OnCreate(savedInstanceState);
 
             SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusDetails", "title"));
-            presenter = new ApplicationStatusDetailPresenter(this);
+            presenter = new ApplicationStatusDetailPresenter(this, this);
             applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
             applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
             btnPrimaryCTA.Visibility = ViewStates.Visible;
@@ -1265,6 +1275,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 imgStar.Visibility = ViewStates.Gone;
                                 layoutstar.Visibility = ViewStates.Gone;
                             }
+
+                            DownloadApplicationCheck();
                         }
                     }
                     if (extras.ContainsKey("submitRatingResponseStatus"))
@@ -1290,17 +1302,34 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 }
 
                 TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle, btnViewActivityLog, howDoISeeApplicaton, btnPrimaryCTA
-                    , btnApplicationStatusViewBill, btnApplicationStatusPay);
+                    , btnApplicationStatusViewBill, btnApplicationStatusPay, txtDownload);
                 TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote);
                 TextViewUtils.SetTextSize10(txtLinkedWithHeader);
                 TextViewUtils.SetTextSize12(txtApplicationStatusUpdated, txtApplicationStatusDetail, txtLinkedWithView
                     , txtApplicationStatusDetailNote, howDoISeeApplicaton);
                 TextViewUtils.SetTextSize13(txtApplicationStatusBottomPayableCurrency);
                 TextViewUtils.SetTextSize14(txtApplicationStatusSubTitle, txtLinkedWithReferencNo, txtApplicationStatusDetail
-                    , txtApplicationStatusBottomPayableTitle);
+                    , txtApplicationStatusBottomPayableTitle, txtDownload);
                 TextViewUtils.SetTextSize16(txtApplicationStatusTitle, txtApplicationStatusMainTitle, btnViewActivityLog
                     , btnPrimaryCTA, btnApplicationStatusViewBill, btnApplicationStatusPay);
                 TextViewUtils.SetTextSize25(txtApplicationStatusBottomPayable);
+            }
+        }
+
+        private void DownloadApplicationCheck()
+        {
+            downloadLayout.Visibility = ViewStates.Gone;
+
+            if (applicationDetailDisplay.MyHomeDetails != null
+                && applicationDetailDisplay.MyHomeDetails.ApplicationFormDownloadURL.IsValid())
+            {
+                downloadLayout.Visibility = ViewStates.Visible;
+                txtDownload.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", ApplicationStatusDetails.CTATitles.I18N_DownloadApplication);
+                downloadLayout.Clickable = true;
+                downloadLayout.Click += (sender, args) =>
+                {
+                    _ = this.presenter.DownloadFile(applicationDetailDisplay.MyHomeDetails.ApplicationFormDownloadURL);
+                };
             }
         }
 
@@ -1869,6 +1898,72 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         {
             ContractorRating,
             SubmitApplicationRating
+        }
+
+        public void ShareDownloadedFile(string filePath, string fileExtension, string fileTitle)
+        {
+            _dowloadedFilePath = filePath;
+            _downloadedFileExt = fileExtension;
+            OnSharePermission();
+        }
+
+        private void OnSharePermission()
+        {
+            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
+            {
+                RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+            }
+            else
+            {
+                OnShareFile();
+            }
+        }
+
+        private void OnShareFile()
+        {
+            try
+            {
+                if (_dowloadedFilePath.IsValid())
+                {
+                    Java.IO.File file = new Java.IO.File(_dowloadedFilePath);
+                    Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
+                                                ApplicationContext.PackageName + ".fileprovider", file);
+
+                    Intent shareIntent = new Intent(Intent.ActionSend);
+                    shareIntent.SetType("application/" + _downloadedFileExt.ToLower());
+                    shareIntent.PutExtra(Intent.ExtraStream, fileUri);
+                    StartActivity(Intent.CreateChooser(shareIntent, Utility.GetLocalizedLabel("Profile", "share")));
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            try
+            {
+                if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
+                {
+                    if (Utility.IsPermissionHasCount(grantResults))
+                    {
+                        if (grantResults[0] == Permission.Granted)
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                OnShareFile();
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }
