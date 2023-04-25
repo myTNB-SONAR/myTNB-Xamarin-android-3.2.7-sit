@@ -363,14 +363,14 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Post("/v6/mytnbappws.asmx/GetUserNotificationsV2")]
         Task<T> GetUserNotificationsV2<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //cep new api //yana
 
-        [Headers(new string[] { "ApiKey: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJDaGFubmVsIjoibXlUTkJfQVBJX01vYmlsZSIsIkNoYW5uZWxLZXkiOiJGNUFEQjU0QzM1MkM0NzYwQjUzMkNEOUU1ODdBRTRGNiIsIm5iZiI6MTU5OTE5OTc0OSwiZXhwIjoxNTk5MjAzMzQ5LCJpYXQiOjE1OTkxOTk3NDksImlzcyI6Im15VE5CIEFQSSIsImF1ZCI6Im15VE5CIEFQSSBBdWRpZW5jZSJ9.Sy_xahwMgt2izUgztYq_BQeGECGsahP9oSNHeB1kwB0Ij8Grpg3kQZPCa_b_bbiyngzpjKy38_DFU12wToQAiA"
-        , "Content-Type: application/json; charset=utf-8" })]
+        [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetNotificationDetailedInfo_V2")]
         Task<T> GetNotificationDetails<T>([Body] MyTNBService.Request.BaseRequest request
             , CancellationToken token
             , [Header(MobileConstants.Header_UserInfo)] string userInfo
             , [Header(MobileConstants.Header_Lang)] string lang
-            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
+            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId
+            , [Header(MobileConstants.Header_APIKey)] string apiKey = MobileConstants.APIKey);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetNotificationDetailsByRequestId")]
