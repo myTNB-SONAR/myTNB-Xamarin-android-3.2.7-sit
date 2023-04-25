@@ -197,6 +197,22 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             currentNavigation = AppLaunchNavigation.Notification;
                         }
                     }
+                    else
+                    {
+                        UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+
+                        if (Intent.Extras.ContainsKey("Type"))
+                        {
+                            string notifType = Intent.Extras.GetString("Type");
+                            UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
+                        }
+
+                        if (Intent.Extras.ContainsKey("Email"))
+                        {
+                            string email = Intent.Extras.GetString("Email");
+                            UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
+                        }
+                    }
                 }
                 UserSessions.SetUploadFileNameCounter(PreferenceManager.GetDefaultSharedPreferences(this), 1);
             }
