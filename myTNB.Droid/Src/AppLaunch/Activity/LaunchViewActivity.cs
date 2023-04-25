@@ -133,66 +133,69 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         NotificationUtil.Instance.SaveData(Intent.Extras);
                     }
 
-                    if (Intent.Extras.ContainsKey("Type"))
+                    if (!NotificationUtil.Instance.PushMapId.IsValid())
                     {
-                        string notifType = Intent.Extras.GetString("Type");
-                        UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
-                        if (notifType.ToUpper() == myTNB.Mobile.Constants.NotificationTypes.APPLICATIONSTATUS
-                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID)
-                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONID)
-                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE))
+                        if (Intent.Extras.ContainsKey("Type"))
                         {
-                            string saveID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID);
-                            string applicationID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONID);
-                            string applicationType = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE);
-                            string system = Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_System)
-                                ? Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_System)
-                                : string.Empty;
-                            UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
-                        }
-                        else if (notifType.ToUpper() == "DBROWNER")
-                        {
-                            string accountNumber = Intent.Extras.GetString("AccountNumber");
-                            UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
-                        }
-                        else
-                        {
-                            UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
-                        }
-                    }
-
-                    if (Intent.Extras.ContainsKey("Type") && Intent.Extras.ContainsKey("RequestTransId") && Intent.Extras.ContainsKey("EventId"))
-                    {
-                        string type = Intent.Extras.GetString(NotificationOpenDirectDetails.TYPE);
-                        string requestTransID = Intent.Extras.GetString(NotificationOpenDirectDetails.PARAM_REQUESTTRANSID);
-                        string eventID = Intent.Extras.GetString(NotificationOpenDirectDetails.Param_EVENTID);
-                        UserSessions.SetNotification(type, requestTransID, eventID);
-                    }
-
-                    if (Intent.Extras.ContainsKey("Email"))
-                    {
-                        string email = Intent.Extras.GetString("Email");
-                        UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
-                        if (PreferenceManager.GetDefaultSharedPreferences(this) != null)
-                        {
-                            if (UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this))?.ToUpper() != null)
+                            string notifType = Intent.Extras.GetString("Type");
+                            UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
+                            if (notifType.ToUpper() == myTNB.Mobile.Constants.NotificationTypes.APPLICATIONSTATUS
+                                && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID)
+                                && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONID)
+                                && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE))
                             {
-                                if (!"APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this)).ToUpper()))
-                                {
-                                    UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
-                                }
+                                string saveID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID);
+                                string applicationID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONID);
+                                string applicationType = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE);
+                                string system = Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_System)
+                                    ? Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_System)
+                                    : string.Empty;
+                                UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
                             }
-                            else if (Intent.Extras.ContainsKey("AccountNum"))
+                            else if (notifType.ToUpper() == "DBROWNER")
+                            {
+                                string accountNumber = Intent.Extras.GetString("AccountNumber");
+                                UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
+                            }
+                            else
                             {
                                 UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                             }
                         }
-                    }
 
-                    if (Intent.Extras.ContainsKey("claimId"))
-                    {
-                        ClaimId = Intent.Extras.GetString("claimId");
-                        currentNavigation = AppLaunchNavigation.Notification;
+                        if (Intent.Extras.ContainsKey("Type") && Intent.Extras.ContainsKey("RequestTransId") && Intent.Extras.ContainsKey("EventId"))
+                        {
+                            string type = Intent.Extras.GetString(NotificationOpenDirectDetails.TYPE);
+                            string requestTransID = Intent.Extras.GetString(NotificationOpenDirectDetails.PARAM_REQUESTTRANSID);
+                            string eventID = Intent.Extras.GetString(NotificationOpenDirectDetails.Param_EVENTID);
+                            UserSessions.SetNotification(type, requestTransID, eventID);
+                        }
+
+                        if (Intent.Extras.ContainsKey("Email"))
+                        {
+                            string email = Intent.Extras.GetString("Email");
+                            UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
+                            if (PreferenceManager.GetDefaultSharedPreferences(this) != null)
+                            {
+                                if (UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this))?.ToUpper() != null)
+                                {
+                                    if (!"APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this)).ToUpper()))
+                                    {
+                                        UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                                    }
+                                }
+                                else if (Intent.Extras.ContainsKey("AccountNum"))
+                                {
+                                    UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                                }
+                            }
+                        }
+
+                        if (Intent.Extras.ContainsKey("claimId"))
+                        {
+                            ClaimId = Intent.Extras.GetString("claimId");
+                            currentNavigation = AppLaunchNavigation.Notification;
+                        }
                     }
                 }
                 UserSessions.SetUploadFileNameCounter(PreferenceManager.GetDefaultSharedPreferences(this), 1);

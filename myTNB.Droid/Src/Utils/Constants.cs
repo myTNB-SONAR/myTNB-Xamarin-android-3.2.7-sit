@@ -383,7 +383,7 @@ namespace myTNB_Android.Src.Utils
 
         //myHome
         public const string BCRM_NOTIFICATION_MYHOME_APP_UPDATE = "41006";
-        public const string BCRM_NOTIFICATION_MYHOME_NC_ADDRESS_SEARCH_COMPLETED = "41001";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_ADDRESS_SEARCH_COMPLETED = "8007";
         public const string BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION = "41002";
         public const string BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED = "41004";
         public const string BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED = "41003";

@@ -8,9 +8,9 @@ namespace myTNB.Mobile
         internal const string Header_RoleID = "RoleId";
         internal const string Header_UserID = "UserId";
         internal const string Header_UserName = "UserName";
-        internal const string Header_SecureKey = "SecureKey";
-        internal const string Header_UserInfo = "UserInfo";
-        internal const string Header_Lang = "Lang";
+        public const string Header_SecureKey = "SecureKey";
+        public const string Header_UserInfo = "UserInfo";
+        public const string Header_Lang = "Lang";
 
         //String Constants
         internal const string EMPTY = "empty";

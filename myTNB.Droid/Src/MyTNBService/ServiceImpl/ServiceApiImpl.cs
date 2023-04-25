@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using myTNB;
 using myTNB_Android.Src.Base.Response;
 using myTNB_Android.Src.Login.Models;
 using myTNB_Android.Src.MyTNBService.InterfaceAPI;
@@ -764,7 +765,10 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserNotificationDetailsResponse> GetNotificationDetails([Body] Request.BaseRequest request)
         {
-            return api.GetNotificationDetails<UserNotificationDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetNotificationDetails<UserNotificationDetailsResponse>(request
+                , CancellationTokenSourceWrapper.GetToken()
+                , AppInfoManager.Instance.GetUserInfo()
+                , LanguageUtil.GetAppLanguage().ToUpper());
         }
 
         /// <summary>
