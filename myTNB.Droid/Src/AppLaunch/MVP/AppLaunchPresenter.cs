@@ -42,6 +42,7 @@ using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeE
 using myTNB_Android.Src.Base.Response;
 using System.Linq;
 using Android.Preferences;
+using myTNB_Android.Src.myTNBMenu.Activity;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -698,47 +699,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
-                    UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new myTNB_Android.Src.MyTNBService.Request.BaseRequest());
-                    if (response.IsSuccessResponse())
-                    {
-                        if (response.GetData() != null)
-                        {
-                            try
-                            {
-                                UserNotificationEntity.RemoveAll();
-                            }
-                            catch (System.Exception ne)
-                            {
-                                Utility.LoggingNonFatalError(ne);
-                            }
 
-                            foreach (UserNotification userNotification in response.GetData().FilteredUserNotificationList)
-                            {
-                                // tODO : SAVE ALL NOTIFICATIONs
-                                int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-                            }
-
-                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
-                        }
-                        else
-                        {
-                            MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                        }
-                    }
-                    else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
-                    {
-                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
-                    }
-                    else
-                    {
-                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-                    }
-
-                    //Console.WriteLine(string.Format("Rows updated {0}" , CustomerBillingAccount.List().Count));
-                    if (this.mView.IsActive())
-                    {
-                        this.mView.ShowNotificationCount(UserNotificationEntity.Count());
-                    }
+                    GetUserNotificationList();
 
                     if (LanguageUtil.GetAppLanguage() == "MS")
                     {
@@ -775,9 +737,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                     this.mView.ShowDashboard();
                 }
-
-
-
             }
             catch (ApiException apiException)
             {
@@ -793,6 +752,58 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 Utility.LoggingNonFatalError(e);
                 EvaluateServiceRetryAWS();
+            }
+        }
+
+        public void GetUserNotificationList()
+        {
+            Task.Run(() =>
+            {
+                _ = OnGetNotificationsV2();
+            });
+        }
+
+        private async Task OnGetNotificationsV2()
+        {
+            UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new myTNB_Android.Src.MyTNBService.Request.BaseRequest());
+            if (response.IsSuccessResponse())
+            {
+                if (response.GetData() != null)
+                {
+                    try
+                    {
+                        UserNotificationEntity.RemoveAll();
+                    }
+                    catch (System.Exception ne)
+                    {
+                        Utility.LoggingNonFatalError(ne);
+                    }
+
+                    foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                    {
+                        // tODO : SAVE ALL NOTIFICATIONs
+                        _ = UserNotificationEntity.InsertOrReplace(userNotification);
+                    }
+
+                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(true);
+                }
+                else
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                }
+            }
+            else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
+            {
+                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
+            }
+            else
+            {
+                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+            }
+
+            if (this.mView.IsActive())
+            {
+                this.mView.ShowNotificationCount(UserNotificationEntity.Count());
             }
         }
 
