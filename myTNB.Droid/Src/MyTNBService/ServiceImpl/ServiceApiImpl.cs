@@ -765,10 +765,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserNotificationDetailsResponse> GetNotificationDetails([Body] Request.BaseRequest request)
         {
-            return api.GetNotificationDetails<UserNotificationDetailsResponse>(request
-                , CancellationTokenSourceWrapper.GetToken()
-                , AppInfoManager.Instance.GetUserInfo()
-                , LanguageUtil.GetAppLanguage().ToUpper());
+            return api.GetNotificationDetails<UserNotificationDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>

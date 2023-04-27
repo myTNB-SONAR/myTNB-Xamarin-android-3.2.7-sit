@@ -365,12 +365,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetNotificationDetailedInfo_V2")]
-        Task<T> GetNotificationDetails<T>([Body] MyTNBService.Request.BaseRequest request
-            , CancellationToken token
-            , [Header(MobileConstants.Header_UserInfo)] string userInfo
-            , [Header(MobileConstants.Header_Lang)] string lang
-            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId
-            , [Header(MobileConstants.Header_APIKey)] string apiKey = MobileConstants.APIKey);
+        Task<T> GetNotificationDetails<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetNotificationDetailsByRequestId")]
