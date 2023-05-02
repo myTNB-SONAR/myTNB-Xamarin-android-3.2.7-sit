@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using myTNB;
 using myTNB_Android.Src.Base.Response;
 using myTNB_Android.Src.Login.Models;
 using myTNB_Android.Src.MyTNBService.InterfaceAPI;

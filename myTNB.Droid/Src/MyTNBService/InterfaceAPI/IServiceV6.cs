@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using myTNB.Mobile;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using Refit;
