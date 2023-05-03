@@ -1021,7 +1021,8 @@
     "cardRemoveSuccess": "Kad kredit / debit yang berakhir dengan {0} telah berjaya dialih keluar.",
     "removeCardMessage": "Anda akan mengalih keluar kad kredit / debit yang berakhir dengan {0}.",
     "removeCardTitle": "Alih Keluar Kad Kredit / Debit",
-    "cardNotRemovedMessage": "Kad Kredit / Debit yang berakhir dengan {0} tidak berjaya dialih keluar. Sila cuba semula sebentar lagi."
+    "cardNotRemovedMessage": "Kad Kredit / Debit yang berakhir dengan {0} tidak berjaya dialih keluar. Sila cuba semula sebentar lagi.",
+    "CCExpired": "Kad Tamat Tempoh"
   },
   "MyPaymentMethod": {
     "title": "Cara Pembayaran Saya",
@@ -1035,7 +1036,8 @@
     "titleNoAutoPay": "BM_You don't have AutoPay yet.",
     "bodyNoAutoPay": "BM_Let us take care your monthly bills automatically. We'll pause AutoPay when your bills are higher than usual",
     "btnStartAutoPay": "BM_Start AutoPay",
-    "titleCard": "Kad Kredit / Debit Saya yang Disimpan"
+    "titleCard": "Kad Kredit / Debit Saya yang Disimpan",
+    "CCExpired": "Kad Tamat Tempoh"
   },
   "ViewBill": {
     "titleBill": "Bil",

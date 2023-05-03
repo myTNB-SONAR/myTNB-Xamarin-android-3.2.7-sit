@@ -38,6 +38,7 @@ namespace myTNB_Android.Src.ManageCards.Adapter
 
                 string lastDigit = item.LastDigits.Substring(item.LastDigits.Length - 4);
                 string html = "<![CDATA[" + viewHolder.ItemView.Context.GetString(Resource.String.credit_card_masked) + lastDigit + "]]>";
+                viewHolder.txtExpiredCard.Text = Utility.GetLocalizedLabel("ManageCards", "CCExpired");
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     viewHolder.txtCardNumber.TextFormatted = Html.FromHtml(html, FromHtmlOptions.ModeLegacy);
@@ -49,6 +50,16 @@ namespace myTNB_Android.Src.ManageCards.Adapter
                     viewHolder.txtCardNumber.TextFormatted = Html.FromHtml(html);
                     TextViewUtils.SetTextSize16(viewHolder.txtCardNumber);
                     TextViewUtils.SetTextSize12(viewHolder.txtExpiredCard);
+                }
+
+                if (item.IsExpired)
+                {
+                    viewHolder.txtExpiredCard.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    viewHolder.txtCardNumber.SetPadding(0, 0, 0, 8);
+                    viewHolder.txtExpiredCard.Visibility = ViewStates.Gone;
                 }
 
                 if (item.CardType.Equals("VISA") || item.CardType.Equals("V"))

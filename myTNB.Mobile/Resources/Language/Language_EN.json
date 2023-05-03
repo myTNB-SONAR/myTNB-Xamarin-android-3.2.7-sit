@@ -1021,7 +1021,8 @@
     "cardRemoveSuccess": "The credit / debit card ending with {0} has been removed successfully.",
     "removeCardMessage": "You are about to remove the credit / debit card ending with {0}.",
     "removeCardTitle": "Remove Credit / Debit Card",
-    "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again."
+    "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again.",
+    "CCExpired": "Credit Card Expired"
   },
   "MyPaymentMethod": {
     "title": "My Payment Methods",
@@ -1035,7 +1036,8 @@
     "titleNoAutoPay": "You don't have AutoPay yet.",
     "bodyNoAutoPay": "Let us take care your monthly bills automatically. We'll pause AutoPay when your bills are higher than usual",
     "btnStartAutoPay": "Start AutoPay",
-    "titleCard": "My Saved Credit / Debit Cards"
+    "titleCard": "My Saved Credit / Debit Cards",
+    "CCExpired": "Credit Card Expired"
   },
   "ViewBill": {
     "titleBill": "Bill",

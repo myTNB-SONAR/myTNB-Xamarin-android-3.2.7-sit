@@ -55,17 +55,18 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
             {
                 RelativeLayout cardbtn = view.FindViewById<RelativeLayout>(Resource.Id.btnCard);
                 TextView cardView = view.FindViewById<TextView>(Resource.Id.textCard);
-                TextView textView = view.FindViewById<TextView>(Resource.Id.txtExpiredCard);
+                TextView txtExpiredCard = view.FindViewById<TextView>(Resource.Id.txtExpiredCard);
                 ImageView cardImg = view.FindViewById<ImageView>(Resource.Id.imgCard);
                 cardbtn.Click += delegate
                 {
                     OnClick(position);
                 };
                 TextViewUtils.SetMuseoSans500Typeface(cardView);
-                TextViewUtils.SetMuseoSans300Typeface(textView);
-                TextViewUtils.SetTextSize12(textView, cardView);
+                TextViewUtils.SetMuseoSans300Typeface(txtExpiredCard);
+                TextViewUtils.SetTextSize12(txtExpiredCard, cardView);
                 string lastDigit = cardList[position].LastDigits.Substring(cardList[position].LastDigits.Length - 4);
                 string html = "<![CDATA[" + activity.GetString(Resource.String.credit_card_masked) + lastDigit + "]]>";
+                txtExpiredCard.Text = Utility.GetLocalizedLabel("MyPaymentMethod", "CCExpired");
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     cardView.TextFormatted = Html.FromHtml(html, FromHtmlOptions.ModeLegacy);
@@ -98,6 +99,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     //cardView.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.ic_payment_card_jcb,
                     //    0, 0, 0);
                     cardImg.SetImageResource(Resource.Drawable.ic_payment_card_jcb);
+                }
+
+                if (cardList[position].IsExpired)
+                {
+                    txtExpiredCard.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    cardView.SetPadding(0, 0, 0, 8);
+                    txtExpiredCard.Visibility = ViewStates.Gone;
                 }
             }
             catch (System.Exception e)

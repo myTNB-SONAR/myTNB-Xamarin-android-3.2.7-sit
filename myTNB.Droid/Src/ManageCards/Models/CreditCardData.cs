@@ -1,5 +1,6 @@
 ﻿using myTNB_Android.Src.MultipleAccountPayment.Models;
 using Newtonsoft.Json;
+using Refit;
 
 namespace myTNB_Android.Src.ManageCards.Models
 {
@@ -20,6 +21,12 @@ namespace myTNB_Android.Src.ManageCards.Models
         [JsonProperty(PropertyName = "CreatedDate")]
         public string CreatedDate { get; set; }
 
+        [JsonProperty(PropertyName = "ExpiredDate")]
+        public string ExpiredDate { get; set; }
+
+        [JsonProperty(PropertyName = "IsExpired")]
+        public bool IsExpired { get; set; }
+
         public static CreditCardData Copy(CreditCard card)
         {
 
@@ -30,7 +37,9 @@ namespace myTNB_Android.Src.ManageCards.Models
                 Email = card.Email,
                 LastDigits = card.LastDigits,
                 CardType = card.CardType,
-                CreatedDate = card.CreatedDate
+                CreatedDate = card.CreatedDate,
+                ExpiredDate = card.ExpiredDate,
+                IsExpired = card.IsExpired
             };
         }
     }

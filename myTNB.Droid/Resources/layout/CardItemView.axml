@@ -45,12 +45,12 @@
 			        android:id="@+id/txtExpiredCard"
 			        android:layout_width="match_parent"
 			        android:layout_height="match_parent"
-			        android:text="This card is expired"
+			        android:text="Credit Card Expired"
 			        android:textSize="8dp"
 			        android:textColor="@color/lightRed"
 			        android:layout_alignParentStart="true"
                     android:layout_below="@+id/textCard"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
             </LinearLayout>
 		<!--<TextView
 			android:layout_width="match_parent"
