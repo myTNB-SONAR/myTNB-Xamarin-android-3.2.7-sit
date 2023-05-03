@@ -191,9 +191,13 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             Task.Run(async () => await GetSMRAccountStatus(notificationDetails.AccountNum)).Wait();
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
                             //pageTitle = "Smart Meter Reading";
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reenableSSMR"), delegate () { EnableSelfMeterReading(notificationDetails); });
-                            primaryCTA.SetEnabled(!isTaggedSMR);
-                            ctaList.Add(primaryCTA);
+                            var account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+                            if (account.isOwned != null && account.isOwned)
+                            {
+                                primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reenableSSMR"), delegate () { EnableSelfMeterReading(notificationDetails); });
+                                primaryCTA.SetEnabled(!isTaggedSMR);
+                                ctaList.Add(primaryCTA);
+                            }
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID:
@@ -790,6 +794,14 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     }
 
                     List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+                    if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                    {
+                        List<CustomerBillingAccount> currentSMRBillingAccountsWithTenant = CustomerBillingAccount.CurrentSMRAccountListWithTenant();
+                        if (currentSMRBillingAccountsWithTenant != null && currentSMRBillingAccountsWithTenant.Count > 0)
+                        {
+                            currentSMRBillingAccounts.AddRange(currentSMRBillingAccountsWithTenant);
+                        }
+                    }
                     List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
                     if (currentSMRBillingAccounts.Count > 0)
                     {
@@ -806,6 +818,14 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     UserSessions.SetSMRAccountList(currentSmrAccountList);
 
                     List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+                    if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                    {
+                        List<CustomerBillingAccount> eligibleSMRBillingAccountsWithTenant = CustomerBillingAccount.EligibleSMRAccountListWithTenant();
+                        if (eligibleSMRBillingAccountsWithTenant != null && eligibleSMRBillingAccountsWithTenant.Count > 0)
+                        {
+                            eligibleSMRBillingAccounts.AddRange(eligibleSMRBillingAccountsWithTenant);
+                        }
+                    }
                     List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
                     if (eligibleSMRBillingAccounts.Count > 0)
                     {

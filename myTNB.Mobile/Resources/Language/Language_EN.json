@@ -480,8 +480,8 @@
     "accountTypeDialogMessage": "You can log in to myTNB <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> using the same login details and enjoy full access to the account.",
     //EnergyBudget
     "myMonthlyBudget": "My monthly budget is",
-    "whyIsAmountDiff": "Will this be my final bill amount?",
-    "whyIsAmountDiffBody": "It’s simple! The amount displayed is your usage which is the amount of energy used so far. Your final bill will include tax, discounts or additional charges.",
+    "whyIsAmountDiff": "Will this be my final bill?",
+    "whyIsAmountDiffBody": "Not exactly. The displayed amount is based on your electricity usage so far for this month. Your final bill may include charges such as 1.6% KWTBB contribution, 6% service tax, ICPT rebate/surcharge (where applicable).",
     "editEnergyButton": "Edit Budget",
     "setEnergyButton": "Set Now",
     "saveEnergyButton": "Save New Budget",
@@ -507,7 +507,7 @@
     "dbrReminderAutoPopupTitle": "Your electricity bills are now paperless!",
     "dbrReminderAutoPopupMessageFirstMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 3 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
     "dbrReminderAutoPopupMessageSecondMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 2 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
-    "dbrReminderAutoPopupMessageThirdMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 1 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
+    "dbrReminderAutoPopupMessageThirdMonth": "As one of our myTNB customer, you have been selected to receive TNB bill digitally via myTNB.<br>You will still receive printed bills for the next 3 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
     "dbrReminderAutoPopUpBtn": "Manage Bill Delivery"
   },
   "Bills": {
@@ -641,7 +641,7 @@
     "onlineBanking": "Online Banking",
     "abortTitle": "Cancel Payment",
     "abortMessage": "Are you sure you want to cancel payment?",
-    "tngEwallet": "Touch 'n Go"
+    "tngEwallet": "Touch 'n Go eWallet"
   },
   "PushNotificationList": {
     "allNotifications": "All Notifications",

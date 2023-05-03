@@ -31,6 +31,10 @@ using Android.Text;
 using Android.OS;
 using System.Globalization;
 using Java.Util;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using myTNB_Android.Src.SSMR.SMRApplication.Api;
+using myTNB_Android.Src.SSMRMeterHistory.Api;
+using Dynatrace.Xamarin;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -76,6 +80,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private ISharedPreferences mPref;
 
+        private SMRregistrationApi api;
+
         private CancellationTokenSource normalTokenSource = new CancellationTokenSource();
 
         public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view, ISharedPreferences pref)
@@ -83,6 +89,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             this.mView = view;
             this.mPref = pref;
             this.serviceApi = new HomeMenuServiceImpl();
+            this.api = new SMRregistrationApiImpl();
         }
 
         public string GetAccountDisplay()
@@ -98,7 +105,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {   //dynatrace infomation for logged user
                 try
                 {
-                    DynatraceAndroid.Dynatrace.IdentifyUser(userEmail);
+                    Agent.Instance.IdentifyUser(userEmail);
                 }
                 catch (System.Exception e)
                 {
@@ -1658,6 +1665,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (IsSMRFeatureDisabled)
                 {
                     List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.CurrentSMRAccountList();
+
+                    if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                    {
+                        List<CustomerBillingAccount> customerBillingAccountListWithTenant = CustomerBillingAccount.CurrentSMRAccountListWithTenant();
+                        if (customerBillingAccountListWithTenant != null && customerBillingAccountListWithTenant.Count > 0)
+                        {
+                            customerBillingAccountList.AddRange(customerBillingAccountListWithTenant);
+                        }
+                    }
+
                     if (customerBillingAccountList != null && customerBillingAccountList.Count > 0)
                     {
                         for (int i = 0; i < customerBillingAccountList.Count; i++)
@@ -1672,6 +1689,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else
                 {
                     List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
+
+                    if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                    {
+                        List<CustomerBillingAccount> customerBillingAccountListWithTenant = CustomerBillingAccount.GetEligibleAndSMRAccountListWithTenant();
+                        if (customerBillingAccountListWithTenant != null && customerBillingAccountListWithTenant.Count > 0)
+                        {
+                            customerBillingAccountList.AddRange(customerBillingAccountListWithTenant);
+                        }
+                    }
 
                     List<string> smrAccountList = new List<string>();
                     for (int i = 0; i < customerBillingAccountList.Count; i++)
@@ -2005,12 +2031,45 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        private async Task<bool> CheckSMRAccountEligibility(List<string> accountList)
+        {
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                GetAccountsSMREligibilityResponse response = await this.api.GetAccountsSMREligibility(new GetAccountListSMREligibilityRequest(accountList));
+
+                if (response != null && response.Response != null && response.Response.ErrorCode == "7200" && response.Response.Data.SMREligibilityList.Count > 0)
+                {
+                    return isSMRApplyAllowFlag = response.Response.Data.SMREligibilityList.Any(x => x?.SMREligibility == "true");
+                }
+                return isSMRApplyAllowFlag = false;
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                this.mView.HideProgressDialog();
+                Utility.LoggingNonFatalError(cancelledException);
+                return isSMRApplyAllowFlag = false;
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideProgressDialog();
+                Utility.LoggingNonFatalError(apiException);
+                return isSMRApplyAllowFlag = false;
+            }
+            catch (Exception unknownException)
+            {
+                this.mView.HideProgressDialog();
+                Utility.LoggingNonFatalError(unknownException);
+                return isSMRApplyAllowFlag = false;
+            }
+        }
 
         private async Task GetIsSmrApplyAllowedService(List<string> accountList)
         {
             try
             {
                 isSMRApplyAllowFlag = false;
+                bool isEligible = false;
 
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                 UserInterface currentUsrInf = new UserInterface()
@@ -2034,9 +2093,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 if (isSMRApplyResponse.Data.ErrorCode == "7200" && isSMRApplyResponse.Data.Data.Count > 0)
                 {
+                    List<CustomerBillingAccount> eligibleSMRBillingAccounts = new List<CustomerBillingAccount>();
+                    bool isTenantSMREnable = MyTNBAccountManagement.GetInstance().IsSMROpenToTenant();
+                    if (isTenantSMREnable)
+                    {
+                        eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+                    }
+
                     for (int i = 0; i < isSMRApplyResponse.Data.Data.Count; i++)
                     {
-                        if (isSMRApplyResponse.Data.Data[i].AllowApply)
+                        if (isTenantSMREnable)
+                        {
+                            List<string> contractAccountList = new List<string> { isSMRApplyResponse.Data.Data[i].ContractAccount };
+                            bool isOwnerExist = eligibleSMRBillingAccounts.Exists(s => s.AccNum == isSMRApplyResponse.Data.Data[i].ContractAccount);
+                            if (isSMRApplyResponse.Data.Data[i].AllowApply && isOwnerExist && !isEligible)
+                            {
+                                isEligible = await CheckSMRAccountEligibility(contractAccountList);
+                            }
+                            else if (isEligible)
+                            {
+                                break;
+                            }
+                        }
+                        else if (isSMRApplyResponse.Data.Data[i].AllowApply)
                         {
                             isSMRApplyAllowFlag = true;
                             break;

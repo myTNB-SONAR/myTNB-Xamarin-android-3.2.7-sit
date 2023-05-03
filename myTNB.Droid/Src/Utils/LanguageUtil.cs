@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Android.App;
-using DynatraceAndroid;
+using Dynatrace.Xamarin;
 using myTNB;
 using myTNB.Mobile;
 using myTNB.SitecoreCMS.Model;
