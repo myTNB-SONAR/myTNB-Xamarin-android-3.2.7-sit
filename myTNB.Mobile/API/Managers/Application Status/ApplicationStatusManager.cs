@@ -509,7 +509,54 @@ namespace myTNB.Mobile
                         && eligibilityByCriteriaResponse.Content.DS.ContractAccounts.Count > 0)
                     {
                         Debug.WriteLine("[DEBUG][GetApplicationDetail] Check By BA");
-                        isDSEligible = true;
+
+                        #region Mitigation Task For myHome & DS
+                        // Mitigation Task For myHome & DS
+                        string searchTerm = savedApplicationID.IsValid() ? savedApplicationID : applicationID;
+                        try
+                        {
+                            IApplicationStatusService service = RestService.For<IApplicationStatusService>(MobileConstants.ApiDomain);
+                            try
+                            {
+                                HttpResponseMessage rawResponse = await service.GetApplicationDetail(applicationType
+                                     , searchTerm
+                                     , system
+                                     , isDSEligible
+                                     , AppInfoManager.Instance.GetUserInfo()
+                                     , NetworkService.GetCancellationToken()
+                                     , AppInfoManager.Instance.Language.ToString()
+                                     , AppInfoManager.Instance.Language.ToString());
+
+                                string responseString = await rawResponse.Content.ReadAsStringAsync();
+                                GetApplicationDetailsResponse response = JsonConvert.DeserializeObject<GetApplicationDetailsResponse>(responseString);
+                                if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                                {
+                                    if ("myTNB_API_Mobile".Equals(response.Content.newConnectionDetail.channel, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        isDSEligible = false;
+                                    }
+                                    else
+                                    {
+                                        isDSEligible = true;
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+#if DEBUG
+                                Debug.WriteLine("[DEBUG][GetApplicationDetailV2]General Exception: " + ex.Message);
+#endif
+                            }
+                        }
+                        catch (Exception e)
+                        {
+#if DEBUG
+                            Debug.WriteLine(e.Message);
+#endif
+                        }
+                        #endregion
+
+                        //isDSEligible = true;
                         displaymodel = await GetApplicationDetailV2(savedApplicationID
                            , applicationID
                            , applicationType
