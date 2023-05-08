@@ -402,10 +402,17 @@ namespace myTNB_Android.Src.MyHome
 
             public override void OnSlide(View bottomSheet, float slideOffset)
             {
-                if (slideOffset < -1 || slideOffset == -1)
+                try
                 {
-                    this.fragment.Dismiss();
-                    DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Dismiss);
+                    if (slideOffset < -1 || slideOffset == -1)
+                    {
+                        this.fragment.Dismiss();
+                        DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Dismiss);
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
                 }
             }
 
