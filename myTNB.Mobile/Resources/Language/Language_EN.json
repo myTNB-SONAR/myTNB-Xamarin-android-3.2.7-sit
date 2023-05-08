@@ -508,7 +508,7 @@
     "dbrReminderAutoPopupTitle": "Your electricity bills are now paperless!",
     "dbrReminderAutoPopupMessageFirstMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 3 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
     "dbrReminderAutoPopupMessageSecondMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 2 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
-    "dbrReminderAutoPopupMessageThirdMonth": "As one of our myTNB customer, you have been selected to receive TNB bill digitally via myTNB.<br>You will still receive printed bills for the next 3 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
+    "dbrReminderAutoPopupMessageThirdMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB.<br>You will still receive printed bills for the next 3 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
     "dbrReminderAutoPopUpBtn": "Manage Bill Delivery"
   },
   "Bills": {
@@ -1426,8 +1426,8 @@
     "overVoltageMaintenanceTitle": "We'll be back soon.",
     "overVoltageMaintenanceDescription": "Sorry, Overvoltage Claim service is currently under maintenance. Please check back later.",
     "overVoltageClaimtemproryUnavailable": "Overvoltage Claim service temporarily unavailable",
-    "overVoltageClaimtemproryUnavailableTitle": "Service temporarily unavailable",
-    "overVoltageClaimtemproryUnavailableDescription": "We're working to restore Overvoltage Claim service as quickly as possible. Please check back soon.",
+    "overVoltageClaimtemproryUnavailableTitle": "This service is temporarily unavailable",
+    "overVoltageClaimtemproryUnavailableDescription": "This service is currently under maintenance. Please try again later.",
     "termsAndConditionTitle": "Terms and Conditions",
     "selectCountryTitle": "Select Country/Region",
     "rescheduleAppointmentTitle": "Reschedule Appointment",

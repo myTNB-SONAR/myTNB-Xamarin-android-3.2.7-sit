@@ -506,9 +506,9 @@
     "dbrReminderPopupViewMore": "Ketahui Lanjut",
     "dbrReminderPopupGotIt": "Ok!",
     "dbrReminderAutoPopupTitle": "Bil elektrik anda kini 'paperless'!",
-    "dbrReminderAutoPopupMessageFirstMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
-    "dbrReminderAutoPopupMessageSecondMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 2 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
-    "dbrReminderAutoPopupMessageThirdMonth": "Sebagai pelanggan lestari myTNB, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB.<br>Anda akan masih masih akan menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopupMessageFirstMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB.<br>Anda masih akan akan masih menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopupMessageSecondMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB.<br>Anda masih akan akan masih menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopupMessageThirdMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB.<br>Anda masih akan akan masih menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
     "dbrReminderAutoPopUpBtn": "Urus Cara Penghantaran Bil"
   },
   "Bills": {
@@ -1426,8 +1426,8 @@
     "overVoltageMaintenanceTitle": "Kami akan kembali tidak lama lagi.",
     "overVoltageMaintenanceDescription": "Maaf, servis Tuntutan Voltan Berlebihan sedang dalam penyelenggaraan. Sila semak semula kemudian.",
     "overVoltageClaimtemproryUnavailable": "Servis Tuntutan Voltan Berlebihan tidak tersedia untuk sementara waktu",
-    "overVoltageClaimtemproryUnavailableTitle": "Servis tidak tersedia untuk sementara waktu",
-    "overVoltageClaimtemproryUnavailableDescription": "Kami sedang memulihkan servis Tuntutan Voltan Berlebihan secepat yang mungkin. Sila cuba sebentar lagi.",
+    "overVoltageClaimtemproryUnavailableTitle": "Perkhidmatan tidak tersedia untuk sementara waktu",
+    "overVoltageClaimtemproryUnavailableDescription": "Perkhidmatan ini tidak tersedia untuk sementara waktu. Sila cuba sebentar lagi.",
     "termsAndConditionTitle": "Terma dan Syarat",
     "selectCountryTitle": "Pilih Negara/Wilayah",
     "rescheduleAppointmentTitle": "Jadualkan Semula Janji Temu",
