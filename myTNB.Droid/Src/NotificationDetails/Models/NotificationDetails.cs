@@ -61,7 +61,7 @@ namespace myTNB_Android.Src.NotificationDetails.Models
         [JsonProperty("HeaderTitle")]
         public string HeaderTitle { get; set; }
 
-        [JsonProperty("MyHomeDetails", Required = Newtonsoft.Json.Required.AllowNull)]
+        [JsonProperty("MyHomeDetails")]
         public MyHomeDetailsData MyHomeDetails { get; set; }
 
         [JsonProperty("ApplicationStatusDetail", Required = Newtonsoft.Json.Required.AllowNull)]
