@@ -26,6 +26,10 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string EXTENSION_PNG = "png";
         internal static readonly string EXTENSION_JPG = "jpg";
         internal static readonly string USER_SESSION_NC_RESUME_POPUP_KEY = "userSessionNCResumePopUpKey";
+        internal static readonly string PAYMENT_HISTORY_PAYMENT = "PAYMENT";
+        internal static readonly string PAYMENT_HISTORY_CA = "CA";
+        internal static readonly string PAYMENT_HISTORY_IS_OWNED = "IsOwned";
+        internal static readonly string PAYMENT_HISTORY_ACCOUNT_TYPE = "AccountType";
     }
 }
 

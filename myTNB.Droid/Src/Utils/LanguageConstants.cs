@@ -54,6 +54,8 @@
         {
             internal static readonly string TOOLTIP_ACT_STMT_TITLE = "accountStatementTenantTitle";
             internal static readonly string TOOLTIP_ACT_STMT_MSG = "accountStatementTenantMessage";
+            internal static readonly string NO_HISTORY_DATA = "noHistoryData";
+            internal static readonly string EMPTY_PAYMENT_HISTORY = "emptyPaymentHistory";
         }
 
         internal struct BillDetails

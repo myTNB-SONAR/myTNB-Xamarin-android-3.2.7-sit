@@ -145,6 +145,8 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             baseView.Visibility = ViewStates.Gone;
             try
             {
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
 
                 mPresenter = new ViewReceiptMultiAccountNewDesignPresenter(this);

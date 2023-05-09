@@ -7832,6 +7832,13 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\MyHome\Activity\MyHomePaymentHistoryActivity.cs" />
+    <AndroidResource Include="Resources\layout\MyHomePaymentHistoryView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\MyHome\MVP\MyHomePaymentHistoryContract.cs" />
+    <Compile Include="Src\MyHome\MVP\MyHomePaymentHistoryPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">
