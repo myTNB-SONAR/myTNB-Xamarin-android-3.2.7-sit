@@ -460,6 +460,7 @@ namespace myTNB.Mobile
         public async Task<ApplicationDetailDisplay> GetApplicationDetail(string savedApplicationID
             , string applicationID
             , string applicationType
+            , string userID
             , string system = "myTNB")
         {
             bool isDSEligible = false;
@@ -493,12 +494,16 @@ namespace myTNB.Mobile
                             , system);
                     }
                 }
-                else if (displaymodel.Content.CABusinessArea is string businessArea
+                else if ((displaymodel.Content.CABusinessArea is string businessArea
                     && businessArea.IsValid())
+                    || (displaymodel.Content.ContractAccountNo is string accNumber
+                    && accNumber.IsValid()))
                 {
                     GetEligibilityResponse eligibilityByCriteriaResponse =
                         await EligibilityManager.Instance.PostEligibilityByCriteria(new List<string> { displaymodel.Content.CABusinessArea }
-                        , AppInfoManager.Instance.AccessToken);
+                        , new List<AWS.ContractAccountModel> { new AWS.ContractAccountModel() { accNum = displaymodel.Content.ContractAccountNo, BusinessArea = displaymodel.Content.CABusinessArea } }
+                        , AppInfoManager.Instance.AccessToken
+                        , userID);
 
                     if (DSUtility.Instance.IsAccountEligible
                         && eligibilityByCriteriaResponse.StatusDetail != null
@@ -531,7 +536,8 @@ namespace myTNB.Mobile
                                 GetApplicationDetailsResponse response = JsonConvert.DeserializeObject<GetApplicationDetailsResponse>(responseString);
                                 if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                                 {
-                                    if ("myTNB_API_Mobile".Equals(response.Content.newConnectionDetail.channel, StringComparison.OrdinalIgnoreCase))
+                                    if (applicationType.Contains("NC")
+                                        && "myTNB_API_Mobile".Equals(response.Content.newConnectionDetail.channel, StringComparison.OrdinalIgnoreCase))
                                     {
                                         isDSEligible = false;
                                     }

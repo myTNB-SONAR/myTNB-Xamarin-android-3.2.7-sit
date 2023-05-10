@@ -23,7 +23,7 @@ namespace myTNB.Mobile.AWS.Services.DS
            , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
            , string environment = AWSConstants.Environment);
 
-        [Post("/Eligibility/api/v1/Eligibility/GetEligibility/ByCriteria")]
+        [Post("/Eligibility/api/v1/Eligibility/GetEligibility")]
         Task<HttpResponseMessage> PostEligibilityByCriteria([Body] PostEligibilityByCriteriaRequest request
            , CancellationToken cancellationToken
            , [Header(AWSConstants.Headers.Authorization)] string accessToken

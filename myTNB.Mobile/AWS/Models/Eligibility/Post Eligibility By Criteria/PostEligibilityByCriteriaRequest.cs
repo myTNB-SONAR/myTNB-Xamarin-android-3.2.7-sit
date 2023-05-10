@@ -4,7 +4,9 @@ namespace myTNB.Mobile.AWS
 {
     public class PostEligibilityByCriteriaRequest
     {
+        public string UserID { set; get; }
         public List<PremiseCriteriaModel> PremiseCriteria { set; get; }
+        public List<ContractAccountModel> ContractAccounts { set; get; }
     }
 
     public class PremiseCriteriaModel

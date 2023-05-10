@@ -347,27 +347,47 @@ namespace myTNB.Mobile
 
 
         internal async Task<GetEligibilityResponse> PostEligibilityByCriteria(List<string> businessAreaList
-            , string accessToken)
+            , List<ContractAccountModel> contractAccList
+            , string accessToken
+            , string userID)
         {
             PostEligibilityResponse postResponse = new PostEligibilityResponse();
             GetEligibilityResponse response = new GetEligibilityResponse();
-            if (businessAreaList != null && businessAreaList.Count > 0)
+            if ((businessAreaList != null && businessAreaList.Count > 0)
+                || (contractAccList != null && contractAccList.Count > 0))
             {
                 try
                 {
                     IDSService service = RestService.For<IDSService>(AWSConstants.Domains.Domain);
                     List<PremiseCriteriaModel> premistCriteriaList = new List<PremiseCriteriaModel>();
-                    for (int i = 0; i < businessAreaList.Count; i++)
+                    List<ContractAccountModel> contractAccountList = new List<ContractAccountModel>();
+                    if (businessAreaList != null && businessAreaList.Count > 0)
                     {
-                        premistCriteriaList.Add(new PremiseCriteriaModel
+                        for (int i = 0; i < businessAreaList.Count; i++)
                         {
-                            BusinessArea = businessAreaList[i]
-                        });
+                            premistCriteriaList.Add(new PremiseCriteriaModel
+                            {
+                                BusinessArea = businessAreaList[i]
+                            });
+                        }
+                    }
+                    if (contractAccList != null && contractAccList.Count > 0)
+                    {
+                        for (int i = 0; i < contractAccList.Count; i++)
+                        {
+                            contractAccountList.Add(new ContractAccountModel
+                            {
+                                accNum = contractAccList[i].accNum,
+                                BusinessArea = contractAccList[i].BusinessArea
+                            });
+                        }
                     }
 
                     PostEligibilityByCriteriaRequest request = new PostEligibilityByCriteriaRequest
                     {
-                        PremiseCriteria = premistCriteriaList
+                        UserID = userID,
+                        PremiseCriteria = premistCriteriaList,
+                        ContractAccounts = contractAccountList
                     };
 
                     Debug.WriteLine("[DEBUG] PostEligibilityByCriteria Request: " + JsonConvert.SerializeObject(request));
@@ -456,17 +476,21 @@ namespace myTNB.Mobile
             {
                 if (postEligibilityResponse != null
                     && postEligibilityResponse.Content != null
-                    && postEligibilityResponse.Content.EligibilityByCriteria != null
-                    && postEligibilityResponse.Content.EligibilityByCriteria.Count > 0)
+                    && ((postEligibilityResponse.Content.FeatureBAList != null
+                    && postEligibilityResponse.Content.FeatureBAList.Count > 0)
+                    || (postEligibilityResponse.Content.FeatureCAList != null
+                    && postEligibilityResponse.Content.FeatureCAList.Count > 0)))
                 {
-                    List<FeatureCAModel> ds = postEligibilityResponse.Content.EligibilityByCriteria.FindAll(
-                        x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.DS.ToString().ToUpper()).ToList();
+                    BaseCAListModel baseContent = new BaseCAListModel
+                    {
+                        ContractAccounts = new List<ContractAccountsModel>()
+                    };
+
+                    List<FeatureCAModel> ds = postEligibilityResponse.Content.FeatureBAList.FindAll(
+                    x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.DS.ToString().ToUpper()).ToList();
+
                     if (ds != null && ds.Count > 0)
                     {
-                        BaseCAListModel baseContent = new BaseCAListModel
-                        {
-                            ContractAccounts = new List<ContractAccountsModel>()
-                        };
                         for (int i = 0; i < ds.Count; i++)
                         {
                             FeatureCAModel item = ds[i];
@@ -478,8 +502,25 @@ namespace myTNB.Mobile
                                 BusinessArea = item.BusinessArea
                             });
                         }
-                        eligibilityResponse.Content.DS = baseContent;
                     }
+
+                    List<FeatureCAModel> dsAcc = postEligibilityResponse.Content.FeatureCAList.FindAll(
+                    x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.DS.ToString().ToUpper()).ToList();
+                    if (dsAcc != null && dsAcc.Count > 0)
+                    {
+                        for (int i = 0; i < dsAcc.Count; i++)
+                        {
+                            FeatureCAModel item = dsAcc[i];
+                            baseContent.ContractAccounts.Add(new ContractAccountsModel
+                            {
+                                ContractAccount = item.ContractAccount,
+                                Acted = item.Acted,
+                                ModifiedDate = item.ModifiedDate,
+                                BusinessArea = item.BusinessArea
+                            });
+                        }
+                    }
+                    eligibilityResponse.Content.DS = baseContent;
                 }
             }
             catch (Exception e)
