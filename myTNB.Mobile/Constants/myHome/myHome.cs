@@ -17,5 +17,14 @@
             public const string I18N_NCSubmittedRatingTitle = "ncSubmittedTitle";
             public const string I18N_NCSubmittedDesc = "ncSubmittedDesc";
         }
+
+        public struct PaymentHistory
+        {
+            public const string I18N_PaymentHistoryTitle = "title";
+            public const string I18N_PaymentHistoryListTitle = "paymentHistoryTitle";
+            public const string I18N_PaymentHistoryEmptyMessage = "paymentHistoryEmptyMessage";
+            public const string I18N_PaymentHistoryRefreshMessage = "paymentHistoryRefreshMessage";
+            public const string I18N_PaymentHistoryRefreshBtnText = "paymentHistoryRefreshBtnText";
+        }
     }
 }

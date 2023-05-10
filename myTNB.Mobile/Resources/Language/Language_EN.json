@@ -3420,5 +3420,12 @@
   },
   "PremiseTypeHeaderID": {
     "NC": [ 1 ]
+  },
+  "PaymentHistory": {
+    "title": "Payment History",
+    "paymentHistoryTitle": "My Payment History",
+    "paymentHistoryEmptyMessage": "No payment history was recorded up to now",
+    "paymentHistoryRefreshMessage": "There seems to be a problem retrieving your payment history. Please try again.",
+    "paymentHistoryRefreshBtnText": "Try Again"
   }
 }

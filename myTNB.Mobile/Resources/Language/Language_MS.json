@@ -3420,5 +3420,12 @@
   },
   "PremiseTypeHeaderID": {
     "NC": [ 1 ]
+  },
+  "PaymentHistory": {
+    "title": "Sejarah Pembayaran",
+    "paymentHistoryTitle": "Sejarah Pembayaran Saya",
+    "paymentHistoryEmptyMessage": "Tiada sejarah pembayaran direkodkan",
+    "paymentHistoryRefreshMessage": "Nampaknya terdapat ralat untuk menjejaki sejarah pembayaran anda. Sila cuba sekali lagi.",
+    "paymentHistoryRefreshBtnText": "Cuba Lagi"
   }
 }
