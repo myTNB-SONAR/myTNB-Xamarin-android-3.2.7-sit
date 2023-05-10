@@ -19,11 +19,12 @@ using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewReceipt.Activity;
+using myTNB.Mobile.Constants;
 
 namespace myTNB_Android.Src.MyHome.Activity
 {
 	[Activity(Label = "MyHomePaymentHistoryActivity", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
-    public class MyHomePaymentHistoryActivity : BaseToolbarAppCompatActivity, MyHomePaymentHistoryContract.IView
+    public class MyHomePaymentHistoryActivity : BaseActivityCustom, MyHomePaymentHistoryContract.IView
     {
         [BindView(Resource.Id.myHomePaymentHistoryTitle)]
         TextView myHomePaymentHistoryTitle;
@@ -53,6 +54,8 @@ namespace myTNB_Android.Src.MyHome.Activity
 
         private DecimalFormat mDecimalFormat = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
+        const string PAGE_ID = "PaymentHistory";
+
         protected override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
@@ -65,8 +68,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                 ? Resource.Style.Theme_DashboardLarge
                 : Resource.Style.Theme_Dashboard);
 
-                //Lang STUB
-                SetToolBarTitle("Payment History");
+                SetToolBarTitle(GetLabelByLanguage(myHome.PaymentHistory.I18N_PaymentHistoryTitle));
                 SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
@@ -107,6 +109,11 @@ namespace myTNB_Android.Src.MyHome.Activity
             this.presenter = userActionListener;
         }
 
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
+
         public void SetUpViews()
         {
             TextViewUtils.SetMuseoSans500Typeface(myHomePaymentHistoryTitle, btnMyHomePaymentHistoryRefresh);
@@ -115,11 +122,7 @@ namespace myTNB_Android.Src.MyHome.Activity
             TextViewUtils.SetTextSize14(myHomePaymentHistoryEmptyMessage);
             TextViewUtils.SetTextSize12(myHomePaymentHistoryRefreshMessage);
 
-            //Lang STUB
-            myHomePaymentHistoryTitle.Text = "My Payment History";
-            myHomePaymentHistoryEmptyMessage.Text = "Looks like you have no bills yet! Once you do, your bills and payment history will appear here.";
-            myHomePaymentHistoryRefreshMessage.Text = "Uh oh, looks like your bill/payment history have been unplugged. Refresh to stay plugged in!";
-            btnMyHomePaymentHistoryRefresh.Text = "Refresh Now";
+            myHomePaymentHistoryTitle.Text = GetLabelByLanguage(myHome.PaymentHistory.I18N_PaymentHistoryListTitle);
 
             UpdateShimmerLoadingState(true);
             this.presenter.GetAccountBillPayHistory();

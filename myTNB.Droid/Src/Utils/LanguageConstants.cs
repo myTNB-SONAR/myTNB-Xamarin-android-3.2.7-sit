@@ -18,6 +18,7 @@
         internal static readonly string DBR_WEBVIEW = "DBRWebview";
         internal static readonly string USAGE = "Usage";
         internal static readonly string MANAGE_DIGITAL_BILL = "ManageDigitalBillLanding";
+        internal static readonly string PAYMENT_HISTORY = "PaymentHistory";
 
         internal struct Common
         {

@@ -9,6 +9,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
+using myTNB.Mobile.Constants;
 using static myTNB_Android.Src.MyTNBService.Response.AccountBillPayHistoryResponse;
 
 namespace myTNB_Android.Src.MyHome.MVP
@@ -90,8 +91,8 @@ namespace myTNB_Android.Src.MyHome.MVP
                     }
                     else
                     {
-                        //STUB
-                        this.mView?.ShowEmptyListWithMessage(Utility.GetLocalizedLabel(LanguageConstants.BILLS, LanguageConstants.Bills.EMPTY_PAYMENT_HISTORY));
+                        string contentText = Utility.GetLocalizedLabel(LanguageConstants.PAYMENT_HISTORY, myHome.PaymentHistory.I18N_PaymentHistoryEmptyMessage);
+                        this.mView?.ShowEmptyListWithMessage(contentText);
                     }
                 });
             }
@@ -99,34 +100,13 @@ namespace myTNB_Android.Src.MyHome.MVP
                 && accountBillPayResponse.Response != null
                 && accountBillPayResponse.Response.ErrorCode == "8400")
             {
-                string contentText = Utility.GetLocalizedLabel(LanguageConstants.BILLS, LanguageConstants.Bills.NO_HISTORY_DATA);
-
-                if (accountBillPayResponse.Response.DisplayMessage.IsValid())
-                {
-                    contentText = accountBillPayResponse.Response.DisplayMessage;
-                }
-
+                string contentText = Utility.GetLocalizedLabel(LanguageConstants.PAYMENT_HISTORY, myHome.PaymentHistory.I18N_PaymentHistoryRefreshMessage);
                 this.mView.ShowRefreshStateWithMessage(false, contentText, string.Empty);
             }
             else
             {
-                //STUB
-                string contentText = "";
-                string btnText = Utility.GetLocalizedCommonLabel(LanguageConstants.Common.REFRESH_NOW);
-
-                if (accountBillPayResponse != null
-                    && accountBillPayResponse.Response != null
-                    && accountBillPayResponse.Response.RefreshMessage.IsValid())
-                {
-                    contentText = accountBillPayResponse.Response.RefreshMessage;
-                }
-
-                if (accountBillPayResponse != null
-                    && accountBillPayResponse.Response != null
-                    && accountBillPayResponse.Response.RefreshBtnText.IsValid())
-                {
-                    btnText = accountBillPayResponse.Response.RefreshBtnText;
-                }
+                string contentText = Utility.GetLocalizedLabel(LanguageConstants.PAYMENT_HISTORY, myHome.PaymentHistory.I18N_PaymentHistoryRefreshMessage);
+                string btnText = Utility.GetLocalizedLabel(LanguageConstants.PAYMENT_HISTORY, myHome.PaymentHistory.I18N_PaymentHistoryRefreshBtnText);
 
                 this.mView.ShowRefreshStateWithMessage(true, contentText, btnText);
             }
