@@ -423,9 +423,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                 ToastUtils.OnDisplayToast(this, message ?? string.Empty);
                             }
                         }
-                        else if (extras.ContainsKey(MyHomeConstants.BACK_TO_HOME))
+                        else if (extras.ContainsKey(MyHomeConstants.ACTION_BACK_TO_HOME))
                         {
-                            bool backToHome = extras.GetBoolean(MyHomeConstants.BACK_TO_HOME);
+                            bool backToHome = extras.GetBoolean(MyHomeConstants.ACTION_BACK_TO_HOME);
                             if (backToHome)
                             {
                                 string toastMessage = string.Empty;
@@ -435,13 +435,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                 }
 
                                 Intent resultIntent = new Intent();
-                                resultIntent.PutExtra(MyHomeConstants.BACK_TO_HOME, true);
+                                resultIntent.PutExtra(MyHomeConstants.ACTION_BACK_TO_HOME, true);
                                 resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
                                 SetResult(Result.Ok, resultIntent);
                                 Finish();
                             }
                         }
-                        else if (extras.ContainsKey(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
+                        else if (extras.ContainsKey(MyHomeConstants.ACTION_BACK_TO_APPLICATION_STATUS_LANDING))
                         {
                             if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
                             {

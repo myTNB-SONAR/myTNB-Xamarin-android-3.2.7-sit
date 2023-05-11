@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 
@@ -25,6 +26,11 @@ namespace myTNB_Android.Src.MyHome.MVP
             void HideProgressDialog();
 
             /// <summary>
+            /// Shows generic error pop up
+            /// </summary>
+            void ShowGenericError();
+
+            /// <summary>
             /// Views the downloaded file to a different screen
             /// </summary>
             /// <param name="filePath"></param>
@@ -39,6 +45,12 @@ namespace myTNB_Android.Src.MyHome.MVP
             /// <param name="fileExtension"></param>
             /// <param name="fileTitle"></param>
             void ShareDownloadedFile(string filePath, string fileExtension, string fileTitle);
+
+            /// <summary>
+            /// Shows Payment Details screen with data model
+            /// </summary>
+            /// <param name="paymentDetailsModel"></param>
+            void ShowPaymentDetails(MyHomePaymentDetailsModel paymentDetailsModel);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -68,6 +80,12 @@ namespace myTNB_Android.Src.MyHome.MVP
             /// </summary>
             /// <returns></returns>
             string GetFilePath();
+
+            /// <summary>
+            /// Parses the url and calls GetCharges API
+            /// </summary>
+            /// <param name="webURL"></param>
+            void GetPaymentDetails(string webURL);
         }
     }
 }

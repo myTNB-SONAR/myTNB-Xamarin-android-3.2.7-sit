@@ -19,6 +19,7 @@
         internal static readonly string USAGE = "Usage";
         internal static readonly string MANAGE_DIGITAL_BILL = "ManageDigitalBillLanding";
         internal static readonly string PAYMENT_HISTORY = "PaymentHistory";
+        internal static readonly string SELECT_PAYMENT_METHOD = "SelectPaymentMethod";
 
         internal struct Common
         {
@@ -30,6 +31,9 @@
             internal static readonly string REFRESH_NOW = "refreshNow";
             internal static readonly string OK = "ok";
             internal static readonly string SUBMIT = "submit";
+            internal static readonly string CARDS = "cards";
+            internal static readonly string TOTAL_AMOUNT = "totalAmountRM";
+            internal static readonly string EPP_TOOLTIP_TITLE = "eppToolTipTitle";
         }
 
         internal struct Error
@@ -66,6 +70,12 @@
             internal static readonly string BILL_THIS_MONTH = "billThisMonth";
             internal static readonly string BILL_THIS_MONTH_V2 = "billThisMonthV2";
             internal static readonly string ROUNDING_ADJUSTMENT = "roundingAdjustment";
+            internal static readonly string MY_CHARGES = "billDetails";
+            internal static readonly string APPLICATION_CHARGES = "applicationCharges";
+            internal static readonly string PAID_EXTRA = "paidExtra";
+            internal static readonly string NEED_TO_PAY = "needToPay";
+            internal static readonly string BY = "by";
+            internal static readonly string CLEARED_BILLS = "clearedBills";
         }
 
         internal struct BillFilter
@@ -219,6 +229,15 @@
             internal static readonly string DBR_INFO_DESC_2 = "dbrInfoDescription2";
             internal static readonly string DBR_INFO_DESC_2_V2 = "dbrInfoDescription2V2";
             internal static readonly string DBR_INFO_DESC_3 = "dbrInfoDescription3";
+        }
+
+        internal struct SelectPaymentMethod
+        {
+            internal static readonly string OTHER_PAYMENT_METHODS = "otherPaymentMethods";
+            internal static readonly string E_WALLET_PAYMENT_METHODS = "eWalletPaymentMethods";
+            internal static readonly string TNG_TITLE = "tngTitle";
+            internal static readonly string ADD_CARD = "addCard";
+            internal static readonly string FPX_TITLE = "fpxTitle";
         }
     }
 }

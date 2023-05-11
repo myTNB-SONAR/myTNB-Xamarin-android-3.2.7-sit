@@ -10,6 +10,13 @@ using System.Net;
 using myTNB_Android.Src.Utils;
 using System.Threading;
 using System.Threading.Tasks;
+using myTNB_Android.Src.MyHome.Model;
+using System.Collections.Generic;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.Base;
+using myTNB_Android.Src.MyTNBService.Parser;
 
 namespace myTNB_Android.Src.MyHome.MVP
 {
@@ -23,6 +30,7 @@ namespace myTNB_Android.Src.MyHome.MVP
         public string _filePath;
         public string _fileExtension;
         public string _fileTitle;
+        private MyHomePaymentDetailsModel _paymentDetailsModel;
 
         public MyHomeMicrositePresenter(MyHomeMicrositeContract.IView view, BaseAppCompatActivity activity, Context context)
         {
@@ -38,6 +46,7 @@ namespace myTNB_Android.Src.MyHome.MVP
             _filePath = string.Empty;
             _fileExtension = string.Empty;
             _fileTitle = string.Empty;
+            _paymentDetailsModel = new MyHomePaymentDetailsModel();
 
             this.mView?.SetUpViews();
         }
@@ -150,6 +159,100 @@ namespace myTNB_Android.Src.MyHome.MVP
                 Utility.LoggingNonFatalError(e);
             }
             return path;
+        }
+
+        public void GetPaymentDetails(string webURL)
+        {
+            try
+            {
+                string ca = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_CA.ToLower(), webURL);
+                if (ca.IsValid())
+                {
+                    _paymentDetailsModel.AccountNumber = ca;
+                }
+
+                string nickName = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_ACCOUNT_NICKNAME, webURL);
+                if (nickName.IsValid())
+                {
+                    _paymentDetailsModel.AccountNickName = nickName;
+                }
+
+                string address = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_ACCOUNT_PREMISE, webURL);
+                if (address.IsValid())
+                {
+                    _paymentDetailsModel.AccountAddress = address;
+                }
+
+                string isOwnedStr = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_IS_OWNER, webURL);
+                if (isOwnedStr.IsValid())
+                {
+                    _paymentDetailsModel.IsOwned = bool.Parse(isOwnedStr);
+                }
+
+                this.mView?.ShowProgressDialog();
+
+                Task.Run(() =>
+                {
+                    _ = OnGetAccountCharges();
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void OnGetRegisteredCards()
+        {
+            Task.Run(() =>
+            {
+                _ = GetRegisteredCards();
+            });
+        }
+
+        private async Task OnGetAccountCharges()
+        {
+            AccountChargesResponse accountChargesResponse = await ServiceApiImpl.Instance.GetAccountsCharges(new AccountsChargesRequest(new List<string>() {
+                _paymentDetailsModel.AccountNumber },
+                _paymentDetailsModel.IsOwned));
+
+            if (accountChargesResponse.IsSuccessResponse())
+            {
+                _paymentDetailsModel.AccountChargesResponse = accountChargesResponse;
+                Utility.SetIsPayDisableNotFromAppLaunch(!accountChargesResponse.Response.IsPayEnabled);
+                MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargesResponse.GetData().MandatoryChargesPopUpDetails));
+                OnGetRegisteredCards();
+            }
+            else
+            {
+                this.mActivity.RunOnUiThread(() =>
+                {
+                    this.mView.HideProgressDialog();
+                    this.mView?.ShowGenericError();
+                });
+            }
+        }
+
+        private async Task GetRegisteredCards()
+        {
+            RegisteredCardsResponse registeredCardsResponse = await ServiceApiImpl.Instance.GetRegisteredCards(new RegisteredCardsRequest(_paymentDetailsModel.IsOwned));
+            if (registeredCardsResponse.IsSuccessResponse())
+            {
+                _paymentDetailsModel.RegisteredCardsResponse = registeredCardsResponse;
+                this.mActivity.RunOnUiThread(() =>
+                {
+                    this.mView?.HideProgressDialog();
+                    this.mView?.ShowPaymentDetails(_paymentDetailsModel);
+                });
+            }
+            else
+            {
+                this.mActivity.RunOnUiThread(() =>
+                {
+                    this.mView?.HideProgressDialog();
+                    this.mView?.ShowGenericError();
+                });
+            }
         }
     }
 }

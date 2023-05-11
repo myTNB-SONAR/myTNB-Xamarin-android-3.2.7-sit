@@ -3,6 +3,7 @@ using myTNB_Android.Src.MyHome.Model;
 using static myTNB.Mobile.MobileEnums;
 using Android.Graphics;
 using Newtonsoft.Json;
+using myTNB_Android.Src.MyTNBService.Response;
 
 namespace myTNB_Android.Src.MyHome.Model
 {
@@ -51,6 +52,16 @@ namespace myTNB_Android.Src.MyHome.Model
         public string Message { get; set; }
         public string PrimaryCTA { get; set; }
         public string SecondaryCTA { get; set; }
+    }
+
+    public class MyHomePaymentDetailsModel
+    {
+        public string AccountNumber { get; set; }
+        public string AccountNickName { get; set; }
+        public string AccountAddress { get; set; }
+        public bool IsOwned { get; set; }
+        public AccountChargesResponse AccountChargesResponse { get; set; }
+        public RegisteredCardsResponse RegisteredCardsResponse { get; set; }
     }
 }
 

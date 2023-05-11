@@ -1756,9 +1756,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             {
                 if (data != null && data.Extras is Bundle extras && extras != null)
                 {
-                    if (extras.ContainsKey(MyHomeConstants.BACK_TO_HOME))
+                    if (extras.ContainsKey(MyHomeConstants.ACTION_BACK_TO_HOME))
                     {
-                        bool backToHome = extras.GetBoolean(MyHomeConstants.BACK_TO_HOME);
+                        bool backToHome = extras.GetBoolean(MyHomeConstants.ACTION_BACK_TO_HOME);
                         if (backToHome)
                         {
                             string toastMessage = string.Empty;
@@ -1768,15 +1768,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             }
 
                             Intent resultIntent = new Intent();
-                            resultIntent.PutExtra(MyHomeConstants.BACK_TO_HOME, true);
+                            resultIntent.PutExtra(MyHomeConstants.ACTION_BACK_TO_HOME, true);
                             resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
                             SetResult(Result.Ok, resultIntent);
                             Finish();
                         }
                     }
-                    else if (extras.ContainsKey(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
+                    else if (extras.ContainsKey(MyHomeConstants.ACTION_BACK_TO_APPLICATION_STATUS_LANDING))
                     {
-                        bool backToStatusLanding = extras.GetBoolean(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING);
+                        bool backToStatusLanding = extras.GetBoolean(MyHomeConstants.ACTION_BACK_TO_APPLICATION_STATUS_LANDING);
                         if (backToStatusLanding)
                         {
                             string toastMessage = string.Empty;
@@ -1786,7 +1786,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             }
 
                             Intent resultIntent = new Intent();
-                            resultIntent.PutExtra(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING, true);
+                            resultIntent.PutExtra(MyHomeConstants.ACTION_BACK_TO_APPLICATION_STATUS_LANDING, true);
                             resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
                             SetResult(Result.Ok, resultIntent);
                             Finish();

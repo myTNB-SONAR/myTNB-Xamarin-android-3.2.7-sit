@@ -38,19 +38,19 @@ namespace myTNB_Android.Src.MyHome.MVP
         {
             _billingHistoryList = new List<AccountBillPayHistoryModel>();
 
-            if (bundle.ContainsKey(MyHomeConstants.PAYMENT_HISTORY_CA))
+            if (bundle.ContainsKey(MyHomeConstants.PAYMENT_CA))
             {
-                _contractAccount = bundle.GetString(MyHomeConstants.PAYMENT_HISTORY_CA);
+                _contractAccount = bundle.GetString(MyHomeConstants.PAYMENT_CA);
             }
 
-            if (bundle.ContainsKey(MyHomeConstants.PAYMENT_HISTORY_IS_OWNED))
+            if (bundle.ContainsKey(MyHomeConstants.PAYMENT_IS_OWNED))
             {
-                _isOwnedAccount = bundle.GetBoolean(MyHomeConstants.PAYMENT_HISTORY_IS_OWNED);
+                _isOwnedAccount = bundle.GetBoolean(MyHomeConstants.PAYMENT_IS_OWNED);
             }
 
-            if (bundle.ContainsKey(MyHomeConstants.PAYMENT_HISTORY_ACCOUNT_TYPE))
+            if (bundle.ContainsKey(MyHomeConstants.PAYMENT_ACCOUNT_TYPE))
             {
-                _accountType = bundle.GetString(MyHomeConstants.PAYMENT_HISTORY_ACCOUNT_TYPE);
+                _accountType = bundle.GetString(MyHomeConstants.PAYMENT_ACCOUNT_TYPE);
             }
 
             this.mView?.SetUpViews();
