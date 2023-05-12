@@ -3378,7 +3378,10 @@
     "idVerifiedMessage": "Dengan identiti yang telah disahkan, anda kini boleh menikmati semua ciri-ciri myTNB dengan akaun yang dilindungi untuk memastikan risiko minimum dari permohonan penipuan",
     "backToHome": "Kembali ke Halaman Utama",
     "userIDNotMatchTitle": "Oops!",
-    "userIDNotMatchMessage": "Sila pastikan anda menggunakan akaun myTNB yang ditetapkan untuk pengesahan identiti."
+    "userIDNotMatchMessage": "Sila pastikan anda menggunakan akaun myTNB yang ditetapkan untuk pengesahan identiti.",
+    "DSPrivacyPolicy": "Dengan mengesahkan identiti anda, anda bersetuju dengan <a href=\"\\\">Dasar Privasi</a>.",
+    "privacyPolicy": "Dasar Privasi",
+    "privacyPolicyURL": "https://www.mytnb.com.my/privacy-policy"
   },
   "DSLanding_selector": {
     "idType": [

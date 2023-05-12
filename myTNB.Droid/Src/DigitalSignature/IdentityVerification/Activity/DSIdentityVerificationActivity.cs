@@ -63,6 +63,9 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         [BindView(Resource.Id.dsIdVerifInfoDropdownMessage)]
         readonly TextView dsIdVerifInfoDropdownMessage;
 
+        [BindView(Resource.Id.dsIdVerificationPrivacyPolicy)]
+        readonly TextView dsIdVerificationPrivacyPolicy;
+
         private const string PAGE_ID = DSConstants.PageName_DSLanding;
         private const int _totalItem = 3;
         private Action buttonCTA;
@@ -139,10 +142,10 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                 identityVerificationBtnContinue.Text = GetLabelByLanguage(DSConstants.I18N_Continue);
             }
 
-            TextViewUtils.SetTextSize12(dsIdVerifInfoDropdownTitle, dsIdVerifInfoDropdownMessage);
+            TextViewUtils.SetTextSize12(dsIdVerifInfoDropdownTitle, dsIdVerifInfoDropdownMessage, dsIdVerificationPrivacyPolicy);
             TextViewUtils.SetTextSize16(dsIdVerifInfoTitle);
             TextViewUtils.SetTextSize14(dsIdVerifInfoMessage);
-            TextViewUtils.SetMuseoSans300Typeface(dsIdVerifInfoMessage, dsIdVerifInfoDropdownTitle, dsIdVerifInfoDropdownMessage);
+            TextViewUtils.SetMuseoSans300Typeface(dsIdVerifInfoMessage, dsIdVerifInfoDropdownTitle, dsIdVerifInfoDropdownMessage, dsIdVerificationPrivacyPolicy);
             TextViewUtils.SetMuseoSans500Typeface(dsIdVerifInfoTitle);
         }
 
@@ -277,10 +280,12 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                 if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_NoRegisteredIDMessage), FromHtmlOptions.ModeLegacy);
+                    dsIdVerificationPrivacyPolicy.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_DSPrivacyPolicy), FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
                     dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_NoRegisteredIDMessage));
+                    dsIdVerificationPrivacyPolicy.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_DSPrivacyPolicy));
                 }
 
                 buttonCTA = OnVerifyNow;
@@ -387,12 +392,16 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                                     dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(dialogMessage, FromHtmlOptions.ModeLegacy);
                                     dsIdVerifInfoDropdownTitle.TextFormatted = Html.FromHtml(dropdownTitle, FromHtmlOptions.ModeLegacy);
                                     dsIdVerifInfoDropdownMessage.TextFormatted = Html.FromHtml(dropdownMessage, FromHtmlOptions.ModeLegacy);
+                                    dsIdVerificationPrivacyPolicy.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_DSPrivacyPolicy), FromHtmlOptions.ModeLegacy);
+                                    StripUnderlinesFromLinks(dsIdVerificationPrivacyPolicy);
                                 }
                                 else
                                 {
                                     dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(dialogMessage);
                                     dsIdVerifInfoDropdownTitle.TextFormatted = Html.FromHtml(dropdownTitle);
                                     dsIdVerifInfoDropdownMessage.TextFormatted = Html.FromHtml(dropdownMessage);
+                                    dsIdVerificationPrivacyPolicy.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_DSPrivacyPolicy), FromHtmlOptions.ModeLegacy);
+                                    StripUnderlinesFromLinks(dsIdVerificationPrivacyPolicy);
                                 }
 
                                 ImageSpan imageSpan = new ImageSpan(this, Resource.Drawable.Icon_DS_Dropdown_Expand, SpanAlign.Bottom);
@@ -458,6 +467,34 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Verification.PopUp_Verify_Now);
         }
 
+        [OnClick(Resource.Id.dsIdVerificationPrivacyPolicy)]
+        void openLink(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("DSLanding", "privacyPolicyURL"));
+                webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("DSLanding", "privacyPolicy"));
+                this.StartActivity(webIntent);
+            }
+        }
+
+        public void StripUnderlinesFromLinks(TextView textView)
+        {
+            var spannable = new SpannableStringBuilder(textView.TextFormatted);
+            var spans = spannable.GetSpans(0, spannable.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+            foreach (URLSpan span in spans)
+            {
+                var start = spannable.GetSpanStart(span);
+                var end = spannable.GetSpanEnd(span);
+                spannable.RemoveSpan(span);
+                var newSpan = new URLSpanNoUnderline(span.URL);
+                spannable.SetSpan(newSpan, start, end, 0);
+            }
+            textView.TextFormatted = spannable;
+        }
+
         public void UpdateLoadingShimmer(bool toShow)
         {
             dsIdVerifShimmerContainer.Visibility = toShow ? ViewStates.Visible : ViewStates.Gone;
@@ -494,6 +531,19 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             else
             {
                 ProceedOnVerifyNow(_dsDynamicLinkParamsModel);
+            }
+        }
+
+        class URLSpanNoUnderline : URLSpan
+        {
+            public URLSpanNoUnderline(string url) : base(url)
+            {
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
             }
         }
     }
