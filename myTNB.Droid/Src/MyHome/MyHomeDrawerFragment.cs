@@ -260,8 +260,6 @@ namespace myTNB_Android.Src.MyHome
                         CancelURL = string.Empty
                     };
 
-                    bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
-
                     Intent micrositeActivity = new Intent(this.Activity, typeof(MyHomeMicrositeActivity));
                     micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
                     micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
