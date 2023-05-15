@@ -3379,7 +3379,7 @@
     "backToHome": "Back To Home",
     "userIDNotMatchTitle": "Oops!",
     "userIDNotMatchMessage": "Please ensure that you are using the designated myTNB account for identity verification.",
-    "DSPrivacyPolicy": "By verifying your identity, you're consenting to <a href=\"\\\">Privacy Policy</a>.",
+    "DSPrivacyPolicy": "By verifying your identity, you're consenting to TNB's '<a href=\"\\\">Privacy Policy</a>.",
     "privacyPolicy": "Privacy Policy",
     "privacyPolicyURL": "https://www.mytnb.com.my/privacy-policy"
   },
