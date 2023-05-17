@@ -994,7 +994,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 if (String.IsNullOrEmpty(txtTotalAmount.Text) || txtTotalAmount.Text.Equals("0.00"))
                 {
                     isValid = false;
-                    txtTotalAmount.Error = "Please Selcet/Enter Valid Payable Amount";
+                    txtTotalAmount.Error = Utility.GetLocalizedErrorLabel(LanguageConstants.Error.MIN_PAY_AMOUNT);
                 }
                 else
                 {
@@ -1004,7 +1004,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         isValid = false;
                         //txtTotalAmount.Error = "Minimum amount for online payment is 1RM";
-                        ShowErrorMessage("Minimum amount for online payment is 1RM");
+                        ShowErrorMessage(Utility.GetLocalizedErrorLabel(LanguageConstants.Error.MIN_PAY_AMOUNT));
                     }
                     else if (payableAmt > 5000 && selectedPaymentMethod.Equals(METHOD_CREDIT_CARD))
                     {

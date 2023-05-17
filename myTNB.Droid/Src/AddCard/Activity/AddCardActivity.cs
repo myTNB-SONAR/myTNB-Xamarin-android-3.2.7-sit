@@ -75,6 +75,9 @@ namespace myTNB_Android.Src.AddCard.Activity
             {
                 this.mPresenter = new AddCardPresenter(this);
 
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
                 Bundle extras = Intent.Extras;
 
                 if (extras != null)

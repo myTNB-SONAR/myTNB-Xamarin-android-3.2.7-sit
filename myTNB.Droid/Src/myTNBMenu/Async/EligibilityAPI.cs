@@ -11,6 +11,7 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Async
 {
@@ -117,6 +118,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                         , UserEntity.GetActive().Email ?? string.Empty
                         , GetContractAccountList()
                         , AccessTokenCache.Instance.GetAccessToken(mView));
+
+                    System.Diagnostics.Debug.WriteLine("[DEBUG] PostEligibility: " + JsonConvert.SerializeObject(response));
 
                     //Nullity Check
                     if (response != null

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Android.Content;
 using Android.OS;
+using Android.Util;
+using Android.Views;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.MultipleAccountPayment.Models;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Parser;
@@ -24,6 +28,7 @@ namespace myTNB_Android.Src.MyHome.MVP
         private List<AccountChargeModel> _accountChargeModelList;
         private List<AccountChargeModel> _selectedAccountChargesModelList;
         private AccountChargeModel _accountChargeModel;
+        private List<CreditCard> _registeredCards;
 
         public MyHomePaymentDetailsPresenter(MyHomePaymentDetailsContract.IView view, BaseAppCompatActivity activity, Context context)
         {
@@ -58,7 +63,24 @@ namespace myTNB_Android.Src.MyHome.MVP
                         this.mView?.UpdateMyChargesUI();
                     }
 
-                    this.mView?.UpdatePaymentsMethodUI();
+                    RegisteredCardsResponse registeredCardsResponse = _paymentDetailsModel.RegisteredCardsResponse;
+                    if (registeredCardsResponse != null)
+                    {
+                        if (registeredCardsResponse.GetData() != null)
+                        {
+                            if (registeredCardsResponse.GetData().Count() > 0)
+                            {
+                                _registeredCards = new List<CreditCard>();
+                                List<CreditCard> cards = registeredCardsResponse.GetData();
+                                foreach (CreditCard card in cards)
+                                {
+                                    _registeredCards.Add(card);
+                                }
+
+                                this.mView?.UpdatePaymentsMethodUI();
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -77,6 +99,11 @@ namespace myTNB_Android.Src.MyHome.MVP
         public AccountChargeModel GetAccountChargeModel()
         {
             return _accountChargeModel;
+        }
+
+        public List<CreditCard> GetRegisteredCards()
+        {
+            return _registeredCards;
         }
     }
 }

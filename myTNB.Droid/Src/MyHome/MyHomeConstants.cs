@@ -35,6 +35,8 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string PAYMENT_ACCOUNT_PREMISE = "premise";
         internal static readonly string PAYMENT_ACCOUNT_TYPE = "AccountType";
         internal static readonly string PAYMENT_DETAILS_MODEL = "paymentDetailsModel";
+        internal static readonly int PAYMENT_ADD_CARD_REQUEST_CODE = 1001;
+        internal static readonly string REGISTERED_CARDS = "registeredCards";
     }
 }
 

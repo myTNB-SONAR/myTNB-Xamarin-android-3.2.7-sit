@@ -34,6 +34,7 @@
             internal static readonly string CARDS = "cards";
             internal static readonly string TOTAL_AMOUNT = "totalAmountRM";
             internal static readonly string EPP_TOOLTIP_TITLE = "eppToolTipTitle";
+            internal static readonly string BACK = "back";
         }
 
         internal struct Error
@@ -44,6 +45,7 @@
             internal static readonly string INVALID_EMAIL = "invalid_email";
             internal static readonly string DEFAULT_ERROR_TITLE = "defaultErrorTitle";
             internal static readonly string DEFAULT_ERROR_MSG = "defaultErrorMessage";
+            internal static readonly string MIN_PAY_AMOUNT = "minimumPayAmount";
         }
 
         internal struct DashboardHome
@@ -238,6 +240,7 @@
             internal static readonly string TNG_TITLE = "tngTitle";
             internal static readonly string ADD_CARD = "addCard";
             internal static readonly string FPX_TITLE = "fpxTitle";
+            internal static readonly string MAX_CC_AMT_MSG = "maxCCAmountMessage";
         }
     }
 }
