@@ -115,7 +115,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     }
 
                     GetEligibilityResponse response = await EligibilityManager.Instance.PostEligibility(UserEntity.GetActive().UserID ?? string.Empty,
-                        GetContractAccountList(), AccessTokenCache.Instance.GetAccessToken(mView));
+                        GetContractAccountList(), null, AccessTokenCache.Instance.GetAccessToken(mView));
 
                     //Nullity Check
                     if (response != null

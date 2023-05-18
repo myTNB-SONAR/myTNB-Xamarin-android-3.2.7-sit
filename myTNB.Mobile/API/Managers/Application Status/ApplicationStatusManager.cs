@@ -500,10 +500,10 @@ namespace myTNB.Mobile
                     && accNumber.IsValid()))
                 {
                     GetEligibilityResponse eligibilityByCriteriaResponse =
-                        await EligibilityManager.Instance.PostEligibilityByCriteria(new List<string> { displaymodel.Content.CABusinessArea }
+                        await EligibilityManager.Instance.PostEligibility(userID
                         , new List<AWS.ContractAccountModel> { new AWS.ContractAccountModel() { accNum = displaymodel.Content.ContractAccountNo, BusinessArea = displaymodel.Content.CABusinessArea } }
-                        , AppInfoManager.Instance.AccessToken
-                        , userID);
+                        , new List<AWS.PremiseCriteriaModel> { new AWS.PremiseCriteriaModel() { BusinessArea = displaymodel.Content.CABusinessArea } }
+                        , AppInfoManager.Instance.AccessToken);
 
                     if (DSUtility.Instance.IsAccountEligible
                         && eligibilityByCriteriaResponse.StatusDetail != null
@@ -518,47 +518,14 @@ namespace myTNB.Mobile
                         #region Mitigation Task For myHome & DS
                         // Mitigation Task For myHome & DS
                         string searchTerm = savedApplicationID.IsValid() ? savedApplicationID : applicationID;
-                        try
+                        if (applicationType.Contains("NC")
+                            && "myTNB_API_Mobile".Equals(displaymodel.Content.ApplicationStatusDetail.Channel, StringComparison.OrdinalIgnoreCase))
                         {
-                            IApplicationStatusService service = RestService.For<IApplicationStatusService>(MobileConstants.ApiDomain);
-                            try
-                            {
-                                HttpResponseMessage rawResponse = await service.GetApplicationDetail(applicationType
-                                     , searchTerm
-                                     , system
-                                     , isDSEligible
-                                     , AppInfoManager.Instance.GetUserInfo()
-                                     , NetworkService.GetCancellationToken()
-                                     , AppInfoManager.Instance.Language.ToString()
-                                     , AppInfoManager.Instance.Language.ToString());
-
-                                string responseString = await rawResponse.Content.ReadAsStringAsync();
-                                GetApplicationDetailsResponse response = JsonConvert.DeserializeObject<GetApplicationDetailsResponse>(responseString);
-                                if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
-                                {
-                                    if (applicationType.Contains("NC")
-                                        && "myTNB_API_Mobile".Equals(response.Content.newConnectionDetail.channel, StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        isDSEligible = false;
-                                    }
-                                    else
-                                    {
-                                        isDSEligible = true;
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-#if DEBUG
-                                Debug.WriteLine("[DEBUG][GetApplicationDetailV2]General Exception: " + ex.Message);
-#endif
-                            }
+                            isDSEligible = false;
                         }
-                        catch (Exception e)
+                        else
                         {
-#if DEBUG
-                            Debug.WriteLine(e.Message);
-#endif
+                            isDSEligible = true;
                         }
                         #endregion
 
@@ -657,6 +624,7 @@ namespace myTNB.Mobile
                                     , applicationType);
                                 displaymodel.ParseDisplayModel(paymentResponse);
                             }
+                            displaymodel.Content.ApplicationStatusDetail.Channel = response.Content.newConnectionDetail.channel;
                         }
                     }
                     catch (Exception ex)
