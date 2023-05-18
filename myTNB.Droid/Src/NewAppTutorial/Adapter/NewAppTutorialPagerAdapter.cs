@@ -3489,7 +3489,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     bottomLayout.RequestLayout();
 
                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
+                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? LanguageUtil.GetAppLanguage() == "MS" ? (int)DPUtils.ConvertDPToPx(170f) : (int)DPUtils.ConvertDPToPx(144f)
+                        : LanguageUtil.GetAppLanguage() == "MS" ? (int)DPUtils.ConvertDPToPx(122f) : (int)DPUtils.ConvertDPToPx(112f);
                     innerTopLayoutParam.LeftMargin = myHomeLeftPosition + (int)DPUtils.ConvertDPToPx(20f);
                     innerTopLayoutParam.RightMargin = padding;
                     innerTopLayout.RequestLayout();
