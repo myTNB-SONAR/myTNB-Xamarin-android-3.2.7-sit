@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using myTNB.Mobile.API.Models.Home.PostServices;
 using myTNB.Mobile.Extensions;
@@ -70,23 +71,28 @@ namespace myTNB.Mobile.API.Managers.Home.Utilities
             {
                 return true;
             }
-            int nAppVersion = GetNumericVersion(appVersion);
-            int nServiceVersion = GetNumericVersion(serviceVersion);
-            return nAppVersion >= nServiceVersion;
+            return IsValidVersion(appVersion, serviceVersion);
         }
 
-        private static int GetNumericVersion(string version)
+        private static bool IsValidVersion(string appVersionString
+            , string serviceVersionString)
         {
-            if (version.IsValid())
+            Version appVersion = new Version(appVersionString);
+            Version serviceVersion = new Version(serviceVersionString);
+
+            int comparison = appVersion.CompareTo(serviceVersion);
+            if (comparison > 0)
             {
-                version = version.Replace(".", string.Empty);
-                bool isSuccess = int.TryParse(version, out int numericVersion);
-                if (isSuccess)
-                {
-                    return numericVersion;
-                }
+                return true;
             }
-            return 0;
+            else if (comparison < 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }
