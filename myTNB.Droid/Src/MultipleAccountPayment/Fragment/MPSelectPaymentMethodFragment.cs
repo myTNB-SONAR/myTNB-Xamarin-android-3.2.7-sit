@@ -534,7 +534,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         selectedCard = cardAdapter.GetCardDetailsAt(position);
                         //cardDetails = null;
                         //InitiatePaymentRequest();
-                        EnterCVVNumber(selectedCard); // -- CVV Enabled --
+                       
+                        if (!selectedCard.IsExpired)
+                        {
+                            EnterCVVNumber(selectedCard); // -- CVV Enabled --
+                        }
                     }
                 }
             }
