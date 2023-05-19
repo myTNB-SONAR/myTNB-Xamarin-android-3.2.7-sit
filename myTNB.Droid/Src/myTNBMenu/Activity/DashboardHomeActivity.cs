@@ -885,18 +885,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowMyHomeMarketingPopUp()
         {
             //STUB myHome
-            MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
-                    .SetHeaderImage(Resource.Drawable.Banner_MyHome_Marketing)
-                    .SetTitle("Check out myHome today!")
-                    .SetMessage("You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, track your application status and even organise your moving plans with ease using myHome.")
-                    .SetCTALabel("Got It!")
-                    .SetCTAaction(() =>
-                    {
-                        this.SetIsClicked(false);
-                        LogicCheckForDBRMarketingPopUp();
-                    })
-                    .Build();
-            marketingTooltip.Show();
+            //MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+            //        .SetHeaderImage(Resource.Drawable.Banner_MyHome_Marketing)
+            //        .SetTitle("Check out myHome today!")
+            //        .SetMessage("You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, track your application status and even organise your moving plans with ease using myHome.")
+            //        .SetCTALabel("Got It!")
+            //        .SetCTAaction(() =>
+            //        {
+            //            this.SetIsClicked(false);
+            //            LogicCheckForDBRMarketingPopUp();
+            //        })
+            //        .Build();
+            //marketingTooltip.Show();
         }
 
         public void ShowManageBill()
