@@ -9,6 +9,7 @@ namespace myTNB.Mobile.AWS
         public string UserID { set; get; }
         [JsonProperty("contractAccounts")]
         public List<ContractAccountModel> ContractAccounts { set; get; }
+        [JsonProperty("premiseCriteria")]
         public List<PremiseCriteriaModel> PremiseCriteria { set; get; }
     }
 

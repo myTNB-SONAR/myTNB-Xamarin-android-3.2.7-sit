@@ -14,8 +14,6 @@ namespace myTNB.Mobile.AWS.Models
         public EligibileFeaturesModel EligibileFeaturesList { set; get; }
         [JsonProperty("featureCAList")]
         public List<FeatureCAModel> FeatureCAList { set; get; }
-        [JsonProperty("featureBAList")]
-        public List<FeatureCAModel> FeatureBAList { set; get; }
     }
 
     public class FeatureCAModel : ContractAccountsModel

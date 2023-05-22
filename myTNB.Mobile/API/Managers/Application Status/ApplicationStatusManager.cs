@@ -517,7 +517,6 @@ namespace myTNB.Mobile
 
                         #region Mitigation Task For myHome & DS
                         // Mitigation Task For myHome & DS
-                        string searchTerm = savedApplicationID.IsValid() ? savedApplicationID : applicationID;
                         if (applicationType.Contains("NC")
                             && "myTNB_API_Mobile".Equals(displaymodel.Content.ApplicationStatusDetail.Channel, StringComparison.OrdinalIgnoreCase))
                         {
