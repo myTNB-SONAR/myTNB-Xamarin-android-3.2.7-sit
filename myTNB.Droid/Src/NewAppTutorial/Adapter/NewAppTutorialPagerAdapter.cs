@@ -272,8 +272,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     innerMiddleTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(12f);
                 }
 
-                txtTopContentParam.Width = (int)((float)this.mContext.Resources.DisplayMetrics.WidthPixels * 0.705);
-
                 txtTopContent.RequestLayout();
                 txtTopTitle.RequestLayout();
                 btnTopGotIt.RequestLayout();
@@ -479,14 +477,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 bottomLayout.RequestLayout();
 
                                 RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                                if (model.NeedHelpHide)
-                                {
-                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
-                                }
-                                else
-                                {
-                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
-                                }
                                 innerTopLayoutParam.LeftMargin = padding;
                                 innerTopLayoutParam.RightMargin = padding + (myHomeWidth / 2) - 8;
                                 innerTopLayout.RequestLayout();
@@ -528,14 +518,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 bottomLayout.RequestLayout();
 
                                 RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                                if (model.NeedHelpHide)
-                                {
-                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
-                                }
-                                else
-                                {
-                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
-                                }
                                 innerTopLayoutParam.LeftMargin = padding;
                                 innerTopLayoutParam.RightMargin = padding + (myHomeWidth / 2) - 8;
                                 innerTopLayout.RequestLayout();
@@ -778,16 +760,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 bottomLayout.RequestLayout();
 
                                 RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                                if (model.NeedHelpHide)
-                                {
-                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
-                                }
-                                else
-                                {
-                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
-                                }
                                 innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                                 innerTopLayout.RequestLayout();
                             }
                             else if (model.Feature == FeatureType.MyHome)
@@ -839,14 +812,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 bottomLayout.RequestLayout();
 
                                 RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                                if (model.NeedHelpHide)
-                                {
-                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
-                                }
-                                else
-                                {
-                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
-                                }
                                 innerTopLayoutParam.LeftMargin = padding;
                                 innerTopLayoutParam.RightMargin = padding + (myHomeWidth / 2) - 8;
                                 innerTopLayout.RequestLayout();
@@ -892,9 +857,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 bottomLayout.RequestLayout();
 
                                 RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
                                 innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                                 innerTopLayout.RequestLayout();
                             }
                         }
@@ -1122,16 +1085,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 bottomLayout.RequestLayout();
 
                                 RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                                if (model.NeedHelpHide)
-                                {
-                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
-                                }
-                                else
-                                {
-                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
-                                }
                                 innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                                 innerTopLayout.RequestLayout();
 
                             }
@@ -1200,14 +1154,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 bottomLayout.RequestLayout();
 
                                 RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                                if (model.NeedHelpHide)
-                                {
-                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
-                                }
-                                else
-                                {
-                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
-                                }
                                 innerTopLayoutParam.LeftMargin = padding;
                                 innerTopLayoutParam.RightMargin = padding + (myHomeWidth / 2) - 8;
                                 innerTopLayout.RequestLayout();
@@ -1259,9 +1205,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     bottomLayout.RequestLayout();
 
                                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
                                     innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                                     innerTopLayout.RequestLayout();
                                 }
                                 else if (model.ItemCount == 2)
@@ -1309,9 +1253,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     bottomLayout.RequestLayout();
 
                                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
                                     innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                                     innerTopLayout.RequestLayout();
                                 }
                                 else if (model.ItemCount == 1)
@@ -1360,9 +1302,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     bottomLayout.RequestLayout();
 
                                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
                                     innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                                     innerTopLayout.RequestLayout();
                                 }
                                 else
@@ -1410,9 +1350,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     bottomLayout.RequestLayout();
 
                                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
                                     innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                                     innerTopLayout.RequestLayout();
                                 }
                             }
@@ -1483,16 +1421,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
-                            }
-                            else
-                            {
-                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
-                            }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                         else if (model.Feature == FeatureType.MyHome)
@@ -1532,14 +1461,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
-                            }
-                            else
-                            {
-                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
-                            }
                             innerTopLayoutParam.LeftMargin = padding;
                             innerTopLayoutParam.RightMargin = padding + (myHomeWidth / 2) - 8;
                             innerTopLayout.RequestLayout();
@@ -1589,9 +1510,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                     }
@@ -1657,16 +1576,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
-                            }
-                            else
-                            {
-                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
-                            }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                         else if (model.Feature == FeatureType.MyHome)
@@ -1706,14 +1616,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
-                            }
-                            else
-                            {
-                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
-                            }
                             innerTopLayoutParam.LeftMargin = padding;
                             innerTopLayoutParam.RightMargin = padding + (myHomeWidth / 2) - 8;
                             innerTopLayout.RequestLayout();
@@ -1763,9 +1665,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                     }
@@ -1814,7 +1714,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
                             innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTxtBtnBottomLayout.RequestLayout();
                         }
                         else if (model.Feature == FeatureType.QuickActions)
@@ -1852,16 +1751,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
-                            }
-                            else
-                            {
-                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
-                            }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                         else if (model.Feature == FeatureType.MyHome)
@@ -1912,14 +1802,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
-                            }
-                            else
-                            {
-                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
-                            }
                             innerTopLayoutParam.LeftMargin = padding;
                             innerTopLayoutParam.RightMargin = padding + (myHomeWidth / 2) - 8;
                             innerTopLayout.RequestLayout();
@@ -1969,9 +1851,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                     }
@@ -2058,16 +1938,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
-                            }
-                            else
-                            {
-                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
-                            }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                         else if (model.Feature == FeatureType.MyHome)
@@ -2118,14 +1989,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(150f);
-                            }
-                            else
-                            {
-                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
-                            }
                             innerTopLayoutParam.LeftMargin = padding;
                             innerTopLayoutParam.RightMargin = padding + (myHomeWidth / 2) - 8;
                             innerTopLayout.RequestLayout();
@@ -2177,9 +2040,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                     }
@@ -2319,16 +2180,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
-                            }
-                            else
-                            {
-                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
-                            }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                         else if (model.Feature == FeatureType.MyHome)
@@ -2379,14 +2231,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
-                            }
-                            else
-                            {
-                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
-                            }
                             innerTopLayoutParam.LeftMargin = padding;
                             innerTopLayoutParam.RightMargin = padding + (myHomeWidth / 2) - 8;
                             innerTopLayout.RequestLayout();
@@ -2432,9 +2276,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                     }
@@ -2571,9 +2413,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
                             bottomLayout.RequestLayout();
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                         else
@@ -2658,9 +2498,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(200f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                     }
@@ -2799,9 +2637,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(200f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                     }
@@ -2882,8 +2718,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(77f);
-                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(46f);
                             innerTopLayout.RequestLayout();
                         }
@@ -2916,9 +2750,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(97f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(31f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                         else if (((ItemisedBillingMenuFragment)this.mFragment).IsDigitalContainerVisible() && position == 3)
@@ -3003,9 +2835,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                         else if ((((ItemisedBillingMenuFragment)this.mFragment)._isBillStatement && position == 4 && ((ItemisedBillingMenuFragment)this.mFragment).IsDigitalContainerVisible()) || (((ItemisedBillingMenuFragment)this.mFragment)._isBillStatement && position == 3))
@@ -3040,8 +2870,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
                             var margin = rightWidth + (int)DPUtils.ConvertDPToPx((35f / 2) - 4);
                             var msgHeight = TextViewUtils.IsLargeFonts ? 220f : 150f;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(msgHeight);
-                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayoutParam.RightMargin = margin;
                             innerTopLayout.RequestLayout();
                         }
@@ -3126,9 +2954,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(200f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
                         }
                     }
@@ -3158,9 +2984,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     bottomLayout.RequestLayout();
 
                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(180f);
                     innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                     innerTopLayout.RequestLayout();
 
                 }
@@ -3489,10 +3313,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     bottomLayout.RequestLayout();
 
                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? LanguageUtil.GetAppLanguage() == "MS" ? (int)DPUtils.ConvertDPToPx(170f) : (int)DPUtils.ConvertDPToPx(144f)
-                        : LanguageUtil.GetAppLanguage() == "MS" ? (int)DPUtils.ConvertDPToPx(122f) : (int)DPUtils.ConvertDPToPx(112f);
                     innerTopLayoutParam.LeftMargin = myHomeLeftPosition + (int)DPUtils.ConvertDPToPx(20f);
-                    innerTopLayoutParam.RightMargin = padding;
                     innerTopLayout.RequestLayout();
                 }
             }
@@ -3525,9 +3346,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 bottomLayout.RequestLayout();
 
                 RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(160f);
                 innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                 innerTopLayout.RequestLayout();
 
             }
@@ -3565,9 +3384,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 rightInnerUpperBottomLineLayout.RequestLayout();
 
                 RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(160f);
                 innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                 innerTopLayout.RequestLayout();
 
 
@@ -3576,14 +3393,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(50f);
                 innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(20f);
                 innerUpperBottomLayout.RequestLayout();
-
-                /* LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                 innerTxtBtnBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f);
-                 innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(50f);
-                 innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(60f);
-                 innerTxtBtnBottomLayout.RequestLayout();*/
-
-
             }
             else if (this.mContext is ManageAccessActivity)
             {
@@ -3623,9 +3432,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         rightInnerUpperBottomLineLayout.RequestLayout();
 
                         RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(160f);
                         innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                        innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTopLayout.RequestLayout();
 
 
@@ -3746,9 +3553,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         rightInnerUpperBottomLineLayout.RequestLayout();
 
                         RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(160f);
                         innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                        innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTopLayout.RequestLayout();
 
 
@@ -3803,9 +3608,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 bottomLayout.RequestLayout();
 
                 RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(180f);
                 innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                 innerTopLayout.RequestLayout();
             }
             else if (this.mContext is SubmitMeterReadingActivity)
@@ -3818,9 +3621,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 if (model.ContentShowPosition == ContentType.TopLeft)
                 {
                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(180f);
                     innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                     innerTopLayout.RequestLayout();
                 }
                 else
@@ -3889,9 +3690,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     bottomLayout.RequestLayout();
 
                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(96f);
                     innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(46f);
-                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                     innerTopLayout.RequestLayout();
                 }
                 else
@@ -3923,8 +3722,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     bottomLayout.RequestLayout();
 
                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(200f);
-                    innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0f);
                     innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(46f);
                     innerTopLayout.RequestLayout();
                 }
@@ -4042,11 +3839,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
                         bottomLayout.RequestLayout();
 
-
                         RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                        innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(250f) : (int)DPUtils.ConvertDPToPx(110f);
                         innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                        innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTopLayout.RequestLayout();
                     }
 
@@ -4103,10 +3897,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     innerTxtBtnBottomLayout.RequestLayout();
 
                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                    float innerHeight = TextViewUtils.IsLargeFonts ? 130f : 100f;
-                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(innerHeight);
                     innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                     innerTopLayout.RequestLayout();
                 }
                 else
@@ -4181,11 +3972,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
                         bottomLayout.RequestLayout();
 
-
                         RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(100f);
                         innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                        innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTopLayout.RequestLayout();
                     }
 
@@ -4217,9 +4005,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
                 bottomLayout.RequestLayout();
                 RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
                 innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                 innerTopLayout.RequestLayout();
 
             }
@@ -4255,9 +4041,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
                     bottomLayout.RequestLayout();
                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
                     innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                     innerTopLayout.RequestLayout();
                 }
                 else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EBillWithCTA)
@@ -4285,9 +4069,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
                     bottomLayout.RequestLayout();
                     RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
                     innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                     innerTopLayout.RequestLayout();
                 }
                 else if (UserSessions.ManageBillDelivery == MobileEnums.DBRTypeEnum.EmailWithCTA)
@@ -4321,9 +4103,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
                         bottomLayout.RequestLayout();
                         RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
                         innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                        innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTopLayout.RequestLayout();
                     }
                     else
@@ -4351,9 +4131,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
                         bottomLayout.RequestLayout();
                         RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
                         innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                        innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTopLayout.RequestLayout();
                     }
                 }
