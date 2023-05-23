@@ -46,40 +46,24 @@ namespace myTNB.Mobile
         /// <returns></returns>
         public async Task<GetEligibilityResponse> PostEligibility(string userID
             , List<ContractAccountModel> caList
-            , List<PremiseCriteriaModel> baList
             , string accessToken)
         {
             PostEligibilityResponse postResponse = new PostEligibilityResponse();
             GetEligibilityResponse response = new GetEligibilityResponse();
             int maxAccountList = LanguageManager.Instance.GetConfigTimeout(LanguageManager.ConfigPropertyEnum.MaxAccountList);
             maxAccountList = maxAccountList == 0 ? MobileConstants.MaxAccountList : maxAccountList;
-            if ((caList != null
+            if (caList != null
                 && caList.Count <= maxAccountList)
-                || (baList != null
-                && baList.Count <= maxAccountList))
             {
                 try
                 {
                     IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.Domain);
                     AppInfoManager.Instance.SetAccountList(caList);
 
-                    List<PremiseCriteriaModel> premistCriteriaList = new List<PremiseCriteriaModel>();
-                    if (baList != null && baList.Count > 0)
-                    {
-                        for (int i = 0; i < baList.Count; i++)
-                        {
-                            premistCriteriaList.Add(new PremiseCriteriaModel
-                            {
-                                BusinessArea = baList[i].BusinessArea
-                            });
-                        }
-                    }
-
                     PostEligibilityRequest request = new PostEligibilityRequest
                     {
                         UserID = userID ?? string.Empty,
-                        ContractAccounts = caList,
-                        PremiseCriteria = baList
+                        ContractAccounts = caList
                     };
                     Debug.WriteLine("[DEBUG] PostEligibility Request: " + JsonConvert.SerializeObject(request));
                     Debug.WriteLine("[DEBUG] PostEligibility ViewInfo: " + AppInfoManager.Instance.ViewInfo);

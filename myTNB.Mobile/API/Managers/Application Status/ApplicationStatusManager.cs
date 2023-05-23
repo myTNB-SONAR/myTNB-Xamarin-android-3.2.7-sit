@@ -499,19 +499,7 @@ namespace myTNB.Mobile
                     || (displaymodel.Content.ContractAccountNo is string accNumber
                     && accNumber.IsValid()))
                 {
-                    GetEligibilityResponse eligibilityByCriteriaResponse =
-                        await EligibilityManager.Instance.PostEligibility(userID
-                        , new List<AWS.ContractAccountModel> { new AWS.ContractAccountModel() { accNum = displaymodel.Content.ContractAccountNo, BusinessArea = displaymodel.Content.CABusinessArea } }
-                        , new List<AWS.PremiseCriteriaModel> { new AWS.PremiseCriteriaModel() { BusinessArea = displaymodel.Content.CABusinessArea } }
-                        , AppInfoManager.Instance.AccessToken);
-
-                    if (DSUtility.Instance.IsAccountEligible
-                        && eligibilityByCriteriaResponse.StatusDetail != null
-                        && eligibilityByCriteriaResponse.StatusDetail.IsSuccess
-                        && eligibilityByCriteriaResponse.Content != null
-                        && eligibilityByCriteriaResponse.Content.DS != null
-                        && eligibilityByCriteriaResponse.Content.DS.ContractAccounts != null
-                        && eligibilityByCriteriaResponse.Content.DS.ContractAccounts.Count > 0)
+                    if (DSUtility.Instance.IsAccountEligible)
                     {
                         Debug.WriteLine("[DEBUG][GetApplicationDetail] Check By BA");
 

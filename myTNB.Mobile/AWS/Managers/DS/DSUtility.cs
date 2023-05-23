@@ -25,7 +25,7 @@ namespace myTNB.Mobile.AWS.Managers.DS
         {
         }
 
-        /*public bool IsAccountEligible
+        public bool IsAccountEligible
         {
             get
             {
@@ -47,15 +47,15 @@ namespace myTNB.Mobile.AWS.Managers.DS
                     return false;
                 }
             }
-        }*/
+        }
 
-        public bool IsAccountEligible
+        /*public bool IsAccountEligible
         {
             get
             {
                 return EligibilitySessionCache.Instance.IsFeatureEligible(Features.DS, FeatureProperty.Enabled);
             }
-        }
+        }*/
 
         private List<string> GetCAList()
         {
