@@ -260,6 +260,22 @@ namespace myTNB_Android.Src.MyHome.Activity
             this.StartActivity(myHomePaymentDetailsActivity);
         }
 
+        internal void ShowPaymentHistory(string webURL)
+        {
+            string ca = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_CA.ToLower(), webURL);
+            string isOwner = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_IS_OWNER, webURL);
+            string accountType = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_ACCOUNT_TYPE, webURL);
+
+            if (ca.IsValid() && isOwner.IsValid() && accountType.IsValid())
+            {
+                Intent myHomePaymentHistoryActivity = new Intent(this, typeof(MyHomePaymentHistoryActivity));
+                myHomePaymentHistoryActivity.PutExtra(MyHomeConstants.PAYMENT_CA, ca);
+                myHomePaymentHistoryActivity.PutExtra(MyHomeConstants.PAYMENT_IS_OWNER, bool.Parse(isOwner));
+                myHomePaymentHistoryActivity.PutExtra(MyHomeConstants.PAYMENT_ACCOUNT_TYPE, accountType);
+                this.StartActivity(myHomePaymentHistoryActivity);
+            }
+        }
+
         private void SetUpWebView(string accessToken)
         {
             try
@@ -465,11 +481,14 @@ namespace myTNB_Android.Src.MyHome.Activity
                 //string image = "https://stagingmyhome.mytnb.com.my/Utility/FileUploadWithoutAuth/GetFileByFileID?fileID=4ac61fbf-1c94-4ac8-a21f-9d0bcc88c50c";
                 //var encrypted = SecurityManager.Instance.AES256_Encrypt(AWSConstants.MyHome_SaltKey, AWSConstants.MyHome_Passphrase, pdf);
                 //url = "mytnbapp://action=openPDF&extension=pdf&&title=ICCopy_202211.pdf&file=" + encrypted;
-                //url = MyHomeConstants.RATE_SUCCESSFUL;
-                //url = "mytnbapp://action=showPaymentDetails&ca=210060762000&isOwner=true&accountDesc=CSP - LC from myTNB&premise=LOT21966 I,JALAN TANJUNG TUALANG,-,31800,TANJUNG TUALANG,PERAK.";
                 Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
 
-                if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT_DETAILS))
+                if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT_HISTORY))
+                {
+                    shouldOverride = true;
+                    this.mActivity?.ShowPaymentHistory(url);
+                }
+                else if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT_DETAILS))
                 {
                     shouldOverride = true;
                     this.mActivity?.OnShowPaymentDetails(url);
