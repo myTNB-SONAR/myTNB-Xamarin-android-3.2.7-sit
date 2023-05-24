@@ -15,6 +15,7 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string ACTION_DOWNLOAD_FILE = "mytnbapp://action=downloadPDF";
         internal static readonly string ACTION_RATE_SUCCESSFUL = "mytnbapp://action=rateSuccessful";
         internal static readonly string ACTION_SHOW_PAYMENT_DETAILS = "mytnbapp://action=showPaymentDetails";
+        internal static readonly string ACTION_SHOW_PAYMENT_HISTORY = "mytnbapp://action=showPaymentHistory";
         internal static readonly string PATTERN = "\\b{0}.*\\b";
         internal static readonly string REPLACE_KEY = "{0}/";
         internal static readonly string FULL_STOP = ".";
