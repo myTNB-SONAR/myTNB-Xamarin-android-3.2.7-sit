@@ -2880,25 +2880,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 else if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref))
                 {
-                    UserSessions.SetShownBeforeHomeDashboardTutorial(this.mPref);
-                    UserSessions.UpdateHomeTutorialShown(this.mPref);
-                    if (HomeMenuUtils.GetIsRestartHomeMenu())
+                    if (MyHomeUtility.Instance.IsAccountEligible)
                     {
-                        this.mView.ResetNewFAQScroll();
-                        this.mView.OnShowHomeMenuFragmentTutorialDialog();
-                    }
-                    else
-                    {
-                        normalTokenSource.Cancel();
-                        trackCurrentLoadMoreCount = 0;
-                        HomeMenuUtils.SetTrackCurrentLoadMoreCount(0);
-                        isMyServiceExpanded = false;
-                        HomeMenuUtils.SetIsMyServiceExpanded(false);
-                        isQuery = false;
-                        HomeMenuUtils.SetIsQuery(false);
-                        HomeMenuUtils.SetQueryWord(string.Empty);
-                        HomeMenuUtils.SetIsRestartHomeMenu(true);
-                        this.mView.RestartHomeMenu();
+                        UserSessions.SetShownBeforeHomeDashboardTutorial(this.mPref);
+                        UserSessions.UpdateHomeTutorialShown(this.mPref);
+                        if (HomeMenuUtils.GetIsRestartHomeMenu())
+                        {
+                            this.mView.ResetNewFAQScroll();
+                            this.mView.OnShowHomeMenuFragmentTutorialDialog();
+                        }
+                        else
+                        {
+                            normalTokenSource.Cancel();
+                            trackCurrentLoadMoreCount = 0;
+                            HomeMenuUtils.SetTrackCurrentLoadMoreCount(0);
+                            isMyServiceExpanded = false;
+                            HomeMenuUtils.SetIsMyServiceExpanded(false);
+                            isQuery = false;
+                            HomeMenuUtils.SetIsQuery(false);
+                            HomeMenuUtils.SetQueryWord(string.Empty);
+                            HomeMenuUtils.SetIsRestartHomeMenu(true);
+                            this.mView.RestartHomeMenu();
+                        }
                     }
                 }
             }
