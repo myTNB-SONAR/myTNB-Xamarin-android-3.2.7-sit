@@ -20,6 +20,11 @@ namespace myTNB_Android.Src.Utils
         {
             try
             {
+                if (list == null || (list != null && list.Count == 0))
+                {
+                    return;
+                }
+
                 if (mDialog != null)
                 {
                     mDialog.CloseDialog();
