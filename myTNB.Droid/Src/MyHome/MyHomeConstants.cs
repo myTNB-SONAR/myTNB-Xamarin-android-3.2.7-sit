@@ -14,6 +14,7 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string OPEN_FILE = "mytnbapp://action=openPDF";
         internal static readonly string DOWNLOAD_FILE = "mytnbapp://action=downloadPDF";
         internal static readonly string RATE_SUCCESSFUL = "mytnbapp://action=rateSuccessful";
+        internal static readonly string ACTION_SHOW_LATEST_BILL = "mytnbapp://action=showLatestBill";
         internal static readonly string PATTERN = "\\b{0}.*\\b";
         internal static readonly string REPLACE_KEY = "{0}/";
         internal static readonly string FULL_STOP = ".";
@@ -26,6 +27,8 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string EXTENSION_PNG = "png";
         internal static readonly string EXTENSION_JPG = "jpg";
         internal static readonly string USER_SESSION_NC_RESUME_POPUP_KEY = "userSessionNCResumePopUpKey";
+        internal static readonly string PAYMENT_CA = "ca";
+        internal static readonly string PAYMENT_IS_OWNER = "isOwner";
     }
 }
 

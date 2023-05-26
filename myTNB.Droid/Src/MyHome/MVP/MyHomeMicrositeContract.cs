@@ -39,6 +39,18 @@ namespace myTNB_Android.Src.MyHome.MVP
             /// <param name="fileExtension"></param>
             /// <param name="fileTitle"></param>
             void ShareDownloadedFile(string filePath, string fileExtension, string fileTitle);
+
+
+            /// <summary>
+            /// Shows Generic error pop up
+            /// </summary>
+            void ShowGenericError();
+
+            /// <summary>
+            /// Navigates to ViewBillActivity to display latest bill
+            /// </summary>
+            /// <param name="selectedBill"></param>
+            void ShowLatestBill(string accountNum, bool isOwner);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -68,6 +80,13 @@ namespace myTNB_Android.Src.MyHome.MVP
             /// </summary>
             /// <returns></returns>
             string GetFilePath();
+
+            /// <summary>
+            /// Method to parse webURL to show latest bill
+            /// </summary>
+            /// <param name="webURL"></param>
+            /// <returns></returns>
+            void GetLatestBill(string webURL);
         }
     }
 }

@@ -31,6 +31,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Deeplink;
+using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Crmf;
 using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
@@ -154,6 +155,11 @@ namespace myTNB_Android.Src.MyHome.Activity
             }
         }
 
+        public void ShowGenericError()
+        {
+            this.ShowGenericErrorPopUp();
+        }
+
         public void ViewDownloadedFile(string filePath, string fileExtension, string fileTitle)
         {
             var pdfViewActivity = new Intent(this, typeof(CustomPDFImageViewerActivity));
@@ -240,6 +246,25 @@ namespace myTNB_Android.Src.MyHome.Activity
             resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
             SetResult(Result.Ok, resultIntent);
             Finish();
+        }
+
+        internal void ShowLatestBill(string webURL)
+        {
+            this.presenter.GetLatestBill(webURL);
+        }
+
+        public void ShowLatestBill(string accountNum, bool isOwner)
+        {
+            AccountData selectedAccount = new AccountData()
+            {
+                AccountNum = accountNum,
+                IsOwner = isOwner
+            };
+
+            var viewBillActivity = new Intent(this, typeof(ViewBillActivity));
+            viewBillActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            viewBillActivity.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
+            StartActivity(viewBillActivity);
         }
 
         private void SetUpWebView(string accessToken)
@@ -449,8 +474,12 @@ namespace myTNB_Android.Src.MyHome.Activity
                 //url = "mytnbapp://action=openPDF&extension=pdf&&title=ICCopy_202211.pdf&file=" + encrypted;
                 //url = MyHomeConstants.RATE_SUCCESSFUL;
                 Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
-
-                if (url.Contains(MyHomeConstants.RATE_SUCCESSFUL))
+                if (url.Contains(MyHomeConstants.ACTION_SHOW_LATEST_BILL))
+                {
+                    shouldOverride = true;
+                    this.mActivity?.ShowLatestBill(url);
+                }
+                else if (url.Contains(MyHomeConstants.RATE_SUCCESSFUL))
                 {
                     shouldOverride = true;
                     RatingCache.Instance.Clear();
