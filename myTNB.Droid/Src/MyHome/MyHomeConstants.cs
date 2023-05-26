@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using myTNB_Android.Src.Utils;
+
 namespace myTNB_Android.Src.MyHome
 {
     public class MyHomeConstants
@@ -29,6 +32,25 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string USER_SESSION_NC_RESUME_POPUP_KEY = "userSessionNCResumePopUpKey";
         internal static readonly string PAYMENT_CA = "ca";
         internal static readonly string PAYMENT_IS_OWNER = "isOwner";
+        internal static readonly List<string> MYHOME_NOTIFS = new List<string>()
+        {
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_ADDRESS_SEARCH_COMPLETED,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_ACCEPTED,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_NO_RESPONSE,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_REQUIRES_UPDATE,
+            Constants.BCRM_NOTIFICATION_MYHOME_COA_APPLICATION_COMPLETED,
+            Constants.BCRM_NOTIFICATION_MYHOME_COA_APPLICATION_CANCELLED,
+            Constants.BCRM_NOTIFICATION_MYHOME_COA_OTP_VERIFY,
+            Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_SUBMITTED,
+            Constants.BCRM_NOTIFICATION_MYHOME_COT_OTP_VERIFY,
+            Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST,
+            Constants.BCRM_NOTIFICATION_MYHOME_COT_REMINDER
+        };
     }
 }
 
