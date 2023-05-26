@@ -19,11 +19,10 @@ namespace myTNB.Mobile.AWS.Models
         [JsonProperty("isPopupSeen")]
         public bool IsPopupSeen { set; get; }
         [JsonProperty("popupSeenDate")]
-        public DateTime? popupSeenDate { set; get; }
+        public DateTime? PopupSeenDate { set; get; }
         [JsonProperty("currentMonthCount")]
         public int CurrentMonthCount { set; get; }
         [JsonProperty("autoOptInDate")]
         public DateTime? AutoOptInDate { set; get; }
     }
-
 }

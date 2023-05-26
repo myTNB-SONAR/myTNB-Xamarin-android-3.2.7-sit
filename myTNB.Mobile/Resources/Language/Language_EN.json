@@ -107,7 +107,8 @@
     "dbrPaperBillNonOwner": "You’re receiving <b>Paper Bill</b> for this account.",
     "dbrEmail": "You’re receiving <b>myTNB & Email Bills</b> for this account.",
     "dbrWhatsApp": "You’re receiving <b>myTNB & Whatsapp Bills</b> for this account.",
-    "dbrViaMyTNB": "Your account is environmentally friendly with <b>myTNB Bill!</b>"
+    "dbrViaMyTNB": "Your account is environmentally friendly with <b>myTNB Bill!</b>",
+    "applicationCancelledMessage": "Your application has been deleted."
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -507,7 +508,7 @@
     "dbrReminderAutoPopupTitle": "Your electricity bills are now paperless!",
     "dbrReminderAutoPopupMessageFirstMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 3 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
     "dbrReminderAutoPopupMessageSecondMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB app and email.<br>You will still receive physical bills for the next 2 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
-    "dbrReminderAutoPopupMessageThirdMonth": "As one of our myTNB customer, you have been selected to receive TNB bill digitally via myTNB.<br>You will still receive printed bills for the next 3 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
+    "dbrReminderAutoPopupMessageThirdMonth": "As one of our smart meter customers, you have been selected to receive TNB bill digitally via myTNB.<br>You will still receive printed bills for the next 3 months and the delivery of printed bill to your premise will be discontinued after.<br>You may choose to change your billing delivery method at any time.",
     "dbrReminderAutoPopUpBtn": "Manage Bill Delivery"
   },
   "Bills": {
@@ -694,6 +695,11 @@
     "callUs": "Need help? <a href='tel: 15454'>Call us</a> for more information",
     "shareFeedback": "Share Feedback",
     "manageBillDelivery": "Manage Bill Delivery",
+    "continueApplication": "Continue Application",
+    "submitNow": "Submit Now",
+    "viewApplicationDetails": "View Application Details",
+    "otpVerifyNow": "Verify Now",
+    "reapplyNow": "Reapply Now",
     "verifyTitle": "Verify your identity now to enjoy more of myTNB!",
     "verifyNow": "Verify Now",
     "setAppointmentNow": "Set Appointment Now",
@@ -1021,6 +1027,10 @@
     "title8": "Stay Updated with Your Applications!",
     "title9": "Personalise Your Text Size.",
     "title10": "Set your appointment with us!",
+    "title11": "Enhanced access controls to safeguard your information.",
+    "title12": "Enhance your moving experience with myHome!",
+    "title13": "Connect your premises to electricity with ease.",
+    "title14": "Manage your applications with ease!",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
@@ -1031,8 +1041,10 @@
     "description8": "You can now track all your application status with zero hassle, anytime and anywhere.",
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
     "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot.",
-    "title11": "Enhanced access controls to safeguard your information.",
-    "description11": "Stay in control of your account information and permissions by defining what you let others access as an owner of an electricity account."
+    "description11": "Stay in control of your account information and permissions by defining what you let others access as an owner of an electricity account.",
+    "description12": "Planning to move in to your home? You can now apply for your electricity account easily and edit your applications with our new feature.",
+    "description13": "Create new applications and manage your existing electricity accounts anytime!",
+    "description14": "You can now edit, manage and track all your application status with zero hassle, anytime and anywhere."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -1426,8 +1438,8 @@
     "overVoltageMaintenanceTitle": "We'll be back soon.",
     "overVoltageMaintenanceDescription": "Sorry, Overvoltage Claim service is currently under maintenance. Please check back later.",
     "overVoltageClaimtemproryUnavailable": "Overvoltage Claim service temporarily unavailable",
-    "overVoltageClaimtemproryUnavailableTitle": "Service temporarily unavailable",
-    "overVoltageClaimtemproryUnavailableDescription": "We're working to restore Overvoltage Claim service as quickly as possible. Please check back soon.",
+    "overVoltageClaimtemproryUnavailableTitle": "This service is temporarily unavailable",
+    "overVoltageClaimtemproryUnavailableDescription": "This service is currently under maintenance. Please try again later.",
     "termsAndConditionTitle": "Terms and Conditions",
     "selectCountryTitle": "Select Country/Region",
     "rescheduleAppointmentTitle": "Reschedule Appointment",
@@ -1538,7 +1550,11 @@
     "manageDeliveryMethodEmailTitle": "Recipient(s) of email bills.",
     "manageDeliveryMethodEmailMessage": "View email recipients who are receiving monthly bills for this account.",
     "billStatementTitle": "Download your account statement.",
-    "billStatementMessage": "You can now download a summary of your accounts monthly statements and bills by your preferred statement period."
+    "billStatementMessage": "You can now download a summary of your accounts monthly statements and bills by your preferred statement period.",
+    "myHomeTitle": "Introducing myHome.",
+    "myHomeMessage": "Manage your electricity connection accounts and applications by selecting the myHome feature.",
+    "connectMyPremiseTitle": "Start Your Application",
+    "connectMyPremiseMessage": "Apply for new electricity connections, change of account ownership and close your electricity accounts here."
   },
   "Tnb_Profile": {
     "title": "myTNB Profile",
@@ -1654,6 +1670,21 @@
     "cannotReschedule": "Why can’t I reschedule anymore?",
     "cannotRescheduleTitle": "Appointments can’t be rescheduled on the same day.",
     "cannotRescheduleMessage": "You can’t reschedule your appointment anymore as it is coming up later today. Please note that you don’t have to be present if your meter installation area is accessible without entering the premises.<br><br>You may contact <a href=\"tel: 1300885454\">TNB Careline</a> if you have to reschedule or cancel.",
+    "startApplication": "Start Application",
+    "delete": "Delete",
+    "resume": "Resume",
+    "deleteNCDraftTitle": "Are you sure you want to delete this draft?",
+    "deleteNCDraftMessage": "Your draft will be permanently deleted.",
+    "deleteNCDraftSure": "Yes, I’m Sure",
+    "deleteNCDraftCancel": "Cancel",
+    "reapplyNow": "Reapply Now",
+    "reapplyContractorRejectCTAMessage": "Reapply your application because the contractor has rejected your request.",
+    "reapplyNoResponseCTAMessage": "Reapply your application because we didn’t receive any response from the contractor you appointed.",
+    "updateNow": "Update Now",
+    "updateNowCTAMessage": "Update your information by re-uploading your document(s) for us to review again.",
+    "ncSubmissionRateUs": "Rate Our Service",
+    "otpReadyMessage": "We will let you know once your application's OTP is ready to be verified again.",
+    "ncActionMessage": "You can take the action to continue or update your application using the myTNB Portal or App.",
     "verifyNowCTA": "Verify Now",
     "signApplicationCTA": "Proceed"
   },
@@ -2901,6 +2932,17 @@
             "type": "none"
           }
         ],
+        "GetUserServiceAccessToken": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
         "BillRendering": [
           {
             "code": "7200",
@@ -3015,6 +3057,48 @@
             "code": "7200",
             "title": "",
             "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "GetServices": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "default",
+            "title": "",
+            "message": "Uh oh, looks like your quick actions have been unplugged. Refresh to stay plugged in!",
+            "primaryCTATitle": "Refresh Now",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "refresh"
+          }
+        ],
+        "DeleteNCDraft": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "Your application has been deleted.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "toast"
+          }
+        ],
+        "GetNCDraftApplications": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": ".",
             "primaryCTATitle": "",
             "secondaryCTATitle": "",
             "isSuccess": true,
@@ -3164,7 +3248,13 @@
     "AccountStatementTimeout": 5000,
     "ShouldShowAccountStatementToNonOwner": true,
     "MaxAccountList": 100000,
-    "ResidentialRateCategory": [ "A_LV", "A_LV_D", "A_MV" ]
+    "ResidentialRateCategory": [
+      "A_LV",
+      "A_LV_D",
+      "A_MV"
+    ],
+    "IsMyHomeMarketingPopupEnable": false,
+    "ForceHidemyHomeBanner": true
   },
   "StatementPeriod": {
     "title": "Account Statement",
@@ -3418,5 +3508,31 @@
     "btnSubmit": "Submit",
     "thumbUpYes": "Yes, absolutely!",
     "thumbDownNo": "Not really"
+  },
+  "MarketingPopup": {
+    "myHomeTitle": "Check out myHome today!",
+    "myHomeMessage": "You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, edit your applications and even organise your moving plans with ease using myHome.",
+    "myHomeCTA": "Got It!",
+    "myHomeResumeApplicationTitle": "Resume your Start Electricity Application",
+    "myHomeResumeApplicationMessage": "You have an unfinished Start Electricity Application (Application No.: {0}) waiting to be completed. You can click on the button below to resume your application on myTNB app.<br><br>Submit your Start Electricity application on myTNB app now!",
+    "myHomeResumeApplicationsTitle": "Resume your Start Electricity Applications",
+    "myHomeResumeApplicationsMessage": "You have unfinished Start Electricity Applications (Application Nos.: {0}) waiting to be completed. You can click on the button below to resume your applications on myTNB app.<br><br>Submit your Start Electricity applications on myTNB app now!",
+    "myHomeResumeApplicationPrimaryCTA": "Continue",
+    "myHomeResumeApplicationSecondaryCTA": "I’ll do it later."
+  },
+  "ApplicationStatusID": {
+    "ASRCompleted": [ 127 ],
+    "NCDraft": [ 1 ],
+    "NCReapplyNow": [
+      7,
+      18
+    ],
+    "NCReuploadDocument": [ 130 ]
+  },
+  "AccountTypeID": {
+    "NC": [ 1 ]
+  },
+  "PremiseTypeHeaderID": {
+    "NC": [ 1 ]
   }
 }

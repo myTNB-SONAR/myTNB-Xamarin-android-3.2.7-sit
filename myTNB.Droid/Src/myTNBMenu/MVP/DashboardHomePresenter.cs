@@ -32,6 +32,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile;
 using System.Linq;
+using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.Base.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP
 {
@@ -42,6 +44,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         CancellationTokenSource cts;
 
         public DashboardHomeContract.IView mView;
+        private BaseAppCompatActivity mActivity;
         private ISharedPreferences mSharedPref;
 
         internal int currentBottomNavigationMenu = Resource.Id.menu_dashboard;
@@ -87,9 +90,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private static bool isWhatsNewDialogShowNeed = false;
 
-        public DashboardHomePresenter(DashboardHomeContract.IView mView, ISharedPreferences preferences)
+        public DashboardHomePresenter(DashboardHomeContract.IView mView, BaseAppCompatActivity activity, ISharedPreferences preferences)
         {
             this.mView = mView;
+            this.mActivity = activity;
             this.mSharedPref = preferences;
             this.mView?.SetPresenter(this);
 
@@ -390,6 +394,45 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         OnMenuSelect(Resource.Id.menu_bill);
                     }
                 }
+                else if (requestCode == Constants.MYHOME_MICROSITE_REQUEST_CODE
+                    || requestCode == Constants.APPLICATION_STATUS_LANDING_FROM_DASHBOARD_REQUEST_CODE
+                    || requestCode == Constants.NOTIFICATION_LISTING_REQUEST_CODE
+                    || requestCode == Constants.NOTIFICATION_DETAILS_REQUEST_CODE
+                    || requestCode == Constants.APPLICATION_STATUS_DETAIL_FROM_DASHBOARD_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        if (data != null && data.Extras is Bundle extras && extras != null)
+                        {
+                            if (extras.ContainsKey(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
+                            {
+                                bool backToApplicationStatusLanding = extras.GetBoolean(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING);
+                                if (backToApplicationStatusLanding)
+                                {
+                                    string toastMsg = string.Empty;
+                                    if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                                    {
+                                        toastMsg = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                                    }
+                                    this.mView.RouteToApplicationLanding(toastMsg);
+                                }
+                            }
+                            else if (extras.ContainsKey(MyHomeConstants.BACK_TO_HOME))
+                            {
+                                bool backToHome = extras.GetBoolean(MyHomeConstants.BACK_TO_HOME);
+                                if (backToHome)
+                                {
+                                    string toastMessage = string.Empty;
+                                    if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                                    {
+                                        toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                                    }
+                                    OnMenuSelect(Resource.Id.menu_dashboard, false, toastMessage);
+                                }
+                            }
+                        }
+                    }
+                }
             }
             catch (System.Exception e)
             {
@@ -397,8 +440,17 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
-        public void OnMenuSelect(int resourceId, bool isIneligiblePopUpActive = false)
+        public void OnMenuSelect(int resourceId, bool isIneligiblePopUpActive = false, string toastMessage = "")
         {
+            if (resourceId == Resource.Id.menu_dashboard)
+            {
+                if (toastMessage.IsValid())
+                {
+                    ToastUtils.OnDisplayToast(this.mActivity, toastMessage);
+                    toastMessage = string.Empty;
+                }
+            }
+
             if (!this.mView.GetAlreadyStarted())
             {
                 this.mView.SetAlreadyStarted(true);
@@ -1922,12 +1974,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }            
             return newList;
         }
-
-
-        public void DisableWalkthrough()
-        {
-            UserSessions.DoHomeTutorialShown(this.mSharedPref);
-        }
         
         public void OnGetBillEligibilityCheck(string accountNumber)
         {
@@ -1988,6 +2034,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 }
             }
             return account;
+        }
+
+        public void OnCheckNCDraftForResume(ISharedPreferences prefs)
+        {
+            if (MyHomeUtility.Instance.IsAccountEligible)
+            {
+                this.CheckNCDraftForResume(prefs);
+            }
         }
     }
 

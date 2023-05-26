@@ -35,6 +35,9 @@ using myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity;
 using myTNB.Mobile.AWS.Managers.DS;
 using myTNB_Android.Src.Notifications.Activity;
 using myTNB.Mobile.AWS.Models.DBR;
+using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.MyHome.Model;
+using myTNB.Mobile.AWS;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -44,6 +47,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             switch (DeeplinkUtil.Instance.TargetScreen)
             {
+                case Deeplink.ScreenEnum.Home:
+                    DeeplinkHomeValidation(mainActivity);
+                    break;
                 case Deeplink.ScreenEnum.Rewards:
                     DeeplinkRewardValidation(mainActivity);
                     break;
@@ -71,6 +77,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 default:
                     break;
             }
+        }
+
+        private static void DeeplinkHomeValidation(DashboardHomeActivity mainActivity)
+        {
+            DeeplinkUtil.Instance.ClearDeeplinkData();
         }
 
         private static void DeeplinkRewardValidation(this DashboardHomeActivity mainActivity)
@@ -119,50 +130,26 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        private static async void DeeplinkAppListingValidation(DashboardHomeActivity mainActivity)
+        private static void DeeplinkAppListingValidation(DashboardHomeActivity mainActivity)
         {
-            DeeplinkUtil.Instance.ClearDeeplinkData();
-            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
-            if (searchApplicationTypeResponse == null)
+            mainActivity.RunOnUiThread(() =>
             {
                 mainActivity.ShowProgressDialog();
-                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
-                if (searchApplicationTypeResponse != null
-                    && searchApplicationTypeResponse.StatusDetail != null
-                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
-                {
-                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
-                }
-                mainActivity.HideProgressDialog();
-            }
-            if (searchApplicationTypeResponse != null
-                && searchApplicationTypeResponse.StatusDetail != null
-                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+            });
+
+            Task.Run(() =>
             {
-                AllApplicationsCache.Instance.Clear();
-                AllApplicationsCache.Instance.Reset();
-                Intent applicationLandingIntent = new Intent(mainActivity, typeof(ApplicationStatusLandingActivity));
-                mainActivity.StartActivity(applicationLandingIntent);
-            }
-            else
-            {
-                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
-                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
-                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
-                     .Build();
-                errorPopup.Show();
-            }
+                _ = SearchApplicationType(mainActivity);
+                DeeplinkUtil.Instance.ClearDeeplinkData();
+            });
         }
 
-        private static async void DeeplinkAppDetailsValidation(DashboardHomeActivity mainActivity)
+        private static async Task SearchApplicationType(DashboardHomeActivity mainActivity)
         {
-            DeeplinkUtil.Instance.ClearDeeplinkData();
-            mainActivity.ShowProgressDialog();
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
-                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                searchApplicationTypeResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
                 if (searchApplicationTypeResponse != null
                     && searchApplicationTypeResponse.StatusDetail != null
                     && searchApplicationTypeResponse.StatusDetail.IsSuccess)
@@ -170,41 +157,103 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
                 }
             }
-            if (searchApplicationTypeResponse != null
+
+            mainActivity.RunOnUiThread(() =>
+            {
+                mainActivity.HideProgressDialog();
+
+                if (searchApplicationTypeResponse != null
                 && searchApplicationTypeResponse.StatusDetail != null
                 && searchApplicationTypeResponse.StatusDetail.IsSuccess)
-            {
-                ApplicationDetailDisplay detailsResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(ApplicationDetailsDeeplinkCache.Instance.SaveID
-                    , ApplicationDetailsDeeplinkCache.Instance.ID
-                    , ApplicationDetailsDeeplinkCache.Instance.Type
-                    , ApplicationDetailsDeeplinkCache.Instance.System);
-
-                if (detailsResponse.StatusDetail.IsSuccess)
                 {
-                    Intent applicationStatusDetailIntent = new Intent(mainActivity, typeof(ApplicationStatusDetailActivity));
-                    applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(detailsResponse.Content));
-                    mainActivity.StartActivity(applicationStatusDetailIntent);
+                    AllApplicationsCache.Instance.Clear();
+                    AllApplicationsCache.Instance.Reset();
+                    Intent applicationLandingIntent = new Intent(mainActivity, typeof(ApplicationStatusLandingActivity));
+                    mainActivity.StartActivityForResult(applicationLandingIntent, Constants.APPLICATION_STATUS_LANDING_FROM_DASHBOARD_REQUEST_CODE);
                 }
                 else
                 {
                     MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                     .SetTitle(detailsResponse.StatusDetail.Title)
-                     .SetMessage(detailsResponse.StatusDetail.Message)
-                     .SetCTALabel(detailsResponse.StatusDetail.PrimaryCTATitle)
-                     .Build();
+                         .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
+                         .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
+                         .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
+                         .Build();
                     errorPopup.Show();
                 }
+            });
+        }
+
+        private static void DeeplinkAppDetailsValidation(DashboardHomeActivity mainActivity)
+        {
+            DeeplinkUtil.Instance.ClearDeeplinkData();
+            mainActivity.RunOnUiThread(() =>
+            {
+                mainActivity.ShowProgressDialog();
+            });
+
+            Task.Run(() =>
+            {
+                _ = OnGetApplicationDetail(mainActivity);
+            });
+        }
+
+        private static async Task OnGetApplicationDetail(DashboardHomeActivity mainActivity)
+        {
+            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+            if (searchApplicationTypeResponse == null)
+            {
+                searchApplicationTypeResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                if (searchApplicationTypeResponse != null
+                    && searchApplicationTypeResponse.StatusDetail != null
+                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                {
+                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                }
+            }
+            if (searchApplicationTypeResponse != null
+                && searchApplicationTypeResponse.StatusDetail != null
+                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+            {
+                ApplicationDetailDisplay detailsResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.GetApplicationDetail(ApplicationDetailsDeeplinkCache.Instance.SaveID
+                    , ApplicationDetailsDeeplinkCache.Instance.ID
+                    , ApplicationDetailsDeeplinkCache.Instance.Type
+                    , ApplicationDetailsDeeplinkCache.Instance.System);
+
+                mainActivity.RunOnUiThread(() =>
+                {
+                    mainActivity.HideProgressDialog();
+
+                    if (detailsResponse.StatusDetail.IsSuccess)
+                    {
+                        Intent applicationStatusDetailIntent = new Intent(mainActivity, typeof(ApplicationStatusDetailActivity));
+                        applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(detailsResponse.Content));
+                        mainActivity.StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAIL_FROM_DASHBOARD_REQUEST_CODE);
+                    }
+                    else
+                    {
+                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                         .SetTitle(detailsResponse.StatusDetail.Title)
+                         .SetMessage(detailsResponse.StatusDetail.Message)
+                         .SetCTALabel(detailsResponse.StatusDetail.PrimaryCTATitle)
+                         .Build();
+                        errorPopup.Show();
+                    }
+                });
             }
             else
             {
-                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                mainActivity.RunOnUiThread(() =>
+                {
+                    mainActivity.HideProgressDialog();
+
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                      .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
                      .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
                      .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
                      .Build();
-                errorPopup.Show();
+                    errorPopup.Show();
+                });
             }
-            mainActivity.HideProgressDialog();
         }
 
         private static void DeeplinkOvervoltageFeedbackValidation(DashboardHomeActivity mainActivity)
@@ -288,27 +337,38 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         internal static void NotificationValidation(this DashboardHomeActivity mainActivity)
         {
-            switch (NotificationUtil.Instance.Type)
+            if (NotificationUtil.Instance.Type == Notification.TypeEnum.NewBillDesign)
             {
-                case Notification.TypeEnum.AppUpdate:
-                case Notification.TypeEnum.AccountStatement:
-                case Notification.TypeEnum.EKYC:
+                NavigateToBillRedesign(mainActivity);
+            }
+            else if (NotificationUtil.Instance.PushMapId.IsValid())
+            {
+                if ((NotificationUtil.Instance.Type == Notification.TypeEnum.AppUpdate)
+                    || (NotificationUtil.Instance.Type == Notification.TypeEnum.AccountStatement)
+                    || (NotificationUtil.Instance.Type == Notification.TypeEnum.EKYC))
+                {
                     if (DSUtility.Instance.IsAccountEligible)
                     {
                         UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
-                        OnGetNotificationDetails(mainActivity, NotificationUtil.Instance.Type);
+                        mainActivity.RunOnUiThread(() =>
+                        {
+                            mainActivity.ShowProgressDialog();
+                        });
+                        Task.Run(() =>
+                        {
+                            _ = OnGetNotificationDetails(mainActivity);
+                        });
                     }
                     else
                     {
                         NavigateToNotificationListing(mainActivity);
                     }
-                    break;
-                case Notification.TypeEnum.NewBillDesign:
-                    NavigateToBillRedesign(mainActivity);
-                    break;
-                default:
-                    NavigateToNotificationListing(mainActivity);
-                    break;
+                }
+            }
+            else
+            {
+                NavigateToNotificationListing(mainActivity);
+                NotificationUtil.Instance.ClearData();
             }
         }
 
@@ -326,9 +386,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        private async static void OnGetNotificationDetails(DashboardHomeActivity mainActivity, Notification.TypeEnum typeEnum)
+        private async static Task OnGetNotificationDetails(DashboardHomeActivity mainActivity)
         {
-            mainActivity.ShowProgressDialog();
             try
             {
                 string notifType = NotificationUtil.Instance.NotificationType;
@@ -338,23 +397,21 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     PushMapId = pushMapId
                 };
                 UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetails(request);
-                if (response.IsSuccessResponse())
+
+                mainActivity.RunOnUiThread(() =>
                 {
-                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
-                    if (typeEnum == Notification.TypeEnum.EKYC)
+                    if (response.IsSuccessResponse())
                     {
-                        ShowEKYCNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+                        Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
+                        ShowNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+                        mainActivity.HideProgressDialog();
                     }
                     else
                     {
-                        ShowNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+                        mainActivity.HideProgressDialog();
                     }
-                    mainActivity.HideProgressDialog();
-                }
-                else
-                {
-                    mainActivity.HideProgressDialog();
-                }
+                });
+                
                 NotificationUtil.Instance.ClearData();
             }
             catch (System.OperationCanceledException e)
@@ -540,6 +597,60 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        internal static void ShowNCDraftResumePopUp(this DashboardHomeActivity mainActivity, MyHomeToolTipModel toolTipModel, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft)
+        {
+            mainActivity.RunOnUiThread(() =>
+            {
+                MyTNBAccountManagement.GetInstance().SetPostGetNCDraftResponse(null);
+                UserSessions.SetNCResumePopUpRefNos(PreferenceManager.GetDefaultSharedPreferences(mainActivity), MyTNBAccountManagement.GetInstance().GetNCResumeDraftRefNos());
+
+                DynatraceHelper.OnTrack(DynatraceConstants.MyHome.Screens.Home.Resume_Reminder);
+
+                MyTNBAppToolTipBuilder ncResumeTooltip = MyTNBAppToolTipBuilder.Create(mainActivity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+                .SetHeaderImage(Resource.Drawable.Banner_MyHome_NC_Resume)
+                .SetTitle(toolTipModel.Title)
+                .SetMessage(toolTipModel.Message)
+                .SetCTALabel(toolTipModel.PrimaryCTA)
+                .SetCTAaction(() => OnCheckNCList(mainActivity, newNCList, isMultipleDraft))
+                .SetSecondaryCTALabel(toolTipModel.SecondaryCTA)
+                .SetSecondaryCTATextSize(12)
+                .SetSecondaryCTAaction(() =>
+                {
+                    mainActivity.SetIsClicked(false);
+                    DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Resume_Reminder_IllDoItLater);
+                })
+                .Build();
+                ncResumeTooltip.Show();
+            });
+        }
+
+        private static void OnCheckNCList(this DashboardHomeActivity mainActivity, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft)
+        {
+            DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Resume_Reminder_Continue);
+
+            if (isMultipleDraft)
+            {
+                DeeplinkAppListingValidation(mainActivity);
+            }
+            else
+            {
+                if (newNCList != null && newNCList.Count == 1)
+                {
+                    PostGetNCDraftResponseItemModel ncObj = newNCList[0];
+
+                    if (ncObj != null)
+                    {
+                        ApplicationDetailsDeeplinkCache.Instance.SaveID = "";
+                        ApplicationDetailsDeeplinkCache.Instance.ID = ncObj.ApplicationID.ToString();
+                        ApplicationDetailsDeeplinkCache.Instance.Type = ncObj.ApplicationType;
+                        ApplicationDetailsDeeplinkCache.Instance.System = ncObj.System;
+
+                        DeeplinkAppDetailsValidation(mainActivity);
+                    }
+                }
             }
         }
     }

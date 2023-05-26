@@ -232,6 +232,7 @@ namespace myTNB_Android.Src.Rating.Adapter
                 TextViewUtils.SetMuseoSans300Typeface(txtComments, txtContentInfo);
                 TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
                 TextViewUtils.SetTextSize12(txtContentInfo);
+                TextViewUtils.SetTextSize14(txtInputLayoutComments.EditText);
                 TextViewUtils.SetTextSize16(txtTitleInfo);
 
                 txtComments.MovementMethod = new ScrollingMovementMethod();

@@ -24,5 +24,18 @@
             Paper,
             None
         }
+
+        public enum ServiceEnum
+        {
+            None = 0,
+            SELFMETERREADING,
+            SUBMITFEEDBACK,
+            PAYBILL,
+            VIEWBILL,
+            APPLICATIONSTATUS,
+            ENERGYBUDGET,
+            MYHOME,
+            CONNECTMYPREMISE
+        }
     }
 }

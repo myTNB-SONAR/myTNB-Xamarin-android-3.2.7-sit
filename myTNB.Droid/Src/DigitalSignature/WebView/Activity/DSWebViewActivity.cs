@@ -195,7 +195,7 @@ namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
                 , appRef
                 , ApplicationModuleID);
 
-            string ssoURL = string.Format(AWSConstants.Domains.DSSSO, signature);
+            string ssoURL = string.Format(AWSConstants.Domains.SSO.DS, signature);
 
             micrositeWebView.SetWebChromeClient(new MyTNBWebChromeClient(this) { });
             micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));

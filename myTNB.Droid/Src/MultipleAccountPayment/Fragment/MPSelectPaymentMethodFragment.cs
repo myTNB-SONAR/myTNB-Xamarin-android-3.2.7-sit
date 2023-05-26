@@ -96,8 +96,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         private bool isClicked = false;
-
-        private static ISharedPreferences mPreferences;
         bool tenantDBR = false;
         //Mark: Application Payment
         private bool IsApplicationPayment;
@@ -229,7 +227,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                                             && x.DBRType == MobileEnums.DBRTypeEnum.Paper);
 
                                                 int indexTenant = tenantList.FindIndex(x =>
-                                                            x.caNo == dbrCAForPaymentList[j]
+                                                            x.CaNo == dbrCAForPaymentList[j]
                                                             && x.IsOwnerAlreadyOptIn == false
                                                             && x.IsOwnerOverRule == false
                                                             && x.IsTenantAlreadyOptIn == false);

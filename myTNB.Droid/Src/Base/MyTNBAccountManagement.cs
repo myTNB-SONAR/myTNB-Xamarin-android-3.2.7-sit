@@ -12,6 +12,7 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using myTNB.SQLite.SQLiteDataManager;
+using myTNB.Mobile.AWS;
 
 namespace myTNB_Android.Src.Base
 {
@@ -54,6 +55,8 @@ namespace myTNB_Android.Src.Base
         private bool IsNCAcc = false;
         private bool IsSDUser = false;
         private bool IsTNGEnable = false;
+        private static PostGetNCDraftResponse postGetNCDraftResponse = null;
+        private string nCResumeDraftRefNos = string.Empty;
 
         private MyTNBAccountManagement()
         {
@@ -798,6 +801,26 @@ namespace myTNB_Android.Src.Base
         public bool IsTNGEnableVerify()
         {
             return IsTNGEnable;
+        }
+
+        public void SetPostGetNCDraftResponse(PostGetNCDraftResponse data)
+        {
+            postGetNCDraftResponse = data;
+        }
+
+        public PostGetNCDraftResponse GetPostGetNCDraftResponse()
+        {
+            return postGetNCDraftResponse;
+        }
+
+        public void SetNCResumeDraftRefNos(string str)
+        {
+            nCResumeDraftRefNos = str;
+        }
+
+        public string GetNCResumeDraftRefNos()
+        {
+            return nCResumeDraftRefNos;
         }
     }
 }

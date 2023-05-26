@@ -25,7 +25,6 @@ namespace myTNB
             get;
         } = LanguageManager.Instance.GetErrorValue("defaultErrorMessage");
 
-
         [JsonProperty("primaryCTATitle")]
         public string PrimaryCTATitle
         {
@@ -61,7 +60,6 @@ namespace myTNB
             get;
         } = false;
 
-        [JsonIgnore]
         public StatusDisplayType DisplayType
         {
             get
@@ -105,6 +103,8 @@ namespace myTNB
                 return presentationType;
             }
         }
+
+        public string AccessToken { internal set; get; }
     }
 
     public enum StatusDisplayType

@@ -157,6 +157,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
         {
             base.OnCreate(savedInstanceState);
 
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
             TextViewUtils.SetMuseoSans500Typeface(btnClear);
             TextViewUtils.SetTextSize16(btnClear);
             btnClear.Text = Utility.GetLocalizedLabel("ApplicationStatusFilter", "clear");

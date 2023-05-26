@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
-    <IntermediateOutputPath>obj\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</IntermediateOutputPath>
+    <IntermediateOutputPath>obj\Release\netstandard2.0</IntermediateOutputPath>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
@@ -16,7 +16,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,7 +31,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\Release\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\Release\netstandard2.0</OutputPath>
     <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -42,100 +42,43 @@
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.26.1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Business\Managers\" />
     <Folder Include="Resources\" />
-    <Folder Include="Resources\TnC\" />
-    <Folder Include="Resources\FAQ\" />
-    <Folder Include="Resources\Language\" />
-    <Folder Include="Resources\Country\" />
     <Folder Include="API\" />
-    <Folder Include="API\Managers\" />
-    <Folder Include="API\Models\" />
-    <Folder Include="API\Base\" />
-    <Folder Include="API\Models\Application Status\" />
-    <Folder Include="API\Services\" />
-    <Folder Include="API\Services\Application Status\" />
     <Folder Include="Sitecore\" />
-    <Folder Include="Sitecore\Services\" />
-    <Folder Include="Sitecore\Manager\" />
-    <Folder Include="Sitecore\Services\Auth\" />
-    <Folder Include="Sitecore\Base\" />
-    <Folder Include="Sitecore\Model\" />
-    <Folder Include="Sitecore\Model\Login\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="API\Models\Application Status\Get Search Application Type\" />
-    <Folder Include="API\Managers\Application Status\" />
-    <Folder Include="API\Models\Application Status\Get Application Status\" />
-    <Folder Include="API\Models\Application Status\Post Save Application\" />
-    <Folder Include="API\Managers\Application Status\Utilities\" />
-    <Folder Include="API\Display Model\" />
-    <Folder Include="API\Display Model\Application Status\" />
-    <Folder Include="API\Models\Application Status\Get All Applications\" />
     <Folder Include="Session Cache\" />
-    <Folder Include="API\Models\Application Status\Get Application Details\" />
-    <Folder Include="API\Managers\Payment\" />
-    <Folder Include="API\Services\Payment\" />
-    <Folder Include="API\Models\Payment\" />
-    <Folder Include="API\Models\Payment\Post Application Payment\" />
-    <Folder Include="Helpers\Application Status\" />
-    <Folder Include="API\Models\Application Status\Post Remove Application\" />
-    <Folder Include="API\Models\Application Status\Get Applications By CA\" />
-    <Folder Include="API\Models\Payment\Post Applications Paid Details\" />
-    <Folder Include="API\Models\Payment\Get Tax Invoice\" />
-    <Folder Include="API\Models\Notification\" />
-    <Folder Include="API\Models\Notification\Application Status\" />
-    <Folder Include="API\Managers\Rating\" />
-    <Folder Include="API\Services\Rating\" />
-    <Folder Include="API\Models\Rating\" />
-    <Folder Include="API\Models\Rating\Get Customer Rating Master\" />
-    <Folder Include="API\Models\Rating\Post Submit Rating\" />
-    <Folder Include="API\Models\Scheduler\" />
-    <Folder Include="API\Models\Scheduler\Get Available Appointment\" />
-    <Folder Include="API\Services\Scheduler\" />
-    <Folder Include="API\Managers\Scheduler\" />
-    <Folder Include="API\Models\Scheduler\Post Set Appointment\" />
-    <Folder Include="API\Display Model\Scheduler\" />
-    <Folder Include="API\Managers\Scheduler\Utilities\" />
-    <Folder Include="API\Models\Application Status\Post Sync SR Application\" />
-    <Folder Include="API\Models\Notification\Notification Details\" />
     <Folder Include="AWS\" />
     <Folder Include="AWS\Managers\" />
     <Folder Include="AWS\Models\" />
-    <Folder Include="AWS\Models\Access Token\" />
-    <Folder Include="AWS\Models\SSO\" />
     <Folder Include="AWS\Services\" />
-    <Folder Include="AWS\Managers\SSO\" />
     <Folder Include="AWS\Services\Access Token\" />
-    <Folder Include="AWS\Models\DBR\" />
-    <Folder Include="AWS\Models\DBR\Get Bill Rendering\" />
-    <Folder Include="AWS\Managers\DBR\" />
     <Folder Include="AWS\Services\DBR\" />
-    <Folder Include="AWS\Managers\Eligibility\" />
-    <Folder Include="AWS\Models\DBR\Post Multi Bill Rendering\" />
-    <Folder Include="AWS\Models\DBR\Post Multi Installation Details\" />
-    <Folder Include="API\Managers\Feature Info\" />
-    <Folder Include="API\Models\Feature Info\" />
-    <Folder Include="AWS\Managers\EB\" />
-    <Folder Include="AWS\Managers\Bill Redesign\" />
-    <Folder Include="AWS\Models\Eligibility\" />
-    <Folder Include="AWS\Models\Eligibility\Get Eligibility\" />
-    <Folder Include="AWS\Managers\Account Statement\" />
-    <Folder Include="AWS\Models\Account Statement\" />
     <Folder Include="AWS\Services\Account Statement\" />
+    <Folder Include="Constants\" />
+    <Folder Include="Constants\Application Status\" />
+    <Folder Include="AWS\Services\Application Status\" />
+    <Folder Include="AWS\Managers\Application Status\" />
+    <Folder Include="AWS\Models\Application Status\" />
+    <Folder Include="AWS\Models\Application Status\Post Delete NC Draft\" />
     <Folder Include="AWS\Models\Account Statement\Statement\" />
     <Folder Include="AWS\Models\Account Statement\Notification\" />
     <Folder Include="AWS\Models\Eligibility\Post Eligibility\" />
     <Folder Include="API\Services\Feature Info\" />
     <Folder Include="API\Models\Base Model\" />
-    <Folder Include="AWS\Managers\ServiceDistruption\" />
     <Folder Include="AWS\Models\DBR\Post Get Auto Opt In CA\" />
     <Folder Include="AWS\Models\DBR\Post BR Eligibility Indicators\" />
     <Folder Include="AWS\Models\DBR\Patch Update Auto Opt In Ca\" />
     <Folder Include="AWS\Managers\TNG\" />
+    <Folder Include="API\Managers\Home\Utilities\" />
+    <Folder Include="AWS\Managers\MyHome\" />
+    <Folder Include="AWS\Models\Application Status\Post NC Draft Applications\" />
     <Folder Include="AWS\Managers\DS\" />
     <Folder Include="AWS\Services\DS\" />
     <Folder Include="AWS\Models\DS\" />
@@ -172,59 +115,42 @@
     <None Remove="Resources\Language\Language_MS.json" />
     <None Remove="Resources\TnC\TermsAndConditions_EN.txt" />
     <None Remove="Resources\TnC\TermsAndConditions_MS.txt" />
-    <None Remove="Resources\Usage\AccountUsageSmart.json" />
-    <None Remove="Resources\Notification\GetUserNotifications.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10009.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1001.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10010.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10011.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1002.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1003.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1004.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1005.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10050.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10051.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10052.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10053.json" />
-    <None Remove="Resources\Notification\NotificationInfo_1099.json" />
     <None Remove="Resources\Language\Language_MS.json" />
     <None Remove="Resources\Language\Language_EN.json" />
     <None Remove="Resources\Country\CountryList.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10071.json" />
-    <None Remove="Resources\Notification\NotificationInfo_10072.json" />
     <None Remove="AWS\Models\DBR\Get Multi Bill Rendering\" />
-    <None Remove="AWS\Models\DBR\Post Multi Installation Details\" />
-    <None Remove="API\Models\Notification\Notification Details\" />
     <None Remove="API\Managers\FeatureInfo\" />
-    <None Remove="API\Models\Feature Info\" />
-    <None Remove="AWS\Managers\EB\" />
-    <None Remove="AWS\Managers\Bill Redesign\" />
-    <None Remove="AWS\Models\Eligibility\" />
-    <None Remove="AWS\Models\Eligibility\Get Eligibility\" />
-    <None Remove="AWS\Managers\Account Statement\" />
-    <None Remove="AWS\Models\Account Statement\" />
     <None Remove="AWS\Services\Account Statement\" />
+    <None Remove="Xamarin.Essentials" />
+    <None Remove="API\Models\myHome\" />
+    <None Remove="Constants\" />
+    <None Remove="Constants\Application Status\" />
+    <None Remove="AWS\Services\Application Status\" />
+    <None Remove="AWS\Managers\Application Status\" />
+    <None Remove="AWS\Models\Application Status\" />
+    <None Remove="AWS\Models\Application Status\Delete NC Draft\" />
+    <None Remove="System.IdentityModel.Tokens.Jwt" />
     <None Remove="AWS\Models\Account Statement\Statement\" />
     <None Remove="AWS\Models\Account Statement\Notification\" />
     <None Remove="AWS\Models\Eligibility\Post Eligibility\" />
     <None Remove="API\Services\Feature Info\" />
     <None Remove="API\Models\Base Model\" />
-    <None Remove="AWS\Managers\ServiceDistruption\" />
     <None Remove="AWS\Models\DBR\Get Auto Opt In CA\" />
     <None Remove="AWS\Models\DBR\Post BR Eligibility Indicators\" />
     <None Remove="AWS\Models\DBR\Patch Update Auto Opt In Ca\" />
     <None Remove="AWS\Managers\TNG\" />
+    <None Remove="API\Managers\Home\Utilities\" />
+    <None Remove="AWS\Managers\MyHome\" />
+    <None Remove="AWS\Models\Application Status\Post NC Draft Applications\" />
     <None Remove="AWS\Managers\DS\" />
     <None Remove="AWS\Services\DS\" />
     <None Remove="AWS\Models\DS\" />
     <None Remove="AWS\Models\DS\EKYCStatus\" />
     <None Remove="AWS\Models\DS\EKYCIdentification\" />
     <None Remove="Refit" />
-    <None Remove="Xamarin.Essentials" />
     <None Remove="AWS\Models\Eligibility\Post Eligibility By Criteria\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />
     <Compile Remove="Business\Managers\AccountUsageManager.cs" />
   </ItemGroup>

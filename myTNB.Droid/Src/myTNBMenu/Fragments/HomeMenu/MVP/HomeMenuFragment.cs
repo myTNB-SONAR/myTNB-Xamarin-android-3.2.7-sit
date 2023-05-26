@@ -58,7 +58,12 @@ using myTNB_Android.Src.EBPopupScreen.Activity;
 using Dynatrace.Xamarin;
 using myTNB_Android.Src.ServiceDistruption.Activity;
 using System.Threading.Tasks;
+using AndroidX.Fragment.App;
+using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.MyHome.Model;
+using myTNB_Android.Src.MyDrawer;
 using myTNB.Mobile.AWS.Models.DBR;
+using Android.Graphics;
 using Dynatrace.Xamarin.Binding.Android;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
@@ -282,6 +287,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.newBillRedesignBanner)]
         ImageView newBillRedesignBanner;
 
+        [BindView(Resource.Id.discoverMoreMyHomeContainer)]
+        LinearLayout discoverMoreMyHomeContainer;
+
+        [BindView(Resource.Id.myHomeBanner)]
+        ImageView myHomeBanner;
+
         [BindView(Resource.Id.discovercontainer)]
         LinearLayout discovercontainer;
 
@@ -304,7 +315,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         internal static readonly int SELECT_SD_POPUP_REQUEST_CODE = 8820;
 
-        private static List<MyService> currentMyServiceList = new List<MyService>();
+        private static List<MyServiceModel> myServicesList = new List<MyServiceModel>();
 
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
 
@@ -352,6 +363,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            DynatraceHelper.OnTrack(DynatraceConstants.MyHome.Screens.Home.Dashboard);
             presenter = new HomeMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
         }
 
@@ -515,8 +527,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 GetIndicatorTenantDBR();
                 //SetDBRDiscoverView();
-                SetUpNBRView();
                 SetupNewFAQView();
+                SetUpMyHomeBanner();
 
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
@@ -577,7 +589,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             Utility.LoggingNonFatalError(err);
                         }
-                        StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
+                        this.Activity.StartActivityForResult(new Intent(this.Activity, typeof(NotificationActivity)), Constants.NOTIFICATION_LISTING_REQUEST_CODE);
                     }
                 };
 
@@ -635,6 +647,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
+                SetUpNBRView();
                 ShowDiscoverMoreLayout();
                 ShowDiscoverMoreSDLayout();
             }
@@ -1113,16 +1126,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetMyServiceRecycleView()
         {
-            myServiceShimmerAdapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(3), this.Activity);
-            myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
+            this.Activity.RunOnUiThread(() =>
+            {
+                myServiceShimmerAdapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(3), this.Activity);
+                myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
 
-            myServiceShimmerView.Visibility = ViewStates.Visible;
-            myServiceView.Visibility = ViewStates.Gone;
+                myServiceShimmerView.Visibility = ViewStates.Visible;
+                myServiceView.Visibility = ViewStates.Gone;
+            });
 
-            this.presenter.InitiateMyService();
+            Task.Run(() =>
+            {
+                this.presenter.InitiateMyService();
+            });
         }
 
-        public void SetMyServiceResult(List<MyService> list)
+        public void SetMyServicesResult(List<MyServiceModel> list)
         {
             try
             {
@@ -1132,8 +1151,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
                         myServiceListRecycleView.SetAdapter(myServiceAdapter);
-                        currentMyServiceList.Clear();
-                        currentMyServiceList.AddRange(list);
+                        myServicesList.Clear();
+                        myServicesList.AddRange(list);
                         myServiceAdapter.ClickChanged += OnClickChanged;
                         this.SetIsClicked(false);
                         try
@@ -1379,7 +1398,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
                                 {
                                     if (flagOwner
-                                        && billRenderingTenantResponse.Content[i].caNo == accounts[j].AccNum
+                                        && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
                                         && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
                                         && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
                                         && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
@@ -1424,27 +1443,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 // TODO: To Hide the FAQ
                 // HideNewFAQ();
                 Utility.LoggingNonFatalError(e);
-            }
-        }
-        public void ShowMarketingTooltip()
-        {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
-                    .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
-                    .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_TITLE))
-                    .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_MESSAGE))
-                    .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_START_NOW))
-                    .SetCTAaction(() => ShowManageBill())
-                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.DASHBOARD_HOME, LanguageConstants.DashboardHome.DBR_REMINDER_POPUP_GOT_IT))
-                    .SetSecondaryCTAaction(() =>
-                    {
-                        this.SetIsClicked(false);
-                        DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
-                    })
-                    .Build();
-                marketingTooltip.Show();
             }
         }
 
@@ -1815,6 +1813,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            if (MyTNBAccountManagement.GetInstance().GetPostGetNCDraftResponse() != null)
+            {
+                ((DashboardHomeActivity)Activity).OnCheckNCDraftResumePopUp();
+            }
         }
 
         public void CallOnCheckShowHomeTutorial()
@@ -1847,12 +1850,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         this.SetIsClicked(true);
 
-                        MyService selectedService = currentMyServiceList[position];
-                        if (selectedService.ServiceCategoryId == "1003")
+                        MyServiceModel selectedService = myServicesList[position];
+                        if (selectedService.ServiceType == MobileEnums.ServiceEnum.SUBMITFEEDBACK)
                         {
                             ShowFeedbackMenu();
                         }
-                        else if (selectedService.ServiceCategoryId == "1001")
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.SELFMETERREADING)
                         {
                             if (!UserSessions.HasSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
@@ -1862,7 +1865,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Intent applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
                             StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
-                        else if (selectedService.ServiceCategoryId == "1004")
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.PAYBILL)
                         {
                             if (Utility.IsEnablePayment()
                             && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded())
@@ -1887,7 +1890,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 }
                             }
                         }
-                        else if (selectedService.ServiceCategoryId == "1005" && (!isRefreshShown
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.VIEWBILL && (!isRefreshShown
                             && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
                         {
                             if (!UserSessions.HasViewBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
@@ -1915,7 +1918,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 StartActivity(supplyAccount);
                             }
                         }
-                        else if (selectedService.ServiceCategoryId == "1006")
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.APPLICATIONSTATUS)
                         {
                             _searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
                             if (_searchApplicationTypeResponse == null)
@@ -1934,7 +1937,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                             this.SetIsClicked(false);
                         }
-                        else if (selectedService.ServiceCategoryId == "1007")
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.ENERGYBUDGET)
                         {
                             if (Utility.IsMDMSDownEnergyBudget() && !isRefreshShown)
                             {
@@ -2033,6 +2036,42 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 }
                             }
                         }
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.MYHOME)
+                        {
+                            if (!UserSessions.MyHomeQuickLinkHasShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            {
+                                UserSessions.SetShownMyHomeQuickLink(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                            }
+
+                            List<MyDrawerModel> drawerList = new List<MyDrawerModel>();
+
+                            if (selectedService.Children != null
+                                && selectedService.Children.Count > 0)
+                            {
+                                foreach (MyServiceModel child in selectedService.Children)
+                                {
+                                    drawerList.Add(new MyDrawerModel()
+                                    {
+                                        ParentServiceId = child.ParentServiceId,
+                                        ServiceId = child.ServiceId,
+                                        ServiceName = child.ServiceName,
+                                        ServiceIconUrl = child.ServiceIconUrl,
+                                        DisabledServiceIconUrl = child.DisabledServiceIconUrl,
+                                        SSODomain = child.SSODomain,
+                                        OriginURL = child.OriginURL,
+                                        RedirectURL = child.RedirectURL,
+                                        ServiceType = child.ServiceType
+                                    });
+                                }
+
+                                MyHomeDrawerFragment myHomeBottomSheetDialog = new MyHomeDrawerFragment(this.Activity, drawerList, selectedService.ServiceName);
+
+                                myHomeBottomSheetDialog.Cancelable = true;
+                                myHomeBottomSheetDialog.Show(this.Activity.SupportFragmentManager, "My Home Dialog");
+                            }
+
+                            this.SetIsClicked(false);
+                        }
                         else
                         {
                             this.SetIsClicked(false);
@@ -2092,7 +2131,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     AllApplicationsCache.Instance.Clear();
                     AllApplicationsCache.Instance.Reset();
                     Intent applicationLandingIntent = new Intent(this.Activity, typeof(ApplicationStatusLandingActivity));
-                    StartActivity(applicationLandingIntent);
+                    this.Activity.StartActivityForResult(applicationLandingIntent, Constants.APPLICATION_STATUS_LANDING_FROM_DASHBOARD_REQUEST_CODE);
                 }
                 else
                 {
@@ -2652,9 +2691,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }
 
-            if (currentMyServiceList.Count > 0)
+            if (myServicesList.Count > 0)
             {
-                myServiceAdapter = new MyServiceAdapter(currentMyServiceList, this.Activity, isRefreshShown);
+                myServiceAdapter = new MyServiceAdapter(myServicesList, this.Activity, isRefreshShown);
                 myServiceListRecycleView.SetAdapter(myServiceAdapter);
 
                 myServiceAdapter.ClickChanged += OnClickChanged;
@@ -3180,7 +3219,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             this.presenter.RefreshAccountSummary();
 
-            currentMyServiceList = new List<MyService>();
+            myServicesList = new List<MyServiceModel>();
 
             this.presenter.InitiateMyServiceRefresh();
 
@@ -3215,7 +3254,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             SetBottomLayoutBackground(false);
 
-            currentMyServiceList = new List<MyService>();
+            myServicesList = new List<MyServiceModel>();
 
             this.presenter.InitiateMyServiceRefresh();
         }
@@ -3722,6 +3761,68 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public int GetMyServiceContainerHeight()
         {
             return myServiceContainer.Height;
+        }
+
+        public int GetMyServiceItemHeight()
+        {
+            var servicesList = myServicesList;
+
+            int a = (int)System.Math.Ceiling((double)servicesList.Count / 3);
+            var itemHeight = myServiceListRecycleView.Height / a;
+
+            return itemHeight;
+        }
+
+        public int GetMyServiceItemWidth()
+        {
+            var itemWidth = myServiceListRecycleView.Width / 3;
+            return itemWidth;
+        }
+
+        public int GetMyServiceItemTopPosition(string id)
+        {
+            var topPosition = 0;
+            var servicesList = myServicesList;
+            int itemPosition = servicesList.FindIndex(x => x.ServiceId == id) + 1;
+
+            int row = (int)System.Math.Ceiling((double)itemPosition / 3);
+            int rowIndex = row - 1;
+            topPosition = rowIndex * GetMyServiceItemHeight();
+
+            return topPosition;
+        }
+
+        public int GetMyServiceItemLeftPosition(string id)
+        {
+            var leftPosition = 0;
+
+            int column = 0;
+
+            var servicesList = myServicesList;
+            int itemIndex = servicesList.FindIndex(x => x.ServiceId == id);
+
+            column = (itemIndex % 3);
+            leftPosition = column * GetMyServiceItemWidth();
+
+            return leftPosition;
+        }
+
+        public int GetMyServiceRecycleViewYLocation()
+        {
+            int i = 0;
+
+            try
+            {
+                int[] location = new int[2];
+                myServiceListRecycleView.GetLocationOnScreen(location);
+                i = location[1];
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
         }
 
         public int GetAccountContainerHeight()
@@ -4261,6 +4362,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Home.Home_Banner);
             ((DashboardHomeActivity)Activity).NavigateToNBR();
+        }
+
+        private void SetUpMyHomeBanner()
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                if (!MyHomeUtility.Instance.IsBannerHidden && MyHomeUtility.Instance.IsAccountEligible)
+                {
+                    //GTM-1 Force Hide myHome Banner
+                    discoverMoreSectionTitle.Visibility = ViewStates.Gone;
+                    discoverMoreMyHomeContainer.Visibility = ViewStates.Gone;
+
+                    //discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+                    //discoverMoreMyHomeContainer.Visibility = ViewStates.Visible;
+                    //myHomeBanner.Visibility = ViewStates.Visible;
+                    //myHomeBanner.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.Banner_Home_MyHome_MS
+                    //    : Resource.Drawable.Banner_Home_MyHome_EN);
+                }
+            });
         }
     }
 }

@@ -463,7 +463,7 @@ will be recorded. Check back again later to view its update."/>
 							android:layout_marginRight="16dp"
 							android:layout_marginBottom="16dp"
 							android:textSize="16dp"
-							style="@style/Theme.ApplicationStatusLandingButton" />
+							style="@style/Theme.FreshGreenOutlineButton" />
 					</LinearLayout>
 					<View
 						android:layout_height="1dp"
@@ -538,16 +538,6 @@ will be recorded. Check back again later to view its update."/>
 				android:padding="16dp"
 				android:orientation="vertical"
 				android:background="@color/white">
-				<TextView
-					android:id="@+id/txtApplicationStatusBottomNote"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:textColor="@color/charcoalGrey"
-					android:textSize="14dp"
-					android:lineSpacingExtra="3dp"
-					android:layout_marginBottom="16dp"
-					android:visibility="gone"
-					android:text="UI - Save this application to keep track of its up-to-date status in My Applications."/>
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -610,8 +600,8 @@ will be recorded. Check back again later to view its update."/>
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="16dp"
-						android:layout_marginTop="16dp"
 						android:visibility="gone"
+						tools:visibility="visible"
 						android:text="You have an appointment set for 19 Sep 2020, between 9:00 AM - 1:00 PM. "
 						android:textColor="@color/charcoalGrey"
 						android:textSize="14dp" />
@@ -670,7 +660,9 @@ will be recorded. Check back again later to view its update."/>
 						android:layout_weight="0.5"
 						android:text="@string/dashboard_chartview_view_bill"
 						android:textSize="16dp"
-						android:textAllCaps="false" />
+						android:textAllCaps="false"
+						android:ellipsize="end"
+						android:maxLines="1"/>
 					<Button
 						android:id="@+id/btnApplicationStatusPay"
 						style="@style/Theme.PayButton"
@@ -681,7 +673,9 @@ will be recorded. Check back again later to view its update."/>
 						android:text="@string/dashboard_chartview_pay"
 						android:textAllCaps="false"
 						android:textSize="16dp"
-						android:visibility="visible" />
+						android:visibility="visible"
+						android:ellipsize="end"
+						android:maxLines="1"/>
 				</LinearLayout>
 			</LinearLayout>
 		</LinearLayout>

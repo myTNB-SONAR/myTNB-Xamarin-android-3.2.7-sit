@@ -23,6 +23,8 @@ namespace myTNB.Mobile.AWS.Models
         public BaseCAListModel SD { set; get; }
         [JsonProperty("tng")]
         public BaseCAListModel TNG { set; get; }
+        [JsonProperty("myHome")]
+        public BaseCAListModel MyHome { set; get; }
         [JsonProperty("ds")]
         public BaseCAListModel DS { set; get; }
     }
@@ -41,6 +43,8 @@ namespace myTNB.Mobile.AWS.Models
         public bool Enabled { set; get; }
         [JsonProperty("targetGroup")]
         public bool TargetGroup { set; get; }
+        [JsonProperty("validateCriteria")]
+        public bool ValidateCriteria { set; get; }
     }
 
     public class BaseCAListModel

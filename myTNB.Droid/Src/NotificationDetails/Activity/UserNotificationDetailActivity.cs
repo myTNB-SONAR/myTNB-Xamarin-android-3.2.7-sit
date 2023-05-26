@@ -52,12 +52,19 @@ using Newtonsoft.Json;
 using Refit;
 using Constant = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.Constants;
 using Screen = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.ScreenEnum;
+using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
 using System.Linq;
 using myTNB.Mobile.AWS.Models.DBR;
+using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.MyHome.Activity;
+using myTNB_Android.Src.MyHome.Model;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB;
+using Xamarin.Facebook;
 using Dynatrace.Xamarin.Binding.Android;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity
@@ -154,6 +161,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         public override void OnBackPressed()
         {
+            OnBackPressedDynatraceTracking();
+
             if (fromPushDirectNotification)
             {
                 if (notificationDetails != null)
@@ -175,6 +184,33 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 result.PutExtra(Constants.ACTION_IS_READ, true);
                 SetResult(Result.Ok, result);
                 base.OnBackPressed();
+            }
+        }
+        
+        private void OnBackPressedDynatraceTracking()
+        {
+            if (notificationDetails != null)
+            {
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Non_Contractor_Completed_Back);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Contractor_Completed_Back);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Reappoint_Contractor_Back);
+                }
+                else
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.Back);
+                }
+            }
+            else
+            {
+                DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.Back);
             }
         }
 
@@ -259,7 +295,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             try
             {
-                mPresenter = new UserNotificationDetailPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+                mPresenter = new UserNotificationDetailPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this), this);
                 base.OnCreate(savedInstanceState);
                 SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
                 SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
@@ -348,6 +384,39 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+
+            OnScreenVisitDynatraceTracking();
+        }
+
+        private void OnScreenVisitDynatraceTracking()
+        {
+            if (notificationDetails != null)
+            {
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.NC_Non_Contractor_Completed);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.NC_Contractor_Completed);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.NC_OTP_Verify);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.NC_Reappoint_Contractor);
+                }
+                else
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.Visit);
+                }
+            }
+            else
+            {
+                DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.Visit);
             }
         }
 
@@ -901,6 +970,50 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 if (resultCode == Result.Ok)
                 {
                     ShowBillsMenu();
+                }
+            }
+            else if (resultCode == Result.Ok
+                && (requestCode == Constants.MYHOME_MICROSITE_REQUEST_CODE
+                || requestCode == Constants.APPLICATION_STATUS_DETAILS_FROM_NOTIFICATION_DETAILS_REQUEST_CODE))
+            {
+                if (data != null && data.Extras is Bundle extras && extras != null)
+                {
+                    if (extras.ContainsKey(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
+                    {
+                        bool backToApplicationStatusLanding = extras.GetBoolean(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING);
+                        if (backToApplicationStatusLanding)
+                        {
+                            string toastMessage = string.Empty;
+                            if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                            {
+                                toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                            }
+
+                            Intent resultIntent = new Intent();
+                            resultIntent.PutExtra(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING, true);
+                            resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+                            SetResult(Result.Ok, resultIntent);
+                            Finish();
+                        }
+                    }
+                    else if (extras.ContainsKey(MyHomeConstants.BACK_TO_HOME))
+                    {
+                        bool backToHome = extras.GetBoolean(MyHomeConstants.BACK_TO_HOME);
+                        if (backToHome)
+                        {
+                            string toastMessage = string.Empty;
+                            if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                            {
+                                toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                            }
+
+                            Intent resultIntent = new Intent();
+                            resultIntent.PutExtra(MyHomeConstants.BACK_TO_HOME, true);
+                            resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+                            SetResult(Result.Ok, resultIntent);
+                            Finish();
+                        }
+                    }
                 }
             }
         }
@@ -1719,5 +1832,80 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             //    ? Resources.Assets : base.Assets;
         }
 
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowErrorPopUp()
+        {
+            ShowGenericErrorPopUp();
+        }
+
+        private Snackbar mNoInternetSnackbar;
+        public void ShowNoInternetSnackbar()
+        {
+            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
+
+            mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mNoInternetSnackbar.Dismiss();
+            }
+            );
+            View v = mNoInternetSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mNoInternetSnackbar.Show();
+            this.SetIsClicked(false);
+        }
+
+        public void ShowApplicationPopupMessage(StatusDetail statusDetail)
+        {
+            MyTNBAppToolTipBuilder popUpMessage = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(statusDetail.Title)
+                .SetMessage(statusDetail.Message)
+                .SetCTALabel(statusDetail.PrimaryCTATitle)
+                .Build();
+            popUpMessage.Show();
+        }
+
+        public void NavigateToMyHomeMicrosite(MyHomeModel model, string accessToken)
+        {
+            Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
+            micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
+            micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(model));
+            StartActivityForResult(micrositeActivity, Constants.MYHOME_MICROSITE_REQUEST_CODE);
+        }
+
+        public void NavigateToApplicationDetails(GetApplicationStatusDisplay application)
+        {
+            Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+            applicationStatusDetailIntent.PutExtra(MyHomeConstants.APPLICATION_DETAIL_RESPONSE, JsonConvert.SerializeObject(application));
+            StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_FROM_NOTIFICATION_DETAILS_REQUEST_CODE);
+        }
     }
 }

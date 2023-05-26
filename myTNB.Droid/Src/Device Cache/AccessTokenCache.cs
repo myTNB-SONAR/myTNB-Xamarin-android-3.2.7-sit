@@ -23,6 +23,7 @@ namespace myTNB_Android.Src.DeviceCache
         internal AccessTokenCache() { }
 
         private string Token { set; get; } = string.Empty;
+        private string UserAccessToken { set; get; } = string.Empty;
 
         internal void SaveAccessToken(Context activity, string token)
         {
@@ -34,6 +35,17 @@ namespace myTNB_Android.Src.DeviceCache
             editor.Apply();
             Token = token;
             AppInfoManager.Instance.AccessToken = token;
+        }
+
+        internal void SaveUserServiceAccessToken(Context activity, string token)
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            ISharedPreferences preferences = PreferenceManager.GetDefaultSharedPreferences(activity);
+#pragma warning restore CS0618 // Type or member is obsolete
+            ISharedPreferencesEditor editor = preferences.Edit();
+            editor.PutString(MobileConstants.SharePreferenceKey.UserServiceAccessToken, token);
+            editor.Apply();
+            UserAccessToken = token;
         }
 
         internal string GetAccessToken(Context activity)
@@ -51,6 +63,20 @@ namespace myTNB_Android.Src.DeviceCache
             return Token;
         }
 
+        internal string GetUserServiceAccessToken(Context activity)
+        {
+            if (string.IsNullOrEmpty(UserAccessToken)
+                || string.IsNullOrWhiteSpace(UserAccessToken))
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                ISharedPreferences preferences = PreferenceManager.GetDefaultSharedPreferences(activity);
+#pragma warning restore CS0618 // Type or member is obsolete
+                UserAccessToken = preferences.GetString(MobileConstants.SharePreferenceKey.UserServiceAccessToken, string.Empty) ?? string.Empty;
+            }
+            Log.Debug("User Service Access Token", UserAccessToken);
+            return UserAccessToken;
+        }
+
         internal bool HasTokenSaved(Context activity)
         {
             string tkn = GetAccessToken(activity);
@@ -58,10 +84,17 @@ namespace myTNB_Android.Src.DeviceCache
                 && !string.IsNullOrWhiteSpace(tkn);
         }
 
+        internal bool HasUserAccessTokenSaved(Context activity)
+        {
+            string tkn = GetUserServiceAccessToken(activity);
+            return !string.IsNullOrEmpty(tkn)
+                && !string.IsNullOrWhiteSpace(tkn);
+        }
+
         internal void Clear()
         {
             Token = string.Empty;
-            AppInfoManager.Instance.AccessToken = string.Empty;
+            UserAccessToken = string.Empty;
         }
     }
 }

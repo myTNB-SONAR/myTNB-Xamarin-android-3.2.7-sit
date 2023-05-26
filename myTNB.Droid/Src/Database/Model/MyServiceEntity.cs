@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Android.Nfc;
+using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
 using SQLite;
@@ -9,20 +11,41 @@ namespace myTNB_Android.Src.Database.Model
     [Table("MyServiceEntity")]
     public class MyServiceEntity
     {
-        [Unique, Column("ServiceCategoryId")]
-        public string ServiceCategoryId { get; set; }
+        [Unique, Column("ServiceId")]
+        public string ServiceId { get; set; }
 
-        [Column("serviceCategoryName")]
-        public string serviceCategoryName { get; set; }
+        [Column("ServiceName")]
+        public string ServiceName { get; set; }
 
-        [Column("serviceCategoryIcon")]
-        public string serviceCategoryIcon { get; set; }
+        [Column("ServiceIconUrl")]
+        public string ServiceIconUrl { get; set; }
 
-        [Column("serviceCategoryIconUrl")]
-        public string serviceCategoryIconUrl { get; set; }
+        [Column("DisabledServiceIconUrl")]
+        public string DisabledServiceIconUrl { get; set; }
 
-        [Column("serviceCategoryDesc")]
-        public string serviceCategoryDesc { get; set; }
+        [Column("ServiceBannerUrl")]
+        public string ServiceBannerUrl { get; set; }
+
+        [Column("Enabled")]
+        public bool Enabled { get; set; }
+
+        [Column("SSODomain")]
+        public string SSODomain { get; set; }
+
+        [Column("OriginURL")]
+        public string OriginURL { get; set; }
+
+        [Column("RedirectURL")]
+        public string RedirectURL { get; set; }
+
+        [Column("DisplayType")]
+        public int DisplayType { get; set; }
+
+        [Column("ServiceType")]
+        public int ServiceType { get; set; }
+
+        [Column("HasChildren")]
+        public bool HasChildren { get; set; }
 
         public static int CreateTable()
         {
@@ -35,18 +58,24 @@ namespace myTNB_Android.Src.Database.Model
             db.CreateTableAsync<MyServiceEntity>();
         }
 
-        public static int InsertOrReplace(MyService myServices)
+        public static int InsertOrReplace(MyServiceModel myService)
         {
             var db = DBHelper.GetSQLiteConnection();
             var newRecord = new MyServiceEntity()
             {
-                ServiceCategoryId = myServices.ServiceCategoryId,
-                serviceCategoryName = myServices.serviceCategoryName,
-                serviceCategoryIcon = myServices.serviceCategoryIcon,
-                serviceCategoryIconUrl = myServices.serviceCategoryIconUrl,
-                serviceCategoryDesc = myServices.serviceCategoryDesc,
+                ServiceId = myService.ServiceId,
+                ServiceName = myService.ServiceName,
+                ServiceIconUrl = myService.ServiceIconUrl,
+                DisabledServiceIconUrl = myService.DisabledServiceIconUrl,
+                ServiceBannerUrl = myService.ServiceBannerUrl,
+                Enabled = myService.Enabled,
+                SSODomain = myService.SSODomain,
+                OriginURL = myService.OriginURL,
+                RedirectURL = myService.RedirectURL,
+                DisplayType = myService.DisplayType,
+                ServiceType = (int)myService.ServiceType,
+                HasChildren = myService.Children != null && myService.Children.Count > 0 ? true : false
             };
-
             int rows = db.InsertOrReplace(newRecord);
 
             return rows;

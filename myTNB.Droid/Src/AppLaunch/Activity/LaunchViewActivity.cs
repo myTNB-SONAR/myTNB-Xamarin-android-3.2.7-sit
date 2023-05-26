@@ -50,6 +50,7 @@ using System.Text.RegularExpressions;
 using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.Utils.Notification;
 using myTNB.Mobile.AWS.Models.DBR;
+using Firebase.Iid;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -127,41 +128,48 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 if (Intent != null && Intent.Extras != null)
                 {
-                    if (Intent.Extras.ContainsKey("Type"))
+                    if (UserEntity.IsCurrentlyActive())
                     {
-                        string notifType = Intent.Extras.GetString("Type");
-                        UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
-                        if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.APPLICATIONSTATUS
-                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID)
-                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONID)
-                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE))
+                        NotificationUtil.Instance.SaveData(Intent.Extras);
+                    }
+
+                    if (!NotificationUtil.Instance.PushMapId.IsValid())
+                    {
+                        if (Intent.Extras.ContainsKey("Type"))
                         {
-                            string saveID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID);
-                            string applicationID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONID);
-                            string applicationType = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE);
-                            string system = Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_System)
-                                ? Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_System)
-                                : string.Empty;
-                            UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
-                        }
-                        else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.DBR_Owner)
-                        {
-                            string accountNumber = Intent.Extras.GetString("AccountNumber");
-                            UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
-                        }
-                        else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCFirstNotification ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCSecondNotification ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCSuccessful ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCFailed ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThreeTimesFailure ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCIDNotMatching ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyFailed ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyThreeTimesFailure ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartySuccessful ||
-                            notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyIDNotMatching)
+                            string notifType = Intent.Extras.GetString("Type");
+                            UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
+                            if (notifType.ToUpper() == myTNB.Mobile.Constants.NotificationTypes.APPLICATIONSTATUS
+                                && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID)
+                                && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONID)
+                                && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE))
+                            {
+                                string saveID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID);
+                                string applicationID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONID);
+                                string applicationType = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE);
+                                string system = Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_System)
+                                    ? Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_System)
+                                    : string.Empty;
+                                UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
+                            }
+                            else if (notifType.ToUpper() == "DBROWNER")
+                            {
+                                string accountNumber = Intent.Extras.GetString("AccountNumber");
+                                UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
+                            }
+                            else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT
+                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE
+                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN
+                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCFirstNotification
+                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCSecondNotification
+                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCSuccessful
+                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCFailed
+                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThreeTimesFailure
+                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCIDNotMatching
+                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyFailed
+                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyThreeTimesFailure
+                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartySuccessful
+                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyIDNotMatching)
                         {
                             if (UserEntity.IsCurrentlyActive())
                             {
@@ -169,44 +177,61 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                 UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                             }
                         }
-                        else
-                        {
-                            UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
-                        }
-                    }
-
-                    if (Intent.Extras.ContainsKey("Type") && Intent.Extras.ContainsKey("RequestTransId") && Intent.Extras.ContainsKey("EventId"))
-                    {
-                        string type = Intent.Extras.GetString(NotificationOpenDirectDetails.TYPE);
-                        string requestTransID = Intent.Extras.GetString(NotificationOpenDirectDetails.PARAM_REQUESTTRANSID);
-                        string eventID = Intent.Extras.GetString(NotificationOpenDirectDetails.Param_EVENTID);
-                        UserSessions.SetNotification(type, requestTransID, eventID);
-                    }
-
-                    if (Intent.Extras.ContainsKey("Email"))
-                    {
-                        string email = Intent.Extras.GetString("Email");
-                        UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
-                        if (PreferenceManager.GetDefaultSharedPreferences(this) != null)
-                        {
-                            if (UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this))?.ToUpper() != null)
-                            {
-                                if (!"APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this)).ToUpper()))
-                                {
-                                    UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
-                                }
-                            }
-                            else if (Intent.Extras.ContainsKey("AccountNum"))
+                            else
                             {
                                 UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                             }
                         }
-                    }
 
-                    if (Intent.Extras.ContainsKey("claimId"))
+                        if (Intent.Extras.ContainsKey("Type") && Intent.Extras.ContainsKey("RequestTransId") && Intent.Extras.ContainsKey("EventId"))
+                        {
+                            string type = Intent.Extras.GetString(NotificationOpenDirectDetails.TYPE);
+                            string requestTransID = Intent.Extras.GetString(NotificationOpenDirectDetails.PARAM_REQUESTTRANSID);
+                            string eventID = Intent.Extras.GetString(NotificationOpenDirectDetails.Param_EVENTID);
+                            UserSessions.SetNotification(type, requestTransID, eventID);
+                        }
+
+                        if (Intent.Extras.ContainsKey("Email"))
+                        {
+                            string email = Intent.Extras.GetString("Email");
+                            UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
+                            if (PreferenceManager.GetDefaultSharedPreferences(this) != null)
+                            {
+                                if (UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this))?.ToUpper() != null)
+                                {
+                                    if (!"APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this)).ToUpper()))
+                                    {
+                                        UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                                    }
+                                }
+                                else if (Intent.Extras.ContainsKey("AccountNum"))
+                                {
+                                    UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                                }
+                            }
+                        }
+
+                        if (Intent.Extras.ContainsKey("claimId"))
+                        {
+                            ClaimId = Intent.Extras.GetString("claimId");
+                            currentNavigation = AppLaunchNavigation.Notification;
+                        }
+                    }
+                    else
                     {
-                        ClaimId = Intent.Extras.GetString("claimId");
-                        currentNavigation = AppLaunchNavigation.Notification;
+                        UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+
+                        if (Intent.Extras.ContainsKey("Type"))
+                        {
+                            string notifType = Intent.Extras.GetString("Type");
+                            UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
+                        }
+
+                        if (Intent.Extras.ContainsKey("Email"))
+                        {
+                            string email = Intent.Extras.GetString("Email");
+                            UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
+                        }
                     }
                 }
                 UserSessions.SetUploadFileNameCounter(PreferenceManager.GetDefaultSharedPreferences(this), 1);

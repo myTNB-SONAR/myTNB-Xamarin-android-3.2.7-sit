@@ -24,6 +24,7 @@
 
         public enum ScreenEnum
         {
+            Home,
             Rewards,
             WhatsNew,
             ApplicationListing,

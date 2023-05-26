@@ -60,7 +60,19 @@ namespace myTNB_Android.Src.Utils
             return imageBitmap;
         }
 
+        public static string GetBase64FromBitmapPNG(Bitmap bitmap, int imageQuality)
+        {
+            string base64String = "";
+            using (var stream = new MemoryStream())
+            {
+                bitmap.Compress(Bitmap.CompressFormat.Png, imageQuality, stream);
 
+                var byteArray = stream.ToArray();
+                int length = byteArray.Length;
+                base64String = Convert.ToBase64String(byteArray);
+            }
+            return base64String;
+        }
 
         public static string GetBase64FromBitmap(Bitmap bitmap, int imageQuality)
         {

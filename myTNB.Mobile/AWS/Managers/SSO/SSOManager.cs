@@ -72,6 +72,67 @@ namespace myTNB.Mobile
             }
         }
 
+        public string GetMyHomeSignature(string name
+            , string accessToken
+            , string deviceToken
+            , string appVersion
+            , int roleID
+            , string language
+            , string fontSize
+            , string originURL
+            , string redirectURL
+            , string userID
+            , string idNumber
+            , int osType
+            , string email
+            , string appReference
+            , int? applicationModuleID
+            , string mobileNumber
+            , string cancelURL)
+        {
+            try
+            {
+                MyHomeModel ssoModel = new MyHomeModel
+                {
+                    Name = name,
+                    AccessToken = accessToken,
+                    DeviceToken = deviceToken,
+                    AppVersion = appVersion,
+                    RoleId = roleID,
+                    Lang = language,
+                    FontSize = fontSize == "L" ? "L" : "N",
+                    OriginUrl = originURL,
+                    RedirectUrl = redirectURL,
+                    CaNo = string.Empty,
+                    UserID = userID,
+                    IdType = null,
+                    IdNo = idNumber,
+                    TransactionType = "MyHome",
+                    InitiateTime = DateTime.UtcNow,
+                    QRMappingID = null,
+                    OSType = osType,
+                    Email = email,
+                    IsContractorApplied = false,
+                    IsNonLogin = false,
+                    AppRef = appReference,
+                    ApplicationModuleID = applicationModuleID,
+                    MobileNo = mobileNumber,
+                    CancelUrl = cancelURL
+                };
+                Debug.WriteLine("[DEBUG] SSO ssoModel: " + JsonConvert.SerializeObject(ssoModel));
+                string signature = SecurityManager.Instance.AES256_Encrypt(AWSConstants.SaltKey
+                    , AWSConstants.PassPhrase
+                    , JsonConvert.SerializeObject(ssoModel));
+                Debug.WriteLine("[DEBUG] SSO GetMyHomeSignature: " + signature);
+                return signature;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] GetMyHomeSignature Error: " + e.Message);
+                return string.Empty;
+            }
+        }
+
         /// <summary>
         /// This returns the app signature for Digital Signature
         /// </summary>

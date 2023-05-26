@@ -5,11 +5,11 @@ using myTNB.Mobile;
 
 namespace myTNB
 {
-    public sealed class ServiceMappingManager
+    internal sealed class ServiceMappingManager
     {
         private static readonly Lazy<ServiceMappingManager> lazy =
             new Lazy<ServiceMappingManager>(() => new ServiceMappingManager());
-        public static ServiceMappingManager Instance { get { return lazy.Value; } }
+        internal static ServiceMappingManager Instance { get { return lazy.Value; } }
 
         /// <summary>
         /// Maps the service and its status code to language file.
@@ -17,7 +17,8 @@ namespace myTNB
         /// <param name="serviceName">Name of the service</param>
         /// <param name="statusCode">Status code returned from the Service Response</param>
         /// <returns>Mapped status code details</returns>
-        public StatusDetail GetStatusDetails(string serviceName, string statusCode)
+        internal StatusDetail GetStatusDetails(string serviceName
+            , string statusCode)
         {
             List<StatusDetail> statusList = GetStatusList(serviceName);
             if (statusList != null && statusList.Count > 0)

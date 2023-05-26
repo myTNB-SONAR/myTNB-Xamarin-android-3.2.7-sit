@@ -252,5 +252,15 @@ namespace myTNB_Android.Src.Base.Activity
             //mErrorMessageSnackBar.Show();
             this.SetIsClicked(false);
         }
+
+        public void ShowGenericErrorPopUp()
+        {
+            MyTNBAppToolTipBuilder errorPopUp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(Utility.GetLocalizedErrorLabel(LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+                .SetMessage(Utility.GetLocalizedErrorLabel(LanguageConstants.Error.DEFAULT_ERROR_MSG))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.OK))
+                .Build();
+            errorPopUp.Show();
+        }
     }
 }

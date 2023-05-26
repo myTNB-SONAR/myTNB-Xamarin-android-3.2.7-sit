@@ -44,6 +44,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP
         {
             base.OnCreate(savedInstanceState);
 
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
             //layoutManagerService = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {

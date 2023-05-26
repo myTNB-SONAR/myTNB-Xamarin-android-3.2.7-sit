@@ -172,6 +172,40 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_sd));
                 }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_APP_UPDATE))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_generic));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_NC_ADDRESS_SEARCH_COMPLETED))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_Address_Search_Completed));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_Resume_Application));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED)
+                    || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_Application_Success));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_OTP_Verify));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_ACCEPTED))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_Contractor_Accepted));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED)
+                    || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_NO_RESPONSE))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_Contractor_Rejected));
+                }
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_REQUIRES_UPDATE))
+                {
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_Resume_Application));
+                }
                 else
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_generic));

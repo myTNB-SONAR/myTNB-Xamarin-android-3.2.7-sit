@@ -1,7 +1,7 @@
 ﻿using Android.OS;
-using myTNB.Mobile;
 using Constant = myTNB_Android.Src.Utils.Notification.Notification.Constants;
 using Type = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
+using NotificationTypes = myTNB.Mobile.Constants.NotificationTypes;
 
 namespace myTNB_Android.Src.Utils.Notification
 {
@@ -14,6 +14,7 @@ namespace myTNB_Android.Src.Utils.Notification
         public string PushMapId = string.Empty;
         public string Email = string.Empty;
         public Type Type = Type.None;
+        public bool IsDirectPush = false;
 
         public static NotificationUtil Instance
         {
@@ -30,6 +31,7 @@ namespace myTNB_Android.Src.Utils.Notification
         public void SaveData(Bundle extras)
         {
             GetData(extras);
+            SetIsDirectPush();
         }
 
         private void SetType(string type)
@@ -38,25 +40,40 @@ namespace myTNB_Android.Src.Utils.Notification
             {
                 switch (type.ToUpper())
                 {
-                    case MobileConstants.PushNotificationTypes.APP_UPDATE:
+                    case NotificationTypes.APP_UPDATE:
                         Type = Type.AppUpdate;
                         break;
-                    case MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT:
+                    case NotificationTypes.DBR.ACCOUNT_STATEMENT:
                         Type = Type.AccountStatement;
                         break;
-                    case MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN:
+                    case NotificationTypes.DBR.NEW_BILL_DESIGN:
                         Type = Type.NewBillDesign;
                         break;
-                    case MobileConstants.PushNotificationTypes.EKYCFirstNotification:
-                    case MobileConstants.PushNotificationTypes.EKYCSecondNotification:
-                    case MobileConstants.PushNotificationTypes.EKYCSuccessful:
-                    case MobileConstants.PushNotificationTypes.EKYCFailed:
-                    case MobileConstants.PushNotificationTypes.EKYCThreeTimesFailure:
-                    case MobileConstants.PushNotificationTypes.EKYCIDNotMatching:
-                    case MobileConstants.PushNotificationTypes.EKYCThirdPartyFailed:
-                    case MobileConstants.PushNotificationTypes.EKYCThirdPartyThreeTimesFailure:
-                    case MobileConstants.PushNotificationTypes.EKYCThirdPartySuccessful:
-                    case MobileConstants.PushNotificationTypes.EKYCThirdPartyIDNotMatching:
+                    case NotificationTypes.MyHome.MYHOME_NC_ADDRESS_SEARCH_COMPLETED:
+                        Type = Type.NCAddressSearchCompleted;
+                        break;
+                    case NotificationTypes.MyHome.MYHOME_NC_RESUME_APPLICATION:
+                        Type = Type.NCResumeApplication;
+                        break;
+                    case NotificationTypes.MyHome.MYHOME_NC_APPLICATION_COMPLETED:
+                        Type = Type.NCApplicationCompleted;
+                        break;
+                    case NotificationTypes.MyHome.MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED:
+                        Type = Type.NCApplicationContractorCompleted;
+                        break;
+                    case NotificationTypes.MyHome.MYHOME_NC_OTP_VERIFY:
+                        Type = Type.NCOTPVerify;
+                        break;
+                    case NotificationTypes.DS.EKYCFIRSTNOTIFICATION:
+                    case NotificationTypes.DS.EKYCSECONDNOTIFICATION:
+                    case NotificationTypes.DS.EKYCSUCCESSFUL:
+                    case NotificationTypes.DS.EKYCFAILED:
+                    case NotificationTypes.DS.EKYCTHREETIMESFAILURE:
+                    case NotificationTypes.DS.EKYCIDNOTMATCHING:
+                    case NotificationTypes.DS.EKYCTHIRDPARTYFAILED:
+                    case NotificationTypes.DS.EKYCTHIRDPARTYTHREETIMESFAILURE:
+                    case NotificationTypes.DS.EKYCTHIRDPARTYSUCCESSFUL:
+                    case NotificationTypes.DS.EKYCTHIRDPARTYIDNOTMATCHING:
                         Type = Type.EKYC;
                         break;
                     default:
@@ -92,6 +109,11 @@ namespace myTNB_Android.Src.Utils.Notification
             }
         }
 
+        private void SetIsDirectPush()
+        {
+            IsDirectPush = Type == Type.NewBillDesign || PushMapId.IsValid();
+        }
+
         public void ClearData()
         {
             Type = Type.None;
@@ -99,6 +121,7 @@ namespace myTNB_Android.Src.Utils.Notification
             NotificationType = string.Empty;
             PushMapId = string.Empty;
             Email = string.Empty;
+            IsDirectPush = false;
         }
     }
 }

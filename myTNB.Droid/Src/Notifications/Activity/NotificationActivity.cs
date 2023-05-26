@@ -27,6 +27,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.Snackbar;
+using myTNB.Mobile;
 using myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity;
 
 namespace myTNB_Android.Src.Notifications.Activity
@@ -176,6 +177,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Landing.Visit);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -797,8 +800,9 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details, UserNotificationData notificationData, int position)
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Landing.View_Notification_Detail);
             switch (details.BCRMNotificationTypeId)
-            {
+            {                
                 case Constants.BCRM_NOTIFICATION_EKYC_FIRST_NOTIFICATION:
                 case Constants.BCRM_NOTIFICATION_EKYC_SECOND_NOTIFICATION:
                 case Constants.BCRM_NOTIFICATION_EKYC_ID_NOT_MATCHING:
@@ -1040,6 +1044,8 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             try
             {
+                DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Landing.Back);
+
                 if (MyTNBAccountManagement.GetInstance().IsUsageFromNotification())
                 {
                     MyTNBAccountManagement.GetInstance().SetIsAccessUsageFromNotification(false);
@@ -1066,6 +1072,12 @@ namespace myTNB_Android.Src.Notifications.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void NavigateToDashboardWithIntent(Intent intent)
+        {
+            SetResult(Result.Ok, intent);
+            Finish();
         }
     }
 }

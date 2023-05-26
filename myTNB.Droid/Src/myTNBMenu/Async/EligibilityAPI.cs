@@ -114,8 +114,10 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                         AccessTokenCache.Instance.SaveAccessToken(mView, accessToken);
                     }
 
-                    GetEligibilityResponse response = await EligibilityManager.Instance.PostEligibility(UserEntity.GetActive().UserID ?? string.Empty,
-                        GetContractAccountList(), AccessTokenCache.Instance.GetAccessToken(mView));
+                    GetEligibilityResponse response = await EligibilityManager.Instance.PostEligibility(UserEntity.GetActive().UserID ?? string.Empty
+                        , UserEntity.GetActive().Email ?? string.Empty
+                        , GetContractAccountList()
+                        , AccessTokenCache.Instance.GetAccessToken(mView));
 
                     //Nullity Check
                     if (response != null

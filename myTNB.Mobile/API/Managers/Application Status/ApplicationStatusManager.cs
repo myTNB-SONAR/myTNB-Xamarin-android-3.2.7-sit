@@ -446,6 +446,16 @@ namespace myTNB.Mobile
             return response;
         }
 
+        public async Task<GetAllApplicationsResponse> GetNCDraftApplications(int page)
+        {
+            GetAllApplicationsResponse response = await AllApplications(page
+               , "NC"
+               , "Draft"
+               , string.Empty
+               , string.Empty
+               , true);
+            return response;
+        }
         #endregion
 
         #region GetApplicationDetail
@@ -537,6 +547,9 @@ namespace myTNB.Mobile
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(MobileConstants.ApiDomain);
                 try
                 {
+                    Debug.WriteLine("[DEBUG] GetApplicationDetail applicationType: " + applicationType);
+                    Debug.WriteLine("[DEBUG] GetApplicationDetail searchTerm: " + searchTerm);
+                    Debug.WriteLine("[DEBUG] GetApplicationDetail system: " + system);
                     HttpResponseMessage rawResponse = await service.GetApplicationDetail(applicationType
                          , searchTerm
                          , system
@@ -630,7 +643,7 @@ namespace myTNB.Mobile
             catch (Exception e)
             {
 #if DEBUG
-                Debug.WriteLine(e.Message);
+                Debug.WriteLine("[DEBUG][GetApplicationDetail]General Exception: " + e.Message);
 #endif
             }
             displaymodel = new ApplicationDetailDisplay

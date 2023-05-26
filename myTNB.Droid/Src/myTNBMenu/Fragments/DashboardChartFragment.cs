@@ -11676,6 +11676,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_POPUP_VIEW_MORE))
                 .SetCTAaction(() => ShowManageBill())
                 .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                .SetSecondaryCTATextSize(12)
                 .SetSecondaryCTAaction(() =>
                 {
                     this.SetIsClicked(false);
@@ -11717,6 +11718,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_BTN))
                     .SetCTAaction(() => ShowGoToPaperlessMicrosite())
                     .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                    .SetSecondaryCTATextSize(12)
                     .SetSecondaryCTAaction(() =>
                     {
                         this.SetIsClicked(false);
@@ -11737,6 +11739,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_BTN))
                     .SetCTAaction(() => ShowGoToPaperlessMicrosite())
                     .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                    .SetSecondaryCTATextSize(12)
                     .SetSecondaryCTAaction(() =>
                     {
                         this.SetIsClicked(false);
@@ -11757,6 +11760,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBR_REMINDER_AUTOPOPUP_BTN))
                     .SetCTAaction(() => ShowGoToPaperlessMicrosite())
                     .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.USAGE, LanguageConstants.Usage.DBBR_REMINDER_POPUP_GOT_IT))
+                    .SetSecondaryCTATextSize(12)
                     .SetSecondaryCTAaction(() =>
                     {
                         this.SetIsClicked(false);
@@ -11884,6 +11888,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                    && _billRenderingResponse.Content.IsInProgress == false)
                 {
                     billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+
                     if (_billRenderingResponse.Content.IsOwner)
                     {
                         ShowMarketingTooltip();
@@ -11896,9 +11901,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                            && billRenderingTenantResponse.StatusDetail.IsSuccess
                            && billRenderingTenantResponse.Content != null)
                         {
-                            bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccount.AccountNum).IsOwnerOverRule;
-                            bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
-                            bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
+                            bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
+                            bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
+                            bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
                             bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccount.AccountNum).AccountHasOwner;
 
                             if (AccountHasOwner == true && !isOwnerAlreadyOptIn && !isOwnerOverRule && !isTenantAlreadyOptIn)
@@ -11935,13 +11940,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     , AccessTokenCache.Instance.GetAccessToken(this.Activity)); //cek balik sini
 
                 if (getAutoOptInCaResponse != null
-                   && getAutoOptInCaResponse.StatusDetail != null
-                   && getAutoOptInCaResponse.Content != null
-                   && _billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.Paper
-                   && _billRenderingResponse.Content.IsOwner == true
-                   && _billRenderingResponse.Content.IsInProgress == false
-                   && getAutoOptInCaResponse.Content.IsPopupSeen == false
-                   )
+                    && getAutoOptInCaResponse.StatusDetail != null
+                    && getAutoOptInCaResponse.Content != null
+                    && _billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.Paper
+                    && _billRenderingResponse.Content.IsOwner == true
+                    && _billRenderingResponse.Content.IsInProgress == false
+                    && getAutoOptInCaResponse.Content.IsPopupSeen == false)
                 {
                     ShowAutoOptInTooltip();
                     MarketingPopUpEntity.InsertOrReplace(contractAccount, true);
@@ -11960,7 +11964,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         getAutoOptInCaResponse.Content.CurrentMonthCount = patchUpdateResponse.Content.CurrentMonthCount;
                         getAutoOptInCaResponse.Content.Email = patchUpdateResponse.Content.Email;
                         getAutoOptInCaResponse.Content.IsPopupSeen = bool.Parse(patchUpdateResponse.Content.IsPopupSeen);
-                        getAutoOptInCaResponse.Content.popupSeenDate = patchUpdateResponse.Content.popupSeenDate;
+                        getAutoOptInCaResponse.Content.PopupSeenDate = patchUpdateResponse.Content.popupSeenDate;
                         getAutoOptInCaResponse.Content.UserId = patchUpdateResponse.Content.UserId;
                     }
 
@@ -11968,7 +11972,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         , UserEntity.GetActive().UserID
                         , AccessTokenCache.Instance.GetAccessToken(this.Activity)); //cek balik sini
                     */
-                    //flag
                 }
             }
             catch (System.Exception e)
