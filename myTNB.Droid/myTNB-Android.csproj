@@ -7300,26 +7300,6 @@
     </AndroidResource>
     <Compile Include="Src\MyDrawer\MyDrawerAdapter.cs" />
     <Compile Include="Src\MyDrawer\MyDrawerModel.cs" />
-    <AndroidResource Include="Resources\drawable-hdpi\Banner_Home_MyHome_EN.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\Banner_Home_MyHome_EN.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\Banner_Home_MyHome_EN.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_Home_MyHome_EN.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_Home_MyHome_EN.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_Quick_Access_MyHome.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -7570,26 +7550,6 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Connect_My_Premise.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\Banner_MyHome_Marketing.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\Banner_MyHome_Marketing.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\Banner_MyHome_Marketing.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_MyHome_Marketing.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_MyHome_Marketing.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -7938,26 +7898,6 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\myTNBMenu\Async\TenantDBRCache.cs" />
-    <AndroidResource Include="Resources\drawable-hdpi\Banner_Home_MyHome_MS.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\Banner_Home_MyHome_MS.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\Banner_Home_MyHome_MS.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_Home_MyHome_MS.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_Home_MyHome_MS.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <Compile Include="Src\MyHome\MVP\MyHomeMicrositeContract.cs" />
     <Compile Include="Src\MyHome\MVP\MyHomeMicrositePresenter.cs" />
     <AndroidResource Include="Resources\layout\CustomPDFImageView.xml">

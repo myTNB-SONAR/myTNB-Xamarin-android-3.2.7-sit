@@ -287,12 +287,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.newBillRedesignBanner)]
         ImageView newBillRedesignBanner;
 
-        [BindView(Resource.Id.discoverMoreMyHomeContainer)]
-        LinearLayout discoverMoreMyHomeContainer;
-
-        [BindView(Resource.Id.myHomeBanner)]
-        ImageView myHomeBanner;
-
         [BindView(Resource.Id.discovercontainer)]
         LinearLayout discovercontainer;
 
@@ -528,7 +522,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 GetIndicatorTenantDBR();
                 //SetDBRDiscoverView();
                 SetupNewFAQView();
-                SetUpMyHomeBanner();
 
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
@@ -4362,25 +4355,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Home.Home_Banner);
             ((DashboardHomeActivity)Activity).NavigateToNBR();
-        }
-
-        private void SetUpMyHomeBanner()
-        {
-            Activity.RunOnUiThread(() =>
-            {
-                if (!MyHomeUtility.Instance.IsBannerHidden && MyHomeUtility.Instance.IsAccountEligible)
-                {
-                    //GTM-1 Force Hide myHome Banner
-                    discoverMoreSectionTitle.Visibility = ViewStates.Gone;
-                    discoverMoreMyHomeContainer.Visibility = ViewStates.Gone;
-
-                    //discoverMoreSectionTitle.Visibility = ViewStates.Visible;
-                    //discoverMoreMyHomeContainer.Visibility = ViewStates.Visible;
-                    //myHomeBanner.Visibility = ViewStates.Visible;
-                    //myHomeBanner.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.Banner_Home_MyHome_MS
-                    //    : Resource.Drawable.Banner_Home_MyHome_EN);
-                }
-            });
         }
     }
 }

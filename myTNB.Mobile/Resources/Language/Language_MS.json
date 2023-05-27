@@ -446,7 +446,7 @@
     "accountsMissing": "Mengapa akaun saya tiada di sini?",
     "gotIt": "Ok!",
     "disconnectionMsg": "<strong>Apakah maksudnya?</strong><br><br>Bekalan elektrik anda telah dipotong. Pemotongan ini mungkin disebabkan oleh permintaan pemilik premis, atau tunggakan bayaran bil.<br><br>Sekiranya anda telah memohon untuk sambungan semula, atau telah membuat bayaran, bekalan anda akan disambung dalam masa terdekat.",
-    "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
+    "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Bil anda setakat hari ini adalah jumlah yang telah anda gunakan sehingga semalam<br><br><strong> Bil saya boleh mencecah:</strong><br><br>Ini dikira berdasarkan purata penggunaan harian anda untuk satu (1) bulan yang lalu, bil sebenar anda mungkin berbeza. Untuk ketahui lebih lanjut, sila lawati laman <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Soalan Lazim.</a></strong><br><br>Nota: Jumlah yang tertera adalah sebelum cukai / caj tambahan yang berkenaan.",
     "projectedCostTitle": "Apakah ini?",
     "missedReadTitle": "Apakah maksudnya?",
     "missedReadMsg": "Maklumat penggunaan anda tidak dapat diperolehi pada masa ini. Anda boleh 'refresh' untuk cuba semula.",
@@ -1044,7 +1044,7 @@
     "description11": "Sebagai pemilik akaun elektrik, pastikan anda mempunyai kawalan terhadap maklumat dan permintaan akaun dengan menetapkan akses yang anda beri kepada pihak lain.",
     "description12": "Bercadang untuk berpindah? Kini anda boleh memohon bekalan elektrik dengan mudah dan edit permohonan anda dengan ciri baharu kami.",
     "description13": "Lakukan permohonan baharu dan urus akaun elektrik sedia ada anda pada bila-bila masa.",
-    "description14": "Kini anda boleh mengedit, mengurus dan memantau semua status aplikasi anda tanpa sebarang kerumitan, pada bila-bila masa dan di mana-mana sahaja."
+    "description14": "Kini anda boleh edit, urus dan pantau semua status aplikasi anda tanpa sebarang kerumitan, pada bila-bila masa dan di mana-mana sahaja."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
