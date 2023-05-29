@@ -386,140 +386,178 @@ namespace myTNB.Mobile
                 {
                     type = DetailCTAType.Save;
                 }
-                else if (MyHomeUtility.Instance.IsAccountEligible
-                    && ApplicationTypeCode == "ASR"
-                    && !SavedApplicationID.IsValid()
+                else if (!SavedApplicationID.IsValid()
                     && ApplicationStatusDetail != null
-                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "ASRCompleted"))
-                {
-                    type = DetailCTAType.StartApplication;
-                }
-                else if (MyHomeUtility.Instance.IsAccountEligible
-                    && ApplicationTypeCode == "NC"
-                    && !SavedApplicationID.IsValid()
-                    && ApplicationStatusDetail != null
-                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCDraft")
-                    && IsActionableAccountTypeID(AccountTypeId, "NC")
-                    && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "NC")
-                    && MyHomeDetails != null
-                    && MyHomeDetails.IsOTPFailed)
-                {
-                    type = DetailCTAType.DeleteApplication;
-                }
-                else if (MyHomeUtility.Instance.IsAccountEligible
-                    && ApplicationTypeCode == "NC"
-                    && !SavedApplicationID.IsValid()
-                    && ApplicationStatusDetail != null
-                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCDraft")
-                    && IsActionableAccountTypeID(AccountTypeId, "NC")
-                    && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "NC")
-                    && MyHomeDetails != null
-                    && !MyHomeDetails.IsOTPFailed)
-                {
-                    type = DetailCTAType.ResumeApplication;
-                }
-                else if (MyHomeUtility.Instance.IsAccountEligible
-                    && ApplicationTypeCode == "NC"
-                    && !SavedApplicationID.IsValid()
-                    && ApplicationStatusDetail != null
-                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCReapplyNow")
-                    && IsActionableAccountTypeID(AccountTypeId, "NC")
-                    && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "NC")
+                    && MyHomeUtility.Instance.IsAccountEligible
                     && MyHomeDetails != null)
                 {
-                    type = DetailCTAType.ReapplyNow;
-                }
-                else if (MyHomeUtility.Instance.IsAccountEligible
-                    && ApplicationTypeCode == "NC"
-                    && !SavedApplicationID.IsValid()
-                    && ApplicationStatusDetail != null
-                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCReuploadDocument")
-                    && IsActionableAccountTypeID(AccountTypeId, "NC")
-                    && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "NC")
-                    && MyHomeDetails != null)
-                {
-                    type = DetailCTAType.ReuploadDocument;
-                }
-                else if (MyHomeUtility.Instance.IsAccountEligible
-                   && ApplicationTypeCode == "NC"
-                   && !SavedApplicationID.IsValid()
-                   && ApplicationStatusDetail != null
-                   && ApplicationRatingDetail != null
-                   && ApplicationRatingDetail.SubmissionRating != null
-                   && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
-                {
-                    type = DetailCTAType.SubmitApplicationRating;
-                }
-                else if (IsPayment && IsOffLine)
-                {
-                    type = DetailCTAType.PayOffline;
-                }
-                else if (IsPayment && applicationPaymentDetail != null)
-                {
-                    type = IsPaymentAllowed ? DetailCTAType.Pay : DetailCTAType.PayInProgress;
-                    if (!IsPaymentAvailable && type == DetailCTAType.Pay)
+                    switch (SupplyOffering)
                     {
-                        type = DetailCTAType.None;
-                    }
-                }
-                else if (IsSchedulerEnable
-                    && ApplicationAppointmentDetail != null
-                    && ApplicationAppointmentDetail.Mode.IsValid())
-                {
-                    switch (ApplicationAppointmentDetail.Mode.ToUpper())
-                    {
-                        case "NEWSCHEDULE":
+                        case SupplyOfferingType.ASR:
                             {
-                                type = DetailCTAType.NewAppointment;
-                                break;
-                            }
-                        case "RESCHEDULE":
-                            {
-                                type = DetailCTAType.Reschedule;
-                                break;
-                            }
-                        case "DISABLED":
-                            {
-                                type = DetailCTAType.RescheduleDisabled;
-                                break;
-                            }
-                        default:
-                            {
-                                break;
-                            }
-                    }
-                }
-                else if (ApplicationRatingDetail != null)
-                {
-                    try
-                    {
-                        if (ApplicationStatusDetail != null
-                            && ApplicationStatusDetail.StatusTracker is List<StatusTrackerDisplay> tracker
-                            && tracker != null
-                            && tracker.Count > 0)
-                        {
-                            int index = tracker.FindIndex(x => x.StatusMode.IsValid() && x.StatusMode.ToUpper() == "COMPLETED");
-                            if (index > -1)
-                            {
-                                if (ApplicationRatingDetail.CustomerRating != null
-                                    && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
+                                if (IsActionableStatusID(ApplicationStatusDetail.StatusId, "ASRCompleted"))
                                 {
-                                    type = DetailCTAType.CustomerRating;
+                                    type = DetailCTAType.StartApplication;
                                 }
-                                else if (ApplicationRatingDetail.ContractorRating != null
-                                    && ApplicationRatingDetail.ContractorRating.ContractorRatingUrl.IsValid())
+                            }
+                            break;
+                        case SupplyOfferingType.NC:
+                            {
+                                if (IsActionableAccountTypeID(AccountTypeId, "NC")
+                                    && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "NC"))
                                 {
-                                    type = DetailCTAType.ContractorRating;
+                                    if (IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCDraft"))
+                                    {
+                                        type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
+                                    }
+                                    else if (IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCReapplyNow"))
+                                    {
+                                        type = DetailCTAType.ReapplyNow;
+                                    }
+                                    else if (IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCReuploadDocument"))
+                                    {
+                                        type = DetailCTAType.ReuploadDocument;
+                                    }
+                                    else if (ApplicationRatingDetail.SubmissionRating != null
+                                        && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
+                                    {
+                                        type = DetailCTAType.SubmitApplicationRating;
+                                    }
+                                }
+                            }
+                            break;
+                        case SupplyOfferingType.COT:
+                            {
+                                if (IsActionableAccountTypeID(AccountTypeId, "COT")
+                                    && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "COT"))
+                                {
+                                    if (ApplicationStatusDetail != null
+                                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "COTDraft"))
+                                    {
+                                        type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
+                                    }
+                                }
+                            }
+                            break;
+                        case SupplyOfferingType.COA:
+                            {
+                                if (IsActionableAccountTypeID(AccountTypeId, "COA")
+                                    && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "COA"))
+                                {
+                                    if (ApplicationStatusDetail != null
+                                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "COADraft"))
+                                    {
+                                        type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
+                                    }
+                                }
+                            }
+                            break;
+                        default:
+                            type = DetailCTAType.None;
+                            break;
+                    }
+                }
+
+                if (type == DetailCTAType.None)
+                {
+                    if (IsPayment && IsOffLine)
+                    {
+                        type = DetailCTAType.PayOffline;
+                    }
+                    else if (IsPayment && applicationPaymentDetail != null)
+                    {
+                        type = IsPaymentAllowed ? DetailCTAType.Pay : DetailCTAType.PayInProgress;
+                        if (!IsPaymentAvailable && type == DetailCTAType.Pay)
+                        {
+                            type = DetailCTAType.None;
+                        }
+                    }
+                    else if (IsSchedulerEnable
+                        && ApplicationAppointmentDetail != null
+                        && ApplicationAppointmentDetail.Mode.IsValid())
+                    {
+                        switch (ApplicationAppointmentDetail.Mode.ToUpper())
+                        {
+                            case "NEWSCHEDULE":
+                                {
+                                    type = DetailCTAType.NewAppointment;
+                                    break;
+                                }
+                            case "RESCHEDULE":
+                                {
+                                    type = DetailCTAType.Reschedule;
+                                    break;
+                                }
+                            case "DISABLED":
+                                {
+                                    type = DetailCTAType.RescheduleDisabled;
+                                    break;
+                                }
+                            default:
+                                {
+                                    break;
+                                }
+                        }
+                    }
+                    else if (ApplicationRatingDetail != null)
+                    {
+                        try
+                        {
+                            if (ApplicationStatusDetail != null
+                                && ApplicationStatusDetail.StatusTracker is List<StatusTrackerDisplay> tracker
+                                && tracker != null
+                                && tracker.Count > 0)
+                            {
+                                int index = tracker.FindIndex(x => x.StatusMode.IsValid() && x.StatusMode.ToUpper() == "COMPLETED");
+                                if (index > -1)
+                                {
+                                    if (ApplicationRatingDetail.CustomerRating != null
+                                        && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
+                                    {
+                                        type = DetailCTAType.CustomerRating;
+                                    }
+                                    else if (ApplicationRatingDetail.ContractorRating != null
+                                        && ApplicationRatingDetail.ContractorRating.ContractorRatingUrl.IsValid())
+                                    {
+                                        type = DetailCTAType.ContractorRating;
+                                    }
                                 }
                             }
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine("[DEBUG] ApplicationRatingDetail CTA Error: " + e.Message);
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine("[DEBUG] ApplicationRatingDetail CTA Error: " + e.Message);
+                        }
                     }
                 }
+
                 return type;
+            }
+        }
+
+        public SupplyOfferingType SupplyOffering
+        {
+            get
+            {
+                SupplyOfferingType supplyOffering = SupplyOfferingType.OTHERS;
+                if (ApplicationTypeCode.IsValid())
+                {
+                    switch (ApplicationTypeCode.ToUpper())
+                    {
+                        case "ASR": supplyOffering = SupplyOfferingType.ASR;
+                            break;
+                        case "NC": supplyOffering = SupplyOfferingType.NC;
+                            break;
+                        case "COT": supplyOffering = SupplyOfferingType.COT;
+                            break;
+                        case "COA": supplyOffering = SupplyOfferingType.COA;
+                            break;
+                        default: supplyOffering = SupplyOfferingType.OTHERS;
+                            break;
+                    }
+                }
+
+                return supplyOffering;
             }
         }
 
@@ -1155,6 +1193,15 @@ namespace myTNB.Mobile
         InProgress,
         Action,
         None
+    }
+
+    public enum SupplyOfferingType
+    {
+        ASR,
+        NC,
+        COT,
+        COA,
+        OTHERS
     }
     #endregion
 }

@@ -79,6 +79,8 @@
     <Folder Include="API\Managers\Home\Utilities\" />
     <Folder Include="AWS\Managers\MyHome\" />
     <Folder Include="AWS\Models\Application Status\Post NC Draft Applications\" />
+    <Folder Include="AWS\Models\Application Status\Post Delete COT Draft\" />
+    <Folder Include="AWS\Models\Application Status\Post Delete COA Draft\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Language\Language_MS.json" />
@@ -126,6 +128,8 @@
     <None Remove="API\Managers\Home\Utilities\" />
     <None Remove="AWS\Managers\MyHome\" />
     <None Remove="AWS\Models\Application Status\Post NC Draft Applications\" />
+    <None Remove="AWS\Models\Application Status\Post Delete COT Draft\" />
+    <None Remove="AWS\Models\Application Status\Post Delete COA Draft\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />

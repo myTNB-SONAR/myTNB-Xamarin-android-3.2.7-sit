@@ -3063,6 +3063,28 @@
             "type": "toast"
           }
         ],
+        "DeleteCOTDraft": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "Permohonan anda telah dipadamkan.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "toast"
+          }
+        ],
+        "DeleteCOADraft": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "Permohonan anda telah dipadamkan.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "toast"
+          }
+        ],
         "GetNCDraftApplications": [
           {
             "code": "7200",
@@ -3413,13 +3435,19 @@
       7,
       18
     ],
-    "NCReuploadDocument": [ 130 ]
+    "NCReuploadDocument": [ 130 ],
+    "COTDraft": [ 1 ],
+    "COADraft": [ 1 ]
   },
   "AccountTypeID": {
-    "NC": [ 1 ]
+    "NC": [ 1 ],
+    "COT": [ 1 ],
+    "COA": [ 1 ]
   },
   "PremiseTypeHeaderID": {
-    "NC": [ 1 ]
+    "NC": [ 1 ],
+    "COT": [ 1 ],
+    "COA": [ 1 ]
   },
   "PaymentHistory": {
     "title": "Sejarah Pembayaran",
