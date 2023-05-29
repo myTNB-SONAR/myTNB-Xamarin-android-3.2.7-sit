@@ -25,7 +25,6 @@ namespace myTNB
             get;
         } = LanguageManager.Instance.GetErrorValue("defaultErrorMessage");
 
-
         [JsonProperty("primaryCTATitle")]
         public string PrimaryCTATitle
         {

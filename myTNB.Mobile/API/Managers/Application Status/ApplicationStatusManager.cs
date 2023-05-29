@@ -460,7 +460,6 @@ namespace myTNB.Mobile
         public async Task<ApplicationDetailDisplay> GetApplicationDetail(string savedApplicationID
             , string applicationID
             , string applicationType
-            , string userID
             , string system = "myTNB")
         {
             bool isDSEligible = false;

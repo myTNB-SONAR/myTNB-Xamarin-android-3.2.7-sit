@@ -7,6 +7,8 @@ namespace myTNB.Mobile.AWS
     {
         [JsonProperty("userID")]
         public string UserID { set; get; }
+        [JsonProperty("email")]
+        public string Email { set; get; }
         [JsonProperty("contractAccounts")]
         public List<ContractAccountModel> ContractAccounts { set; get; }
         [JsonProperty("premiseCriteria")]

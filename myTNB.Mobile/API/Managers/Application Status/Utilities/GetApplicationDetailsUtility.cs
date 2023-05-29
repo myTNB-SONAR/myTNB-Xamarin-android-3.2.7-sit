@@ -306,14 +306,13 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     {
                         displayModel.Content.ApplicationDetail.IdentificationType = identificationType;
                     }
-                    if (!displayModel.Content.ApplicationDetail.ReferenceNo.IsValid()
-                        && GetObjectValue(props, "referenceNo") is string referenceNo && referenceNo.IsValid())
+                    if (GetObjectValue(props, "referenceNo") is string referenceNo && referenceNo.IsValid())
                     {
                         displayModel.Content.ApplicationDetail.ReferenceNo = referenceNo;
                     }
                     if (GetObjectValue(props, "applicationModuleId") is string applicationModuleId && applicationModuleId.IsValid())
                     {
-                        displayModel.Content.ApplicationDetail.ApplicationModuleID = int.Parse(applicationModuleId);
+                        displayModel.Content.ApplicationDetail.ApplicationModuleId = applicationModuleId;
                     }
                     if (!displayModel.Content.ApplicationDetail.Email.IsValid()
                         && GetObjectValue(props, "email") is string email && email.IsValid())

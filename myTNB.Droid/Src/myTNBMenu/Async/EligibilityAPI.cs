@@ -58,6 +58,33 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             return contractAccountList;
         }
 
+        public List<PremiseCriteriaModel> GetBusinessAreaList(List<string> accNumList = null)
+        {
+            List<CustomerBillingAccount> accountList;
+            List<PremiseCriteriaModel> contractAccountList = new List<PremiseCriteriaModel>();
+            if (accNumList != null && accNumList.Count > 0)
+            {
+                accountList = CustomerBillingAccount.List();
+                accNumList.ForEach(accNum =>
+                {
+                    var account = CustomerBillingAccount.FindByAccNum(accNum);
+                    if (account != null)
+                    {
+                        contractAccountList.Add(GetBusinessAreaModel(account));
+                    }
+                });
+            }
+            else
+            {
+                accountList = CustomerBillingAccount.List();
+                accountList.ForEach(account =>
+                {
+                    contractAccountList.Add(GetBusinessAreaModel(account));
+                });
+            }
+            return contractAccountList;
+        }
+
         private ContractAccountModel GetAccountModel(CustomerBillingAccount account)
         {
             try
@@ -96,6 +123,27 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             }
         }
 
+        private PremiseCriteriaModel GetBusinessAreaModel(CustomerBillingAccount account)
+        {
+            try
+            {
+                PremiseCriteriaModel businessAreaModel = new PremiseCriteriaModel
+                {
+                    IsOwner = account.isOwned,
+                    RateCategory = account.RateCategory,
+                    SmartMeterCode = account.SmartMeterCode,
+                    BusinessArea = account.BusinessArea,
+                };
+                return businessAreaModel;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                return new PremiseCriteriaModel();
+            }
+        }
+
+
         public async Task<bool> EvaluateEligibility(Context mView, bool isForceCall)
         {
             try
@@ -115,7 +163,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     }
 
                     GetEligibilityResponse response = await EligibilityManager.Instance.PostEligibility(UserEntity.GetActive().UserID ?? string.Empty,
-                        GetContractAccountList(), AccessTokenCache.Instance.GetAccessToken(mView));
+                        GetContractAccountList(), GetBusinessAreaList(), AccessTokenCache.Instance.GetAccessToken(mView));
 
                     //Nullity Check
                     if (response != null

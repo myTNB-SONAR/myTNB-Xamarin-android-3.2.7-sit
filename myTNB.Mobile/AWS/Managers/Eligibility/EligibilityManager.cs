@@ -46,6 +46,7 @@ namespace myTNB.Mobile
         /// <returns></returns>
         public async Task<GetEligibilityResponse> PostEligibility(string userID
             , List<ContractAccountModel> caList
+            , List<PremiseCriteriaModel> baList
             , string accessToken)
         {
             PostEligibilityResponse postResponse = new PostEligibilityResponse();
@@ -63,7 +64,8 @@ namespace myTNB.Mobile
                     PostEligibilityRequest request = new PostEligibilityRequest
                     {
                         UserID = userID ?? string.Empty,
-                        ContractAccounts = caList
+                        ContractAccounts = caList,
+                        PremiseCriteria = baList
                     };
                     Debug.WriteLine("[DEBUG] PostEligibility Request: " + JsonConvert.SerializeObject(request));
                     Debug.WriteLine("[DEBUG] PostEligibility ViewInfo: " + AppInfoManager.Instance.ViewInfo);
