@@ -17,6 +17,7 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.MyTNBService.Parser;
+using Refit;
 
 namespace myTNB_Android.Src.MyHome.MVP
 {
@@ -157,6 +158,7 @@ namespace myTNB_Android.Src.MyHome.MVP
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+                this.mView.ShowGenericError();
             }
             return path;
         }
@@ -195,10 +197,27 @@ namespace myTNB_Android.Src.MyHome.MVP
                 {
                     _ = OnGetAccountCharges();
                 });
+                }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                this.mView.ShowGenericError();
+            }
+        }
+
+        public void GetLatestBill(string webURL)
+        {
+            try
+            {
+                string accountNum = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_CA.ToLower(), webURL);
+                string isOwnerString = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_IS_OWNER, webURL);
+
+                this.mView.ShowLatestBill(accountNum, bool.Parse(isOwnerString));
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+                this.mView.ShowGenericError();
             }
         }
 

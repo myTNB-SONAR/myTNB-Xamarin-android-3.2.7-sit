@@ -47,6 +47,12 @@ namespace myTNB_Android.Src.MyHome.MVP
             void ShareDownloadedFile(string filePath, string fileExtension, string fileTitle);
 
             /// <summary>
+            /// Navigates to ViewBillActivity to display latest bill
+            /// </summary>
+            /// <param name="selectedBill"></param>
+            void ShowLatestBill(string accountNum, bool isOwner);
+
+            /// <summary>
             /// Shows Payment Details screen with data model
             /// </summary>
             /// <param name="paymentDetailsModel"></param>
@@ -86,6 +92,13 @@ namespace myTNB_Android.Src.MyHome.MVP
             /// </summary>
             /// <param name="webURL"></param>
             void GetPaymentDetails(string webURL);
+
+            /// <summary>
+            /// Method to parse webURL to show latest bill
+            /// </summary>
+            /// <param name="webURL"></param>
+            /// <returns></returns>
+            void GetLatestBill(string webURL);
         }
     }
 }

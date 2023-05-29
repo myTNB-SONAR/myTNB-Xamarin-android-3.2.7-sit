@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using myTNB_Android.Src.Utils;
+
 namespace myTNB_Android.Src.MyHome
 {
     public class MyHomeConstants
@@ -14,6 +17,7 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string ACTION_OPEN_FILE = "mytnbapp://action=openPDF";
         internal static readonly string ACTION_DOWNLOAD_FILE = "mytnbapp://action=downloadPDF";
         internal static readonly string ACTION_RATE_SUCCESSFUL = "mytnbapp://action=rateSuccessful";
+        internal static readonly string ACTION_SHOW_LATEST_BILL = "mytnbapp://action=showLatestBill";
         internal static readonly string ACTION_SHOW_PAYMENT_DETAILS = "mytnbapp://action=showPaymentDetails";
         internal static readonly string ACTION_SHOW_PAYMENT_HISTORY = "mytnbapp://action=showPaymentHistory";
         internal static readonly string PATTERN = "\\b{0}.*\\b";
@@ -38,6 +42,25 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string PAYMENT_DETAILS_MODEL = "paymentDetailsModel";
         internal static readonly int PAYMENT_ADD_CARD_REQUEST_CODE = 1001;
         internal static readonly string REGISTERED_CARDS = "registeredCards";
+        internal static readonly List<string> MYHOME_NOTIFS = new List<string>()
+        {
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_ADDRESS_SEARCH_COMPLETED,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_ACCEPTED,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_NO_RESPONSE,
+            Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_REQUIRES_UPDATE,
+            Constants.BCRM_NOTIFICATION_MYHOME_COA_APPLICATION_COMPLETED,
+            Constants.BCRM_NOTIFICATION_MYHOME_COA_APPLICATION_CANCELLED,
+            Constants.BCRM_NOTIFICATION_MYHOME_COA_OTP_VERIFY,
+            Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_SUBMITTED,
+            Constants.BCRM_NOTIFICATION_MYHOME_COT_OTP_VERIFY,
+            Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST,
+            Constants.BCRM_NOTIFICATION_MYHOME_COT_REMINDER
+        };
     }
 }
 

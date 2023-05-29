@@ -94,6 +94,7 @@ namespace myTNB_Android.Src.MyHome
                     Dialog.Window.SetLayout(WindowManagerLayoutParams.MatchParent, WindowManagerLayoutParams.WrapContent);
                     Dialog.SetOnDismissListener(new OnDismissListener(() =>
                     {
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
                         DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Drawer_Dismiss);
                     }));
                 }
@@ -414,7 +415,16 @@ namespace myTNB_Android.Src.MyHome
                 }
             }
 
-            public override void OnStateChanged(View bottomSheet, int newState) { }
+            public override void OnStateChanged(View bottomSheet, int newState)
+            {
+                if (bottomSheet != null)
+                {
+                    if (newState == BottomSheetBehavior.StateHidden)
+                    {
+                        this.fragment.Dismiss();
+                    }
+                }
+            }
         }
 
         private sealed class OnDismissListener : Java.Lang.Object, IDialogInterfaceOnDismissListener
