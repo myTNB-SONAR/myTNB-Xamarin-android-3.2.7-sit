@@ -84,6 +84,22 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "message")]
             [AliasAs("message")]
             public string message { get; set; }
+
+            [JsonProperty(PropertyName = "myHomeDetails")]
+            [AliasAs("message")]
+            public MyHomeDetails MyHomeDetails { set; get; }
+        }
+
+        public class MyHomeDetails
+        {
+            [JsonProperty("ssoDomain")]
+            public string SSODomain { set; get; }
+            [JsonProperty("originURL")]
+            public string OriginURL { set; get; }
+            [JsonProperty("redirectURL")]
+            public string RedirectURL { set; get; }
+            [JsonProperty("isOTPFailed")]
+            public bool IsOTPFailed { set; get; }
         }
     }
 }

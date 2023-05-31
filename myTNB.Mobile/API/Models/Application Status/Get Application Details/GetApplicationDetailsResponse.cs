@@ -172,6 +172,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string ownershipTypeDescription { set; get; }
         public bool? hasExistingOwnerSupportingDocument { set; get; } = false;
         public string premiseAddress { set; get; }
+        public bool isExistingOwner { set; get; }
 
         [JsonIgnore]
         public string hasExistingOwnerSupportingDocumentDisplay
