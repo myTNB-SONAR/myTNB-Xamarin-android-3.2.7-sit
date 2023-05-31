@@ -569,6 +569,20 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_OTP_Verify;
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_OTP_VERIFY:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "otpVerifyNow"),
+                                   delegate ()
+                                   {
+                                       DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.COT_Current_Owner_OTP_Verify_Now);
+                                       ViewApplicationDetails(notificationDetails);
+                                   });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetIsRoundedButton(true);
+                            ctaList.Add(primaryCTA);
+                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_OTP_Verify;
+                            break;
+                        }
                     case Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitNow"),

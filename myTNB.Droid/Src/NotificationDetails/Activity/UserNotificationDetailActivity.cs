@@ -211,6 +211,10 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 {
                     DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.COT_OTP_Verify_Back);
                 }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_OTP_VERIFY)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.COT_Current_Owner_OTP_Verify_Back);
+                }
                 else
                 {
                     DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.Back);
@@ -424,6 +428,10 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST)
                 {
                     DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.COT_Request);
+                }
+                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_OTP_VERIFY)
+                {
+                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.COT_Current_Owner_OTP_Verify);
                 }
                 else
                 {

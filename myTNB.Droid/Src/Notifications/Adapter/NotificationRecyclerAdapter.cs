@@ -222,7 +222,8 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_COT_Submitted));
                 }
-                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_COT_OTP_VERIFY))
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_COT_OTP_VERIFY)
+                    || notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_OTP_VERIFY))
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.Icon_Notif_List_OTP_Verify));
                 }

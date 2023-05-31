@@ -285,6 +285,7 @@
                     public const string COT_OTP_Verify = "myHome_App_Visit_VerifyAgainNotification_COT";
                     public const string COT_Submitted = "myHome_App_Visit_ApplicationSubmittedAppNotification_ExistingOwner_COT";
                     public const string COT_Request = "myHome_App_Visit_ExistingOwner_COTRequest_WithTNB_AppNotification";
+                    public const string COT_Current_Owner_OTP_Verify = "myHome_App_Visit_VerifyAgainNotification_COTExistingOwner";
                 }
             }
 
@@ -311,6 +312,8 @@
                     public const string COT_Submitted_View_Application_Details = "myHome_App_Action_ApplicationSubmittedAppNotification_ExistingOwner_COT_ViewApplicationDetails";
                     public const string COT_Request_Submit_Now = "myHome_App_Action_ExistingOwner_COTRequest_WithTNB_AppNotification_SubmitNow";
                     public const string COT_Request_Back = "myHome_App_Action_ExistingOwner_COTRequest_WithTNB_AppNotification_Back";
+                    public const string COT_Current_Owner_OTP_Verify_Back = "myHome_App_Action_VerifyAgainNotification_COTExistingOwner_Back";
+                    public const string COT_Current_Owner_OTP_Verify_Now = "myHome_App_Action_VerifyAgainNotification_COTExistingOwner_VerifyNow";
                 }
             }
 

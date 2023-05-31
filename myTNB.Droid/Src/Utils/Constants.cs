@@ -399,6 +399,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_MYHOME_COT_OTP_VERIFY = "43005";
         public const string BCRM_NOTIFICATION_MYHOME_COT_REQUEST = "43006";
         public const string BCRM_NOTIFICATION_MYHOME_COT_REMINDER = "43007";
+        public const string BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_OTP_VERIFY = "43008";
 
         //Bill Estimation
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";
