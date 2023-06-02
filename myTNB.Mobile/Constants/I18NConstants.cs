@@ -9,5 +9,6 @@
         public const string DBR_EBill = "dbrViaMyTNB";
 
         public const string Cancelled_Application = "applicationCancelledMessage";
+        public const string Cancelled_Application_COT = "applicationCancelledCOTMessage";
     }
 }

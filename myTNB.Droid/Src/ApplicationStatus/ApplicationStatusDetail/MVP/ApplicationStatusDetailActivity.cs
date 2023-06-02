@@ -316,14 +316,28 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         this.SetIsClicked(true);
                         DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Delete_Draft_PopUp);
 
+                        string title = Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftTitle);
+                        string message = Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftMessage);
+                        bool isCOTExistingOwner = false; 
+                        if (applicationDetailDisplay.SupplyOffering == SupplyOfferingType.COT)
+                        {
+                            if (applicationDetailDisplay.IsCOTExistingOwner)
+                            {
+                                //TODO: Pending Functional/Copywriter to provide copy for this scenario where Existing Owner wants to delete COT application
+                                title = "";
+                                message = "";
+                                isCOTExistingOwner = true;
+                            }
+                        }
+
                         MyTNBAppToolTipBuilder deleteDraftPopUp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                             .SetSecondaryHeaderImage(Resource.Drawable.ic_display_validation_success)
-                            .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftTitle))
-                            .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftMessage))
+                            .SetTitle(title)
+                            .SetMessage(message)
                             .SetPrimaryButtonDrawable(Resource.Drawable.blue_button_solid_background)
                             .SetSecondaryButtonDrawable(Resource.Drawable.blue_outline_round_button_background)
                             .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftSure))
-                            .SetCTAaction(() => OnDeleteDraft())
+                            .SetCTAaction(() => OnDeleteDraft(applicationDetailDisplay.SupplyOffering, isCOTExistingOwner))
                             .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftCancel))
                             .SetSecondaryCTAaction(() =>
                             {
@@ -383,7 +397,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
         }
 
-        private void OnDeleteDraft()
+        private void OnDeleteDraft(SupplyOfferingType type, bool isCOTExistingOwner = false)
         {
             this.SetIsClicked(false);
 
@@ -392,28 +406,68 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             ShowProgressDialog();
             Task.Run(() =>
             {
-                _ = PostDeleteDraft();
+                _ = PostDeleteDraft(type, isCOTExistingOwner);
             });
         }
 
-        private async Task PostDeleteDraft()
+        private async Task PostDeleteDraft(SupplyOfferingType type, bool isCOTExistingOwner = false)
         {
             if (applicationDetailDisplay.ApplicationDetail != null &&
                 applicationDetailDisplay.ApplicationDetail.ReferenceNo.IsValid())
             {
                 string refNo = applicationDetailDisplay.ApplicationDetail.ReferenceNo;
                 UserEntity user = UserEntity.GetActive();
-                var response = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostDeleteNCDraft(refNo, user.UserID, AccessTokenCache.Instance.GetUserServiceAccessToken(this));
-                if (response != null &&
-                    response.StatusDetail != null &&
-                    response.StatusDetail.IsSuccess)
+
+                bool isSuccess = false;
+                string accessToken = string.Empty;
+                string message = string.Empty;
+
+                switch (type)
                 {
-                    AccessTokenCache.Instance.SaveUserServiceAccessToken(this, response.StatusDetail.AccessToken);
+                    case SupplyOfferingType.NC:
+                        var responseNC = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostDeleteNCDraft(refNo, user.UserID, AccessTokenCache.Instance.GetUserServiceAccessToken(this));
+                        if (responseNC != null &&
+                            responseNC.StatusDetail != null)
+                        {
+                            isSuccess = responseNC.StatusDetail.IsSuccess;
+                            accessToken = responseNC.StatusDetail.AccessToken;
+                            message = responseNC.StatusDetail.Message;
+                        }
+                        break;
+                    case SupplyOfferingType.COT:
+                        var responseCOT = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostDeleteCOTDraft(refNo, user.UserID, AccessTokenCache.Instance.GetUserServiceAccessToken(this));
+                        if (responseCOT != null &&
+                            responseCOT.StatusDetail != null)
+                        {
+                            isSuccess = responseCOT.StatusDetail.IsSuccess;
+                            accessToken = responseCOT.StatusDetail.AccessToken;
+                            //TODO: Pending Functional/Copywriter to provide copy for the toast message where Existing Owner deleted the COT application
+                            string isCOTExistingOwnerMsg = "";
+                            message = isCOTExistingOwner ? isCOTExistingOwnerMsg : responseCOT.StatusDetail.Message;
+                        }
+                        break;
+                    case SupplyOfferingType.COA:
+                        var responseCOA = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostDeleteCOADraft(refNo, user.UserID, AccessTokenCache.Instance.GetUserServiceAccessToken(this));
+                        if (responseCOA != null &&
+                            responseCOA.StatusDetail != null)
+                        {
+                            isSuccess = responseCOA.StatusDetail.IsSuccess;
+                            accessToken = responseCOA.StatusDetail.AccessToken;
+                            message = responseCOA.StatusDetail.Message;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                
+                if (isSuccess)
+                {
+                    AccessTokenCache.Instance.SaveUserServiceAccessToken(this, accessToken);
                     RunOnUiThread(() =>
                     {
                         HideProgressDialog();
                         Intent intent = new Intent();
-                        intent.PutExtra(Constants.DELETE_DRAFT_MESSAGE, response.StatusDetail.Message);
+                        intent.PutExtra(Constants.DELETE_DRAFT_MESSAGE, message);
                         SetResult(Result.Ok, intent);
                         Finish();
                     });
@@ -423,7 +477,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     RunOnUiThread(() =>
                     {
                         HideProgressDialog();
-                        ShowErrorSnackbar(response.StatusDetail.Message);
+                        ShowErrorSnackbar(message);
                     });
                 }
             }
@@ -447,14 +501,28 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Delete);
                     DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Delete_Draft_PopUp);
 
+                    string title = Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftTitle);
+                    string message = Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftMessage);
+                    bool isCOTExistingOwner = false;
+                    if (applicationDetailDisplay.SupplyOffering == SupplyOfferingType.COT)
+                    {
+                        if (applicationDetailDisplay.IsCOTExistingOwner)
+                        {
+                            //TODO: Pending Functional/Copywriter to provide copy for this scenario where Existing Owner wants to delete COT application
+                            title = "";
+                            message = "";
+                            isCOTExistingOwner = true;
+                        }
+                    }
+
                     MyTNBAppToolTipBuilder deleteDraftPopUp = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
                             .SetSecondaryHeaderImage(Resource.Drawable.ic_display_validation_success)
-                            .SetTitle(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftTitle))
-                            .SetMessage(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftMessage))
+                            .SetTitle(title)
+                            .SetMessage(message)
                             .SetPrimaryButtonDrawable(Resource.Drawable.blue_button_solid_background)
                             .SetSecondaryButtonDrawable(Resource.Drawable.blue_outline_round_button_background)
                             .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftSure))
-                            .SetCTAaction(() => OnDeleteDraft())
+                            .SetCTAaction(() => OnDeleteDraft(applicationDetailDisplay.SupplyOffering, isCOTExistingOwner))
                             .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftCancel))
                             .SetSecondaryCTAaction(() =>
                             {

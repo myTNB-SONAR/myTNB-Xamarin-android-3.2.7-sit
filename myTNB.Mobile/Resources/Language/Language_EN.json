@@ -108,7 +108,9 @@
     "dbrEmail": "You’re receiving <b>myTNB & Email Bills</b> for this account.",
     "dbrWhatsApp": "You’re receiving <b>myTNB & Whatsapp Bills</b> for this account.",
     "dbrViaMyTNB": "Your account is environmentally friendly with <b>myTNB Bill!</b>",
-    "applicationCancelledMessage": "Your application has been deleted."
+    "applicationCancelledMessage": "Your application has been deleted.",
+    //TODO: Pending Functional/Copywriter to provide copy for the toast message where Existing Owner deleted the COT application
+    "applicationCancelledCOTMessage": "Your application has been deleted."
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -3437,6 +3439,7 @@
     ],
     "NCReuploadDocument": [ 130 ],
     "COTDraft": [ 1 ],
+    "COTAwaitingExistingOwnerSubmission": [ 3 ],
     "COADraft": [ 1 ]
   },
   "AccountTypeID": {

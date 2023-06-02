@@ -18,6 +18,9 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.MyTNBService.Parser;
 using Refit;
+using myTNB.Mobile.API.Models.ApplicationStatus;
+using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace myTNB_Android.Src.MyHome.MVP
 {
@@ -203,6 +206,54 @@ namespace myTNB_Android.Src.MyHome.MVP
                 Utility.LoggingNonFatalError(e);
                 this.mView.ShowGenericError();
             }
+        }
+
+        public void GetPaymentInfo(string webURL)
+        {
+            try
+            {
+                string applicationPaymentDetailStr = GetPaymentParamValuesFromKey(MyHomeConstants.APPLICATION_PAYMENT_DETAIL, webURL);
+                if (applicationPaymentDetailStr.IsValid())
+                {
+                    ApplicationPaymentDetail paymentDetail = JsonConvert.DeserializeObject<ApplicationPaymentDetail>(applicationPaymentDetailStr);
+                    if (paymentDetail != null)
+                    {
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                this.mView.ShowGenericError();
+            }
+        }
+
+        private string GetPaymentParamValuesFromKey(string key, string urlString)
+        {
+            string value = string.Empty;
+
+            if (!urlString.IsValid())
+            {
+                return value;
+            }
+
+            var segment = urlString?.Split(Constants.AMPERSAND);
+            if (segment.Length > 0)
+            {
+                foreach (var pair in segment)
+                {
+                    string pattern = string.Format(Constants.PATTERN, key);
+                    Regex regex = new Regex(pattern);
+                    Match match = regex.Match(pair);
+                    if (match.Success)
+                    {
+                        value = pair.Replace(string.Format(Constants.REPLACE_KEY, key), string.Empty);
+                        break;
+                    }
+                }
+            }
+            return value;
         }
 
         public void GetLatestBill(string webURL)

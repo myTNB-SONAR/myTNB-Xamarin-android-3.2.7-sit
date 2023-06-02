@@ -296,6 +296,11 @@ namespace myTNB_Android.Src.MyHome.Activity
             }
         }
 
+        internal void ShowPayment(string webURL)
+        {
+            this.presenter?.GetPaymentInfo(webURL);
+        }
+
         private void SetUpWebView(string accessToken)
         {
             try
@@ -501,8 +506,14 @@ namespace myTNB_Android.Src.MyHome.Activity
                 //string image = "https://stagingmyhome.mytnb.com.my/Utility/FileUploadWithoutAuth/GetFileByFileID?fileID=4ac61fbf-1c94-4ac8-a21f-9d0bcc88c50c";
                 //var encrypted = SecurityManager.Instance.AES256_Encrypt(AWSConstants.MyHome_SaltKey, AWSConstants.MyHome_Passphrase, pdf);
                 //url = "mytnbapp://action=openPDF&extension=pdf&&title=ICCopy_202211.pdf&file=" + encrypted;
+                //url = "mytnbapp://action=showPayment&accountName=Rob&premise=Jalan&mobileNo=60168610109&applicationType=COT&searchTerm=1234&system=mytnb&statusId=1&statusCode=001&srNumber=12345678&applicationPaymentDetail={\"outstandingChargesAmount\":0.0,\"latestBillAmount\":0.0,\"oneTimeChargesAmount\":183.00,\"oneTimeChargesDetail\":{\"connectionChargesAmount\":0.0,\"connectionChargesDetail\":{\"connectionChargesNetAmount\":0.0,\"connectionChargesTaxAmount\":0.0},\"technicalStudyFeeAmount\":0.0,\"securityDepositAmount\":170.00,\"meterFeeAmount\":0.0,\"stampDutyAmount\":10.0,\"processingFeeAmount\":3.0},\"totalPayableAmount\":183.00,\"caNo\":\"210324299709\",\"sdDocumentNo\":null,\"srNo\":\"4002943030\",\"snNo\":null,\"hasInvoiceAttachment\":false}";
                 Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
 
+                if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT))
+                {
+                    shouldOverride = true;
+                    this.mActivity?.ShowPayment(url);
+                }
                 if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT_HISTORY))
                 {
                     shouldOverride = true;
@@ -566,6 +577,16 @@ namespace myTNB_Android.Src.MyHome.Activity
                 {
                     shouldOverride = true;
                     mActivity.OnShowApplicationStatusLanding(Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application));
+                }
+                else if (url.Contains(AWSConstants.BackToHomeCancelCOTURL))
+                {
+                    shouldOverride = true;
+                    mActivity.OnShowDashboard(Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application_COT));
+                }
+                else if (url.Contains(AWSConstants.ApplicationStatusLandingCancelCOTURL))
+                {
+                    shouldOverride = true;
+                    mActivity.OnShowApplicationStatusLanding(Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application_COT));
                 }
                 else if (url.Contains(MyHomeConstants.ACTION_BACK_TO_APPLICATION_STATUS_LANDING))
                 {

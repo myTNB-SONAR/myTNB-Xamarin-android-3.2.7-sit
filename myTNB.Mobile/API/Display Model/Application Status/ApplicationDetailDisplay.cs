@@ -431,10 +431,19 @@ namespace myTNB.Mobile
                                 if (IsActionableAccountTypeID(AccountTypeId, "COT")
                                     && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "COT"))
                                 {
-                                    if (ApplicationStatusDetail != null
-                                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "COTDraft"))
+                                    if (IsCOTExistingOwner)
                                     {
-                                        type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
+                                        if (IsActionableStatusID(ApplicationStatusDetail.StatusId, "COTAwaitingExistingOwnerSubmission"))
+                                        {
+                                            type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (IsActionableStatusID(ApplicationStatusDetail.StatusId, "COTDraft"))
+                                        {
+                                            type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
+                                        }
                                     }
                                 }
                             }
@@ -444,8 +453,7 @@ namespace myTNB.Mobile
                                 if (IsActionableAccountTypeID(AccountTypeId, "COA")
                                     && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "COA"))
                                 {
-                                    if (ApplicationStatusDetail != null
-                                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "COADraft"))
+                                    if (IsActionableStatusID(ApplicationStatusDetail.StatusId, "COADraft"))
                                     {
                                         type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
                                     }
@@ -790,6 +798,15 @@ namespace myTNB.Mobile
                 return color;
             }
         }
+
+        public bool IsCOTExistingOwner
+        {
+            get
+            {
+                bool isExistingOwner = ApplicationStatusDetail != null ? ApplicationStatusDetail.IsExistingOwner : false;
+                return isExistingOwner;
+            }
+        }
     }
 
     public class PaymentDisplayModel : ApplicationPaymentDetail
@@ -901,6 +918,7 @@ namespace myTNB.Mobile
         /// Determines if the application requires payment or not
         /// </summary>
         public bool IsPayment { set; get; }
+        public bool IsExistingOwner { set; get; }
     }
 
     public class StatusTrackerDisplay

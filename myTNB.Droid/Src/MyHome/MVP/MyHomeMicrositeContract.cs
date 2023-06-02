@@ -99,6 +99,12 @@ namespace myTNB_Android.Src.MyHome.MVP
             /// <param name="webURL"></param>
             /// <returns></returns>
             void GetLatestBill(string webURL);
+
+            /// <summary>
+            /// Parses the url to get the payment info
+            /// </summary>
+            /// <param name="webURL"></param>
+            void GetPaymentInfo(string webURL);
         }
     }
 }

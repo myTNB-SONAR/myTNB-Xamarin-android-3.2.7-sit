@@ -244,6 +244,11 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     }
                     SetPaymentDisplay(ref displayModel);
                     displayModel.Content.IsDeleteEnable = isSavedApplication && !displayModel.Content.IsOwnApplication;
+
+                    if (searchApplicationType == "COT" && response.Content.changeOfTenancyDetail != null)
+                    {
+                        displayModel.Content.ApplicationStatusDetail.IsExistingOwner = response.Content.changeOfTenancyDetail.isExistingOwner;
+                    }
                 }
 
                 return displayModel;
