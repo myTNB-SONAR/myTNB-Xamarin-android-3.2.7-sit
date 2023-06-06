@@ -330,6 +330,7 @@
                     public const string NC_Customer_Rating = "myHome_App_Visit_Application_DetailsCompletedWthC_RateOurService";
                 }
             }
+            
             public struct CTAs
             {
                 public struct Landing
@@ -357,6 +358,17 @@
                     public const string NC_Contractor_Rating = "myHome_App_Action_Application_DetailsCompletedWC_RateOurService_RateOurService";
                     public const string NC_Customer_Rating = "myHome_App_Action_Application_DetailsCompletedWthC_RateOurService_RateOurService";
                 }
+            }
+        }
+
+        public struct AppUpdate
+        {
+            public struct Recommend
+            {
+                public const string RecommendAppUpdate_DisplayPopUp = "App_Action_Display_RecommendAppUpdatePopup";
+                public const string RecommendAppUpdate_ClickYes = "App_Action_Click_RecommendAppUpdateYes";
+                public const string RecommendAppUpdate_ClickNo = "App_Action_Click_RecommendAppUpdateNo";
+                public const string RecommendAppUpdate_VersionBeforeUpdate = "App_Action_Get_VersionBeforeUpdate";
             }
         }
     }

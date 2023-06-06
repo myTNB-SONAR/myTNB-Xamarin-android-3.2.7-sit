@@ -1396,6 +1396,7 @@ Please try again later.]]>
 
   <!--- Facebook application config-->
   <string name="facebook_app_id">1820273008266041</string>
+  <string name="facebook_client_token">c36ae4dd1a9f8042522f521fd98dee49</string>
 
   <!--- App Update -->
   <string name="update_dialog_title">New Update Available</string>

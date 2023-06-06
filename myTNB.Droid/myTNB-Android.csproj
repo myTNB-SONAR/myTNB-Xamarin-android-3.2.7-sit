@@ -495,7 +495,7 @@
       <HintPath>..\packages\Xamarin.AndroidX.MultiDex.2.0.1.7\lib\monoandroid90\Xamarin.AndroidX.MultiDex.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.AndroidX.Annotation">
-      <HintPath>..\packages\Xamarin.AndroidX.Annotation.1.2.0\lib\monoandroid90\Xamarin.AndroidX.Annotation.dll</HintPath>
+      <HintPath>..\packages\Xamarin.AndroidX.Annotation.1.2.0.1\lib\monoandroid90\Xamarin.AndroidX.Annotation.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.AndroidX.Arch.Core.Common">
       <HintPath>..\packages\Xamarin.AndroidX.Arch.Core.Common.2.1.0.8\lib\monoandroid90\Xamarin.AndroidX.Arch.Core.Common.dll</HintPath>
@@ -684,10 +684,7 @@
       <HintPath>..\packages\Xamarin.Android.CirclePageIndicator.1.0.4\lib\MonoAndroid\Com.ViewPagerIndicator.dll</HintPath>
     </Reference>
     <Reference Include="Google.ZXing.Core">
-      <HintPath>..\packages\Xamarin.Google.ZXing.Core.3.3.0\lib\MonoAndroid\Google.ZXing.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Facebook">
-      <HintPath>..\packages\Xamarin.Facebook.Android.4.26.0\lib\MonoAndroid70\Xamarin.Facebook.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Google.ZXing.Core.3.3.3\lib\monoandroid90\Google.ZXing.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\netstandard2.1\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -802,6 +799,51 @@
     </Reference>
     <Reference Include="Dynatrace.Xamarin.Binding.Android">
       <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Binding.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Binding.InstallReferrer">
+      <HintPath>..\packages\Xamarin.Android.Binding.InstallReferrer.2.2.0\lib\MonoAndroid10\Xamarin.Android.Binding.InstallReferrer.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors" />
+    <Reference Include="Xamarin.Jetbrains.Annotations">
+      <HintPath>..\packages\Xamarin.Jetbrains.Annotations.24.0.1\lib\monoandroid12.0\Xamarin.Jetbrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Kotlin.StdLib.Common">
+      <HintPath>..\packages\Xamarin.Kotlin.StdLib.Common.1.8.20\lib\monoandroid12.0\Xamarin.Kotlin.StdLib.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Kotlin.StdLib">
+      <HintPath>..\packages\Xamarin.Kotlin.StdLib.1.8.20\lib\monoandroid12.0\Xamarin.Kotlin.StdLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Kotlin.StdLib.Jdk7">
+      <HintPath>..\packages\Xamarin.Kotlin.StdLib.Jdk7.1.8.20\lib\monoandroid12.0\Xamarin.Kotlin.StdLib.Jdk7.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Facebook.Core.Android">
+      <HintPath>..\packages\Xamarin.Facebook.Core.Android.11.2.0.1\lib\monoandroid90\Xamarin.Facebook.Core.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Kotlin.StdLib.Jdk8">
+      <HintPath>..\packages\Xamarin.Kotlin.StdLib.Jdk8.1.8.20\lib\monoandroid12.0\Xamarin.Kotlin.StdLib.Jdk8.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Facebook.AppLinks.Android">
+      <HintPath>..\packages\Xamarin.Facebook.AppLinks.Android.11.2.0.1\lib\monoandroid90\Xamarin.Facebook.AppLinks.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Facebook.Common.Android">
+      <HintPath>..\packages\Xamarin.Facebook.Common.Android.11.2.0.1\lib\monoandroid90\Xamarin.Facebook.Common.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Facebook.Login.Android">
+      <HintPath>..\packages\Xamarin.Facebook.Login.Android.11.2.0.1\lib\monoandroid90\Xamarin.Facebook.Login.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Facebook.Messenger.Android">
+      <HintPath>..\packages\Xamarin.Facebook.Messenger.Android.11.2.0.1\lib\monoandroid90\Xamarin.Facebook.Messenger.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Facebook.Share.Android">
+      <HintPath>..\packages\Xamarin.Facebook.Share.Android.11.2.0.1\lib\monoandroid90\Xamarin.Facebook.Share.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Facebook.GamingServices.Android">
+      <HintPath>..\packages\Xamarin.Facebook.GamingServices.Android.11.2.0.1\lib\monoandroid90\Xamarin.Facebook.GamingServices.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Facebook.Android">
+      <HintPath>..\packages\Xamarin.Facebook.Android.11.2.0.1\lib\monoandroid90\Xamarin.Facebook.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -13628,7 +13670,6 @@
   <Import Project="..\packages\Xamarin.GooglePlayServices.Location.71.1600.4\build\MonoAndroid90\Xamarin.GooglePlayServices.Location.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Location.71.1600.4\build\MonoAndroid90\Xamarin.GooglePlayServices.Location.targets')" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Maps.71.1610.4\build\MonoAndroid90\Xamarin.GooglePlayServices.Maps.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Maps.71.1610.4\build\MonoAndroid90\Xamarin.GooglePlayServices.Maps.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Migration.1.0.8\build\monoandroid90\Xamarin.AndroidX.Migration.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Migration.1.0.8\build\monoandroid90\Xamarin.AndroidX.Migration.targets')" />
-  <Import Project="..\packages\Xamarin.AndroidX.Annotation.1.2.0\build\monoandroid9.0\Xamarin.AndroidX.Annotation.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Annotation.1.2.0\build\monoandroid9.0\Xamarin.AndroidX.Annotation.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Arch.Core.Common.2.1.0.8\build\monoandroid9.0\Xamarin.AndroidX.Arch.Core.Common.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Arch.Core.Common.2.1.0.8\build\monoandroid9.0\Xamarin.AndroidX.Arch.Core.Common.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Arch.Core.Runtime.2.1.0.8\build\monoandroid9.0\Xamarin.AndroidX.Arch.Core.Runtime.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Arch.Core.Runtime.2.1.0.8\build\monoandroid9.0\Xamarin.AndroidX.Arch.Core.Runtime.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Collection.1.1.0.7\build\monoandroid9.0\Xamarin.AndroidX.Collection.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Collection.1.1.0.7\build\monoandroid9.0\Xamarin.AndroidX.Collection.targets')" />
@@ -13711,4 +13752,10 @@
   <Import Project="..\packages\Xamarin.Firebase.Dynamic.Links.120.1.0\build\MonoAndroid90\Xamarin.Firebase.Dynamic.Links.targets" Condition="Exists('..\packages\Xamarin.Firebase.Dynamic.Links.120.1.0\build\MonoAndroid90\Xamarin.Firebase.Dynamic.Links.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Iid.121.1.0\build\MonoAndroid90\Xamarin.Firebase.Iid.targets" Condition="Exists('..\packages\Xamarin.Firebase.Iid.121.1.0\build\MonoAndroid90\Xamarin.Firebase.Iid.targets')" />
   <Import Project="..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets" Condition="Exists('..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets')" />
+  <Import Project="..\packages\Xamarin.AndroidX.Annotation.1.2.0.1\build\monoandroid90\Xamarin.AndroidX.Annotation.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Annotation.1.2.0.1\build\monoandroid90\Xamarin.AndroidX.Annotation.targets')" />
+  <Import Project="..\packages\Xamarin.Jetbrains.Annotations.24.0.1\build\monoandroid12.0\Xamarin.Jetbrains.Annotations.targets" Condition="Exists('..\packages\Xamarin.Jetbrains.Annotations.24.0.1\build\monoandroid12.0\Xamarin.Jetbrains.Annotations.targets')" />
+  <Import Project="..\packages\Xamarin.Kotlin.StdLib.Common.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.Common.targets" Condition="Exists('..\packages\Xamarin.Kotlin.StdLib.Common.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.Common.targets')" />
+  <Import Project="..\packages\Xamarin.Kotlin.StdLib.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.targets" Condition="Exists('..\packages\Xamarin.Kotlin.StdLib.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.targets')" />
+  <Import Project="..\packages\Xamarin.Kotlin.StdLib.Jdk7.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.Jdk7.targets" Condition="Exists('..\packages\Xamarin.Kotlin.StdLib.Jdk7.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.Jdk7.targets')" />
+  <Import Project="..\packages\Xamarin.Kotlin.StdLib.Jdk8.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.Jdk8.targets" Condition="Exists('..\packages\Xamarin.Kotlin.StdLib.Jdk8.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.Jdk8.targets')" />
 </Project>
