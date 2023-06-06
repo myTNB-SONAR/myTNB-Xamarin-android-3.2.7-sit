@@ -374,6 +374,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                                 countTotalPopup++;
                                 Log.Debug("Update popup count", countTotalPopup.ToString());
+                                DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Recommend.RecommendAppUpdate_DisplayPopUp);
+                                DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Recommend.RecommendAppUpdate_VersionBeforeUpdate);
                                 UserSessions.SavePopUpCountUpdate(mSharedPref, countTotalPopup.ToString() + " " + DateTime.Now.ToString("dd/M/yyyy HH:mm"));
                                 UserSessions.SavePopUpDateReset(mSharedPref, responseData.RecommendUpdateInfo?.PublishDateTimeRecommendUpdate);
                                 this.mView.ShowUpdateAvailableWithRequirement(modalTitle, modalMessage, modalBtnYes, modalBtnNo);

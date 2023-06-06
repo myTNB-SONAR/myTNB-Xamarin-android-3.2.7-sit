@@ -1083,11 +1083,13 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtDialogTitle, btnYeslabel);
                 btnYeslabel.Click += delegate
                 {
+                    DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Recommend.RecommendAppUpdate_ClickYes);
                     userClick = true;
                     OnAppUpdateClick();
                 };
                 btnNolabel.Click += delegate
                 {
+                    DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Recommend.RecommendAppUpdate_ClickNo);
                     appUpdateDialog.Dismiss();
                     userClick = true;
                     mPresenter.Start();

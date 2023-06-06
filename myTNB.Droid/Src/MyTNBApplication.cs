@@ -36,6 +36,10 @@ namespace myTNB_Android.Src
             Fabric.Fabric.With(Context, new Crashlytics.Crashlytics());
             Crashlytics.Crashlytics.HandleManagedExceptions();
             FacebookSdk.SdkInitialize(ApplicationContext);
+            //FacebookSdk.AutoInitEnabled = true;
+            //FacebookSdk.FullyInitialize();
+            //FacebookSdk.IsDebugEnabled = true;                            //for debug only
+            //FacebookSdk.AddLoggingBehavior(LoggingBehavior.AppEvents); //for debug only
             AccountTypeEntity.CreateTable();
             UserEntity.CreateTable();
             UserLoginCountEntity.CreateTable();
