@@ -11,21 +11,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/txtCardNumber"
+         <ImageView
+            android:id="@+id/imgCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/visa"
-            android:drawablePadding="6dp"
-            android:gravity="center_vertical"
-            android:paddingTop="1dp"
-            android:paddingRight="20dp"
-            android:text="**** "
-            android:textSize="16dp"
-            android:textColor="@color/tunaGrey"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/visa"
             android:layout_centerVertical="true"
-            android:layout_alignParentStart="true" />
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical|left"/>
 
+         <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+		        android:orientation="vertical"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/txtCardNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingTop="1dp"
+                    android:paddingRight="20dp"
+                    android:text="**** "
+                    android:textSize="16dp"
+                    android:textColor="@color/tunaGrey"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+			        android:id="@+id/txtExpiredCard"
+			        android:layout_width="wrap_content"
+			        android:layout_height="match_parent"
+			        android:text="Credit Card Expired"
+			        android:textSize="8dp"
+			        android:textColor="@color/lightRed"
+			        android:layout_alignParentStart="true"
+                    android:layout_below="@+id/txtCardNumber"
+                    android:visibility="visible"/>
+         </LinearLayout>
         <ImageView
             android:id="@+id/imgCardNumberDelete"
             android:layout_width="wrap_content"
@@ -36,4 +62,24 @@
             android:layout_marginLeft="10dp"
             app:srcCompat="@drawable/ic_close" />
     </RelativeLayout>
+
+	<!--<LinearLayout
+		android:id="@+id/layoutExpired"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<TextView
+			android:id="@+id/txtExpiredCard"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			android:paddingTop="1dp"
+            android:paddingRight="20dp"
+			android:text="This Card is Expired"
+			android:textSize="10dp"
+			android:textColor="@color/lightRed"
+			android:layout_alignParentStart="true"/>
+	</LinearLayout>-->
+
 </LinearLayout>
