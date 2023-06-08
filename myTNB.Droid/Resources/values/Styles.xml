@@ -513,4 +513,26 @@
 		<item name="colorControlActivated">@color/tunaGrey</item>
 		<item name="colorError">@color/errorColor</item>
 	</style>
+	<!-- NEW Rounded Buttons -->
+	<style name="Theme.RoundGreenSolidButton" parent="@android:style/Widget.Button">
+		<item name="android:textColor">#FFFFFF</item>
+		<item name="android:hint">#FFFFFF</item>
+		<item name="android:textSize">16dp</item>
+		<item name="android:stateListAnimator">@null</item>
+		<item name="android:background">@drawable/green_round_button_background</item>
+	</style>
+	<style name="Theme.RoundRedOutlineButton" parent="@android:style/Widget.Button">
+		<item name="android:textColor">@color/tomato</item>
+		<item name="android:hint">@color/tomato</item>
+		<item name="android:textSize">16dp</item>
+		<item name="android:stateListAnimator">@null</item>
+		<item name="android:background">@drawable/red_outline_round_button_background</item>
+	</style>
+	<style name="Theme.RoundGreenOutlineButton" parent="@android:style/Widget.Button">
+		<item name="android:textColor">@color/freshGreen</item>
+		<item name="android:hint">@color/freshGreen</item>
+		<item name="android:textSize">16dp</item>
+		<item name="android:stateListAnimator">@null</item>
+		<item name="android:background">@drawable/light_green_outline_button_background</item>
+	</style>
 </resources>

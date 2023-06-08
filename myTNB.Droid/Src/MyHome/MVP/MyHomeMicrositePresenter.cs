@@ -375,7 +375,7 @@ namespace myTNB_Android.Src.MyHome.MVP
             catch (Exception ex)
             {
 #if DEBUG
-                Debug.WriteLine("[DEBUG][ParseDisplayModel Payment Receipt]General Exception: " + ex.Message);
+                Debug.WriteLine("[DEBUG][ParsePaidDetailsResponse Payment Receipt]General Exception: " + ex.Message);
 #endif
                 this.mActivity.RunOnUiThread(() =>
                 {
@@ -417,7 +417,7 @@ namespace myTNB_Android.Src.MyHome.MVP
             catch (Exception ex)
             {
 #if DEBUG
-                Debug.WriteLine("[DEBUG][ParseDisplayModel Tax Invoice]General Exception: " + ex.Message);
+                Debug.WriteLine("[DEBUG][ParsePaidDetailsResponse Tax Invoice]General Exception: " + ex.Message);
 #endif
                 this.mActivity.RunOnUiThread(() =>
                 {

@@ -32,7 +32,7 @@
 				android:text="Pay Now"
 				android:textSize="16dp"
 				android:textAllCaps="false"
-				style="@style/DarkButton1"/>
+				style="@style/Theme.RoundGreenSolidButton"/>
 		</LinearLayout>
 		<ScrollView
 			android:layout_width="match_parent"
