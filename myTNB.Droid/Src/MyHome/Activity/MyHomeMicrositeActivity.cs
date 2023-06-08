@@ -18,6 +18,7 @@ using CheeseBind;
 using myTNB;
 using myTNB.Mobile;
 using myTNB.Mobile.SessionCache;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Bills.AccountStatement.Activity;
@@ -299,6 +300,13 @@ namespace myTNB_Android.Src.MyHome.Activity
         internal void ShowPayment(string webURL)
         {
             this.presenter?.GetPaymentInfo(webURL);
+        }
+
+        public void ShowApplicationPayment(GetApplicationStatusDisplay applicationStatusDisplay)
+        {
+            Intent applicationStatusDetailPaymentIntent = new Intent(this, typeof(ApplicationStatusDetailPaymentActivity));
+            applicationStatusDetailPaymentIntent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationStatusDisplay));
+            StartActivity(applicationStatusDetailPaymentIntent);
         }
 
         private void SetUpWebView(string accessToken)

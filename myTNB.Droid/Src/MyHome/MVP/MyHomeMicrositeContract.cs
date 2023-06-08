@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Android.Content;
+using myTNB.Mobile;
 using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -57,6 +59,12 @@ namespace myTNB_Android.Src.MyHome.MVP
             /// </summary>
             /// <param name="paymentDetailsModel"></param>
             void ShowPaymentDetails(MyHomePaymentDetailsModel paymentDetailsModel);
+
+            /// <summary>
+            /// Shows Payment flow with applicationStatusDisplay param
+            /// </summary>
+            /// <param name="applicationStatusDisplay"></param>
+            void ShowApplicationPayment(GetApplicationStatusDisplay applicationStatusDisplay);
         }
 
         public interface IUserActionsListener : IBasePresenter

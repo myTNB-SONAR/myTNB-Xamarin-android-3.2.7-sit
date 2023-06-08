@@ -124,6 +124,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
             try
             {
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 appBarLayout = FindViewById<AppBarLayout>(Resource.Id.appBar);
                 toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
