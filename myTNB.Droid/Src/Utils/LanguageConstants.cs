@@ -20,6 +20,7 @@
         internal static readonly string MANAGE_DIGITAL_BILL = "ManageDigitalBillLanding";
         internal static readonly string PAYMENT_HISTORY = "PaymentHistory";
         internal static readonly string SELECT_PAYMENT_METHOD = "SelectPaymentMethod";
+        internal static readonly string RATING_RESULTS = "RatingResults";
 
         internal struct Common
         {
@@ -35,6 +36,7 @@
             internal static readonly string TOTAL_AMOUNT = "totalAmountRM";
             internal static readonly string EPP_TOOLTIP_TITLE = "eppToolTipTitle";
             internal static readonly string BACK = "back";
+            internal static readonly string CONTINUE = "continue";
         }
 
         internal struct Error
@@ -241,6 +243,13 @@
             internal static readonly string ADD_CARD = "addCard";
             internal static readonly string FPX_TITLE = "fpxTitle";
             internal static readonly string MAX_CC_AMT_MSG = "maxCCAmountMessage";
+        }
+
+        internal struct RatingResults
+        {
+            internal static readonly string DESCRIPTION = "description";
+            internal static readonly string THANK_YOU = "thankyou";
+            internal static readonly string BACK_TO_HOME = "backToHome";
         }
     }
 }

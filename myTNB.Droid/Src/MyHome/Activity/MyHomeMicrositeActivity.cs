@@ -36,6 +36,8 @@ using myTNB_Android.Src.Utils.Deeplink;
 using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Crmf;
+using Xamarin.Facebook;
+using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
 using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
 
 namespace myTNB_Android.Src.MyHome.Activity
@@ -304,75 +306,85 @@ namespace myTNB_Android.Src.MyHome.Activity
 
         public void ShowApplicationPayment(GetApplicationStatusDisplay applicationStatusDisplay)
         {
+            MyHomeUtil.Instance.SetIsCOTCOAFlow();
             Intent applicationStatusDetailPaymentIntent = new Intent(this, typeof(ApplicationStatusDetailPaymentActivity));
             applicationStatusDetailPaymentIntent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationStatusDisplay));
-            StartActivity(applicationStatusDetailPaymentIntent);
+            StartActivityForResult(applicationStatusDetailPaymentIntent, Constants.MYHOME_MICROSITE_REQUEST_CODE);
         }
 
         private void SetUpWebView(string accessToken)
         {
+            string ssoDomain = _model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome;
+            string originURL = _model?.OriginURL ?? MyHomeConstants.ACTION_BACK_TO_APP;
+            string redirectURL = _model?.RedirectURL ?? string.Empty;
+            string cancelURL = _model?.CancelURL ?? string.Empty;
+
+            LoadWebview(ssoDomain, originURL, redirectURL, cancelURL, accessToken);
+        }
+
+        public void ReloadWebview(MyHomeDetails details, string accessToken)
+        {
+            LoadWebview(details.SSODomain, details.OriginURL, details.RedirectURL, string.Empty, accessToken);
+        }
+
+        private void LoadWebview(string ssoDomain, string originURL, string redirectURL, string cancelURL, string accessToken)
+        {
             try
             {
-                RunOnUiThread(() =>
-                {
-                    string originURL = _model?.OriginURL ?? MyHomeConstants.ACTION_BACK_TO_APP;
-                    string redirectURL = _model?.RedirectURL ?? string.Empty;
-                    string cancelURL = _model?.CancelURL ?? string.Empty;
+                //STUB
+                //redirectURL = "https://https://18.139.216.169/Application/Offerings";
+                //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
+                //redirectURL = "https://devmyhome.mytnb.com.my/Application/MyHomeChecklist/ConnectToMyHome";
 
-                    //STUB
-                    //redirectURL = "https://https://18.139.216.169/Application/Offerings";
-                    //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
-                    //redirectURL = "https://devmyhome.mytnb.com.my/Application/MyHomeChecklist/ConnectToMyHome";
+                UserEntity user = UserEntity.GetActive();
+                string myTNBAccountName = user?.DisplayName ?? string.Empty;
+                string signature = SSOManager.Instance.GetMyHomeSignature(myTNBAccountName
+                , accessToken
+                , user.DeviceId ?? string.Empty
+                , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
+                , 16
+                , (LanguageUtil.GetAppLanguage() == "MS"
+                ? LanguageManager.Language.MS
+                : LanguageManager.Language.EN).ToString()
+                , TextViewUtils.FontInfo ?? "N"
+                , originURL
+                , redirectURL
+                , user.UserID
+                , user.IdentificationNo
+                , MobileConstants.OSType.int_Android
+                , user.Email
+                , string.Empty
+                , null
+                , user.MobileNo
+                , cancelURL);
 
-                    UserEntity user = UserEntity.GetActive();
-                    string myTNBAccountName = user?.DisplayName ?? string.Empty;
-                    string signature = SSOManager.Instance.GetMyHomeSignature(myTNBAccountName
-                    , accessToken
-                    , user.DeviceId ?? string.Empty
-                    , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
-                    , 16
-                    , (LanguageUtil.GetAppLanguage() == "MS"
-                    ? LanguageManager.Language.MS
-                    : LanguageManager.Language.EN).ToString()
-                    , TextViewUtils.FontInfo ?? "N"
-                    , originURL
-                    , redirectURL
-                    , user.UserID
-                    , user.IdentificationNo
-                    , MobileConstants.OSType.int_Android
-                    , user.Email
-                    , string.Empty
-                    , null
-                    , user.MobileNo
-                    , cancelURL);
+                string ssoURL = string.Format(ssoDomain, signature);
 
-                    string ssoURL = string.Format(_model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome, signature);
+                //STUB
+                //ssoURL = string.Format("https://18.139.216.169/Sso?s={0}", signature);
+                //ssoURL = string.Format("https://devmyhome.mytnb.com.my/Sso?s={0}", signature);
 
-                    //STUB
-                    //ssoURL = string.Format("https://18.139.216.169/Sso?s={0}", signature);
-                    //ssoURL = string.Format("https://devmyhome.mytnb.com.my/Sso?s={0}", signature);
+                micrositeWebview.SetWebChromeClient(new MyHomeWebChromeClient(this));
+                micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
+                micrositeWebview.Settings.JavaScriptEnabled = true;
+                micrositeWebview.Settings.AllowFileAccess = true;
+                micrositeWebview.Settings.AllowFileAccessFromFileURLs = true;
+                micrositeWebview.Settings.AllowUniversalAccessFromFileURLs = true;
+                micrositeWebview.Settings.AllowContentAccess = true;
+                micrositeWebview.Settings.JavaScriptCanOpenWindowsAutomatically = true;
+                micrositeWebview.Settings.DomStorageEnabled = true;
+                micrositeWebview.Settings.MediaPlaybackRequiresUserGesture = false;
+                micrositeWebview.Settings.SetSupportZoom(false);
 
-                    micrositeWebview.SetWebChromeClient(new MyHomeWebChromeClient(this));
-                    micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
-                    micrositeWebview.Settings.JavaScriptEnabled = true;
-                    micrositeWebview.Settings.AllowFileAccess = true;
-                    micrositeWebview.Settings.AllowFileAccessFromFileURLs = true;
-                    micrositeWebview.Settings.AllowUniversalAccessFromFileURLs = true;
-                    micrositeWebview.Settings.AllowContentAccess = true;
-                    micrositeWebview.Settings.JavaScriptCanOpenWindowsAutomatically = true;
-                    micrositeWebview.Settings.DomStorageEnabled = true;
-                    micrositeWebview.Settings.MediaPlaybackRequiresUserGesture = false;
-                    micrositeWebview.Settings.SetSupportZoom(false);
-
-                    //STUB
-                    //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
-                    Log.Debug("[DEBUG]", "ssoURL: " + ssoURL);
-                    micrositeWebview.LoadUrl(ssoURL);
-                });
+                //STUB
+                //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
+                Log.Debug("[DEBUG]", "ssoURL: " + ssoURL);
+                micrositeWebview.LoadUrl(ssoURL);
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+                ShowGenericError();
             }
         }
 
@@ -429,6 +441,52 @@ namespace myTNB_Android.Src.MyHome.Activity
             {
                 this._resultCallbackvalue(requestCode, resultCode, data);
                 this._resultCallbackvalue = null;
+            }
+            else if (resultCode == Result.Ok && requestCode == Constants.MYHOME_MICROSITE_REQUEST_CODE)
+            {
+                if (data != null && data.Extras is Bundle extras && extras != null)
+                {
+                    if (extras.ContainsKey(MyHomeConstants.IS_PAYMENT_SUCCESSFUL))
+                    {
+                        bool paymentSuccess = extras.GetBoolean(MyHomeConstants.IS_PAYMENT_SUCCESSFUL);
+                        if (paymentSuccess)
+                        {
+                            ReloadMicrosite();
+                        }
+                    }
+                    else if (extras.ContainsKey(MyHomeConstants.IS_RATING_SUCCESSFUL))
+                    {
+                        bool ratingSuccess = extras.GetBoolean(MyHomeConstants.IS_RATING_SUCCESSFUL);
+                        if (ratingSuccess)
+                        {
+                            ReloadMicrosite();
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ReloadMicrosite()
+        {
+            //STUB
+            //MyHomeDetails d = new MyHomeDetails()
+            //{
+            //    SSODomain = "https://stagingmyhome.mytnb.com.my/Sso?s={0}",
+            //    OriginURL = "mytnbapp://action=backToApp",
+            //    RedirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings"
+            //};
+            //MyHomeUtil.Instance.SetMyHomeDetails(d);
+
+            var details = MyHomeUtil.Instance.MyHomeDetails;
+            if (details != null)
+            {
+                MyHomeUtil.Instance.ClearCache();
+                this.presenter?.OnReloadMicrosite(details);
+            }
+            else
+            {
+                MyHomeUtil.Instance.ClearCache();
+                this.ShowGenericError();
             }
         }
 

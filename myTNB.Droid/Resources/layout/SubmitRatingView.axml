@@ -39,7 +39,7 @@
             android:layout_height="48dp"
             android:layout_width="match_parent"
             android:textAllCaps="false"
-            style="@style/DarkButton"
+            style="@style/Theme.RoundGreenSolidButton"
             android:text="Submit" />
       </LinearLayout>
     </LinearLayout>

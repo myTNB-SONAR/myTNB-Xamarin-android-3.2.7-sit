@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Utils;
@@ -32,6 +33,13 @@ namespace myTNB_Android.Src.Rating.Fargment
 
             try
             {
+                bool isCOTCOAFlow = false;
+
+                if (Arguments.ContainsKey(MyHomeConstants.IS_COTCOA_PAYMENT_FLOW))
+                {
+                    isCOTCOAFlow = Arguments.GetBoolean(MyHomeConstants.IS_COTCOA_PAYMENT_FLOW);
+                }
+
                 ratingActivity = ((RatingActivity)Activity);
 
                 coordinatorLayout = rootView.FindViewById<CoordinatorLayout>(Resource.Id.rootView);
@@ -56,20 +64,30 @@ namespace myTNB_Android.Src.Rating.Fargment
                 TextViewUtils.SetTextSize14(txtContentInfo, txtTransactionScheduleContent, txtFeedbackIdContent);
                 TextViewUtils.SetTextSize16(txtTitleInfo, btnBackToFeedback);
 
-                btnBackToFeedback.Text = Utility.GetLocalizedLabel("RatingResults", "backToHome");
-                txtTitleInfo.Text = Utility.GetLocalizedLabel("RatingResults", "thankyou");
-                txtContentInfo.Text = Utility.GetLocalizedLabel("RatingResults", "description");
+                btnBackToFeedback.Text = isCOTCOAFlow ? Utility.GetLocalizedCommonLabel(LanguageConstants.Common.CONTINUE)
+                    : Utility.GetLocalizedLabel(LanguageConstants.RATING_RESULTS, LanguageConstants.RatingResults.BACK_TO_HOME);
+                txtTitleInfo.Text = Utility.GetLocalizedLabel(LanguageConstants.RATING_RESULTS, LanguageConstants.RatingResults.THANK_YOU);
+                txtContentInfo.Text = Utility.GetLocalizedLabel(LanguageConstants.RATING_RESULTS, LanguageConstants.RatingResults.DESCRIPTION);
 
                 ratingActivity.HideToolBar();
 
                 btnBackToFeedback.Click += delegate
                 {
-                    //ratingActivity.Finish();
-                    Intent DashboardIntent = new Intent(ratingActivity, typeof(DashboardHomeActivity));
-                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                    HomeMenuUtils.ResetAll();
-                    DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                    StartActivity(DashboardIntent);
+                    if (isCOTCOAFlow)
+                    {
+                        Intent intent = new Intent();
+                        intent.PutExtra(MyHomeConstants.IS_RATING_SUCCESSFUL, true);
+                        ratingActivity.SetResult(Result.Ok, intent);
+                        ratingActivity.Finish();
+                    }
+                    else
+                    {
+                        Intent DashboardIntent = new Intent(ratingActivity, typeof(DashboardHomeActivity));
+                        MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                        HomeMenuUtils.ResetAll();
+                        DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                        StartActivity(DashboardIntent);
+                    }
                 };
 
             }

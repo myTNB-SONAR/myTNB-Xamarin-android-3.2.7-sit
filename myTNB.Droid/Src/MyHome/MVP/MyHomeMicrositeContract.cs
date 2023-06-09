@@ -5,6 +5,7 @@ using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
+using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
 
 namespace myTNB_Android.Src.MyHome.MVP
 {
@@ -65,6 +66,12 @@ namespace myTNB_Android.Src.MyHome.MVP
             /// </summary>
             /// <param name="applicationStatusDisplay"></param>
             void ShowApplicationPayment(GetApplicationStatusDisplay applicationStatusDisplay);
+
+            /// <summary>
+            /// Reloads webview with new sso details
+            /// </summary>
+            /// <param name="details"></param>
+            void ReloadWebview(MyHomeDetails details, string accessToken);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -113,6 +120,12 @@ namespace myTNB_Android.Src.MyHome.MVP
             /// </summary>
             /// <param name="webURL"></param>
             void GetPaymentInfo(string webURL);
+
+            /// <summary>
+            /// Reloads Microsite with new SSO details
+            /// </summary>
+            /// <param name="details"></param>
+            void OnReloadMicrosite(MyHomeDetails details);
         }
     }
 }

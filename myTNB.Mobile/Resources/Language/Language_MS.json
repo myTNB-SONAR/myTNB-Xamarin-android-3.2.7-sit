@@ -109,8 +109,8 @@
     "dbrWhatsApp": "Anda menerima Bil <b>myTNB & Whatsapp</b> untuk akaun ini.",
     "dbrViaMyTNB": "Akaun anda adalah mesra alam dengan <b>Bil myTNB!</b>",
     "applicationCancelledMessage": "Permohonan anda telah dipadamkan.",
-    //TODO: Pending Functional/Copywriter to provide copy for the toast message where Existing Owner deleted the COT application
-    "applicationCancelledCOTMessage": "Permohonan anda telah dipadamkan."
+    "applicationCancelledCOTMessage": "Draf anda telah dipadamkan",
+    "continue": "Teruskan"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",

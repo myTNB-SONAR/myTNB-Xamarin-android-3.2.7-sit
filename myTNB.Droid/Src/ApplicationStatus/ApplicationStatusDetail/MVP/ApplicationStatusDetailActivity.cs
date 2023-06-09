@@ -323,9 +323,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         {
                             if (applicationDetailDisplay.IsCOTExistingOwner)
                             {
-                                //TODO: Pending Functional/Copywriter to provide copy for this scenario where Existing Owner wants to delete COT application
-                                title = "";
-                                message = "";
                                 isCOTExistingOwner = true;
                             }
                         }
@@ -441,8 +438,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         {
                             isSuccess = responseCOT.StatusDetail.IsSuccess;
                             accessToken = responseCOT.StatusDetail.AccessToken;
-                            //TODO: Pending Functional/Copywriter to provide copy for the toast message where Existing Owner deleted the COT application
-                            string isCOTExistingOwnerMsg = "";
+                            string isCOTExistingOwnerMsg = Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application_COT);
                             message = isCOTExistingOwner ? isCOTExistingOwnerMsg : responseCOT.StatusDetail.Message;
                         }
                         break;
@@ -508,9 +504,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     {
                         if (applicationDetailDisplay.IsCOTExistingOwner)
                         {
-                            //TODO: Pending Functional/Copywriter to provide copy for this scenario where Existing Owner wants to delete COT application
-                            title = "";
-                            message = "";
                             isCOTExistingOwner = true;
                         }
                     }

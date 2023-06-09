@@ -4,6 +4,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Content.Res;
 using Android.OS;
+using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -23,6 +24,7 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.MultipleAccountPayment.Fragment;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
@@ -391,6 +393,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
+        public void NavigateBackToMicrosite()
+        {
+            Intent intent = new Intent();
+            intent.PutExtra(MyHomeConstants.IS_PAYMENT_SUCCESSFUL, true);
+            SetResult(Result.Ok, intent);
+            Finish();
+        }
+
         public override void Finish()
         {
 
@@ -543,5 +553,27 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop && Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
             ? Resources.Assets : base.Assets;
 
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == Result.Ok && requestCode == Constants.MYHOME_MICROSITE_REQUEST_CODE)
+            {
+                if (data != null && data.Extras is Bundle extras && extras != null)
+                {
+                    if (extras.ContainsKey(MyHomeConstants.IS_RATING_SUCCESSFUL))
+                    {
+                        bool ratingSuccess = extras.GetBoolean(MyHomeConstants.IS_RATING_SUCCESSFUL);
+                        if (ratingSuccess)
+                        {
+                            Intent intent = new Intent();
+                            intent.PutExtra(MyHomeConstants.IS_RATING_SUCCESSFUL, true);
+                            SetResult(Result.Ok, intent);
+                            Finish();
+                        }
+                    }
+                }
+            }
+        }
     }
 }

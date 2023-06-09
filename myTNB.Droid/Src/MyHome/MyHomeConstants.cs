@@ -21,6 +21,7 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string ACTION_SHOW_PAYMENT_DETAILS = "mytnbapp://action=showPaymentDetails";
         internal static readonly string ACTION_SHOW_PAYMENT_HISTORY = "mytnbapp://action=showPaymentHistory";
         internal static readonly string ACTION_SHOW_PAYMENT = "mytnbapp://action=showPayment";
+        internal static readonly string ACTION_PAYMENT_SUCCESS_CONTINUE = "mytnbapp://action=paymentSuccessContinueMyHome";
         internal static readonly string PATTERN = "\\b{0}.*\\b";
         internal static readonly string REPLACE_KEY = "{0}/";
         internal static readonly string FULL_STOP = ".";
@@ -53,6 +54,10 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string APPLICATION_PAYMENT_STATUS_ID = "statusId";
         internal static readonly string APPLICATION_PAYMENT_STATUS_CODE = "statusCode";
         internal static readonly string APPLICATION_PAYMENT_SR_NUMBER = "srNumber";
+        internal static readonly string IS_PAYMENT_SUCCESSFUL = "isPaymentSuccessful";
+        internal static readonly string IS_RATING_SUCCESSFUL = "isRatingSuccessful";
+        internal static readonly string IS_COTCOA_PAYMENT_FLOW = "isCOTCOAPaymentFlow";
+        
         internal static readonly List<string> MYHOME_NOTIFS = new List<string>()
         {
             Constants.BCRM_NOTIFICATION_MYHOME_NC_ADDRESS_SEARCH_COMPLETED,

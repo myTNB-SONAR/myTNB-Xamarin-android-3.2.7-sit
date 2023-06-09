@@ -36,6 +36,8 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB.Mobile.AWS.Models.DBR;
+using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
+using myTNB_Android.Src.MyHome;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -1283,6 +1285,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     Log.Debug("Initiate Payment Response", "Response Count" + response.ToString());
                     if (response.IsSuccessResponse())
                     {
+                        PaymentTransactionIdResponse.InitiatePaymentResult initiatePaymentResult = response.GetData();
+                        if (initiatePaymentResult != null)
+                        {
+                            MyHomeDetails myHomeDetails = initiatePaymentResult.MyHomeDetails;
+                            if (myHomeDetails != null)
+                            {
+                                MyHomeUtil.Instance.SetMyHomeDetails(myHomeDetails);
+                            }
+                        }
+
                         if (selectedPaymentMethod.Equals(METHOD_CREDIT_CARD))
                         {
                             InitiateSubmitPayment(response, cardDetails);

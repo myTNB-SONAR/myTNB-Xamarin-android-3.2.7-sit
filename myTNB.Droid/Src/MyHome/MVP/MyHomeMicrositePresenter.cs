@@ -30,6 +30,9 @@ using System.Linq;
 using System.Diagnostics;
 using static Android.Provider.Settings;
 using System.Reflection;
+using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
+using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.MyHome.MVP
 {
@@ -517,6 +520,46 @@ namespace myTNB_Android.Src.MyHome.MVP
             {
                 Utility.LoggingNonFatalError(e);
                 this.mView.ShowGenericError();
+            }
+        }
+
+        public void OnReloadMicrosite(MyHomeDetails details)
+        {
+            if (details != null)
+            {
+                this.mView.ShowProgressDialog();
+                Task.Run(() =>
+                {
+                    _ = GetAccessToken(details);
+                });
+            }
+            else
+            {
+                this.mView.HideProgressDialog();
+                this.mActivity.Finish();
+            }
+        }
+
+        private async Task GetAccessToken(MyHomeDetails details)
+        {
+            UserEntity user = UserEntity.GetActive();
+            string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
+            AccessTokenCache.Instance.SaveUserServiceAccessToken(this.mActivity, accessToken);
+            if (accessToken.IsValid())
+            {
+                this.mActivity.RunOnUiThread(() =>
+                {
+                    this.mView.HideProgressDialog();
+                    this.mView.ReloadWebview(details, accessToken);
+                });
+            }
+            else
+            {
+                this.mActivity.RunOnUiThread(() =>
+                {
+                    this.mView.HideProgressDialog();
+                    this.mView.ShowGenericError();
+                });
             }
         }
 

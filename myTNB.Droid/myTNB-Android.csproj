@@ -7847,6 +7847,11 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Utils\NumberUtils.cs" />
+    <Compile Include="Src\MyHome\MyHomeUtil.cs" />
+    <AndroidResource Include="Resources\drawable\white_round_button_background.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">

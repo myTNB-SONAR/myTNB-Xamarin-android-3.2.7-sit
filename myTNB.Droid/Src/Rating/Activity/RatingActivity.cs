@@ -2,11 +2,13 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Google.Android.Material.AppBar;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.Rating.Fargment;
 using myTNB_Android.Src.Utils;
 using System;
@@ -31,6 +33,7 @@ namespace myTNB_Android.Src.Rating.Activity
         private string merchantTransID;
         private string deviceID;
         private int selectedRating;
+        private bool isCOTCOAFlow;
         private string PAGE_ID = "Rating";
 
         public override int ResourceId()
@@ -117,6 +120,10 @@ namespace myTNB_Android.Src.Rating.Activity
                     {
                         selectedRating = extras.GetInt(Constants.SELECTED_RATING, 1);
                     }
+                    if (extras.ContainsKey(MyHomeConstants.IS_COTCOA_PAYMENT_FLOW))
+                    {
+                        isCOTCOAFlow = extras.GetBoolean(MyHomeConstants.IS_COTCOA_PAYMENT_FLOW);
+                    }
                 }
 
                 OnLoadMainFragment();
@@ -160,6 +167,7 @@ namespace myTNB_Android.Src.Rating.Activity
             if (fragment is SubmitRatingFragment)
             {
                 var thankYouFragment = new ThankYouFragment();
+                bundle.PutBoolean(MyHomeConstants.IS_COTCOA_PAYMENT_FLOW, isCOTCOAFlow);
                 thankYouFragment.Arguments = bundle;
                 var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                 fragmentTransaction.Add(Resource.Id.fragment_container, thankYouFragment);
@@ -211,6 +219,29 @@ namespace myTNB_Android.Src.Rating.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == Result.Ok && requestCode == Constants.MYHOME_MICROSITE_REQUEST_CODE)
+            {
+                if (data != null && data.Extras is Bundle extras && extras != null)
+                {
+                    if (extras.ContainsKey(MyHomeConstants.IS_RATING_SUCCESSFUL))
+                    {
+                        bool ratingSuccess = extras.GetBoolean(MyHomeConstants.IS_RATING_SUCCESSFUL);
+                        if (ratingSuccess)
+                        {
+                            Intent intent = new Intent();
+                            intent.PutExtra(MyHomeConstants.IS_RATING_SUCCESSFUL, true);
+                            SetResult(Result.Ok, intent);
+                            Finish();
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ using Java.Net;
 using myTNB.Mobile;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Model;
@@ -309,7 +310,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 this.summaryDashBoardRequest = summaryDashBoardRequest;
             }
 
-            public override bool ShouldOverrideUrlLoading(WebView view, string url)
+            public override bool ShouldOverrideUrlLoading(WebView view, IWebResourceRequest request)
             {
                 if (!ConnectionUtils.HasInternetConnection(mActivity))
                 {
@@ -318,7 +319,31 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 }
                 else
                 {
-                    if (url.ToLower().Contains("mytnbapp://receipt"))// && !isRedirected)
+                    string url = string.Empty;
+                    if (request != null && request.Url != null)
+                    {
+                        url = request.Url.ToString();
+                        //STUB
+                        //url = "mytnbapp://action=paymentSuccessContinueMyHome";
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                    if (url.Contains(MyHomeConstants.ACTION_PAYMENT_SUCCESS_CONTINUE))
+                    {
+                        if (MyHomeUtil.Instance.MyHomeDetails != null)
+                        {
+                            ((PaymentActivity)this.mActivity).NavigateBackToMicrosite();
+                        }
+                        //STUB
+                        //else
+                        //{
+                        //    ((PaymentActivity)this.mActivity).NavigateBackToMicrosite();
+                        //}
+                    }
+                    else if (url.ToLower().Contains("mytnbapp://receipt"))// && !isRedirected)
                     {
                         isRedirected = true;
                         string merchantTransId = url.Substring(url.LastIndexOf("=") + 1);//GetQueryString(url, "transid");
@@ -364,7 +389,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         payment_activity.PutExtra(Constants.QUESTION_ID_CATEGORY, ((int)QuestionCategoryID.Payment));
                         payment_activity.PutExtra(Constants.SELECTED_RATING, ratings);
                         payment_activity.PutExtra(Constants.MERCHANT_TRANS_ID, merchantTransId);
-                        mActivity.StartActivity(payment_activity);
+                        payment_activity.PutExtra(MyHomeConstants.IS_COTCOA_PAYMENT_FLOW, MyHomeUtil.Instance.IsCOTCOAFlow);
+                        mActivity.StartActivityForResult(payment_activity, Constants.MYHOME_MICROSITE_REQUEST_CODE);
                         //((PaymentActivity)this.mActivity).SetResult(Result.Ok);
                         //((PaymentActivity)this.mActivity).Finish();
                     }
@@ -411,7 +437,21 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             {
                 try
                 {
-                    if (url.ToLower().Contains("statusreceipt.aspx")
+                    //STUB
+                    //url = "mytnbapp://action=paymentSuccessContinueMyHome";
+                    if (url.Contains(MyHomeConstants.ACTION_PAYMENT_SUCCESS_CONTINUE))
+                    {
+                        if (MyHomeUtil.Instance.MyHomeDetails != null)
+                        {
+                            ((PaymentActivity)this.mActivity).NavigateBackToMicrosite();
+                        }
+                        //STUB
+                        //else
+                        //{
+                        //    ((PaymentActivity)this.mActivity).NavigateBackToMicrosite();
+                        //}
+                    }
+                    else if (url.ToLower().Contains("statusreceipt.aspx")
                         || url.ToLower().Contains("paystatusreceipt")
                         && url.ToLower().Contains("approved"))
                     {
