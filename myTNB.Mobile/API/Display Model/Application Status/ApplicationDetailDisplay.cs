@@ -803,8 +803,31 @@ namespace myTNB.Mobile
         {
             get
             {
-                bool isExistingOwner = ApplicationStatusDetail != null ? ApplicationStatusDetail.IsExistingOwner : false;
-                return isExistingOwner;
+                return ApplicationStatusDetail != null ? ApplicationStatusDetail.IsExistingOwner : false;
+            }
+        }
+
+        public string ContractAccountNo
+        {
+            get
+            {
+                return ApplicationStatusDetail != null ? ApplicationStatusDetail.ContractAccountNo : string.Empty;
+            }
+        }
+
+        public string AccountName
+        {
+            get
+            {
+                return ApplicationStatusDetail != null ? ApplicationStatusDetail.AccountName : string.Empty;
+            }
+        }
+
+        public string PremiseAddress
+        {
+            get
+            {
+                return ApplicationStatusDetail != null ? ApplicationStatusDetail.PremiseAddress : string.Empty;
             }
         }
     }
@@ -919,6 +942,9 @@ namespace myTNB.Mobile
         /// </summary>
         public bool IsPayment { set; get; }
         public bool IsExistingOwner { set; get; }
+        public string ContractAccountNo { set; get; }
+        public string AccountName { set; get; }
+        public string PremiseAddress { set; get; }
     }
 
     public class StatusTrackerDisplay

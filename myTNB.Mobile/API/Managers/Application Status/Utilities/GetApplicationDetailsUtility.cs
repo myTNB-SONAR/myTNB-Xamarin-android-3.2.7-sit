@@ -248,6 +248,16 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     if (searchApplicationType == "COT" && response.Content.changeOfTenancyDetail != null)
                     {
                         displayModel.Content.ApplicationStatusDetail.IsExistingOwner = response.Content.changeOfTenancyDetail.isExistingOwner;
+                        displayModel.Content.ApplicationStatusDetail.ContractAccountNo = response.Content.changeOfTenancyDetail.contractAccountNo;
+                        displayModel.Content.ApplicationStatusDetail.AccountName = response.Content.changeOfTenancyDetail.accountName;
+                        displayModel.Content.ApplicationStatusDetail.PremiseAddress = response.Content.changeOfTenancyDetail.premiseAddress;
+                    }
+
+                    if (searchApplicationType == "COA" && response.Content.closeOfAccountDetail != null)
+                    {
+                        displayModel.Content.ApplicationStatusDetail.ContractAccountNo = response.Content.closeOfAccountDetail.contractAccountNo;
+                        displayModel.Content.ApplicationStatusDetail.AccountName = response.Content.closeOfAccountDetail.accountName;
+                        displayModel.Content.ApplicationStatusDetail.PremiseAddress = response.Content.closeOfAccountDetail.premiseAddress;
                     }
                 }
 

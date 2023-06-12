@@ -142,6 +142,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string closeOfAccountId { set; get; }
         public string contractAccountNo { set; get; }
         public string premiseAddress { set; get; }
+        public string accountName { set; get; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
@@ -173,6 +174,8 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public bool? hasExistingOwnerSupportingDocument { set; get; } = false;
         public string premiseAddress { set; get; }
         public bool isExistingOwner { set; get; }
+        public string contractAccountNo { set; get; }
+        public string accountName { set; get; }
 
         [JsonIgnore]
         public string hasExistingOwnerSupportingDocumentDisplay
