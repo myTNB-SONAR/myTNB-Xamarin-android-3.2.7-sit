@@ -48,6 +48,7 @@ using myTNB.Mobile.Constants;
 using Xamarin.Facebook;
 using static myTNB_Android.Src.myTNBMenu.Models.SMUsageHistoryData;
 using Android;
+using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -352,7 +353,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
         }
 
-        private async Task GetAccessToken(int resultCode, string cancelUrl)
+        private async Task GetAccessToken(int resultCode, string cancelUrl, MyHomeDetails myHomeDetail = null)
         {
             UserEntity user = UserEntity.GetActive();
             string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
@@ -363,7 +364,22 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     HideProgressDialog();
 
-                    if (applicationDetailDisplay.MyHomeDetails != null)
+                    if (myHomeDetail != null)
+                    {
+                        MyHomeModel myHomeModel = new MyHomeModel()
+                        {
+                            SSODomain = myHomeDetail.SSODomain,
+                            OriginURL = myHomeDetail.OriginURL,
+                            RedirectURL = myHomeDetail.RedirectURL,
+                            CancelURL = cancelUrl
+                        };
+
+                        Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
+                        micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
+                        micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
+                        StartActivityForResult(micrositeActivity, resultCode);
+                    }
+                    else if (applicationDetailDisplay.MyHomeDetails != null)
                     {
                         MyHomeModel myHomeModel = new MyHomeModel()
                         {
@@ -531,7 +547,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             Intent applicationStatusDetailPaymentIntent = new Intent(this, typeof(ApplicationStatusDetailPaymentActivity));
             applicationStatusDetailPaymentIntent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
 
-            StartActivity(applicationStatusDetailPaymentIntent);
+            StartActivityForResult(applicationStatusDetailPaymentIntent, Constants.MYHOME_APPLICATION_DETAIL_REQUEST_CODE);
         }
 
         [OnClick(Resource.Id.btnApplicationStatusPay)]
@@ -1375,6 +1391,18 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     , btnPrimaryCTA, btnApplicationStatusViewBill, btnApplicationStatusPay);
                 TextViewUtils.SetTextSize25(txtApplicationStatusBottomPayable);
             }
+
+            SupplyOfferingCheck();
+        }
+
+        private void SupplyOfferingCheck()
+        {
+            MyHomeUtil.Instance.ClearCache();
+            if (applicationDetailDisplay.SupplyOffering == SupplyOfferingType.COT
+                || applicationDetailDisplay.SupplyOffering == SupplyOfferingType.COA)
+            {
+                MyHomeUtil.Instance.SetIsCOTCOAFlow();
+            }
         }
 
         private void DownloadApplicationCheck()
@@ -1879,6 +1907,20 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             {
                                 _ = GetApplicationDetail(UpdateType.SubmitApplicationRating, toastMessage);
                             });
+                        }
+                    }
+                }
+            }
+            else if (resultCode == Result.Ok && requestCode == Constants.MYHOME_APPLICATION_DETAIL_REQUEST_CODE)
+            {
+                if (data != null && data.Extras is Bundle extras && extras != null)
+                {
+                    if (extras.ContainsKey(MyHomeConstants.IS_PAYMENT_SUCCESSFUL))
+                    {
+                        bool paymentSuccess = extras.GetBoolean(MyHomeConstants.IS_PAYMENT_SUCCESSFUL);
+                        if (paymentSuccess)
+                        {
+                            
                         }
                     }
                 }
