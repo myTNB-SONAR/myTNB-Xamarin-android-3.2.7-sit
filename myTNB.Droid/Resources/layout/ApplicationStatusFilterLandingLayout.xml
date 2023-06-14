@@ -219,7 +219,7 @@
 					android:layout_weight="0.5"
 					android:textAllCaps="false"
 					android:layout_marginRight="2dp"
-					style="@style/Theme.ApplicationStatusLandingButton" />
+					style="@style/Theme.RoundGreenOutlineButton" />
 				<Button
 					android:id="@+id/btnApplyFilter"
 					android:text="UI-Apply"
@@ -228,7 +228,7 @@
 					android:layout_height="wrap_content"
 					android:textAllCaps="false"
 					android:layout_marginLeft="2dp"
-					style="@style/Theme.PayButton" />
+					style="@style/Theme.RoundGreenSolidButton" />
 			</LinearLayout>
 		</LinearLayout>
 	</LinearLayout>

@@ -92,11 +92,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         GetNCType(ref key
                             , searchApplicationType
                             , response.Content
-                            , out bool isPremiseServiceReady
-                            , out int accountTypeId
-                            , out int premiseTypeHeaderId);
-                        displayModel.Content.AccountTypeId = accountTypeId;
-                        displayModel.Content.PremiseTypeHeaderId = premiseTypeHeaderId;
+                            , out bool isPremiseServiceReady);
                         if (selectors != null && selectors.ContainsKey(key))
                         {
                             additionalDisplayConfig = selectors[key];
@@ -244,21 +240,6 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     }
                     SetPaymentDisplay(ref displayModel);
                     displayModel.Content.IsDeleteEnable = isSavedApplication && !displayModel.Content.IsOwnApplication;
-
-                    if (searchApplicationType == "COT" && response.Content.changeOfTenancyDetail != null)
-                    {
-                        displayModel.Content.ApplicationStatusDetail.IsExistingOwner = response.Content.changeOfTenancyDetail.isExistingOwner;
-                        displayModel.Content.ApplicationStatusDetail.ContractAccountNo = response.Content.changeOfTenancyDetail.contractAccountNo;
-                        displayModel.Content.ApplicationStatusDetail.AccountName = response.Content.changeOfTenancyDetail.accountName;
-                        displayModel.Content.ApplicationStatusDetail.PremiseAddress = response.Content.changeOfTenancyDetail.premiseAddress;
-                    }
-
-                    if (searchApplicationType == "COA" && response.Content.closeOfAccountDetail != null)
-                    {
-                        displayModel.Content.ApplicationStatusDetail.ContractAccountNo = response.Content.closeOfAccountDetail.contractAccountNo;
-                        displayModel.Content.ApplicationStatusDetail.AccountName = response.Content.closeOfAccountDetail.accountName;
-                        displayModel.Content.ApplicationStatusDetail.PremiseAddress = response.Content.closeOfAccountDetail.premiseAddress;
-                    }
                 }
 
                 return displayModel;
@@ -308,6 +289,26 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     if (GetObjectValue(props, "referenceNo") is string referenceNo && referenceNo.IsValid())
                     {
                         displayModel.Content.ApplicationDetail.ReferenceNo = referenceNo;
+                    }
+                    if (GetObjectValue(props, "isExistingOwner") is bool isExistingOwner)
+                    {
+                        displayModel.Content.IsCOTExistingOwner = isExistingOwner;
+                    }
+                    if (GetObjectValue(props, "contractAccountNo") is string contractAccountNo && contractAccountNo.IsValid())
+                    {
+                        displayModel.Content.ContractAccountNo = contractAccountNo;
+                    }
+                    if (GetObjectValue(props, "accountName") is string accountName && accountName.IsValid())
+                    {
+                        displayModel.Content.AccountName = accountName;
+                    }
+                    if (GetObjectValue(props, "accountType") is int accountType)
+                    {
+                        displayModel.Content.AccountTypeId = accountType;
+                    }
+                    if (GetObjectValue(props, "premiseTypeHeaderId") is int premiseTypeHeaderId)
+                    {
+                        displayModel.Content.PremiseTypeHeaderId = premiseTypeHeaderId;
                     }
                     bool shouldShowLinkedWith = false;
 
@@ -395,13 +396,9 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
         private static void GetNCType(ref string key
             , string applicationType
             , GetApplicationDetailsModel content
-            , out bool isPremiseServiceReady
-            , out int accountTypeId
-            , out int premiseTypeHeaderId)
+            , out bool isPremiseServiceReady)
         {
             isPremiseServiceReady = false;
-            accountTypeId = 0;
-            premiseTypeHeaderId = 0;
 
             try
             {
@@ -414,8 +411,6 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                 isPremiseServiceReady = content.newConnectionDetail.isPremiseServiceReady == null
                     ? false
                     : content.newConnectionDetail.isPremiseServiceReady.Value;
-                accountTypeId = content.newConnectionDetail.accountType;
-                premiseTypeHeaderId = content.newConnectionDetail.premiseTypeHeaderId;
 
                 if (applicationModuleId == "101011" || applicationModuleId == "101010")
                 {

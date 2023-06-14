@@ -486,7 +486,7 @@ will be recorded. Check back again later to view its update."/>
 							android:layout_marginRight="16dp"
 							android:layout_marginBottom="16dp"
 							android:textSize="16dp"
-							style="@style/Theme.FreshGreenOutlineButton" />
+							style="@style/Theme.RoundGreenOutlineButton" />
 					</LinearLayout>
 					<View
 						android:layout_height="1dp"
@@ -635,7 +635,7 @@ will be recorded. Check back again later to view its update."/>
 						android:layout_height="wrap_content"
 						android:textAllCaps="false"
 						android:textSize="16dp"
-						style="@style/Theme.PayButton" />
+						style="@style/Theme.RoundGreenSolidButton" />
 					<LinearLayout
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -677,7 +677,7 @@ will be recorded. Check back again later to view its update."/>
 					android:background="@color/white">
 					<Button
 						android:id="@+id/btnApplicationStatusViewBill"
-						style="@style/Theme.ViewBill"
+						style="@style/Theme.RoundGreenOutlineButton"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_weight="0.5"
@@ -688,7 +688,7 @@ will be recorded. Check back again later to view its update."/>
 						android:maxLines="1"/>
 					<Button
 						android:id="@+id/btnApplicationStatusPay"
-						style="@style/Theme.PayButton"
+						style="@style/Theme.RoundGreenSolidButton"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_marginLeft="4dp"

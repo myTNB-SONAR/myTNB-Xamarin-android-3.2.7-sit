@@ -143,6 +143,8 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string contractAccountNo { set; get; }
         public string premiseAddress { set; get; }
         public string accountName { set; get; }
+        public int accountType { set; get; }
+        public int premiseTypeHeaderId { set; get; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
@@ -167,7 +169,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string changeOfTenancyId { set; get; }
         public string linkedAsrId { set; get; }
         public string linkedAsrReferenceNo { set; get; }
-        public string accountType { set; get; }
+        public int accountType { set; get; }
         public string accountTypeDescription { set; get; }
         public string ownershipType { set; get; }
         public string ownershipTypeDescription { set; get; }
@@ -176,6 +178,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public bool isExistingOwner { set; get; }
         public string contractAccountNo { set; get; }
         public string accountName { set; get; }
+        public int premiseTypeHeaderId { set; get; }
 
         [JsonIgnore]
         public string hasExistingOwnerSupportingDocumentDisplay

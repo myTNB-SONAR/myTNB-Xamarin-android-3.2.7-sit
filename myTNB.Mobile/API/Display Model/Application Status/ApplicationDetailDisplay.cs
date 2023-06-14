@@ -799,37 +799,20 @@ namespace myTNB.Mobile
             }
         }
 
-        public bool IsCOTExistingOwner
-        {
-            get
-            {
-                return ApplicationStatusDetail != null ? ApplicationStatusDetail.IsExistingOwner : false;
-            }
-        }
+        /// <summary>
+        /// Use to determine if COT application owns by the user
+        /// </summary>
+        public bool IsCOTExistingOwner { set; get; }
 
-        public string ContractAccountNo
-        {
-            get
-            {
-                return ApplicationStatusDetail != null ? ApplicationStatusDetail.ContractAccountNo : string.Empty;
-            }
-        }
+        /// <summary>
+        /// Use to display in Payment Detail
+        /// </summary>
+        public string ContractAccountNo { set; get; }
 
-        public string AccountName
-        {
-            get
-            {
-                return ApplicationStatusDetail != null ? ApplicationStatusDetail.AccountName : string.Empty;
-            }
-        }
-
-        public string PremiseAddress
-        {
-            get
-            {
-                return ApplicationStatusDetail != null ? ApplicationStatusDetail.PremiseAddress : string.Empty;
-            }
-        }
+        /// <summary>
+        /// Use to display in Payment Detail
+        /// </summary>
+        public string AccountName { set; get; }
     }
 
     public class PaymentDisplayModel : ApplicationPaymentDetail
@@ -941,10 +924,6 @@ namespace myTNB.Mobile
         /// Determines if the application requires payment or not
         /// </summary>
         public bool IsPayment { set; get; }
-        public bool IsExistingOwner { set; get; }
-        public string ContractAccountNo { set; get; }
-        public string AccountName { set; get; }
-        public string PremiseAddress { set; get; }
     }
 
     public class StatusTrackerDisplay

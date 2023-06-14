@@ -15,7 +15,7 @@ namespace myTNB.Mobile.AWS.Services.ApplicationStatus
             , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
             , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey);
 
-        [Post("/myhome/cot-svc/api/v1/COT/DeleteDraft?referenceNo={referenceNo}")]
+        [Post("/myhome/cot-svc/api/v1/COT/CancelDraft?referenceNo={referenceNo}")]
         Task<HttpResponseMessage> PostDeleteCOTDraft(string referenceNo
             , CancellationToken cancellationToken
             , [Header(AWSConstants.Headers.Authorization)] string accessToken
