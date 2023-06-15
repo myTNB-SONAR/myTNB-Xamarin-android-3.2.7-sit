@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Android.OS;
+using myTNB.Mobile;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.Utils;
 
@@ -9,10 +12,25 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
     {
         public interface IView
         {
+            /// <summary>
+            /// On Screen Load function
+            /// </summary>
+            /// <param name="extras"></param>
+            void OnScreenLoad(Bundle extras);
+
+            /// <summary>
+            /// Updates the UI
+            /// </summary>
             void UpdateUI();
 
+            /// <summary>
+            /// Shows loading indicator in full screen
+            /// </summary>
             void ShowProgressDialog();
 
+            /// <summary>
+            /// Hides loading indicator
+            /// </summary>
             void HideProgressDialog();
 
             /// <summary>
@@ -22,6 +40,33 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             /// <param name="fileExtension"></param>
             /// <param name="fileTitle"></param>
             void ShareDownloadedFile(string filePath, string fileExtension, string fileTitle);
+
+            /// <summary>
+            /// Shows Generic Error Pop Up
+            /// </summary>
+            void OnShowGenericErrorPopUp();
+
+            /// <summary>
+            /// Function to navigate to microsite
+            /// </summary>
+            /// <param name="resultCode"></param>
+            /// <param name="cancelUrl"></param>
+            /// <param name="myHomeDetail"></param>
+            void NavigateToMicrosite(string accessToken, int resultCode, string cancelUrl);
+
+            /// <summary>
+            /// Handles the result of Delete Draft API
+            /// </summary>
+            /// <param name="message"></param>
+            void DeleteDraftOnResult(bool isSuccess, string message);
+
+            /// <summary>
+            /// Handles the result of GetApplication API call
+            /// </summary>
+            /// <param name="response"></param>
+            /// <param name="updateType"></param>
+            /// <param name="toastMessage"></param>
+            void GetApplicationDetailOnResult(ApplicationDetailDisplay response, UpdateType updateType, string toastMessage = "");
         }
 
         public interface IPresenter
@@ -37,6 +82,26 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             /// <param name="webURL"></param>
             /// <returns></returns>
             Task DownloadFile(string webURL);
+
+            /// <summary>
+            /// Function to call ApplicationDetail API to reload the screen
+            /// </summary>
+            void OnGetApplicationDetail(GetApplicationStatusDisplay statusDisplay, UpdateType updateType, string toastMessage = "");
+
+            /// <summary>
+            /// Gets the Access Token for Microsite reload
+            /// </summary>
+            /// <param name="resultCode"></param>
+            /// <param name="cancelUrl"></param>
+            /// <param name="myHomeDetail"></param>
+            void OnGetAccessToken(int resultCode, string cancelUrl);
+
+            /// <summary>
+            /// Function to delete draft application for NC, COT & COA
+            /// </summary>
+            /// <param name="type"></param>
+            /// <param name="isCOTExistingOwner"></param>
+            void OnDeleteDraft(string refNo, SupplyOfferingType type, bool isCOTExistingOwner = false);
         }
     }
 }

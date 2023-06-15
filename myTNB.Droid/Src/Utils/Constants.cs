@@ -109,7 +109,6 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int SELECT_FEEDBACK_STATE = 0x02;
         internal static readonly int SELECT_FEEDBACK_TYPE = 0x02;
         internal static readonly int MYHOME_MICROSITE_REQUEST_CODE = 0x16;
-        internal static readonly int MYHOME_APPLICATION_DETAIL_REQUEST_CODE = 0x17;
 
         internal static readonly int NOTIFICATION_LISTING_REQUEST_CODE = 29813;
         internal static readonly int NOTIFICATION_DETAILS_REQUEST_CODE = 0x03;

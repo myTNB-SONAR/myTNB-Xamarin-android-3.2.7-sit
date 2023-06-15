@@ -5,12 +5,17 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.Content;
+using Android.OS;
 using Com.Airbnb.Lottie.Network;
 using myTNB.Mobile;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -186,6 +191,126 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 Utility.LoggingNonFatalError(e);
             }
             return path;
+        }
+
+        public void OnGetApplicationDetail(GetApplicationStatusDisplay statusDisplay, UpdateType updateType, string toastMessage = "")
+        {
+            this.mView.ShowProgressDialog();
+            Task.Run(() =>
+            {
+                _ = GetApplicationDetail(statusDisplay, updateType, toastMessage);
+            });
+        }
+
+        private async Task GetApplicationDetail(GetApplicationStatusDisplay statusDisplay, UpdateType updateType, string toastMessage = "")
+        {
+            ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(statusDisplay.SavedApplicationID
+                , statusDisplay.ApplicationDetail.ApplicationId
+                , statusDisplay.ApplicationTypeCode
+                , statusDisplay.System);
+
+            this.mActivity.RunOnUiThread(() =>
+            {
+                this.mView.HideProgressDialog();
+                if (response.StatusDetail.IsSuccess)
+                {
+                    Bundle extras = new Bundle();
+                    extras.PutString(MyHomeConstants.APPLICATION_DETAIL_RESPONSE, JsonConvert.SerializeObject(response.Content));
+                    this.mView.OnScreenLoad(extras);
+                }
+
+                this.mView.GetApplicationDetailOnResult(response, updateType, toastMessage);
+            });
+        }
+
+        public void OnGetAccessToken(int resultCode, string cancelUrl)
+        {
+            this.mView.ShowProgressDialog();
+            Task.Run(() =>
+            {
+                _ = GetAccessToken(resultCode, cancelUrl);
+            });
+        }
+
+        private async Task GetAccessToken(int resultCode, string cancelUrl)
+        {
+            UserEntity user = UserEntity.GetActive();
+            string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
+            AccessTokenCache.Instance.SaveUserServiceAccessToken(this.mActivity, accessToken);
+            this.mActivity.RunOnUiThread(() =>
+            {
+                this.mView.HideProgressDialog();
+                if (accessToken.IsValid())
+                {
+                    this.mView.NavigateToMicrosite(accessToken, resultCode, cancelUrl);
+                }
+                else
+                {
+                    this.mView.OnShowGenericErrorPopUp();
+                }
+            });
+        }
+
+        public void OnDeleteDraft(string refNo, SupplyOfferingType type, bool isCOTExistingOwner = false)
+        {
+            this.mView.ShowProgressDialog();
+            Task.Run(() =>
+            {
+                _ = PostDeleteDraft(refNo, type, isCOTExistingOwner);
+            });
+        }
+
+        private async Task PostDeleteDraft(string refNo, SupplyOfferingType type, bool isCOTExistingOwner = false)
+        {
+            UserEntity user = UserEntity.GetActive();
+
+            bool isSuccess = false;
+            string accessToken = string.Empty;
+            string message = string.Empty;
+
+            switch (type)
+            {
+                case SupplyOfferingType.NC:
+                    var responseNC = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostDeleteNCDraft(refNo, user.UserID, AccessTokenCache.Instance.GetUserServiceAccessToken(this.mActivity));
+                    if (responseNC != null &&
+                        responseNC.StatusDetail != null)
+                    {
+                        isSuccess = responseNC.StatusDetail.IsSuccess;
+                        accessToken = responseNC.StatusDetail.AccessToken;
+                        message = responseNC.StatusDetail.Message;
+                    }
+                    break;
+                case SupplyOfferingType.COT:
+                    var responseCOT = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostDeleteCOTDraft(refNo, user.UserID, AccessTokenCache.Instance.GetUserServiceAccessToken(this.mActivity));
+                    if (responseCOT != null &&
+                        responseCOT.StatusDetail != null)
+                    {
+                        isSuccess = responseCOT.StatusDetail.IsSuccess;
+                        accessToken = responseCOT.StatusDetail.AccessToken;
+                        string isCOTExistingOwnerMsg = Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application_COT);
+                        message = isCOTExistingOwner ? isCOTExistingOwnerMsg : responseCOT.StatusDetail.Message;
+                    }
+                    break;
+                case SupplyOfferingType.COA:
+                    var responseCOA = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostDeleteCOADraft(refNo, user.UserID, AccessTokenCache.Instance.GetUserServiceAccessToken(this.mActivity));
+                    if (responseCOA != null &&
+                        responseCOA.StatusDetail != null)
+                    {
+                        isSuccess = responseCOA.StatusDetail.IsSuccess;
+                        accessToken = responseCOA.StatusDetail.AccessToken;
+                        message = responseCOA.StatusDetail.Message;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            if (isSuccess)
+            {
+                AccessTokenCache.Instance.SaveUserServiceAccessToken(this.mActivity, accessToken);
+            }
+
+            this.mView.DeleteDraftOnResult(isSuccess, message);
         }
     }
 }

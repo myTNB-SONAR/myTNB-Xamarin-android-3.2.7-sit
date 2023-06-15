@@ -248,8 +248,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
         {
             btnClear.Enabled = isEnabled;
             btnClear.Background = ContextCompat.GetDrawable(this, isEnabled
-                ? Resource.Drawable.light_green_outline_button_background
-                : Resource.Drawable.silver_chalice_button_outline);
+                ? Resource.Drawable.light_green_outline_round_button_background
+                : Resource.Drawable.silver_chalice_outline_round_button_background);
             btnClear.SetTextColor(ContextCompat.GetColorStateList(this, isEnabled
                 ? Resource.Color.freshGreen
                 : Resource.Color.silverChalice));

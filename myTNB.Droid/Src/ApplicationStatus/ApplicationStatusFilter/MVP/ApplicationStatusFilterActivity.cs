@@ -217,10 +217,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             if (string.IsNullOrEmpty(targetApplicationTypeId) && string.IsNullOrEmpty(targetApplicationStatusCode) && string.IsNullOrEmpty(filterDate))
             {
                 btnClearFilter.Enabled = false;
-                btnClearFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_outline);
+                btnClearFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_outline_round_button_background);
                 btnClearFilter.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.silverChalice));
                 btnApplyFilter.Enabled = false;
-                btnApplyFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+                btnApplyFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_round_button_background);
             }
         }
 
@@ -229,10 +229,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             if (!string.IsNullOrEmpty(targetApplicationTypeId) || !string.IsNullOrEmpty(targetApplicationStatusCode) || !string.IsNullOrEmpty(filterDate))
             {
                 btnClearFilter.Enabled = true;
-                btnClearFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+                btnClearFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_round_button_background);
                 btnClearFilter.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
                 btnApplyFilter.Enabled = true;
-                btnApplyFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+                btnApplyFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_round_button_background);
             }
         }
 

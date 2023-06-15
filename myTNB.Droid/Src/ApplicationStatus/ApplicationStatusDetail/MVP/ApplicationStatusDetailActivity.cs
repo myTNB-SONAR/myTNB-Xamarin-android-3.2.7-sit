@@ -49,6 +49,7 @@ using Xamarin.Facebook;
 using static myTNB_Android.Src.myTNBMenu.Models.SMUsageHistoryData;
 using Android;
 using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -259,12 +260,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.SubmitApplicationRating)
                     {
                         DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Rate_Our_Service);
-
-                        ShowProgressDialog();
-                        Task.Run(() =>
-                        {
-                            _ = GetAccessToken(Constants.APPLICATION_STATUS_SUBMIT_APPLICATION_RATING_REQUEST_CODE, string.Empty);
-                        });
+                        this.presenter?.OnGetAccessToken(Constants.APPLICATION_STATUS_SUBMIT_APPLICATION_RATING_REQUEST_CODE, string.Empty);
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.ContractorRating)
                     {
@@ -300,12 +296,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             }
 
                             DynatraceHelper.OnTrack(dynatraceCTA);
-
-                            ShowProgressDialog();
-                            Task.Run(() =>
-                            {
-                                _ = GetAccessToken(Constants.APPLICATION_STATUS_START_RESUME_REQUEST_CODE, string.Empty);
-                            });
+                            this.presenter?.OnGetAccessToken(Constants.APPLICATION_STATUS_START_RESUME_REQUEST_CODE, string.Empty);
                         }
                         else
                         {
@@ -335,7 +326,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             .SetPrimaryButtonDrawable(Resource.Drawable.blue_button_solid_background)
                             .SetSecondaryButtonDrawable(Resource.Drawable.blue_outline_round_button_background)
                             .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftSure))
-                            .SetCTAaction(() => OnDeleteDraft(applicationDetailDisplay.SupplyOffering, isCOTExistingOwner))
+                            .SetCTAaction(() => OnDeleteDraftAction(applicationDetailDisplay.SupplyOffering, isCOTExistingOwner))
                             .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftCancel))
                             .SetSecondaryCTAaction(() =>
                             {
@@ -353,145 +344,42 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
         }
 
-        private async Task GetAccessToken(int resultCode, string cancelUrl, MyHomeDetails myHomeDetail = null)
+        private void OnDeleteDraftAction(SupplyOfferingType type, bool isCOTExistingOwner = false)
         {
-            UserEntity user = UserEntity.GetActive();
-            string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
-            AccessTokenCache.Instance.SaveUserServiceAccessToken(this, accessToken);
-            if (accessToken.IsValid())
+            if (applicationDetailDisplay.ApplicationDetail != null &&
+               applicationDetailDisplay.ApplicationDetail.ReferenceNo.IsValid())
             {
-                this.RunOnUiThread(() =>
+                this.SetIsClicked(false);
+                DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Delete_Draft_Im_Sure);
+
+                this.presenter?.OnDeleteDraft(applicationDetailDisplay.ApplicationDetail.ReferenceNo, type, isCOTExistingOwner);
+            }
+            else
+            {
+                ShowGenericErrorPopUp();
+            }
+        }
+
+        public void DeleteDraftOnResult(bool isSuccess, string message)
+        {
+            if (isSuccess)
+            {
+                RunOnUiThread(() =>
                 {
                     HideProgressDialog();
-
-                    if (myHomeDetail != null)
-                    {
-                        MyHomeModel myHomeModel = new MyHomeModel()
-                        {
-                            SSODomain = myHomeDetail.SSODomain,
-                            OriginURL = myHomeDetail.OriginURL,
-                            RedirectURL = myHomeDetail.RedirectURL,
-                            CancelURL = cancelUrl
-                        };
-
-                        Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
-                        micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
-                        micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
-                        StartActivityForResult(micrositeActivity, resultCode);
-                    }
-                    else if (applicationDetailDisplay.MyHomeDetails != null)
-                    {
-                        MyHomeModel myHomeModel = new MyHomeModel()
-                        {
-                            SSODomain = applicationDetailDisplay.MyHomeDetails.SSODomain,
-                            OriginURL = applicationDetailDisplay.MyHomeDetails.OriginURL,
-                            RedirectURL = applicationDetailDisplay.MyHomeDetails.RedirectURL,
-                            CancelURL = cancelUrl
-                        };
-
-                        Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
-                        micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
-                        micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
-                        StartActivityForResult(micrositeActivity, resultCode);
-                    }
-                    else
-                    {
-                        ShowGenericErrorPopUp();
-                    }
+                    Intent intent = new Intent();
+                    intent.PutExtra(Constants.DELETE_DRAFT_MESSAGE, message);
+                    SetResult(Result.Ok, intent);
+                    Finish();
                 });
             }
             else
             {
-                this.RunOnUiThread(() =>
+                RunOnUiThread(() =>
                 {
                     HideProgressDialog();
-                    ShowGenericErrorPopUp();
+                    ShowErrorSnackbar(message);
                 });
-            }
-        }
-
-        private void OnDeleteDraft(SupplyOfferingType type, bool isCOTExistingOwner = false)
-        {
-            this.SetIsClicked(false);
-
-            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Delete_Draft_Im_Sure);
-
-            ShowProgressDialog();
-            Task.Run(() =>
-            {
-                _ = PostDeleteDraft(type, isCOTExistingOwner);
-            });
-        }
-
-        private async Task PostDeleteDraft(SupplyOfferingType type, bool isCOTExistingOwner = false)
-        {
-            if (applicationDetailDisplay.ApplicationDetail != null &&
-                applicationDetailDisplay.ApplicationDetail.ReferenceNo.IsValid())
-            {
-                string refNo = applicationDetailDisplay.ApplicationDetail.ReferenceNo;
-                UserEntity user = UserEntity.GetActive();
-
-                bool isSuccess = false;
-                string accessToken = string.Empty;
-                string message = string.Empty;
-
-                switch (type)
-                {
-                    case SupplyOfferingType.NC:
-                        var responseNC = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostDeleteNCDraft(refNo, user.UserID, AccessTokenCache.Instance.GetUserServiceAccessToken(this));
-                        if (responseNC != null &&
-                            responseNC.StatusDetail != null)
-                        {
-                            isSuccess = responseNC.StatusDetail.IsSuccess;
-                            accessToken = responseNC.StatusDetail.AccessToken;
-                            message = responseNC.StatusDetail.Message;
-                        }
-                        break;
-                    case SupplyOfferingType.COT:
-                        var responseCOT = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostDeleteCOTDraft(refNo, user.UserID, AccessTokenCache.Instance.GetUserServiceAccessToken(this));
-                        if (responseCOT != null &&
-                            responseCOT.StatusDetail != null)
-                        {
-                            isSuccess = responseCOT.StatusDetail.IsSuccess;
-                            accessToken = responseCOT.StatusDetail.AccessToken;
-                            string isCOTExistingOwnerMsg = Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application_COT);
-                            message = isCOTExistingOwner ? isCOTExistingOwnerMsg : responseCOT.StatusDetail.Message;
-                        }
-                        break;
-                    case SupplyOfferingType.COA:
-                        var responseCOA = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostDeleteCOADraft(refNo, user.UserID, AccessTokenCache.Instance.GetUserServiceAccessToken(this));
-                        if (responseCOA != null &&
-                            responseCOA.StatusDetail != null)
-                        {
-                            isSuccess = responseCOA.StatusDetail.IsSuccess;
-                            accessToken = responseCOA.StatusDetail.AccessToken;
-                            message = responseCOA.StatusDetail.Message;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                
-                if (isSuccess)
-                {
-                    AccessTokenCache.Instance.SaveUserServiceAccessToken(this, accessToken);
-                    RunOnUiThread(() =>
-                    {
-                        HideProgressDialog();
-                        Intent intent = new Intent();
-                        intent.PutExtra(Constants.DELETE_DRAFT_MESSAGE, message);
-                        SetResult(Result.Ok, intent);
-                        Finish();
-                    });
-                }
-                else
-                {
-                    RunOnUiThread(() =>
-                    {
-                        HideProgressDialog();
-                        ShowErrorSnackbar(message);
-                    });
-                }
             }
         }
 
@@ -531,7 +419,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             .SetPrimaryButtonDrawable(Resource.Drawable.blue_button_solid_background)
                             .SetSecondaryButtonDrawable(Resource.Drawable.blue_outline_round_button_background)
                             .SetCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftSure))
-                            .SetCTAaction(() => OnDeleteDraft(applicationDetailDisplay.SupplyOffering, isCOTExistingOwner))
+                            .SetCTAaction(() => OnDeleteDraftAction(applicationDetailDisplay.SupplyOffering, isCOTExistingOwner))
                             .SetSecondaryCTALabel(Utility.GetLocalizedLabel(LanguageConstants.APPLICATION_STATUS_DETAILS, ApplicationStatusDetails.PopUps.I18N_DeleteNCDraftCancel))
                             .SetSecondaryCTAaction(() =>
                             {
@@ -547,7 +435,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             Intent applicationStatusDetailPaymentIntent = new Intent(this, typeof(ApplicationStatusDetailPaymentActivity));
             applicationStatusDetailPaymentIntent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
 
-            StartActivityForResult(applicationStatusDetailPaymentIntent, Constants.MYHOME_APPLICATION_DETAIL_REQUEST_CODE);
+            StartActivity(applicationStatusDetailPaymentIntent);
         }
 
         [OnClick(Resource.Id.btnApplicationStatusPay)]
@@ -560,11 +448,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     if (applicationDetailDisplay.MyHomeDetails != null)
                     {
                         DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Details.NC_Resume);
-                        ShowProgressDialog();
-                        Task.Run(() =>
-                        {
-                            _ = GetAccessToken(Constants.APPLICATION_STATUS_START_RESUME_REQUEST_CODE, AWSConstants.ApplicationStatusLandingCancelURL);
-                        });
+                        this.presenter?.OnGetAccessToken(Constants.APPLICATION_STATUS_START_RESUME_REQUEST_CODE, AWSConstants.ApplicationStatusLandingCancelURL);
                     }
                     return;
                 }
@@ -989,6 +873,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             // Create your application here
             Bundle extras = Intent.Extras;
 
+            OnScreenLoad(extras);
+        }
+
+        public void OnScreenLoad(Bundle extras)
+        {
             if (extras != null)
             {
                 if (extras.ContainsKey(Constants.APPLICATION_STATUS_DETAIL_TITLE_KEY))
@@ -1821,15 +1710,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 }
                 else
                 {
-                    this.RunOnUiThread(() =>
-                    {
-                        ShowProgressDialog();
-                    });
-
-                    Task.Run(() =>
-                    {
-                        _ = GetApplicationDetail(UpdateType.ContractorRating);
-                    });
+                    this.presenter?.OnGetApplicationDetail(applicationDetailDisplay, UpdateType.ContractorRating);
                 }
             }
             else if (resultCode == Result.Ok && requestCode == Constants.APPLICATION_STATUS_DETAILS_SCHEDULER_REQUEST_CODE)
@@ -1903,81 +1784,46 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 toastMessage = extras.GetString(Constants.APPLICATION_STATUS_DETAIL_RATED_TOAST_MESSAGE);
                             }
 
-                            Task.Run(() =>
-                            {
-                                _ = GetApplicationDetail(UpdateType.SubmitApplicationRating, toastMessage);
-                            });
-                        }
-                    }
-                }
-            }
-            else if (resultCode == Result.Ok && requestCode == Constants.MYHOME_APPLICATION_DETAIL_REQUEST_CODE)
-            {
-                if (data != null && data.Extras is Bundle extras && extras != null)
-                {
-                    if (extras.ContainsKey(MyHomeConstants.IS_PAYMENT_SUCCESSFUL))
-                    {
-                        bool paymentSuccess = extras.GetBoolean(MyHomeConstants.IS_PAYMENT_SUCCESSFUL);
-                        if (paymentSuccess)
-                        {
-                            
+                            this.presenter?.OnGetApplicationDetail(applicationDetailDisplay, UpdateType.SubmitApplicationRating, toastMessage);
                         }
                     }
                 }
             }
         }
 
-        private async Task GetApplicationDetail(UpdateType updateType, string toastMessage = "")
+        public void GetApplicationDetailOnResult(ApplicationDetailDisplay response, UpdateType updateType, string toastMessage = "")
         {
-            ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(applicationDetailDisplay.SavedApplicationID
-                , applicationDetailDisplay.ApplicationDetail.ApplicationId
-                , applicationDetailDisplay.ApplicationTypeCode
-                , applicationDetailDisplay.System);
-
-            this.RunOnUiThread(() =>
+            if (toastMessage.IsValid())
             {
-                HideProgressDialog();
-
-                if (toastMessage.IsValid())
+                ToastUtils.OnDisplayToast(this, toastMessage);
+            }
+            if (response.StatusDetail.IsSuccess && response.Content != null)
+            {
+                applicationDetailDisplay.ApplicationRatingDetail = response.Content.ApplicationRatingDetail;
+                if (updateType == UpdateType.ContractorRating)
                 {
-                    ToastUtils.OnDisplayToast(this, toastMessage);
-                }
-
-                if (response.StatusDetail.IsSuccess && response.Content != null)
-                {
-                    applicationDetailDisplay.ApplicationRatingDetail = response.Content.ApplicationRatingDetail;
-                    if (updateType == UpdateType.ContractorRating)
+                    if (response.Content.RatingDisplay != null
+                        && response.Content.RatingDisplay != string.Empty)
                     {
-                        if (response.Content.RatingDisplay != null
-                            && response.Content.RatingDisplay != string.Empty)
-                        {
-                            txtApplicationRateStar.Visibility = ViewStates.Visible;
-                            imgStar.Visibility = ViewStates.Visible;
-                            layoutstar.Visibility = ViewStates.Visible;
-                            txtApplicationRateStar.Text = response.Content.RatingDisplay + " ";
-                        }
-                        else
-                        {
-                            txtApplicationRateStar.Visibility = ViewStates.Gone;
-                            imgStar.Visibility = ViewStates.Gone;
-                            layoutstar.Visibility = ViewStates.Gone;
-                        }
-                        if (response.Content.IsContractorRating)
-                        {
-                            btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateCTA");
-                            applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
-                            applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
-                            ctaParentLayout.Visibility = ViewStates.Visible;
-                        }
-                        else
-                        {
-                            applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
-                            applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
-                            applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Gone;
-                            ctaParentLayout.Visibility = ViewStates.Gone;
-                        }
+                        txtApplicationRateStar.Visibility = ViewStates.Visible;
+                        imgStar.Visibility = ViewStates.Visible;
+                        layoutstar.Visibility = ViewStates.Visible;
+                        txtApplicationRateStar.Text = response.Content.RatingDisplay + " ";
                     }
-                    else if (updateType == UpdateType.SubmitApplicationRating)
+                    else
+                    {
+                        txtApplicationRateStar.Visibility = ViewStates.Gone;
+                        imgStar.Visibility = ViewStates.Gone;
+                        layoutstar.Visibility = ViewStates.Gone;
+                    }
+                    if (response.Content.IsContractorRating)
+                    {
+                        btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateCTA");
+                        applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                        applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                        ctaParentLayout.Visibility = ViewStates.Visible;
+                    }
+                    else
                     {
                         applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
                         applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
@@ -1985,22 +1831,24 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         ctaParentLayout.Visibility = ViewStates.Gone;
                     }
                 }
-                else
+                else if (updateType == UpdateType.SubmitApplicationRating)
                 {
-                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                        .SetTitle(response.StatusDetail.Title)
-                        .SetMessage(response.StatusDetail.Message)
-                        .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
-                        .Build();
-                    errorPopup.Show();
+                    applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                    applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                    applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Gone;
+                    ctaParentLayout.Visibility = ViewStates.Gone;
                 }
-            });
-        }
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    .SetTitle(response.StatusDetail.Title)
+                    .SetMessage(response.StatusDetail.Message)
+                    .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
+                    .Build();
+                errorPopup.Show();
+            }
 
-        private enum UpdateType
-        {
-            ContractorRating,
-            SubmitApplicationRating
         }
 
         public void ShareDownloadedFile(string filePath, string fileExtension, string fileTitle)
@@ -2066,6 +1914,34 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnShowGenericErrorPopUp()
+        {
+            ShowGenericErrorPopUp();
+        }
+
+        public void NavigateToMicrosite(string accessToken, int resultCode, string cancelUrl)
+        {
+            if (applicationDetailDisplay.MyHomeDetails != null)
+            {
+                MyHomeModel myHomeModel = new MyHomeModel()
+                {
+                    SSODomain = applicationDetailDisplay.MyHomeDetails.SSODomain,
+                    OriginURL = applicationDetailDisplay.MyHomeDetails.OriginURL,
+                    RedirectURL = applicationDetailDisplay.MyHomeDetails.RedirectURL,
+                    CancelURL = cancelUrl
+                };
+
+                Intent micrositeActivity = new Intent(this, typeof(MyHomeMicrositeActivity));
+                micrositeActivity.PutExtra(MyHomeConstants.ACCESS_TOKEN, accessToken);
+                micrositeActivity.PutExtra(MyHomeConstants.MYHOME_MODEL, JsonConvert.SerializeObject(myHomeModel));
+                StartActivityForResult(micrositeActivity, resultCode);
+            }
+            else
+            {
+                OnShowGenericErrorPopUp();
             }
         }
     }
