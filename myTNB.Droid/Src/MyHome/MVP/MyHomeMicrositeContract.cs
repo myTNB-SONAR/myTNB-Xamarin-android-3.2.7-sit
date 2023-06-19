@@ -68,6 +68,12 @@ namespace myTNB_Android.Src.MyHome.MVP
             void ShowApplicationPayment(GetApplicationStatusDisplay applicationStatusDisplay);
 
             /// <summary>
+            /// Shows Bill Payment screen flow
+            /// </summary>
+            /// <param name="accountData"></param>
+            void ShowBillPayment(AccountData accountData);
+
+            /// <summary>
             /// Reloads webview with new sso details
             /// </summary>
             /// <param name="details"></param>

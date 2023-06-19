@@ -32,6 +32,10 @@ using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Database.Model;
 using static myTNB_Android.Src.CompoundView.ExpandableTextViewComponent;
 using myTNB.Mobile.AWS.Models.DBR;
+using Android.Runtime;
+using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.MultipleAccountPayment.Model;
+using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -153,6 +157,9 @@ namespace myTNB_Android.Src.Billing.MVP
 
         internal bool _isOwner { get; set; }
 
+        List<MPAccount> _accountList;
+        List<AccountChargeModel> _accountChargesList;
+
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
         {
@@ -180,6 +187,18 @@ namespace myTNB_Android.Src.Billing.MVP
                 {
                     Finish();
                 }
+                else if (MyHomeUtil.Instance.IsCOTCOAFlow)
+                {
+                    this.SetIsClicked(true);
+
+                    Intent payment_activity = new Intent(this, typeof(PaymentActivity));
+                    payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                    payment_activity.PutExtra("PAYMENT_ITEMS", JsonConvert.SerializeObject(_accountList));
+                    payment_activity.PutExtra("ACCOUNT_CHARGES_LIST", JsonConvert.SerializeObject(GetSelectedAccountChargesModelList(_accountList)));
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                    payment_activity.PutExtra("TOTAL", _accountList[0].amount.ToString("#,##0.00", currCult));
+                    StartActivityForResult(payment_activity, Constants.MYHOME_MICROSITE_REQUEST_CODE);
+                }
                 else if (isPaymentButtonEnable)
                 {
                     this.SetIsClicked(true);
@@ -197,6 +216,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
                     });
                 }
+                
 
                 try
                 {
@@ -523,6 +543,17 @@ namespace myTNB_Android.Src.Billing.MVP
             }
         }
 
+        private List<AccountChargeModel> GetSelectedAccountChargesModelList(List<MPAccount> mpAccountList)
+        {
+            List<AccountChargeModel> selectedList = new List<AccountChargeModel>();
+            mpAccountList.ForEach(account =>
+            {
+                AccountChargeModel foundChargeModel = _accountChargesList.Find(model => { return model.ContractAccount == account.accountNumber; });
+                selectedList.Add(foundChargeModel);
+            });
+            return selectedList;
+        }
+
         public void ShowBillDetails(List<AccountChargeModel> accountChargeModelList)
         {
             try
@@ -531,6 +562,30 @@ namespace myTNB_Android.Src.Billing.MVP
                 detailLayout.Visibility = ViewStates.Visible;
                 refreshLayout.Visibility = ViewStates.Gone;
                 selectedAccountChargeModel = accountChargeModelList[0];
+
+                if (MyHomeUtil.Instance.IsCOTCOAFlow)
+                {
+                    _accountChargesList = accountChargeModelList;
+                    _accountList = new List<MPAccount>();
+                    double dueAmount = selectedAccountChargeModel.AmountDue;
+
+                    MPAccount mpAccount = new MPAccount()
+                    {
+                        accountLabel = selectedAccountData.AccountNickName,
+                        accountNumber = selectedAccountData.AccountNum,
+                        accountAddress = selectedAccountData.AddStreet,
+                        isSelected = false,
+                        isTooltipShow = false,
+                        OpenChargeTotal = 0.00,
+                        amount = dueAmount,
+                        orgAmount = dueAmount,
+                        minimumAmountDue = selectedAccountChargeModel.MandatoryCharges.TotalAmount,
+                        isOwner = selectedAccountData.IsOwner
+                    };
+
+                    _accountList.Add(mpAccount);
+                }
+
                 PopulateCharges();
                 EnablePayBillButtons();
                 Handler h = new Handler();
@@ -979,5 +1034,38 @@ namespace myTNB_Android.Src.Billing.MVP
             this.SetIsClicked(false);
         }
 
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == Result.Ok && requestCode == Constants.MYHOME_MICROSITE_REQUEST_CODE)
+            {
+                if (data != null && data.Extras is Bundle extras && extras != null)
+                {
+                    if (extras.ContainsKey(MyHomeConstants.IS_PAYMENT_SUCCESSFUL))
+                    {
+                        bool paymentSuccess = extras.GetBoolean(MyHomeConstants.IS_PAYMENT_SUCCESSFUL);
+                        if (paymentSuccess)
+                        {
+                            Intent intent = new Intent();
+                            intent.PutExtra(MyHomeConstants.IS_PAYMENT_SUCCESSFUL, true);
+                            SetResult(Result.Ok, intent);
+                            Finish();
+                        }
+                    }
+                    else if (extras.ContainsKey(MyHomeConstants.IS_RATING_SUCCESSFUL))
+                    {
+                        bool ratingSuccess = extras.GetBoolean(MyHomeConstants.IS_RATING_SUCCESSFUL);
+                        if (ratingSuccess)
+                        {
+                            Intent intent = new Intent();
+                            intent.PutExtra(MyHomeConstants.IS_RATING_SUCCESSFUL, true);
+                            SetResult(Result.Ok, intent);
+                            Finish();
+                        }
+                    }
+                }
+            }
+        }
     }
 }

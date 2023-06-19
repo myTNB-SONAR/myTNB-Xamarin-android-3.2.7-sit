@@ -21,6 +21,7 @@ using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.Bills.AccountStatement.Activity;
 using myTNB_Android.Src.Bills.AccountStatement.MVP;
 using myTNB_Android.Src.Bills.NewBillRedesign.Activity;
@@ -285,7 +286,7 @@ namespace myTNB_Android.Src.MyHome.Activity
 
         internal void ShowPaymentHistory(string webURL)
         {
-            string ca = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_CA.ToLower(), webURL);
+            string ca = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_CA, webURL);
             string isOwner = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_IS_OWNER, webURL);
             string accountType = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_ACCOUNT_TYPE, webURL);
 
@@ -310,6 +311,13 @@ namespace myTNB_Android.Src.MyHome.Activity
             Intent applicationStatusDetailPaymentIntent = new Intent(this, typeof(ApplicationStatusDetailPaymentActivity));
             applicationStatusDetailPaymentIntent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationStatusDisplay));
             StartActivityForResult(applicationStatusDetailPaymentIntent, Constants.MYHOME_MICROSITE_REQUEST_CODE);
+        }
+
+        public void ShowBillPayment(AccountData accountData)
+        {
+            Intent billingDetailIntent = new Intent(this, typeof(BillingDetailsActivity));
+            billingDetailIntent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(accountData));
+            StartActivityForResult(billingDetailIntent, Constants.MYHOME_MICROSITE_REQUEST_CODE);
         }
 
         private void SetUpWebView(string accessToken)
@@ -572,7 +580,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                 //string image = "https://stagingmyhome.mytnb.com.my/Utility/FileUploadWithoutAuth/GetFileByFileID?fileID=4ac61fbf-1c94-4ac8-a21f-9d0bcc88c50c";
                 //var encrypted = SecurityManager.Instance.AES256_Encrypt(AWSConstants.MyHome_SaltKey, AWSConstants.MyHome_Passphrase, pdf);
                 //url = "mytnbapp://action=openPDF&extension=pdf&&title=ICCopy_202211.pdf&file=" + encrypted;
-                //url = "mytnbapp://action=showPayment&accountName=Rob&premise=Jalan&mobileNo=60168610109&applicationType=COT&searchTerm=1234&system=mytnb&statusId=1&statusCode=001&srNumber=12345678&applicationPaymentDetail={\"outstandingChargesAmount\":0.0,\"latestBillAmount\":0.0,\"oneTimeChargesAmount\":183.00,\"oneTimeChargesDetail\":{\"connectionChargesAmount\":0.0,\"connectionChargesDetail\":{\"connectionChargesNetAmount\":0.0,\"connectionChargesTaxAmount\":0.0},\"technicalStudyFeeAmount\":0.0,\"securityDepositAmount\":170.00,\"meterFeeAmount\":0.0,\"stampDutyAmount\":10.0,\"processingFeeAmount\":3.0},\"totalPayableAmount\":183.00,\"caNo\":\"210324299709\",\"sdDocumentNo\":null,\"srNo\":\"4002943030\",\"snNo\":null,\"hasInvoiceAttachment\":false}";
+                //url = "mytnbapp://action=showPayment&accountName=Dummy&premise=DEWAN JLN SK JENDERAK SELATAN FELDA JENDERAK SELATAN KUALA KRAU PAHANG 28050&ca=220283416103&isOwner=true&applicationType=COA&applicationRefNo=COT-000-001-6858";
                 Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
 
                 if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT))

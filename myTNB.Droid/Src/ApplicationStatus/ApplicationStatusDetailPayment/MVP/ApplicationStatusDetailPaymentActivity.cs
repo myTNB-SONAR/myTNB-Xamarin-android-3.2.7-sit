@@ -15,7 +15,6 @@ using myTNB.Mobile;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
-using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -90,7 +89,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
                 intent.PutExtra("StatusId", applicationDetailDisplay?.ApplicationStatusDetail?.StatusId.ToString() ?? string.Empty);
                 intent.PutExtra("StatusCode", applicationDetailDisplay?.ApplicationStatusDetail?.StatusCode ?? string.Empty);
                 intent.PutExtra("ApplicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay) ?? string.Empty);
-                StartActivityForResult(intent, Constants.MYHOME_MICROSITE_REQUEST_CODE);
+                StartActivity(intent);
                 try
                 {
                     FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
@@ -220,40 +219,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
                     Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "oneTimeCharges")
                     , "RM " + applicationDetailDisplay.PaymentDisplay.OneTimeChargesAmountDisplay, chargeList);
                 otherChargesExpandableView.RequestLayout();
-            }
-        }
-
-        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-
-            if (resultCode == Result.Ok && requestCode == Constants.MYHOME_MICROSITE_REQUEST_CODE)
-            {
-                if (data != null && data.Extras is Bundle extras && extras != null)
-                {
-                    if (extras.ContainsKey(MyHomeConstants.IS_PAYMENT_SUCCESSFUL))
-                    {
-                        bool paymentSuccess = extras.GetBoolean(MyHomeConstants.IS_PAYMENT_SUCCESSFUL);
-                        if (paymentSuccess)
-                        {
-                            Intent intent = new Intent();
-                            intent.PutExtra(MyHomeConstants.IS_PAYMENT_SUCCESSFUL, true);
-                            SetResult(Result.Ok, intent);
-                            Finish();
-                        }
-                    }
-                    else if (extras.ContainsKey(MyHomeConstants.IS_RATING_SUCCESSFUL))
-                    {
-                        bool ratingSuccess = extras.GetBoolean(MyHomeConstants.IS_RATING_SUCCESSFUL);
-                        if (ratingSuccess)
-                        {
-                            Intent intent = new Intent();
-                            intent.PutExtra(MyHomeConstants.IS_RATING_SUCCESSFUL, true);
-                            SetResult(Result.Ok, intent);
-                            Finish();
-                        }
-                    }
-                }
             }
         }
     }

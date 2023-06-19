@@ -33,6 +33,7 @@ using System.Reflection;
 using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Billing.MVP;
 
 namespace myTNB_Android.Src.MyHome.MVP
 {
@@ -183,7 +184,7 @@ namespace myTNB_Android.Src.MyHome.MVP
         {
             try
             {
-                string ca = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_CA.ToLower(), webURL);
+                string ca = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_CA, webURL);
                 if (ca.IsValid())
                 {
                     _paymentDetailsModel.AccountNumber = ca;
@@ -227,63 +228,28 @@ namespace myTNB_Android.Src.MyHome.MVP
             {
                 string accountName = GetPaymentParamValuesFromKey(MyHomeConstants.APPLICATION_PAYMENT_ACCOUNT_NAME, webURL);
                 string accountAddress = GetPaymentParamValuesFromKey(MyHomeConstants.APPLICATION_PAYMENT_PREMISE, webURL);
-                string mobileNo = GetPaymentParamValuesFromKey(MyHomeConstants.APPLICATION_PAYMENT_MOBILE_NO, webURL);
+                string ca = GetPaymentParamValuesFromKey(MyHomeConstants.PAYMENT_CA, webURL);
+                string isOwnerString = GetPaymentParamValuesFromKey(MyHomeConstants.PAYMENT_IS_OWNER, webURL);
                 string applicationType = GetPaymentParamValuesFromKey(MyHomeConstants.APPLICATION_PAYMENT_TYPE, webURL);
-                string searchTerm = GetPaymentParamValuesFromKey(MyHomeConstants.APPLICATION_PAYMENT_SEARCH_TERM, webURL);
-                string system = GetPaymentParamValuesFromKey(MyHomeConstants.APPLICATION_PAYMENT_SYSTEM, webURL);
-                string statusId = GetPaymentParamValuesFromKey(MyHomeConstants.APPLICATION_PAYMENT_STATUS_ID, webURL);
-                string statusCode = GetPaymentParamValuesFromKey(MyHomeConstants.APPLICATION_PAYMENT_STATUS_CODE, webURL);
-                string srNumber = GetPaymentParamValuesFromKey(MyHomeConstants.APPLICATION_PAYMENT_SR_NUMBER, webURL);
+                string applicationRefNo = GetPaymentParamValuesFromKey(MyHomeConstants.APPLICATION_PAYMENT_REF_NO, webURL);
 
-                string applicationPaymentDetailStr = GetPaymentParamValuesFromKey(MyHomeConstants.APPLICATION_PAYMENT_DETAIL, webURL);
-                if (mobileNo.IsValid()
+                if (ca.IsValid()
+                    && isOwnerString.IsValid()
                     && applicationType.IsValid()
-                    && searchTerm.IsValid()
-                    && system.IsValid()
-                    && statusId.IsValid()
-                    && statusCode.IsValid()
-                    && srNumber.IsValid()
-                    && applicationPaymentDetailStr.IsValid())
+                    && applicationRefNo.IsValid())
                 {
-                    ApplicationPaymentDetail paymentDetail = JsonConvert.DeserializeObject<ApplicationPaymentDetail>(applicationPaymentDetailStr);
-                    if (paymentDetail != null)
+                    AccountData selectedAccount = new AccountData()
                     {
-                        _paymentDisplayModel = new ApplicationDetailDisplay()
-                        {
-                            Content = new GetApplicationStatusDisplay()
-                        };
+                        AccountNum = ca,
+                        AccountNickName = accountName,
+                        AddStreet = accountAddress,
+                        IsOwner = bool.Parse(isOwnerString)
+                    };
 
-                        _paymentDisplayModel.Content.ApplicationStatusDetail = new ApplicationStatusDetailDisplayModel();
-                        _paymentDisplayModel.Content.ApplicationStatusDetail.IsPayment = true;
-                        _paymentDisplayModel.Content.ApplicationDetail = new ApplicationDetailDisplayModel();
-                        _paymentDisplayModel.Content.ApplicationDetail.ApplicationId = searchTerm;
-                        _paymentDisplayModel.Content.System = system;
-                        _paymentDisplayModel.Content.ApplicationTypeCode = applicationType;
-                        _paymentDisplayModel.Content.applicationPaymentDetail = paymentDetail;
-                        _paymentDisplayModel.Content.PaymentDisplay = new PaymentDisplayModel
-                        {
-                            outstandingChargesAmount = paymentDetail.outstandingChargesAmount,
-                            latestBillAmount = paymentDetail.latestBillAmount,
-                            oneTimeChargesAmount = paymentDetail.oneTimeChargesAmount,
-                            oneTimeChargesDetail = paymentDetail.oneTimeChargesDetail,
-                            totalPayableAmount = paymentDetail.totalPayableAmount,
-                            caNo = paymentDetail.caNo,
-                            sdDocumentNo = paymentDetail.sdDocumentNo,
-                            srNo = paymentDetail.srNo,
-                            hasInvoiceAttachment = paymentDetail.hasInvoiceAttachment
-                        };
-
-                        this.mView.ShowProgressDialog();
-
-                        Task.Run(() =>
-                        {
-                            _ = GetApplicationsPaidDetails(srNumber, statusId, statusCode, applicationType);
-                        });
-                    }
-                    else
-                    {
-                        this.mView.ShowGenericError();
-                    }
+                    MyHomeUtil.Instance.SetIsCOTCOAFlow();
+                    MyHomeUtil.Instance.SetApplicationType(applicationType);
+                    MyHomeUtil.Instance.SetReferenceNo(applicationRefNo);
+                    this.mView.ShowBillPayment(selectedAccount);
                 }
                 else
                 {
@@ -511,7 +477,7 @@ namespace myTNB_Android.Src.MyHome.MVP
         {
             try
             {
-                string accountNum = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_CA.ToLower(), webURL);
+                string accountNum = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_CA, webURL);
                 string isOwnerString = Utility.GetParamValueFromKey(MyHomeConstants.PAYMENT_IS_OWNER, webURL);
 
                 this.mView.ShowLatestBill(accountNum, bool.Parse(isOwnerString));

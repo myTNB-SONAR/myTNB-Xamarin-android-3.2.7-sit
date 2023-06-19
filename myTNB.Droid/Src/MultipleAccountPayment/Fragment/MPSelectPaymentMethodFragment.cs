@@ -133,7 +133,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             selectedPaymentItemList = new List<PaymentItem>();
             try
             {
-                mPresenter = new MPSelectPaymentMethodPresenter(this);
+                mPresenter = new MPSelectPaymentMethodPresenter(this, (PaymentActivity)Activity);
                 mRequestingPaymentDialog = new MaterialDialog.Builder(Activity)
                     .Title(GetString(Resource.String.initiate_payment_progress_title))
                     .Content(GetString(Resource.String.initiate_payment_progress_message))

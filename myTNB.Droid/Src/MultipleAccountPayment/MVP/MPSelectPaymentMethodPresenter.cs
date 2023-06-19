@@ -1,6 +1,7 @@
 ﻿using Android.Util;
 using myTNB.Mobile.API.Managers.Payment;
 using myTNB.Mobile.API.Models.ApplicationStatus;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
+using System.Threading.Tasks;
 using static myTNB_Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.MVP
@@ -19,12 +21,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
     public class MPSelectPaymentMethodPresenter : MPSelectPaymentMethodContract.IUserActionsListener
     {
         private MPSelectPaymentMethodContract.IView mView;
+        private BaseToolbarAppCompatActivity mActivity;
 
         private string TAG = "SelectPaymentMethodPresenter";
 
-        public MPSelectPaymentMethodPresenter(MPSelectPaymentMethodContract.IView mView)
+        public MPSelectPaymentMethodPresenter(MPSelectPaymentMethodContract.IView mView, BaseToolbarAppCompatActivity activity)
         {
             this.mView = mView;
+            this.mActivity = activity;
             this.mView.SetPresenter(this);
         }
 
@@ -161,27 +165,35 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 
         public void GetRegisterdCards(string apiKeyID, string email)
         {
-            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            GetRegisteredCardsAsync(apiKeyID, email);
+            this.mView.ShowGetRegisteredCardDialog();
+            Task.Run(() =>
+            {
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                _ = GetRegisteredCardsAsync(apiKeyID, email);
+            });
         }
 
-        public async void GetRegisteredCardsAsync(string apiKeyId, string email)
+        public async Task GetRegisteredCardsAsync(string apiKeyId, string email)
         {
             try
             {
-                this.mView.ShowGetRegisteredCardDialog();
                 var result = await ServiceApiImpl.Instance.GetRegisteredCards(new RegisteredCardsRequest(true));
-                this.mView.GetRegisterCardsResult(result);
-                this.mView.HideGetRegisteredCardDialog();
+                this.mActivity?.RunOnUiThread(() =>
+                {
+                    this.mView.GetRegisterCardsResult(result);
+                    this.mView.HideGetRegisteredCardDialog();
+                });
             }
             catch (Exception e)
             {
                 Log.Debug(TAG, e.StackTrace);
-                this.mView.HideGetRegisteredCardDialog();
-                Utility.LoggingNonFatalError(e);
-                this.mView.ShowErrorMessageWithOK(Utility.GetLocalizedErrorLabel("paymentCCErrorMsg"));
+                this.mActivity?.RunOnUiThread(() =>
+                {
+                    this.mView.HideGetRegisteredCardDialog();
+                    Utility.LoggingNonFatalError(e);
+                    this.mView.ShowErrorMessageWithOK(Utility.GetLocalizedErrorLabel("paymentCCErrorMsg"));
+                });
             }
-
         }
     }
 }

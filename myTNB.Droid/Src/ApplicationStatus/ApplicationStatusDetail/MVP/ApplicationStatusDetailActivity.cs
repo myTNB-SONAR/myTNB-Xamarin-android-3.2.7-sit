@@ -1280,18 +1280,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     , btnPrimaryCTA, btnApplicationStatusViewBill, btnApplicationStatusPay);
                 TextViewUtils.SetTextSize25(txtApplicationStatusBottomPayable);
             }
-
-            SupplyOfferingCheck();
-        }
-
-        private void SupplyOfferingCheck()
-        {
-            MyHomeUtil.Instance.ClearCache();
-            if (applicationDetailDisplay.SupplyOffering == SupplyOfferingType.COT
-                || applicationDetailDisplay.SupplyOffering == SupplyOfferingType.COA)
-            {
-                MyHomeUtil.Instance.SetIsCOTCOAFlow();
-            }
         }
 
         private void DownloadApplicationCheck()
