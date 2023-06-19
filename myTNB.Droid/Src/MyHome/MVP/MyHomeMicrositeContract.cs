@@ -132,6 +132,17 @@ namespace myTNB_Android.Src.MyHome.MVP
             /// </summary>
             /// <param name="details"></param>
             void OnReloadMicrosite(MyHomeDetails details);
+
+            /// <summary>
+            /// Generates myHome SSO signature
+            /// </summary>
+            /// <param name="ssoDomain"></param>
+            /// <param name="originURL"></param>
+            /// <param name="redirectURL"></param>
+            /// <param name="cancelURL"></param>
+            /// <param name="accessToken"></param>
+            /// <returns></returns>
+            string OnGetMyHomeSignature(string ssoDomain, string originURL, string redirectURL, string cancelURL, string accessToken);
         }
     }
 }

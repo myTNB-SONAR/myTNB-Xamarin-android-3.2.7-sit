@@ -307,7 +307,6 @@ namespace myTNB_Android.Src.MyHome.Activity
 
         public void ShowApplicationPayment(GetApplicationStatusDisplay applicationStatusDisplay)
         {
-            MyHomeUtil.Instance.SetIsCOTCOAFlow();
             Intent applicationStatusDetailPaymentIntent = new Intent(this, typeof(ApplicationStatusDetailPaymentActivity));
             applicationStatusDetailPaymentIntent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationStatusDisplay));
             StartActivityForResult(applicationStatusDetailPaymentIntent, Constants.MYHOME_MICROSITE_REQUEST_CODE);
@@ -339,38 +338,7 @@ namespace myTNB_Android.Src.MyHome.Activity
         {
             try
             {
-                //STUB
-                //redirectURL = "https://https://18.139.216.169/Application/Offerings";
-                //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
-                //redirectURL = "https://devmyhome.mytnb.com.my/Application/MyHomeChecklist/ConnectToMyHome";
-
-                UserEntity user = UserEntity.GetActive();
-                string myTNBAccountName = user?.DisplayName ?? string.Empty;
-                string signature = SSOManager.Instance.GetMyHomeSignature(myTNBAccountName
-                , accessToken
-                , user.DeviceId ?? string.Empty
-                , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
-                , 16
-                , (LanguageUtil.GetAppLanguage() == "MS"
-                ? LanguageManager.Language.MS
-                : LanguageManager.Language.EN).ToString()
-                , TextViewUtils.FontInfo ?? "N"
-                , originURL
-                , redirectURL
-                , user.UserID
-                , user.IdentificationNo
-                , MobileConstants.OSType.int_Android
-                , user.Email
-                , string.Empty
-                , null
-                , user.MobileNo
-                , cancelURL);
-
-                string ssoURL = string.Format(ssoDomain, signature);
-
-                //STUB
-                //ssoURL = string.Format("https://18.139.216.169/Sso?s={0}", signature);
-                //ssoURL = string.Format("https://devmyhome.mytnb.com.my/Sso?s={0}", signature);
+                string ssoURL = this.presenter?.OnGetMyHomeSignature(ssoDomain, originURL, redirectURL, cancelURL, accessToken);
 
                 micrositeWebview.SetWebChromeClient(new MyHomeWebChromeClient(this));
                 micrositeWebview.SetWebViewClient(new MyHomeWebViewClient(this));
@@ -386,7 +354,6 @@ namespace myTNB_Android.Src.MyHome.Activity
 
                 //STUB
                 //global::Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
-                Log.Debug("[DEBUG]", "ssoURL: " + ssoURL);
                 micrositeWebview.LoadUrl(ssoURL);
             }
             catch (System.Exception e)
@@ -485,15 +452,16 @@ namespace myTNB_Android.Src.MyHome.Activity
             //};
             //MyHomeUtil.Instance.SetMyHomeDetails(d);
 
+            MyHomeUtil.Instance.ClearCache();
+
             var details = MyHomeUtil.Instance.MyHomeDetails;
             if (details != null)
             {
-                MyHomeUtil.Instance.ClearCache();
+                
                 this.presenter?.OnReloadMicrosite(details);
             }
             else
             {
-                MyHomeUtil.Instance.ClearCache();
                 this.ShowGenericError();
             }
         }
@@ -572,7 +540,6 @@ namespace myTNB_Android.Src.MyHome.Activity
             public override bool ShouldOverrideUrlLoading(WebView view, IWebResourceRequest request)
             {
                 bool shouldOverride = false;
-
                 string url = request.Url.ToString();
 
                 //STUB

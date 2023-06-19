@@ -434,6 +434,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION:
+                    case Constants.BCRM_NOTIFICATION_MYHOME_COT_NEW_OWNER_RESUME_APPLICATION:
+                    case Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_RESUME_APPLICATION:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitNow"),
                                    delegate () { ViewMyHomeMicrosite(notificationDetails, AWSConstants.BackToHomeCancelURL); });
@@ -861,7 +863,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 this.mActivity.RunOnUiThread(()=>
                 {
                     this.mView.HideProgressDialog();
-                    if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION)
+                    if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION
+                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_NEW_OWNER_RESUME_APPLICATION
+                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_RESUME_APPLICATION)
                     {
                         DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Submit_Now);
                     }

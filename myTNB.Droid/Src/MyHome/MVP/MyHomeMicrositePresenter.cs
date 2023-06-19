@@ -66,6 +66,7 @@ namespace myTNB_Android.Src.MyHome.MVP
             _fileTitle = string.Empty;
             _paymentDetailsModel = new MyHomePaymentDetailsModel();
 
+            MyHomeUtil.Instance.ClearCache();
             this.mView?.SetUpViews();
         }
 
@@ -504,6 +505,50 @@ namespace myTNB_Android.Src.MyHome.MVP
                 this.mView.HideProgressDialog();
                 this.mActivity.Finish();
             }
+        }
+
+        public string OnGetMyHomeSignature(string ssoDomain, string originURL, string redirectURL, string cancelURL, string accessToken)
+        {
+            string ssoURL = string.Empty;
+            try
+            {
+                //STUB
+                //redirectURL = "https://https://18.139.216.169/Application/Offerings";
+                //redirectURL = "https://stagingmyhome.mytnb.com.my/Application/Offerings";
+                //redirectURL = "https://devmyhome.mytnb.com.my/Application/MyHomeChecklist/ConnectToMyHome";
+                UserEntity user = UserEntity.GetActive();
+                string myTNBAccountName = user?.DisplayName ?? string.Empty;
+                string signature = SSOManager.Instance.GetMyHomeSignature(myTNBAccountName
+                , accessToken
+                , user.DeviceId ?? string.Empty
+                , DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty)
+                , 16
+                , (LanguageUtil.GetAppLanguage() == "MS"
+                ? LanguageManager.Language.MS
+                : LanguageManager.Language.EN).ToString()
+                , TextViewUtils.FontInfo ?? "N"
+                , originURL
+                , redirectURL
+                , user.UserID
+                , user.IdentificationNo
+                , MobileConstants.OSType.int_Android
+                , user.Email
+                , string.Empty
+                , null
+                , user.MobileNo
+                , cancelURL);
+
+                ssoURL = string.Format(ssoDomain, signature);
+                //STUB
+                //ssoURL = string.Format("https://18.139.216.169/Sso?s={0}", signature);
+                //ssoURL = string.Format("https://devmyhome.mytnb.com.my/Sso?s={0}", signature);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            Log.Debug("[DEBUG]", "ssoURL: " + ssoURL);
+            return ssoURL;
         }
 
         private async Task GetAccessToken(MyHomeDetails details)
