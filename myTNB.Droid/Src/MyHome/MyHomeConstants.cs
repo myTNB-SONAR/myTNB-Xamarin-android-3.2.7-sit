@@ -14,6 +14,7 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string ACTION_BACK_TO_HOME = "mytnbapp://action=backToHome";
         internal static readonly string ACTION_BACK_TO_APPLICATION_STATUS_LANDING = "mytnbapp://action=applicationStatusLanding";
         internal static readonly string ACTION_EXTERNAL_BROWSER = "mytnbapp://action=externalBrowser";
+        internal static readonly string ACTION_INAPP_BROWSER = "mytnbapp://action=inAppBrowser";
         internal static readonly string ACTION_OPEN_FILE = "mytnbapp://action=openPDF";
         internal static readonly string ACTION_DOWNLOAD_FILE = "mytnbapp://action=downloadPDF";
         internal static readonly string ACTION_RATE_SUCCESSFUL = "mytnbapp://action=rateSuccessful";

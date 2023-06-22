@@ -27,6 +27,7 @@ using myTNB_Android.Src.Bills.AccountStatement.MVP;
 using myTNB_Android.Src.Bills.NewBillRedesign.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.Login.Models;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.MyHome.MVP;
@@ -376,6 +377,31 @@ namespace myTNB_Android.Src.MyHome.Activity
             StartActivity(intent);
         }
 
+        public void LoadToInAppBrowser(string url)
+        {
+            if (url.Contains(".pdf"))
+            {
+                Intent webIntent = new Intent(this, typeof(BasePDFViewerActivity));
+                webIntent.PutExtra(Constants.IN_APP_LINK, url);
+                webIntent.PutExtra(Constants.IN_APP_TITLE, string.Empty);
+                StartActivity(webIntent);
+            }
+            else if (url.Contains(".jpeg") || url.Contains(".jpg") || url.Contains(".png"))
+            {
+                Intent webIntent = new Intent(this, typeof(BaseFullScreenImageViewActivity));
+                webIntent.PutExtra(Constants.IN_APP_LINK, url);
+                webIntent.PutExtra(Constants.IN_APP_TITLE, string.Empty);
+                StartActivity(webIntent);
+            }
+            else
+            {
+                Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                webIntent.PutExtra(Constants.IN_APP_LINK, url);
+                webIntent.PutExtra(Constants.IN_APP_TITLE, string.Empty);
+                StartActivity(webIntent);
+            }
+        }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -548,6 +574,9 @@ namespace myTNB_Android.Src.MyHome.Activity
                 //var encrypted = SecurityManager.Instance.AES256_Encrypt(AWSConstants.MyHome_SaltKey, AWSConstants.MyHome_Passphrase, pdf);
                 //url = "mytnbapp://action=openPDF&extension=pdf&&title=ICCopy_202211.pdf&file=" + encrypted;
                 //url = "mytnbapp://action=showPayment&accountName=Dummy&premise=DEWAN JLN SK JENDERAK SELATAN FELDA JENDERAK SELATAN KUALA KRAU PAHANG 28050&ca=220283416103&isOwner=true&applicationType=COA&applicationRefNo=COT-000-001-6858";
+                //url = "mytnbapp://action=inAppBrowser/https://www.google.com";
+                //url = "mytnbapp://action=inAppBrowser/https://www.africau.edu/images/default/sample.pdf";
+                //url = "mytnbapp://action=inAppBrowser/https://www.learningcontainer.com/wp-content/uploads/2020/07/Large-Sample-Image-download-for-Testing.jpg";
                 Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
 
                 if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT))
@@ -592,20 +621,30 @@ namespace myTNB_Android.Src.MyHome.Activity
                     shouldOverride = true;
                     mActivity.OnBackPressed();
                 }
-                else if (url.Contains(MyHomeConstants.ACTION_EXTERNAL_BROWSER))
+                else if (url.Contains(MyHomeConstants.ACTION_EXTERNAL_BROWSER)
+                    || url.Contains(MyHomeConstants.ACTION_INAPP_BROWSER))
                 {
                     shouldOverride = true;
 
+                    string action = url.Contains(MyHomeConstants.ACTION_INAPP_BROWSER) ? MyHomeConstants.ACTION_INAPP_BROWSER
+                        : MyHomeConstants.ACTION_EXTERNAL_BROWSER;
                     string value = string.Empty;
-                    string pattern = string.Format(MyHomeConstants.PATTERN, MyHomeConstants.ACTION_EXTERNAL_BROWSER);
+                    string pattern = string.Format(MyHomeConstants.PATTERN, action);
                     Regex regex = new Regex(pattern);
                     Match match = regex.Match(url);
                     if (match.Success)
                     {
-                        value = match.Value.Replace(string.Format(MyHomeConstants.REPLACE_KEY, MyHomeConstants.ACTION_EXTERNAL_BROWSER), string.Empty);
+                        value = match.Value.Replace(string.Format(MyHomeConstants.REPLACE_KEY, action), string.Empty);
                         if (value.IsValid())
                         {
-                            mActivity.LoadToExternalBrowser(value);
+                            if (action == MyHomeConstants.ACTION_EXTERNAL_BROWSER)
+                            {
+                                mActivity.LoadToExternalBrowser(value);
+                            }
+                            else
+                            {
+                                mActivity.LoadToInAppBrowser(value);
+                            }
                         }
                     }
                 }
