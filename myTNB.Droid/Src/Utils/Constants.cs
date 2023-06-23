@@ -401,8 +401,7 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_MYHOME_COT_REMINDER = "43007";
         public const string BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_OTP_VERIFY = "43008";
         public const string BCRM_NOTIFICATION_MYHOME_COT_NEW_OWNER_RESUME_APPLICATION = "43009";
-        public const string BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_RESUME_APPLICATION = "43010";
-        public const string BCRM_NOTIFICATION_MYHOME_COA_RESUME_APPLICATION = "43011";
+        public const string BCRM_NOTIFICATION_MYHOME_COA_RESUME_APPLICATION = "43010";
 
         //Bill Estimation
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";
