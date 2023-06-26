@@ -78,6 +78,15 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
                 ctaList = new List<NotificationDetailModel.NotificationCTA>();
 
+
+                string cancelURL = AWSConstants.BackToHomeCancelURL;
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST
+                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_REMINDER
+                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_OTP_VERIFY)
+                {
+                    cancelURL = AWSConstants.BackToHomeCancelCOTURL;
+                }
+
                 switch (notificationDetails.BCRMNotificationTypeId)
                 {
                     case Constants.BCRM_NOTIFICATION_NEW_BILL_ID:
@@ -436,9 +445,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION:
                     case Constants.BCRM_NOTIFICATION_MYHOME_COT_NEW_OWNER_RESUME_APPLICATION:
                     case Constants.BCRM_NOTIFICATION_MYHOME_COA_RESUME_APPLICATION:
-                    {
+                        {
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitNow"),
-                                   delegate () { ViewMyHomeMicrosite(notificationDetails, AWSConstants.BackToHomeCancelURL); });
+                                   delegate () { ViewMyHomeMicrosite(notificationDetails, cancelURL); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
@@ -591,7 +600,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                                    delegate ()
                                    {
                                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.COT_Request_Submit_Now);
-                                       ViewMyHomeMicrosite(notificationDetails);
+                                       ViewMyHomeMicrosite(notificationDetails, cancelURL);
                                    });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
@@ -602,7 +611,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_MYHOME_COT_REMINDER:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "submitNow"),
-                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
+                                   delegate () { ViewMyHomeMicrosite(notificationDetails, cancelURL); });
                             primaryCTA.SetSolidCTA(true);
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
