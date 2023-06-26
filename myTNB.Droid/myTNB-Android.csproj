@@ -28,7 +28,7 @@
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
@@ -7634,6 +7634,45 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_hide_floatingBtn.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_hide_floatingBtn.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_hide_floatingBtn.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_hide_floatingBtn.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_hide_floatingBtn.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Database\Model\FloatingButtonEntity.cs" />
+    <Compile Include="Src\Database\Model\FloatingButtonMarketingEntity.cs" />
+    <Compile Include="Src\Database\Model\FloatingButtonMarketingParentEntity.cs" />
+    <Compile Include="Src\Database\Model\FloatingButtonParentEntity.cs" />
+    <Compile Include="Src\FloatingButtonMarketing\Activity\FloatingButtonMarketingActivity.cs" />
+    <Compile Include="Src\FloatingButtonMarketing\MVP\FloatingButtonMarketingContract.cs" />
+    <Compile Include="Src\FloatingButtonMarketing\MVP\FloatingButtonMarketingPresenter.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\FloatingButtonMarketingModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\FloatingButtonModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\FloatingButtonMarketingService.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\FloatingButtonService.cs" />
+    <Compile Include="Src\Utils\FloatingButtonMarketingUtils.cs" />
+    <Compile Include="Src\Utils\FloatingButtonUtils.cs" />
+    <AndroidResource Include="Resources\layout\FloatingButtonMarketingView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Async\SiteCoreFloatingButtonAPI.cs" />
+    <Compile Include="Src\myTNBMenu\Async\SiteCoreFloatingButtonContentAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">
@@ -10128,6 +10167,9 @@
     <Folder Include="Src\MyHome\Model\" />
     <Folder Include="Src\MyHome\MVP\" />
     <Folder Include="Src\Utils\PDFImageViewer\" />
+    <Folder Include="Src\FloatingButtonMarketing\" />
+    <Folder Include="Src\FloatingButtonMarketing\Activity\" />
+    <Folder Include="Src\FloatingButtonMarketing\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

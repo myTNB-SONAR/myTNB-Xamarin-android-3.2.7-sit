@@ -172,7 +172,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             void CheckOnPaperFromBillRendering();
 
-            void CheckOnAutoOptIn();
         }
 
         public interface IUserActionsListener : IBasePresenter

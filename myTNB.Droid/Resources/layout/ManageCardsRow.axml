@@ -50,7 +50,7 @@
 			        android:textColor="@color/lightRed"
 			        android:layout_alignParentStart="true"
                     android:layout_below="@+id/txtCardNumber"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
          </LinearLayout>
         <ImageView
             android:id="@+id/imgCardNumberDelete"

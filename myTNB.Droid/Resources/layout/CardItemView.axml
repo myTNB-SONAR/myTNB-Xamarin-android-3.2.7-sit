@@ -50,7 +50,7 @@
 			        android:textColor="@color/lightRed"
 			        android:layout_alignParentStart="true"
                     android:layout_below="@+id/textCard"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
             </LinearLayout>
 		<!--<TextView
 			android:layout_width="match_parent"

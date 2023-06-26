@@ -11857,14 +11857,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             });
         }
 
-        public void CheckOnAutoOptIn()
-        {
-            Task.Run(() =>
-            {
-                _ = CheckOnAutoOptInAsync();
-            });
-        }
-
         private async Task CheckOnPaperAsync()
         {
             try
@@ -11918,6 +11910,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     //flag
                     UserSessions.SaveDBRMarketingPopUpFlag(this.mPref, true);
                 }
+                else if (_billRenderingResponse != null
+                   && _billRenderingResponse.StatusDetail != null
+                   && _billRenderingResponse.StatusDetail.IsSuccess
+                   && _billRenderingResponse.Content != null
+                   && _billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.Paper
+                   && _billRenderingResponse.Content.IsOwner == true
+                   && _billRenderingResponse.Content.IsInProgress == false)
+                {
+                    Task.Run(() =>
+                    {
+                        _ = CheckOnAutoOptInAsync();
+                    });
+                }
             }
             catch (System.Exception e)
             {
@@ -11930,7 +11935,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             try
             {
                 string contractAccount = GetSelectedAccount().AccountNum;
-                bool dbrHasShown = MarketingPopUpEntity.GetDBRPopUpFlag(contractAccount);
                 if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
                 {
                     string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
@@ -11941,12 +11945,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     , AccessTokenCache.Instance.GetAccessToken(this.Activity)); //cek balik sini
 
                 if (getAutoOptInCaResponse != null
-                    && getAutoOptInCaResponse.StatusDetail != null
-                    && getAutoOptInCaResponse.Content != null
-                    && _billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.Paper
-                    && _billRenderingResponse.Content.IsOwner == true
-                    && _billRenderingResponse.Content.IsInProgress == false
-                    && getAutoOptInCaResponse.Content.IsPopupSeen == false)
+                        && getAutoOptInCaResponse.StatusDetail != null
+                        && getAutoOptInCaResponse.Content != null
+                        && getAutoOptInCaResponse.Content.IsPopupSeen == false)
                 {
                     ShowAutoOptInTooltip();
                     MarketingPopUpEntity.InsertOrReplace(contractAccount, true);
@@ -11969,10 +11970,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         getAutoOptInCaResponse.Content.UserId = patchUpdateResponse.Content.UserId;
                     }
 
-                    /*getAutoOptInCaResponse = await DBRManager.Instance.PatchUpdateAutoOptInCa(contractAccount
-                        , UserEntity.GetActive().UserID
-                        , AccessTokenCache.Instance.GetAccessToken(this.Activity)); //cek balik sini
-                    */
                 }
             }
             catch (System.Exception e)

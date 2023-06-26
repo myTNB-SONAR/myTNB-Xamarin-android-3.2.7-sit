@@ -159,6 +159,51 @@ namespace myTNB.SitecoreCMS.Services
             }
             return respModel;
         }
+
+        public FloatingButtonResponseModel GetFloatingButtonItem()
+        {
+            FloatingButtonResponseModel respModel = new FloatingButtonResponseModel();
+            try
+            {
+                FloatingButtonService service = new FloatingButtonService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<FloatingButtonResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetFloatingButtonItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public FloatingButtonMarketingResponseModel GetFloatingButtonMarketingItem()
+        {
+            FloatingButtonMarketingResponseModel respModel = new FloatingButtonMarketingResponseModel();
+            try
+            {
+                FloatingButtonMarketingService service = new FloatingButtonMarketingService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                if (service.IsChildItemError)
+                {
+                    service.IsChildItemError = false;
+                    return new FloatingButtonMarketingResponseModel();
+                }
+                else
+                {
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<FloatingButtonMarketingResponseModel>(serializedObj);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetFloatingButtonMarketingItem: " + e.Message);
+            }
+            return respModel;
+        }
+
         public HelpResponseModel GetHelpItems()
         {
             HelpResponseModel respModel = new HelpResponseModel();
@@ -454,6 +499,45 @@ namespace myTNB.SitecoreCMS.Services
             }
             return respModel;
         }
+
+        public FloatingButtonTimeStampResponseModel GetFloatingButtonTimestampItem()
+        {
+            FloatingButtonTimeStampResponseModel respModel = new FloatingButtonTimeStampResponseModel();
+            try
+            {
+                FloatingButtonService service = new FloatingButtonService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<FloatingButtonTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetFloatingButtonTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public FloatingButtonMarketingTimeStampResponseModel GetFloatingButtonMarketingTimestampItem()
+        {
+            FloatingButtonMarketingTimeStampResponseModel respModel = new FloatingButtonMarketingTimeStampResponseModel();
+            try
+            {
+                FloatingButtonMarketingService service = new FloatingButtonMarketingService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<FloatingButtonMarketingTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetFloatingButtonMarketingTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
         public BillDetailsTooltipTimeStampResponseModel GetBillDetailsTooltipTimestampItem(BillsTooltipVersionEnum version)
         {
             BillDetailsTooltipTimeStampResponseModel respModel = new BillDetailsTooltipTimeStampResponseModel();

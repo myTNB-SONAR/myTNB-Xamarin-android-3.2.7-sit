@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -78,6 +79,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         private string savedFont;
         private string FontName;
         private bool LargeFontOnBoard = false;
+        private string savedFloatingButtonTimeStamp = "0000000";
+        private string savedFBContentTimeStamp = "0000000";
 
         NotificationChannelAdapter channelAdapter;
 
@@ -205,6 +208,146 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             SetSelectedFont("");
         }
 
+        public void UpdateFloatingButton()
+        {
+            try
+            {
+                FloatingButtonParentEntity wtManager = new FloatingButtonParentEntity();
+                List<FloatingButtonParentEntity> items = wtManager.GetAllItems();
+                if (items != null && items.Count != 0)
+                {
+                    foreach (FloatingButtonParentEntity obj in items)
+                    {
+                        OnSavedFloatingButtonTimeStampRecieved(obj.Timestamp);
+                    }
+                }
+                else
+                {
+                    OnSavedFloatingButtonTimeStampRecieved(null);
+                }
+
+            }
+            catch (Exception e)
+            {
+                OnSavedFloatingButtonTimeStampRecieved(null);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnSavedFloatingButtonTimeStampRecieved(string timestamp)
+        {
+            try
+            {
+                if (timestamp != null)
+                {
+                    savedFloatingButtonTimeStamp = timestamp;
+                }
+                this.userActionsListener.OnGetFloatingButtonTimeStamp();
+            }
+            catch (Exception e)
+            {
+                this.userActionsListener.OnGetFloatingButtonCache();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnFloatingButtonTimeStampRecieved(string timestamp)
+        {
+            try
+            {
+                if (timestamp != null)
+                {
+                    //if (timestamp.Equals(savedFloatingButtonTimeStamp))
+                    //{
+                    //    this.userActionsListener.OnGetFloatingButtonCache();
+                    //}
+                    //else
+                    //{
+                    this.userActionsListener.OnGetFloatingButtonItem();
+                    //}
+                }
+                else
+                {
+                    this.userActionsListener.OnGetFloatingButtonCache();
+                }
+            }
+            catch (Exception e)
+            {
+                this.userActionsListener.OnGetFloatingButtonCache();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void UpdateFloatingButtonContent()
+        {
+            try
+            {
+                FloatingButtonMarketingParentEntity wtManager = new FloatingButtonMarketingParentEntity();
+                List<FloatingButtonMarketingParentEntity> items = wtManager.GetAllItems();
+                if (items != null && items.Count != 0)
+                {
+                    foreach (FloatingButtonMarketingParentEntity obj in items)
+                    {
+                        OnSavedFBContentTimeStampRecieved(obj.Timestamp);
+                    }
+                }
+                else
+                {
+                    OnSavedFBContentTimeStampRecieved(null);
+                }
+
+            }
+            catch (Exception e)
+            {
+                OnSavedFBContentTimeStampRecieved(null);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnSavedFBContentTimeStampRecieved(string timestamp)
+        {
+            try
+            {
+                if (timestamp != null)
+                {
+                    savedFBContentTimeStamp = timestamp;
+                }
+                this.userActionsListener.OnGetFBContentTimeStamp();
+            }
+            catch (Exception e)
+            {
+                this.userActionsListener.OnGetFBContentCache();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnFBContentTimeStampRecieved(string timestamp)
+        {
+            try
+            {
+                if (timestamp != null)
+                {
+                    //if (timestamp.Equals(savedFloatingButtonTimeStamp))
+                    //{
+                    //    this.userActionsListener.OnGetFBContentCache();
+                    //}
+                    //else
+                    //{
+                    this.userActionsListener.OnGetFBContentItem();
+                    //}
+                }
+                else
+                {
+                    this.userActionsListener.OnGetFBContentCache();
+                }
+            }
+            catch (Exception e)
+            {
+                this.userActionsListener.OnGetFBContentCache();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowNotificationChannelList(List<NotificationChannelUserPreference> channelPreferenceList)
         {
             
@@ -289,7 +432,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 //SetTextSize
                 TextViewUtils.SetTextSize16(txtNotificationTypeTitle, txtNotificationChannelTitle, textSizeMessage, appLanguageMessage);
 
-                mPresenter = new NotificationSettingsPresenter(this);
+                mPresenter = new NotificationSettingsPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
                 this.userActionsListener.Start();
                 bool hasUpdateLargeFont = MyTNBAccountManagement.GetInstance().IsUpdateLargeFont();
                 if (hasUpdateLargeFont)
@@ -583,6 +726,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                                     UpdateLanguage();
                                     UpdateTypesList();
                                     UpdateSizeFontText();
+                                    UpdateFloatingButton();
+                                    UpdateFloatingButtonContent();
                                     MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
                                     MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
                                     OnMaintenanceProceed();
@@ -616,6 +761,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                                     UpdateTypesList();
                                     UpdateLanguage();
                                     UpdateSizeFontText();
+                                    UpdateFloatingButton();
+                                    UpdateFloatingButtonContent();
                                     ShowLanguageUpdateSuccess();
                                     HideShowProgressDialog();
                                 }

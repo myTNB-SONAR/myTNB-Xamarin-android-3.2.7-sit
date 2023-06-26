@@ -3,6 +3,7 @@ using myTNB_Android.Src.SelectNotification.Models;
 using Refit;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.NotificationSettings.MVP
 {
@@ -109,7 +110,13 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             /// <param name="position">integer</param>
             void ShowRetryOptionsUnknownException(Exception exception, NotificationChannelUserPreference channelPreference, int position);
 
-            //void UpdateSizeFontText();
+            void OnSavedFloatingButtonTimeStampRecieved(string timestamp);
+
+            void OnFloatingButtonTimeStampRecieved(string timestamp);
+
+            void OnSavedFBContentTimeStampRecieved(string timestamp);
+
+            void OnFBContentTimeStampRecieved(string timestamp);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -134,6 +141,18 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             /// <param name="item">NotificationChannelUserPreference</param>
             /// <param name="position">integer</param>
             void OnChannelItemClick(NotificationChannelUserPreference item, int position);
+
+            void OnGetFloatingButtonTimeStamp();
+
+            void OnGetFloatingButtonItem();
+
+            Task OnGetFloatingButtonCache();
+
+            void OnGetFBContentTimeStamp();
+
+            void OnGetFBContentItem();
+
+            Task OnGetFBContentCache();
         }
     }
 }
