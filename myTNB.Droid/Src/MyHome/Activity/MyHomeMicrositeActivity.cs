@@ -233,7 +233,7 @@ namespace myTNB_Android.Src.MyHome.Activity
         internal void OnShowDashboard(string toastMessage = "")
         {
             Intent resultIntent = new Intent();
-            resultIntent.PutExtra(MyHomeConstants.BACK_TO_HOME, true);
+            resultIntent.PutExtra(MyHomeConstants.ACTION_BACK_TO_HOME, true);
             resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
             SetResult(Result.Ok, resultIntent);
             Finish();
@@ -242,7 +242,7 @@ namespace myTNB_Android.Src.MyHome.Activity
         internal void OnShowApplicationStatusLanding(string toastMessage = "")
         {
             Intent resultIntent = new Intent();
-            resultIntent.PutExtra(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING, true);
+            resultIntent.PutExtra(MyHomeConstants.ACTION_BACK_TO_APPLICATION_STATUS_LANDING, true);
             resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
             SetResult(Result.Ok, resultIntent);
             Finish();
@@ -273,7 +273,7 @@ namespace myTNB_Android.Src.MyHome.Activity
             {
                 RunOnUiThread(() =>
                 {
-                    string originURL = _model?.OriginURL ?? MyHomeConstants.BACK_TO_APP;
+                    string originURL = _model?.OriginURL ?? MyHomeConstants.ACTION_BACK_TO_APP;
                     string redirectURL = _model?.RedirectURL ?? string.Empty;
                     string cancelURL = _model?.CancelURL ?? string.Empty;
 
@@ -345,6 +345,31 @@ namespace myTNB_Android.Src.MyHome.Activity
             Intent intent = new Intent(Intent.ActionView);
             intent.SetData(Android.Net.Uri.Parse(url));
             StartActivity(intent);
+        }
+
+        public void LoadToInAppBrowser(string url)
+        {
+            if (url.Contains(".pdf"))
+            {
+                Intent webIntent = new Intent(this, typeof(BasePDFViewerActivity));
+                webIntent.PutExtra(Constants.IN_APP_LINK, url);
+                webIntent.PutExtra(Constants.IN_APP_TITLE, string.Empty);
+                StartActivity(webIntent);
+            }
+            else if (url.Contains(".jpeg") || url.Contains(".jpg") || url.Contains(".png"))
+            {
+                Intent webIntent = new Intent(this, typeof(BaseFullScreenImageViewActivity));
+                webIntent.PutExtra(Constants.IN_APP_LINK, url);
+                webIntent.PutExtra(Constants.IN_APP_TITLE, string.Empty);
+                StartActivity(webIntent);
+            }
+            else
+            {
+                Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                webIntent.PutExtra(Constants.IN_APP_LINK, url);
+                webIntent.PutExtra(Constants.IN_APP_TITLE, string.Empty);
+                StartActivity(webIntent);
+            }
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -473,48 +498,60 @@ namespace myTNB_Android.Src.MyHome.Activity
                 //var encrypted = SecurityManager.Instance.AES256_Encrypt(AWSConstants.MyHome_SaltKey, AWSConstants.MyHome_Passphrase, pdf);
                 //url = "mytnbapp://action=openPDF&extension=pdf&&title=ICCopy_202211.pdf&file=" + encrypted;
                 //url = MyHomeConstants.RATE_SUCCESSFUL;
+                //url = "mytnbapp://action=inAppBrowser/https://www.google.com";
                 Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
                 if (url.Contains(MyHomeConstants.ACTION_SHOW_LATEST_BILL))
                 {
                     shouldOverride = true;
                     this.mActivity?.ShowLatestBill(url);
                 }
-                else if (url.Contains(MyHomeConstants.RATE_SUCCESSFUL))
+                else if (url.Contains(MyHomeConstants.ACTION_RATE_SUCCESSFUL))
                 {
                     shouldOverride = true;
                     RatingCache.Instance.Clear();
                     RatingCache.Instance.SetRatingToast(string.Empty);
                     this.mActivity.InterceptForSuccessfulRating();
                 }
-                else if (url.Contains(MyHomeConstants.DOWNLOAD_FILE))
+                else if (url.Contains(MyHomeConstants.ACTION_DOWNLOAD_FILE))
                 {
                     shouldOverride = true;
                     this.mActivity.InterceptDownloadFileWithURL(url);
                 }
-                else if (url.Contains(MyHomeConstants.OPEN_FILE))
+                else if (url.Contains(MyHomeConstants.ACTION_OPEN_FILE))
                 {
                     shouldOverride = true;
                     this.mActivity.InterceptViewFileWithURL(url);
                 }
-                else if (url.Contains(MyHomeConstants.BACK_TO_APP))
+                else if (url.Contains(MyHomeConstants.ACTION_BACK_TO_APP))
                 {
                     shouldOverride = true;
                     mActivity.OnBackPressed();
                 }
-                else if (url.Contains(MyHomeConstants.EXTERNAL_BROWSER))
+                else if (url.Contains(MyHomeConstants.ACTION_EXTERNAL_BROWSER)
+                    || url.Contains(MyHomeConstants.ACTION_INAPP_BROWSER))
                 {
                     shouldOverride = true;
 
+                    string action = url.Contains(MyHomeConstants.ACTION_INAPP_BROWSER) ? MyHomeConstants.ACTION_INAPP_BROWSER
+                        : MyHomeConstants.ACTION_EXTERNAL_BROWSER;
+
                     string value = string.Empty;
-                    string pattern = string.Format(MyHomeConstants.PATTERN, MyHomeConstants.EXTERNAL_BROWSER);
+                    string pattern = string.Format(MyHomeConstants.PATTERN, action);
                     Regex regex = new Regex(pattern);
                     Match match = regex.Match(url);
                     if (match.Success)
                     {
-                        value = match.Value.Replace(string.Format(MyHomeConstants.REPLACE_KEY, MyHomeConstants.EXTERNAL_BROWSER), string.Empty);
+                        value = match.Value.Replace(string.Format(MyHomeConstants.REPLACE_KEY, action), string.Empty);
                         if (value.IsValid())
                         {
-                            mActivity.LoadToExternalBrowser(value);
+                            if (action == MyHomeConstants.ACTION_EXTERNAL_BROWSER)
+                            {
+                                mActivity.LoadToExternalBrowser(value);
+                            }
+                            else
+                            {
+                                mActivity.LoadToInAppBrowser(value);
+                            }
                         }
                     }
                 }
@@ -528,12 +565,12 @@ namespace myTNB_Android.Src.MyHome.Activity
                     shouldOverride = true;
                     mActivity.OnShowApplicationStatusLanding(Utility.GetLocalizedCommonLabel(I18NConstants.Cancelled_Application));
                 }
-                else if (url.Contains(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
+                else if (url.Contains(MyHomeConstants.ACTION_BACK_TO_APPLICATION_STATUS_LANDING))
                 {
                     shouldOverride = true;
                     mActivity.OnShowApplicationStatusLanding();
                 }
-                else if (url.Contains(MyHomeConstants.BACK_TO_HOME))
+                else if (url.Contains(MyHomeConstants.ACTION_BACK_TO_HOME))
                 {
                     shouldOverride = true;
                     mActivity.OnShowDashboard();

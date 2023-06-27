@@ -404,9 +404,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     {
                         if (data != null && data.Extras is Bundle extras && extras != null)
                         {
-                            if (extras.ContainsKey(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
+                            if (extras.ContainsKey(MyHomeConstants.ACTION_BACK_TO_APPLICATION_STATUS_LANDING))
                             {
-                                bool backToApplicationStatusLanding = extras.GetBoolean(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING);
+                                bool backToApplicationStatusLanding = extras.GetBoolean(MyHomeConstants.ACTION_BACK_TO_APPLICATION_STATUS_LANDING);
                                 if (backToApplicationStatusLanding)
                                 {
                                     string toastMsg = string.Empty;
@@ -417,9 +417,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     this.mView.RouteToApplicationLanding(toastMsg);
                                 }
                             }
-                            else if (extras.ContainsKey(MyHomeConstants.BACK_TO_HOME))
+                            else if (extras.ContainsKey(MyHomeConstants.ACTION_BACK_TO_HOME))
                             {
-                                bool backToHome = extras.GetBoolean(MyHomeConstants.BACK_TO_HOME);
+                                bool backToHome = extras.GetBoolean(MyHomeConstants.ACTION_BACK_TO_HOME);
                                 if (backToHome)
                                 {
                                     string toastMessage = string.Empty;
