@@ -32,6 +32,9 @@ namespace myTNB_Android.Src.Maintenance.MVP
             void ShowLaunchViewActivity();
 
             void OnUpdateMaintenanceWord(string mTitle, string mMessage);
+
+            //STUB
+            string GetAppMasterLaunchStub();
         }
 
         public interface IUserActionsListener : IBasePresenter

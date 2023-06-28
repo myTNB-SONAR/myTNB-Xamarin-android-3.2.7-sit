@@ -51,6 +51,7 @@ using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.Utils.Notification;
 using myTNB.Mobile.AWS.Models.DBR;
 using Firebase.Iid;
+using System.IO;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -221,6 +222,25 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Utility.LoggingNonFatalError(e);
             }
 #pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        //STUB
+        public string GetAppMasterLaunchStub()
+        {
+            var stringContent = string.Empty;
+            try
+            {
+                var inputStream = Resources.OpenRawResource(Resource.Raw.GetAppLaunchMasterData);
+                using (StreamReader sr = new StreamReader(inputStream))
+                {
+                    stringContent = sr.ReadToEnd();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return stringContent;
         }
 
         public bool IsActive()

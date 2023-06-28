@@ -451,7 +451,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
             {
                 SearchApplicationTypeCache.Instance.Clear();
                 LanguageUtil.SaveAppLanguage(language);
-                MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+                MyTNBAccountManagement.GetInstance().UpdateAppMasterData(this);
                 _ = CheckAppMasterDataDone();
             });
         }
@@ -464,7 +464,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 {
                     if (MyTNBAccountManagement.GetInstance().GetIsAppMasterFailed())
                     {
-                        MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+                        MyTNBAccountManagement.GetInstance().UpdateAppMasterData(this);
                         _ = CheckAppMasterDataDone();
                     }
                     else if (MyTNBAccountManagement.GetInstance().GetIsAppMasterMaintenance())

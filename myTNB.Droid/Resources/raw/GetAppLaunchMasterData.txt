@@ -1,0 +1,689 @@
+{
+    "IdentificationNo": "1234567890",
+    "IsSMROpenToTenant": true,
+    "data": {
+        "AppVersionList": [
+            {
+                "Platform": "1",
+                "Version": "17",
+                "Features": [
+                    {
+                        "Feature": "Android Feature 1"
+                    },
+                    {
+                        "Feature": "Android Feature 2"
+                    }
+                ]
+            },
+            {
+                "Platform": "2",
+                "Version": "1.0.7",
+                "Features": [
+                    {
+                        "Feature": "iOS Feature 1"
+                    },
+                    {
+                        "Feature": "iOS Feature 2"
+                    }
+                ]
+            },
+            {
+                "Platform": "3",
+                "Version": "2.2.2",
+                "Features": [
+                    {
+                        "Feature": "Huawei Feature 1"
+                    }
+                ]
+            }
+        ],
+        "Downtime": [
+            {
+                "System": "SSP",
+                "IsDown": false,
+                "DowntimeMessage": "myTNB system maintenance is currently in progress. In the meantime, you can still pay your bill via JomPAY and online banking channels. \n\nThank you for your understanding.",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "16/10/2018 11:30 AM",
+                "DowntimeEnd": "17/10/2018 11:30 AM"
+            },
+            {
+                "System": "BCRM",
+                "IsDown": false,
+                "DowntimeMessage": "myTNB system maintenance is currently in progress. In the meantime, you can still pay your bill via JomPAY and online banking channels. \n\nThank you for your understanding.",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "19/04/2019 23:00 PM",
+                "DowntimeEnd": "20/04/2019 06:00 AM"
+            },
+            {
+                "System": "SmartMeter",
+                "IsDown": false,
+                "DowntimeMessage": "The Daily Energy Usage view will be back after the system maintenance is completed.\r\nWe apologise for any inconvenience caused.\r\n",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "25/06/2022 20:00 PM",
+                "DowntimeEnd": "26/06/2022 22:00 PM"
+            },
+            {
+                "System": "PG_CC",
+                "IsDown": false,
+                "DowntimeMessage": "Debit/Credit Card payment service on myTNB App is currently under maintenance.\r\n\r\nWe’ll be right back. \r\n\r\nYou can still pay your bill via JomPAY, Touch 'n Go eWallet, Boost or Online Banking. We apologize for any inconvenience caused. Thank you for your patience.\r\n",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "18/02/2023 03:30 AM",
+                "DowntimeEnd": "18/02/2023 06:00 AM"
+            },
+            {
+                "System": "PG_FPX",
+                "IsDown": false,
+                "DowntimeMessage": "Payment service on myTNB App is currently under maintenance.\r\n\r\nWe’ll be right back. \r\n\r\nYou can still pay your bill via JomPAY, Touch 'n Go eWallet, Boost or Online Banking. We apologize for any inconvenience caused. Thank you for your patience.\r\n",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "16/09/2022 12:00 PM",
+                "DowntimeEnd": "16/09/2022 02:00 AM"
+            },
+            {
+                "System": "SmartMeterDaily",
+                "IsDown": false,
+                "DowntimeMessage": "The Daily Energy Usage view will be back after the system maintenance is completed.\r\nWe apologise for any inconvenience caused.\r\n",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "25/06/2022 20:00 PM",
+                "DowntimeEnd": "26/06/2022 22:00 PM"
+            },
+            {
+                "System": "UNIFY",
+                "IsDown": false,
+                "DowntimeMessage": "System is not available at the moment. Please try later.",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "20/01/2021 00:00 AM",
+                "DowntimeEnd": "20/01/2021 00:00 AM"
+            },
+            {
+                "System": "PG",
+                "IsDown": false,
+                "DowntimeMessage": "myTNB system maintenance is currently in progress. During this time, myTNB App will be temporarily unavailable to customers.\r\nWorry not, bill payment can still be made via JomPAY, Touch 'n Go eWallet, Boost and various online banking channels.\r\nThank you for your understanding.\r\n",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "20/01/2021 00:00 AM",
+                "DowntimeEnd": "20/01/2021 00:00 AM"
+            },
+            {
+                "System": "EB",
+                "IsDown": false,
+                "DowntimeMessage": "My Energy Budget features will be back online after the system maintenance is completed.\r \nWe apologise for any inconvenience caused.\r\n",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "20/01/2021 00:00 AM",
+                "DowntimeEnd": "20/01/2021 00:00 AM"
+            },
+            {
+                "System": "TRIL",
+                "IsDown": false,
+                "DowntimeMessage": "My Energy Budget features will be back online after the system maintenance is completed.\r \nWe apologise for any inconvenience caused.\r\n",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "20/01/2021 00:00 AM",
+                "DowntimeEnd": "20/01/2021 00:00 AM"
+            },
+            {
+                "System": "SAGE",
+                "IsDown": false,
+                "DowntimeMessage": "My Energy Budget features will be back online after the system maintenance is completed.\r \nWe apologise for any inconvenience caused.\r\n",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "20/01/2021 00:00 AM",
+                "DowntimeEnd": "20/01/2021 00:00 AM"
+            },
+            {
+                "System": "CatchupCell",
+                "IsDown": false,
+                "DowntimeMessage": "myTNB maintenance is currently in progress.\r\n\r\nYour Energy Budget might be not accurate at this time. We apologize for any inconvenience caused.",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "20/01/2021 00:00 AM",
+                "DowntimeEnd": "20/01/2021 00:00 AM"
+            },
+            {
+                "System": "CatchupRF",
+                "IsDown": false,
+                "DowntimeMessage": "myTNB maintenance is currently in progress.\r\n\r\nYour Energy Budget might be not accurate at this time. We apologize for any inconvenience caused.",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "20/01/2021 00:00 AM",
+                "DowntimeEnd": "20/01/2021 00:00 AM"
+            },
+            {
+                "System": "CatchupPLC",
+                "IsDown": false,
+                "DowntimeMessage": "myTNB maintenance is currently in progress.\r\n\r\nYour Energy Budget might be not accurate at this time. We apologize for any inconvenience caused.",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "20/01/2021 00:00 AM",
+                "DowntimeEnd": "20/01/2021 00:00 AM"
+            },
+            {
+                "System": "PG_TNG",
+                "IsDown": false,
+                "DowntimeMessage": "Payment via Touch 'n Go eWallet is temporarily unavailable. You can still pay your bill via FPX or Credit/Debit card on the myTNB App or other alternative payment channels such as JomPAY, Boost or Online Banking. We apologise for any inconvenience caused.",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "20/01/2021 00:00 AM",
+                "DowntimeEnd": "20/01/2021 00:00 AM"
+            },
+            {
+                "System": "ERMS",
+                "IsDown": false,
+                "DowntimeMessage": "myTNB system maintenance is currently in progress.\r\nMost of myTNB features are accessible to our customers except:\r\ni.   Payment for Security Deposit (SD), Connection Charges (CC) & RE Charges\r\n\r\nmyTNB will be back with full functionality at 2:10 pm, 6 May 2023 (Saturday).\r\nWe thank you for your support.\r\n\r\n-myTNB Team-\r\n",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "05/05/2023 22:00 PM",
+                "DowntimeEnd": "06/05/2023 14:10 PM"
+            },
+            {
+                "System": "MyHome",
+                "IsDown": false,
+                "DowntimeMessage": "<p>\n<br />\n                Dear Valued Customer,<br />\n<br />\n                myTNB system is currently under maintenance.Most of myTNB features are accessible to our customers except:<br />\n<br />\n                Most of myTNB features are accessible to our customers except:<br />\n                i.   RE submission and payment<br />\n                ii.  Viewing status of selected New Connection, Project and Upgrade/Downgrade applications<br />\n                iii. Viewing selected parcel information upon connection charge payment.<br />\n<br />\n                myTNB will be back with full functionality at <b></b><br />\n<br />\n                We apologise for any inconvenience caused. Thank you for your patience.<br />\n</p>",
+                "DowntimeTextMessage": "We’ll be back shortly!",
+                "DowntimeStart": "07/02/2023 00:00 AM",
+                "DowntimeEnd": "07/02/2023 00:00 AM"
+            }
+        ],
+        "WebLink": [
+            {
+                "Id": "1000001",
+                "Code": "FAQ",
+                "Title": "FAQ",
+                "Url": "https://www.tnb.com.my/faq/general",
+                "IsActive": "True",
+                "DateCreated": "11/23/2017 00:00:00",
+                "OpenWith": "APP"
+            },
+            {
+                "Id": "1000002",
+                "Code": "BILL",
+                "Title": "Understand Your Bill",
+                "Url": "https://www.tnb.com.my/residential/billing",
+                "IsActive": "True",
+                "DateCreated": "11/23/2017 00:00:00",
+                "OpenWith": "APP"
+            },
+            {
+                "Id": "1000005",
+                "Code": "IOS",
+                "Title": "New myTNB on AppStore",
+                "Url": "https://itunes.apple.com/my/app/mytnb-new/id1297089591",
+                "IsActive": "True",
+                "DateCreated": "11/23/2017 00:00:00",
+                "OpenWith": "APP"
+            },
+            {
+                "Id": "1000006",
+                "Code": "DROID",
+                "Title": "New myTNB on PlayStore",
+                "Url": "https://play.google.com/store/apps/details?id=com.mytnb.mytnb",
+                "IsActive": "True",
+                "DateCreated": "11/23/2017 00:00:00",
+                "OpenWith": "APP"
+            },
+            {
+                "Id": "1000007",
+                "Code": "TNBCL",
+                "Title": "Call Us",
+                "Url": "1-300-88-5454",
+                "IsActive": "True",
+                "DateCreated": "11/28/2017 12:46:50",
+                "OpenWith": "PHONE"
+            },
+            {
+                "Id": "1000008",
+                "Code": "SMTR",
+                "Title": "Learn More",
+                "Url": "https://www.tnb.com.my/announcements/informed-customers-with-tnbs-smart-meter-project",
+                "IsActive": "True",
+                "DateCreated": "12/05/2017 13:00:37",
+                "OpenWith": "APP"
+            },
+            {
+                "Id": "1000009",
+                "Code": "PROMO",
+                "Title": "Promotions",
+                "Url": "https://www.tnb.com.my/promotions",
+                "IsActive": "True",
+                "DateCreated": "12/05/2017 13:02:18",
+                "OpenWith": "APP"
+            },
+            {
+                "Id": "1000010",
+                "Code": "TNBCLE",
+                "Title": "Call Us (Billing Enquiries)",
+                "Url": "1-300-88-5454",
+                "IsActive": "True",
+                "DateCreated": "12/26/2017 14:01:42",
+                "OpenWith": "PHONE"
+            },
+            {
+                "Id": "1000011",
+                "Code": "TNBCLO",
+                "Title": "Call Us (Outages & Breakdown)",
+                "Url": "15454",
+                "IsActive": "True",
+                "DateCreated": "12/26/2017 14:18:41",
+                "OpenWith": "PHONE"
+            },
+            {
+                "Id": "1000016",
+                "Code": "HMS",
+                "Title": "New myTNB on App Gallery",
+                "Url": "https://appgallery.cloud.huawei.com/#/detailApp/C102383027",
+                "IsActive": "True",
+                "DateCreated": "08/14/2020 00:00:00",
+                "OpenWith": "APP"
+            },
+            {
+                "Id": "1000017",
+                "Code": "HMSRATEUS",
+                "Title": "Huawei Rate Url",
+                "Url": "appmarket://details?id=com.mytnb.mytnb",
+                "IsActive": "True",
+                "DateCreated": "08/14/2020 00:00:00",
+                "OpenWith": "APP"
+            }
+        ],
+        "LocationType": [
+            {
+                "Id": "1",
+                "Title": "KT",
+                "Description": "Kedai Tenaga",
+                "ImagePath": "/-/media/myTNBapp/locs/def/default-kt.png"
+            },
+            {
+                "Id": "2",
+                "Title": "7E",
+                "Description": "7 Eleven near me",
+                "ImagePath": "/-/media/myTNBapp/locs/def/default-7eleven.png"
+            }
+        ],
+        "State": [
+            {
+                "StateId": "1",
+                "StateName": "Johor"
+            },
+            {
+                "StateId": "2",
+                "StateName": "Kedah"
+            },
+            {
+                "StateId": "3",
+                "StateName": "Kelantan"
+            },
+            {
+                "StateId": "4",
+                "StateName": "Melaka"
+            },
+            {
+                "StateId": "5",
+                "StateName": "Negeri Sembilan"
+            },
+            {
+                "StateId": "6",
+                "StateName": "Pahang"
+            },
+            {
+                "StateId": "7",
+                "StateName": "Pulau Pinang"
+            },
+            {
+                "StateId": "8",
+                "StateName": "Perak"
+            },
+            {
+                "StateId": "9",
+                "StateName": "Perlis"
+            },
+            {
+                "StateId": "10",
+                "StateName": "Selangor"
+            },
+            {
+                "StateId": "11",
+                "StateName": "Terengganu"
+            },
+            {
+                "StateId": "12",
+                "StateName": "WP Kuala Lumpur"
+            },
+            {
+                "StateId": "15",
+                "StateName": "WP Putrajaya & Cyberjaya"
+            }
+        ],
+        "FeedbackCategory": [
+            {
+                "FeedbackCategoryId": "1",
+                "FeedbackCategoryName": "Give Us Feedback",
+                "FeedbackCategoryDesc": "Let us know your thoughts and concerns."
+            },
+            {
+                "FeedbackCategoryId": "10",
+                "FeedbackCategoryName": "View Submitted Feedback",
+                "FeedbackCategoryDesc": "View Status Updates on your feedback here."
+            }
+        ],
+        "FeedbackType": [
+            {
+                "FeedbackTypeId": "1",
+                "FeedbackTypeName": "Enquiry"
+            },
+            {
+                "FeedbackTypeId": "2",
+                "FeedbackTypeName": "Complaint"
+            },
+            {
+                "FeedbackTypeId": "3",
+                "FeedbackTypeName": "Suggestion"
+            }
+        ],
+        "NotificationType": [
+            {
+                "Id": "1000004",
+                "Title": "Billing and payment",
+                "Code": "BP",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "True",
+                "ShowInFilterList": "True",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "11/07/2017 16:37:57"
+            },
+            {
+                "Id": "1000005",
+                "Title": "Account related matters",
+                "Code": "ACC",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "True",
+                "ShowInFilterList": "True",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "11/07/2017 16:37:57"
+            },
+            {
+                "Id": "1000006",
+                "Title": "Starting and stopping Self Meter Reading",
+                "Code": "SRT",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "False",
+                "ShowInFilterList": "True",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "08/27/2019 17:15:30"
+            },
+            {
+                "Id": "1000009",
+                "Title": "Promotion",
+                "Code": "PRM",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "False",
+                "ShowInFilterList": "True",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "11/07/2017 16:37:57"
+            },
+            {
+                "Id": "1000010",
+                "Title": "News",
+                "Code": "NAA",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "False",
+                "ShowInFilterList": "True",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "11/07/2017 16:37:57"
+            },
+            {
+                "Id": "1000011",
+                "Title": "Maintenance",
+                "Code": "MD",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "False",
+                "ShowInFilterList": "True",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "11/07/2017 16:37:57"
+            },
+            {
+                "Id": "1000015",
+                "Title": "Self Meter Reading related",
+                "Code": "SPN",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "False",
+                "ShowInFilterList": "True",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "09/04/2019 12:08:40"
+            },
+            {
+                "Id": "1000017",
+                "Title": "Application Status",
+                "Code": "AST",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "False",
+                "ShowInFilterList": "True",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "11/19/2020 00:00:00"
+            },
+            {
+                "Id": "1000019",
+                "Title": "Appointment Scheduler",
+                "Code": "ASC",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "False",
+                "ShowInFilterList": "False",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "11/19/2020 00:00:00"
+            },
+            {
+                "Id": "1000020",
+                "Title": "Energy Budget",
+                "Code": "EB",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "True",
+                "ShowInFilterList": "False",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "02/19/2021 00:00:00"
+            },
+            {
+                "Id": "1000022",
+                "Title": "delete this record",
+                "Code": "d",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "False",
+                "ShowInFilterList": "False",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "08/19/2021 00:00:00"
+            },
+            {
+                "Id": "1000023",
+                "Title": "delete this record",
+                "Code": "d",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "False",
+                "ShowInFilterList": "False",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "08/19/2021 00:00:00"
+            },
+            {
+                "Id": "1000024",
+                "Title": "Digital Bill Rendering",
+                "Code": "DBR",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "False",
+                "ShowInFilterList": "False",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "08/19/2021 00:00:00"
+            },
+            {
+                "Id": "1000028",
+                "Title": "Service Disruption",
+                "Code": "SD",
+                "PreferenceMode": "0",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "True",
+                "ShowInFilterList": "False",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "11/09/2021 00:00:00"
+            },
+            {
+                "Id": "1000034",
+                "Title": "MyHome",
+                "Code": "MH",
+                "PreferenceMode": "O",
+                "Type": "ANNOUNCEMENT",
+                "ShowInPreference": "False",
+                "ShowInFilterList": "True",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "01/03/2023 00:00:00"
+            }
+        ],
+        "NotificationTypeChannel": [
+            {
+                "Id": "1000001",
+                "Title": "Push Notifications",
+                "Code": "PUSH",
+                "PreferenceMode": "O",
+                "Type": "CHANNEL",
+                "ShowInPreference": "True",
+                "ShowInFilterList": "True",
+                "IsOpted": null,
+                "MasterId": null,
+                "CreatedDate": "11/07/2017 16:35:10"
+            }
+        ],
+        "MaintenanceTitle": null,
+        "MaintenanceMessage": null,
+        "ForceUpdateInfo": {
+            "isIOSForceUpdateOn": false,
+            "isAndroidForceUpdateOn": false,
+            "isHMSForceUpdateOn": false,
+            "iOSLastVersion": "1.0.7",
+            "AndroidLastVersion": "17",
+            "HmsLastVersion": "2.2.2",
+            "iOSLatestVersion": "1.2.0",
+            "AndroidLatestVersion": "71",
+            "HmsLatestVersion": "2.2.2",
+            "ModalTitle": "New Version Available",
+            "ModalBody": "Get the newest version of myTNB to enjoy a better experience.",
+            "ModalBtnText": "Update Now"
+        },
+        "RecommendUpdateInfo": {
+            "IsIOSRecommendUpdateOn": false,
+            "IsAndroidRecommendUpdateOn": false,
+            "IsHMSRecommendUpdateOn": false,
+            "RecommendUpdatePopUpCount": 3,
+            "RecommendUpdatePopUpDayDelay": 7,
+            "PublishDateTimeRecommendUpdate": "07/4/2023 01:17",
+            "EndDateTimeRecommendUpdate": "07/4/2023 03:40",
+            "RangeIOSRecommendUpdate": false,
+            "RangeAndroidRecommendUpdate": false,
+            "RangeHMSRecommendUpdate": false,
+            "IOSLastRecommendVersion": "2.8.0",
+            "AndroidLastRecommendVersion": "2.8.0",
+            "HmsLastRecommendVersion": "2.8.0",
+            "IOSLatestRecommendVersion": "2.8.1",
+            "AndroidLatestRecommendVersion": "2.8.1",
+            "HmsLatestRecommendVersion": "2.8.1",
+            "SelectIOSRecommendUpdate": false,
+            "SelectAndroidRecommendUpdate": false,
+            "SelectHMSRecommendUpdate": false,
+            "IOSVersionToUpdate": [
+                "2.8.2"
+            ],
+            "AndroidVersionToUpdate": [
+                "2.8.2"
+            ],
+            "HmsVersionToUpdate": [
+                "2.8.2"
+            ],
+            "ModalRecommendTitle": "New Version Available",
+            "ModalRecommendBody": "Update your myTNB app to the latest version now to continue receiving the best user experience and take advantage of the latest features and improvements.",
+            "ModalRecommendBtnYesText": "Update",
+            "ModalRecommendBtnNoText": "Cancel"
+        },
+        "CountryDetails": null,
+        "ServicesPreLogin": [
+            {
+                "ServiceId": "1001",
+                "ServiceName": "Find Us",
+                "ServiceIcon": "ICON07",
+                "ServiceIconUrl": "Find Us URL",
+                "ServiceDescription": "Open Find Us page",
+                "ServiceCategory": null,
+                "OrderId": "01",
+                "Enabled": true,
+                "AppVersion": null
+            },
+            {
+                "ServiceId": "1002",
+                "ServiceName": "Call Us",
+                "ServiceIcon": "ICON08",
+                "ServiceIconUrl": "Call Us URL",
+                "ServiceDescription": "Open Call Us page",
+                "ServiceCategory": null,
+                "OrderId": "02",
+                "Enabled": true,
+                "AppVersion": null
+            },
+            {
+                "ServiceId": "1006",
+                "ServiceName": "Application Status",
+                "ServiceIcon": "ICON06",
+                "ServiceIconUrl": "Application Status URL",
+                "ServiceDescription": "Open Application Status page",
+                "ServiceCategory": null,
+                "OrderId": "03",
+                "Enabled": true,
+                "AppVersion": null
+            },
+            {
+                "ServiceId": "1003",
+                "ServiceName": "Submit Enquiry",
+                "ServiceIcon": "ICON03",
+                "ServiceIconUrl": "Submit feedback URL",
+                "ServiceDescription": "Open Feedback apply page",
+                "ServiceCategory": null,
+                "OrderId": "04",
+                "Enabled": true,
+                "AppVersion": null
+            }
+        ]
+    },
+    "IsSMRApplyDisabled": false,
+    "IsEnergyTipsDisabled": true,
+    "IsOCRDown": true,
+    "IsSMRFeatureDisabled": false,
+    "IsRewardsDisabled": true,
+    "IsFeedbackUpdateDetailDisabled": false,
+    "IsLargeFontDisabled": false,
+    "IsApplicationSyncAPIEnable": true,
+    "ApplicationSyncAPIInterval": 60,
+    "IsAppointmentDisabled": true,
+    "status": "",
+    "isError": "false",
+    "message": "",
+    "ErrorCode": "7200",
+    "ErrorMessage": "false",
+    "DisplayMessage": "Successful!",
+    "DisplayType": "",
+    "DisplayTitle": "",
+    "RefreshTitle": "Refresh Now",
+    "RefreshMessage": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
+    "RefreshBtnText": "Refresh Now",
+    "IsPayEnabled": true
+}

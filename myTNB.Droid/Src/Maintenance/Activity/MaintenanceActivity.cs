@@ -14,6 +14,7 @@ using myTNB_Android.Src.Maintenance.MVP;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
+using System.IO;
 
 namespace myTNB_Android.Src.Maintenance.Activity
 {
@@ -125,6 +126,25 @@ namespace myTNB_Android.Src.Maintenance.Activity
             base.OnStart();
 
 
+        }
+
+        //STUB
+        public string GetAppMasterLaunchStub()
+        {
+            var stringContent = string.Empty;
+            try
+            {
+                var inputStream = Resources.OpenRawResource(Resource.Raw.GetAppLaunchMasterData);
+                using (StreamReader sr = new StreamReader(inputStream))
+                {
+                    stringContent = sr.ReadToEnd();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return stringContent;
         }
 
         public void OnUpdateMaintenanceWord(string mTitle, string mMessage)

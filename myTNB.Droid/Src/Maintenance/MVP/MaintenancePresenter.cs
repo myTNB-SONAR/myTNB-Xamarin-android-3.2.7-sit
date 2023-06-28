@@ -7,6 +7,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Net.Http;
@@ -87,12 +88,15 @@ namespace myTNB_Android.Src.Maintenance.MVP
 
                 };
 
-                AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequestAWS(currentDeviceInf));
+                //AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequestAWS(currentDeviceInf));
                 /*var masterDataResponse = await masterDataApi.GetAppLaunchMasterData(new MasterDataRequest()
                 {
                     deviceInf = currentDeviceInf,
                     usrInf = currentUsrInf
                 }, cts.Token);*/
+
+                //STUB
+                AppLaunchMasterDataResponseAWS masterDataResponse = JsonConvert.DeserializeObject<AppLaunchMasterDataResponseAWS>(this.mView.GetAppMasterLaunchStub());
 
                 if (masterDataResponse != null && masterDataResponse.Data != null)
                 {

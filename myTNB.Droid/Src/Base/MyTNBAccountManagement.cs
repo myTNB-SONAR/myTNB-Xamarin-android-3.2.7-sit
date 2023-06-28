@@ -13,6 +13,10 @@ using Newtonsoft.Json;
 using Refit;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.Mobile.AWS;
+using System.Reflection;
+using System.IO;
+using myTNB_Android.Src.Base.Activity;
+using Android.Content.Res;
 
 namespace myTNB_Android.Src.Base
 {
@@ -428,12 +432,12 @@ namespace myTNB_Android.Src.Base
             IsNotificationComplete = isCompleted;
         }
 
-        public void UpdateAppMasterData()
+        public void UpdateAppMasterData(BaseAppCompatActivity activity = null)
         {
             IsAppMasterComplete = false;
             IsAppMasterFailed = false;
             IsAppMasterMaintenance = false;
-            LoadAppMasterData();
+            LoadAppMasterData(activity);
         }
 
         public bool GetIsAppMasterComplete()
@@ -461,13 +465,38 @@ namespace myTNB_Android.Src.Base
             return MaintenanceContent;
         }
 
-        private void LoadAppMasterData()
+        //STUB
+        public string GetAppMasterLaunchStub(BaseAppCompatActivity activity)
+        {
+            var stringContent = string.Empty;
+            try
+            {
+                var inputStream = activity.Resources.OpenRawResource(Resource.Raw.GetAppLaunchMasterData);
+                using (StreamReader sr = new StreamReader(inputStream))
+                {
+                    stringContent = sr.ReadToEnd();
+                }
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return stringContent;
+        }
+
+        private void LoadAppMasterData(BaseAppCompatActivity activity = null)
         {
             try
             {
-                Task<AppLaunchMasterDataResponseAWS> appLaunchMasterDataTask = Task.Run(async () => await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest()));
+                //Task<AppLaunchMasterDataResponseAWS> appLaunchMasterDataTask = Task.Run(async () => await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest()));
                 //appLaunchMasterDataTask.Wait();
-                AppLaunchMasterDataResponseAWS masterDataResponse = appLaunchMasterDataTask.Result;
+
+                //AppLaunchMasterDataResponseAWS masterDataResponse = appLaunchMasterDataTask.Result;
+
+                //STUB
+                AppLaunchMasterDataResponseAWS masterDataResponse = JsonConvert.DeserializeObject<AppLaunchMasterDataResponseAWS>(GetAppMasterLaunchStub(activity));
+
                 if (masterDataResponse != null && masterDataResponse.ErrorCode != null && masterDataResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     SetMasterDataResponse(masterDataResponse);
