@@ -481,7 +481,7 @@
     "accountTypeDialogMessage": "Anda boleh log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> myTNB menggunakan maklumat log masuk yang sama dan nikmati akses penuh untuk akaun tersebut.",
     //EnergyBudget
     "myMonthlyBudget": "Energy Budget saya adalah",
-    "whyIsAmountDiff": "Adakah ini bill sebenar saya?",
+    "whyIsAmountDiff": "Adakah ini bil sebenar saya?",
     "whyIsAmountDiffBody": "Tidak semestinya. Jumlah yang dipaparkan adalah berdasarkan kepada penggunaan elektrik anda setakat ini bagi bulan semasa. Bil anda boleh termasuk caj-caj seperti sumbangan KWTBB 1.6%, cukai perkhidmatan 6%, rebat/surcaj ICPT (di mana berkenaan).",
     "editEnergyButton": "Tetapkan Energy Budget anda",
     "setEnergyButton": "Tetapkan Sekarang",
@@ -3162,7 +3162,7 @@
   "EnregyBudgetListing": {
     "title": "Pilih Akaun Meter Pintar",
     "tootltipTitle": "Kenapa sesetengah akaun saya yang tidak tersenarai?",
-    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
+    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
     "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"
   },
   "EnergyBudgetPopup": {
