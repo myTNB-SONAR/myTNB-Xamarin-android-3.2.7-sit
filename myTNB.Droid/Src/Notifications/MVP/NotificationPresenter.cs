@@ -192,18 +192,27 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 this.mView.NavigateToDashboardWithIntent(resultIntent);
                             }
                         }
+                        else if (resultCode == Result.Ok)
+                        {
+                            ReloadNotifistUI();
+                        }
                     }
                 }
                 else if (resultCode == Result.Ok)
                 {
-                    this.mView.ClearAdapter();
-                    this.ShowFilteredList();
+                    ReloadNotifistUI();
                 }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ReloadNotifistUI()
+        {
+            this.mView.ClearAdapter();
+            this.ShowFilteredList();
         }
 
         public async void OnShowNotificationDetails(UserNotificationData userNotification, int position)
