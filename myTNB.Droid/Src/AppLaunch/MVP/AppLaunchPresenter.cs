@@ -43,8 +43,6 @@ using myTNB_Android.Src.Base.Response;
 using System.Linq;
 using Android.Preferences;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using Android.Content.Res;
-using myTNB_Android.Src.AddAccount.Models;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -234,13 +232,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
 
-                //AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest());
+                AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest());
                 /*AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
                       (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));*/
-
-                //STUB
-                AppLaunchMasterDataResponseAWS masterDataResponse = JsonConvert.DeserializeObject<AppLaunchMasterDataResponseAWS>(this.mView.GetAppMasterLaunchStub());
-
                 if (masterDataResponse != null && masterDataResponse.ErrorCode != null)
                 {
                     if (masterDataResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
@@ -678,16 +672,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                 baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 //string dt = JsonConvert.SerializeObject(baseRequest);
-                //CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
-                //STUB
-                CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
-                if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.IsSuccessResponse())
+                CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
+                if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null && customerAccountListResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     //if (customerAccountListResponse.GetData().Count > 0)
-                    if (customerAccountListResponse.GetData().Count == 0 || customerAccountListResponse.GetData().Count > 0)
+                    if (customerAccountListResponse.customerAccountData.Count == 0 || customerAccountListResponse.customerAccountData.Count > 0)
                     {
                         CustomerBillingAccount.RemoveActive();
-                        ProcessCustomerAccount(customerAccountListResponse.GetData());
+                        ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
                     }
                     else
                     {
@@ -823,18 +815,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                 baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 //string dt = JsonConvert.SerializeObject(baseRequest);
-                //CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
-                //STUB
-                CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
-                if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.IsSuccessResponse())
+                CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
+                if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null && customerAccountListResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     //if (customerAccountListResponse.GetData().Count > 0)
-                    if (customerAccountListResponse.GetData().Count == 0 || customerAccountListResponse.GetData().Count > 0)
+                    if (customerAccountListResponse.customerAccountData.Count == 0 || customerAccountListResponse.customerAccountData.Count > 0)
                     {
                         CustomerBillingAccount.RemoveActive();
-                        ProcessCustomerAccount(customerAccountListResponse.GetData());
-
-
+                        ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
                     }
                     else
                     {
@@ -1731,11 +1719,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             });
         }
 
-
-
-
-        //private void ProcessCustomerAccount(List<CustomerAccountListResponse.CustomerAccountData> list)
-        private void ProcessCustomerAccount(List<CustomerAccountListResponse.CustomerAccountData> list)
+        private void ProcessCustomerAccount(List<CustomerAccountListResponseAppLaunch.CustomerAccountData> list)
         {
             try
             {
@@ -1751,7 +1735,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     List<CustomerBillingAccount> newAccountList = new List<CustomerBillingAccount>();
 
 
-                    foreach (CustomerAccountListResponse.CustomerAccountData acc in list)
+                    foreach (CustomerAccountListResponseAppLaunch.CustomerAccountData acc in list)
                     {
 
                         int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
@@ -1805,7 +1789,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         {
                             CustomerBillingAccount oldAcc = existingSortedList[index];
 
-                            CustomerAccountListResponse.CustomerAccountData newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
+                            CustomerAccountListResponseAppLaunch.CustomerAccountData newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
 
                             var newRecord = new CustomerBillingAccount()
                             {
@@ -1871,7 +1855,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 }
                 else
                 {
-                    foreach (CustomerAccountListResponse.CustomerAccountData acc in list)
+                    foreach (CustomerAccountListResponseAppLaunch.CustomerAccountData acc in list)
                     {
                         int rowChange = CustomerBillingAccount.InsertOrReplace(acc, false);
                     }

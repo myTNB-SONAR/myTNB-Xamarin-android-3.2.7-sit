@@ -238,9 +238,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// Track user cancel update
             ///</summary>
             bool UserCancelUpdate();
-
-            //STUB
-            string GetAppMasterLaunchStub();
         }
 
         public interface IUserActionsListener : IBasePresenter

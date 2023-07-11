@@ -550,7 +550,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             return Task.Run(() =>
             {
                 LanguageUtil.SaveAppLanguage(selectedItem.type);
-                MyTNBAccountManagement.GetInstance().UpdateAppMasterData(this);
+                MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                 _ = CheckAppMasterDataDone();
             });
         }
@@ -563,7 +563,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 {
                     if (MyTNBAccountManagement.GetInstance().GetIsAppMasterFailed())
                     {
-                        MyTNBAccountManagement.GetInstance().UpdateAppMasterData(this);
+                        MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                         _ = CheckAppMasterDataDone();
                     }
                     else if (MyTNBAccountManagement.GetInstance().GetIsAppMasterMaintenance())

@@ -16,7 +16,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
     {
         private static readonly Lazy<ServiceApiImpl>
             lazy = new Lazy<ServiceApiImpl>(() => new ServiceApiImpl());
-        private IServiceV6 api, apiAws, apiStub;
+        private IServiceV6 api, apiAws;
         HttpClient httpClient, httpClientAws, httpClientAwsIsUserAuth;
 
         private ServiceApiImpl()
@@ -24,9 +24,6 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
 #if DEBUG || DEVELOP || SIT
             httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             api = RestService.For<IServiceV6>(httpClient);
-
-            //STUB
-            apiStub = RestService.For<IServiceV6>(new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri("http://10.215.128.162:100") });
 
             httpClientAws = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT_AWS) };
             apiAws = RestService.For<IServiceV6>(httpClientAws);
@@ -81,7 +78,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<CustomerAccountListResponse> GetCustomerAccountList([Body] Request.BaseRequestV4 request)
         {
-            return apiStub.GetCustomerAccountList<CustomerAccountListResponse>(request,CancellationTokenSourceWrapper.GetToken());
+            return api.GetCustomerAccountList<CustomerAccountListResponse>(request,CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
