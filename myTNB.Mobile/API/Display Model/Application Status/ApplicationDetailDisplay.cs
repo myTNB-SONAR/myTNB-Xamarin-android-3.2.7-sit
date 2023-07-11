@@ -730,6 +730,7 @@ namespace myTNB.Mobile
         /// Determines if the application requires payment or not
         /// </summary>
         public bool IsPayment { set; get; }
+        public string Channel { set; get; }
     }
 
     public class StatusTrackerDisplay

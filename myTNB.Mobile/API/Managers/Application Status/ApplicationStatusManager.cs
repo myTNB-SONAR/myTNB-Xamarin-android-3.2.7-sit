@@ -493,23 +493,29 @@ namespace myTNB.Mobile
                             , system);
                     }
                 }
-                else if (displaymodel.Content.CABusinessArea is string businessArea
+                else if ((displaymodel.Content.CABusinessArea is string businessArea
                     && businessArea.IsValid())
+                    || (displaymodel.Content.ContractAccountNo is string accNumber
+                    && accNumber.IsValid()))
                 {
-                    GetEligibilityResponse eligibilityByCriteriaResponse =
-                        await EligibilityManager.Instance.PostEligibilityByCriteria(new List<string> { displaymodel.Content.CABusinessArea }
-                        , AppInfoManager.Instance.AccessToken);
-
-                    if (DSUtility.Instance.IsAccountEligible
-                        && eligibilityByCriteriaResponse.StatusDetail != null
-                        && eligibilityByCriteriaResponse.StatusDetail.IsSuccess
-                        && eligibilityByCriteriaResponse.Content != null
-                        && eligibilityByCriteriaResponse.Content.DS != null
-                        && eligibilityByCriteriaResponse.Content.DS.ContractAccounts != null
-                        && eligibilityByCriteriaResponse.Content.DS.ContractAccounts.Count > 0)
+                    if (DSUtility.Instance.IsAccountEligible)
                     {
                         Debug.WriteLine("[DEBUG][GetApplicationDetail] Check By BA");
-                        isDSEligible = true;
+
+                        #region Mitigation Task For myHome & DS
+                        // Mitigation Task For myHome & DS
+                        if (applicationType.Contains("NC")
+                            && "myTNB_API_Mobile".Equals(displaymodel.Content.ApplicationStatusDetail.Channel, StringComparison.OrdinalIgnoreCase))
+                        {
+                            isDSEligible = false;
+                        }
+                        else
+                        {
+                            isDSEligible = true;
+                        }
+                        #endregion
+
+                        //isDSEligible = true;
                         displaymodel = await GetApplicationDetailV2(savedApplicationID
                            , applicationID
                            , applicationType
@@ -604,6 +610,7 @@ namespace myTNB.Mobile
                                     , applicationType);
                                 displaymodel.ParseDisplayModel(paymentResponse);
                             }
+                            displaymodel.Content.ApplicationStatusDetail.Channel = response.Content.newConnectionDetail.channel;
                         }
                     }
                     catch (Exception ex)

@@ -141,7 +141,6 @@
     <Folder Include="AWS\Models\DS\" />
     <Folder Include="AWS\Models\DS\Status\" />
     <Folder Include="AWS\Models\DS\Identification\" />
-    <Folder Include="AWS\Models\Eligibility\Post Eligibility By Criteria\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -221,7 +220,6 @@
     <None Remove="AWS\Models\DS\EKYCIdentification\" />
     <None Remove="Refit" />
     <None Remove="Xamarin.Essentials" />
-    <None Remove="AWS\Models\Eligibility\Post Eligibility By Criteria\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />
