@@ -108,7 +108,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         ImageView floatingButtonHide;
 
         [BindView(Resource.Id.floating_button_layout)]
-        LinearLayout floatingButtonLayout;
+        RelativeLayout floatingButtonLayout;
+
+        [BindView(Resource.Id.hide_button_layout)]
+        LinearLayout hideButtonLayout;
 
         [BindView(Resource.Id.bottom_navigation)]
         public BottomNavigationView bottomNavigationView;
@@ -441,36 +444,36 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 HideProgressDialog();
 
                 //Nullity Check
-                //if (billRenderingTenantResponse == null
-                //   && billRenderingTenantResponse.StatusDetail == null
-                //   && !billRenderingTenantResponse.StatusDetail.IsSuccess
-                //   && billRenderingTenantResponse.Content == null
-                //  )
-                //{
-
-
-                //    string title = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Title.IsValid()
-                //        ? billRenderingTenantResponse?.StatusDetail?.Title
-                //        : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE);
-
-                //    string message = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Message.IsValid()
-                //       ? billRenderingTenantResponse?.StatusDetail?.Message
-                //       : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG);
-
-                //    string cta = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.PrimaryCTATitle.IsValid()
-                //       ? billRenderingTenantResponse?.StatusDetail?.PrimaryCTATitle
-                //       : Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK);
-
-                //    this.RunOnUiThread(() =>
+                //    if (billRenderingTenantResponse == null
+                //       && billRenderingTenantResponse.StatusDetail == null
+                //       && !billRenderingTenantResponse.StatusDetail.IsSuccess
+                //       && billRenderingTenantResponse.Content == null
+                //      )
                 //    {
-                //        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                //            .SetTitle(title ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
-                //            .SetMessage(message ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
-                //            .SetCTALabel(cta ?? Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK))
-                //            .Build();
-                //        errorPopup.Show();
-                //    });
-                //}
+
+
+                //        string title = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Title.IsValid()
+                //            ? billRenderingTenantResponse?.StatusDetail?.Title
+                //            : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE);
+
+                //        string message = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Message.IsValid()
+                //           ? billRenderingTenantResponse?.StatusDetail?.Message
+                //           : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG);
+
+                //        string cta = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.PrimaryCTATitle.IsValid()
+                //           ? billRenderingTenantResponse?.StatusDetail?.PrimaryCTATitle
+                //           : Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK);
+
+                //        this.RunOnUiThread(() =>
+                //        {
+                //            MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                //                .SetTitle(title ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+                //                .SetMessage(message ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
+                //                .SetCTALabel(cta ?? Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK))
+                //                .Build();
+                //            errorPopup.Show();
+                //        });
+                //    }
             }
             catch (System.Exception e)
             {
@@ -759,6 +762,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         [OnClick(Resource.Id.floating_button_img)]
         void OnSelectFloatingIcon(object sender, EventArgs eventArgs)
         {
+           
             // FBitem = FloatingButtonUtils.GetFloatingButton();
             FloatingButtonEntity wtManager = new FloatingButtonEntity();
             List<FloatingButtonEntity> floatingButtonList = wtManager.GetAllItems();
@@ -769,6 +773,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 if (!string.IsNullOrEmpty(floatingButtonList[0].Description))
                 {
+                   
                     string url = string.Empty;
                     string title = string.Empty;
 
@@ -781,6 +786,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         try
                         {
+                            DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.WEB);
                             Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
                             webIntent.PutExtra(Constants.IN_APP_LINK, url);
                             webIntent.PutExtra(Constants.IN_APP_TITLE, title);
@@ -799,10 +805,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 if (!string.IsNullOrEmpty(floatingButtonList[0].Description))
                 {
-
                     CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
                     try
                     {
+                        DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.DBR);
                         Intent intent = new Intent(this, typeof(FloatingButtonMarketingActivity));
                         intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                         intent.PutExtra("accountNumber", dbrAccount.AccNum);
@@ -821,6 +827,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                     try
                     {
+                        DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.BR);
                         Intent supplyAccount = new Intent(this, typeof(NBRDiscoverMoreActivity));
                         StartActivityForResult(supplyAccount, Constants.SELECT_ACCOUNT_REQUEST_CODE);
                     }
@@ -838,6 +845,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                     try
                     {
+                        DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.SD);
                         Intent SDDiscoverCom = new Intent(this, typeof(ServiceDisruptionActivity));
                         SDDiscoverCom.PutExtra("fromDashboard", true);
                         StartActivityForResult(SDDiscoverCom, SELECT_SD_POPUP_REQUEST_CODE);
@@ -861,6 +869,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         {
                             if (currentFragment.GetType() == typeof(HomeMenuFragment))
                             {
+                                DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.EB);
                                 //Intent EBPopupPage = new Intent(this, typeof(EBPopupScreenActivity));
                                 //StartActivityForResult(EBPopupPage, SELECT_SM_POPUP_REQUEST_CODE);
                                 HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
@@ -1006,6 +1015,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             LogicCheckForDBRMarketingPopUp();
                         }
                     }
+                    else
+                    {
+                        LogicCheckForDBRMarketingPopUp();
+                    }
                 }
                 catch (System.Exception e)
                 {
@@ -1080,6 +1093,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (!dbrPopUpHasShown
                     && loginCount == 1
                     && DBRUtility.Instance.ShouldShowHomeCard
+                    && DBRUtility.Instance.IsAccountEligible
                     && countCA > 0)
                 {
                     ShowMarketingTooltip();
@@ -1521,11 +1535,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void HideFloatingButton()
         {
             floatingButtonLayout.Visibility = ViewStates.Gone;
+            hideButtonLayout.Visibility = ViewStates.Gone;
         }
 
         public void ShowFloatingButton()
         {
             floatingButtonLayout.Visibility = ViewStates.Visible;
+            hideButtonLayout.Visibility = ViewStates.Visible;
         }
 
         public void HideAccountName()

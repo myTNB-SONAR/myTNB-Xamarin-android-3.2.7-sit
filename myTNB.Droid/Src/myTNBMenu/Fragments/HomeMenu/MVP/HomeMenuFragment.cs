@@ -725,12 +725,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 //Nullity Check
                 if (billRenderingTenantResponse != null
-                   && billRenderingTenantResponse.StatusDetail != null
-                   && billRenderingTenantResponse.StatusDetail.IsSuccess
-                   && billRenderingTenantResponse.Content != null
-                  )
+                    && billRenderingTenantResponse.StatusDetail != null
+                    && billRenderingTenantResponse.StatusDetail.IsSuccess
+                    && billRenderingTenantResponse.Content != null
+                 )
                 {
-                    SetDBRDiscoverView();
+                   SetDBRDiscoverView();
                 }
                 //else
                 //{
@@ -1355,64 +1355,66 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     try
                     {
                         this.IsAccountDBREligible = IsAccountDBREligible;
-                        //if (IsAccountDBREligible)
-                        //{
 
-                        if (IsAccountDBREligible && CustomerBillingAccount.HasOwnerCA())
+                        if (IsAccountDBREligible)
                         {
-                            SetupDiscoverView();
-                            discovercontainer.Visibility = ViewStates.Visible;
-                            discoverView.Visibility = ViewStates.Visible;
-                            img_discover_digital_bill.Visibility = ViewStates.Visible;
-                            discoverMoreSectionTitle.Visibility = ViewStates.Visible;
 
-                        }
-                        else
-                        {
-                            //GetBillTenantRendering();
-                            int countCA = 0;
-                            bool flagOwner = false;
-                            List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                            List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
-                            CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
-
-                            //TenantDBR
-
-                            foreach (CustomerBillingAccount item in accounts)
-                            {
-                                if (item.AccountHasOwner == true)
-                                {
-                                    flagOwner = true;
-                                }
-                            }
-
-                            for (int j = 0; j < accounts.Count; j++)
-                            {
-                                for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
-                                {
-                                    if (flagOwner
-                                        && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
-                                        && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
-                                        && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
-                                        && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
-                                    {
-                                        countCA++;
-                                    }
-                                }
-
-                            }
-
-                            if (countCA > 0)
+                            if (CustomerBillingAccount.HasOwnerCA())
                             {
                                 SetupDiscoverView();
                                 discovercontainer.Visibility = ViewStates.Visible;
                                 discoverView.Visibility = ViewStates.Visible;
                                 img_discover_digital_bill.Visibility = ViewStates.Visible;
                                 discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+
                             }
                             else
                             {
-                                discovercontainer.Visibility = ViewStates.Gone;
+                                //GetBillTenantRendering();
+                                int countCA = 0;
+                                bool flagOwner = false;
+                                List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+                                List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+                                CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
+
+                                //TenantDBR
+
+                                foreach (CustomerBillingAccount item in accounts)
+                                {
+                                    if (item.AccountHasOwner == true)
+                                    {
+                                        flagOwner = true;
+                                    }
+                                }
+
+                                for (int j = 0; j < accounts.Count; j++)
+                                {
+                                    for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
+                                    {
+                                        if (flagOwner
+                                            && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
+                                            && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
+                                            && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
+                                            && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
+                                        {
+                                            countCA++;
+                                        }
+                                    }
+
+                                }
+
+                                if (countCA > 0)
+                                {
+                                    SetupDiscoverView();
+                                    discovercontainer.Visibility = ViewStates.Visible;
+                                    discoverView.Visibility = ViewStates.Visible;
+                                    img_discover_digital_bill.Visibility = ViewStates.Visible;
+                                    discoverMoreSectionTitle.Visibility = ViewStates.Visible;
+                                }
+                                else
+                                {
+                                    discovercontainer.Visibility = ViewStates.Gone;
+                                }
                             }
                         }
                         //}

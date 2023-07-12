@@ -38,12 +38,13 @@
             android:id="@+id/content_layout"
             android:layout_marginBottom="48dp" />
     </LinearLayout>
-    <LinearLayout
+    <RelativeLayout
 		android:id="@+id/floating_button_layout"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="80dp"
+        android:layout_marginRight="16dp"
 		android:orientation="horizontal"
         android:visibility="gone">
 
@@ -52,19 +53,25 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="12dp"
-            android:layout_marginLeft="200dp"
             android:background="@drawable/md_transparent"
             android:src="@drawable/md_transparent"/>
+	</RelativeLayout>
+    <LinearLayout
+		    android:id="@+id/hide_button_layout"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+		    android:orientation="horizontal"
+            android:visibility="gone">
 
-        <ImageView
-            android:id="@+id/floating_button_x"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_gravity="end"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="110dp"
-            android:src="@drawable/ic_hide_floatingBtn"/>
-
+            <ImageView
+                android:id="@+id/floating_button_x"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="150dp"
+                android:src="@drawable/ic_hide_floatingBtn"/>
+       
 	</LinearLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

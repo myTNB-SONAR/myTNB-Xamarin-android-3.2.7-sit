@@ -672,7 +672,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                 baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                 baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                //string dt = JsonConvert.SerializeObject(baseRequest);
                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
                 if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null && customerAccountListResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
@@ -815,7 +814,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                 baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                 baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                //string dt = JsonConvert.SerializeObject(baseRequest);
                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
                 if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null && customerAccountListResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
@@ -1057,7 +1055,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 this.mView.ShowProgress();
                 UserNotificationDetailsRequestNew request = new UserNotificationDetailsRequestNew(NotificationTypeId, BCRMNotificationTypeId, NotificationRequestId);
-                //string dt = JsonConvert.SerializeObject(request);
                 UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetailsByRequestId(request);
                 if (response.IsSuccessResponse())
                 {
