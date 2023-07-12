@@ -468,6 +468,7 @@ namespace myTNB_Android.Src.Base
                 Task<AppLaunchMasterDataResponseAWS> appLaunchMasterDataTask = Task.Run(async () => await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest()));
                 //appLaunchMasterDataTask.Wait();
                 AppLaunchMasterDataResponseAWS masterDataResponse = appLaunchMasterDataTask.Result;
+
                 if (masterDataResponse != null && masterDataResponse.ErrorCode != null && masterDataResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     SetMasterDataResponse(masterDataResponse);

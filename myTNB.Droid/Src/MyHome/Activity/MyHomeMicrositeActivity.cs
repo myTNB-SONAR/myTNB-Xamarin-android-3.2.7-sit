@@ -575,8 +575,6 @@ namespace myTNB_Android.Src.MyHome.Activity
                 //url = "mytnbapp://action=openPDF&extension=pdf&&title=ICCopy_202211.pdf&file=" + encrypted;
                 //url = "mytnbapp://action=showPayment&accountName=Dummy&premise=DEWAN JLN SK JENDERAK SELATAN FELDA JENDERAK SELATAN KUALA KRAU PAHANG 28050&ca=220283416103&isOwner=true&applicationType=COA&applicationRefNo=COT-000-001-6858";
                 //url = "mytnbapp://action=inAppBrowser/https://www.google.com";
-                //url = "mytnbapp://action=inAppBrowser/https://www.africau.edu/images/default/sample.pdf";
-                //url = "mytnbapp://action=inAppBrowser/https://www.learningcontainer.com/wp-content/uploads/2020/07/Large-Sample-Image-download-for-Testing.jpg";
                 Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
 
                 if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT))

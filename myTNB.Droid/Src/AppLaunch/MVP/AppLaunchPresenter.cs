@@ -823,8 +823,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         CustomerBillingAccount.RemoveActive();
                         ProcessCustomerAccount(customerAccountListResponse.customerAccountData);
-
-
                     }
                     else
                     {
@@ -1720,9 +1718,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 CountryUtil.Instance.SetCountryList();
             });
         }
-
-
-
 
         //private void ProcessCustomerAccount(List<CustomerAccountListResponse.CustomerAccountData> list)
         private void ProcessCustomerAccount(List<CustomerAccountListResponseAppLaunch.CustomerAccountData> list)
