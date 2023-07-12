@@ -891,6 +891,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                     try
                     {
+                        DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.TNG);
                         Intent MarketingActivity = new Intent(this, typeof(FloatingButtonMarketingActivity));
                         StartActivity(MarketingActivity);
                     }

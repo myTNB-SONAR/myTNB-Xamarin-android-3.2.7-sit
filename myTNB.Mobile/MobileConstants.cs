@@ -68,8 +68,8 @@ namespace myTNB.Mobile
 
         //AWS GetAccount
         //public static string AWSApiDomainSIT = "https://stagingapi.mytnb.com.my"; //"https://core.stg-mytnb.com/api"; 
-        //public static string AWSApiDomainSIT = "https://stagingapi.mytnb.com.my/core/api";
-        public static string AWSApiDomainSIT = "http://mobiletestingws.tnb.com.my/api";
+        public static string AWSApiDomainSIT = "https://stagingapi.mytnb.com.my/core/api";
+        public static string AWSAPIOnpremSIT = "http://mobiletestingws.tnb.com.my/api";
         public static string AWSApiDomainDEV = "https://mytnb-core-staging-362772745.ap-southeast-1.elb.amazonaws.com/api";
         public static string AWSApiDomainPROD = "https://api.mytnb.com.my/core/api";
 
@@ -82,7 +82,7 @@ namespace myTNB.Mobile
         //public static string OvisWebviewBaseUrlSTG = "https://stage-mytnbappwv.ovis.tnb.com.my";
         public static string OvisWebviewBaseUrlPROD = "https://mytnbappwv.ovis.tnb.com.my";
 
-#if DEBUGx
+#if DEBUG
         public static string ApiDomain = DEV5;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
@@ -92,7 +92,7 @@ namespace myTNB.Mobile
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlSTG;
         internal const string SignKey = SignKey_Staging;
 #elif MASTER || SIT || DEBUG
-        public static string ApiDomain = DEV5;
+        public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;

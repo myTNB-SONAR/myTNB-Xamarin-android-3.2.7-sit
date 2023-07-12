@@ -467,7 +467,6 @@ namespace myTNB_Android.Src.Login.MVP
                                 GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                                 baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                                 baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                                string dt = JsonConvert.SerializeObject(baseRequest);
                                 CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
                                 //if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                                 if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null && customerAccountListResponse.ErrorCode == Constants.SERVICE_CODE_SUCCESS)

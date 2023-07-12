@@ -1224,7 +1224,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             {
                 this.mView.ShowLoadingScreen();
                 UserNotificationDetailsRequestNew request = new UserNotificationDetailsRequestNew(NotificationTypeId, BCRMNotificationTypeId, NotificationRequestId);
-                string dt = JsonConvert.SerializeObject(request);
+                // string dt = JsonConvert.SerializeObject(request);
                 UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetailsByRequestId(request);
                 if (response.IsSuccessResponse())
                 {

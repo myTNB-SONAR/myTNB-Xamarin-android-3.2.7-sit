@@ -338,7 +338,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                             try
                             {
                                 UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new BaseRequest());
-                                string dt = JsonConvert.SerializeObject(new BaseRequest());
+                                // string dt = JsonConvert.SerializeObject(new BaseRequest());
                                 if (response != null && response.Response != null && response.Response.ErrorCode == "7200")
                                 {
                                     if (response.GetData() != null && response.GetData().FilteredUserNotificationList != null)

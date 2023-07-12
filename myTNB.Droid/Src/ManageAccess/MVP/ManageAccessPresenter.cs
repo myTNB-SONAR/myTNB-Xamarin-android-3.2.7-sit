@@ -106,7 +106,6 @@ namespace myTNB_Android.Src.ManageAccess.MVP
 
                 RemoveAccountRequestNew removeAccountRequest = new RemoveAccountRequestNew(accountList, AccountNum);
                 removeAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                string dt = JsonConvert.SerializeObject(removeAccountRequest);
 
                 var removeAccountResponse = await ServiceApiImpl.Instance.RemoveUserAcess_OT(removeAccountRequest);
 
@@ -211,7 +210,6 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             {
                 RemoveAccountRequestNew removeUserAccountRequest = new RemoveAccountRequestNew(AccountList, AccountNum);
                 removeUserAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                string dt = JsonConvert.SerializeObject(removeUserAccountRequest);
 
                 var removeAccountResponse = await ServiceApiImpl.Instance.RemoveUserAcess_OT(removeUserAccountRequest);
 
@@ -307,7 +305,6 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             {
                 LogUserAccessRequest logUserAccessRequest = new LogUserAccessRequest(accountData.AccountNum);
                 logUserAccessRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                string dt = JsonConvert.SerializeObject(logUserAccessRequest);
                 LogUserAccessResponse logUserAccessResponse = await ServiceApiImpl.Instance.GetAccountActivityLogList(logUserAccessRequest);
 
                 if (mView.IsActive())
