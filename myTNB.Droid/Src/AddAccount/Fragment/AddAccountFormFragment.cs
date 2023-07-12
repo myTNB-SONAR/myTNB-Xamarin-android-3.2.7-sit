@@ -524,6 +524,26 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             mSnackBar.Show();
         }
 
+        public void ShowAddAccountNumberInvalid(string errorMessage)
+        {
+
+            if (mSnackBar != null && mSnackBar.IsShown)
+            {
+                mSnackBar.Dismiss();
+
+            }
+
+            mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
+            );
+            View v = mSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+
+            mSnackBar.Show();
+
+        }
+
         public void ShowAddAccountROCFail(string errorMessage)
         {
 
