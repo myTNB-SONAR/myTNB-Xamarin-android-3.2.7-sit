@@ -152,31 +152,11 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                     : string.Empty;
                                 UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
                             }
-                            else if (notifType.ToUpper() == "DBROWNER")
+                            else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.DBR_Owner)
                             {
                                 string accountNumber = Intent.Extras.GetString("AccountNumber");
                                 UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
                             }
-                            else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.ACCOUNT_STATEMENT
-                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.APP_UPDATE
-                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.NEW_BILL_DESIGN
-                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCFirstNotification
-                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCSecondNotification
-                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCSuccessful
-                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCFailed
-                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThreeTimesFailure
-                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCIDNotMatching
-                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyFailed
-                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyThreeTimesFailure
-                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartySuccessful
-                                || notifType.ToUpper() == MobileConstants.PushNotificationTypes.EKYCThirdPartyIDNotMatching)
-                        {
-                            if (UserEntity.IsCurrentlyActive())
-                            {
-                                NotificationUtil.Instance.SaveData(Intent.Extras);
-                                UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
-                            }
-                        }
                             else
                             {
                                 UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));

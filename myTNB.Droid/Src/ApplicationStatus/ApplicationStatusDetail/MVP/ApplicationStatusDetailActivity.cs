@@ -1433,7 +1433,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
             if (applicationDetailDisplay != null && applicationDetailDisplay.TutorialType != null)
             {
-                if (!UserSessions.HasApplicationDetailShown(PreferenceManager.GetDefaultSharedPreferences(this)))//STUB
+                if (!UserSessions.HasApplicationDetailShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                 {
                     Handler h = new Handler();
                     Action myAction = () =>

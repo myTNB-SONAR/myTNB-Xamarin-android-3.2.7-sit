@@ -343,9 +343,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
             else if (NotificationUtil.Instance.PushMapId.IsValid())
             {
-                if ((NotificationUtil.Instance.Type == Notification.TypeEnum.AppUpdate)
-                    || (NotificationUtil.Instance.Type == Notification.TypeEnum.AccountStatement)
-                    || (NotificationUtil.Instance.Type == Notification.TypeEnum.EKYC))
+                if (NotificationUtil.Instance.Type == Notification.TypeEnum.EKYC)
                 {
                     if (DSUtility.Instance.IsAccountEligible)
                     {
@@ -403,7 +401,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     if (response.IsSuccessResponse())
                     {
                         Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
-                        ShowNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+
+                        if (notifType == Notification.TypeEnum.EKYC.ToString())
+                        {
+                            ShowEKYCNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+                        }
+                        else
+                        {
+                            ShowNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+                        }
+
                         mainActivity.HideProgressDialog();
                     }
                     else

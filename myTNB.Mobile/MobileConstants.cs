@@ -162,17 +162,6 @@ namespace myTNB.Mobile
             public const string APP_UPDATE = "APPUPDATE";
             public const string ACCOUNT_STATEMENT = "ACCOUNTSTATEMENT";
             public const string NEW_BILL_DESIGN = "NEWBILLDESIGN";
-            public const string DIGITAL_SIGNATURE = "EKYCVERIFICATION";
-            public const string EKYCIDNotMatching = "EKYCIDNOTMATCHING";
-            public const string EKYCFailed = "EKYCFAILED";
-            public const string EKYCThreeTimesFailure = "EKYCTHREETIMESFAILURE";
-            public const string EKYCSuccessful = "EKYCVERIFICATIONSUCCESS";
-            public const string EKYCFirstNotification = "EKYCFIRSTNOTIFICATION";
-            public const string EKYCSecondNotification = "EKYCSECONDNOTIFICATION";
-            public const string EKYCThirdPartyFailed = "EKYCTHIRDPARTYFAILED";
-            public const string EKYCThirdPartySuccessful = "EKYCTHIRDPARTYVERIFICATIONSUCCESS";
-            public const string EKYCThirdPartyThreeTimesFailure = "EKYCTHIRDPARTYMTHREETIMESFAILURE";
-            public const string EKYCThirdPartyIDNotMatching = "EKYCTHIRDPARTYIDNOTMATCHING";
         }
 
         public struct OSType
