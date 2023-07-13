@@ -60,6 +60,7 @@ namespace myTNB.Mobile
                 {
                     IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.Domain);
                     AppInfoManager.Instance.SetAccountList(caList);
+
                     PostEligibilityRequest request = new PostEligibilityRequest
                     {
                         UserID = userID ?? string.Empty,

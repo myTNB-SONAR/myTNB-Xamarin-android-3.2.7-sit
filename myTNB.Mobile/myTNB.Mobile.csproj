@@ -84,7 +84,6 @@
     <Folder Include="AWS\Models\DS\" />
     <Folder Include="AWS\Models\DS\Status\" />
     <Folder Include="AWS\Models\DS\Identification\" />
-    <Folder Include="AWS\Models\Eligibility\Post Eligibility By Criteria\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -148,7 +147,7 @@
     <None Remove="AWS\Models\DS\EKYCStatus\" />
     <None Remove="AWS\Models\DS\EKYCIdentification\" />
     <None Remove="Refit" />
-    <None Remove="AWS\Models\Eligibility\Post Eligibility By Criteria\" />
+    <None Remove="Xamarin.Essentials" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />

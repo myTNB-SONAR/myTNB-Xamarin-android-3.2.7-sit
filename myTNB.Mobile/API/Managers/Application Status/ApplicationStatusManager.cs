@@ -511,8 +511,9 @@ namespace myTNB.Mobile
                     if (DSUtility.Instance.IsAccountEligible)
                     {
                         Debug.WriteLine("[DEBUG][GetApplicationDetail] Check By BA");
-                        #region Mitigation Task For myHome & DS	
-                        // Mitigation Task For myHome & DS	
+
+                        #region Mitigation Task For myHome & DS
+                        // Mitigation Task For myHome & DS
                         if (applicationType.Contains("NC")
                             && "myTNB_API_Mobile".Equals(displaymodel.Content.ApplicationStatusDetail.Channel, StringComparison.OrdinalIgnoreCase))
                         {
@@ -523,7 +524,8 @@ namespace myTNB.Mobile
                             isDSEligible = true;
                         }
                         #endregion
-                        //isDSEligible = true;	
+                        
+                        //isDSEligible = true;
                         displaymodel = await GetApplicationDetailV2(savedApplicationID
                            , applicationID
                            , applicationType
@@ -621,6 +623,7 @@ namespace myTNB.Mobile
                                     , applicationType);
                                 displaymodel.ParseDisplayModel(paymentResponse);
                             }
+                            displaymodel.Content.ApplicationStatusDetail.Channel = response.Content.newConnectionDetail.channel;
                         }
                     }
                     catch (Exception ex)
