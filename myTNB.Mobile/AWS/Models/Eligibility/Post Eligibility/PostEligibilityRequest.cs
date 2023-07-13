@@ -11,6 +11,8 @@ namespace myTNB.Mobile.AWS
         public string Email { set; get; }
         [JsonProperty("contractAccounts")]
         public List<ContractAccountModel> ContractAccounts { set; get; }
+        [JsonProperty("premiseCriteria")]
+        public List<PremiseCriteriaModel> PremiseCriteria { set; get; }
     }
 
     public class ContractAccountModel

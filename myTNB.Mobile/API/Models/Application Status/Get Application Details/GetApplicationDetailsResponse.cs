@@ -66,6 +66,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string mobileNo { set; get; }
         public string businessArea { set; get; }
         public bool isOwnApplication { set; get; }
+        public string channel { set; get; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
