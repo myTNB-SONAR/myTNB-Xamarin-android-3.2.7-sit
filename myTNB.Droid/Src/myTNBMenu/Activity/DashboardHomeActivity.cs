@@ -620,6 +620,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
+            HideFloatingButton();
             //if (DashboardHomeActivity.GO_TO_INNER_DASHBOARD)
             //{
 
