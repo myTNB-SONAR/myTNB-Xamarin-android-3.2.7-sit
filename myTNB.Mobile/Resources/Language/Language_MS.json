@@ -3469,9 +3469,9 @@
     "backToHome": "Kembali ke Halaman Utama",
     "userIDNotMatchTitle": "Oops!",
     "userIDNotMatchMessage": "Sila pastikan anda menggunakan akaun myTNB yang ditetapkan untuk pengesahan identiti.",
-    "DSPrivacyPolicy": "Dengan mengesahkan identiti anda, anda bersetuju dengan <a href=\"\\\">Dasar Privasi</a> TNB.",
-    "privacyPolicy": "Dasar Privasi",
-    "privacyPolicyURL": "https://www.mytnb.com.my/privacy-policy"
+    "DSPrivacyPolicy": "Saya dengan ini memberikan persetujuan dan memperakui bahawa Tenaga Nasional Berhad, ejen dan pembekal perkhidmatan yang diberi kuasa (“TNB”) mempunyai hak untuk mengumpul, menggunakan, memindahkan, menzahirkan, menyimpan dan/atau memproses data peribadi dan data peribadi sensitif saya termasuk tetapi tidak terhad kepada gambar, rakaman audio atau video, imej, data biometrik dan apa-apa data lain yang diperlukan bagi tujuan pengesahan identiti selaras dengan <a href=\"\\\">Polisi Perlindungan Data Peribadi TNB</a> dan Akta Perlindungan Data Peribadi 2010.",
+    "privacyPolicy": "Polisi Perlindungan Data Peribadi TNB",
+    "privacyPolicyURL": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa"
   },
   "DSLanding_selector": {
     "idType": [

@@ -14,7 +14,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
-		android:background="@color/lightGrey">
+		android:background="@color/lightGrey"
+		android:layout_marginBottom="10dp">
 		<include
 			layout="@layout/toolbar"
 			id="@+id/toolbar" />
@@ -99,6 +100,7 @@
 						android:orientation="vertical"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
+						android:paddingBottom="16dp"
 						android:visibility="gone"
 						tools:visibility="visible"
 						android:id="@+id/dsIdVerifBottomInfoContainer">
@@ -156,7 +158,7 @@
 								android:textColor="@color/charcoalGrey"
 								android:layout_marginTop="10dp"
 								android:layout_marginLeft="0dp"
-								android:layout_marginBottom="24dp"
+								android:layout_marginBottom="8dp"
 								android:layout_marginRight="16dp"
 								tools:text="Before you begin, get your Identification Type ready."
 								android:text="Before you begin, get your Identification Type ready."
@@ -166,6 +168,53 @@
 								android:layout_gravity="left"
 								android:visibility="visible"
 								tools:visibility="visible"/>
+						</LinearLayout>
+					</LinearLayout>
+				</LinearLayout>
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="9dp"
+					android:layout_marginBottom="9dp"
+					android:visibility="gone"
+					tools:visibility="visible"
+					android:background="@color/white"
+					android:id="@+id/identityVerificationPrivacyPolicyContainer">
+					<LinearLayout
+						android:orientation="horizontal"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_margin="8dp"
+						android:layout_marginTop="9dp"
+						android:layout_marginBottom="9dp"
+						android:weightSum="1">
+						<CheckBox
+							android:id="@+id/checkboxCondition"
+							android:layout_weight="0.1"
+							android:layout_height="wrap_content"
+							android:layout_width="0dp"
+							android:layout_gravity="center|left"
+							android:button="@drawable/checkbox_selector"/>
+						<LinearLayout
+							android:orientation="vertical"
+							android:layout_width="0dp"
+							android:layout_weight="0.9"
+							android:layout_marginTop="9dp"
+							android:layout_marginBottom="9dp"
+							android:layout_height="wrap_content">
+							<TextView
+								android:id="@+id/dsIdVerificationPrivacyPolicy"
+								android:text="By confirming"
+								android:textAppearance="?android:attr/textAppearanceSmall"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:textSize="12dp"
+								android:textColorLink="@color/powerBlue"
+								android:layout_gravity="fill_vertical"
+								android:paddingRight="8dp"
+								android:layout_marginStart="5dp"
+								android:layout_marginEnd="8dp"/>
 						</LinearLayout>
 					</LinearLayout>
 				</LinearLayout>
@@ -217,18 +266,9 @@
 				tools:text="Continue"
 				android:layout_width="match_parent"
 				android:layout_height="48dp"
-				style="@style/DarkButton"
-				android:textAllCaps="false" />
-			<TextView
-				android:id="@+id/dsIdVerificationPrivacyPolicy"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-				android:paddingLeft="3dp"
-				android:paddingTop="5dp"
-                android:textSize="12dp"
-                android:textColorLink="@color/powerBlue"
-                android:layout_gravity="center_vertical"/>
+				style="@style/DisabledButton"
+				android:textAllCaps="false"
+				android:enabled="false"/>
 		</LinearLayout>
 	</LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

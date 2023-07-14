@@ -802,13 +802,17 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Landing.View_Notification_Detail);
             switch (details.BCRMNotificationTypeId)
-            {                
-                case Constants.BCRM_NOTIFICATION_EKYC_FIRST_NOTIFICATION:
-                case Constants.BCRM_NOTIFICATION_EKYC_SECOND_NOTIFICATION:
+            {
                 case Constants.BCRM_NOTIFICATION_EKYC_ID_NOT_MATCHING:
                 case Constants.BCRM_NOTIFICATION_EKYC_FAILED:
                 case Constants.BCRM_NOTIFICATION_EKYC_THREE_TIMES_FAILURE:
                 case Constants.BCRM_NOTIFICATION_EKYC_SUCCESSFUL:
+                case Constants.BCRM_NOTIFICATION_EKYC_FIRST_NOTIFICATION:
+                case Constants.BCRM_NOTIFICATION_EKYC_SECOND_NOTIFICATION:
+                case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_FAILED:
+                case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_THREE_TIMES_FAILURE:
+                case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_SUCCESSFUL:
+                case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_ID_NO_TMATCHING:
                     {
                         Intent notificationDetails = new Intent(this, typeof(DSNotificationDetailsActivity));
                         notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));

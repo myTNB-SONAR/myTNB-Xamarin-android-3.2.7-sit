@@ -3469,9 +3469,9 @@
     "backToHome": "Back To Home",
     "userIDNotMatchTitle": "Oops!",
     "userIDNotMatchMessage": "Please ensure that you are using the designated myTNB account for identity verification.",
-    "DSPrivacyPolicy": "By verifying your identity, you're consenting to TNB's '<a href=\"\\\">Privacy Policy</a>.",
-    "privacyPolicy": "Privacy Policy",
-    "privacyPolicyURL": "https://www.mytnb.com.my/privacy-policy"
+    "DSPrivacyPolicy": "I hereby consent and acknowledge that Tenaga Nasional Berhad, its agent and authorized service providers (“TNB”) shall have the right to collect, use, transfer, disclose, retain and/or process my personal data and sensitive personal data including but not limited to photographs, audio or video recording, images, biometric data and any other data necessary for identity verification in accordance to the <a href=\"\\\">TNB’s Personal Data Protection Policy</a> and the Personal Data Protection Act 2010.",
+    "privacyPolicy": "TNB’s Personal Data Protection Policy",
+    "privacyPolicyURL": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa"
   },
   "DSLanding_selector": {
     "idType": [
