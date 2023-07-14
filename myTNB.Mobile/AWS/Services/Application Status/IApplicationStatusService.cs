@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using myTNB.Mobile.AWS.Models.ApplicationStatus.PostNCDraftApplications;
 using Refit;
 
 namespace myTNB.Mobile.AWS.Services.ApplicationStatus
@@ -29,9 +28,8 @@ namespace myTNB.Mobile.AWS.Services.ApplicationStatus
             , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
             , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey);
 
-        [Post("/myhome/nc-svc/api/v1/NC/GetNCDraftApplications")]
-        Task<HttpResponseMessage> PostGetNCDraftApplications([Body] PostGetNCDraftRequest request
-            , CancellationToken cancellationToken
+        [Post("/myhome/myhome-svc/api/v1/GetDraftApplication/GetDraftApplicationStatus")]
+        Task<HttpResponseMessage> PostGetDraftApplications(CancellationToken cancellationToken
             , [Header(AWSConstants.Headers.Authorization)] string accessToken
             , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
             , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey);

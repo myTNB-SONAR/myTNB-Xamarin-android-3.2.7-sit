@@ -3,25 +3,25 @@ using Newtonsoft.Json;
 
 namespace myTNB.Mobile.AWS
 {
-    public class PostGetNCDraftResponse : BaseResponse<PostGetNCDraftResponseModel>
+    public class PostGetDraftResponse : BaseResponse<PostGetDraftResponseModel>
     {
 
     }
 
-    public class PostGetNCDraftResponseModel
+    public class PostGetDraftResponseModel
     {
         [JsonProperty("applications")]
-        public List<PostGetNCDraftResponseItemModel> Applications { set; get; }
+        public List<PostGetDraftResponseItemModel> Applications { set; get; }
 
         public string ReminderTitle { set; get; } = string.Empty;
         public string ReminderMessage { set; get; } = string.Empty;
         public string PrimaryCTA { set; get; } = string.Empty;
         public string SecondaryCTA { set; get; } = string.Empty;
         public bool IsMultipleDraft { set; get; }
-        public List<string> NCApplicationList { set; get; }
+        public List<string> ApplicationList { set; get; }
     }
 
-    public class PostGetNCDraftResponseItemModel
+    public class PostGetDraftResponseItemModel
     {
         [JsonProperty("applicationId")]
         public int ApplicationID { set; get; }

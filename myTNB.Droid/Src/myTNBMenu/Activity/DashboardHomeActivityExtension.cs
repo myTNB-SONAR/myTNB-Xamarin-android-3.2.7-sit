@@ -557,12 +557,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        internal static void ShowNCDraftResumePopUp(this DashboardHomeActivity mainActivity, MyHomeToolTipModel toolTipModel, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft)
+        internal static void ShowDraftResumePopUp(this DashboardHomeActivity mainActivity, MyHomeToolTipModel toolTipModel, List<PostGetDraftResponseItemModel> newList, bool isMultipleDraft)
         {
             mainActivity.RunOnUiThread(() =>
             {
-                MyTNBAccountManagement.GetInstance().SetPostGetNCDraftResponse(null);
-                UserSessions.SetNCResumePopUpRefNos(PreferenceManager.GetDefaultSharedPreferences(mainActivity), MyTNBAccountManagement.GetInstance().GetNCResumeDraftRefNos());
+                MyTNBAccountManagement.GetInstance().SetPostGetDraftResponse(null);
+                UserSessions.SetResumePopUpRefNos(PreferenceManager.GetDefaultSharedPreferences(mainActivity), MyTNBAccountManagement.GetInstance().GetResumeDraftRefNos());
 
                 DynatraceHelper.OnTrack(DynatraceConstants.MyHome.Screens.Home.Resume_Reminder);
 
@@ -571,7 +571,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 .SetTitle(toolTipModel.Title)
                 .SetMessage(toolTipModel.Message)
                 .SetCTALabel(toolTipModel.PrimaryCTA)
-                .SetCTAaction(() => OnCheckNCList(mainActivity, newNCList, isMultipleDraft))
+                .SetCTAaction(() => OnCheckNCList(mainActivity, newList, isMultipleDraft))
                 .SetSecondaryCTALabel(toolTipModel.SecondaryCTA)
                 .SetSecondaryCTATextSize(12)
                 .SetSecondaryCTAaction(() =>
@@ -584,7 +584,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             });
         }
 
-        private static void OnCheckNCList(this DashboardHomeActivity mainActivity, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft)
+        private static void OnCheckNCList(this DashboardHomeActivity mainActivity, List<PostGetDraftResponseItemModel> newNCList, bool isMultipleDraft)
         {
             DynatraceHelper.OnTrack(DynatraceConstants.MyHome.CTAs.Home.Resume_Reminder_Continue);
 
@@ -596,7 +596,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 if (newNCList != null && newNCList.Count == 1)
                 {
-                    PostGetNCDraftResponseItemModel ncObj = newNCList[0];
+                    PostGetDraftResponseItemModel ncObj = newNCList[0];
 
                     if (ncObj != null)
                     {

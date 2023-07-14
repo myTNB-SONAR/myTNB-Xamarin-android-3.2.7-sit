@@ -55,8 +55,8 @@ namespace myTNB_Android.Src.Base
         private bool IsNCAcc = false;
         private bool IsSDUser = false;
         private bool IsTNGEnable = false;
-        private static PostGetNCDraftResponse postGetNCDraftResponse = null;
-        private string nCResumeDraftRefNos = string.Empty;
+        private static PostGetDraftResponse postGetDraftResponse = null;
+        private string resumeDraftRefNos = string.Empty;
 
         private MyTNBAccountManagement()
         {
@@ -804,24 +804,24 @@ namespace myTNB_Android.Src.Base
             return IsTNGEnable;
         }
 
-        public void SetPostGetNCDraftResponse(PostGetNCDraftResponse data)
+        public void SetPostGetDraftResponse(PostGetDraftResponse data)
         {
-            postGetNCDraftResponse = data;
+            postGetDraftResponse = data;
         }
 
-        public PostGetNCDraftResponse GetPostGetNCDraftResponse()
+        public PostGetDraftResponse GetPostGetDraftResponse()
         {
-            return postGetNCDraftResponse;
+            return postGetDraftResponse;
         }
 
-        public void SetNCResumeDraftRefNos(string str)
+        public void SetResumeDraftRefNos(string str)
         {
-            nCResumeDraftRefNos = str;
+            resumeDraftRefNos = str;
         }
 
-        public string GetNCResumeDraftRefNos()
+        public string GetResumeDraftRefNos()
         {
-            return nCResumeDraftRefNos;
+            return resumeDraftRefNos;
         }
     }
 }

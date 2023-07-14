@@ -1813,9 +1813,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
 
-            if (MyTNBAccountManagement.GetInstance().GetPostGetNCDraftResponse() != null)
+            if (MyTNBAccountManagement.GetInstance().GetPostGetDraftResponse() != null)
             {
-                ((DashboardHomeActivity)Activity).OnCheckNCDraftResumePopUp();
+                ((DashboardHomeActivity)Activity).OnCheckDraftResumePopUp();
             }
         }
 

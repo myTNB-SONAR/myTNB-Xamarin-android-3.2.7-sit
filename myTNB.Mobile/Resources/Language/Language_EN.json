@@ -3087,7 +3087,7 @@
             "type": "toast"
           }
         ],
-        "GetNCDraftApplications": [
+        "GetDraftApplications": [
           {
             "code": "7200",
             "title": "",
@@ -3423,12 +3423,12 @@
     "myHomeTitle": "Check out myHome today!",
     "myHomeMessage": "You can now submit applications for your electricity accounts, change account ownership, close electricity accounts, edit your applications and even organise your moving plans with ease using myHome.",
     "myHomeCTA": "Got It!",
-    "myHomeResumeApplicationTitle": "Resume your Start Electricity Application",
-    "myHomeResumeApplicationMessage": "You have an unfinished Start Electricity Application (Application No.: {0}) waiting to be completed. You can click on the button below to resume your application on myTNB app.<br><br>Submit your Start Electricity application on myTNB app now!",
-    "myHomeResumeApplicationsTitle": "Resume your Start Electricity Applications",
-    "myHomeResumeApplicationsMessage": "You have unfinished Start Electricity Applications (Application Nos.: {0}) waiting to be completed. You can click on the button below to resume your applications on myTNB app.<br><br>Submit your Start Electricity applications on myTNB app now!",
+    "myHomeResumeApplicationTitle": "Resume your application",
+    "myHomeResumeApplicationMessage": "You have an unfinished Application (Application No.: {0}) waiting to be completed. You can click on the button below to resume your application on myTNB app.<br><br>Submit your application on myTNB app now!",
+    "myHomeResumeApplicationsTitle": "Resume your applications",
+    "myHomeResumeApplicationsMessage": "You have unfinished Applications (Application Nos.: {0}) waiting to be completed. You can click on the button below to resume your applications on myTNB app.<br><br>Submit your applications on myTNB app now!",
     "myHomeResumeApplicationPrimaryCTA": "Continue",
-    "myHomeResumeApplicationSecondaryCTA": "I’ll do it later."
+    "myHomeResumeApplicationSecondaryCTA": "I'll Do It Later"
   },
   "ApplicationStatusID": {
     "ASRCompleted": [ 127 ],

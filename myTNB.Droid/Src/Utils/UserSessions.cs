@@ -1313,12 +1313,12 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static string GetNCResumePopUpRefNos(ISharedPreferences prefs)
+        public static string GetResumePopUpRefNos(ISharedPreferences prefs)
         {
             return prefs.GetString(MyHomeConstants.USER_SESSION_NC_RESUME_POPUP_KEY, string.Empty);
         }
 
-        public static void SetNCResumePopUpRefNos(ISharedPreferences prefs, string refNos)
+        public static void SetResumePopUpRefNos(ISharedPreferences prefs, string refNos)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutString(MyHomeConstants.USER_SESSION_NC_RESUME_POPUP_KEY, refNos);

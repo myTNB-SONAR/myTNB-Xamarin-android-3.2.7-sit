@@ -96,10 +96,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         internal static void CheckNCDraftForResume(this DashboardHomePresenter presenter, ISharedPreferences prefs)
         {
-            var response = MyTNBAccountManagement.GetInstance().GetPostGetNCDraftResponse();
+            var response = MyTNBAccountManagement.GetInstance().GetPostGetDraftResponse();
 
             List<string> refNosOldList = new List<string>();
-            string currentRefNos = UserSessions.GetNCResumePopUpRefNos(prefs);
+            string currentRefNos = UserSessions.GetResumePopUpRefNos(prefs);
 
             if (currentRefNos.IsValid())
             {
@@ -112,28 +112,28 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             if (response != null)
             {
-                OnProcessGetNCDraftApplications(presenter, refNosOldList, response);
-                MyTNBAccountManagement.GetInstance().SetPostGetNCDraftResponse(null);
+                OnProcessGetDraftApplications(presenter, refNosOldList, response);
+                MyTNBAccountManagement.GetInstance().SetPostGetDraftResponse(null);
             }
             else
             {
                 Task.Run(() =>
                 {
-                    _ = GetNCDraftApplications(presenter, refNosOldList, prefs);
+                    _ = GetDraftApplications(presenter, refNosOldList, prefs);
                 });
             }
         }
 
-        private static async Task GetNCDraftApplications(this DashboardHomePresenter presenter, List<string> refNosOldList, ISharedPreferences prefs)
+        private static async Task GetDraftApplications(this DashboardHomePresenter presenter, List<string> refNosOldList, ISharedPreferences prefs)
         {
             UserEntity user = UserEntity.GetActive();
-            var response = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostGetNCDraftApplications(user.UserID, user.Email, refNosOldList);
+            var response = await myTNB.Mobile.AWS.ApplicationStatusManager.Instance.PostGetDraftApplications(user.UserID, refNosOldList);
 
-            MyTNBAccountManagement.GetInstance().SetPostGetNCDraftResponse(response);
-            OnProcessGetNCDraftApplications(presenter, refNosOldList, response);
+            MyTNBAccountManagement.GetInstance().SetPostGetDraftResponse(response);
+            OnProcessGetDraftApplications(presenter, refNosOldList, response);
         }
 
-        private static void OnProcessGetNCDraftApplications(this DashboardHomePresenter presenter, List<string> refNosOldList, PostGetNCDraftResponse response)
+        private static void OnProcessGetDraftApplications(this DashboardHomePresenter presenter, List<string> refNosOldList, PostGetDraftResponse response)
         {
             if (response != null &&
                 response.StatusDetail != null &&
@@ -144,27 +144,27 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     response.Content.ReminderMessage.IsValid())
                 {
                     List<string> newRefNosList = new List<string>();
-                    if (response.Content.NCApplicationList != null &&
-                        response.Content.NCApplicationList.Count > 0)
+                    if (response.Content.ApplicationList != null &&
+                        response.Content.ApplicationList.Count > 0)
                     {
-                        string newSetOfRefNos = JsonConvert.SerializeObject(response.Content.NCApplicationList);
-                        MyTNBAccountManagement.GetInstance().SetNCResumeDraftRefNos(newSetOfRefNos);
+                        string newSetOfRefNos = JsonConvert.SerializeObject(response.Content.ApplicationList);
+                        MyTNBAccountManagement.GetInstance().SetResumeDraftRefNos(newSetOfRefNos);
 
-                        newRefNosList = response.Content.NCApplicationList.Except(refNosOldList).ToList();
+                        newRefNosList = response.Content.ApplicationList.Except(refNosOldList).ToList();
                     }
 
-                    List<PostGetNCDraftResponseItemModel> newNCDraftObjList = new List<PostGetNCDraftResponseItemModel>();
+                    List<PostGetDraftResponseItemModel> newDraftObjList = new List<PostGetDraftResponseItemModel>();
 
                     if (response.Content.Applications != null &&
                         response.Content.Applications.Count > 0)
                     {
-                        newNCDraftObjList = response.Content.Applications;
+                        newDraftObjList = response.Content.Applications;
                         foreach (string refNo in refNosOldList)
                         {
                             int index = response.Content.Applications.FindIndex(x => x.ReferenceNo == refNo);
                             if (index != -1)
                             {
-                                newNCDraftObjList.RemoveAt(index);
+                                newDraftObjList.RemoveAt(index);
                             }
                         }
                     }
@@ -177,7 +177,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         SecondaryCTA = response.Content.SecondaryCTA
                     };
 
-                    presenter.mView.OnShowNCDraftResumePopUp(tooltipModel, newNCDraftObjList, response.Content.IsMultipleDraft);
+                    presenter.mView.OnShowDraftResumePopUp(tooltipModel, newDraftObjList, response.Content.IsMultipleDraft);
                 }
             }
         }

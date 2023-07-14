@@ -851,7 +851,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 else
                 {
-                    this.userActionsListener.OnCheckNCDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
+                    this.userActionsListener.OnCheckDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
                 }
             }
         }
@@ -873,7 +873,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         this.SetIsClicked(false);
                         DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Home.Reminder_Popup_GotIt);
-                        this.userActionsListener.OnCheckNCDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
+                        this.userActionsListener.OnCheckDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
                     })
                     .Build();
                 marketingTooltip.Show();
@@ -1823,7 +1823,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 else
                 {
-                    this.userActionsListener.OnCheckNCDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
+                    this.userActionsListener.OnCheckDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
                 }
             }
 
@@ -3239,16 +3239,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.ShowGSLInfoScreen();
         }
 
-        public void OnCheckNCDraftResumePopUp()
+        public void OnCheckDraftResumePopUp()
         {
-            this.userActionsListener.OnCheckNCDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
+            this.userActionsListener.OnCheckDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
         }
 
-        public void OnShowNCDraftResumePopUp(MyHomeToolTipModel toolTipModel, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft)
+        public void OnShowDraftResumePopUp(MyHomeToolTipModel toolTipModel, List<PostGetDraftResponseItemModel> newList, bool isMultipleDraft)
         {
             if (currentFragment.GetType() == typeof(HomeMenuFragment))
             {
-                this.ShowNCDraftResumePopUp(toolTipModel, newNCList, isMultipleDraft);
+                this.ShowDraftResumePopUp(toolTipModel, newList, isMultipleDraft);
             }
         }
     }

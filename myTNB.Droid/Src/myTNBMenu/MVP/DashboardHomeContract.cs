@@ -206,9 +206,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void NavigateToNBR();
 
-            void OnCheckNCDraftResumePopUp();
+            void OnCheckDraftResumePopUp();
 
-            void OnShowNCDraftResumePopUp(MyHomeToolTipModel toolTipModel, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft);
+            void OnShowDraftResumePopUp(MyHomeToolTipModel toolTipModel, List<PostGetDraftResponseItemModel> newList, bool isMultipleDraft);
 
             void RouteToApplicationLanding(string toastMessage = "");
         }
@@ -308,7 +308,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void ShowBillMenuWithAccount(CustomerBillingAccount account);
 
-            void OnCheckNCDraftForResume(ISharedPreferences prefs);
+            void OnCheckDraftForResume(ISharedPreferences prefs);
         }
     }
 }

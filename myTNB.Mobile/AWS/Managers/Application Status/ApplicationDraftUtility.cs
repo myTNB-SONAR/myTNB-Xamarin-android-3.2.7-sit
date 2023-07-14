@@ -4,10 +4,10 @@ using myTNB.Mobile.Constants;
 
 namespace myTNB.Mobile.AWS.Managers.ApplicationStatus
 {
-    internal static class NCDraftUtility
+    internal static class ApplicationDraftUtility
     {
-        internal static void UpdateNCDraftResponse(ref PostGetNCDraftResponse response
-            , List<string> localNCList)
+        internal static void UpdateDraftResponse(ref PostGetDraftResponse response
+            , List<string> localList)
         {
             if (response != null
                 && response.StatusDetail != null
@@ -16,44 +16,44 @@ namespace myTNB.Mobile.AWS.Managers.ApplicationStatus
                 && response.Content.Applications != null
                 && response.Content.Applications.Count > 0)
             {
-                response.Content.NCApplicationList = new List<string>();
-                List<string> newLocalNCList = new List<string>();
+                response.Content.ApplicationList = new List<string>();
+                List<string> newLocalList = new List<string>();
                 string title = string.Empty;
                 string message = string.Empty;
 
-                if (localNCList != null && localNCList.Count > 0)
+                if (localList != null && localList.Count > 0)
                 {
                     List<string> responseNCList = response.Content.Applications.Select(x => x.ReferenceNo).ToList();
-                    newLocalNCList = responseNCList.Except(localNCList).ToList();
-                    response.Content.NCApplicationList.AddRange(localNCList);
+                    newLocalList = responseNCList.Except(localList).ToList();
+                    response.Content.ApplicationList.AddRange(localList);
                 }
                 else
                 {
-                    newLocalNCList = response.Content.Applications.Select(x => x.ReferenceNo).ToList();
+                    newLocalList = response.Content.Applications.Select(x => x.ReferenceNo).ToList();
                 }
-                if (newLocalNCList.Count > 1)
+                if (newLocalList.Count > 1)
                 {
                     response.Content.IsMultipleDraft = true;
-                    string ncString = string.Empty;
-                    for (int i = 0; i < newLocalNCList.Count; i++)
+                    string applicationString = string.Empty;
+                    for (int i = 0; i < newLocalList.Count; i++)
                     {
-                        ncString += newLocalNCList[i];
-                        if (i < newLocalNCList.Count - 1)
+                        applicationString += newLocalList[i];
+                        if (i < newLocalList.Count - 1)
                         {
-                            ncString += ", ";
+                            applicationString += ", ";
                         }
                     }
                     title = LanguageManager.Instance.GetPageValueByKey("MarketingPopup"
                         , MarketingPopup.MyHome.I18N_ResumeApplicationsTitle);
                     message = string.Format(LanguageManager.Instance.GetPageValueByKey("MarketingPopup"
-                        , MarketingPopup.MyHome.I18N_ResumeApplicationsMessage), ncString);
+                        , MarketingPopup.MyHome.I18N_ResumeApplicationsMessage), applicationString);
                 }
-                else if (newLocalNCList.Count == 1)
+                else if (newLocalList.Count == 1)
                 {
                     title = LanguageManager.Instance.GetPageValueByKey("MarketingPopup"
                         , MarketingPopup.MyHome.I18N_ResumeApplicationTitle);
                     message = string.Format(LanguageManager.Instance.GetPageValueByKey("MarketingPopup"
-                        , MarketingPopup.MyHome.I18N_ResumeApplicationMessage), newLocalNCList[0]);
+                        , MarketingPopup.MyHome.I18N_ResumeApplicationMessage), newLocalList[0]);
                 }
 
                 response.Content.ReminderTitle = title;
@@ -62,7 +62,7 @@ namespace myTNB.Mobile.AWS.Managers.ApplicationStatus
                     , MarketingPopup.MyHome.I18N_ResumeApplicationPrimaryCTA);
                 response.Content.SecondaryCTA = LanguageManager.Instance.GetPageValueByKey("MarketingPopup"
                     , MarketingPopup.MyHome.I18N_ResumeApplicationSecondaryCTA);
-                response.Content.NCApplicationList.AddRange(newLocalNCList);
+                response.Content.ApplicationList.AddRange(newLocalList);
             }
         }
     }

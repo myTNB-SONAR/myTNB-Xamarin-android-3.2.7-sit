@@ -2036,7 +2036,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             return account;
         }
 
-        public void OnCheckNCDraftForResume(ISharedPreferences prefs)
+        public void OnCheckDraftForResume(ISharedPreferences prefs)
         {
             if (MyHomeUtility.Instance.IsAccountEligible)
             {
