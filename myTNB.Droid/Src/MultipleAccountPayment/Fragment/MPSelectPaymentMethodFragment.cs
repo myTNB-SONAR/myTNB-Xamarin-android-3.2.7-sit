@@ -205,7 +205,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                     }
                                 }
 
-                                if (dbrCAForPaymentList != null && dbrCAForPaymentList.Count > 0)
+                               if (dbrCAForPaymentList != null && dbrCAForPaymentList.Count > 0)
                                 {
                                     PostMultiBillRenderingResponse multiBillRenderingResponse = await DBRManager.Instance.PostMultiBillRendering(dbrCAForPaymentList
                                         , AccessTokenCache.Instance.GetAccessToken(Activity));
@@ -272,6 +272,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         {
                                             paymentItemAccountPayment.dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1; //enable for tenant
                                         }
+                                        else
+                                        {
+                                            paymentItemAccountPayment.dbrEnabled = false;
+                                        }
 
                                         List<AccountPayment> accountPaymentList = new List<AccountPayment>();
                                         chargeModel.MandatoryCharges.ChargeModelList.ForEach(charge =>
@@ -297,6 +301,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                         else if (AccountHasOwner == true && tenantDBR == true)
                                         {
                                             dbrEnable = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1; //enable for tenant
+                                        }
+                                        else
+                                        {
+                                            dbrEnable = false;
                                         }
 
                                         PaymentItem payItem = new PaymentItem
