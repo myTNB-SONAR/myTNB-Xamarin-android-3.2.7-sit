@@ -343,7 +343,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
             else if (NotificationUtil.Instance.PushMapId.IsValid())
             {
-                if (NotificationUtil.Instance.Type == Notification.TypeEnum.EKYC && DSUtility.Instance.IsAccountEligible)
+                if (NotificationUtil.Instance.Type == Notification.TypeEnum.EKYC && !DSUtility.Instance.IsAccountEligible)
                 {
                     NavigateToNotificationListing(mainActivity);
                 }
