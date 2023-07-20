@@ -343,17 +343,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
             else if (NotificationUtil.Instance.PushMapId.IsValid())
             {
-                if (NotificationUtil.Instance.Type == Notification.TypeEnum.EKYC && !DSUtility.Instance.IsAccountEligible) 
+                if (NotificationUtil.Instance.Type == Notification.TypeEnum.EKYC && DSUtility.Instance.IsAccountEligible)
                 {
-                    UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
-                    mainActivity.RunOnUiThread(() =>
-                    {
-                        mainActivity.ShowProgressDialog();
-                    });
-                    Task.Run(() =>
-                    {
-                        _ = OnGetNotificationDetails(mainActivity);
-                    });
+                    NavigateToNotificationListing(mainActivity);
                 }
                 else
                 {
