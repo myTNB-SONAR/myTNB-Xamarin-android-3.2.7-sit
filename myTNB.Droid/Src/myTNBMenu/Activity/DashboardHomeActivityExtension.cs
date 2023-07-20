@@ -343,24 +343,29 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
             else if (NotificationUtil.Instance.PushMapId.IsValid())
             {
-                if (NotificationUtil.Instance.Type == Notification.TypeEnum.EKYC)
+                if (NotificationUtil.Instance.Type == Notification.TypeEnum.EKYC && !DSUtility.Instance.IsAccountEligible) 
                 {
-                    if (DSUtility.Instance.IsAccountEligible)
+                    UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
+                    mainActivity.RunOnUiThread(() =>
                     {
-                        UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
-                        mainActivity.RunOnUiThread(() =>
-                        {
-                            mainActivity.ShowProgressDialog();
-                        });
-                        Task.Run(() =>
-                        {
-                            _ = OnGetNotificationDetails(mainActivity);
-                        });
-                    }
-                    else
+                        mainActivity.ShowProgressDialog();
+                    });
+                    Task.Run(() =>
                     {
-                        NavigateToNotificationListing(mainActivity);
-                    }
+                        _ = OnGetNotificationDetails(mainActivity);
+                    });
+                }
+                else
+                {
+                    UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
+                    mainActivity.RunOnUiThread(() =>
+                    {
+                        mainActivity.ShowProgressDialog();
+                    });
+                    Task.Run(() =>
+                    {
+                        _ = OnGetNotificationDetails(mainActivity);
+                    });
                 }
             }
             else
@@ -402,7 +407,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
 
-                        if (notifType == Notification.TypeEnum.EKYC.ToString())
+                        if (notifType.Equals(Notification.TypeEnum.EKYC))
                         {
                             ShowEKYCNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
                         }
