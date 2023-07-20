@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -29,7 +30,10 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.FindUs.Activity;
+using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Deeplink;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
@@ -96,6 +100,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
         bool isFilter = false;
         bool isFilterVisible = false;
+        bool isDeleted = false;
         [OnClick(Resource.Id.btnRefresh)]
         void OnDetailRefresh(object sender, EventArgs eventArgs)
         {
@@ -106,6 +111,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         [OnClick(Resource.Id.btnSearchApplicationStatus)]
         void OnClickSearchApplicationStatus(object sender, EventArgs eventArgs)
         {
+            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Landing.Search_Applications);
             GetSearchApplicationTypeAsync();
         }
         private void GetSearchApplicationTypeAsync()
@@ -183,6 +189,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         {
             return true;
         }
+
+        public override void OnBackPressed()
+        {
+            DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Landing.Back);
+            base.OnBackPressed();
+        }
+
         public int GetTopHeight()
         {
             int i = 0;
@@ -259,6 +272,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             switch (item.ItemId)
             {
                 case Resource.Id.action_notification:
+                    DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.CTAs.Landing.Filter_Applications);
                     OnNavigateToApplicationStatusFilter();
                     return true;
             }
@@ -394,9 +408,55 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
                 }
             }
-            if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE || requestCode == Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE)
+            if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE || requestCode == Constants.APPLICATION_STATUS_DETAILS_REQUEST_CODE)
             {
+                if (resultCode == Result.Ok)
+                {
+                    if (data != null && data.Extras is Bundle extras && extras != null)
+                    {
+                        if (extras.ContainsKey(Constants.DELETE_DRAFT_MESSAGE))
+                        {
+                            string message = data.Extras.GetString(Constants.DELETE_DRAFT_MESSAGE);
+                            if (message.IsValid())
+                            {
+                                isDeleted = true;
+                                ToastUtils.OnDisplayToast(this, message ?? string.Empty);
+                            }
+                        }
+                        else if (extras.ContainsKey(MyHomeConstants.BACK_TO_HOME))
+                        {
+                            bool backToHome = extras.GetBoolean(MyHomeConstants.BACK_TO_HOME);
+                            if (backToHome)
+                            {
+                                string toastMessage = string.Empty;
+                                if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                                {
+                                    toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                                }
+
+                                Intent resultIntent = new Intent();
+                                resultIntent.PutExtra(MyHomeConstants.BACK_TO_HOME, true);
+                                resultIntent.PutExtra(MyHomeConstants.CANCEL_TOAST_MESSAGE, toastMessage);
+                                SetResult(Result.Ok, resultIntent);
+                                Finish();
+                            }
+                        }
+                        else if (extras.ContainsKey(MyHomeConstants.BACK_TO_APPLICATION_STATUS_LANDING))
+                        {
+                            if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                            {
+                                string toastMessage = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                                if (toastMessage.IsValid())
+                                {
+                                    isDeleted = true;
+                                    ToastUtils.OnDisplayToast(this, toastMessage);
+                                }
+                            }
+                        }
+                    }
+                }
                 UpdateUI();
+                isDeleted = false;
             }
             HideProgressDialog();
         }
@@ -461,6 +521,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             base.OnCreate(savedInstanceState);
             isFilter = false;
             isFilterVisible = false;
+            isDeleted = false;
             mPresenter = new ApplicationStatusLandingPresenter(this);
             // applicationStatusLandingEmptyLayout.Visibility = ViewStates.Visible;
             viewMoreContainer.Visibility = ViewStates.Gone;
@@ -537,6 +598,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                         mRemoveSnackbar.Show();
                     }
                 }
+                if (extras.ContainsKey(MyHomeConstants.CANCEL_TOAST_MESSAGE))
+                {
+                    string message = extras.GetString(MyHomeConstants.CANCEL_TOAST_MESSAGE);
+                    if (message.IsValid())
+                    {
+                        ToastUtils.OnDisplayToast(this, message ?? string.Empty);
+                    }
+                }
+
             }
 
             if (ApplicationStatusSearchDetailCache.Instance.ShouldSave)
@@ -723,7 +793,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        private async void GetApplicationStatus(int position)
+        private void GetApplicationStatus(int position)
         {
             try
             {
@@ -731,23 +801,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 {
                     ShowProgressDialog();
                     ApplicationModel application = GetAllApplications[position];
-                    ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(application.SavedApplicationId
-                        , application.ApplicationId
-                        , application.ApplicationType
-                        , application.System);
 
-                    if (response.StatusDetail.IsSuccess)
+                    Task.Run(() =>
                     {
-                        Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
-                        applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(response.Content));
-                        StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE);
-                    }
-                    else
-                    {
-                        ShowApplicaitonPopupMessage(this, response.StatusDetail);
-                        this.SetIsClicked(false);
-                    }
-                    HideProgressDialog();
+                        _ = OnGetApplicationStatus(application);
+                    });
                 }
                 else
                 {
@@ -759,7 +817,32 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public async void ShowApplicaitonPopupMessage(Activity context, StatusDetail statusDetail)
+
+        private async Task OnGetApplicationStatus(ApplicationModel application)
+        {
+            ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(application.SavedApplicationId
+                , application.ApplicationId
+                , application.ApplicationType
+                , application.System);
+
+            this.RunOnUiThread(() =>
+            {
+                if (response.StatusDetail.IsSuccess)
+                {
+                    Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                    applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(response.Content));
+                    StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_REQUEST_CODE);
+                }
+                else
+                {
+                    this.SetIsClicked(false);
+                    ShowApplicationPopupMessage(this, response.StatusDetail);
+                }
+                HideProgressDialog();
+            });
+        }
+
+        public void ShowApplicationPopupMessage(Activity context, StatusDetail statusDetail)
         {
             MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                 .SetTitle(statusDetail.Title)
@@ -1032,7 +1115,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                     btnSearchApplicationStatus.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
                                     btnSearchApplicationStatus.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
                                 }
-                                if (!isFilter)
+                                if (!isFilter || isDeleted)
                                 {
                                     applicationStatusRefreshContainer.Visibility = ViewStates.Gone;
                                     applicationStatusLandingRecyclerView.Visibility = ViewStates.Gone;

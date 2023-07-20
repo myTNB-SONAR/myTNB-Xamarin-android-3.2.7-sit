@@ -1,0 +1,98 @@
+{
+    "d": {
+        "__type": "mytnb.lib.models.ServicesStatus",
+        "data": {
+            "services": [
+                {
+                    "ServiceId": "1004",
+                    "ServiceName": "Pay My Bills",
+                    "ServiceIcon": "ICON04",
+                    "ServiceIconUrl": "Pay My Bills URL",
+                    "ServiceDescription": "Open Feedback apply page",
+                    "ServiceCategory": null,
+                    "OrderId": "01",
+                    "Enabled": true,
+                    "AppVersion": "v1,v2"
+                },
+                {
+                    "ServiceId": "1005",
+                    "ServiceName": "View My e-Bills / Advice",
+                    "ServiceIcon": "ICON05",
+                    "ServiceIconUrl": "View My e-bills URL",
+                    "ServiceDescription": "View My e-bills URL",
+                    "ServiceCategory": null,
+                    "OrderId": "02",
+                    "Enabled": true,
+                    "AppVersion": "v1,v2"
+                },
+                {
+                    "ServiceId": "1008",
+                    "ServiceName": "myHome",
+                    "ServiceIcon": "ICON08",
+                    "ServiceIconUrl": "myHome URL",
+                    "ServiceDescription": "Open myHome page",
+                    "ServiceCategory": null,
+                    "OrderId": "03",
+                    "Enabled": true,
+                    "AppVersion": "v1,v2"
+                },
+                {
+                    "ServiceId": "1007",
+                    "ServiceName": "My Energy Budget",
+                    "ServiceIcon": "ICON07",
+                    "ServiceIconUrl": "My Energy Budget URL",
+                    "ServiceDescription": "My Energy Budget page",
+                    "ServiceCategory": null,
+                    "OrderId": "07",
+                    "Enabled": true,
+                    "AppVersion": "v3"
+                },
+                {
+                    "ServiceId": "1001",
+                    "ServiceName": "Self Meter Reading",
+                    "ServiceIcon": "ICON01",
+                    "ServiceIconUrl": "Self Meter Reading URL",
+                    "ServiceDescription": "Open SMR Apply page",
+                    "ServiceCategory": null,
+                    "OrderId": "03",
+                    "Enabled": true,
+                    "AppVersion": "v1,v2"
+                },
+                {
+                    "ServiceId": "1003",
+                    "ServiceName": "Submit Feedback",
+                    "ServiceIcon": "ICON03",
+                    "ServiceIconUrl": "Submit feedback URL",
+                    "ServiceDescription": "Open Feedback apply page",
+                    "ServiceCategory": null,
+                    "OrderId": "04",
+                    "Enabled": true,
+                    "AppVersion": "v1,v2"
+                },
+                {
+                    "ServiceId": "1006",
+                    "ServiceName": "Application Status",
+                    "ServiceIcon": "ICON06",
+                    "ServiceIconUrl": "Application Status URL",
+                    "ServiceDescription": "Open Application Status page",
+                    "ServiceCategory": null,
+                    "OrderId": "06",
+                    "Enabled": true,
+                    "AppVersion": "v2"
+                }
+            ]
+        },
+        "status": "",
+        "isError": "false",
+        "message": "",
+        "ErrorCode": "7200",
+        "ErrorMessage": "Successful!",
+        "DisplayMessage": "Successful!",
+        "DisplayType": "",
+        "DisplayTitle": "",
+        "RefreshTitle": "",
+        "RefreshMessage": "",
+        "RefreshBtnText": "",
+        "IsPayEnabled": true
+    }
+}

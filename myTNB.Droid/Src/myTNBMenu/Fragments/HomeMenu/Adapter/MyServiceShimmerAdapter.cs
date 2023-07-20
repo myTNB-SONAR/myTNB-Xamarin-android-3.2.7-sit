@@ -5,6 +5,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Facebook.Shimmer;
+using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
 using System;
@@ -15,11 +16,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
     public class MyServiceShimmerAdapter : RecyclerView.Adapter
     {
 
-        List<MyService> shimmerList = new List<MyService>();
+        List<MyServiceModel> shimmerList = new List<MyServiceModel>();
 
         private Android.App.Activity mActivity;
 
-        public MyServiceShimmerAdapter(List<MyService> data, Android.App.Activity Activity)
+        public MyServiceShimmerAdapter(List<MyServiceModel> data, Android.App.Activity Activity)
         {
             if (data == null)
             {

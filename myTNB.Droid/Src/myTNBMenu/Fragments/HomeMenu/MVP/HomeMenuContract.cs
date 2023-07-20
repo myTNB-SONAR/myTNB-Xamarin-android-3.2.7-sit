@@ -11,6 +11,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyHome.Model;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -26,7 +27,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void SetMyServiceRecycleView();
             void SetNewFAQRecycleView();
             //void StopShimmerDiscoverMore();
-            void SetMyServiceResult(List<MyService> list);
+            void SetMyServicesResult(List<MyServiceModel> list);
             void SetNewFAQResult(List<NewFAQ> list);
             void SetDiscoverResult(bool IsAccountDBREligible);
             string GetDeviceId();
@@ -123,7 +124,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void InitiateService();
             Task InitiateMyService();
             Task RetryMyService();
-            List<MyService> LoadShimmerServiceList(int count);
+            List<MyServiceModel> LoadShimmerServiceList(int count);
             List<NewFAQ> LoadShimmerFAQList(int count);
             void GetSavedNewFAQTimeStamp();
             Task OnGetFAQTimeStamp();

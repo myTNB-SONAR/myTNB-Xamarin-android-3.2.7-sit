@@ -434,9 +434,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                            && billRenderingTenantResponse.StatusDetail.IsSuccess
                            && billRenderingTenantResponse.Content != null)
                         {
-                            bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccount.AccountNum).IsOwnerOverRule;
-                            bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
-                            bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.caNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
+                            bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
+                            bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
+                            bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
 
                             if (selectedAccount.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
                             {

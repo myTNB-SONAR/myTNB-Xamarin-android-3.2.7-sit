@@ -91,6 +91,13 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string ACCT_STMNT_PDF_FILE_PATH = ".accountStatementFilePath";
         internal static readonly string BILL_HISTORY_IS_EMPTY = ".billHistoryIsEmpty";
 
+        internal static readonly string DELETE_DRAFT_MESSAGE = ".deleteDraftMessage";
+
+        internal static readonly string PDF_IMAGE_VIWER_FILE_PATH = ".pdfImageViewerfilePath";
+        internal static readonly string PDF_IMAGE_VIEWER_EXTENSION = ".pdfImageViewerFileExtension";
+        internal static readonly string PDF_FILE_TITLE = ".pdfImageViewerFileTitle";
+        internal static readonly string PDF_FILE_EXTENSION = "pdf";
+
         /// <summary>
         /// BARCODE REQUEST TYPE
         /// </summary>
@@ -101,7 +108,9 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int ACCTSTMNT_PDFVIEW_REQUEST_CODE = 0x14;
         internal static readonly int SELECT_FEEDBACK_STATE = 0x02;
         internal static readonly int SELECT_FEEDBACK_TYPE = 0x02;
+        internal static readonly int MYHOME_MICROSITE_REQUEST_CODE = 0x16;
 
+        internal static readonly int NOTIFICATION_LISTING_REQUEST_CODE = 29813;
         internal static readonly int NOTIFICATION_DETAILS_REQUEST_CODE = 0x03;
 
         internal static readonly int NOTIFICATION_FILTER_REQUEST_CODE = 0x04;
@@ -384,6 +393,18 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_APP_UPDATE_OT = "20009";
         public const string BCRM_NOTIFICATION_APP_UPDATE_DBR = "21010";
 
+        //myHome
+        public const string BCRM_NOTIFICATION_MYHOME_APP_UPDATE = "41006";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_ADDRESS_SEARCH_COMPLETED = "8007";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION = "41002";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED = "41004";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED = "41003";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY = "41005";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_ACCEPTED = "41007";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED = "41008";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_NO_RESPONSE = "41009";
+        public const string BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_REQUIRES_UPDATE = "41010";
+
         //Bill Estimation
         public const string BCRM_NOTIFICATION_BILL_ESTIMATION_NEWS = "09";
 
@@ -492,6 +513,8 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string APPLICATION_STATUS_FILTER_REQUEST_KEY = "filterRequest";
         internal static readonly string APPLICATION_STATUS_FILTER_INDIVIDUAL_CLEAR_KEY = "individualClear";
         internal static readonly string APPLICATION_STATUS_DETAIL_TITLE_KEY = "applicationStatusTitle";
+        internal static readonly string APPLICATION_STATUS_DETAIL_RELOAD = "applicationStatusToBeReloaded";
+        internal static readonly string APPLICATION_STATUS_DETAIL_RATED_TOAST_MESSAGE = "applicationStatusRatedToastMessage";
         internal static readonly int APPLICATION_STATUS_FILTER_REQUEST_CODE = 29800;
         internal static readonly int APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE = 29801;
         internal static readonly int APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE = 29802;
@@ -499,8 +522,13 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE = 29804;
         internal static readonly int APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE = 29805;
         internal static readonly int APPLICATION_STATUS_RATING_REQUEST_CODE = 29806;
-        internal static readonly int APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE = 29807;
+        internal static readonly int APPLICATION_STATUS_DETAILS_REQUEST_CODE = 29807;
         internal static readonly int APPLICATION_STATUS_DETAILS_SCHEDULER_REQUEST_CODE = 29808;
+        internal static readonly int APPLICATION_STATUS_SUBMIT_APPLICATION_RATING_REQUEST_CODE = 29809;
+        internal static readonly int APPLICATION_STATUS_START_RESUME_REQUEST_CODE = 29810;
+        internal static readonly int APPLICATION_STATUS_DETAILS_FROM_NOTIFICATION_DETAILS_REQUEST_CODE = 29811;
+        internal static readonly int APPLICATION_STATUS_LANDING_FROM_DASHBOARD_REQUEST_CODE = 29812;
+        internal static readonly int APPLICATION_STATUS_DETAIL_FROM_DASHBOARD_REQUEST_CODE = 29814;
 
         internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
         internal static readonly string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";
@@ -512,6 +540,11 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string DYNA_SITECORE_REFFER_ONLINE = "sitecore_refer_online";
         internal static readonly string DYNA_WHATS_NEW_DEFAULT = "WhatsNewClicked";
 
+        //Utility
+        internal static readonly string PATTERN = "\\b{0}.*\\b";
+        internal static readonly string REPLACE_KEY = "{0}=";
+        internal static readonly string SLASH = "/";
+        internal static readonly string AMPERSAND = "&";
 
 #if MASTER || SIT || DEBUG
         internal static readonly string EB_in_app_notification = "EB_in_app_notification";

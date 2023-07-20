@@ -89,6 +89,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
             mPresenter = new ApplicationStatusFilterPresenter(this);
 
             TextViewUtils.SetMuseoSans300Typeface(applicationStatusItemTitle, applicationStatusSubTitle);

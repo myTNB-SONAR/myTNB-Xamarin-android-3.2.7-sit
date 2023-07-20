@@ -18,12 +18,12 @@ namespace myTNB.Mobile.SessionCache
 
         private ApplicationDetailsDeeplinkCache() { }
 
-        public string ID { private set; get; } = string.Empty;
-        public string Type { private set; get; } = string.Empty;
-        public string System { private set; get; } = string.Empty;
-        public string SaveID { private set; get; } = string.Empty;
-        public bool IsListingDeepLink { private set; get; } = false;
-        public bool IsDetailsDeepLink { private set; get; } = false;
+        public string ID { set; get; } = string.Empty;
+        public string Type { set; get; } = string.Empty;
+        public string System { set; get; } = string.Empty;
+        public string SaveID { set; get; } = string.Empty;
+        public bool IsListingDeepLink { set; get; } = false;
+        public bool IsDetailsDeepLink { set; get; } = false;
 
         public void SetData(string deepLinkURL)
         {

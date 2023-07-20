@@ -92,7 +92,11 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         GetNCType(ref key
                             , searchApplicationType
                             , response.Content
-                            , out bool isPremiseServiceReady);
+                            , out bool isPremiseServiceReady
+                            , out int accountTypeId
+                            , out int premiseTypeHeaderId);
+                        displayModel.Content.AccountTypeId = accountTypeId;
+                        displayModel.Content.PremiseTypeHeaderId = premiseTypeHeaderId;
                         if (selectors != null && selectors.ContainsKey(key))
                         {
                             additionalDisplayConfig = selectors[key];
@@ -241,6 +245,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     if (response.Content.ApplicationAppointmentDetail != null)
                     {
                         displayModel.Content.ApplicationAppointmentDetail = response.Content.ApplicationAppointmentDetail;
+                    }
+                    if (response.Content.MyHomeDetails != null)
+                    {
+                        displayModel.Content.MyHomeDetails = response.Content.MyHomeDetails;
                     }
                     SetPaymentDisplay(ref displayModel);
                     displayModel.Content.IsDeleteEnable = isSavedApplication && !displayModel.Content.IsOwnApplication;
@@ -405,14 +413,18 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
         private static void GetNCType(ref string key
             , string applicationType
             , GetApplicationDetailsModel content
-            , out bool isPremiseServiceReady)
+            , out bool isPremiseServiceReady
+            , out int accountTypeId
+            , out int premiseTypeHeaderId)
         {
+            isPremiseServiceReady = false;
+            accountTypeId = 0;
+            premiseTypeHeaderId = 0;
+
             try
             {
-                isPremiseServiceReady = false;
                 if (applicationType != "NC" || key == KEDAI || key == SAVED)
                 {
-                    isPremiseServiceReady = false;
                     return;
                 }
                 string createdByRoleID = content.newConnectionDetail.createdByRoleId;
@@ -420,6 +432,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                 isPremiseServiceReady = content.newConnectionDetail.isPremiseServiceReady == null
                     ? false
                     : content.newConnectionDetail.isPremiseServiceReady.Value;
+                accountTypeId = content.newConnectionDetail.accountType;
+                premiseTypeHeaderId = content.newConnectionDetail.premiseTypeHeaderId;
 
                 if (applicationModuleId == "101011" || applicationModuleId == "101010")
                 {
@@ -447,7 +461,6 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
             }
             catch (Exception e)
             {
-                isPremiseServiceReady = false;
                 Debug.WriteLine("[DEBUG] GetNCType Error: " + e.Message);
             }
         }

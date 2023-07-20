@@ -98,6 +98,9 @@ namespace myTNB_Android.Src.Rating.Activity
                 frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
                 coordinatorLayout = FindViewById<AndroidX.CoordinatorLayout.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
 
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
                 deviceID = DeviceIdUtils.DeviceId(this);
                 Bundle extras = Intent.Extras;
                 if (extras != null)
@@ -114,7 +117,6 @@ namespace myTNB_Android.Src.Rating.Activity
                     {
                         selectedRating = extras.GetInt(Constants.SELECTED_RATING, 1);
                     }
-
                 }
 
                 OnLoadMainFragment();
@@ -188,7 +190,6 @@ namespace myTNB_Android.Src.Rating.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
 
         public override void OnTrimMemory(TrimMemory level)
         {

@@ -44,7 +44,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
             newList.Add(new NewAppModel()
             {
-                ContentShowPosition = ContentType.TopLeft,
+                ContentShowPosition = ContentType.BottomLeft,
                 ContentTitle = Utility.GetLocalizedLabel("Tutorial", "applicationStatusDetailsActionOneTitle"), //"Keep track of your applications.",
                 ContentMessage = Utility.GetLocalizedLabel("Tutorial", "applicationStatusDetailsActionOneMessage"), //"Your submitted applications will automatically appear so you can view their status. Search and save applications submitted by others.",
                 ItemCount = 0,

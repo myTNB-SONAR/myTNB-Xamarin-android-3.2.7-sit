@@ -73,12 +73,26 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 ratingBar = FindViewById<RatingBar>(Resource.Id.applicationRatingBar);
                 txtContentInfo = FindViewById<TextView>(Resource.Id.txtContentInfo);
                 SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusRating", "title"));
+
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
                 TextViewUtils.SetMuseoSans500Typeface(txtContentInfo);
+                TextViewUtils.SetTextSize16(txtContentInfo);
+
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
-                    applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationDetailDisplay"));
-                    customerRatingMasterResponse = JsonConvert.DeserializeObject<GetCustomerRatingMasterResponse>(extras.GetString("customerRatingMasterResponse"));
+                    if (extras.ContainsKey("applicationDetailDisplay"))
+                    {
+                        applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationDetailDisplay"));
+                    }
+
+                    if (extras.ContainsKey("customerRatingMasterResponse"))
+                    {
+                        customerRatingMasterResponse = JsonConvert.DeserializeObject<GetCustomerRatingMasterResponse>(extras.GetString("customerRatingMasterResponse"));
+                    }
+
                     var sequence = customerRatingMasterResponse.Content.QuestionAnswerSets.Where(x => x.Sequence == 1).FirstOrDefault();
                     txtContentInfo.Text = sequence != null ? sequence.QuestionDetail.QuestionDescription["0"] : string.Empty;
                 }

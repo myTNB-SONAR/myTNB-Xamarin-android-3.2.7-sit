@@ -166,6 +166,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
         {
             base.OnCreate(savedInstanceState);
 
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFromDate, txtInputLayoutToDate);
             TextViewUtils.SetMuseoSans300Typeface(txtFromDate, txtToDate);
             TextViewUtils.SetMuseoSans500Typeface(btnApply);

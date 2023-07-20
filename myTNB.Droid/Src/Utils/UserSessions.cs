@@ -12,6 +12,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using Newtonsoft.Json;
+using myTNB_Android.Src.MyHome;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -346,7 +347,41 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static bool MyHomeDashboardTutorialHasShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("myHomeDashboardTutorialHasShown", false);
+        }
+
+        public static void SetShownMyHomeDashboardTutorial(ISharedPreferences prefs)
+        {
+            if (MyHomeUtility.Instance.IsAccountEligible)
+            {
+                ISharedPreferencesEditor editor = prefs.Edit();
+                editor.PutBoolean("myHomeDashboardTutorialHasShown", true);
+                editor.Apply();
+            }
+        }
+
+        public static bool HomeDashboardTutorialHasShownBefore(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("HomeDashboardTutorialHasShownBefore", false);
+        }
+
+        public static void SetShownBeforeHomeDashboardTutorial(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("HomeDashboardTutorialHasShownBefore", true);
+            editor.Apply();
+        }
+
         internal static void UpdateNCTutorialShown(ISharedPreferences mSharedPref)       //for update flag overlay
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("hasHomeTutorialShown");
+            editor.Apply();
+        }
+
+        internal static void UpdateHomeTutorialShown(ISharedPreferences mSharedPref) //to show home tutorial again for myHome
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();
             editor.Remove("hasHomeTutorialShown");
@@ -1204,6 +1239,78 @@ namespace myTNB_Android.Src.Utils
         public static bool GetDBRMarketingPopUpFlag(ISharedPreferences preferences)
         {
             return preferences.GetBoolean("DBRMarketingPopUpHasShown", false);
+        }
+        
+        public static bool MyHomeDrawerTutorialHasShown(ISharedPreferences prefs, string key)
+        {
+            return prefs.GetBoolean(key, false);
+        }
+
+        public static void SetShownMyHomeDrawerTutorial(ISharedPreferences prefs, string key)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean(key, true);
+            editor.Apply();
+        }
+
+        public static bool MyHomeMarketingPopUpHasShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("myHomeMarketingPopUpHasShown", false);
+        }
+
+        public static void SetShownMyHomeMarketingPopUp(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("myHomeMarketingPopUpHasShown", true);
+            editor.Apply();
+        }
+
+        public static bool MyHomeQuickLinkHasShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("myHomeQuickLinkHasShown", false);
+        }
+
+        public static void SetShownMyHomeQuickLink(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("myHomeQuickLinkHasShown", true);
+            editor.Apply();
+        }
+
+        public static bool ConnectMyPremiseHasShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("connectMyPremiseHasShown", false);
+        }
+
+        public static void SetShownConnectMyPremise(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("connectMyPremiseHasShown", true);
+            editor.Apply();
+        }
+
+        public static string GetServicesTimeStamp(ISharedPreferences prefs)
+        {
+            return prefs.GetString(PreferenceKey.Home.QuickLinkImagesTimestamp, string.Empty);
+        }
+
+        public static void SetGetServicesTimeStamp(ISharedPreferences prefs, string timeStamp)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString(PreferenceKey.Home.QuickLinkImagesTimestamp, timeStamp);
+            editor.Apply();
+        }
+
+        public static string GetNCResumePopUpRefNos(ISharedPreferences prefs)
+        {
+            return prefs.GetString(MyHomeConstants.USER_SESSION_NC_RESUME_POPUP_KEY, string.Empty);
+        }
+
+        public static void SetNCResumePopUpRefNos(ISharedPreferences prefs, string refNos)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString(MyHomeConstants.USER_SESSION_NC_RESUME_POPUP_KEY, refNos);
+            editor.Apply();
         }
     }
 }

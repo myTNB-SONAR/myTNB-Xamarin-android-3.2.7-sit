@@ -505,7 +505,7 @@ namespace myTNB_Android.Src.Login.MVP
                                                     Utility.LoggingNonFatalError(ne);
                                                 }
 
-                                                foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                                                foreach (UserNotification userNotification in response.GetData().FilteredUserNotificationList)
                                                 {
                                                     // tODO : SAVE ALL NOTIFICATIONs
                                                     int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
@@ -540,6 +540,8 @@ namespace myTNB_Android.Src.Login.MVP
                                             , UserSessions.GetDeviceId()
                                             , DeviceIdUtils.GetAppVersionName()
                                             , myTNB.Mobile.MobileConstants.OSType.Android
+                                            , DeviceIdUtils.GetAndroidVersion()
+                                            , FirebaseTokenEntity.GetLatest().FBToken
                                             , TextViewUtils.FontInfo
                                             , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                         AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
@@ -597,7 +599,7 @@ namespace myTNB_Android.Src.Login.MVP
                                                     Utility.LoggingNonFatalError(ne);
                                                 }
 
-                                                foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                                                foreach (UserNotification userNotification in response.GetData().FilteredUserNotificationList)
                                                 {
                                                     // tODO : SAVE ALL NOTIFICATIONs
                                                     int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
@@ -632,6 +634,8 @@ namespace myTNB_Android.Src.Login.MVP
                                             , UserSessions.GetDeviceId()
                                             , DeviceIdUtils.GetAppVersionName()
                                             , myTNB.Mobile.MobileConstants.OSType.Android
+                                            , DeviceIdUtils.GetAndroidVersion()
+                                            , FirebaseTokenEntity.GetLatest().FBToken
                                             , TextViewUtils.FontInfo
                                             , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                         AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);

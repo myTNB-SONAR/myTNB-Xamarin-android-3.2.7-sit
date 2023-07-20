@@ -32,6 +32,9 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
 
         [JsonProperty("applicationAppointmentDetail")]
         public ApplicationAppointmentDetail ApplicationAppointmentDetail { set; get; }
+
+        [JsonProperty("myHomeDetails")]
+        public MyHomeDetails MyHomeDetails { set; get; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
@@ -90,7 +93,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
     {
         public string newConnectionId { set; get; }
         public string contractAccountNo { set; get; }
-        public string accountType { set; get; }
+        public int accountType { set; get; }
         public string accountTypeDescription { set; get; }
         public string firstName { set; get; }
         public string lastName { set; get; }
@@ -104,6 +107,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public bool isVerifyNow { set; get; }
         public bool? isPremiseServiceReady { set; get; } = false;
         public DateTime? electricityStartDate { set; get; }
+        public int premiseTypeHeaderId { set; get; }
 
         public bool isContractorApplied { set; get; }
         public string identificationNo { get; set; }
@@ -257,6 +261,8 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public CustomerRating CustomerRating { set; get; }
         [JsonProperty("contractorRating")]
         public ContractorRating ContractorRating { set; get; }
+        [JsonProperty("submissionRating")]
+        public SubmissionRating SubmissionRating { set; get; }
     }
 
     public class CustomerRating
@@ -275,6 +281,12 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string ContractorRatingUrl { set; get; }
         [JsonProperty("transactionId")]
         public string TransactionId { set; get; }
+    }
+
+    public class SubmissionRating
+    {
+        [JsonProperty("isSubmissionSurveyCompleted")]
+        public bool IsSubmissionSurveyCompleted { set; get; }
     }
 
     public class ApplicationAppointmentDetail
@@ -383,5 +395,17 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
                 return string.Empty;
             }
         }
+    }
+
+    public class MyHomeDetails
+    {
+        [JsonProperty("ssoDomain")]
+        public string SSODomain { set; get; }
+        [JsonProperty("originURL")]
+        public string OriginURL { set; get; }
+        [JsonProperty("redirectURL")]
+        public string RedirectURL { set; get; }
+        [JsonProperty("isOTPFailed")]
+        public bool IsOTPFailed { set; get; }
     }
 }

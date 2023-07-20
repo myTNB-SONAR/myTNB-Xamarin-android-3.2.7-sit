@@ -143,7 +143,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             }
         }
 
-
         public async Task<bool> EvaluateEligibility(Context mView, bool isForceCall)
         {
             try

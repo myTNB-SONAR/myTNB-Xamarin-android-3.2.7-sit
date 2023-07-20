@@ -3,6 +3,7 @@
     public static class AWSConstants
     {
         internal const int TimeOut = 10000;
+        internal const int DebugTimeOut = 20000; //DO NOT USE IN PROD
         internal const int AccountStatementTimeOut = 5000;
         internal const string Channel = "myTNB_API_Mobile";
         internal const int RoleID = 16;
@@ -16,11 +17,13 @@
         private const string SaltKey_DEV = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
         private const string SaltKey_SIT = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
         private const string SaltKey_PROD = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
+        public const string MyHome_SaltKey = "Salt-9F586DF42C58-4753-8FCE7113EBFAACCF";
 
         //Passphrase
         private const string Passphrase_DEV = "PW-myTNBDbrSso";
         private const string Passphrase_SIT = "PW-myTNBDbrSso";
         private const string Passphrase_PROD = "PW-myTNBDbrSso";
+        public const string MyHome_Passphrase = "PW-myTNBMyHomeSso";
 
         //Environment
         private const string Environment_DEV = "Prod";
@@ -30,6 +33,8 @@
         //WEB Actions
         internal const string BackToApp = "mytnbapp://action=backToApp";
         internal const string BackToHome = "mytnbapp://action=backToHome";
+        public const string BackToHomeCancelURL = "mytnbapp://action=backToHomeWithCancelToast";
+        public const string ApplicationStatusLandingCancelURL = "mytnbapp://action=applicationStatusLandingWithCancelToast";
 
         //Domains
         public struct Domains
@@ -42,10 +47,16 @@
             internal const string GetMultiBillRendering = "https://devapi.mytnb.com.my/BillRendering/api/v1";
             internal const string StartDigitalBill = "https://devdbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://devdbr.mytnb.com.my/PaperBill/OptIn";
-            public const string DBRSSO = "https://devdbr.mytnb.com.my/Sso?s={0}";
+            internal const string DSRedirect = "https://stagingds.mytnb.com.my/EKYC/StartEKYC";//Staging
             internal const string PostBREligibilityIndicators = "https://devapi.mytnb.com.my/BillRendering/api/v1";
             internal const string GetAutoOptInCa = "https://devapi.mytnb.com.my/StagedData/api/v1";
             internal const string PatchUpdateAutoOptInCa = "https://devapi.mytnb.com.my/StagedData/api/v1";
+            public struct SSO
+            {
+                public const string DBR = "https://devdbr.mytnb.com.my/Sso?s={0}";
+                public const string MyHome = "https://devmyhome.mytnb.com.my/Sso?s={0}";
+                public const string DS = "https://stagingds.mytnb.com.my/Sso?s={0}";//Staging
+            }
 #elif MASTER || SIT || DEBUG
             internal const string Domain = "https://stagingapi.mytnb.com.my";
             internal const string GenerateAccessToken = "https://stagingapi.mytnb.com.my/Identity/api/v1";
@@ -55,11 +66,18 @@
             internal const string StartDigitalBill = "https://stagingdbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://stagingdbr.mytnb.com.my/PaperBill/OptIn";
             internal const string DSRedirect = "https://stagingds.mytnb.com.my/EKYC/StartEKYC";
-            public const string DBRSSO = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
-            public const string DSSSO = "https://stagingds.mytnb.com.my/Sso?s={0}";
             internal const string PostBREligibilityIndicators = "https://stagingapi.mytnb.com.my/BillRendering/api/v1";
             internal const string GetAutoOptInCa = "https://stagingapi.mytnb.com.my/StagedData/api/v1";
             internal const string PatchUpdateAutoOptInCa = "https://stagingapi.mytnb.com.my/StagedData/api/v1";
+            public struct SSO
+            {
+                //public const string DBR = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
+                //public const string MyHome = "https://stagingmyhome.mytnb.com.my/Sso?s={0}";
+
+                public const string DBR = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
+                public const string MyHome = "https://stagingmyhome.mytnb.com.my/Sso?s={0}";
+                public const string DS = "https://stagingds.mytnb.com.my/Sso?s={0}";
+            }
 #else
             internal const string Domain = "https://api.mytnb.com.my";
             internal const string GenerateAccessToken = "https://api.mytnb.com.my/Identity/api/v1";
@@ -69,11 +87,15 @@
             internal const string StartDigitalBill = "https://dbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://dbr.mytnb.com.my/PaperBill/OptIn";
             internal const string DSRedirect = "https://stagingds.mytnb.com.my/EKYC/StartEKYC";//Staging
-            public const string DBRSSO = "https://dbr.mytnb.com.my/Sso?s={0}";
-            public const string DSSSO = "https://stagingds.mytnb.com.my/Sso?s={0}";//Staging
             internal const string PostBREligibilityIndicators = "https://api.mytnb.com.my/BillRendering/api/v1";
             internal const string GetAutoOptInCa = "https://api.mytnb.com.my/StagedData/api/v1";
             internal const string PatchUpdateAutoOptInCa = "https://api.mytnb.com.my/StagedData/api/v1";
+            public struct SSO
+            {
+                public const string DBR = "https://dbr.mytnb.com.my/Sso?s={0}";
+                public const string MyHome = "https://myhome.mytnb.com.my/Sso?s={0}";
+                public const string DS = "https://stagingds.mytnb.com.my/Sso?s={0}";//Staging
+            }
 #endif
         }
 
@@ -107,6 +129,7 @@
         {
             //Identity
             internal const string GenerateAccessToken = "GenerateAccessToken";
+            internal const string GetUserServiceAccessToken = "GetUserServiceAccessToken";
             //DBR
             internal const string GetBillRendering = "BillRendering";
             internal const string PostMultiBillRendering = "MultiBillRendering";
@@ -114,10 +137,14 @@
             internal const string PostMultiInstallationDetails = "MultiInstallationDetails";
             internal const string PostAccountStatement = "AccountStatement";
             internal const string PostAccountStatementNotification = "AccountStatementNotification";
+            internal const string PostServices = "GetServices";
+
             public const string GetEligibility = "Eligibility";
             internal const string PostBREligibilityIndicators = "BREligibilityIndicators";
             internal const string GetAutoOptInCa = "GetAutoOptInCa";
             internal const string PatchUpdateAutoOptInCa = "PatchUpdateAutoOptInCa";
+            internal const string PostDeleteNCDraft = "DeleteNCDraft";
+            internal const string PostGetNCDraftApplications = "GetNCDraftApplications";
             
             //DS
             internal const string GetEKYCStatus = "EKYCStatus";

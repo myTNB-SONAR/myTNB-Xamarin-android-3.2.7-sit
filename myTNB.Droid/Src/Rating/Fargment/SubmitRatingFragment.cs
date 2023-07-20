@@ -1,8 +1,5 @@
 ﻿using Android.App;
 using Android.OS;
-
-
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
@@ -78,6 +75,9 @@ namespace myTNB_Android.Src.Rating.Fargment
                 rootView = mainView.FindViewById<FrameLayout>(Resource.Id.baseView);
                 btnSubmit = mainView.FindViewById<Button>(Resource.Id.btnSubmit);
 
+                TextViewUtils.SetMuseoSans300Typeface(btnSubmit);
+                TextViewUtils.SetTextSize16(btnSubmit);
+
                 btnSubmit.Text = Utility.GetLocalizedCommonLabel("submit");
 
                 layoutManager = new GridLayoutManager(Activity.ApplicationContext, 1);
@@ -85,8 +85,6 @@ namespace myTNB_Android.Src.Rating.Fargment
                 recyclerView.SetLayoutManager(layoutManager);
                 recyclerView.SetAdapter(adapter);
                 adapter.RatingUpdate += OnRatingUpdate;
-
-
 
                 this.userActionsListener.GetQuestions(questionCatId);
 

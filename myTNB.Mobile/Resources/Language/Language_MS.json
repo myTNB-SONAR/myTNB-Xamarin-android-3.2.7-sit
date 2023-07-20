@@ -107,7 +107,8 @@
     "dbrPaperBillNonOwner": "Anda menerima <b>Bil Bercetak</b> untuk akaun ini.",
     "dbrEmail": "Anda menerima Bil <b>myTNB & E-mel</b> untuk akaun ini.",
     "dbrWhatsApp": "Anda menerima Bil <b>myTNB & Whatsapp</b> untuk akaun ini.",
-    "dbrViaMyTNB": "Akaun anda adalah mesra alam dengan <b>Bil myTNB!</b>"
+    "dbrViaMyTNB": "Akaun anda adalah mesra alam dengan <b>Bil myTNB!</b>",
+    "applicationCancelledMessage": "Permohonan anda telah dipadamkan."
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -225,7 +226,7 @@
     "tutorialQuickActionDesc": "Ciri baharu diketengahkan untuk anda mendapatkan semua perkhidmatan yang ditawarkan oleh myTNB!",
     "tutorialNeedHelpDesc": "Kami ketengahkan soalan lazim untuk anda ketahui.",
     "gotIt": "Ok!",
-    "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
+    "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
     "receivedExtra": "terima lebih",
     "applicationStatus": "Status<br>Permohonan",
     "later": "Tangguhkan",
@@ -249,7 +250,7 @@
     "dbrReminderPopupStartNow": "Ketahui Lanjut",
     "dbrReminderPopupGotIt": "Ok!",
     //EnergyBudget
-    "energyBudget": "Energy <br> Budget Saya",
+    "energyBudget": "Energy<br>Budget Saya",
     "tutorialEnergyBudgetTitle": "Mulakan langkah untuk menguruskan tenaga anda",
     "tutorialEnergyBudgetDesc": "Anda boleh mengakses Energy Budget dari laman utama untuk mula menetapkan jumlah bil yang anda inginkan",
     //DiscoverMore
@@ -445,7 +446,7 @@
     "accountsMissing": "Mengapa akaun saya tiada di sini?",
     "gotIt": "Ok!",
     "disconnectionMsg": "<strong>Apakah maksudnya?</strong><br><br>Bekalan elektrik anda telah dipotong. Pemotongan ini mungkin disebabkan oleh permintaan pemilik premis, atau tunggakan bayaran bil.<br><br>Sekiranya anda telah memohon untuk sambungan semula, atau telah membuat bayaran, bekalan anda akan disambung dalam masa terdekat.",
-    "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
+    "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Bil anda setakat hari ini adalah jumlah yang telah anda gunakan sehingga semalam<br><br><strong> Bil saya boleh mencecah:</strong><br><br>Ini dikira berdasarkan purata penggunaan harian anda untuk satu (1) bulan yang lalu, bil sebenar anda mungkin berbeza. Untuk ketahui lebih lanjut, sila lawati laman <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Soalan Lazim.</a></strong><br><br>Nota: Jumlah yang tertera adalah sebelum cukai / caj tambahan yang berkenaan.",
     "projectedCostTitle": "Apakah ini?",
     "missedReadTitle": "Apakah maksudnya?",
     "missedReadMsg": "Maklumat penggunaan anda tidak dapat diperolehi pada masa ini. Anda boleh 'refresh' untuk cuba semula.",
@@ -480,7 +481,7 @@
     "accountTypeDialogMessage": "Anda boleh log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> myTNB menggunakan maklumat log masuk yang sama dan nikmati akses penuh untuk akaun tersebut.",
     //EnergyBudget
     "myMonthlyBudget": "Energy Budget saya adalah",
-    "whyIsAmountDiff": "Adakah ini bill sebenar saya?",
+    "whyIsAmountDiff": "Adakah ini bil sebenar saya?",
     "whyIsAmountDiffBody": "Tidak semestinya. Jumlah yang dipaparkan adalah berdasarkan kepada penggunaan elektrik anda setakat ini bagi bulan semasa. Bil anda boleh termasuk caj-caj seperti sumbangan KWTBB 1.6%, cukai perkhidmatan 6%, rebat/surcaj ICPT (di mana berkenaan).",
     "editEnergyButton": "Tetapkan Energy Budget anda",
     "setEnergyButton": "Tetapkan Sekarang",
@@ -495,7 +496,7 @@
     "tutorialUsageDesc": "Lihat maklumat akaun dan urus pengguna lain yang mempunyai akses pada akaun anda.",
     "tutorialUsageTitleNonOwner": "Lihat akaun anda di sini.",
     "tutorialUsageDescNonOwner": "Lihat butiran akaun anda dengan mudah di sini.",
-    "skip": "Tekan untuk melangkau.",
+    "skip": "Tekan untuk langkau.",
     "feedback1Title": "Tahniah! Bagaimanakah pengalaman penetapan Energy Budget anda?",
     "feedbackDontAskAgain": "Tidak Berminat",
     "feedbackSuccessTitle": "Terima kasih atas maklumbalas anda",
@@ -505,9 +506,9 @@
     "dbrReminderPopupViewMore": "Ketahui Lanjut",
     "dbrReminderPopupGotIt": "Ok!",
     "dbrReminderAutoPopupTitle": "Bil elektrik anda kini 'paperless'!",
-    "dbrReminderAutoPopupMessageFirstMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
-    "dbrReminderAutoPopupMessageSecondMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB dan emel.<br>Anda akan masih menerima bil secara fizikal untuk 2 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
-    "dbrReminderAutoPopupMessageThirdMonth": "Sebagai pelanggan lestari myTNB, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB.<br>Anda akan masih masih akan menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopupMessageFirstMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB.<br>Anda masih akan akan masih menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopupMessageSecondMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB.<br>Anda masih akan akan masih menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
+    "dbrReminderAutoPopupMessageThirdMonth": "Sebagai pelanggan meter pintar, anda telah terpilih untuk menerima bil TNB secara digital melalui aplikasi myTNB.<br>Anda masih akan akan masih menerima bil secara fizikal untuk 3 bulan akan datang dan penghantaran bil bercetak ke premis anda akan dihentikan seterusnya selepas tempoh tersebut.<br>Anda boleh menukar cara penghantaran bil pada bila-bila masa.",
     "dbrReminderAutoPopUpBtn": "Urus Cara Penghantaran Bil"
   },
   "Bills": {
@@ -694,6 +695,11 @@
     "callUs": "Perlu bantuan lanjut? <a href='tel: 15454'>Hubungi kami</a>",
     "shareFeedback": "Kongsi Maklum Balas",
     "manageBillDelivery": "Urus Cara Penghantaran Bil",
+    "continueApplication": "Teruskan Permohonan",
+    "submitNow": "Hantar Sekarang",
+    "viewApplicationDetails": "Lihat Butiran Permohonan",
+    "otpVerifyNow": "Sah Sekarang",
+    "reapplyNow": "Mohon Sekali Lagi",
     "verifyTitle": "Sahkan identiti anda sekarang untuk nikmati lebih lagi di myTNB!",
     "verifyNow": "Sahkan Sekarang",
     "setAppointmentNow": "Tetapkan janji temu",
@@ -1021,6 +1027,10 @@
     "title8": "Sentiasa ketahui status permohonan anda!",
     "title9": "Pilih Saiz Teks Paparan Anda.",
     "title10": "Tetapkan janji temu anda!",
+    "title11": "Peningkatan kawalan akses untuk melindungi maklumat anda.",
+    "title12": "Tingkatkan pengalaman berpindah anda dengan myHome!",
+    "title13": "Sambung elektrik ke premis anda dengan mudah.",
+    "title14": "Urus permohonan anda dengan mudah!",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
@@ -1031,8 +1041,10 @@
     "description8": "Anda boleh jejaki semua status permohonan dengan mudah, pada bila-bila masa dan di mana-mana sahaja.",
     "description9": "Ubah suai myTNB anda dengan saiz teks paparan bersesuaian untuk pengendalian yang lebih selesa. Anda boleh memilih antara saiz normal atau besar dan boleh mengubah tetapan ini pada bila-bila masa di Profil anda.",
     "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai.",
-    "title11": "Peningkatan kawalan akses untuk melindungi maklumat anda.",
-    "description11": "Sebagai pemilik akaun elektrik, pastikan anda mempunyai kawalan terhadap maklumat dan permintaan akaun dengan menetapkan akses yang anda beri kepada pihak lain."
+    "description11": "Sebagai pemilik akaun elektrik, pastikan anda mempunyai kawalan terhadap maklumat dan permintaan akaun dengan menetapkan akses yang anda beri kepada pihak lain.",
+    "description12": "Bercadang untuk berpindah? Kini anda boleh memohon bekalan elektrik dengan mudah dan edit permohonan anda dengan ciri baharu kami.",
+    "description13": "Lakukan permohonan baharu dan urus akaun elektrik sedia ada anda pada bila-bila masa.",
+    "description14": "Kini anda boleh edit, urus dan pantau semua status aplikasi anda tanpa sebarang kerumitan, pada bila-bila masa dan di mana-mana sahaja."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -1426,8 +1438,8 @@
     "overVoltageMaintenanceTitle": "Kami akan kembali tidak lama lagi.",
     "overVoltageMaintenanceDescription": "Maaf, servis Tuntutan Voltan Berlebihan sedang dalam penyelenggaraan. Sila semak semula kemudian.",
     "overVoltageClaimtemproryUnavailable": "Servis Tuntutan Voltan Berlebihan tidak tersedia untuk sementara waktu",
-    "overVoltageClaimtemproryUnavailableTitle": "Servis tidak tersedia untuk sementara waktu",
-    "overVoltageClaimtemproryUnavailableDescription": "Kami sedang memulihkan servis Tuntutan Voltan Berlebihan secepat yang mungkin. Sila cuba sebentar lagi.",
+    "overVoltageClaimtemproryUnavailableTitle": "Perkhidmatan tidak tersedia untuk sementara waktu",
+    "overVoltageClaimtemproryUnavailableDescription": "Perkhidmatan ini tidak tersedia untuk sementara waktu. Sila cuba sebentar lagi.",
     "termsAndConditionTitle": "Terma dan Syarat",
     "selectCountryTitle": "Pilih Negara/Wilayah",
     "rescheduleAppointmentTitle": "Jadualkan Semula Janji Temu",
@@ -1509,8 +1521,8 @@
     ]
   },
   "Tutorial": {
-    "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",
-    "skip": "Tekan untuk melangkau.",
+    "swipeText": "Leret untuk melihat selanjutnya, tekan untuk langkau.",
+    "skip": "Tekan untuk langkau.",
     "applicationStatusLandingTitle": "Ikuti perkembangan permohonan anda.",
     "applicationStatusLandingDescription": "Permohonan yang telah dihantar akan dipaparkan disini secara automatik supaya anda boleh melihat statusnya. Gunakan tapisan untuk mencari menerusi senarai dengan mudah.",
     "applicationStatusLandingEmptyTitle": "Ikuti perkembangan permohonan anda.",
@@ -1538,7 +1550,11 @@
     "manageDeliveryMethodEmailTitle": "Penerima bil e-mel.",
     "manageDeliveryMethodEmailMessage": "Semak penerima e-mel yang menerima bil bulanan untuk akaun ini.",
     "billStatementTitle": "Muat turun penyata akaun anda.",
-    "billStatementMessage": "Anda boleh memuat turun ringkasan penyata bulanan dan bil akaun anda mengikut tempoh penyata pilihan anda."
+    "billStatementMessage": "Anda boleh memuat turun ringkasan penyata bulanan dan bil akaun anda mengikut tempoh penyata pilihan anda.",
+    "myHomeTitle": "Memperkenalkan myHome.",
+    "myHomeMessage": "Urus akaun dan permohonan elektrik anda dengan memilih ciri myHome.",
+    "connectMyPremiseTitle": "Mulakan Permohonan Anda",
+    "connectMyPremiseMessage": "Mohon bekalan elekrik baharu, petukaran penghuni dan penamatan akaun elektrik anda di sini."
   },
   "Tnb_Profile": {
     "title": "Profil myTNB",
@@ -1654,6 +1670,21 @@
     "cannotReschedule": "Mengapakah saya tidak boleh mengubah butiran janji temu?",
     "cannotRescheduleTitle": "Janji temu tidak boleh diubah pada hari janji temu.",
     "cannotRescheduleMessage": "Anda tidak boleh mengubah janji temu pada hari janji temu tersebut. Sila ambil maklum bahawa anda tidak perlu hadir sekiranya kawasan pemasangan meter anda boleh diakses tanpa memasuki premis.<br><br>Hubungi <a href=\"tel: 1300885454\">TNB Careline</a> sekiranya anda perlu mengubah  atau membatalkan janji temu.",
+    "startApplication": "Mulakan Permohonan",
+    "delete": "Padam",
+    "resume": "Teruskan",
+    "deleteNCDraftTitle": "Adakah anda pasti untuk padam draf ini?",
+    "deleteNCDraftMessage": "Draf anda akan dipadamkan secara kekal.",
+    "deleteNCDraftSure": "Ya, Saya Pasti",
+    "deleteNCDraftCancel": "Batal",
+    "reapplyNow": "Mohon Sekali Lagi",
+    "reapplyContractorRejectCTAMessage": "Mohon semula permohonan anda kerana kontraktor telah menolak permintaan anda.",
+    "reapplyNoResponseCTAMessage": "Mohon semula permohonan anda kerana kami tidak menerima sebarang maklum balas daripada kontraktor yang anda lantik.",
+    "updateNow": "Kemas kini Sekarang",
+    "updateNowCTAMessage": "Kemas kini maklumat anda dengan memuat naik semula dokumen anda untuk kami semak semula.",
+    "ncSubmissionRateUs": "Nilai Perkhidmatan Kami",
+    "otpReadyMessage": "Anda akan dimaklumkan apabila OTP untuk permohonan anda sudah sedia untuk disahkan semula.",
+    "ncActionMessage": "Anda boleh pilih untuk meneruskan atau kemas kini permohonan anda di Portal atau App myTNB.",
     "verifyNowCTA": "Sahkan Sekarang",
     "signApplicationCTA": "Teruskan"
   },
@@ -1673,7 +1704,7 @@
     "walkthroughStep2Title": "Lihat pengguna akaun anda sepintas lalu.",
     "walkthroughStep1": "Pantau semua perubahan akses dan kawalan supaya anda tidak ketinggalan!",
     "walkthroughStep2": "Lihat dan urus pengguna yang melihat akaun anda atau beri akses kepada pengguna yang baru di sini.",
-    "tapToSkip": "Tekan untuk melangkau",
+    "tapToSkip": "Tekan untuk langkau",
     "pendingRegistration": "Pendaftaran Belum Selesai",
     "cancelAddSuccess": "{0} telah dibatalkan untuk menjadi pengguna akaun elektrik ini.",
     "AddTNBUserSuccess": "{0} kini mempunyai akses ke {1} di myTNB.",
@@ -2901,6 +2932,17 @@
             "type": "none"
           }
         ],
+        "GetUserServiceAccessToken": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
         "BillRendering": [
           {
             "code": "7200",
@@ -3021,6 +3063,48 @@
             "type": "none"
           }
         ],
+        "GetServices": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "default",
+            "title": "",
+            "message": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan!",
+            "primaryCTATitle": "'Refresh' Sekarang",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "refresh"
+          }
+        ],
+        "DeleteNCDraft": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "Permohonan anda telah dipadamkan.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "toast"
+          }
+        ],
+        "GetNCDraftApplications": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": ".",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
         "EKYCStatus": [
           {
             "code": "7200",
@@ -3078,7 +3162,7 @@
   "EnregyBudgetListing": {
     "title": "Pilih Akaun Meter Pintar",
     "tootltipTitle": "Kenapa sesetengah akaun saya yang tidak tersenarai?",
-    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
+    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
     "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"
   },
   "EnergyBudgetPopup": {
@@ -3164,7 +3248,13 @@
     "AccountStatementTimeout": 5000,
     "ShouldShowAccountStatementToNonOwner": true,
     "MaxAccountList": 100000,
-    "ResidentialRateCategory": [ "A_LV", "A_LV_D", "A_MV" ]
+    "ResidentialRateCategory": [
+      "A_LV",
+      "A_LV_D",
+      "A_MV"
+    ],
+    "IsMyHomeMarketingPopupEnable": false,
+    "ForceHidemyHomeBanner": true
   },
   "StatementPeriod": {
     "title": "Penyata Akaun",
@@ -3379,9 +3469,9 @@
     "backToHome": "Kembali ke Halaman Utama",
     "userIDNotMatchTitle": "Oops!",
     "userIDNotMatchMessage": "Sila pastikan anda menggunakan akaun myTNB yang ditetapkan untuk pengesahan identiti.",
-    "DSPrivacyPolicy": "Dengan mengesahkan identiti anda, anda bersetuju dengan <a href=\"\\\">Dasar Privasi</a> TNB.",
-    "privacyPolicy": "Dasar Privasi",
-    "privacyPolicyURL": "https://www.mytnb.com.my/privacy-policy"
+    "DSPrivacyPolicy": "Saya dengan ini memberikan persetujuan dan memperakui bahawa Tenaga Nasional Berhad, ejen dan pembekal perkhidmatan yang diberi kuasa (“TNB”) mempunyai hak untuk mengumpul, menggunakan, memindahkan, menzahirkan, menyimpan dan/atau memproses data peribadi dan data peribadi sensitif saya termasuk tetapi tidak terhad kepada gambar, rakaman audio atau video, imej, data biometrik dan apa-apa data lain yang diperlukan bagi tujuan pengesahan identiti selaras dengan <a href=\"\\\">Polisi Perlindungan Data Peribadi TNB</a> dan Akta Perlindungan Data Peribadi 2010.",
+    "privacyPolicy": "Polisi Perlindungan Data Peribadi TNB",
+    "privacyPolicyURL": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa"
   },
   "DSLanding_selector": {
     "idType": [
@@ -3421,5 +3511,31 @@
     "btnSubmit": "Hantar",
     "thumbUpYes": "Ya, sangat membantu!",
     "thumbDownNo": "Kurang membantu"
+  },
+  "MarketingPopup": {
+    "myHomeTitle": "Kenali ciri-ciri MyHome hari ini!",
+    "myHomeMessage": "Anda kini boleh menghantar permohonan untuk akaun elektrik, menukar penghuni, menutup akaun elektrik, edit permohonan dan juga mengatur rancangan perpindahan anda dengan menggunakan myHome.",
+    "myHomeCTA": "Faham!",
+    "myHomeResumeApplicationTitle": "Sambung semula Permohonan Mula Bekalan Elektrik anda",
+    "myHomeResumeApplicationMessage": "Anda mempunyai Permohonan Mula Bekalan Elektrik yang belum selesai (No. Permohonan: {0}). Anda boleh klik pada butang di bawah untuk sambung semula permohonan anda di aplikasi myTNB.<br><br>Hantar permohonan Mula Bekalan Elektrik anda pada aplikasi myTNB sekarang!",
+    "myHomeResumeApplicationsTitle": "Sambung semula Permohonan-permohonan Mula Bekalan Elektrik anda",
+    "myHomeResumeApplicationsMessage": "Anda mempunyai Permohonan-permohonan Mula Bekalan Elektrik yang belum selesai (No. Permohonan: {0}). Anda boleh klik pada butang di bawah untuk sambung semula permohonan-permohonan anda di aplikasi myTNB.<br><br>Hantar permohonan-permohonan Mula Bekalan Elektrik anda pada aplikasi myTNB sekarang!",
+    "myHomeResumeApplicationPrimaryCTA": "Teruskan",
+    "myHomeResumeApplicationSecondaryCTA": "Sambung Nanti."
+  },
+  "ApplicationStatusID": {
+    "ASRCompleted": [ 127 ],
+    "NCDraft": [ 1 ],
+    "NCReapplyNow": [
+      7,
+      18
+    ],
+    "NCReuploadDocument": [ 130 ]
+  },
+  "AccountTypeID": {
+    "NC": [ 1 ]
+  },
+  "PremiseTypeHeaderID": {
+    "NC": [ 1 ]
   }
 }

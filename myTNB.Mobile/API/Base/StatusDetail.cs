@@ -60,7 +60,6 @@ namespace myTNB
             get;
         } = false;
 
-        [JsonIgnore]
         public StatusDisplayType DisplayType
         {
             get
@@ -104,6 +103,8 @@ namespace myTNB
                 return presentationType;
             }
         }
+
+        public string AccessToken { internal set; get; }
     }
 
     public enum StatusDisplayType

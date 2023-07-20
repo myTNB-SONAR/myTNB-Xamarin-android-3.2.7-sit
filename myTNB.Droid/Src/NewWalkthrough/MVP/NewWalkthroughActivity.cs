@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -57,6 +58,9 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         string currentAppNavigation;
         private Snackbar mLanguageSnackbar;
 
+        List<NewWalkthroughModel> walkthroughModelList;
+        string dynatraceSkipActionTag;
+
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)
         {
             return base.OnCreateView(name, context, attrs);
@@ -76,6 +80,14 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         {
             if (newWalkthroughAdapter != null && newWalkthroughAdapter.Count > 1)
             {
+                NewWalkthroughModel walkthroughModel = walkthroughModelList[position];
+
+                if (walkthroughModel != null)
+                {
+                    DynatraceHelper.OnTrack(walkthroughModel.DynatraceVisitTag);
+                    dynatraceSkipActionTag = walkthroughModel.DynatraceActionTag;
+                }
+
                 for (int i = 0; i < newWalkthroughAdapter.Count; i++)
                 {
                     ImageView selectedDot = (ImageView)indicatorContainer.GetChildAt(i);
@@ -108,7 +120,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 //    editor.PutBoolean("hasItemizedBillingNMSMTutorialShown", false);
                 //    editor.Apply();
                 //}
-                if (position == newWalkthroughAdapter.Count - 2)
+                if (position == newWalkthroughAdapter.Count - 5)
                 {
                     ShowSubmitButton(true);
                 }
@@ -133,6 +145,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             viewPager = (ViewPager)FindViewById(Resource.Id.viewPager);
             viewPager.AddOnPageChangeListener(this);
             newWalkthroughAdapter = new NewWalkthroughAdapter(SupportFragmentManager);
+            walkthroughModelList = new List<NewWalkthroughModel>();
 
             Bundle extras = Intent.Extras;
 
@@ -141,8 +154,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
                 {
                     currentAppNavigation = extras.GetString(Constants.APP_NAVIGATION_KEY);
-
-                    newWalkthroughAdapter.SetData(this.presenter.GenerateNewWalkthroughList(currentAppNavigation));
+                    walkthroughModelList = this.presenter.GenerateNewWalkthroughList(currentAppNavigation);
+                    newWalkthroughAdapter.SetData(walkthroughModelList);
 
                     viewPager.Adapter = newWalkthroughAdapter;
 
@@ -172,6 +185,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             }
             btnSkip.Click += delegate
             {
+                DynatraceHelper.OnTrack(dynatraceSkipActionTag);
                 UserSessions.DoSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
                 UserSessions.DoUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
                 StartActivity();
@@ -187,6 +201,17 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 btnStart.Text = Utility.GetLocalizedLabel("Onboarding", "setSize");
             }
             btnStart.Visibility = ViewStates.Gone;
+
+            if (walkthroughModelList.Count > 0)
+            {
+                NewWalkthroughModel walkthroughModel = walkthroughModelList[0];
+
+                if (walkthroughModel != null)
+                {
+                    DynatraceHelper.OnTrack(walkthroughModel.DynatraceVisitTag);
+                    dynatraceSkipActionTag = walkthroughModel.DynatraceActionTag;
+                }
+            }
         }
 
         private void ShowSubmitButton(bool isShow)
@@ -305,7 +330,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             {
                 if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop)
                 {
-                    Drawable drawable = Resources.GetDrawable(Resource.Drawable.walkthrough_bg_install_1);
+                    Drawable drawable = Resources.GetDrawable(Resource.Drawable.Onboarding_BG_One);
                     this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
                     this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
                     this.Window.SetBackgroundDrawable(drawable);
@@ -335,7 +360,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 //btnStart.Visibility = ViewStates.Visible;
             }
 
-            newWalkthroughAdapter.SetData(this.presenter.GenerateNewWalkthroughList(currentAppNavigation));
+            walkthroughModelList = this.presenter.GenerateNewWalkthroughList(currentAppNavigation);
+            newWalkthroughAdapter.SetData(walkthroughModelList);
             newWalkthroughAdapter.NotifyDataSetChanged();
             viewPager.Invalidate();
             DismissProgressDialog();

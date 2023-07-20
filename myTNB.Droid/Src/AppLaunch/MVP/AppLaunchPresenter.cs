@@ -37,10 +37,12 @@ using Android.Gms.Extensions;
 using myTNB_Android.Src.Utils.Deeplink;
 using myTNB.Mobile;
 using myTNB_Android.Src.Utils.Notification;
+using System.Net.Http;
 using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 using myTNB_Android.Src.Base.Response;
 using System.Linq;
 using Android.Preferences;
+using myTNB_Android.Src.myTNBMenu.Activity;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -499,16 +501,15 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             , UserSessions.GetDeviceId()
                                             , DeviceIdUtils.GetAppVersionName()
                                             , myTNB.Mobile.MobileConstants.OSType.Android
+                                            , DeviceIdUtils.GetAndroidVersion()
+                                            , FirebaseTokenEntity.GetLatest().FBToken
                                             , TextViewUtils.FontInfo
                                             , LanguageUtil.GetAppLanguage() == "MS"
                                                 ? LanguageManager.Language.MS
                                                 : LanguageManager.Language.EN);
                                         AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
 
-                                        if (hasNotification && isLoggedInEmail && (NotificationUtil.Instance.Type == NotificationType.AppUpdate ||
-                                            NotificationUtil.Instance.Type == NotificationType.AccountStatement ||
-                                            NotificationUtil.Instance.Type == NotificationType.NewBillDesign ||
-                                            NotificationUtil.Instance.Type == NotificationType.EKYC))
+                                        if (hasNotification && isLoggedInEmail && NotificationUtil.Instance.IsDirectPush)
                                         {
                                             GetAccountAWS();
                                         }
@@ -533,7 +534,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             string notificationType = UserSessions.GetNotificationType(mSharedPref) != null
                                                 ? UserSessions.GetNotificationType(mSharedPref).ToUpper()
                                                 : string.Empty;
-                                            if (notificationType == MobileConstants.PushNotificationTypes.DBR_NonOwner)
+                                            if (notificationType == myTNB.Mobile.Constants.NotificationTypes.DBR.DBR_NonOwner)
                                             {
                                                 DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Notifications.Combined_Comms_Non_Owner);
                                             }
@@ -594,6 +595,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         , UserSessions.GetDeviceId()
                                         , DeviceIdUtils.GetAppVersionName()
                                         , myTNB.Mobile.MobileConstants.OSType.Android
+                                        , DeviceIdUtils.GetAndroidVersion()
+                                        , FirebaseTokenEntity.GetLatest().FBToken
                                         , TextViewUtils.FontInfo
                                         , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
 
@@ -734,9 +737,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                     this.mView.ShowDashboard();
                 }
-
-
-
             }
             catch (ApiException apiException)
             {
@@ -759,11 +759,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             Task.Run(() =>
             {
-                _ = GetUserNotificationsV2();
+                _ = OnGetNotificationsV2();
             });
         }
 
-        private async Task GetUserNotificationsV2()
+        private async Task OnGetNotificationsV2()
         {
             UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new myTNB_Android.Src.MyTNBService.Request.BaseRequest());
             if (response.IsSuccessResponse())
@@ -858,7 +858,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 Utility.LoggingNonFatalError(ne);
                             }
 
-                            foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                            foreach (UserNotification userNotification in response.GetData().FilteredUserNotificationList)
                             {
                                 // tODO : SAVE ALL NOTIFICATIONs
                                 int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
@@ -898,7 +898,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     string notificationType = UserSessions.GetNotificationType(mSharedPref) != null
                         ? UserSessions.GetNotificationType(mSharedPref).ToUpper()
                         : string.Empty;
-                    if (notificationType == MobileConstants.PushNotificationTypes.DBR_NonOwner)
+                    if (notificationType == myTNB.Mobile.Constants.NotificationTypes.DBR.DBR_NonOwner)
                     {
                         DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Notifications.Combined_Comms_Non_Owner);
                     }
@@ -912,7 +912,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     string notificationType = UserSessions.GetNotificationType(mSharedPref) != null
                         ? UserSessions.GetNotificationType(mSharedPref).ToUpper()
                         : string.Empty;
-                    if (notificationType == MobileConstants.PushNotificationTypes.DBR_NonOwner)
+                    if (notificationType == myTNB.Mobile.Constants.NotificationTypes.DBR.DBR_NonOwner)
                     {
                         DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Notifications.Combined_Comms_Non_Owner);
                     }

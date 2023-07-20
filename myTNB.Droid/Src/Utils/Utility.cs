@@ -835,5 +835,40 @@ namespace myTNB_Android.Src.Utils
                 .Build();
             marketingTooltip.Show();
         }
+
+        public static string GetParamValueFromKey(string key, string urlString)
+        {
+            string value = string.Empty;
+
+            if (!urlString.IsValid())
+            {
+                return value;
+            }
+
+            var parameters = urlString?.Split(Constants.SLASH);
+            if (parameters.Length > 0)
+            {
+                foreach (var item in parameters)
+                {
+                    var segment = item?.Split(Constants.AMPERSAND);
+                    if (segment.Length > 0)
+                    {
+                        foreach (var pair in segment)
+                        {
+                            string pattern = string.Format(Constants.PATTERN, key);
+                            Regex regex = new Regex(pattern);
+                            Match match = regex.Match(pair);
+                            if (match.Success)
+                            {
+                                value = match.Value.Replace(string.Format(Constants.REPLACE_KEY, key), string.Empty);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return value;
+        }
+
     }
 }

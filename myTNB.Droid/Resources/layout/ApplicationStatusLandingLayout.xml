@@ -416,7 +416,7 @@
 					android:layout_marginLeft="16dp"
 					android:layout_marginRight="16dp"
 					android:layout_marginBottom="16dp"
-					style="@style/Theme.ApplicationStatusLandingButton" />
+					style="@style/Theme.FreshGreenOutlineButton" />
 			</LinearLayout>
 		</LinearLayout>
 	</LinearLayout>

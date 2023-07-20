@@ -16,6 +16,11 @@
             AppUpdate,
             AccountStatement,
             NewBillDesign,
+            NCAddressSearchCompleted,
+            NCResumeApplication,
+            NCApplicationCompleted,
+            NCApplicationContractorCompleted,
+            NCOTPVerify,
             EKYC,
             None
         }

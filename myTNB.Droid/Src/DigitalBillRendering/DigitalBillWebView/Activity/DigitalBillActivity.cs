@@ -240,7 +240,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     , BillRendering.Content.RedirectURL
                     , _accountNumber);
 
-                    string ssoURL = string.Format(AWSConstants.Domains.DBRSSO, signature);
+                    string ssoURL = string.Format(AWSConstants.Domains.SSO.DBR, signature);
 
                     micrositeWebView.SetWebChromeClient(new WebChromeClient());
                     micrositeWebView.SetWebViewClient(new MyTNBWebViewClient(this));

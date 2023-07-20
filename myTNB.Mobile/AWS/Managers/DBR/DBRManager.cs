@@ -200,8 +200,8 @@ namespace myTNB.Mobile
                 {
                     PostBREligibilityIndicatorsRequest request = new PostBREligibilityIndicatorsRequest
                     {
-                        CaNos = caList
-                        , UserID = userId
+                        CaNos = caList,
+                        UserID = userId
                     };
 
                     IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.PostBREligibilityIndicators);

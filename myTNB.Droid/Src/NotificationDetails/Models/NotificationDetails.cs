@@ -64,6 +64,12 @@ namespace myTNB_Android.Src.NotificationDetails.Models
         [JsonProperty("HeaderTitle")]
         public string HeaderTitle { get; set; }
 
+        [JsonProperty("MyHomeDetails")]
+        public MyHomeDetailsData MyHomeDetails { get; set; }
+
+        [JsonProperty("ApplicationStatusDetail", Required = Newtonsoft.Json.Required.AllowNull)]
+        public ApplicationStatusDetailData ApplicationStatusDetail { get; set; }
+
         public class AccountDetailsData
         {
             [JsonProperty("BillDate")]
@@ -87,6 +93,42 @@ namespace myTNB_Android.Src.NotificationDetails.Models
 
             [JsonProperty("ServiceDisruptionID")]
             public string ServiceDisruptionID { get; set; }
+        }
+
+        public class MyHomeDetailsData
+        {
+            [JsonProperty("SSODomain")]
+            public string SSODomain { get; set; }
+
+            [JsonProperty("OriginURL")]
+            public string OriginURL { get; set; }
+
+            [JsonProperty("RedirectURL")]
+            public string RedirectURL { get; set; }
+        }
+
+        public class ApplicationStatusDetailData
+        {
+            [JsonProperty("SaveApplicationId")]
+            public string SaveApplicationId { get; set; }
+
+            [JsonProperty("ApplicationID")]
+            public string ApplicationID { get; set; }
+
+            [JsonProperty("ApplicationType")]
+            public string ApplicationType { get; set; }
+
+            [JsonProperty("System")]
+            public string System { get; set; }
+
+            [JsonProperty("MessageCategory")]
+            public string MessageCategory { get; set; }
+
+            [JsonProperty("MessageCode")]
+            public string MessageCode { get; set; }
+
+            [JsonProperty("Type")]
+            public string Type { get; set; }
         }
 
         public class EKYCVerification

@@ -1,12 +1,15 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
+using myTNB.Mobile.AWS;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP
@@ -202,6 +205,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void TriggerIneligiblePopUp();
 
             void NavigateToNBR();
+
+            void OnCheckNCDraftResumePopUp();
+
+            void OnShowNCDraftResumePopUp(MyHomeToolTipModel toolTipModel, List<PostGetNCDraftResponseItemModel> newNCList, bool isMultipleDraft);
+
+            void RouteToApplicationLanding(string toastMessage = "");
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -219,8 +228,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// <summary>
             /// Action to select menu
             /// </summary>
-            /// <param name="resourceId">integer</param>
-            void OnMenuSelect(int resourceId, bool isIneligiblePopUpActive = false);
+            /// <param name="resourceId"></param>
+            /// <param name="isIneligiblePopUpActive"></param>
+            /// <param name="toastMessage"></param>
+            void OnMenuSelect(int resourceId, bool isIneligiblePopUpActive = false, string toastMessage = "");
 
             /// <summary>
             /// The returned result from another activity
@@ -296,6 +307,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void OnGetBillEligibilityCheck(string accountNumber);
 
             void ShowBillMenuWithAccount(CustomerBillingAccount account);
+
+            void OnCheckNCDraftForResume(ISharedPreferences prefs);
         }
     }
 }

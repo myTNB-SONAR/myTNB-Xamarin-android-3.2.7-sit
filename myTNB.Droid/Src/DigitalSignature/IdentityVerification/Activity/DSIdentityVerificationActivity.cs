@@ -9,6 +9,7 @@ using Android.Text;
 using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
 using myTNB;
 using myTNB.Mobile;
@@ -63,8 +64,16 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         [BindView(Resource.Id.dsIdVerifInfoDropdownMessage)]
         readonly TextView dsIdVerifInfoDropdownMessage;
 
+        [BindView(Resource.Id.identityVerificationPrivacyPolicyContainer)]
+        readonly LinearLayout identityVerificationPrivacyPolicyContainer;
+
         [BindView(Resource.Id.dsIdVerificationPrivacyPolicy)]
-        readonly TextView dsIdVerificationPrivacyPolicy;
+        TextView dsIdVerificationPrivacyPolicy;
+
+        [BindView(Resource.Id.checkboxCondition)]
+        CheckBox txtboxcondition;
+
+        private bool checkedCondition = false;
 
         private const string PAGE_ID = DSConstants.PageName_DSLanding;
         private const int _totalItem = 3;
@@ -147,6 +156,9 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             TextViewUtils.SetTextSize14(dsIdVerifInfoMessage);
             TextViewUtils.SetMuseoSans300Typeface(dsIdVerifInfoMessage, dsIdVerifInfoDropdownTitle, dsIdVerifInfoDropdownMessage, dsIdVerificationPrivacyPolicy);
             TextViewUtils.SetMuseoSans500Typeface(dsIdVerifInfoTitle);
+
+            txtboxcondition.CheckedChange += CheckedChange;
+            txtboxcondition.Checked = false;
         }
 
         public void SetPresenter(DSIdentityVerificationContract.IUserActionsListener userActionListener)
@@ -276,6 +288,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 
                 dsIdVerifInfoTitle.Text = GetLabelByLanguage(DSConstants.I18N_NoRegisteredIDTitle);
                 identityVerificationBtnContinue.Text = GetLabelByLanguage(DSConstants.I18N_VerifyNow);
+                identityVerificationBtnContinue.Enabled = false;
 
                 if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
@@ -288,6 +301,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                     dsIdVerificationPrivacyPolicy.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_DSPrivacyPolicy));
                 }
 
+                StripUnderlinesFromLinks(dsIdVerificationPrivacyPolicy);
                 buttonCTA = OnVerifyNow;
 
                 DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Popup.Document_Ready);
@@ -382,6 +396,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
 
                             dsIdVerifInfoTitle.Text = dialogTitle;
                             identityVerificationBtnContinue.Text = GetLabelByLanguage(DSConstants.I18N_VerifyNow);
+                            identityVerificationBtnContinue.Enabled = false;
 
                             try
                             {
@@ -400,7 +415,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
                                     dsIdVerifInfoMessage.TextFormatted = Html.FromHtml(dialogMessage);
                                     dsIdVerifInfoDropdownTitle.TextFormatted = Html.FromHtml(dropdownTitle);
                                     dsIdVerifInfoDropdownMessage.TextFormatted = Html.FromHtml(dropdownMessage);
-                                    dsIdVerificationPrivacyPolicy.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_DSPrivacyPolicy), FromHtmlOptions.ModeLegacy);
+                                    dsIdVerificationPrivacyPolicy.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_DSPrivacyPolicy));
                                     StripUnderlinesFromLinks(dsIdVerificationPrivacyPolicy);
                                 }
 
@@ -495,6 +510,50 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
             textView.TextFormatted = spannable;
         }
 
+        private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            if (!txtboxcondition.Checked)
+            {
+                checkedCondition = true;
+                dsIdVerificationPrivacyPolicy.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_DSPrivacyPolicy));
+                StripUnderlinesFromLinks(dsIdVerificationPrivacyPolicy);
+                DisableSubmitButton();
+            }
+            else
+            {
+                checkedCondition = false;
+                dsIdVerificationPrivacyPolicy.TextFormatted = Html.FromHtml(GetLabelByLanguage(DSConstants.I18N_DSPrivacyPolicy));
+                StripUnderlinesFromLinks(dsIdVerificationPrivacyPolicy);
+                EnableSubmitButton();
+            }
+        }
+
+        public void DisableSubmitButton()
+        {
+            try
+            {
+                identityVerificationBtnContinue.Enabled = false;
+                identityVerificationBtnContinue.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void EnableSubmitButton()
+        {
+            try
+            {
+                identityVerificationBtnContinue.Enabled = true;
+                identityVerificationBtnContinue.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void UpdateLoadingShimmer(bool toShow)
         {
             dsIdVerifShimmerContainer.Visibility = toShow ? ViewStates.Visible : ViewStates.Gone;
@@ -504,6 +563,7 @@ namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity
         public void UpdateBottomContainer(bool toShow)
         {
             dsIdVerifBottomInfoContainer.Visibility = toShow ? ViewStates.Visible : ViewStates.Gone;
+            identityVerificationPrivacyPolicyContainer.Visibility = toShow ? ViewStates.Visible : ViewStates.Gone;
         }
 
         public void UpdateButtonState(bool toShow)

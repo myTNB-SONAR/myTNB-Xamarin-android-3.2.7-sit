@@ -24,6 +24,7 @@ namespace myTNB_Android.Src.NotificationDetails.Models
             public Action action;
             public bool isSolidBackground;
             public bool isEnabled = true;
+            public bool isRoundedButton = false;
 
             public NotificationCTA(string btnLabel, Action ctaAction)
             {
@@ -41,6 +42,10 @@ namespace myTNB_Android.Src.NotificationDetails.Models
                 isEnabled = enable;
             }
 
+            public void SetIsRoundedButton(bool isRounded)
+            {
+                isRoundedButton = isRounded;
+            }
         }
     }
 }

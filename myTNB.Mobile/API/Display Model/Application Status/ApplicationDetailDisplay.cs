@@ -34,6 +34,8 @@ namespace myTNB.Mobile
 
         public ApplicationAppointmentDetail ApplicationAppointmentDetail { set; get; }
 
+        public MyHomeDetails MyHomeDetails { set; get; }
+
         /// <summary>
         /// List of Title and Value used for payment details
         /// </summary>
@@ -210,7 +212,19 @@ namespace myTNB.Mobile
         {
             get
             {
-                return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "portalMessage");
+                string message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "portalMessage");
+                if (ApplicationTypeCode == "NC")
+                {
+                    if (CTAType == DetailCTAType.DeleteApplication)
+                    {
+                        message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "otpReadyMessage");
+                    }
+                    else
+                    {
+                        message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "ncActionMessage");
+                    }
+                }
+                return message;
             }
         }
         /// <summary>
@@ -255,6 +269,25 @@ namespace myTNB.Mobile
                             , ApplicationAppointmentDetail.AppointmentDateDisplay
                             , ApplicationAppointmentDetail.TimeSlotDisplay);
                     }
+
+                }
+                else if (CTAType == DetailCTAType.ReapplyNow
+                      && ApplicationStatusDetail != null)
+                {
+                    string key = string.Empty;
+                    if (ApplicationStatusDetail.StatusId == 7)
+                    {
+                        key = "reapplyContractorRejectCTAMessage";
+                    }
+                    else if (ApplicationStatusDetail.StatusId == 18)
+                    {
+                        key = "reapplyNoResponseCTAMessage";
+                    }
+                    message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", key);
+                }
+                else if (CTAType == DetailCTAType.ReuploadDocument)
+                {
+                    message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "updateNowCTAMessage");
                 }
                 return message;
             }
@@ -306,6 +339,52 @@ namespace myTNB.Mobile
         /// Additional information list that contains Title and Value
         /// </summary>
         public List<TitleValueModel> AdditionalInfoList { set; get; } = new List<TitleValueModel>();
+
+        private bool IsActionableStatusID(int statusID
+            , string statusIDListName)
+        {
+            Dictionary<string, List<int>> statusIDDIctionary = LanguageManager.Instance.GetValues<Dictionary<string, List<int>>>("ApplicationStatusID");
+            if (statusIDDIctionary != null
+                && statusIDDIctionary.ContainsKey(statusIDListName)
+                && statusIDDIctionary[statusIDListName] is List<int> statusIDList
+                && statusIDList != null
+                && statusIDList.Count > 0)
+            {
+                return statusIDList.Contains(statusID);
+            }
+            return false;
+        }
+
+        private bool IsActionableAccountTypeID(int statusID
+            , string statusIDListName)
+        {
+            Dictionary<string, List<int>> statusIDDIctionary = LanguageManager.Instance.GetValues<Dictionary<string, List<int>>>("AccountTypeID");
+            if (statusIDDIctionary != null
+                && statusIDDIctionary.ContainsKey(statusIDListName)
+                && statusIDDIctionary[statusIDListName] is List<int> statusIDList
+                && statusIDList != null
+                && statusIDList.Count > 0)
+            {
+                return statusIDList.Contains(statusID);
+            }
+            return false;
+        }
+
+        private bool IsActionablePremiseHeaderTypeID(int statusID
+            , string statusIDListName)
+        {
+            Dictionary<string, List<int>> statusIDDIctionary = LanguageManager.Instance.GetValues<Dictionary<string, List<int>>>("PremiseTypeHeaderID");
+            if (statusIDDIctionary != null
+                && statusIDDIctionary.ContainsKey(statusIDListName)
+                && statusIDDIctionary[statusIDListName] is List<int> statusIDList
+                && statusIDList != null
+                && statusIDList.Count > 0)
+            {
+                return statusIDList.Contains(statusID);
+            }
+            return false;
+        }
+
         /// <summary>
         /// Determines the CTA to display
         /// </summary>
@@ -317,6 +396,70 @@ namespace myTNB.Mobile
                 if (IsSaveMessageDisplayed)
                 {
                     type = DetailCTAType.Save;
+                }
+                else if (MyHomeUtility.Instance.IsAccountEligible
+                    && ApplicationTypeCode == "ASR"
+                    && !SavedApplicationID.IsValid()
+                    && ApplicationStatusDetail != null
+                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "ASRCompleted"))
+                {
+                    type = DetailCTAType.StartApplication;
+                }
+                else if (MyHomeUtility.Instance.IsAccountEligible
+                    && ApplicationTypeCode == "NC"
+                    && !SavedApplicationID.IsValid()
+                    && ApplicationStatusDetail != null
+                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCDraft")
+                    && IsActionableAccountTypeID(AccountTypeId, "NC")
+                    && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "NC")
+                    && MyHomeDetails != null
+                    && MyHomeDetails.IsOTPFailed)
+                {
+                    type = DetailCTAType.DeleteApplication;
+                }
+                else if (MyHomeUtility.Instance.IsAccountEligible
+                    && ApplicationTypeCode == "NC"
+                    && !SavedApplicationID.IsValid()
+                    && ApplicationStatusDetail != null
+                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCDraft")
+                    && IsActionableAccountTypeID(AccountTypeId, "NC")
+                    && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "NC")
+                    && MyHomeDetails != null
+                    && !MyHomeDetails.IsOTPFailed)
+                {
+                    type = DetailCTAType.ResumeApplication;
+                }
+                else if (MyHomeUtility.Instance.IsAccountEligible
+                    && ApplicationTypeCode == "NC"
+                    && !SavedApplicationID.IsValid()
+                    && ApplicationStatusDetail != null
+                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCReapplyNow")
+                    && IsActionableAccountTypeID(AccountTypeId, "NC")
+                    && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "NC")
+                    && MyHomeDetails != null)
+                {
+                    type = DetailCTAType.ReapplyNow;
+                }
+                else if (MyHomeUtility.Instance.IsAccountEligible
+                    && ApplicationTypeCode == "NC"
+                    && !SavedApplicationID.IsValid()
+                    && ApplicationStatusDetail != null
+                    && IsActionableStatusID(ApplicationStatusDetail.StatusId, "NCReuploadDocument")
+                    && IsActionableAccountTypeID(AccountTypeId, "NC")
+                    && IsActionablePremiseHeaderTypeID(PremiseTypeHeaderId, "NC")
+                    && MyHomeDetails != null)
+                {
+                    type = DetailCTAType.ReuploadDocument;
+                }
+                else if (MyHomeUtility.Instance.IsAccountEligible
+                   && ApplicationTypeCode == "NC"
+                   && !SavedApplicationID.IsValid()
+                   && ApplicationStatusDetail != null
+                   && ApplicationRatingDetail != null
+                   && ApplicationRatingDetail.SubmissionRating != null
+                   && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
+                {
+                    type = DetailCTAType.SubmitApplicationRating;
                 }
                 else if (IsPayment && IsOffLine)
                 {
@@ -398,6 +541,7 @@ namespace myTNB.Mobile
                 return type;
             }
         }
+
         /// <summary>
         /// Returns the type of tutorial to display
         /// </summary>
@@ -424,7 +568,14 @@ namespace myTNB.Mobile
                                 if (CTAType == DetailCTAType.CustomerRating
                                     || CTAType == DetailCTAType.ContractorRating
                                     || CTAType == DetailCTAType.NewAppointment
-                                    || CTAType == DetailCTAType.Reschedule)
+                                    || CTAType == DetailCTAType.Reschedule
+                                    || CTAType == DetailCTAType.Pay
+                                    || CTAType == DetailCTAType.StartApplication
+                                    || CTAType == DetailCTAType.DeleteApplication
+                                    || CTAType == DetailCTAType.ResumeApplication
+                                    || CTAType == DetailCTAType.ReapplyNow
+                                    || CTAType == DetailCTAType.ReuploadDocument
+                                    || CTAType == DetailCTAType.SubmitApplicationRating)
                                 {
                                     type = DetailTutorialType.Action;
                                 }
@@ -445,10 +596,16 @@ namespace myTNB.Mobile
                     }
                 }
                 else if (CTAType == DetailCTAType.CustomerRating
-                   || CTAType == DetailCTAType.ContractorRating
-                   || CTAType == DetailCTAType.NewAppointment
-                   || CTAType == DetailCTAType.Reschedule
-                   || CTAType == DetailCTAType.Pay)
+                    || CTAType == DetailCTAType.ContractorRating
+                    || CTAType == DetailCTAType.NewAppointment
+                    || CTAType == DetailCTAType.Reschedule
+                    || CTAType == DetailCTAType.Pay
+                    || CTAType == DetailCTAType.StartApplication
+                    || CTAType == DetailCTAType.DeleteApplication
+                    || CTAType == DetailCTAType.ResumeApplication
+                    || CTAType == DetailCTAType.ReapplyNow
+                    || CTAType == DetailCTAType.ReuploadDocument
+                    || CTAType == DetailCTAType.SubmitApplicationRating)
                 {
                     type = DetailTutorialType.Action;
                 }
@@ -567,6 +724,16 @@ namespace myTNB.Mobile
         /// Coming from app launch master data
         /// </summary>
         public bool IsSchedulerEnable { set; get; } = true;
+
+        /// <summary>
+        /// Use to determine behaviour of NC Application button
+        /// </summary>
+        public int AccountTypeId { set; get; }
+
+        /// <summary>
+        /// Use to determine behaviour of NC Application button
+        /// </summary>
+        public int PremiseTypeHeaderId { set; get; }
 
         private Color StatusColorDisplay
         {
@@ -1009,6 +1176,12 @@ namespace myTNB.Mobile
         Reschedule,
         Save,
         RescheduleDisabled,
+        StartApplication,
+        DeleteApplication,
+        ResumeApplication,
+        ReapplyNow,
+        ReuploadDocument,
+        SubmitApplicationRating,
         VerifyNow,
         SignApplication
     }
