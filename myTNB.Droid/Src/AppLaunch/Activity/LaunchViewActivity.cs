@@ -51,6 +51,7 @@ using myTNB_Android.Src.OverVoltageFeedback.Activity;
 using myTNB_Android.Src.Utils.Notification;
 using myTNB.Mobile.AWS.Models.DBR;
 using Firebase.Iid;
+using System.Linq;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -1098,11 +1099,16 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtDialogTitle, btnYeslabel);
                 btnYeslabel.Click += delegate
                 {
+                    var versionNow = new string(DeviceIdUtils.GetAppVersionName().Where(c => !char.IsLetter(c)).ToArray());
+                    DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Recommend.RecommendAppUpdate_ClickYes);
+                    DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Recommend.RecommendAppUpdate_VersionBeforeUpdate + " " + versionNow);
                     userClick = true;
                     OnAppUpdateClick();
                 };
+
                 btnNolabel.Click += delegate
                 {
+                    DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Recommend.RecommendAppUpdate_ClickNo);
                     appUpdateDialog.Dismiss();
                     userClick = true;
                     mPresenter.Start();

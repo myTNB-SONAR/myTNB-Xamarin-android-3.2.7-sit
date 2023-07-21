@@ -181,7 +181,8 @@
     "error_duplicateAccountMessageNew": "Nombor akaun elektrik ini telah wujud dalam senarai anda.",
     "error_emptyIcAndEmailOwner": "Pemilik e-mel atau nombor telefon tidak boleh kosong.",
     "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan tidak dijumpai.",
-    "accountNickNameError": "Akaun anda harus mempunyai nama gelaran. Anda boleh menggunakan huruf, angka atau simbol."
+    "accountNickNameError": "Akaun anda harus mempunyai nama gelaran. Anda boleh menggunakan huruf, angka atau simbol.",
+    "invalid_accountNumber": "Nombor Akaun Tidak Sah"
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -448,7 +449,7 @@
     "accountsMissing": "Mengapa akaun saya tiada di sini?",
     "gotIt": "Ok!",
     "disconnectionMsg": "<strong>Apakah maksudnya?</strong><br><br>Bekalan elektrik anda telah dipotong. Pemotongan ini mungkin disebabkan oleh permintaan pemilik premis, atau tunggakan bayaran bil.<br><br>Sekiranya anda telah memohon untuk sambungan semula, atau telah membuat bayaran, bekalan anda akan disambung dalam masa terdekat.",
-    "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
+    "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Bil anda setakat hari ini adalah jumlah yang telah anda gunakan sehingga semalam<br><br><strong> Bil saya boleh mencecah:</strong><br><br>Ini dikira berdasarkan purata penggunaan harian anda untuk satu (1) bulan yang lalu, bil sebenar anda mungkin berbeza. Untuk ketahui lebih lanjut, sila lawati laman <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Soalan Lazim.</a></strong><br><br>Nota: Jumlah yang tertera adalah sebelum cukai / caj tambahan yang berkenaan.",
     "projectedCostTitle": "Apakah ini?",
     "missedReadTitle": "Apakah maksudnya?",
     "missedReadMsg": "Maklumat penggunaan anda tidak dapat diperolehi pada masa ini. Anda boleh 'refresh' untuk cuba semula.",
@@ -483,7 +484,7 @@
     "accountTypeDialogMessage": "Anda boleh log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> myTNB menggunakan maklumat log masuk yang sama dan nikmati akses penuh untuk akaun tersebut.",
     //EnergyBudget
     "myMonthlyBudget": "Energy Budget saya adalah",
-    "whyIsAmountDiff": "Adakah ini bill sebenar saya?",
+    "whyIsAmountDiff": "Adakah ini bil sebenar saya?",
     "whyIsAmountDiffBody": "Tidak semestinya. Jumlah yang dipaparkan adalah berdasarkan kepada penggunaan elektrik anda setakat ini bagi bulan semasa. Bil anda boleh termasuk caj-caj seperti sumbangan KWTBB 1.6%, cukai perkhidmatan 6%, rebat/surcaj ICPT (di mana berkenaan).",
     "editEnergyButton": "Tetapkan Energy Budget anda",
     "setEnergyButton": "Tetapkan Sekarang",
@@ -637,7 +638,8 @@
     "addCard": "Tambah kad",
     "fpxTitle": "Perbankan dalam talian melalui FPX",
     "eWalletPaymentMethods": "e-Dompet",
-    "tngTitle": "TNG eWallet"
+    "tngTitle": "TNG eWallet",
+    "CCExpired": "Kad Tamat Tempoh"
   },
   "MakePayment": {
     "enterOTP": "Masukkan Kod OTP",
@@ -1043,7 +1045,8 @@
     "cardRemoveSuccess": "Kad kredit / debit yang berakhir dengan {0} telah berjaya dialih keluar.",
     "removeCardMessage": "Anda akan mengalih keluar kad kredit / debit yang berakhir dengan {0}.",
     "removeCardTitle": "Alih Keluar Kad Kredit / Debit",
-    "cardNotRemovedMessage": "Kad Kredit / Debit yang berakhir dengan {0} tidak berjaya dialih keluar. Sila cuba semula sebentar lagi."
+    "cardNotRemovedMessage": "Kad Kredit / Debit yang berakhir dengan {0} tidak berjaya dialih keluar. Sila cuba semula sebentar lagi.",
+    "CCExpired": "Kad Tamat Tempoh"
   },
   "MyPaymentMethod": {
     "title": "Cara Pembayaran Saya",
@@ -1057,7 +1060,8 @@
     "titleNoAutoPay": "BM_You don't have AutoPay yet.",
     "bodyNoAutoPay": "BM_Let us take care your monthly bills automatically. We'll pause AutoPay when your bills are higher than usual",
     "btnStartAutoPay": "BM_Start AutoPay",
-    "titleCard": "Kad Kredit / Debit Saya yang Disimpan"
+    "titleCard": "Kad Kredit / Debit Saya yang Disimpan",
+    "CCExpired": "Kad Tamat Tempoh"
   },
   "ViewBill": {
     "titleBill": "Bil",
@@ -3133,7 +3137,7 @@
   "EnregyBudgetListing": {
     "title": "Pilih Akaun Meter Pintar",
     "tootltipTitle": "Kenapa sesetengah akaun saya yang tidak tersenarai?",
-    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
+    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Ciri ini hanya tersedia bagi akaun kediaman dengan meter pintar sahaja sehingga dimaklumkan kelak.",
     "headerTitle": "Mari mulakan dengan memilih akaun Smart Meter anda"
   },
   "EnergyBudgetPopup": {
@@ -3172,7 +3176,7 @@
     "eBillDescription": "Bil anda dihantar di Aplikasi & Portal myTNB. Terima kasih kerana memilih 'paperless'!",
     "emailBillDescription": "Bil anda dihantar melalui Aplikasi & Portal myTNB dan e-mel untuk akaun ini.",
     "updatingTitle": "Kami sedang mengemaskini cara penerimaan bil anda.",
-    "updatingDescription": "Akaun anda sedang dikemaskinikan dan dijangka mengambil masa sehingga 5 minit. Kembali semula nanti!",
+    "updatingDescription": "Akaun anda sedang dikemaskinikan dan dijangka mengambil masa sehingga 10 minit. Kembali semula nanti!",
     "selectAccount": "PILIH AKAUN ANDA",
     "notEligibleAccountsTitlePilot": "Mengapa akaun saya tidak ada di sini?",
     "notEligibleAccountsMessagePilot": "Program perintis ini untuk akaun Kediaman di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang berkenaan akan dibolehkan untuk 'paperless'. Ciri ini akan berkembang ke seluruh negara tidak lama lagi. Nantikan!",

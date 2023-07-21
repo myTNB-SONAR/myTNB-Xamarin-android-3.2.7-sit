@@ -40,7 +40,6 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             {
                 SendResetPasswordCodeRequest resetPasswordCodeRequest = new SendResetPasswordCodeRequest();
                 resetPasswordCodeRequest.SetUserName(email);
-                string dt = JsonConvert.SerializeObject(resetPasswordCodeRequest);
                 var forgetPasswordResponse = await ServiceApiImpl.Instance.ChangeNewPasswordNew(resetPasswordCodeRequest);
 
                 
@@ -110,10 +109,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             try
             {
                 SendEmailVerificationRequest resetPasswordCodeRequest = new SendEmailVerificationRequest(email);
-                string dt = JsonConvert.SerializeObject(resetPasswordCodeRequest);
                 var emailVerificationResponse = await ServiceApiImpl.Instance.SendEmailVerify(new SendEmailVerificationRequest(email));
-
-
 
                 if (mView.IsActive())
                 {

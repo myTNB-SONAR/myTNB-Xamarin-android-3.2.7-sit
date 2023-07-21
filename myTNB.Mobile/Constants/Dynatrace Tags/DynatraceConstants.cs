@@ -212,6 +212,18 @@
             }
         }
 
+        public struct AppUpdate
+        {
+            public struct Recommend
+            {
+                public const string RecommendAppUpdate_DisplayPopUp = "App_Action_Display_RecommendAppUpdatePopup";
+                public const string RecommendAppUpdate_ClickYes = "App_Action_Click_RecommendAppUpdateYes";
+                public const string RecommendAppUpdate_ClickNo = "App_Action_Click_RecommendAppUpdateNo";
+                public const string RecommendAppUpdate_VersionBeforeUpdate = "App_Action_Get_VersionBeforeUpdate";
+            }
+
+        }
+
         public struct MyHome
         {
             public struct Screens
@@ -280,7 +292,7 @@
                     public const string EB_Reaching = "EB_view_notification_duration_reaching";
                     public const string EB_Reached = "EB_view_notification_duration_reached";
                     public const string NC_OTP_Verify = "myHome_App_Visit_VerifyAgainNotification";
-                    
+
                     public const string NC_Reappoint_Contractor = "myHome_App_Visit_ReappointContractorNotificationScreen";
                     public const string COT_OTP_Verify = "myHome_App_Visit_VerifyAgainNotification_COT";
                     public const string COT_Submitted = "myHome_App_Visit_ApplicationSubmittedAppNotification_ExistingOwner_COT";
@@ -364,6 +376,19 @@
                     public const string NC_Contractor_Rating = "myHome_App_Action_Application_DetailsCompletedWC_RateOurService_RateOurService";
                     public const string NC_Customer_Rating = "myHome_App_Action_Application_DetailsCompletedWthC_RateOurService_RateOurService";
                 }
+            }
+        }
+
+        public struct FloatingIcon
+        {
+            public struct FloatingModule
+            {
+                public const string WEB = "Floating_Icon_WEB";
+                public const string DBR = "Floating_Icon_DBR";
+                public const string BR = "Floating_Icon_BR";
+                public const string EB = "Floating_Icon_EB";
+                public const string SD = "Floating_Icon_SD";
+                public const string TNG = "Floating_Icon_TNG";
             }
         }
     }

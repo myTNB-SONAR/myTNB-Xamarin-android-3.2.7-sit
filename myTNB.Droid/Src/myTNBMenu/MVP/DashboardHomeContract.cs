@@ -8,6 +8,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
+using myTNB_Android.Src.SitecoreCMS.Model;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -211,6 +212,18 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void OnShowDraftResumePopUp(MyHomeToolTipModel toolTipModel, List<PostGetDraftResponseItemModel> newList, bool isMultipleDraft);
 
             void RouteToApplicationLanding(string toastMessage = "");
+
+            void OnSavedFloatingButtonTimeStampRecieved(string timestamp);
+
+            void OnFloatingButtonTimeStampRecieved(string timestamp);
+
+            void SetCustomFloatingButtonImage(FloatingButtonModel item);
+
+            bool GetFloatingButtonSiteCoreDoneFlag();
+
+            void NavigateToEnergyBudget();
+
+            void PopulateFloatingButton(FloatingButtonModel item);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -309,6 +322,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void ShowBillMenuWithAccount(CustomerBillingAccount account);
 
             void OnCheckDraftForResume(ISharedPreferences prefs);
+
+            void OnGetFloatingButtonTimeStamp();
+
+            void OnGetFloatingButtonItem();
+
+            void GetSavedFloatingButtonTimeStamp();
+
+            Task OnGetFloatingButtonCache();
         }
     }
 }

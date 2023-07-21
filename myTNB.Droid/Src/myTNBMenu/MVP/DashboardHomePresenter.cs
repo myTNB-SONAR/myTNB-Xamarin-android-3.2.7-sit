@@ -34,6 +34,11 @@ using myTNB.Mobile;
 using System.Linq;
 using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.Base.Activity;
+using Android.Graphics;
+using Android.Util;
+using myTNB_Android.Src.SitecoreCMS.Model;
+using System.Diagnostics;
+using System.IO;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP
 {
@@ -73,6 +78,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
         private WhatsNewEntity mWhatsNewEntity;
 
+        private FloatingButtonMarketingModel content;
+
         private static SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager;
         private static SSMRMeterReadingScreensEntity SSMRMeterReadingScreensManager;
         private static SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager;
@@ -82,6 +89,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         private static SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager;
         private static SSMRMeterReadingThreePhaseScreensOCROffEntity SSMRMeterReadingThreePhaseScreensOCROffManager;
 
+        private static int FloatingButtonDefaultTimeOutMillisecond = 4000;
+        private int FloatingButtonTimeOutMillisecond = FloatingButtonDefaultTimeOutMillisecond;
+        private bool IsOnGetPhotoRunning = false;
+
         private static bool isWhatNewClicked = false;
 
         private static bool isRewardClicked = false;
@@ -89,6 +100,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         internal int trackBottomNavigationMenu = Resource.Id.menu_dashboard;
 
         private static bool isWhatsNewDialogShowNeed = false;
+
+        internal static readonly int SELECT_SM_ACCOUNT_REQUEST_CODE = 8809;
+        internal static readonly int SELECT_SM_POPUP_REQUEST_CODE = 8810;
+
 
         public DashboardHomePresenter(DashboardHomeContract.IView mView, BaseAppCompatActivity activity, ISharedPreferences preferences)
         {
@@ -753,6 +768,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             if (LaunchViewActivity.MAKE_INITIAL_CALL)
             {
+                new SiteCoreFloatingButtonContentAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                 WhatsNewMenuUtils.OnSetWhatsNewLoading(true);
                 new SiteCoreWhatsNewAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                 bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
@@ -2042,6 +2058,357 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 this.CheckNCDraftForResume(prefs);
             }
+        }
+
+        public void GetSavedFloatingButtonTimeStamp()
+        {
+            try
+            {
+                FloatingButtonTimeOutMillisecond = FloatingButtonDefaultTimeOutMillisecond;
+                FloatingButtonParentEntity wtManager = new FloatingButtonParentEntity();
+                List<FloatingButtonParentEntity> items = wtManager.GetAllItems();
+                if (items != null && items.Count != 0)
+                {
+                    foreach (FloatingButtonParentEntity obj in items)
+                    {
+                        this.mView.OnSavedFloatingButtonTimeStampRecieved(obj.Timestamp);
+                    }
+                }
+                else
+                {
+                    this.mView.OnSavedFloatingButtonTimeStampRecieved(null);
+                }
+
+            }
+            catch (Exception e)
+            {
+                this.mView.OnSavedFloatingButtonTimeStampRecieved(null);
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
+        public void OnGetFloatingButtonTimeStamp()
+        {
+            CancellationTokenSource token = new CancellationTokenSource();
+            Stopwatch sw = Stopwatch.StartNew();
+            _ = Task.Run(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
+                    FloatingButtonTimeStampResponseModel responseModel = getItemsService.GetFloatingButtonTimestampItem();
+                    sw.Stop();
+                    try
+                    {
+                        if (FloatingButtonTimeOutMillisecond > 0)
+                        {
+                            FloatingButtonTimeOutMillisecond = FloatingButtonTimeOutMillisecond - (int)sw.ElapsedMilliseconds;
+                            if (FloatingButtonTimeOutMillisecond <= 0)
+                            {
+                                FloatingButtonTimeOutMillisecond = 0;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        FloatingButtonParentEntity wtManager = new FloatingButtonParentEntity();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
+                        wtManager.InsertListOfItems(responseModel.Data);
+                        mView.OnFloatingButtonTimeStampRecieved(responseModel.Data[0].Timestamp);
+                    }
+                    else
+                    {
+                        mView.OnFloatingButtonTimeStampRecieved(null);
+                    }
+                }
+                catch (Exception e)
+                {
+                    mView.OnFloatingButtonTimeStampRecieved(null);
+                    Utility.LoggingNonFatalError(e);
+                }
+            }, token.Token);
+
+            if (FloatingButtonTimeOutMillisecond > 0)
+            {
+                _ = Task.Delay(FloatingButtonTimeOutMillisecond).ContinueWith(_ =>
+                {
+                    if (FloatingButtonTimeOutMillisecond > 0)
+                    {
+                        FloatingButtonTimeOutMillisecond = 0;
+                        OnGetFloatingButtonCache();
+                    }
+                });
+            }
+        }
+
+        public void OnGetFloatingButtonItem()
+        {
+            CancellationTokenSource token = new CancellationTokenSource();
+            Stopwatch sw = Stopwatch.StartNew();
+            _ = Task.Run(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
+                    FloatingButtonResponseModel responseModel = getItemsService.GetFloatingButtonItem();
+                    sw.Stop();
+                    try
+                    {
+                        if (FloatingButtonTimeOutMillisecond > 0)
+                        {
+                            FloatingButtonTimeOutMillisecond = FloatingButtonTimeOutMillisecond - (int)sw.ElapsedMilliseconds;
+                            if (FloatingButtonTimeOutMillisecond <= 0)
+                            {
+                                FloatingButtonTimeOutMillisecond = 0;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        IsOnGetPhotoRunning = false;
+                        FloatingButtonEntity wtManager = new FloatingButtonEntity();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
+                        wtManager.InsertListOfItems(responseModel.Data);
+                        OnGetFloatingButtonCache();
+                    }
+                    else
+                    {
+                        OnGetFloatingButtonCache();
+                    }
+                }
+                catch (Exception e)
+                {
+                    OnGetFloatingButtonCache();
+                    Utility.LoggingNonFatalError(e);
+                }
+            }, token.Token);
+
+            if (FloatingButtonTimeOutMillisecond > 0)
+            {
+                _ = Task.Delay(FloatingButtonTimeOutMillisecond).ContinueWith(_ =>
+                {
+                    if (FloatingButtonTimeOutMillisecond > 0)
+                    {
+                        FloatingButtonTimeOutMillisecond = 0;
+                        OnGetFloatingButtonCache();
+                    }
+                });
+            }
+        }
+
+        public Task OnGetFloatingButtonCache()
+        {
+            CancellationTokenSource token = new CancellationTokenSource();
+            return Task.Run(() =>
+            {
+                try
+                {
+                    FloatingButtonEntity wtManager = new FloatingButtonEntity();
+                    List<FloatingButtonEntity> floatingButtonList = wtManager.GetAllItems();
+                    if (floatingButtonList.Count > 0)
+                    {
+                        FloatingButtonModel item = new FloatingButtonModel()
+                        {
+                            ID = floatingButtonList[0].ID,
+                            Image = floatingButtonList[0].Image,
+                            ImageB64 = floatingButtonList[0].ImageB64,
+                            Title = floatingButtonList[0].Title,
+                            Description = floatingButtonList[0].Description,
+                            StartDateTime = floatingButtonList[0].StartDateTime,
+                            EndDateTime = floatingButtonList[0].EndDateTime,
+                            ShowForSeconds = floatingButtonList[0].ShowForSeconds,
+                            ImageBitmap = null
+                        };
+                        OnProcessFloatingButtonItem(item);
+                    }
+                    else
+                    {
+                        FloatingButtonTimeOutMillisecond = 0;
+                        //if (!this.mView.GetFloatingButtonSiteCoreDoneFlag())
+                        //{
+                        //    this.mView.SetDefaultAppLaunchImage();
+                        //}
+                    }
+                }
+                catch (Exception e)
+                {
+                    FloatingButtonTimeOutMillisecond = 0;
+                    //if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                    //{
+                    //    this.mView.SetDefaultAppLaunchImage();
+                    //}
+                    Utility.LoggingNonFatalError(e);
+                }
+            }, token.Token);
+        }
+
+        private void OnProcessFloatingButtonItem(FloatingButtonModel item)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(item.ImageB64))
+                {
+                    Bitmap convertedImageCache = Base64ToBitmap(item.ImageB64);
+                    if (convertedImageCache != null)
+                    {
+                        FloatingButtonTimeOutMillisecond = 0;
+                        item.ImageBitmap = convertedImageCache;
+                        FloatingButtonUtils.SetFloatingButtonBitmap(item);
+                        if (!this.mView.GetFloatingButtonSiteCoreDoneFlag())
+                        {
+                            this.mView.SetCustomFloatingButtonImage(item);
+                            this.mView.PopulateFloatingButton(item);
+                        }
+                    }
+                    else
+                    {
+                        OnGetPhoto(item);
+                    }
+                }
+                else
+                {
+                    OnGetPhoto(item);
+                }
+            }
+            catch (Exception e)
+            {
+                FloatingButtonTimeOutMillisecond = 0;
+                //if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                //{
+                //    this.mView.SetDefaultAppLaunchImage();
+                //}
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnGetPhoto(FloatingButtonModel item)
+        {
+            if (!IsOnGetPhotoRunning)
+            {
+                IsOnGetPhotoRunning = true;
+                CancellationTokenSource token = new CancellationTokenSource();
+                Bitmap imageCache = null;
+                Stopwatch sw = Stopwatch.StartNew();
+                _ = Task.Run(() =>
+                {
+                    try
+                    {
+                        //imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);  
+                        imageCache = ImageUtils.GetImageBitmapFromUrlWithTimeOut(item.Image);
+                        sw.Stop();
+                        FloatingButtonTimeOutMillisecond = 0;
+
+                        if (imageCache != null)
+                        {
+                            item.ImageBitmap = imageCache;
+                            item.ImageB64 = BitmapToBase64(imageCache);
+                            FloatingButtonEntity wtManager = new FloatingButtonEntity();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                            FloatingButtonEntity newItem = new FloatingButtonEntity()
+                            {
+                                ID = item.ID,
+                                Image = item.Image,
+                                ImageB64 = item.ImageB64,
+                                Title = item.Title,
+                                Description = item.Description,
+                                StartDateTime = item.StartDateTime,
+                                EndDateTime = item.EndDateTime,
+                                ShowForSeconds = item.ShowForSeconds
+                            };
+                            wtManager.InsertItem(newItem);
+                            FloatingButtonUtils.SetFloatingButtonBitmap(item);
+                            if (!this.mView.GetFloatingButtonSiteCoreDoneFlag())
+                            {
+                                this.mView.SetCustomFloatingButtonImage(item);
+                                this.mView.PopulateFloatingButton(item);
+                            }
+                        }
+                        else
+                        {
+                            //if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                            //{
+                            //    this.mView.SetDefaultAppLaunchImage();
+                            //}
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        FloatingButtonTimeOutMillisecond = 0;
+                        //if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                        //{
+                        //    this.mView.SetDefaultAppLaunchImage();
+                        //}
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }, token.Token);
+
+                if (FloatingButtonTimeOutMillisecond > 0)
+                {
+                    _ = Task.Delay(FloatingButtonTimeOutMillisecond).ContinueWith(_ =>
+                    {
+                        if (FloatingButtonTimeOutMillisecond > 0)
+                        {
+                            FloatingButtonTimeOutMillisecond = 0;
+                            //if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                            //{
+                            //    this.mView.SetDefaultAppLaunchImage();
+                            //}
+                        }
+                    });
+                }
+            }
+        }
+
+        public string BitmapToBase64(Bitmap bitmap)
+        {
+            string B64Output = "";
+            try
+            {
+                MemoryStream byteArrayOutputStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.ToArray();
+                B64Output = Base64.EncodeToString(byteArray, Base64Flags.Default);
+            }
+            catch (Exception e)
+            {
+                B64Output = "";
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return B64Output;
+        }
+
+        public Bitmap Base64ToBitmap(string base64String)
+        {
+            Bitmap convertedBitmap = null;
+            try
+            {
+                byte[] imageAsBytes = Base64.Decode(base64String, Base64Flags.Default);
+                convertedBitmap = BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
+            }
+            catch (Exception e)
+            {
+                convertedBitmap = null;
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return convertedBitmap;
         }
     }
 

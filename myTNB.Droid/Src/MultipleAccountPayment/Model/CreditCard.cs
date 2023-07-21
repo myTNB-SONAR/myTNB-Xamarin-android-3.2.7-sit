@@ -31,5 +31,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Models
         [AliasAs("LastDigits")]
         public string LastDigits { get; set; }
 
+        [JsonProperty(PropertyName = "ExpiredDate")]
+        [AliasAs("ExpiredDate")]
+        public string ExpiredDate { get; set; }
+
+        [JsonProperty(PropertyName = "IsExpired")]
+        [AliasAs("IsExpired")]
+        public bool IsExpired { get; set; }
+
     }
 }

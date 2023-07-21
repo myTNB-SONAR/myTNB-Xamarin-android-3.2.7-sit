@@ -251,8 +251,8 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
             try
             {
+               
                 ValidateManualAccountRequest addaccRequest = new ValidateManualAccountRequest(accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner.ToString());
-              
                 string dt = JsonConvert.SerializeObject(addaccRequest);
                 var result = await ServiceApiImpl.Instance.ValidateManualAccount(new MyTNBService.Request.ValidateManualAccountRequest(accountNum, accountType, userIdentificationNum, suppliedMotherName, isOwner.ToString()));
                 if (mView.IsActive())
@@ -270,6 +270,10 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 else if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS && result.Response.DisplayMessage.Contains(Utility.GetLocalizedErrorLabel("invalid_accountType")))
                 {
                     mView.ShowAddAccountInvalid(result.Response.DisplayMessage);
+                }
+                else if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS && result.Response.DisplayMessage.Contains(Utility.GetLocalizedErrorLabel("invalid_accountNumber")))
+                {
+                    mView.ShowAddAccountNumberInvalid(result.Response.DisplayMessage);
                 }
                 else if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
                 {
