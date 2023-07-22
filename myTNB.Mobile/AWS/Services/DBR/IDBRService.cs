@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.AWS.Models.DBR;
+using myTNB.Mobile.Business;
 using Refit;
 
 namespace myTNB.Mobile.AWS.Services.DBR
@@ -25,7 +26,7 @@ namespace myTNB.Mobile.AWS.Services.DBR
             , string environment = AWSConstants.Environment);
 
         [Post("/BillRendering/BREligibilityIndicators")]
-        Task<HttpResponseMessage> PostBREligibilityIndicators([Body] PostBREligibilityIndicatorsRequest request
+        Task<HttpResponseMessage> PostBREligibilityIndicators([Body] EncryptedRequest encryptedRequest
             , CancellationToken cancellationToken
             , [Header(AWSConstants.Headers.Authorization)] string accessToken
             , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo

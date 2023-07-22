@@ -27,11 +27,11 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v2/launch/GetAppLaunchMasterData")]
-        Task<T> GetAppLaunchMasterDataAWS<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        Task<T> GetAppLaunchMasterDataAWS<T>([Body] EncryptedRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v2/account/Getaccount")]
-        Task<T> GetCustomerAccountListAppLaunch<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);  //lyana //aws applaunch only
+        Task<T> GetCustomerAccountListAppLaunch<T>([Body] EncryptedRequest request, CancellationToken token);  //lyana //aws applaunch only
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/AddTNBAccountToUserReg")]
@@ -433,10 +433,10 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v1/UserInfo/UpdateUserInfoDevice")]
-        Task<T> UpdateUserInfoDevice<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        Task<T> UpdateUserInfoDevice<T>([Body] EncryptedRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v1/UserInfo/GetIdentificationNo")]
-        Task<T> GetIdentificationNo<T>([Body] MyTNBService.Request.BaseRequestV4 request, CancellationToken token);
+        Task<T> GetIdentificationNo<T>([Body] EncryptedRequest request, CancellationToken token);
     }
 }

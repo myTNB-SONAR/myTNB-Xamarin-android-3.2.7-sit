@@ -80,7 +80,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<AppLaunchMasterDataResponseAWS> GetAppLaunchMasterDataAWS([Body] Request.BaseRequest request)
         {
             //Console.WriteLine("APIWAS call :" + apiAws.GetAppLaunchMasterDataAWS<AppLaunchMasterDataResponseAWS>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()).ToString());
-            return apiAws.GetAppLaunchMasterDataAWS<AppLaunchMasterDataResponseAWS>(request, CancellationTokenSourceWrapper.GetToken());
+            return apiAws.GetAppLaunchMasterDataAWS<AppLaunchMasterDataResponseAWS>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<CustomerAccountListResponseAppLaunch> GetCustomerAccountListAppLaunch([Body] Request.BaseRequestV4 request)
         {
             //Console.WriteLine("APIWAS call :" + apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponseAppLaunch>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()).ToString());
-            return apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponseAppLaunch>(request, CancellationTokenSourceWrapper.GetToken());
+            return apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponseAppLaunch>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<CustomerAccountListResponse> GetCustomerAccountListAppLaunch([Body] Request.BaseRequestV4 request, CancellationToken token)
         {
-            return apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponse>(request, token);
+            return apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponse>(EncryptRequest(request), token);
         }
 
         /// <summary>
@@ -926,7 +926,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<APIBaseResponse> UpdateUserInfoDevice([Body] Request.BaseRequest request)
         {
             //Console.WriteLine("APIWAS call :" + apiAws.UpdateUserInfoDevice<APIBaseResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()).ToString());
-            return apiAws.UpdateUserInfoDevice<APIBaseResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return apiAws.UpdateUserInfoDevice<APIBaseResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -937,7 +937,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<GetIdentificationNoResponse> GetIdentificationNo([Body] Request.BaseRequestV4 request)
         {
-            return apiAws.GetIdentificationNo<GetIdentificationNoResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return apiAws.GetIdentificationNo<GetIdentificationNoResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         #endregion

@@ -45,11 +45,14 @@ namespace myTNB.Mobile
                     Channel = AWSConstants.Channel,
                     UserId = userID ?? string.Empty
                 };
+
+                var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+
 #if MASTER || SIT || DEBUG
-                HttpResponseMessage rawResponse = await service.GenerateAccessToken(request
+                HttpResponseMessage rawResponse = await service.GenerateAccessToken(encryptedRequest
                     , NetworkService.GetCancellationToken(AWSConstants.DebugTimeOut));
 #else
-                HttpResponseMessage rawResponse = await service.GenerateAccessToken(request
+                HttpResponseMessage rawResponse = await service.GenerateAccessToken(encryptedRequest
                     , NetworkService.GetCancellationToken());
 #endif
                 //Mark: Check for 404 First
@@ -153,7 +156,9 @@ namespace myTNB.Mobile
                     UserId = userID ?? string.Empty
                 };
 
-                HttpResponseMessage rawResponse = await service.GetUserServiceAccessToken(request
+                var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+
+                HttpResponseMessage rawResponse = await service.GetUserServiceAccessToken(encryptedRequest
                     , NetworkService.GetCancellationToken());
                 //Mark: Check for 404 First
                 if ((int)rawResponse.StatusCode != 200)

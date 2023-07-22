@@ -205,7 +205,10 @@ namespace myTNB.Mobile
                     };
 
                     IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.PostBREligibilityIndicators);
-                    HttpResponseMessage rawResponse = await service.PostBREligibilityIndicators(request
+
+                    var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+
+                    HttpResponseMessage rawResponse = await service.PostBREligibilityIndicators(encryptedRequest
                        , NetworkService.GetCancellationToken()
                        , accessToken
                        , AppInfoManager.Instance.ViewInfo);

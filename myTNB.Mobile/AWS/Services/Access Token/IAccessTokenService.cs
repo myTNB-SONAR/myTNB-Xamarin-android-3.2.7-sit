@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.Business;
 using Refit;
 
 namespace myTNB.Mobile.AWS.Services.AccessToken
@@ -9,13 +10,13 @@ namespace myTNB.Mobile.AWS.Services.AccessToken
     internal interface IAccessTokenService
     {
         [Post("/Identity/GenerateAccessToken")]
-        Task<HttpResponseMessage> GenerateAccessToken([Body] AccessTokenRequest request
+        Task<HttpResponseMessage> GenerateAccessToken([Body] EncryptedRequest request
             , CancellationToken cancelToken
             , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
             , string environment = AWSConstants.Environment);
 
         [Post("/general/user-svc/api/v1/token/GetAccessToken")]
-        Task<HttpResponseMessage> GetUserServiceAccessToken([Body] AccessTokenRequest request
+        Task<HttpResponseMessage> GetUserServiceAccessToken([Body] EncryptedRequest request
             , CancellationToken cancelToken
             , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
             , string environment = AWSConstants.Environment);
