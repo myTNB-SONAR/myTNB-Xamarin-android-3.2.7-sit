@@ -1,4 +1,5 @@
-﻿using myTNB_Android.Src.myTNBMenu.Models;
+﻿using myTNB.Mobile.Business;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
 using Refit;
 using System.Threading;
@@ -10,6 +11,6 @@ namespace myTNB_Android.Src.myTNBMenu.Api
 	{
 		[Headers("Content-Type:application/json; charset=utf-8")]
 		[Post("/v6/mytnbappws.asmx/CheckPendingPayments")]
-		Task<CheckPendingPaymentsResponse> GetCheckPendingPayments([Body] CheckPendingPaymentRequest request, CancellationToken cancellationToken);
+		Task<CheckPendingPaymentsResponse> GetCheckPendingPayments([Body] EncryptedRequest request, CancellationToken cancellationToken);
 	}
 }

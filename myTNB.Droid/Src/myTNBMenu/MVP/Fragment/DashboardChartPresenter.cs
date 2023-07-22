@@ -168,13 +168,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     ses_param2 = ""
                 };
 
-                var installDetailsResponse = await installDetailsApi.GetInstallationDetails(new Requests.GetInstallationDetailsRequest()
+                var request = new GetInstallationDetailsRequest()
                 {
                     AccountNumber = this.mView.GetSelectedAccount().AccountNum,
                     IsOwner = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
                     usrInf = currentUsrInf
-                }, cts.Token);
+                };
 
+                var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                var installDetailsResponse = await installDetailsApi.GetInstallationDetails(encryptedRequest, cts.Token);
 
                 if (installDetailsResponse != null && installDetailsResponse.Data != null && installDetailsResponse.Data.ErrorCode == "7200")
                 {
@@ -438,12 +440,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         List<string> accountList = new List<string>();
                         accountList.Add(this.mView.GetSelectedAccount().AccountNum);
 
-                        CheckPendingPaymentsResponse paymentStatusResponse = await paymentStatusApi.GetCheckPendingPayments(new CheckPendingPaymentRequest()
+                        var request = new CheckPendingPaymentRequest()
                         {
                             AccountList = accountList,
                             usrInf = currentUsrInf,
                             deviceInf = currentDvdInf
-                        }, cts.Token);
+                        };
+
+                        var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+
+                        CheckPendingPaymentsResponse paymentStatusResponse = await paymentStatusApi.GetCheckPendingPayments(encryptedRequest, cts.Token);
 
                         if (paymentStatusResponse != null && paymentStatusResponse.Data != null && paymentStatusResponse.Data.ErrorCode == "7200")
                         {
@@ -477,13 +483,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 cts = new CancellationTokenSource();
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
-
-                AccountDueAmountResponse dueResponse = await amountDueApi.GetAccountDueAmount(new Requests.AccountDueAmountRequest()
+                var request = new AccountDueAmountRequest()
                 {
                     AccountNumber = this.mView.GetSelectedAccount().AccountNum,
                     IsOwnedAccount = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
                     usrInf = currentUsrInf
-                }, cts.Token);
+                };
+
+                var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                AccountDueAmountResponse dueResponse = await amountDueApi.GetAccountDueAmount(encryptedRequest, cts.Token);
 
                 if (dueResponse != null && dueResponse.Data != null && dueResponse.Data.ErrorCode != "7200")
                 {
@@ -551,13 +559,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     ses_param2 = ""
                 };
 
-                var usageHistoryResponse = await api.DoQuery(new Requests.UsageHistoryRequest()
+                var request = new Requests.UsageHistoryRequest()
                 {
                     AccountNumber = this.mView.GetSelectedAccount().AccountNum,
                     isOwner = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
                     accountType = this.mView.GetIsREAccount() ? "RE" : "NM",
                     userInterface = currentUsrInf
-                }, cts.Token);
+                };
+
+                var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+                var usageHistoryResponse = await api.DoQuery(encryptedRequest, cts.Token);
 
                 if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
                 {
