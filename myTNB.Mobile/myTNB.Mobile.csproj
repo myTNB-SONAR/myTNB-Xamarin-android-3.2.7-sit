@@ -79,6 +79,7 @@
     <Folder Include="API\Managers\Home\Utilities\" />
     <Folder Include="AWS\Managers\MyHome\" />
     <Folder Include="AWS\Models\Application Status\Post NC Draft Applications\" />
+    <Folder Include="Resources\Keys\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Language\Language_MS.json" />
@@ -88,6 +89,7 @@
     <EmbeddedResource Include="Resources\TnC\TermsAndConditions_MS.txt" />
     <EmbeddedResource Include="Resources\Language\Language_EN.json" />
     <EmbeddedResource Include="Resources\Country\CountryList.json" />
+    <EmbeddedResource Include="Resources\Keys\Key.txt" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Remove="Resources\FAQ\FAQ_MS.json" />
@@ -126,6 +128,8 @@
     <None Remove="API\Managers\Home\Utilities\" />
     <None Remove="AWS\Managers\MyHome\" />
     <None Remove="AWS\Models\Application Status\Post NC Draft Applications\" />
+    <None Remove="Resources\Keys\" />
+    <None Remove="Resources\Keys\Key.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />
