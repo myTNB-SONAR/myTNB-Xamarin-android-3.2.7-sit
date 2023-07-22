@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.API.Models.Scheduler.GetAvailableAppointment;
-using myTNB.Mobile.API.Models.Scheduler.PostSetAppointment;
+using myTNB.Mobile.Business;
 using Refit;
 
 namespace myTNB.Mobile.API.Services.Scheduler
@@ -25,7 +25,7 @@ namespace myTNB.Mobile.API.Services.Scheduler
             , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Post("/{urlPrefix}/SetAppointment")]
-        Task<HttpResponseMessage> SetAppointment([Body] PostSetAppointmentRequest request
+        Task<HttpResponseMessage> SetAppointment([Body] EncryptedRequest request
            , [Header(MobileConstants.Header_UserInfo)] string userInfo
            , CancellationToken cancellationToken
            , [Header(MobileConstants.Header_Lang)] string lang

@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using myTNB.Mobile.API.Models.FeatureInfo;
 using myTNB.Mobile.Business;
 using Refit;
 

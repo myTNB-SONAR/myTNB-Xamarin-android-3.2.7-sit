@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using myTNB.Mobile.API.Models.Rating.PostSubmitRating;
 using myTNB.Mobile.API.Services.Rating;
+using myTNB.Mobile.Business;
 using myTNB.Mobile.Extensions;
 using Refit;
 
@@ -126,8 +127,8 @@ namespace myTNB.Mobile.API.Managers.Rating
                             RatingResult = ratingInput
                         }
                     };
-
-                    HttpResponseMessage rawResponse = await service.SubmitRating(request
+                    EncryptedRequest encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                    HttpResponseMessage rawResponse = await service.SubmitRating(encryptedRequest
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());

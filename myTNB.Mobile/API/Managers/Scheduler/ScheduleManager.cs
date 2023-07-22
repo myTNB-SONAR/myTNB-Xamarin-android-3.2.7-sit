@@ -7,6 +7,7 @@ using myTNB.Mobile.API.Managers.Scheduler.Utilities;
 using myTNB.Mobile.API.Models.Scheduler.GetAvailableAppointment;
 using myTNB.Mobile.API.Models.Scheduler.PostSetAppointment;
 using myTNB.Mobile.API.Services.Scheduler;
+using myTNB.Mobile.Business;
 using myTNB.Mobile.Extensions;
 using Refit;
 
@@ -144,8 +145,8 @@ namespace myTNB.Mobile.API.Managers.Scheduler
                             AppointmentEndTime = appointmentEndTime
                         }
                     };
-
-                    HttpResponseMessage rawResponse = await service.SetAppointment(request
+                    EncryptedRequest encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                    HttpResponseMessage rawResponse = await service.SetAppointment(encryptedRequest
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());

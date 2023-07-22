@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.API.Models.ApplicationStatus.PostRemoveApplication;
 using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
+using myTNB.Mobile.Business;
 using Refit;
 
 namespace myTNB.Mobile.API.Services.ApplicationStatus
@@ -53,7 +54,7 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Post("/{urlPrefix}/SaveApplication")]
-        Task<HttpResponseMessage> SaveApplication([Body] PostSaveApplicationRequest request
+        Task<HttpResponseMessage> SaveApplication([Body] EncryptedRequest request
            , [Header(MobileConstants.Header_UserInfo)] string userInfo
            , CancellationToken cancellationToken
            , [Header(MobileConstants.Header_Lang)] string lang
@@ -91,7 +92,7 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
             , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Post("/{urlPrefix}/RemoveApplication")]
-        Task<HttpResponseMessage> RemoveApplication([Body] PostRemoveApplicationRequest request
+        Task<HttpResponseMessage> RemoveApplication([Body] EncryptedRequest request
            , [Header(MobileConstants.Header_UserInfo)] string userInfo
            , CancellationToken cancellationToken
            , [Header(MobileConstants.Header_Lang)] string lang
