@@ -60,7 +60,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                     List<SMRAccount> eligibleList = new List<SMRAccount>();
 
-                    GetAccountsSMREligibilityResponse response = await this.api.GetAccountsSMREligibility(new GetAccountListSMREligibilityRequest(accountList));
+                    var request = new GetAccountListSMREligibilityRequest(accountList);
+                    var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+                    GetAccountsSMREligibilityResponse response = await this.api.GetAccountsSMREligibility(encryptedRequest);
 
                     if (response != null && response.Response != null && response.Response.ErrorCode == "7200" && response.Response.Data.SMREligibilityList.Count > 0)
                     {

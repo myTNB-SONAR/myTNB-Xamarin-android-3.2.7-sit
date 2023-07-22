@@ -10,6 +10,7 @@ using myTNB.Mobile.API.Models.FeatureInfo;
 using myTNB.Mobile.API.Services.FeatureInfo;
 using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.Business;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using Refit;
@@ -171,8 +172,9 @@ namespace myTNB.Mobile
                         UsrInf = userInfo,
                         DeviceInf = deviceInfo
                     };
-                    Debug.WriteLine("[DEBUG] SaveFeatureInfo Request: " + JsonConvert.SerializeObject(request));
-                    HttpResponseMessage rawResponse = await service.SaveFeatureInfo(request
+                    //Debug.WriteLine("[DEBUG] SaveFeatureInfo Request: " + JsonConvert.SerializeObject(request));
+                    var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+                    HttpResponseMessage rawResponse = await service.SaveFeatureInfo(encryptedRequest
                         , AppInfoManager.Instance.GetUserInfo()
                         , API.NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());

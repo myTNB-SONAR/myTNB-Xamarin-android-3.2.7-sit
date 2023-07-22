@@ -56,8 +56,10 @@ namespace myTNB.Mobile.AWS.Managers.Home
                     }
                 };
 
+                var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+
                 IHomeService service = RestService.For<IHomeService>(MobileConstants.ApiDomain);
-                HttpResponseMessage rawResponse = await service.PostServices(request
+                HttpResponseMessage rawResponse = await service.PostServices(encryptedRequest
                     , API.NetworkService.GetCancellationToken()
                     , AppInfoManager.Instance.GetUserInfo()
                     , AppInfoManager.Instance.Language.ToString());

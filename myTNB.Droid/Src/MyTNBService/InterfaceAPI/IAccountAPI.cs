@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using myTNB_Android.Src.Base.Request;
+using myTNB.Mobile.Business;
 using Refit;
 
 namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
@@ -9,10 +9,10 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetLanguagePreference")]
-        Task<T> GetLanguagePreference<T>([Body] APIBaseRequest request);
+        Task<T> GetLanguagePreference<T>([Body] EncryptedRequest request);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/SaveLanguagePreference")]
-        Task<T> SaveLanguagePreference<T>([Body] APIBaseRequest request);
+        Task<T> SaveLanguagePreference<T>([Body] EncryptedRequest request);
     }
 }

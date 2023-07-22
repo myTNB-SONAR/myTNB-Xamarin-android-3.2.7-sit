@@ -42,6 +42,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
 using myTNB.Mobile;
 using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile.Business;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -1021,11 +1022,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                             List<string> accountList = new List<string>();
                             accountList.Add(accountNumber);
 
-                            AccountSMRStatusResponse accountSMRResponse = await api.AccountsSMRStatusApi(new AccountsSMRStatusRequest()
+                            var request = new AccountsSMRStatusRequest()
                             {
                                 ContractAccounts = accountList,
                                 UserInterface = currentUsrInf
-                            }, new CancellationTokenSource().Token);
+                            };
+
+                            var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+
+                            AccountSMRStatusResponse accountSMRResponse = await api.AccountsSMRStatusApi(encryptedRequest, new CancellationTokenSource().Token);
 
                             List<AccountSMRStatus> updateSMRStatus = new List<AccountSMRStatus>();
                             if (accountSMRResponse.Response.ErrorCode == "7200" && accountSMRResponse.Response.Data.Count > 0)
