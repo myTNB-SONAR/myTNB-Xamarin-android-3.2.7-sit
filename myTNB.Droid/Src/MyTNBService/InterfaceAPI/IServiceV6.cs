@@ -26,7 +26,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetCustomerAccountList<T>([Body] EncryptedRequest request, CancellationToken token); //lyana
         
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v2/launch/GetAppLaunchMasterData")]
+        [Post("/v3/launch/GetAppLaunchMasterData")]
         Task<T> GetAppLaunchMasterDataAWS<T>([Body] EncryptedRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
