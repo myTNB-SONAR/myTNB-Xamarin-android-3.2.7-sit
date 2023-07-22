@@ -1,4 +1,4 @@
-﻿using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+﻿using myTNB.Mobile.Business;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using Refit;
 using System.Threading;
@@ -10,6 +10,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetUserRewards")]
-        Task<GetUserRewardsResponse> GetUserRewards([Body] GetUserRewardsRequest request, CancellationToken cancellationToken);
+        Task<GetUserRewardsResponse> GetUserRewards([Body] EncryptedRequest encryptedRequest, CancellationToken cancellationToken);
     }
 }

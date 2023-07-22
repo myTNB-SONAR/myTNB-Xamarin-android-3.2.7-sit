@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Api
             return api.SubmitSMRMeetingReading(request);
         }
 
-        public Task<GetMeterReadingOCRResponse> GetMeterReadingOCRValue([Body] myTNB_Android.Src.SSMR.SMRApplication.Api.BaseRequest request)
+        public Task<GetMeterReadingOCRResponse> GetMeterReadingOCRValue([Body] EncryptedRequest request)
         {
             return api.GetMeterReadingOCRValue(request);
         }

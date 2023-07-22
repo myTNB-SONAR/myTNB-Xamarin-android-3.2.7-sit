@@ -154,13 +154,15 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
-                SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(new SMRAccountActivityInfoRequest()
+                var request = new SMRAccountActivityInfoRequest()
                 {
                     AccountNumber = accountNum,
                     IsOwnedAccount = "true",
                     userInterface = currentUsrInf
-                }, cts.Token);
+                };
 
+                var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+                SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(encryptedRequest, cts.Token);
 
                 if (SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
                 {

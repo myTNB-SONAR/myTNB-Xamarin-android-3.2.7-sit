@@ -43,6 +43,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
 using myTNB.Mobile;
 using myTNB_Android.Src.DeviceCache;
 using myTNB.Mobile.Business;
+using Android.Hardware.Usb;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -294,13 +295,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
-                SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(new Requests.SMRAccountActivityInfoRequest()
+                var request = new SMRAccountActivityInfoRequest()
                 {
                     AccountNumber = this.mView.GetSelectedAccount().AccountNum,
                     IsOwnedAccount = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
                     userInterface = currentUsrInf
-                }, cts.Token);
+                };
 
+                var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(encryptedRequest, cts.Token);
 
                 if (SMRAccountActivityInfoResponse != null && SMRAccountActivityInfoResponse.Response != null && SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
                 {
@@ -676,14 +679,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     ses_param1 = "",
                     ses_param2 = ""
                 };
-                SMUsageHistoryRequest request = new Requests.SMUsageHistoryRequest()
+
+                var request = new SMUsageHistoryRequest()
                 {
                     AccountNumber = this.mView.GetSelectedAccount().AccountNum,
                     isOwner = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
                     MeterCode = this.mView.GetSelectedAccount().SmartMeterCode,
                     userInterface = currentUsrInf
                 };
-                EncryptedRequest encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+
+                var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
                 var usageHistoryResponse = await api.DoSMQueryV2(encryptedRequest, cts.Token);
 
                 if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
