@@ -71,8 +71,8 @@ namespace myTNB.Mobile
                     List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
 
                     //Get AWS EB ca
-                    List <string> ebCAs= EBUtility.Instance.GetCAList();
-                    if (ebCAs != null )
+                    List<string> ebCAs = EBUtility.Instance.GetCAList();
+                    if (ebCAs != null)
                     {
                         foreach (var ca in ebCAs)
                         {
@@ -101,7 +101,8 @@ namespace myTNB.Mobile
                     });
                 }
 
-                if (SDUtility.Instance.IsAccountEligible) {
+                if (SDUtility.Instance.IsAccountEligible)
+                {
 
                     List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
 
@@ -172,8 +173,8 @@ namespace myTNB.Mobile
                         UsrInf = userInfo,
                         DeviceInf = deviceInfo
                     };
-                    //Debug.WriteLine("[DEBUG] SaveFeatureInfo Request: " + JsonConvert.SerializeObject(request));
-                    var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+                    Debug.WriteLine("[DEBUG] SaveFeatureInfo Request: " + JsonConvert.SerializeObject(request));
+                    EncryptedRequest encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
                     HttpResponseMessage rawResponse = await service.SaveFeatureInfo(encryptedRequest
                         , AppInfoManager.Instance.GetUserInfo()
                         , API.NetworkService.GetCancellationToken()

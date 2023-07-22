@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using myTNB.Mobile.API.Managers.Home.Utilities;
 using myTNB.Mobile.API.Models.Home.PostServices;
 using myTNB.Mobile.API.Services.Home;
+using myTNB.Mobile.Business;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using Refit;
@@ -55,9 +56,7 @@ namespace myTNB.Mobile.AWS.Managers.Home
                         DeviceDesc = string.Empty
                     }
                 };
-
-                var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
-
+                EncryptedRequest encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
                 IHomeService service = RestService.For<IHomeService>(MobileConstants.ApiDomain);
                 HttpResponseMessage rawResponse = await service.PostServices(encryptedRequest
                     , API.NetworkService.GetCancellationToken()
