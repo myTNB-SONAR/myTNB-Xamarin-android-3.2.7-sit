@@ -15,10 +15,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
 {
     public class ServiceApiImpl
     {
+        #region Properties/Fields
+
         private static readonly Lazy<ServiceApiImpl>
             lazy = new Lazy<ServiceApiImpl>(() => new ServiceApiImpl());
         private IServiceV6 api, apiAws;
         HttpClient httpClient, httpClientAws, httpClientAwsIsUserAuth;
+
+        #endregion
+
+        #region Constructor
 
         private ServiceApiImpl()
         {
@@ -40,6 +46,10 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
 
         public static ServiceApiImpl Instance { get { return lazy.Value; } }
 
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
         /// Call GetAppLaunchMasterData with default timeout.
         /// </summary>
@@ -47,8 +57,9 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<AppLaunchMasterDataResponse> GetAppLaunchMasterData([Body] Request.BaseRequest request)
         {
-            return api.GetAppLaunchMasterData<AppLaunchMasterDataResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetAppLaunchMasterData<AppLaunchMasterDataResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
+
         /// <summary>
         /// Call GetAppLaunchMasterData with timeout set.
         /// </summary>
@@ -57,7 +68,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<AppLaunchMasterDataResponse> GetAppLaunchMasterData([Body] Request.BaseRequest request, CancellationToken token)
         {
-            return api.GetAppLaunchMasterData<AppLaunchMasterDataResponse>(request, token);
+            return api.GetAppLaunchMasterData<AppLaunchMasterDataResponse>(EncryptRequest(request), token);
         }
 
         /// <summary>
@@ -68,7 +79,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<AppLaunchMasterDataResponseAWS> GetAppLaunchMasterDataAWS([Body] Request.BaseRequest request)
         {
-            Console.WriteLine("APIWAS call :" + apiAws.GetAppLaunchMasterDataAWS<AppLaunchMasterDataResponseAWS>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
+            //Console.WriteLine("APIWAS call :" + apiAws.GetAppLaunchMasterDataAWS<AppLaunchMasterDataResponseAWS>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()).ToString());
             return apiAws.GetAppLaunchMasterDataAWS<AppLaunchMasterDataResponseAWS>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
@@ -79,7 +90,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<CustomerAccountListResponse> GetCustomerAccountList([Body] Request.BaseRequestV4 request)
         {
-            return api.GetCustomerAccountList<CustomerAccountListResponse>(request,CancellationTokenSourceWrapper.GetToken());
+            return api.GetCustomerAccountList<CustomerAccountListResponse>(EncryptRequest(request),CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -90,7 +101,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<CustomerAccountListResponse> GetCustomerAccountList([Body] Request.BaseRequestV4 request, CancellationToken token)
         {
-            return api.GetCustomerAccountList<CustomerAccountListResponse>(request, token);
+            return api.GetCustomerAccountList<CustomerAccountListResponse>(EncryptRequest(request), token);
         }
 
         /// <summary>
@@ -100,8 +111,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// < returns ></ returns >
         public Task<CustomerAccountListResponseAppLaunch> GetCustomerAccountListAppLaunch([Body] Request.BaseRequestV4 request)
         {
-
-            //Console.WriteLine("APIWAS call :" + apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponseAppLaunch>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
+            //Console.WriteLine("APIWAS call :" + apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponseAppLaunch>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()).ToString());
             return apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponseAppLaunch>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
@@ -123,7 +133,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<AccountToCustomerResponse> AddAccountToCustomer([Body] Request.BaseRequest request)
         {
-            return api.AddAccountToCustomer<AccountToCustomerResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.AddAccountToCustomer<AccountToCustomerResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -133,7 +143,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<ValidateManualAccountResponse> ValidateManualAccount([Body] Request.BaseRequest request)
 		{
-			return api.ValidateManualAccount_OT<ValidateManualAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.ValidateManualAccount_OT<ValidateManualAccountResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
 		}
 
         /// <summary>
@@ -143,8 +153,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<GetSearchForAccountResponse> ValidateAccIsExist([Body] Request.BaseRequest request)
         {
-
-            return api.GetSearchForAccount<GetSearchForAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetSearchForAccount<GetSearchForAccountResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -154,7 +163,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<PhoneVerifyStatusResponse> PhoneVerifyStatus([Body] Request.BaseRequest request)
         {
-            return api.PhoneVerifyStatus<PhoneVerifyStatusResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.PhoneVerifyStatus<PhoneVerifyStatusResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -164,7 +173,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<AppNotificationChannelsResponse> AppNotificationChannels([Body] Request.BaseRequest request)
         {
-            return api.AppNotificationChannels<AppNotificationChannelsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.AppNotificationChannels<AppNotificationChannelsResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -174,7 +183,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<AppNotificationTypesResponse> AppNotificationTypes([Body] Request.BaseRequest request)
         {
-            return api.AppNotificationTypes<AppNotificationTypesResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.AppNotificationTypes<AppNotificationTypesResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -184,7 +193,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<CustomerAccountsForICNumResponse> CustomerAccountsForICNum([Body] Request.BaseRequest request)
         {
-            return api.CustomerAccountsForICNum<CustomerAccountsForICNumResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.CustomerAccountsForICNum<CustomerAccountsForICNumResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -194,7 +203,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SubmitFeedbackResponse> SubmitFeedback([Body] Request.BaseRequest request)
         {
-            return api.SubmitFeedback<SubmitFeedbackResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SubmitFeedback<SubmitFeedbackResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -204,7 +213,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SubmitFeedbackResponse> SubmitEnquiry([Body] Request.BaseRequest request)
         {
-            return api.SubmitEnquiry<SubmitFeedbackResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SubmitEnquiry<SubmitFeedbackResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
         /// <summary>
         /// Call submit enquiry with default timeout.
@@ -213,7 +222,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SubmitFeedbackResponse> SubmitEnquiryWithType([Body] Request.BaseRequest request)
         {
-            return api.SubmitEnquiryWithType<SubmitFeedbackResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SubmitEnquiryWithType<SubmitFeedbackResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -223,7 +232,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SubmittedFeedbackListResponse> SubmittedFeedbackList([Body] Request.BaseRequest request)
         {
-            return api.SubmittedFeedbackList<SubmittedFeedbackListResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SubmittedFeedbackList<SubmittedFeedbackListResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -233,7 +242,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<GetOvervoltageClaimDetailModel> OvervoltageClaimDetail([Body] Request.BaseRequest request)
         {
-            return api.OvervoltageClaimDetail<GetOvervoltageClaimDetailModel>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.OvervoltageClaimDetail<GetOvervoltageClaimDetailModel>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -243,7 +252,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<TriggerOVISServicesResponseModel> TriggerOVISServices([Body] Request.BaseRequest request)
         {
-            return api.TriggerOVISServices<TriggerOVISServicesResponseModel>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.TriggerOVISServices<TriggerOVISServicesResponseModel>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -253,7 +262,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<LocationsByKeywordResponse> LocationsByKeyword([Body] Request.BaseRequest request)
         {
-            return api.LocationsByKeyword<LocationsByKeywordResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.LocationsByKeyword<LocationsByKeywordResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -263,7 +272,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserAuthenticateResponse> UserAuthenticate([Body] Request.BaseRequest request)
         {
-            return api.UserAuthenticate<UserAuthenticateResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.UserAuthenticate<UserAuthenticateResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -273,7 +282,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<ManageAccessAccountListNullResponse> CancelInvitation_OT([Body] Request.BaseRequestV4 request)
         {
-            return api.CancelInvitation_OT<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api cancel invited user
+            return api.CancelInvitation_OT<ManageAccessAccountListNullResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());                     //wan   //api cancel invited user
         }
 
 
@@ -284,7 +293,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<ManageAccessAccountListNullResponse> SendReInviteEmail([Body] Request.BaseRequestV4 request)
         {
-            return api.SendReInviteEmail<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //irul   //api resend invited user
+            return api.SendReInviteEmail<ManageAccessAccountListNullResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());                     //irul   //api resend invited user
         }
 
         /// <summary>
@@ -294,7 +303,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<LogUserAccessResponse> AddUserAcess_OT([Body] Request.BaseRequestV4 request)
         {
-            return api.AddUserAcess_OT<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api add user access
+            return api.AddUserAcess_OT<LogUserAccessResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());                     //wan   //api add user access
         }
 
         /// <summary>
@@ -304,7 +313,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<LogUserAccessResponse> RemoveUserAcess_OT([Body] Request.BaseRequestV4 request)
         {
-            return api.RemoveUserAcess_OT<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api remove user access
+            return api.RemoveUserAcess_OT<LogUserAccessResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());                     //wan   //api remove user access
         }
 
         /// <summary>
@@ -314,7 +323,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<LogUserAccessResponse> GetAccountActivityLogList([Body] Request.BaseRequestV4 request)
         {
-            return api.GetAccountActivityLogList<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api log activity user access
+            return api.GetAccountActivityLogList<LogUserAccessResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api log activity user access
         }
 
         /// <summary>
@@ -324,7 +333,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<ManageAccessAccountListNullResponse> UpdateAccountAccessRight([Body] Request.BaseRequestV4 request)
         {
-            return api.UpdateAccountAccessRight<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api add multiple account new
+            return api.UpdateAccountAccessRight<ManageAccessAccountListNullResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api add multiple account new
         }
 
         /// <summary>
@@ -334,7 +343,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<AddAccountsResponse> AddMultipleAccounts_OT([Body] Request.BaseRequestV4 request)
         {
-            return api.AddMultipleAccounts_OT<AddAccountsResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api add multiple account new
+            return api.AddMultipleAccounts_OT<AddAccountsResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api add multiple account new
         }
 
         /// <summary>
@@ -344,7 +353,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<ManageAccessAccountListResponse> GetAccountAccessRightList([Body] Request.BaseRequest request)
         {
-            return api.GetAccountAccessRightList<ManageAccessAccountListResponse>(request, CancellationTokenSourceWrapper.GetToken());     //2enapps wan   //api get manage access list
+            return api.GetAccountAccessRightList<ManageAccessAccountListResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());     //2enapps wan   //api get manage access list
         }
 
         /// <summary>
@@ -354,7 +363,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<ManageAccessAccountListResponse> GetAccountAccessRight([Body] Request.BaseRequest request)
         {
-            return api.GetAccountAccessRight<ManageAccessAccountListResponse>(request, CancellationTokenSourceWrapper.GetToken());     //2enapps wan   //api get manage access  
+            return api.GetAccountAccessRight<ManageAccessAccountListResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());     //2enapps wan   //api get manage access  
         }
 
         /// <summary>
@@ -364,7 +373,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<CreateNewUserWithTokenResponse> CreateNewUserWithToken_OT([Body] Request.BaseRequest request)
         {
-            return api.CreateNewUserWithToken_OT<CreateNewUserWithTokenResponse>(request, CancellationTokenSourceWrapper.GetToken());     //2enapps wan   //api register baru
+            return api.CreateNewUserWithToken_OT<CreateNewUserWithTokenResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());     //2enapps wan   //api register baru
         }
 
         /// <summary>
@@ -374,46 +383,45 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserAuthenticateResponse> UserAuthenticateLogin([Body] Request.BaseRequest request)
         {
-            EncryptedRequest encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
-            return api.UserAuthenticateLoginNew<UserAuthenticateResponse>(encryptedRequest, CancellationTokenSourceWrapper.GetToken());  //Nurlyana //api login baru
+            return api.UserAuthenticateLoginNew<UserAuthenticateResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());  //Nurlyana //api login baru
         }
 
         public Task<UserAuthenticateResponseEmail> UserAuthenticateEmail([Body] Request.BaseRequest request)
         {
-            return api.UserAuthenticate<UserAuthenticateResponseEmail>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.UserAuthenticate<UserAuthenticateResponseEmail>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
 
         public Task<SendEmailRegisterCodeResponse> UserAuthenticateEmailOnlyNew([Body] Request.BaseRequest request)
         {
-            return api.UserAuthenticateEmail<SendEmailRegisterCodeResponse>(request, CancellationTokenSourceWrapper.GetToken());      //irul
+            return api.UserAuthenticateEmail<SendEmailRegisterCodeResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());      //irul
         }
 
 
         public Task<SendDetailRegisterCodeResponse> UserAuthenticateIDOnlyNew([Body] Request.BaseRequest request)
         {
-            return api.UserAuthenticateID<SendDetailRegisterCodeResponse>(request, CancellationTokenSourceWrapper.GetToken());      //irul
+            return api.UserAuthenticateID<SendDetailRegisterCodeResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());      //irul
         }
 
 
         public Task<UserAuthenticateResponseEmail> UserAuthenticateEmailOnly([Body] Request.BaseRequest request)
         {
-            return api.UserAuthenticateEmail<UserAuthenticateResponseEmail>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
+            return api.UserAuthenticateEmail<UserAuthenticateResponseEmail>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());      //2enapps wan
         }
 
         public Task<UserAuthenticateResponseID> UserAuthenticateIDOnly([Body] Request.BaseRequest request)
         {
-            return api.UserAuthenticateID<UserAuthenticateResponseID>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
+            return api.UserAuthenticateID<UserAuthenticateResponseID>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());      //2enapps wan
         }
 
         public Task<UserAuthenticateResponseID> UserAuthenticateUpdateID([Body] Request.BaseRequest request)
         {
-            return api.UserUpdateIdentifcationNo<UserAuthenticateResponseID>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
+            return api.UserUpdateIdentifcationNo<UserAuthenticateResponseID>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());      //2enapps wan
         }
 
         public Task<UserAuthenticateResponseName> UserAuthenticateUpdateName([Body] Request.BaseRequest request)
         {
-            return api.UserUpdateName<UserAuthenticateResponseName>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
+            return api.UserUpdateName<UserAuthenticateResponseName>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());      //2enapps wan
         }
 
         /// <summary>
@@ -423,7 +431,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SaveUserNotificationTypePreferenceResponse> SaveUserNotificationTypePreference([Body] Request.BaseRequest request)
         {
-            return api.SaveUserNotificationTypePreference<SaveUserNotificationTypePreferenceResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SaveUserNotificationTypePreference<SaveUserNotificationTypePreferenceResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -433,7 +441,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SaveUserNotificationChannelPreferenceResponse> SaveUserNotificationChannelPreference([Body] Request.BaseRequest request)
         {
-            return api.SaveUserNotificationChannelPreference<SaveUserNotificationChannelPreferenceResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SaveUserNotificationChannelPreference<SaveUserNotificationChannelPreferenceResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -443,7 +451,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserNotificationTypePreferencesResponse> UserNotificationTypePreferences([Body] Request.BaseRequest request)
         {
-            return api.UserNotificationTypePreferences<UserNotificationTypePreferencesResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.UserNotificationTypePreferences<UserNotificationTypePreferencesResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -453,7 +461,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserNotificationChannelPreferencesResponse> UserNotificationChannelPreferences([Body] Request.BaseRequest request)
         {
-            return api.UserNotificationChannelPreferences<UserNotificationChannelPreferencesResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.UserNotificationChannelPreferences<UserNotificationChannelPreferencesResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -463,7 +471,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SendRegistrationTokenSMSResponse> SendRegistrationTokenSMS([Body] Request.BaseRequest request)
         {
-            return api.SendRegistrationTokenSMS<SendRegistrationTokenSMSResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SendRegistrationTokenSMS<SendRegistrationTokenSMSResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -473,7 +481,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<RegisteredCardsResponse> GetRegisteredCards([Body] Request.BaseRequest request)
         {
-            return api.GetRegisteredCards<RegisteredCardsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetRegisteredCards<RegisteredCardsResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -483,7 +491,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SubmittedFeedbackDetailsResponse> SubmittedFeedbackDetails([Body] Request.BaseRequest request)
         {
-            return api.SubmittedFeedbackDetails<SubmittedFeedbackDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SubmittedFeedbackDetails<SubmittedFeedbackDetailsResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -493,7 +501,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SubmittedFeedbackDetailsResponse> SubmittedFeedbackWithContactDetails([Body] Request.BaseRequest request)
         {
-            return api.SubmittedFeedbackContactDetails<SubmittedFeedbackDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SubmittedFeedbackContactDetails<SubmittedFeedbackDetailsResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -503,7 +511,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<CreateNewUserWithTokenResponse> CreateNewUserWithToken([Body] Request.BaseRequest request)
         {
-            return api.CreateNewUserWithToken<CreateNewUserWithTokenResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.CreateNewUserWithToken<CreateNewUserWithTokenResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -513,7 +521,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SendResetPasswordCodeResponse> SendResetPasswordCode([Body] Request.BaseRequest request)
         {
-            return api.SendResetPasswordCode<SendResetPasswordCodeResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SendResetPasswordCode<SendResetPasswordCodeResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -523,7 +531,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<ResetPasswordWithTokenResponse> ResetPasswordWithToken([Body] Request.BaseRequest request)
         {
-            return api.ResetPasswordWithToken<ResetPasswordWithTokenResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.ResetPasswordWithToken<ResetPasswordWithTokenResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -533,7 +541,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<LogoutUserResponse> LogoutUser([Body] Request.BaseRequest request)
         {
-            return api.LogoutUser<LogoutUserResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.LogoutUser<LogoutUserResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -543,7 +551,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<RemoveRegisteredCardResponse> RemoveRegisteredCard([Body] Request.BaseRequest request)
         {
-            return api.RemoveRegisteredCard<RemoveRegisteredCardResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.RemoveRegisteredCard<RemoveRegisteredCardResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -553,7 +561,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<ChangeNewPasswordResponse> ChangeNewPassword([Body] Request.BaseRequest request)
         {
-            return api.ChangeNewPassword<ChangeNewPasswordResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.ChangeNewPassword<ChangeNewPasswordResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
 
@@ -564,7 +572,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SendResetPasswordCodeResponse> ChangeNewPasswordNew([Body] Request.BaseRequest request)
         {
-            return api.SendResetPasswordCode_OT<SendResetPasswordCodeResponse>(request, CancellationTokenSourceWrapper.GetToken()); //yana
+            return api.SendResetPasswordCode_OT<SendResetPasswordCodeResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()); //yana
         }
 
         /// <summary>
@@ -574,7 +582,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SendEmailVerificationResponse> SendEmailVerify([Body] Request.BaseRequest request)
         {
-            return api.SendEmailVerification<SendEmailVerificationResponse>(request, CancellationTokenSourceWrapper.GetToken()); //yana
+            return api.SendEmailVerification<SendEmailVerificationResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()); //yana
         }
 
         /// <summary>
@@ -584,7 +592,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SendUpdatePhoneTokenSMSResponse> SendUpdatePhoneTokenSMSV2([Body] Request.BaseRequest request)
         {
-            return api.SendUpdatePhoneTokenSMSV2<SendUpdatePhoneTokenSMSResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SendUpdatePhoneTokenSMSV2<SendUpdatePhoneTokenSMSResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -594,7 +602,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UpdateNewPhoneNumberResponse> UpdatePhoneNumber([Body] Request.BaseRequest request)
         {
-            return api.UpdatePhoneNumber<UpdateNewPhoneNumberResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.UpdatePhoneNumber<UpdateNewPhoneNumberResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -604,7 +612,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SubmitRateUsResponse> SubmitRateUs([Body] Request.BaseRequest request)
         {
-            return api.SubmitRateUs<SubmitRateUsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SubmitRateUs<SubmitRateUsResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -614,7 +622,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SubmitRateUsResponse> SubmitRateUsV2([Body] Request.BaseRequest request)
         {
-            return api.SubmitRateUsV2<SubmitRateUsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SubmitRateUsV2<SubmitRateUsResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -624,7 +632,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UpdateLinkedAccountNameResponse> UpdateLinkedAccountNickName([Body] Request.BaseRequest request)
         {
-            return api.UpdateLinkedAccountNickName<UpdateLinkedAccountNameResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.UpdateLinkedAccountNickName<UpdateLinkedAccountNameResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -634,7 +642,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<GetRateUsQuestionResponse> GetRateUsQuestions([Body] Request.BaseRequest request)
         {
-            return api.GetRateUsQuestions<GetRateUsQuestionResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetRateUsQuestions<GetRateUsQuestionResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -644,7 +652,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<GetRateUsQuestionResponse> ShowEnergyBudgetRatingPage([Body] Request.BaseRequest request)
         {
-            return api.ShowEnergyBudgetRatingPage<GetRateUsQuestionResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.ShowEnergyBudgetRatingPage<GetRateUsQuestionResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -654,7 +662,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<GetRateUsQuestionResponse> ExperienceRatingUserLeaveOut([Body] Request.BaseRequest request)
         {
-            return api.ExperienceRatingUserLeaveOut<GetRateUsQuestionResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.ExperienceRatingUserLeaveOut<GetRateUsQuestionResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -664,7 +672,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<GetLanguagePreferenceResponse> GetLanguagePreference([Body] Request.BaseRequest request)
         {
-            return api.GetLanguagePreference<GetLanguagePreferenceResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetLanguagePreference<GetLanguagePreferenceResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -674,7 +682,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SaveLanguagePreferenceResponse> SaveLanguagePreference([Body] Request.BaseRequest request)
         {
-            return api.SaveLanguagePreference<SaveLanguagePreferenceResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SaveLanguagePreference<SaveLanguagePreferenceResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -684,7 +692,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<GetBillHistoryResponse> GetBillHistory([Body] Request.BaseRequest request)
         {
-            return api.GetBillHistory<GetBillHistoryResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetBillHistory<GetBillHistoryResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -694,7 +702,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<RemoveAccountResponse> RemoveAccount([Body] Request.BaseRequestV4 request)
         {
-            return api.RemoveAccount<RemoveAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.RemoveAccount<RemoveAccountResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -704,7 +712,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SaveEnergyBudgetResponse> SaveEnergyBudget([Body] Request.BaseRequest request)
         {
-            return api.SaveEnergyBudget<SaveEnergyBudgetResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SaveEnergyBudget<SaveEnergyBudgetResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -714,7 +722,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<GetLocationListResponse> GetLocations([Body] Request.BaseRequest request)
         {
-            return api.GetLocations<GetLocationListResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetLocations<GetLocationListResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -724,7 +732,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<GetLocationListByKeywordResponse> GetLocationsByKeyword([Body] Request.BaseRequest request)
         {
-            return api.GetLocationsByKeyword<GetLocationListByKeywordResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetLocationsByKeyword<GetLocationListByKeywordResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -735,7 +743,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<GetPaymentReceiptResponse> GetPaymentReceipt([Body] Request.BaseRequest request, CancellationToken token)
         {
-            return api.GetPaymentReceipt<GetPaymentReceiptResponse>(request, token);
+            return api.GetPaymentReceipt<GetPaymentReceiptResponse>(EncryptRequest(request), token);
         }
 
         /// <summary>
@@ -745,7 +753,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserNotificationResponse> GetUserNotifications([Body] Request.BaseRequest request)
         {
-            return api.GetUserNotifications<UserNotificationResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetUserNotifications<UserNotificationResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// cep new //yana
@@ -756,7 +764,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserNotificationResponse> GetUserNotificationsV2([Body] Request.BaseRequest request)
         {
-            return api.GetUserNotificationsV2<UserNotificationResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetUserNotificationsV2<UserNotificationResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -766,7 +774,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserNotificationDetailsResponse> GetNotificationDetails([Body] Request.BaseRequest request)
         {
-            return api.GetNotificationDetails<UserNotificationDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetNotificationDetails<UserNotificationDetailsResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -776,7 +784,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserNotificationDetailsResponse> GetNotificationDetailsByRequestId([Body] Request.BaseRequest request)
         {
-            return api.GetNotificationDetailsByRequestId<UserNotificationDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken()); //yana
+            return api.GetNotificationDetailsByRequestId<UserNotificationDetailsResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()); //yana
         }
 
         /// <summary>
@@ -786,7 +794,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserServicedistruptionSubResponse> GetUserServiceDistruptionSub([Body] Request.BaseRequest request)
         {
-            return api.GetUserServiceDistruptionSub<UserServicedistruptionSubResponse>(request, CancellationTokenSourceWrapper.GetToken()); //wan //sd
+            return api.GetUserServiceDistruptionSub<UserServicedistruptionSubResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()); //wan //sd
         }
 
         /// <summary>
@@ -796,7 +804,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserServiceDistruptionSetSubResponse> ServiceDisruptionInfo([Body] Request.BaseRequest request)
         {
-            return api.ServiceDisruptionInfo<UserServiceDistruptionSetSubResponse>(request, CancellationTokenSourceWrapper.GetToken()); //wan //sd
+            return api.ServiceDisruptionInfo<UserServiceDistruptionSetSubResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()); //wan //sd
         }
 
         /// <summary>
@@ -806,7 +814,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<SubmitRateUsResponse> SDSubmitRateUs([Body] Request.BaseRequest request)
         {
-            return api.SDSubmitRateUs<SubmitRateUsResponse>(request, CancellationTokenSourceWrapper.GetToken()); //wan //sd
+            return api.SDSubmitRateUs<SubmitRateUsResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()); //wan //sd
         }
 
         /// <summary>
@@ -816,7 +824,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserServiceDistruptionSetSubResponse> ShowSDRatingPage([Body] Request.BaseRequest request)
         {
-            return api.ShowSDRatingPage<UserServiceDistruptionSetSubResponse>(request, CancellationTokenSourceWrapper.GetToken()); //wan //sd
+            return api.ShowSDRatingPage<UserServiceDistruptionSetSubResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()); //wan //sd
         }
 
         /// <summary>
@@ -826,7 +834,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserNotificationDeleteResponse> DeleteUserNotification([Body] Request.BaseRequest request)
         {
-            return api.DeleteUserNotification<UserNotificationDeleteResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.DeleteUserNotification<UserNotificationDeleteResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -836,7 +844,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserNotificationReadResponse> ReadUserNotification([Body] Request.BaseRequest request)
         {
-            return api.ReadUserNotification<UserNotificationReadResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.ReadUserNotification<UserNotificationReadResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -846,7 +854,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<AddAccountsResponse> AddMultipleAccounts([Body] Request.BaseRequest request)
         {
-            return api.AddMultipleAccounts<AddAccountsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.AddMultipleAccounts<AddAccountsResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -856,7 +864,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<AccountChargesResponse> GetAccountsCharges([Body] Request.BaseRequest request)
         {
-            return api.GetAccountsCharges<AccountChargesResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetAccountsCharges<AccountChargesResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -866,7 +874,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<AccountBillPayHistoryResponse> GetAccountBillPayHistory([Body] Request.BaseRequest request)
         {
-            return api.GetAccountBillPayHistory<AccountBillPayHistoryResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetAccountBillPayHistory<AccountBillPayHistoryResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -876,7 +884,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<PaymentTransactionIdResponse> GetPaymentTransactionId([Body] Request.BaseRequest request)
         {
-            return api.GetPaymentTransactionId<PaymentTransactionIdResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.GetPaymentTransactionId<PaymentTransactionIdResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -886,7 +894,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UpdateUserStatusActivateResponse> UpdateUserStatusActivate([Body] Request.UpdateUserStatusActivateRequest request)
         {
-            return api.UpdateUserStatusActivate<UpdateUserStatusActivateResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.UpdateUserStatusActivate<UpdateUserStatusActivateResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -896,7 +904,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UpdateUserStatusActivateResponse> UpdateUserStatusDeactivate([Body] Request.UpdateUserStatusActivateRequest request)
         {
-            return api.UpdateUserStatusDeactivate<UpdateUserStatusActivateResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.UpdateUserStatusDeactivate<UpdateUserStatusActivateResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -906,7 +914,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<NCAutoAddAccountsResponse> NCAutoAddAccounts([Body] Request.NCAutoAddAccountsRequest request)
         {
-            return api.NCAutoAddAccounts<NCAutoAddAccountsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.NCAutoAddAccounts<NCAutoAddAccountsResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -917,7 +925,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<APIBaseResponse> UpdateUserInfoDevice([Body] Request.BaseRequest request)
         {
-            //Console.WriteLine("APIWAS call :" + apiAws.UpdateUserInfoDevice<APIBaseResponse>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
+            //Console.WriteLine("APIWAS call :" + apiAws.UpdateUserInfoDevice<APIBaseResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()).ToString());
             return apiAws.UpdateUserInfoDevice<APIBaseResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
@@ -931,5 +939,21 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return apiAws.GetIdentificationNo<GetIdentificationNoResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Encrypts request for security Purposes.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>Encrypted Request</returns>
+        private EncryptedRequest EncryptRequest(object request)
+        {
+            return myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+        }
+
+        #endregion
     }
 }
