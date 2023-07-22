@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using myTNB.Mobile.Business;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using Refit;
@@ -99,7 +100,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/IsUserAuthV4")]
-        Task<T> UserAuthenticateLoginNew<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);      //lyana //merge DBR
+        Task<T> UserAuthenticateLoginNew<T>([Body] EncryptedRequest request, CancellationToken token);      //lyana //merge DBR
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/CancelInvitation_OT")]

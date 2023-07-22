@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using myTNB.Mobile.Business;
 using myTNB_Android.Src.Base.Response;
 using myTNB_Android.Src.Login.Models;
 using myTNB_Android.Src.MyTNBService.InterfaceAPI;
@@ -373,7 +374,8 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<UserAuthenticateResponse> UserAuthenticateLogin([Body] Request.BaseRequest request)
         {
-            return api.UserAuthenticateLoginNew<UserAuthenticateResponse>(request, CancellationTokenSourceWrapper.GetToken());  //Nurlyana //api login baru
+            EncryptedRequest encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+            return api.UserAuthenticateLoginNew<UserAuthenticateResponse>(encryptedRequest, CancellationTokenSourceWrapper.GetToken());  //Nurlyana //api login baru
         }
 
         public Task<UserAuthenticateResponseEmail> UserAuthenticateEmail([Body] Request.BaseRequest request)
@@ -915,7 +917,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<APIBaseResponse> UpdateUserInfoDevice([Body] Request.BaseRequest request)
         {
-            Console.WriteLine("APIWAS call :" + apiAws.UpdateUserInfoDevice<APIBaseResponse>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
+            //Console.WriteLine("APIWAS call :" + apiAws.UpdateUserInfoDevice<APIBaseResponse>(request, CancellationTokenSourceWrapper.GetToken()).ToString());
             return apiAws.UpdateUserInfoDevice<APIBaseResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 

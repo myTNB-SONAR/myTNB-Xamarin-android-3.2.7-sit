@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using myTNB.Mobile.Business;
 using Refit;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Api
@@ -8,7 +9,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Api
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/SubmitSMRMeterReading")]
-        Task<SubmitMeterReadingResponse> SubmitSMRMeetingReading([Body] myTNB_Android.Src.SSMR.SMRApplication.Api.BaseRequest request);
+        Task<SubmitMeterReadingResponse> SubmitSMRMeetingReading([Body] EncryptedRequest request);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetMeterReadingOCRValue")]
