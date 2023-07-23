@@ -83,7 +83,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v7/mytnbws.asmx/TriggerOVISServices")]
-        Task<T> TriggerOVISServices<T>([Body] EncryptedRequest request, CancellationToken token);
+        Task<T> TriggerOVISServices<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         //TODO
         [Headers("Content-Type:application/json; charset=utf-8")]

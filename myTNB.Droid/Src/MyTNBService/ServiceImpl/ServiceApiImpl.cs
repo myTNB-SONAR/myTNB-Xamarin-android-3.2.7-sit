@@ -252,7 +252,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<TriggerOVISServicesResponseModel> TriggerOVISServices([Body] Request.BaseRequest request)
         {
-            return api.TriggerOVISServices<TriggerOVISServicesResponseModel>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
+            return api.TriggerOVISServices<TriggerOVISServicesResponseModel>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
