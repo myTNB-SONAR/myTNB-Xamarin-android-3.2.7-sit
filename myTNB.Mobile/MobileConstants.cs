@@ -53,9 +53,13 @@ namespace myTNB.Mobile
         //Mark: http://tnbcsstgapp.tnb.my/
         private const string SitecoreSIT = "http://10.215.70.248/";
         private const string SitecorePROD = "https://sitecore.tnb.com.my/";
-        private const string ApiKeyIdDEV = "c4bd133f-91e3-4a6e-823d-b986bf67648b";
-        private const string ApiKeyIdSIT = "01b7e51b-f777-4653-8658-6662585e4dca";
-        private const string ApiKeyIdPROD = "b24450d9-7045-473f-bec1-4549fe8c9fc6";
+
+        private const string ApiKeyIdDEV = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
+        private const string ApiKeyIdPROD = "E6148656-205B-494C-BC95-CC241423E72F";
+
+        //private const string ApiKeyIdDEV = "c4bd133f-91e3-4a6e-823d-b986bf67648b";
+        //private const string ApiKeyIdSIT = "01b7e51b-f777-4653-8658-6662585e4dca";
+        //private const string ApiKeyIdPROD = "b24450d9-7045-473f-bec1-4549fe8c9fc6";
 
         //Access Token
         private const string SignKey_Staging = "2276B01152D94DF8A65944D3EFD70378";

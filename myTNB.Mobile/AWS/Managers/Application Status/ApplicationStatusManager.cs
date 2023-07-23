@@ -121,9 +121,7 @@ namespace myTNB.Mobile.AWS
                         Email = email
                     };
                     Debug.WriteLine("[DEBUG] [PostGetNCDraftApplications] Request: " + JsonConvert.SerializeObject(request));
-
-                    var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
-                    HttpResponseMessage rawResponse = await service.PostGetNCDraftApplications(encryptedRequest
+                    HttpResponseMessage rawResponse = await service.PostGetNCDraftApplications(request
                        , NetworkService.GetCancellationToken()
                        , "Bearer " + accessToken
                        , AppInfoManager.Instance.ViewInfo);

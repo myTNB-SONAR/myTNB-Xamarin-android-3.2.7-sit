@@ -68,16 +68,13 @@ namespace myTNB.Mobile
                     };
                     Debug.WriteLine("[DEBUG] PostEligibility Request: " + JsonConvert.SerializeObject(request));
                     Debug.WriteLine("[DEBUG] PostEligibility ViewInfo: " + AppInfoManager.Instance.ViewInfo);
-
-                    var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
-
 #if MASTER || SIT || DEBUG
-                    HttpResponseMessage rawResponse = await service.PostEligibility(encryptedRequest
+                    HttpResponseMessage rawResponse = await service.PostEligibility(request
                        , NetworkService.GetCancellationToken(AWSConstants.DebugTimeOut)
                        , accessToken
                        , AppInfoManager.Instance.ViewInfo);
 #else
-                HttpResponseMessage rawResponse = await service.PostEligibility(encryptedRequest
+                HttpResponseMessage rawResponse = await service.PostEligibility(request
                        , NetworkService.GetCancellationToken()
                        , accessToken
                        , AppInfoManager.Instance.ViewInfo);

@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.AWS.Models.ApplicationStatus.PostNCDraftApplications;
-using myTNB.Mobile.Business;
 using Refit;
 
 namespace myTNB.Mobile.AWS.Services.ApplicationStatus
@@ -17,7 +16,7 @@ namespace myTNB.Mobile.AWS.Services.ApplicationStatus
             , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey);
 
         [Post("/myhome/nc-svc/api/v1/NC/GetNCDraftApplications")]
-        Task<HttpResponseMessage> PostGetNCDraftApplications([Body] EncryptedRequest encryptedRequest
+        Task<HttpResponseMessage> PostGetNCDraftApplications([Body] PostGetNCDraftRequest request
             , CancellationToken cancellationToken
             , [Header(AWSConstants.Headers.Authorization)] string accessToken
             , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
