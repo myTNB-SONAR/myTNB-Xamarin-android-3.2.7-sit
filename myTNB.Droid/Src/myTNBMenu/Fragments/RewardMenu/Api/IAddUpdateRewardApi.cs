@@ -9,7 +9,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api
 	public interface IAddUpdateRewardApi
 	{
 		[Headers("Content-Type:application/json; charset=utf-8")]
-		[Post("/v6/mytnbappws.asmx/UpdateRewards")]
+		[Post("/v7/mytnbws.asmx/UpdateRewards")]
 		Task<AddUpdateRewardResponse> AddUpdateReward([Body] EncryptedRequest encryptedRequest, CancellationToken cancellationToken);
 	}
 }

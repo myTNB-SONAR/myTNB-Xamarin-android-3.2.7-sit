@@ -11,7 +11,7 @@ namespace myTNB_Android.Src.myTNBMenu.Api
     public interface IGetInstallationDetailsApi
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetAccountStatus")]
+        [Post("/v7/mytnbws.asmx/GetAccountStatus")]
         Task<GetInstallationDetailsResponse> GetInstallationDetails([Body] EncryptedRequest request, CancellationToken cancellationToken);
     }
 }

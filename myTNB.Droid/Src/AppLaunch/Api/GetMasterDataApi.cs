@@ -9,7 +9,7 @@ namespace myTNB_Android.Src.Base.Api
     public interface GetMasterDataApi
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetAppLaunchMasterData")]
+        [Post("/v7/mytnbws.asmx/GetAppLaunchMasterData")]
         Task<MasterDataResponse> GetAppLaunchMasterData([Body] EncryptedRequest encryptedRequest, CancellationToken token);
     }
 }

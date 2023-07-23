@@ -9,7 +9,7 @@ namespace myTNB_Android.Src.SummaryDashBoard.API
     public interface ISummaryDashBoard
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetAccountsBillSummary")]
+        [Post("/v7/mytnbws.asmx/GetAccountsBillSummary")]
         Task<SummaryDashBoardResponse> GetLinkedAccountsSummaryInfo([Body] EncryptedRequest request, CancellationToken cancellationToken);
     }
 }

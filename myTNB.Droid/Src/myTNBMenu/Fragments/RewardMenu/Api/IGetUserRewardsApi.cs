@@ -9,7 +9,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api
     public interface IGetUserRewardsApi
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetUserRewards")]
+        [Post("/v7/mytnbws.asmx/GetUserRewards")]
         Task<GetUserRewardsResponse> GetUserRewards([Body] EncryptedRequest encryptedRequest, CancellationToken cancellationToken);
     }
 }

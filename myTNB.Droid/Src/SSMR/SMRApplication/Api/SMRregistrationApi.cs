@@ -9,16 +9,16 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
     public interface SMRregistrationApi
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetCAContactDetails")]
-        //[Post("/v6/mytnbappws.asmx/GetCARegisteredContactInfo")]
+        [Post("/v7/mytnbws.asmx/GetCAContactDetails")]
+        //[Post("/v7/mytnbws.asmx/GetCARegisteredContactInfo")]
         Task<CARegisteredContactInfoResponse> GetRegisteredContactInfo([Body] EncryptedRequest encryptedRequest);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/SubmitSMRApplication")]
+        [Post("/v7/mytnbws.asmx/SubmitSMRApplication")]
         Task<SMRregistrationSubmitResponse> SubmitSMRApplication([Body] EncryptedRequest request);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetAccountsSMREligibility")]
+        [Post("/v7/mytnbws.asmx/GetAccountsSMREligibility")]
         Task<GetAccountsSMREligibilityResponse> GetAccountsSMREligibility([Body] EncryptedRequest encryptedRequest);
     }
 }

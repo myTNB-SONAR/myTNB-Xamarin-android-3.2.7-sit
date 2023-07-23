@@ -10,7 +10,7 @@ namespace myTNB_Android.Src.myTNBMenu.Api
     public interface IAmountDueApi
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetAccountDueAmount")]
+        [Post("/v7/mytnbws.asmx/GetAccountDueAmount")]
         Task<AccountDueAmountResponse> GetAccountDueAmount([Body] EncryptedRequest request, CancellationToken cancellationToken);
     }
 }

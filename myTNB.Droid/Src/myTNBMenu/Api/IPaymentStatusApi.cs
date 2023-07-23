@@ -10,7 +10,7 @@ namespace myTNB_Android.Src.myTNBMenu.Api
 	public interface IPaymentStatusApi
 	{
 		[Headers("Content-Type:application/json; charset=utf-8")]
-		[Post("/v6/mytnbappws.asmx/CheckPendingPayments")]
+		[Post("/v7/mytnbws.asmx/CheckPendingPayments")]
 		Task<CheckPendingPaymentsResponse> GetCheckPendingPayments([Body] EncryptedRequest request, CancellationToken cancellationToken);
 	}
 }

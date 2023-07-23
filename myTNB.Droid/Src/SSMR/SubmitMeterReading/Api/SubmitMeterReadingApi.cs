@@ -8,11 +8,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Api
     public interface SubmitMeterReadingApi
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/SubmitSMRMeterReading")]
+        [Post("/v7/mytnbws.asmx/SubmitSMRMeterReading")]
         Task<SubmitMeterReadingResponse> SubmitSMRMeetingReading([Body] EncryptedRequest request);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetMeterReadingOCRValue")]
+        [Post("/v7/mytnbws.asmx/GetMeterReadingOCRValue")]
         Task<GetMeterReadingOCRResponse> GetMeterReadingOCRValue([Body] EncryptedRequest request);
     }
 }
