@@ -54,7 +54,11 @@ namespace myTNB.Mobile
 
         private byte[] RSAEncrypt(byte[] data)
         {
-            const string path = "myTNB.Mobile.Resources.Keys.Key.txt";
+#if DEBUG || MASTER || SIT
+            const string path = "myTNB.Mobile.Resources.Keys.SKey.txt";
+#else
+            const string path = "myTNB.Mobile.Resources.Keys.PKey.txt";
+#endif
             string publicKey = string.Empty;
             Assembly assembly = Assembly.GetExecutingAssembly();
             Stream stream = assembly.GetManifestResourceStream(path);
