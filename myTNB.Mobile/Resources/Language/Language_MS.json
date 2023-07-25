@@ -146,7 +146,6 @@
     "invalid_rocNumber": "Nombor ROC tidak sah",
     "accountLength": "Sila masukkan 12-digit nombor akaun elektrik yang sah.",
     "invalid_accountType": "Jenis Akaun Tidak Sah",
-    "invalid_accountNumber": "Nombor Akaun Tidak Sah",
     "noDataConnectionTitle": "Tiada sambungan internet",
     "noDataConnectionMessage": "Sila periksa sambungan internet anda dan cuba semula.",
     "defaultErrorTitle": "Ada sesuatu yang tidak kena.",
@@ -180,7 +179,9 @@
     "error_duplicateAccountMessageNew": "Nombor akaun elektrik ini telah wujud dalam senarai anda.",
     "error_emptyIcAndEmailOwner": "Pemilik e-mel atau nombor telefon tidak boleh kosong.",
     "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan tidak dijumpai.",
-    "accountNickNameError": "Akaun anda harus mempunyai nama gelaran. Anda boleh menggunakan huruf, angka atau simbol."
+    "accountNickNameError": "Akaun anda harus mempunyai nama gelaran. Anda boleh menggunakan huruf, angka atau simbol.",
+    "invalid_accountNumber": "Nombor Akaun Tidak Sah",
+    "error_RPSCreditCardDown": "Pelanggan yang dihormati,<br><br>penyelenggaraan sistem myTNB sedang dijalankan. Pada masa ini, kad Simpan Kredit/Debit tidak akan tersedia buat sementara waktu."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -636,7 +637,9 @@
     "addCard": "Tambah kad",
     "fpxTitle": "Perbankan dalam talian melalui FPX",
     "eWalletPaymentMethods": "e-Dompet",
-    "tngTitle": "TNG eWallet"
+    "tngTitle": "TNG eWallet",
+    "CCExpired": "Kad Tamat Tempoh",
+    "addCardTxt": "Guna kredit/debit kad baharu"
   },
   "MakePayment": {
     "enterOTP": "Masukkan Kod OTP",

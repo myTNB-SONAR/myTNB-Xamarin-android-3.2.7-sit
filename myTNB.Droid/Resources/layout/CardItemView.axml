@@ -9,7 +9,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="@drawable/solid_border_background"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:layout_margin="10dp">
 
          <ImageView
             android:id="@+id/imgCard"

@@ -146,7 +146,6 @@
     "invalid_rocNumber": "Invalid ROC number.",
     "accountLength": "Please enter a valid 12-digit electricity account number",
     "invalid_accountType": "Invalid Account Type",
-    "invalid_accountNumber": "Account Number Is Invalid",
     "noDataConnectionTitle": "No Internet Connection",
     "noDataConnectionMessage": "Please check your internet connection and try again.",
     "defaultErrorTitle": "Oh no, something went wrong!",
@@ -180,7 +179,9 @@
     "error_duplicateAccountMessageNew": "This account number is already on your list.",
     "error_emptyIcAndEmailOwner": "Email or phone number owner cannot be empty.",
     "error_NotExistsAccountMessage": "The account number you entered cannot be found.",
-    "accountNickNameError": "You must have a nickname for your account. You can use letters, numbers or special characters."
+    "accountNickNameError": "You must have a nickname for your account. You can use letters, numbers or special characters.",
+    "invalid_accountNumber": "Account Number Is Invalid",
+    "error_RPSCreditCardDown": "Dear valued customer,<br><br>myTNB system maintenance is currently in progress. During this time, Save Credit/Debit card will be temporarily unavailable."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -636,7 +637,9 @@
     "addCard": "Add Card",
     "fpxTitle": "Online Banking via FPX",
     "eWalletPaymentMethods": "eWallet",
-    "tngTitle": "TNG eWallet"
+    "tngTitle": "TNG eWallet",
+    "CCExpired": "Credit Card Expired",
+    "addCardTxt": "Use a new credit/debit card"
   },
   "MakePayment": {
     "enterOTP": "Enter the OTP",
