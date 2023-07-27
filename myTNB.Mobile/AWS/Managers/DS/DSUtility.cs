@@ -57,6 +57,28 @@ namespace myTNB.Mobile.AWS.Managers.DS
             }
         }*/
 
+        public bool IsNotificationEligible
+        {
+            get
+            {
+                if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.Enabled))
+                {
+                    if (EligibilitySessionCache.Instance.IsFeatureEligible(Features.DBR, FeatureProperty.TargetGroup))
+                    {
+                        return LanguageManager.Instance.GetConfigProperty<bool>(LanguageManager.ConfigPropertyEnum.IsDSNotificationEnable);
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         private List<string> GetCAList()
         {
             List<string> caList = new List<string>();

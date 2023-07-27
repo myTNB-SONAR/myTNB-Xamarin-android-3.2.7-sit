@@ -3254,7 +3254,8 @@
       "A_MV"
     ],
     "IsMyHomeMarketingPopupEnable": false,
-    "ForceHidemyHomeBanner": true
+    "ForceHidemyHomeBanner": true,
+    "IsDSNotificationEnable": true
   },
   "StatementPeriod": {
     "title": "Account Statement",
