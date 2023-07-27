@@ -808,6 +808,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(notificationDetails.ApplicationStatusDetail.SaveApplicationId
                             , notificationDetails.ApplicationStatusDetail.ApplicationID
                             , notificationDetails.ApplicationStatusDetail.ApplicationType
+                            , UserEntity.GetActive().UserID ?? string.Empty
+                            , UserEntity.GetActive().Email ?? string.Empty
                             , notificationDetails.ApplicationStatusDetail.System);
 
                         this.mActivity.RunOnUiThread(() =>

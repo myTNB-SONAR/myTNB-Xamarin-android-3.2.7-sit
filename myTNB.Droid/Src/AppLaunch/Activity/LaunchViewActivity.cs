@@ -389,6 +389,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 ApplicationDetailDisplay detailResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(notificationObj.SaveApplicationID
                     , notificationObj.ApplicationID
                     , notificationObj.ApplicationType
+                    , UserEntity.GetActive().UserID ?? string.Empty
+                    , UserEntity.GetActive().Email ?? string.Empty
                     , notificationObj.System);
 
                 if (detailResponse.StatusDetail.IsSuccess)

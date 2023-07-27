@@ -470,6 +470,8 @@ namespace myTNB.Mobile
         public async Task<ApplicationDetailDisplay> GetApplicationDetail(string savedApplicationID
             , string applicationID
             , string applicationType
+            , string userID
+            , string email
             , string system = "myTNB")
         {
             bool isDSEligible = false;
@@ -508,13 +510,24 @@ namespace myTNB.Mobile
                     || (displaymodel.Content.ContractAccountNo is string accNumber
                     && accNumber.IsValid()))
                 {
-                    if (DSUtility.Instance.IsAccountEligible)
+                    GetEligibilityResponse eligibilityResponse =
+                        await EligibilityManager.Instance.PostEligibility(userID ?? string.Empty
+                        , email ?? string.Empty
+                        , !string.IsNullOrEmpty(displaymodel.Content.ContractAccountNo) ? new List<AWS.ContractAccountModel> { new AWS.ContractAccountModel() { accNum = displaymodel.Content.ContractAccountNo,
+                            BusinessArea = displaymodel.Content.CABusinessArea }  } : null
+                        , new List<AWS.PremiseCriteriaModel> { new AWS.PremiseCriteriaModel() { BusinessArea = displaymodel.Content.CABusinessArea } }
+                        , AppInfoManager.Instance.AccessToken);
+
+                    if (eligibilityResponse.Content != null
+                        && eligibilityResponse.Content.DS != null
+                        && eligibilityResponse.Content.DS.ContractAccounts != null
+                        && eligibilityResponse.Content.DS.ContractAccounts.Count > 0)
                     {
                         Debug.WriteLine("[DEBUG][GetApplicationDetail] Check By BA");
-
                         #region Mitigation Task For myHome & DS
                         // Mitigation Task For myHome & DS
-                        if (applicationType.Contains("NC")
+                        if (!string.IsNullOrEmpty(applicationType)
+                            && applicationType.Contains("NC")
                             && "myTNB_API_Mobile".Equals(displaymodel.Content.ApplicationStatusDetail.Channel, StringComparison.OrdinalIgnoreCase))
                         {
                             isDSEligible = false;
@@ -524,14 +537,14 @@ namespace myTNB.Mobile
                             isDSEligible = true;
                         }
                         #endregion
-                        
-                        //isDSEligible = true;
-                        displaymodel = await GetApplicationDetailV2(savedApplicationID
+                    }
+
+                    //isDSEligible = true;
+                    displaymodel = await GetApplicationDetailV2(savedApplicationID
                            , applicationID
                            , applicationType
                            , isDSEligible
                            , system);
-                    }
                 }
             }
 
