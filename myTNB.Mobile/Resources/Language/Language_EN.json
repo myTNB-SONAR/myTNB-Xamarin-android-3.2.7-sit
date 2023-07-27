@@ -179,7 +179,8 @@
     "error_duplicateAccountMessageNew": "This account number is already on your list.",
     "error_emptyIcAndEmailOwner": "Email or phone number owner cannot be empty.",
     "error_NotExistsAccountMessage": "The account number you entered cannot be found.",
-    "accountNickNameError": "You must have a nickname for your account. You can use letters, numbers or special characters."
+    "accountNickNameError": "You must have a nickname for your account. You can use letters, numbers or special characters.",
+    "invalid_accountNumber": "Account Number Is Invalid"
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -635,7 +636,8 @@
     "addCard": "Add Card",
     "fpxTitle": "Online Banking via FPX",
     "eWalletPaymentMethods": "eWallet",
-    "tngTitle": "TNG eWallet"
+    "tngTitle": "TNG eWallet",
+    "CCExpired": "Credit Card Expired"
   },
   "MakePayment": {
     "enterOTP": "Enter the OTP",
@@ -1053,7 +1055,8 @@
     "cardRemoveSuccess": "The credit / debit card ending with {0} has been removed successfully.",
     "removeCardMessage": "You are about to remove the credit / debit card ending with {0}.",
     "removeCardTitle": "Remove Credit / Debit Card",
-    "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again."
+    "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again.",
+    "CCExpired": "Credit Card Expired"
   },
   "MyPaymentMethod": {
     "title": "My Payment Methods",
@@ -1067,7 +1070,8 @@
     "titleNoAutoPay": "You don't have AutoPay yet.",
     "bodyNoAutoPay": "Let us take care your monthly bills automatically. We'll pause AutoPay when your bills are higher than usual",
     "btnStartAutoPay": "Start AutoPay",
-    "titleCard": "My Saved Credit / Debit Cards"
+    "titleCard": "My Saved Credit / Debit Cards",
+    "CCExpired": "Credit Card Expired"
   },
   "ViewBill": {
     "titleBill": "Bill",
@@ -3201,7 +3205,7 @@
     "eBillDescription": "Your bills are being delivered on myTNB App & Portal. Thank you for going paperless!",
     "emailBillDescription": "Your bills are being delivered on myTNB App & Portal and email for this account.",
     "updatingTitle": "We’re currently updating your bill delivery method.",
-    "updatingDescription": "It may take up to 5 minutes to reflect the changes on your myTNB account and you won’t be able to view it during this time. Check back later!",
+    "updatingDescription": "It may take up to 10 minutes to reflect the changes on your myTNB account and you won’t be able to view it during this time. Check back later!",
     "selectAccount": "SELECT YOUR ACCOUNT",
     "notEligibleAccountsTitlePilot": "Why are some of my accounts not eligible?",
     "notEligibleAccountsMessagePilot": "We’re introducing this as a pilot program for Residential accounts in selected areas of Malaysia. So for now, only these accounts are eligible to go paperless. We'll continue to expand nationwide in due time. Stay tuned!",

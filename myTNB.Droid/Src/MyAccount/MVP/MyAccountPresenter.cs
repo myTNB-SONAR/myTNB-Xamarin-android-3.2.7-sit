@@ -86,7 +86,6 @@ namespace myTNB_Android.Src.MyAccount.MVP
                 bool isApplyBilling = false;
                 RemoveAccountRequest removeAccountRequest = new RemoveAccountRequest(AccountNum, isTaggedSmartMeter, isOwner, IsInManageAccessList);
                 removeAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                string dt = JsonConvert.SerializeObject(removeAccountRequest);
 
                 var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(removeAccountRequest);
 

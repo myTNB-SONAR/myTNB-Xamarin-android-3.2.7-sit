@@ -69,6 +69,24 @@
                     public const string ShowForSeconds = "ShowForSeconds";
                 }
 
+                public struct FloatingButton
+                {
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                    public const string StartDateTime = "StartDateTime";
+                    public const string EndDateTime = "EndDateTime";
+                    public const string ShowForSeconds = "ShowForSeconds";
+                }
+
+                public struct FloatingButtonMarketing
+                {
+                    public const string Title = "Title";
+                    public const string ButtonTitle = "ButtonTitle";
+                    public const string Description = "Description";
+                    public const string Infographic_FullView_URL = "Infographic_FullView_URL";
+                }
+
                 public struct Help
                 {
                     public const string TopicBGImage = "TopicBGImage";
@@ -283,6 +301,9 @@
                 public const string HowDoesProofOfConsent = "/sitecore/content/myTNBapp/Contents/ProofOwnerConsentToolTips";
 
                 public const string NewBillDesignDiscoverMore = "/sitecore/content/myTNBapp/Contents/New Bill Design";
+
+                public const string FloatingButton = "/sitecore/content/myTNBapp/Contents/App Floating Action Button";
+                public const string FloatingButtonMarketing = "/sitecore/content/myTNBapp/Contents/App Floating Action Content";
             }
         }
     }

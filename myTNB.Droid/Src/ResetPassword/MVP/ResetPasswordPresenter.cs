@@ -114,7 +114,6 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                             GetAcccountsV4Request baseRequest = new GetAcccountsV4Request();
                             baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                             baseRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                            string dt = JsonConvert.SerializeObject(baseRequest);
                             CustomerAccountListResponseAppLaunch customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountListAppLaunch(baseRequest);
                             if (customerAccountListResponse != null && customerAccountListResponse.customerAccountData != null)
                             {

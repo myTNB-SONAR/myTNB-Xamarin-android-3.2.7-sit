@@ -199,7 +199,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             {
                 SendRegistrationTokenSMSRequest sendRegistrationTokenSMSRequest = new SendRegistrationTokenSMSRequest(mobile_no);
                 sendRegistrationTokenSMSRequest.SetUserName(email);
-                string dt = JsonConvert.SerializeObject(sendRegistrationTokenSMSRequest);
+                // string dt = JsonConvert.SerializeObject(sendRegistrationTokenSMSRequest);
                 var verificationResponse = await ServiceApiImpl.Instance.SendRegistrationTokenSMS(sendRegistrationTokenSMSRequest);
 
                 if (verificationResponse.IsSuccessResponse())

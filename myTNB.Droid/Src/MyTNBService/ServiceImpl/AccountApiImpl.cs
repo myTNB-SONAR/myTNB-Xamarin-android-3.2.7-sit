@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using myTNB.Mobile.Business;
 using myTNB_Android.Src.Base.Request;
 using myTNB_Android.Src.MyTNBService.InterfaceAPI;
 using myTNB_Android.Src.Utils;
@@ -23,14 +24,14 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
 #endif
         }
 
-        public Task<T> GetLanguagePreference<T>([Body] APIBaseRequest request)
+        public Task<T> GetLanguagePreference<T>([Body] EncryptedRequest encryptedRequest)
         {
-            return api.GetLanguagePreference<T>(request);
+            return api.GetLanguagePreference<T>(encryptedRequest);
         }
 
-        public Task<T> SaveLanguagePreference<T>([Body] APIBaseRequest request)
+        public Task<T> SaveLanguagePreference<T>([Body] EncryptedRequest encryptedRequest)
         {
-            return api.SaveLanguagePreference<T>(request);
+            return api.SaveLanguagePreference<T>(encryptedRequest);
         }
     }
 }

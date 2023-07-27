@@ -60,6 +60,13 @@ using myTNB.Mobile.AWS;
 using System.Threading.Tasks;
 using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.MyHome;
+using Android.Util;
+using myTNB_Android.Src.SitecoreCMS.Model;
+using myTNB_Android.Src.EnergyBudget.Activity;
+using myTNB_Android.Src.Bills.NewBillRedesign;
+using myTNB_Android.Src.FloatingButtonMarketing.Activity;
+using myTNB_Android.Src.ServiceDistruption.Activity;
+using System.Linq;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -94,10 +101,24 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         [BindView(Resource.Id.txt_account_name)]
         TextView txtAccountName;
 
+        [BindView(Resource.Id.floating_button_img)]
+        ImageView floatingButtonImg;
+
+        [BindView(Resource.Id.floating_button_x)]
+        ImageView floatingButtonHide;
+
+        [BindView(Resource.Id.floating_button_layout)]
+        RelativeLayout floatingButtonLayout;
+
+        [BindView(Resource.Id.hide_button_layout)]
+        LinearLayout hideButtonLayout;
+
         [BindView(Resource.Id.bottom_navigation)]
         public BottomNavigationView bottomNavigationView;
 
         AccountData SelectedAccountData;
+
+        FloatingButtonModel FBitem;
 
         private bool alreadyStarted = false;
 
@@ -130,6 +151,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         private static bool isFromHomeMenu = false;
 
         private static bool isFromLogin = false;
+
+        private string savedTimeStamp = "0000000";
+
+        private string savedFloatingButtonTimeStamp = "0000000";
+
+        private bool isFloatingButtonSiteCoreDone = false;
+
+        internal static readonly int SELECT_SM_ACCOUNT_REQUEST_CODE = 8809;
+
+        internal static readonly int SELECT_SD_POPUP_REQUEST_CODE = 8820;
+
+        internal static readonly int SELECT_SM_POPUP_REQUEST_CODE = 8810;
 
         private IMenu ManageSupplyAccountMenu;
 
@@ -354,6 +387,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             GetBillTenantRenderingAsync();
+
             try
             {
                 new SyncSRApplicationAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
@@ -364,6 +398,36 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
+        public async void OnSetupFloatingButton()
+        {
+            try
+            {
+                if (FloatingButtonUtils.GetFloatingButton() != null)
+                {
+                    SetCustomFloatingButtonImage(FloatingButtonUtils.GetFloatingButton());
+                    Handler h = new Handler();
+                    Action myAction = () =>
+                    {
+                        PopulateFloatingButton(FloatingButtonUtils.GetFloatingButton());
+                    };
+                    h.PostDelayed(myAction, 3000);
+
+                }
+                else
+                {
+                    if (!isFloatingButtonSiteCoreDone)
+                    {
+                        this.userActionsListener.GetSavedFloatingButtonTimeStamp();
+                    }
+                }
+
+            }
+            catch (Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+
+        }
 
         private async void GetBillTenantRenderingAsync()
         {
@@ -380,36 +444,36 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 HideProgressDialog();
 
                 //Nullity Check
-                if (billRenderingTenantResponse == null
-                   && billRenderingTenantResponse.StatusDetail == null
-                   && !billRenderingTenantResponse.StatusDetail.IsSuccess
-                   && billRenderingTenantResponse.Content == null
-                  )
-                {
+                //    if (billRenderingTenantResponse == null
+                //       && billRenderingTenantResponse.StatusDetail == null
+                //       && !billRenderingTenantResponse.StatusDetail.IsSuccess
+                //       && billRenderingTenantResponse.Content == null
+                //      )
+                //    {
 
 
-                    string title = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Title.IsValid()
-                        ? billRenderingTenantResponse?.StatusDetail?.Title
-                        : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE);
+                //        string title = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Title.IsValid()
+                //            ? billRenderingTenantResponse?.StatusDetail?.Title
+                //            : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE);
 
-                    string message = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Message.IsValid()
-                       ? billRenderingTenantResponse?.StatusDetail?.Message
-                       : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG);
+                //        string message = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Message.IsValid()
+                //           ? billRenderingTenantResponse?.StatusDetail?.Message
+                //           : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG);
 
-                    string cta = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.PrimaryCTATitle.IsValid()
-                       ? billRenderingTenantResponse?.StatusDetail?.PrimaryCTATitle
-                       : Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK);
+                //        string cta = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.PrimaryCTATitle.IsValid()
+                //           ? billRenderingTenantResponse?.StatusDetail?.PrimaryCTATitle
+                //           : Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK);
 
-                    this.RunOnUiThread(() =>
-                    {
-                        MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                            .SetTitle(title ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
-                            .SetMessage(message ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
-                            .SetCTALabel(cta ?? Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK))
-                            .Build();
-                        errorPopup.Show();
-                    });
-                }
+                //        this.RunOnUiThread(() =>
+                //        {
+                //            MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                //                .SetTitle(title ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+                //                .SetMessage(message ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
+                //                .SetCTALabel(cta ?? Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK))
+                //                .Build();
+                //            errorPopup.Show();
+                //        });
+                //    }
             }
             catch (System.Exception e)
             {
@@ -556,6 +620,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
+            HideFloatingButton();
             //if (DashboardHomeActivity.GO_TO_INNER_DASHBOARD)
             //{
 
@@ -688,6 +753,186 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.userActionsListener.SelectSupplyAccount();
         }
 
+        [OnClick(Resource.Id.floating_button_x)]
+        void HideFloatingIcon(object sender, EventArgs eventArgs)
+        {
+            floatingButtonImg.Visibility = ViewStates.Gone;
+            floatingButtonHide.Visibility = ViewStates.Gone;
+        }
+
+        [OnClick(Resource.Id.floating_button_img)]
+        void OnSelectFloatingIcon(object sender, EventArgs eventArgs)
+        {
+           
+            // FBitem = FloatingButtonUtils.GetFloatingButton();
+            FloatingButtonEntity wtManager = new FloatingButtonEntity();
+            List<FloatingButtonEntity> floatingButtonList = wtManager.GetAllItems();
+
+            //tncWebView = FindViewById<WebView>(Resource.Id.tncWebView);
+
+            if (floatingButtonList[0].Title == Module.WEB.ToString())
+            {
+                if (!string.IsNullOrEmpty(floatingButtonList[0].Description))
+                {
+                   
+                    string url = string.Empty;
+                    string title = string.Empty;
+
+                    var splitedString = floatingButtonList[0].Description.Split(';');
+
+                    url = splitedString[0] ?? string.Empty;
+                    title = splitedString[1] ?? string.Empty;
+
+                    if ((!string.IsNullOrEmpty(url)) && (!string.IsNullOrEmpty(title)))
+                    {
+                        try
+                        {
+                            DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.WEB);
+                            Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                            webIntent.PutExtra(Constants.IN_APP_LINK, url);
+                            webIntent.PutExtra(Constants.IN_APP_TITLE, title);
+                            this.StartActivity(webIntent);
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+
+                    }
+                }
+
+            }
+            else if (floatingButtonList[0].Title == Module.DBR.ToString())
+            {
+                if (!string.IsNullOrEmpty(floatingButtonList[0].Description))
+                {
+                    CustomerBillingAccount dbrAccount = GetEligibleDBRAccount();
+                    try
+                    {
+                        DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.DBR);
+                        Intent intent = new Intent(this, typeof(FloatingButtonMarketingActivity));
+                        intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
+                        intent.PutExtra("accountNumber", dbrAccount.AccNum);
+                        StartActivity(intent);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+            }
+            else if (floatingButtonList[0].Title == Module.BR.ToString())
+            {
+                if (!string.IsNullOrEmpty(floatingButtonList[0].Description))
+                {
+
+                    try
+                    {
+                        DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.BR);
+                        Intent supplyAccount = new Intent(this, typeof(NBRDiscoverMoreActivity));
+                        StartActivityForResult(supplyAccount, Constants.SELECT_ACCOUNT_REQUEST_CODE);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+
+            }
+            else if (floatingButtonList[0].Title == Module.SD.ToString())
+            {
+                if (!string.IsNullOrEmpty(floatingButtonList[0].Description))
+                {
+
+                    try
+                    {
+                        DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.SD);
+                        Intent SDDiscoverCom = new Intent(this, typeof(ServiceDisruptionActivity));
+                        SDDiscoverCom.PutExtra("fromDashboard", true);
+                        StartActivityForResult(SDDiscoverCom, SELECT_SD_POPUP_REQUEST_CODE);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+
+            }
+            else if (floatingButtonList[0].Title == Module.EB.ToString())
+            {
+                if (!string.IsNullOrEmpty(floatingButtonList[0].Description))
+                {
+
+                    if (!this.GetIsClicked())
+                    {
+                        this.SetIsClicked(true);
+                        try
+                        {
+                            if (currentFragment.GetType() == typeof(HomeMenuFragment))
+                            {
+                                DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.EB);
+                                //Intent EBPopupPage = new Intent(this, typeof(EBPopupScreenActivity));
+                                //StartActivityForResult(EBPopupPage, SELECT_SM_POPUP_REQUEST_CODE);
+                                HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
+                                fragment.EBPopupActivity();
+                            }
+                        }
+                        catch (System.Exception err)
+                        {
+                            Utility.LoggingNonFatalError(err);
+                        }
+                    }
+                }
+
+            }
+            else if (floatingButtonList[0].Title == Module.TNG.ToString())
+            {
+                if (!string.IsNullOrEmpty(floatingButtonList[0].Description))
+                {
+
+                    try
+                    {
+                        DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.TNG);
+                        Intent MarketingActivity = new Intent(this, typeof(FloatingButtonMarketingActivity));
+                        StartActivity(MarketingActivity);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+
+            }
+        }
+
+        public CustomerBillingAccount GetEligibleDBRAccount()
+        {
+            CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+            List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+            List<CustomerBillingAccount> allAccountList = CustomerBillingAccount.List();
+            CustomerBillingAccount account = new CustomerBillingAccount();
+            if (dBRCAs.Count > 0)
+            {
+                var dbrSelected = dBRCAs.Where(x => x == customerAccount.AccNum).FirstOrDefault();
+                if (dbrSelected != string.Empty)
+                {
+                    account = allAccountList.Where(x => x.AccNum == dbrSelected).FirstOrDefault();
+                }
+                if (account == null)
+                {
+                    foreach (var dbrca in dBRCAs)
+                    {
+                        account = allAccountList.Where(x => x.AccNum == dbrca).FirstOrDefault();
+                        if (account != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            return account;
+        }
+
         public void ShowManageSupplyAccount(AccountData accountData)
         {
             try
@@ -772,6 +1017,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             LogicCheckForDBRMarketingPopUp();
                         }
                     }
+                    else
+                    {
+                        LogicCheckForDBRMarketingPopUp();
+                    }
                 }
                 catch (System.Exception e)
                 {
@@ -846,6 +1095,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (!dbrPopUpHasShown
                     && loginCount == 1
                     && DBRUtility.Instance.ShouldShowHomeCard
+                    && DBRUtility.Instance.IsAccountEligible
                     && countCA > 0)
                 {
                     ShowMarketingTooltip();
@@ -856,6 +1106,139 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     this.userActionsListener.OnCheckNCDraftForResume(PreferenceManager.GetDefaultSharedPreferences(this));
                 }
             }
+        }
+
+
+        public void PopulateFloatingButton(FloatingButtonModel content)
+        {
+
+            if (!string.IsNullOrEmpty(content.Title))
+            {
+                if (content.Title == Module.DBR.ToString())
+                {
+                    try
+                    {
+                        int countCA = 0;
+                        bool flagOwner = false;
+                        List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+                        List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+                        CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
+
+                        if (billRenderingTenantResponse != null
+                            && billRenderingTenantResponse.StatusDetail != null
+                            && billRenderingTenantResponse.StatusDetail.IsSuccess
+                            && billRenderingTenantResponse.Content != null)
+                        {
+                            foreach (CustomerBillingAccount item in accounts)
+                            {
+                                if (item.AccountHasOwner == true)
+                                {
+                                    flagOwner = true;
+                                }
+                            }
+
+                            for (int j = 0; j < accounts.Count; j++)
+                            {
+                                for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
+                                {
+                                    if (flagOwner
+                                        && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
+                                        && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
+                                        && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
+                                        && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
+                                    {
+                                        countCA++;
+                                    }
+                                }
+
+                            }
+
+                        }
+
+                        if (DBRUtility.Instance.IsAccountEligible &&
+                            CustomerBillingAccount.HasOwnerCA())
+                        {
+                            ShowFloatingButton();
+                        }
+                        else if (DBRUtility.Instance.IsAccountEligible
+                                && countCA > 0)
+                        {
+                            ShowFloatingButton();
+                        }
+                        else
+                        {
+                            HideFloatingButton();
+                        }
+
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+
+                }
+                else if (content.Title == Module.TNG.ToString())
+                {
+                    if (TNGUtility.Instance.IsAccountEligible)
+                    {
+                        ShowFloatingButton();
+                    }
+                    else
+                    {
+                        HideFloatingButton();
+                    }
+
+                }
+                else if (content.Title == Module.EB.ToString())
+                {
+                    if (UserSessions.GetEnergyBudgetList().Count > 0
+                        && MyTNBAccountManagement.GetInstance().IsEBUserVerify()
+                        && !MyTNBAccountManagement.GetInstance().COMCLandNEM())
+                    {
+                        ShowFloatingButton();
+                    }
+                    else
+                    {
+                        HideFloatingButton();
+                    }
+                }
+                else if (content.Title == Module.BR.ToString())
+                {
+                    if (BillRedesignUtility.Instance.IsAccountEligible)
+                    {
+                        ShowFloatingButton();
+                    }
+                    else
+                    {
+                        HideFloatingButton();
+                    }
+                }
+                else if (content.Title == Module.SD.ToString())
+                {
+                    if (MyTNBAccountManagement.GetInstance().IsSDUserVerify())
+                    {
+                        ShowFloatingButton();
+                    }
+                    else
+                    {
+                        HideFloatingButton();
+                    }
+                }
+                else if (content.Title == Module.WEB.ToString())
+                {
+                    ShowFloatingButton();
+                }
+                else
+                {
+                    HideFloatingButton();
+                }
+
+            }
+            else
+            {
+                HideFloatingButton();
+            }
+
         }
 
         public void ShowMarketingTooltip()
@@ -921,6 +1304,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowBillMenu(AccountData selectedAccount, bool isIneligiblePopUpActive = false)
         {
+            HideFloatingButton();
+
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill).SetChecked(true);
             txtAccountName.Visibility = ViewStates.Gone;
             if (currentFragment != null)
@@ -1077,6 +1462,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowFeedbackMenu()
         {
+            HideFloatingButton();
             ShowBackButton(false);
             if (currentFragment != null)
             {
@@ -1091,6 +1477,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowWhatsNewMenu()
         {
+            HideFloatingButton();
             if (currentFragment != null)
             {
                 SupportFragmentManager.PopBackStack();
@@ -1105,6 +1492,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowRewardsMenu()
         {
+            HideFloatingButton();
             if (currentFragment != null)
             {
                 SupportFragmentManager.PopBackStack();
@@ -1119,6 +1507,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowMoreMenu()
         {
+            HideFloatingButton();
             //ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();
             ProfileMainMenuFragment profileMenuFragment = new ProfileMainMenuFragment();
 
@@ -1143,6 +1532,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void Logout()
         {
             this.userActionsListener.Logout();
+        }
+
+        public void HideFloatingButton()
+        {
+            floatingButtonLayout.Visibility = ViewStates.Gone;
+            hideButtonLayout.Visibility = ViewStates.Gone;
+        }
+
+        public void ShowFloatingButton()
+        {
+            floatingButtonLayout.Visibility = ViewStates.Visible;
+            hideButtonLayout.Visibility = ViewStates.Visible;
         }
 
         public void HideAccountName()
@@ -1858,6 +2259,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 isFromHomeMenu = true;
                 OnCheckProfileTab(false, isFromHomeMenu);
+            }
+
+            OnSetupFloatingButton();
+
+            if (FloatingButtonUtils.GetFloatingButton() != null)
+            {
+                if (UserSessions.GetLanguageFBFlag(PreferenceManager.GetDefaultSharedPreferences(this)))
+                {
+                    this.userActionsListener.OnGetFloatingButtonItem();
+                    UserSessions.UpdateLanguageFBFlag(PreferenceManager.GetDefaultSharedPreferences(this));
+                }
+
             }
         }
 
@@ -3218,6 +3631,214 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     Utility.LoggingNonFatalError(e);
                 }
             }
+        }
+
+        public void SetFloatingButtonSiteCoreDoneFlag(bool flag)
+        {
+            isFloatingButtonSiteCoreDone = flag;
+        }
+
+        public bool GetFloatingButtonSiteCoreDoneFlag()
+        {
+            return isFloatingButtonSiteCoreDone;
+        }
+
+        public void SetCustomFloatingButtonImage(FloatingButtonModel item)
+        {
+            try
+            {
+                if (!isFloatingButtonSiteCoreDone)
+                {
+                    try
+                    {
+                        if (item.ImageBitmap != null)
+                        {
+                            var bitmapDrawable = new BitmapDrawable(item.ImageBitmap);
+                            RunOnUiThread(() =>
+                            {
+                                try
+                                {
+                                    floatingButtonImg.SetImageDrawable(bitmapDrawable);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Utility.LoggingNonFatalError(ex);
+                                }
+                            });
+                        }
+
+
+                        //    DateTime startDateTime = DateTime.ParseExact(item.StartDateTime, "yyyyMMddTHHmmss",
+                        //        CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        //    DateTime stopDateTime = DateTime.ParseExact(item.EndDateTime, "yyyyMMddTHHmmss",
+                        //        CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        //    DateTime nowDateTime = DateTime.Now;
+                        //    int startResult = DateTime.Compare(nowDateTime, startDateTime);
+                        //    int endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                        //    if (startResult >= 0 && endResult <= 0)
+                        //    {
+                        //        try
+                        //        {
+                        //            int secondMilli = 0;
+                        //            try
+                        //            {
+                        //                secondMilli = (int)(float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000);
+                        //            }
+                        //            catch (Exception nea)
+                        //            {
+                        //                Utility.LoggingNonFatalError(nea);
+                        //            }
+
+                        //            if (secondMilli == 0)
+                        //            {
+                        //                try
+                        //                {
+                        //                    secondMilli = Int32.Parse(item.ShowForSeconds) * 1000;
+                        //                }
+                        //                catch (Exception nea)
+                        //                {
+                        //                    Utility.LoggingNonFatalError(nea);
+                        //                }
+                        //            }
+
+                        //            var bitmapDrawable = new BitmapDrawable(item.ImageBitmap);
+                        //            RunOnUiThread(() =>
+                        //            {
+                        //                try
+                        //                {
+                        //                    floatingButtonImg.SetImageDrawable(bitmapDrawable);
+                        //                }
+                        //                catch (Exception ex)
+                        //                {
+                        //                    Utility.LoggingNonFatalError(ex);
+                        //                }
+                        //            });
+
+                        //            //this.userActionsListener.OnWaitSplashScreenDisplay(secondMilli);
+                        //        }
+                        //        catch (Exception ne)
+                        //        {
+                        //            //SetDefaultAppLaunchImage();
+                        //            Utility.LoggingNonFatalError(ne);
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        //SetDefaultAppLaunchImage();
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    //SetDefaultAppLaunchImage();
+                        //}
+                    }
+                    catch (Exception ne)
+                    {
+                        //SetDefaultAppLaunchImage();
+                        Utility.LoggingNonFatalError(ne);
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                //SetDefaultAppLaunchImage();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static Bitmap Base64ToBitmap(string base64String)
+        {
+            Bitmap convertedBitmap;
+            try
+            {
+                byte[] imageAsBytes = Base64.Decode(base64String, Base64Flags.Default);
+                convertedBitmap = BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
+            }
+            catch (Exception e)
+            {
+                convertedBitmap = null;
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return convertedBitmap;
+        }
+
+        public void OnSavedFloatingButtonTimeStampRecieved(string timestamp)
+        {
+            try
+            {
+                if (timestamp != null)
+                {
+                    savedFloatingButtonTimeStamp = timestamp;
+                }
+                this.userActionsListener.OnGetFloatingButtonTimeStamp();
+            }
+            catch (Exception e)
+            {
+                this.userActionsListener.OnGetFloatingButtonCache();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnTimeStampRecieved(string timestamp)
+        {
+            try
+            {
+                if (timestamp != null)
+                {
+                    if (timestamp.Equals(savedTimeStamp))
+                    {
+                        MyTNBApplication.siteCoreUpdated = false;
+                    }
+                    else
+                    {
+                        MyTNBApplication.siteCoreUpdated = true;
+                    }
+                }
+                else
+                {
+                    MyTNBApplication.siteCoreUpdated = true;
+                }
+                // RunOnUiThread(() => StartActivity(typeof(WalkThroughActivity)));
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnFloatingButtonTimeStampRecieved(string timestamp)
+        {
+            try
+            {
+                if (timestamp != null)
+                {
+                    if (timestamp.Equals(savedFloatingButtonTimeStamp))
+                    {
+                        this.userActionsListener.OnGetFloatingButtonCache();
+                    }
+                    else
+                    {
+                        this.userActionsListener.OnGetFloatingButtonItem();
+                    }
+                }
+                else
+                {
+                    this.userActionsListener.OnGetFloatingButtonCache();
+                }
+            }
+            catch (Exception e)
+            {
+                this.userActionsListener.OnGetFloatingButtonCache();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void NavigateToEnergyBudget()
+        {
+            Intent energy_budget_activity = new Intent(this, typeof(EnergyBudgetActivity));
+            StartActivityForResult(energy_budget_activity, SELECT_SM_ACCOUNT_REQUEST_CODE);
         }
 
         public void NavigateToAddAccount()

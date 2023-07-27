@@ -176,7 +176,6 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
                 AddAccountsRequest addaccRequest = new AddAccountsRequest(accounts, name);
                 addaccRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                string dt = JsonConvert.SerializeObject(addaccRequest);
                 addaccRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                 AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts_OT(addaccRequest);
 

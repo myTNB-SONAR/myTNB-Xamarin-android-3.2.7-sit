@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using myTNB.Mobile.Business;
 using myTNB_Android.Src.Utils;
 using Refit;
 
@@ -19,12 +20,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Api
             api = RestService.For<SubmitMeterReadingApi>(Constants.SERVER_URL.END_POINT);
 #endif
         }
-        public Task<SubmitMeterReadingResponse> SubmitSMRMeetingReading([Body] myTNB_Android.Src.SSMR.SMRApplication.Api.BaseRequest request)
+        public Task<SubmitMeterReadingResponse> SubmitSMRMeetingReading([Body] EncryptedRequest request)
         {
             return api.SubmitSMRMeetingReading(request);
         }
 
-        public Task<GetMeterReadingOCRResponse> GetMeterReadingOCRValue([Body] myTNB_Android.Src.SSMR.SMRApplication.Api.BaseRequest request)
+        public Task<GetMeterReadingOCRResponse> GetMeterReadingOCRValue([Body] EncryptedRequest request)
         {
             return api.GetMeterReadingOCRValue(request);
         }

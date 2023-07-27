@@ -179,7 +179,8 @@
     "error_duplicateAccountMessageNew": "Nombor akaun elektrik ini telah wujud dalam senarai anda.",
     "error_emptyIcAndEmailOwner": "Pemilik e-mel atau nombor telefon tidak boleh kosong.",
     "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan tidak dijumpai.",
-    "accountNickNameError": "Akaun anda harus mempunyai nama gelaran. Anda boleh menggunakan huruf, angka atau simbol."
+    "accountNickNameError": "Akaun anda harus mempunyai nama gelaran. Anda boleh menggunakan huruf, angka atau simbol.",
+    "invalid_accountNumber": "Nombor Akaun Tidak Sah"
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -635,7 +636,8 @@
     "addCard": "Tambah kad",
     "fpxTitle": "Perbankan dalam talian melalui FPX",
     "eWalletPaymentMethods": "e-Dompet",
-    "tngTitle": "TNG eWallet"
+    "tngTitle": "TNG eWallet",
+    "CCExpired": "Kad Tamat Tempoh"
   },
   "MakePayment": {
     "enterOTP": "Masukkan Kod OTP",
@@ -1053,7 +1055,8 @@
     "cardRemoveSuccess": "Kad kredit / debit yang berakhir dengan {0} telah berjaya dialih keluar.",
     "removeCardMessage": "Anda akan mengalih keluar kad kredit / debit yang berakhir dengan {0}.",
     "removeCardTitle": "Alih Keluar Kad Kredit / Debit",
-    "cardNotRemovedMessage": "Kad Kredit / Debit yang berakhir dengan {0} tidak berjaya dialih keluar. Sila cuba semula sebentar lagi."
+    "cardNotRemovedMessage": "Kad Kredit / Debit yang berakhir dengan {0} tidak berjaya dialih keluar. Sila cuba semula sebentar lagi.",
+    "CCExpired": "Kad Tamat Tempoh"
   },
   "MyPaymentMethod": {
     "title": "Cara Pembayaran Saya",
@@ -1067,7 +1070,8 @@
     "titleNoAutoPay": "BM_You don't have AutoPay yet.",
     "bodyNoAutoPay": "BM_Let us take care your monthly bills automatically. We'll pause AutoPay when your bills are higher than usual",
     "btnStartAutoPay": "BM_Start AutoPay",
-    "titleCard": "Kad Kredit / Debit Saya yang Disimpan"
+    "titleCard": "Kad Kredit / Debit Saya yang Disimpan",
+    "CCExpired": "Kad Tamat Tempoh"
   },
   "ViewBill": {
     "titleBill": "Bil",
@@ -3201,7 +3205,7 @@
     "eBillDescription": "Bil anda dihantar di Aplikasi & Portal myTNB. Terima kasih kerana memilih 'paperless'!",
     "emailBillDescription": "Bil anda dihantar melalui Aplikasi & Portal myTNB dan e-mel untuk akaun ini.",
     "updatingTitle": "Kami sedang mengemaskini cara penerimaan bil anda.",
-    "updatingDescription": "Akaun anda sedang dikemaskinikan dan dijangka mengambil masa sehingga 5 minit. Kembali semula nanti!",
+    "updatingDescription": "Akaun anda sedang dikemaskinikan dan dijangka mengambil masa sehingga 10 minit. Kembali semula nanti!",
     "selectAccount": "PILIH AKAUN ANDA",
     "notEligibleAccountsTitlePilot": "Mengapa akaun saya tidak ada di sini?",
     "notEligibleAccountsMessagePilot": "Program perintis ini untuk akaun Kediaman di kawasan terpilih di Malaysia. Buat masa ini, hanya akaun yang berkenaan akan dibolehkan untuk 'paperless'. Ciri ini akan berkembang ke seluruh negara tidak lama lagi. Nantikan!",

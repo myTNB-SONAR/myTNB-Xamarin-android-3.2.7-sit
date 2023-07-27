@@ -7,6 +7,7 @@ using myTNB.Mobile.API.Models.Payment.GetTaxInvoice;
 using myTNB.Mobile.API.Models.Payment.PostApplicationPayment;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.API.Services.Payment;
+using myTNB.Mobile.Business;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using Refit;
@@ -84,8 +85,8 @@ namespace myTNB.Mobile.API.Managers.Payment
                         StatusId = statusId,
                         StatusCode = statusCode
                     };
-
-                    HttpResponseMessage rawResponse = await service.ApplicationPayment(request
+                    EncryptedRequest encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                    HttpResponseMessage rawResponse = await service.ApplicationPayment(encryptedRequest
                         , NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());
 
@@ -142,7 +143,8 @@ namespace myTNB.Mobile.API.Managers.Payment
                             ApplicationType = applicationType
                         }
                     };
-                    HttpResponseMessage rawResponse = await service.GetApplicationsPaidDetails(request
+                    EncryptedRequest encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                    HttpResponseMessage rawResponse = await service.GetApplicationsPaidDetails(encryptedRequest
                         , NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
@@ -155,7 +157,7 @@ namespace myTNB.Mobile.API.Managers.Payment
                 }
                 catch (ApiException apiEx)
                 {
-#if DEBUG
+#if MASTER
                     Debug.WriteLine("[DEBUG][GetApplicationsPaidDetails]Refit Exception: " + apiEx.Message);
 #endif
                 }

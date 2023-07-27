@@ -369,7 +369,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         private async Task GetAccessToken(int resultCode, string cancelUrl)
         {
             UserEntity user = UserEntity.GetActive();
-            string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
+            string accessToken = await myTNB.Mobile.AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
             AccessTokenCache.Instance.SaveUserServiceAccessToken(this, accessToken);
             if (accessToken.IsValid())
             {

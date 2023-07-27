@@ -114,12 +114,16 @@ namespace myTNB_Android.Src.Billing.MVP
                             VersionCode = ""
                         };
 
-                        CheckPendingPaymentsResponse paymentStatusResponse = await paymentStatusApi.GetCheckPendingPayments(new CheckPendingPaymentRequest()
+                        var request = new CheckPendingPaymentRequest()
                         {
                             AccountList = accountList,
                             usrInf = currentUsrInf,
                             deviceInf = currentDvdInf
-                        }, cts.Token);
+                        };
+
+                        var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+
+                        CheckPendingPaymentsResponse paymentStatusResponse = await paymentStatusApi.GetCheckPendingPayments(encryptedRequest, cts.Token);
 
                         if (paymentStatusResponse != null && paymentStatusResponse.Data != null && paymentStatusResponse.Data.ErrorCode == "7200")
                         {

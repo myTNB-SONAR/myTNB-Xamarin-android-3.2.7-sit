@@ -16,6 +16,7 @@ using myTNB.Mobile.API.Models.ApplicationStatus.PostSyncSRApplication;
 using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.API.Services.ApplicationStatus;
+using myTNB.Mobile.Business;
 using myTNB.Mobile.AWS.Managers.DS;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.Extensions;
@@ -251,12 +252,13 @@ namespace myTNB.Mobile
                         StatusCode = statusCode,
                         SrCreatedDate = createdDate
                     };
-
-                    HttpResponseMessage rawResponse = await service.SaveApplication(new PostSaveApplicationRequest
+                    PostSaveApplicationRequest req = new PostSaveApplicationRequest
                     {
                         SaveApplication = request,
                         lang = AppInfoManager.Instance.Language.ToString()
-                    }
+                    };
+                    EncryptedRequest encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(req);
+                    HttpResponseMessage rawResponse = await service.SaveApplication(encryptedRequest
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());
@@ -698,8 +700,8 @@ namespace myTNB.Mobile
                         AppId = appID,
                         System = system
                     };
-
-                    HttpResponseMessage rawResponse = await service.RemoveApplication(request
+                    EncryptedRequest encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                    HttpResponseMessage rawResponse = await service.RemoveApplication(encryptedRequest
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());
