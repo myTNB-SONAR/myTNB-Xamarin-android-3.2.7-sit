@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Android.Text;
 using Android.Util;
+using myTNB.Mobile.Business;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
@@ -32,7 +33,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             {
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                 SMRregistrationContactInfoRequest request = new SMRregistrationContactInfoRequest(smrAccount.accountNumber, true);
-                CARegisteredContactInfoResponse response = await api.GetRegisteredContactInfo(request);
+                var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+                CARegisteredContactInfoResponse response = await api.GetRegisteredContactInfo(encryptedRequest);
                 if (response.Data.ErrorCode == "7200")
                 {
                     smrAccount.email = response.Data.AccountDetailsData.Email;
@@ -65,7 +67,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                 SMRregistrationSubmitRequest request = new SMRregistrationSubmitRequest(smrAccount.accountNumber, smrAccount.mobileNumber, newPhone,
                     smrAccount.email, newEmail, SUBMIT_MODE.REGISTER, reason);
-                SMRregistrationSubmitResponse response = await api.SubmitSMRApplication(request);
+                var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+                SMRregistrationSubmitResponse response = await api.SubmitSMRApplication(encryptedRequest);
                 string jsonResponseString = JsonConvert.SerializeObject(response);
                 if (response.Data.ErrorCode == "7200" && response.Data.AccountDetailsData != null)
                 {
@@ -138,7 +141,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                         ses_param2 = ""
                     };
 
-                    GetAccountsSMREligibilityResponse response = await this.api.GetAccountsSMREligibility(new GetAccountListSMREligibilityRequest(accountList));
+                    var request = new GetAccountListSMREligibilityRequest(accountList);
+                    var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+                    GetAccountsSMREligibilityResponse response = await this.api.GetAccountsSMREligibility(encryptedRequest);
 
                     if (response != null && response.Response != null && response.Response.ErrorCode == "7200" && response.Response.Data.SMREligibilityList.Count > 0)
                     {
