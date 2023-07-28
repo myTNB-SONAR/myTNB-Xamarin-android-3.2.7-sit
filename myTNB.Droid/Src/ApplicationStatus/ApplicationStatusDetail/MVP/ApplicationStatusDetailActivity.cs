@@ -369,7 +369,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         private async Task GetAccessToken(int resultCode, string cancelUrl)
         {
             UserEntity user = UserEntity.GetActive();
-            string accessToken = await AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
+            string accessToken = await myTNB.Mobile.AccessTokenManager.Instance.GetUserServiceAccessToken(user.UserID);
             AccessTokenCache.Instance.SaveUserServiceAccessToken(this, accessToken);
             if (accessToken.IsValid())
             {
@@ -1629,6 +1629,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(string.Empty
                         , applicationDetailDisplay.LinkedWithDisplay.ID
                         , applicationDetailDisplay.LinkedWithDisplay.Type
+                        , UserEntity.GetActive().UserID ?? string.Empty
+                        , UserEntity.GetActive().Email ?? string.Empty
                         , applicationDetailDisplay.LinkedWithDisplay.System);
                     HideProgressDialog();
                     if (response.StatusDetail.IsSuccess)
@@ -1851,6 +1853,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(applicationDetailDisplay.SavedApplicationID
                 , applicationDetailDisplay.ApplicationDetail.ApplicationId
                 , applicationDetailDisplay.ApplicationTypeCode
+                , UserEntity.GetActive().UserID ?? string.Empty
+                , UserEntity.GetActive().Email ?? string.Empty
                 , applicationDetailDisplay.System);
 
             this.RunOnUiThread(() =>

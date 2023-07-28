@@ -217,6 +217,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 ApplicationDetailDisplay detailsResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.GetApplicationDetail(ApplicationDetailsDeeplinkCache.Instance.SaveID
                     , ApplicationDetailsDeeplinkCache.Instance.ID
                     , ApplicationDetailsDeeplinkCache.Instance.Type
+                    , UserEntity.GetActive().UserID ?? string.Empty
+                    , UserEntity.GetActive().Email ?? string.Empty
                     , ApplicationDetailsDeeplinkCache.Instance.System);
 
                 mainActivity.RunOnUiThread(() =>

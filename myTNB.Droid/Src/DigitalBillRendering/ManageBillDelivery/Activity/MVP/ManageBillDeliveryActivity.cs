@@ -29,6 +29,7 @@ using Android.Graphics;
 using static myTNB.Mobile.MobileEnums;
 using myTNB_Android.Src.DigitalBillRendering.ManageBillDelivery.Activity.MVP;
 using myTNB.Mobile.AWS.Models.DBR;
+using myTNB_Android.Src.myTNBMenu.Activity;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -137,6 +138,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         private ManageBillDeliveryAdapter ManageBillDeliveryAdapter;
         private string currentAppNavigation;
         private string _accountNumber = string.Empty;
+        private bool FromFloatingButtonMarketing = false;
         LinearLayout.LayoutParams emailLayout;
         FrameLayout.LayoutParams viewerlayout;
 
@@ -197,6 +199,10 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList(mSelectedAccountData));
                     vPager.Adapter = ManageBillDeliveryAdapter;
                     UpdateAccountListIndicator();
+                }
+                if (Intent.HasExtra("FromFloatingButtonMarketing"))
+                {
+                    FromFloatingButtonMarketing = Intent.Extras.GetBoolean("FromFloatingButtonMarketing", false);
                 }
 
                 List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
@@ -1020,11 +1026,22 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             try
             {
                 base.OnBackPressed();
+                if (FromFloatingButtonMarketing)
+                    ShowDashboard();
+                else
+                    this.Finish();
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowDashboard()
+        {
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(DashboardIntent);
         }
 
         public void OnPageScrolled(int position, float positionOffset, int positionOffsetPixels)

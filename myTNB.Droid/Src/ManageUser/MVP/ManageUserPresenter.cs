@@ -65,7 +65,6 @@ namespace myTNB_Android.Src.ManageUser.MVP
                 string action = "U";
                 UpdateUserAccessRequest updateUserAccessRequest = new UpdateUserAccessRequest(accountId, userId, haveAccess, haveEBiling, action, accountData.AccNum, user.DisplayName, email);
                 updateUserAccessRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                string dt = JsonConvert.SerializeObject(updateUserAccessRequest);
 
                 var updateUserAccessReponse = await ServiceApiImpl.Instance.UpdateAccountAccessRight(updateUserAccessRequest);
 
@@ -141,7 +140,6 @@ namespace myTNB_Android.Src.ManageUser.MVP
             {
                 CancelInviteUserAccessRequest cancelInviteUserAccessRequest = new CancelInviteUserAccessRequest(email, AccNum, userId);
                 cancelInviteUserAccessRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                string dt = JsonConvert.SerializeObject(cancelInviteUserAccessRequest);
                 var updateUserAccessReponse = await ServiceApiImpl.Instance.CancelInvitation_OT(cancelInviteUserAccessRequest);
 
                 if (mView.IsActive())

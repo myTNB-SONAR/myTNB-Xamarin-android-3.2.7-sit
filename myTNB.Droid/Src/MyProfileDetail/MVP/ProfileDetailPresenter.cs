@@ -43,7 +43,6 @@ namespace myTNB_Android.Src.MyProfileDetail.MVP
                 //if (string.IsNullOrEmpty(user.IdentificationNo))
                 //{
                     string icno = user.IdentificationNo;
-                    string dt = JsonConvert.SerializeObject(new BaseRequestV4());
                     var getIdentificationNoResponse = await ServiceApiImpl.Instance.GetIdentificationNo(new BaseRequestV4());
 
                     if (mView.IsActive())

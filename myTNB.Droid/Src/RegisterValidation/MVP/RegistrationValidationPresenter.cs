@@ -88,7 +88,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     userCredentialsEntity.Password, userCredentialsEntity.ICNo, userCredentialsEntity.IdType, userCredentialsEntity.MobileNo);
                 createNewUserWithTokenRequest.SetUserName(userCredentialsEntity.Email);
 
-                string dt = JsonConvert.SerializeObject(createNewUserWithTokenRequest);
+                // string dt = JsonConvert.SerializeObject(createNewUserWithTokenRequest);
                 var userRegistrationResponse = await ServiceApiImpl.Instance.CreateNewUserWithToken_OT(createNewUserWithTokenRequest);
 
                 if (userRegistrationResponse.IsSuccessResponse())
@@ -300,7 +300,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             {
                 SendRegistrationTokenSMSRequest sendRegistrationTokenSMSRequest = new SendRegistrationTokenSMSRequest(userCredentialsEntity.MobileNo);
                 sendRegistrationTokenSMSRequest.SetUserName(userCredentialsEntity.Email);
-                string dt = JsonConvert.SerializeObject(sendRegistrationTokenSMSRequest);
+                // string dt = JsonConvert.SerializeObject(sendRegistrationTokenSMSRequest);
                 var verificationResponse = await ServiceApiImpl.Instance.SendRegistrationTokenSMS(sendRegistrationTokenSMSRequest);
                 if (!verificationResponse.IsSuccessResponse())
                 {

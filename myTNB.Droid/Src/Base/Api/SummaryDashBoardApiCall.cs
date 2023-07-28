@@ -1,4 +1,5 @@
 ﻿using Android.Util;
+using myTNB.Mobile.Business;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SummaryDashBoard.API;
 using myTNB_Android.Src.SummaryDashBoard.Models;
@@ -41,7 +42,8 @@ namespace myTNB_Android.Src.Base.Api
 
             try
             {
-                var response = await api.GetLinkedAccountsSummaryInfo(summaryDashboardRequest, cts.Token);
+                var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(summaryDashboardRequest);
+                var response = await api.GetLinkedAccountsSummaryInfo(encryptedRequest, cts.Token);
 
                 if (response != null)
                 {

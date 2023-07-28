@@ -41,6 +41,7 @@ using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.SSMRMeterHistory.Api;
 using Dynatrace.Xamarin;
+using myTNB.Mobile.Business;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -2132,7 +2133,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-                GetAccountsSMREligibilityResponse response = await this.api.GetAccountsSMREligibility(new GetAccountListSMREligibilityRequest(accountList));
+                var request = new GetAccountListSMREligibilityRequest(accountList);
+                var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+
+                GetAccountsSMREligibilityResponse response = await this.api.GetAccountsSMREligibility(encryptedRequest);
 
                 if (response != null && response.Response != null && response.Response.ErrorCode == "7200" && response.Response.Data.SMREligibilityList.Count > 0)
                 {

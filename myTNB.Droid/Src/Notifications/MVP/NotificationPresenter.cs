@@ -194,13 +194,13 @@ namespace myTNB_Android.Src.Notifications.MVP
                         }
                         else if (resultCode == Result.Ok)
                         {
-                            ReloadNotifistUI();
+                            ReloadNotifListUI();
                         }
                     }
                 }
                 else if (resultCode == Result.Ok)
                 {
-                    ReloadNotifistUI();
+                    ReloadNotifListUI();
                 }
             }
             catch (Exception e)
@@ -209,7 +209,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             }
         }
 
-        public void ReloadNotifistUI()
+        private void ReloadNotifListUI()
         {
             this.mView.ClearAdapter();
             this.ShowFilteredList();
@@ -348,7 +348,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                             try
                             {
                                 UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new BaseRequest());
-                                string dt = JsonConvert.SerializeObject(new BaseRequest());
+                                // string dt = JsonConvert.SerializeObject(new BaseRequest());
                                 if (response != null && response.Response != null && response.Response.ErrorCode == "7200")
                                 {
                                     if (response.GetData() != null && response.GetData().FilteredUserNotificationList != null)
@@ -707,7 +707,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                                     case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_THREE_TIMES_FAILURE:
                                                     case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_SUCCESSFUL:
                                                     case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_ID_NO_TMATCHING:
-                                                        if (DSUtility.Instance.IsAccountEligible)
+                                                        if (DSUtility.Instance.IsNotificationEligible)
                                                         {
                                                             listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                                         }

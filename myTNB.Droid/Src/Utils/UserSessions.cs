@@ -1312,5 +1312,43 @@ namespace myTNB_Android.Src.Utils
             editor.PutString(MyHomeConstants.USER_SESSION_NC_RESUME_POPUP_KEY, refNos);
             editor.Apply();
         }
+
+        public static void SaveLanguageFBFlag(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("FBLangIsUpdated", true);
+            editor.Apply();
+        }
+
+        public static bool GetLanguageFBFlag(ISharedPreferences preferences)
+        {
+            return preferences.GetBoolean("FBLangIsUpdated", false);
+        }
+
+        internal static void UpdateLanguageFBFlag(ISharedPreferences mSharedPref)
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("FBLangIsUpdated");
+            editor.Apply();
+        }
+
+        public static void SaveLanguageFBContentFlag(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("FBContentLangIsUpdated", true);
+            editor.Apply();
+        }
+
+        public static bool GetLanguageFBContentFlag(ISharedPreferences preferences)
+        {
+            return preferences.GetBoolean("FBContentLangIsUpdated", false);
+        }
+
+        internal static void UpdateLanguageFBContentFlag(ISharedPreferences mSharedPref)
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.Remove("FBContentLangIsUpdated");
+            editor.Apply();
+        }
     }
 }

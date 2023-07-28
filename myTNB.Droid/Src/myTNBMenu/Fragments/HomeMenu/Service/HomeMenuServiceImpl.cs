@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using myTNB.Mobile.Business;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Api;
@@ -39,7 +40,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service
 
         public Task<SummaryDashBoardResponse> GetLinkedSummaryInfo(SummaryDashBordRequest request, System.Threading.CancellationToken token)
         {
-            return summaryDashboardInfoApi.GetLinkedAccountsSummaryInfo(request, token);
+            var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+            return summaryDashboardInfoApi.GetLinkedAccountsSummaryInfo(encryptedRequest, token);
         }
 
         public Task<GetServicesResponse> GetServices(GetServiceRequests request)
@@ -49,17 +51,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service
 
         public Task<AccountSMRStatusResponse> GetSMRAccountStatus(AccountsSMRStatusRequest request)
         {
-            return getSMRAccountStatusApi.AccountsSMRStatusApi(request, new System.Threading.CancellationToken());
+            var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+            return getSMRAccountStatusApi.AccountsSMRStatusApi(encryptedRequest, new System.Threading.CancellationToken());
         }
 
         public Task<GetIsSmrApplyAllowedResponse> GetIsSmrApplyAllowed(GetIsSmrApplyAllowedRequest request)
         {
-            return getIsSmrApplyAllowedApi.GetIsSmrApplyAllowed(request, new System.Threading.CancellationToken());
+            var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+            return getIsSmrApplyAllowedApi.GetIsSmrApplyAllowed(encryptedRequest, new System.Threading.CancellationToken());
         }
 
         public Task<SummaryDashBoardResponse> GetLinkedSummaryInfoQuery(SummaryDashBordRequest request, System.Threading.CancellationToken token)
         {
-            return summaryDashboardInfoApi.GetLinkedAccountsSummaryInfo(request, token);
+            var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+            return summaryDashboardInfoApi.GetLinkedAccountsSummaryInfo(encryptedRequest, token);
         }
     }
 }

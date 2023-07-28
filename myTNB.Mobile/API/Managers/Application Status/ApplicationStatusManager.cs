@@ -16,6 +16,7 @@ using myTNB.Mobile.API.Models.ApplicationStatus.PostSyncSRApplication;
 using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.API.Services.ApplicationStatus;
+using myTNB.Mobile.Business;
 using myTNB.Mobile.AWS.Managers.DS;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.Extensions;
@@ -251,12 +252,13 @@ namespace myTNB.Mobile
                         StatusCode = statusCode,
                         SrCreatedDate = createdDate
                     };
-
-                    HttpResponseMessage rawResponse = await service.SaveApplication(new PostSaveApplicationRequest
+                    PostSaveApplicationRequest req = new PostSaveApplicationRequest
                     {
                         SaveApplication = request,
                         lang = AppInfoManager.Instance.Language.ToString()
-                    }
+                    };
+                    EncryptedRequest encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(req);
+                    HttpResponseMessage rawResponse = await service.SaveApplication(encryptedRequest
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());
@@ -470,6 +472,8 @@ namespace myTNB.Mobile
         public async Task<ApplicationDetailDisplay> GetApplicationDetail(string savedApplicationID
             , string applicationID
             , string applicationType
+            , string userID
+            , string email
             , string system = "myTNB")
         {
             bool isDSEligible = false;
@@ -508,13 +512,24 @@ namespace myTNB.Mobile
                     || (displaymodel.Content.ContractAccountNo is string accNumber
                     && accNumber.IsValid()))
                 {
-                    if (DSUtility.Instance.IsAccountEligible)
+                    GetEligibilityResponse eligibilityResponse =
+                        await EligibilityManager.Instance.PostEligibility(userID ?? string.Empty
+                        , email ?? string.Empty
+                        , !string.IsNullOrEmpty(displaymodel.Content.ContractAccountNo) ? new List<AWS.ContractAccountModel> { new AWS.ContractAccountModel() { accNum = displaymodel.Content.ContractAccountNo,
+                            BusinessArea = displaymodel.Content.CABusinessArea }  } : null
+                        , new List<AWS.PremiseCriteriaModel> { new AWS.PremiseCriteriaModel() { BusinessArea = displaymodel.Content.CABusinessArea } }
+                        , AppInfoManager.Instance.AccessToken);
+
+                    if (eligibilityResponse.Content != null
+                        && eligibilityResponse.Content.DS != null
+                        && eligibilityResponse.Content.DS.ContractAccounts != null
+                        && eligibilityResponse.Content.DS.ContractAccounts.Count > 0)
                     {
                         Debug.WriteLine("[DEBUG][GetApplicationDetail] Check By BA");
-
                         #region Mitigation Task For myHome & DS
                         // Mitigation Task For myHome & DS
-                        if (applicationType.Contains("NC")
+                        if (!string.IsNullOrEmpty(applicationType)
+                            && applicationType.Contains("NC")
                             && "myTNB_API_Mobile".Equals(displaymodel.Content.ApplicationStatusDetail.Channel, StringComparison.OrdinalIgnoreCase))
                         {
                             isDSEligible = false;
@@ -524,14 +539,14 @@ namespace myTNB.Mobile
                             isDSEligible = true;
                         }
                         #endregion
-                        
-                        //isDSEligible = true;
-                        displaymodel = await GetApplicationDetailV2(savedApplicationID
+                    }
+
+                    //isDSEligible = true;
+                    displaymodel = await GetApplicationDetailV2(savedApplicationID
                            , applicationID
                            , applicationType
                            , isDSEligible
                            , system);
-                    }
                 }
             }
 
@@ -685,8 +700,8 @@ namespace myTNB.Mobile
                         AppId = appID,
                         System = system
                     };
-
-                    HttpResponseMessage rawResponse = await service.RemoveApplication(request
+                    EncryptedRequest encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                    HttpResponseMessage rawResponse = await service.RemoveApplication(encryptedRequest
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());

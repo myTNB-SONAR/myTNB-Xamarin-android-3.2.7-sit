@@ -42,6 +42,8 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
 using myTNB.Mobile;
 using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile.Business;
+using Android.Hardware.Usb;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -134,22 +136,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 this.mView.CheckOnPaperFromBillRendering();
             }
 
-            if (DBRUtility.Instance.IsCAEligible(ca))
-            {
-                this.mView.CheckOnAutoOptIn();
-            }
         }
 
-        //private void ValidateAutoOptInPopUp()
-        //{
-        //    var ca = this.mView.GetSelectedAccount().AccountNum;
-        //    bool dbrHasShown = MarketingPopUpEntity.GetDBRPopUpFlag(ca);
-        //    if (dbrHasShown && DBRUtility.Instance.IsCAEligible(ca))
-        //    {
-        //        this.mView.CheckOnAutoOptIn();
-        //    }
-        //}
-        
         private async Task GetAccountStatus()
         {
             try
@@ -181,13 +169,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     ses_param2 = ""
                 };
 
-                var installDetailsResponse = await installDetailsApi.GetInstallationDetails(new Requests.GetInstallationDetailsRequest()
+                var request = new GetInstallationDetailsRequest()
                 {
                     AccountNumber = this.mView.GetSelectedAccount().AccountNum,
                     IsOwner = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
                     usrInf = currentUsrInf
-                }, cts.Token);
+                };
 
+                var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                var installDetailsResponse = await installDetailsApi.GetInstallationDetails(encryptedRequest, cts.Token);
 
                 if (installDetailsResponse != null && installDetailsResponse.Data != null && installDetailsResponse.Data.ErrorCode == "7200")
                 {
@@ -305,13 +295,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
-                SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(new Requests.SMRAccountActivityInfoRequest()
+                var request = new SMRAccountActivityInfoRequest()
                 {
                     AccountNumber = this.mView.GetSelectedAccount().AccountNum,
                     IsOwnedAccount = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
                     userInterface = currentUsrInf
-                }, cts.Token);
+                };
 
+                var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(encryptedRequest, cts.Token);
 
                 if (SMRAccountActivityInfoResponse != null && SMRAccountActivityInfoResponse.Response != null && SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
                 {
@@ -348,7 +340,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         public async Task LoadUsageHistory()
         {
             ValidateMarketingPopUp();
-            //ValidateAutoOptInPopUp();
 
             await GetAccountStatus();
 
@@ -452,12 +443,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         List<string> accountList = new List<string>();
                         accountList.Add(this.mView.GetSelectedAccount().AccountNum);
 
-                        CheckPendingPaymentsResponse paymentStatusResponse = await paymentStatusApi.GetCheckPendingPayments(new CheckPendingPaymentRequest()
+                        CheckPendingPaymentRequest paymentRequest = new CheckPendingPaymentRequest()
                         {
                             AccountList = accountList,
                             usrInf = currentUsrInf,
                             deviceInf = currentDvdInf
-                        }, cts.Token);
+                        };
+
+                        EncryptedRequest encryptedPaymentRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(paymentRequest);
+                        CheckPendingPaymentsResponse paymentStatusResponse = await paymentStatusApi.GetCheckPendingPayments(encryptedPaymentRequest, cts.Token);
 
                         if (paymentStatusResponse != null && paymentStatusResponse.Data != null && paymentStatusResponse.Data.ErrorCode == "7200")
                         {
@@ -491,13 +485,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 cts = new CancellationTokenSource();
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 
-
-                AccountDueAmountResponse dueResponse = await amountDueApi.GetAccountDueAmount(new Requests.AccountDueAmountRequest()
+                var request = new AccountDueAmountRequest()
                 {
                     AccountNumber = this.mView.GetSelectedAccount().AccountNum,
                     IsOwnedAccount = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
                     usrInf = currentUsrInf
-                }, cts.Token);
+                };
+
+                var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                AccountDueAmountResponse dueResponse = await amountDueApi.GetAccountDueAmount(encryptedRequest, cts.Token);
 
                 if (dueResponse != null && dueResponse.Data != null && dueResponse.Data.ErrorCode != "7200")
                 {
@@ -565,13 +561,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     ses_param2 = ""
                 };
 
-                var usageHistoryResponse = await api.DoQuery(new Requests.UsageHistoryRequest()
+                var request = new Requests.UsageHistoryRequest()
                 {
                     AccountNumber = this.mView.GetSelectedAccount().AccountNum,
                     isOwner = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
                     accountType = this.mView.GetIsREAccount() ? "RE" : "NM",
                     userInterface = currentUsrInf
-                }, cts.Token);
+                };
+
+                var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+                var usageHistoryResponse = await api.DoQuery(encryptedRequest, cts.Token);
 
                 if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
                 {
@@ -681,13 +680,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     ses_param2 = ""
                 };
 
-                var usageHistoryResponse = await api.DoSMQueryV2(new Requests.SMUsageHistoryRequest()
+                var request = new SMUsageHistoryRequest()
                 {
                     AccountNumber = this.mView.GetSelectedAccount().AccountNum,
                     isOwner = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
                     MeterCode = this.mView.GetSelectedAccount().SmartMeterCode,
                     userInterface = currentUsrInf
-                }, cts.Token);
+                };
+
+                var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                var usageHistoryResponse = await api.DoSMQueryV2(encryptedRequest, cts.Token);
 
                 if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
                 {
@@ -1036,11 +1038,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                             List<string> accountList = new List<string>();
                             accountList.Add(accountNumber);
 
-                            AccountSMRStatusResponse accountSMRResponse = await api.AccountsSMRStatusApi(new AccountsSMRStatusRequest()
+                            var request = new AccountsSMRStatusRequest()
                             {
                                 ContractAccounts = accountList,
                                 UserInterface = currentUsrInf
-                            }, new CancellationTokenSource().Token);
+                            };
+
+                            var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+
+                            AccountSMRStatusResponse accountSMRResponse = await api.AccountsSMRStatusApi(encryptedRequest, new CancellationTokenSource().Token);
 
                             List<AccountSMRStatus> updateSMRStatus = new List<AccountSMRStatus>();
                             if (accountSMRResponse.Response.ErrorCode == "7200" && accountSMRResponse.Response.Data.Count > 0)

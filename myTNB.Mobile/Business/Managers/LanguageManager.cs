@@ -336,7 +336,8 @@ namespace myTNB
             MaxAccountList,
             ResidentialRateCategory,
             IsMyHomeMarketingPopupEnable,
-            ForceHidemyHomeBanner
+            ForceHidemyHomeBanner,
+            IsDSNotificationEnable
         }
 
         public Dictionary<string, List<T>> GetSelectorsByPage<T>(string pageName) where T : new()

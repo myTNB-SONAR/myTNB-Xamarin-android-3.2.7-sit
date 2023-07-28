@@ -69,7 +69,12 @@ namespace myTNB_Android.Src.AddAccount.MVP
             /// Show add account failed message
             /// </summary>
             void ShowAddAccountInvalid(string errorMessage);
-            
+
+            /// <summary>
+            /// Show add account number failed message
+            /// </summary>
+            void ShowAddAccountNumberInvalid(string errorMessage);
+
             /// <summary>
             /// Show add account failed message
             /// </summary>

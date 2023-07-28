@@ -21,6 +21,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.MultipleAccountPayment.MVP;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.Utils;
@@ -54,6 +55,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private string preSelectedAccount = null;
         private bool isMinimumAmountTooltipShown = false;
         private string PAGE_ID = "SelectBills";
+        private bool FromFloatingButtonMarketing = false;
 
         RecyclerView.LayoutManager layoutManager;
         SelectAccountListAdapter adapter;
@@ -122,6 +124,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     if (extras.ContainsKey(Constants.FROM_BILL_DETAILS_PAGE))
                     {
                         mPresenter.isFromBillDetails = extras.GetBoolean(Constants.FROM_BILL_DETAILS_PAGE);
+                    }
+
+                    if (Intent.HasExtra("FromFloatingButtonMarketing"))
+                    {
+                        FromFloatingButtonMarketing = Intent.Extras.GetBoolean("FromFloatingButtonMarketing", false);
                     }
                 }
 
@@ -386,6 +393,23 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        public override void OnBackPressed()
+        {
+            base.OnBackPressed();
+            if (FromFloatingButtonMarketing)
+                ShowDashboard();
+            else
+                this.Finish();
+        }
+
+        public void ShowDashboard()
+        {
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(DashboardIntent);
+        }
+
 
         public void IsValidAmount(double amt)
         {

@@ -10,6 +10,7 @@ using myTNB.Mobile.API.Models.FeatureInfo;
 using myTNB.Mobile.API.Services.FeatureInfo;
 using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.Business;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using Refit;
@@ -70,8 +71,8 @@ namespace myTNB.Mobile
                     List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
 
                     //Get AWS EB ca
-                    List <string> ebCAs= EBUtility.Instance.GetCAList();
-                    if (ebCAs != null )
+                    List<string> ebCAs = EBUtility.Instance.GetCAList();
+                    if (ebCAs != null)
                     {
                         foreach (var ca in ebCAs)
                         {
@@ -100,7 +101,8 @@ namespace myTNB.Mobile
                     });
                 }
 
-                if (SDUtility.Instance.IsAccountEligible) {
+                if (SDUtility.Instance.IsAccountEligible)
+                {
 
                     List<FeaturesContractAccount> eligibleCA = new List<FeaturesContractAccount>();
 
@@ -172,7 +174,8 @@ namespace myTNB.Mobile
                         DeviceInf = deviceInfo
                     };
                     Debug.WriteLine("[DEBUG] SaveFeatureInfo Request: " + JsonConvert.SerializeObject(request));
-                    HttpResponseMessage rawResponse = await service.SaveFeatureInfo(request
+                    EncryptedRequest encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                    HttpResponseMessage rawResponse = await service.SaveFeatureInfo(encryptedRequest
                         , AppInfoManager.Instance.GetUserInfo()
                         , API.NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());

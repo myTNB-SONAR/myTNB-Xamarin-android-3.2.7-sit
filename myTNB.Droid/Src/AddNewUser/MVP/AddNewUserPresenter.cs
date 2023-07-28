@@ -79,7 +79,6 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             {
                 AddUserAccessAccountRequest addUserAccessAccountRequest = new AddUserAccessAccountRequest(emailNewUser, accNo, ishaveAccess, ishaveEBilling);
                 addUserAccessAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
-                string dt = JsonConvert.SerializeObject(addUserAccessAccountRequest);
 
                 var AddNewUserAccountResponse = await ServiceApiImpl.Instance.AddUserAcess_OT(addUserAccessAccountRequest);
 

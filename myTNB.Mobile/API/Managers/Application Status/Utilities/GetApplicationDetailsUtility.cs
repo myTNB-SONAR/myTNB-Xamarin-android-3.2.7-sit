@@ -314,10 +314,6 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     {
                         displayModel.Content.ApplicationDetail.IdentificationType = identificationType;
                     }
-                    if (GetObjectValue(props, "referenceNo") is string referenceNo && referenceNo.IsValid())
-                    {
-                        displayModel.Content.ApplicationDetail.ReferenceNo = referenceNo;
-                    }
                     if (GetObjectValue(props, "applicationModuleId") is string applicationModuleId && applicationModuleId.IsValid())
                     {
                         displayModel.Content.ApplicationDetail.ApplicationModuleId = applicationModuleId;
@@ -326,6 +322,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         && GetObjectValue(props, "email") is string email && email.IsValid())
                     {
                         displayModel.Content.ApplicationDetail.Email = email;
+                    }
+                    if (GetObjectValue(props, "referenceNo") is string referenceNo && referenceNo.IsValid())
+                    {
+                        displayModel.Content.ApplicationDetail.ReferenceNo = referenceNo;
                     }
                     bool shouldShowLinkedWith = false;
 

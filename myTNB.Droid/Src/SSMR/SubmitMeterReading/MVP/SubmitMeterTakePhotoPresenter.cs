@@ -44,7 +44,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                         meterImage.ImageData = Utils.ImageUtils.GetBase64FromBitmap(meterImageModel.ImageData, OCR_IMAGE_QUALITY);
 
                         request = new GetMeterReadingOCRValueRequest(contractAccount, meterImage);
-                        ocrSubmitTasks.Add(api.GetMeterReadingOCRValue(request));
+                        var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+                        ocrSubmitTasks.Add(api.GetMeterReadingOCRValue(encryptedRequest));
                     }
                 }
 

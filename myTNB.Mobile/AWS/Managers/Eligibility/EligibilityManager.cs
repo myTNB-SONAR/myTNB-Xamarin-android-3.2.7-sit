@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
-using myTNB.Mobile.AWS.Services.DBR;
+using myTNB.Mobile.AWS.Services.Eligibility;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -45,6 +45,7 @@ namespace myTNB.Mobile
         /// <param name="accessToken">Generated Token</param>
         /// <returns></returns>
         public async Task<GetEligibilityResponse> PostEligibility(string userID
+            , string email
             , List<ContractAccountModel> caList
             , List<PremiseCriteriaModel> baList
             , string accessToken)
@@ -53,17 +54,19 @@ namespace myTNB.Mobile
             GetEligibilityResponse response = new GetEligibilityResponse();
             int maxAccountList = LanguageManager.Instance.GetConfigTimeout(LanguageManager.ConfigPropertyEnum.MaxAccountList);
             maxAccountList = maxAccountList == 0 ? MobileConstants.MaxAccountList : maxAccountList;
-            if (caList != null
+            if ((caList != null
                 && caList.Count <= maxAccountList)
+                || (baList != null
+                && baList.Count > 0))
             {
                 try
                 {
-                    IDBRService service = RestService.For<IDBRService>(AWSConstants.Domains.Domain);
-                    AppInfoManager.Instance.SetAccountList(caList);
+                    IEligibilityService service = RestService.For<IEligibilityService>(AWSConstants.Domains.Domain);
 
                     PostEligibilityRequest request = new PostEligibilityRequest
                     {
                         UserID = userID ?? string.Empty,
+                        Email = email,
                         ContractAccounts = caList,
                         PremiseCriteria = baList
                     };
@@ -71,7 +74,7 @@ namespace myTNB.Mobile
                     Debug.WriteLine("[DEBUG] PostEligibility ViewInfo: " + AppInfoManager.Instance.ViewInfo);
 
                     HttpResponseMessage rawResponse = await service.PostEligibility(request
-                       , NetworkService.GetCancellationToken()
+                       , NetworkService.GetCancellationToken(AWSConstants.DebugTimeOut)
                        , accessToken
                        , AppInfoManager.Instance.ViewInfo);
 
@@ -86,7 +89,7 @@ namespace myTNB.Mobile
                     }
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
-                    
+                    Debug.WriteLine("[DEBUG] PostEligibility responseString: " + responseString);
                     postResponse = JsonConvert.DeserializeObject<PostEligibilityResponse>(responseString);
                     if (postResponse != null
                         && postResponse.Content != null
@@ -284,6 +287,34 @@ namespace myTNB.Mobile
                         }
                         eligibilityResponse.Content.MyHome = baseContent;
                     }
+
+                    if (ds != null && ds.Count > 0)
+                    {
+                        BaseCAListModel baseContent = new BaseCAListModel
+                        {
+                            ContractAccounts = new List<ContractAccountsModel>()
+                        };
+                        for (int i = 0; i < ds.Count; i++)
+                        {
+                            FeatureCAModel item = ds[i];
+                            baseContent.ContractAccounts.Add(new ContractAccountsModel
+                            {
+                                ContractAccount = item.ContractAccount,
+                                Acted = item.Acted,
+                                ModifiedDate = item.ModifiedDate
+                            });
+                        }
+                        eligibilityResponse.Content.DS = baseContent;
+                    }
+                }
+                else if (postEligibilityResponse != null
+                    && postEligibilityResponse.Content != null
+                    && postEligibilityResponse.Content.FeatureBAList != null
+                    && postEligibilityResponse.Content.FeatureBAList.Count > 0
+                    && postEligibilityResponse.Content.FeatureBAList.Any(w => !string.IsNullOrEmpty(w.BusinessArea)))
+                {
+                    List<FeatureCAModel> ds = postEligibilityResponse.Content.FeatureBAList.FindAll(
+                        x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.DS.ToString().ToUpper()).ToList();
 
                     if (ds != null && ds.Count > 0)
                     {
