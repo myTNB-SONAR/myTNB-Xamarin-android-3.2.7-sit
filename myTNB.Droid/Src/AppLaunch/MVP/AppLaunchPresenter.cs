@@ -359,6 +359,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                             if (appUpdateAvailable)
                             {
+                                DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Force.ForceUpdate_DisplayPopUp);
+
                                 DeeplinkUtil.Instance.ClearDeeplinkData();
                                 string modalTitle = responseData.ForceUpdateInfo.ModalTitle;
                                 string modalMessage = responseData.ForceUpdateInfo.ModalBody;

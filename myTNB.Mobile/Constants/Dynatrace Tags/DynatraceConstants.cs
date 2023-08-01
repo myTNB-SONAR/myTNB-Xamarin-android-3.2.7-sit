@@ -214,6 +214,13 @@
 
         public struct AppUpdate
         {
+            public struct Force
+            {
+                public const string ForceUpdate_DisplayPopUp = "App_Action_Display_ForceUpdatePopup";
+                public const string ForceUpdate_ClickUpdate = "App_Action_Click_Update";
+                public const string ForceUpdate_VersionBeforeUpdate = "App_Action_Get_VersionBeforeForceUpdate";
+            }
+
             public struct Recommend
             {
                 public const string RecommendAppUpdate_DisplayPopUp = "App_Action_Display_RecommendAppUpdatePopup";
