@@ -83,7 +83,7 @@ namespace myTNB.Mobile
         public static string OvisWebviewBaseUrlPROD = "https://mytnbappwv.ovis.tnb.com.my";
 
 #if DEBUG
-        public static string ApiDomain = DEV5;
+        public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;
@@ -94,7 +94,7 @@ namespace myTNB.Mobile
 #elif MASTER || SIT || DEBUG
         public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
-        public const string SitecoreURL = SitecoreSIT;
+        public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;
         internal const string PassPhrase = Passphrase_DEV;
         public static string AWSApiDomain = AWSApiDomainSIT;
