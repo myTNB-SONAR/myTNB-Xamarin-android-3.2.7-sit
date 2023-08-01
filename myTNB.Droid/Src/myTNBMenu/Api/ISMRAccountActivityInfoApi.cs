@@ -1,4 +1,5 @@
-﻿using myTNB_Android.Src.myTNBMenu.Models;
+﻿using myTNB.Mobile.Business;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
 using Refit;
 using System.Threading;
@@ -9,7 +10,7 @@ namespace myTNB_Android.Src.myTNBMenu.Api
     public interface ISMRAccountActivityInfoApi
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetSMRAccountActivityInfo")]
-        Task<SMRActivityInfoResponse> GetSMRAccountActivityInfo([Body] SMRAccountActivityInfoRequest request, CancellationToken cancellationToken);
+        [Post("/v7/mytnbws.asmx/GetSMRAccountActivityInfo")]
+        Task<SMRActivityInfoResponse> GetSMRAccountActivityInfo([Body] EncryptedRequest encryptedRequest, CancellationToken cancellationToken);
     }
 }

@@ -24,17 +24,20 @@ namespace myTNB_Android.Src.SSMRTerminate.Api
 
         public Task<CARegisteredContactInfoResponse> GetCARegisteredContactInfo(GetRegisteredContactInfoRequest request)
         {
-            return api.GetRegisteredContactInfo(request, new System.Threading.CancellationToken());
+            var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+            return api.GetRegisteredContactInfo(encryptedRequest, new System.Threading.CancellationToken());
         }
 
         public Task<SMRTerminationReasonsResponse> GetSMRTerminationReasons(GetSMRTerminationReasonsRequest request)
         {
-            return api.GetSMRTerminationReasons(request, new System.Threading.CancellationToken());
+            var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+            return api.GetSMRTerminationReasons(encryptedRequest, new System.Threading.CancellationToken());
         }
 
         public Task<SMRregistrationSubmitResponse> SubmitSMRApplication(SubmitSMRApplicationRequest request)
         {
-            return api.SubmitSMRApplication(request, new System.Threading.CancellationToken());
+            var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+            return api.SubmitSMRApplication(encryptedRequest, new System.Threading.CancellationToken());
         }
     }
 }

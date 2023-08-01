@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using myTNB.Mobile.Business;
 using myTNB_Android.Src.SSMRMeterHistory.Api;
 using myTNB_Android.Src.Utils;
 using Refit;
@@ -21,19 +22,19 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
 #endif
         }
 
-        public Task<CARegisteredContactInfoResponse> GetRegisteredContactInfo([Body] BaseRequest request)
+        public Task<CARegisteredContactInfoResponse> GetRegisteredContactInfo([Body] EncryptedRequest encryptedRequest)
         {
-            return api.GetRegisteredContactInfo(request);
+            return api.GetRegisteredContactInfo(encryptedRequest);
         }
 
-        public Task<SMRregistrationSubmitResponse> SubmitSMRApplication([Body] BaseRequest request)
+        public Task<SMRregistrationSubmitResponse> SubmitSMRApplication([Body] EncryptedRequest encryptedRequest)
         {
-            return api.SubmitSMRApplication(request);
+            return api.SubmitSMRApplication(encryptedRequest);
         }
 
-        public Task<GetAccountsSMREligibilityResponse> GetAccountsSMREligibility([Body] BaseRequest request)
+        public Task<GetAccountsSMREligibilityResponse> GetAccountsSMREligibility([Body] EncryptedRequest encryptedRequest)
         {
-            return api.GetAccountsSMREligibility((GetAccountListSMREligibilityRequest)request);
+            return api.GetAccountsSMREligibility(encryptedRequest);
         }
     }
 }

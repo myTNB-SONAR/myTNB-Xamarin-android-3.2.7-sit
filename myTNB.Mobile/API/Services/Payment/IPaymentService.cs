@@ -1,8 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using myTNB.Mobile.API.Models.Payment.PostApplicationPayment;
-using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
+using myTNB.Mobile.Business;
 using Refit;
 
 namespace myTNB.Mobile.API.Services.Payment
@@ -11,14 +10,14 @@ namespace myTNB.Mobile.API.Services.Payment
     {
         [Headers(new string[] { "Content-Type: application/json" })]
         [Post("/{urlPrefix}/ApplicationPayment")]
-        Task<HttpResponseMessage> ApplicationPayment([Body] PostApplicationPaymentRequest request
+        Task<HttpResponseMessage> ApplicationPayment([Body] EncryptedRequest request
             , CancellationToken cancellationToken
             , [Header(MobileConstants.Header_Lang)] string lang
             , string urlPrefix = MobileConstants.ApiUrlPath);
 
         [Headers(new string[] { "Content-Type: application/json" })]
         [Post("/{urlPrefix}/GetApplicationsPaidDetails")]
-        Task<HttpResponseMessage> GetApplicationsPaidDetails([Body] PostApplicationsPaidDetailsRequest request
+        Task<HttpResponseMessage> GetApplicationsPaidDetails([Body] EncryptedRequest request
             , CancellationToken cancellationToken
             , [Header(MobileConstants.Header_Lang)] string lang
             , string urlPrefix = MobileConstants.ApiUrlPath);

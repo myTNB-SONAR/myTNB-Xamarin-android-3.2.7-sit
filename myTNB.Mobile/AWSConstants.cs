@@ -41,7 +41,7 @@
         //Domains
         public struct Domains
         {
-#if DEBUGx
+#if DEBUG
             internal const string Domain = "https://devapi.mytnb.com.my";
             internal const string GenerateAccessToken = "https://devapi.mytnb.com.my/Identity/api/v1";
             internal const string GetEligibility = "https://devapi.mytnb.com.my/Eligibility/api/v1";
@@ -70,9 +70,6 @@
             internal const string PatchUpdateAutoOptInCa = "https://stagingapi.mytnb.com.my/StagedData/api/v1";
             public struct SSO
             {
-                //public const string DBR = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
-                //public const string MyHome = "https://stagingmyhome.mytnb.com.my/Sso?s={0}";
-
                 public const string DBR = "https://stagingdbr.mytnb.com.my/Sso?s={0}";
                 public const string MyHome = "https://stagingmyhome.mytnb.com.my/Sso?s={0}";
             }
@@ -95,7 +92,7 @@
 #endif
         }
 
-#if DEBUGx
+#if DEBUG
         internal const string Environment = Environment_DEV;
         internal const string XAPIKey = XAPIKey_DEV;
         public const string SaltKey = SaltKey_DEV;

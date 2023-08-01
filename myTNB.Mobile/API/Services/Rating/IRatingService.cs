@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
-using myTNB.Mobile.API.Models.Rating.PostSubmitRating;
+using myTNB.Mobile.Business;
 using Refit;
 
 namespace myTNB.Mobile.API.Services.Rating
@@ -26,7 +26,7 @@ namespace myTNB.Mobile.API.Services.Rating
             , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Post("/{urlPrefix}/SubmitRating")]
-        Task<HttpResponseMessage> SubmitRating([Body] PostSubmitRatingRequest request
+        Task<HttpResponseMessage> SubmitRating([Body] EncryptedRequest request
            , [Header(MobileConstants.Header_UserInfo)] string userInfo
            , CancellationToken cancellationToken
            , [Header(MobileConstants.Header_Lang)] string lang

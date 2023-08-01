@@ -1029,13 +1029,15 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
-                SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(new myTNB_Android.Src.myTNBMenu.Requests.SMRAccountActivityInfoRequest()
+                var request = new myTNBMenu.Requests.SMRAccountActivityInfoRequest()
                 {
                     AccountNumber = customerBillingAccount.AccNum,
                     IsOwnedAccount = customerBillingAccount.isOwned ? "true" : "false",
                     userInterface = currentUsrInf
-                }, cts.Token);
+                };
 
+                var encryptedRequest = APISecurityManager.Instance.GetEncryptedRequest(request);
+                SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(encryptedRequest, cts.Token);
 
                 if (SMRAccountActivityInfoResponse != null && SMRAccountActivityInfoResponse.Response != null && SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
                 {

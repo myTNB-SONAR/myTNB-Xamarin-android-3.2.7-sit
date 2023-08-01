@@ -27,12 +27,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api
 
         public Task<AddUpdateRewardResponse> AddUpdateReward(AddUpdateRewardRequest request, System.Threading.CancellationToken token)
 		{
-			return addUpdateRewardApi.AddUpdateReward(request, token);
+            var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+            return addUpdateRewardApi.AddUpdateReward(encryptedRequest, token);
 		}
 
         public Task<GetUserRewardsResponse> GetUserRewards(GetUserRewardsRequest request, System.Threading.CancellationToken token)
         {
-            return getUserRewardsApi.GetUserRewards(request, token);
+            var encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+            return getUserRewardsApi.GetUserRewards(encryptedRequest, token);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.Graphics;
+using myTNB.Mobile.Business;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
@@ -66,7 +67,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 //mockResponse.Data.ResponseDetailsData = new SMRSubmitResponseDetails();
                 //mockResponse.Data.ResponseDetailsData.SubmitSMRMeterReadingsResp = SubmitSMRMeterReadingsRespList;
                 ////Mock - END
-                SubmitMeterReadingResponse response = await api.SubmitSMRMeetingReading(request);
+                EncryptedRequest encryptedRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(request);
+                SubmitMeterReadingResponse response = await api.SubmitSMRMeetingReading(encryptedRequest);
                 if (response.Data != null && response.Data.ErrorCode == "7200")
                 {
                     this.mView.OnRequestSuccessful(response.Data);
