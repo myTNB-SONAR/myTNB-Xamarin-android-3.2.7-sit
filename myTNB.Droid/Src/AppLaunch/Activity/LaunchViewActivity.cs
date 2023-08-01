@@ -1049,6 +1049,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtDialogTitle, btnUpdateNow);
                 btnUpdateNow.Click += delegate
                 {
+                    var versionNow = new string(DeviceIdUtils.GetAppVersionName().Where(c => !char.IsLetter(c)).ToArray());
+                    DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Force.ForceUpdate_ClickUpdate);
+                    DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Force.ForceUpdate_VersionBeforeUpdate + " " + versionNow);
+
                     OnAppUpdateClick();
                 };
 
