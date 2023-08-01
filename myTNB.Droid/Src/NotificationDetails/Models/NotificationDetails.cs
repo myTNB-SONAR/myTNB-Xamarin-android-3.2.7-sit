@@ -140,7 +140,7 @@ namespace myTNB_Android.Src.NotificationDetails.Models
             public string AppRef { get; set; }
 
             [JsonProperty("identificationType")]
-            public int IdentificationType { get; set; }
+            public int? IdentificationType { get; set; }
 
             [JsonProperty("identificationNo")]
             public string IdentificationNo { get; set; }
