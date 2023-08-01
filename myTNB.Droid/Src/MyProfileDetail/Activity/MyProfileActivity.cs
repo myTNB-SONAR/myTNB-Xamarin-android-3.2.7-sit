@@ -11,6 +11,7 @@ using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
+using myTNB.Mobile.AWS.Managers.DS;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -46,11 +47,14 @@ namespace myTNB_Android.Src.MyAccount.Activity
         [BindView(Resource.Id.profileMenuRootContent)]
         CoordinatorLayout rootView;
 
-        [BindView(Resource.Id.rootView)]
-        LinearLayout profileMenuLinear;
-
         [BindView(Resource.Id.profileMenuItemsContent)]
         LinearLayout profileMenuItemsContent;
+
+        [BindView(Resource.Id.verifiedAccountContent)]
+        LinearLayout verifiedAccountContent;
+
+        [BindView(Resource.Id.verifiedAccountDesc)]
+        TextView verifiedAccountDesc;
 
         ProfileDetailPresenter mPresenter;
         private ProfileMenuItemContentComponent fullName, referenceNumber, email, mobileNumber, password;
@@ -64,7 +68,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         private bool fromEmailVerify = false;
 
-       // private bool fromDashboard = false;
+        // private bool fromDashboard = false;
 
         ISharedPreferences mPref;
 
@@ -96,9 +100,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
 
                 mPref = PreferenceManager.GetDefaultSharedPreferences(this);
-                
+
                 UserEntity user = UserEntity.GetActive();
-                if(string.IsNullOrEmpty(user.IdentificationNo))
+                if (string.IsNullOrEmpty(user.IdentificationNo))
                 {
                     fromIDFlag = true;
                 }
@@ -116,8 +120,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 profileMenuItemsContent.AddView(MyTNBPasswordItem);
 
                 PopulateActiveAccountDetails();
-
-                mPresenter = new ProfileDetailPresenter(this);
+                SetUpViews();
+                mPresenter = new ProfileDetailPresenter(this, this);
+                GetAccountVerifiedStatus();
                 this.userActionsListener.GetID();
                 //this.userActionsListener.Start();
             }
@@ -127,6 +132,25 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
         [Preserve]
+
+        private void SetUpViews()
+        {
+            if (verifiedAccountDesc != null)
+            {
+                TextViewUtils.SetMuseoSans300Typeface(verifiedAccountDesc);
+                TextViewUtils.SetTextSize12(verifiedAccountDesc);
+                verifiedAccountDesc.Text = Utility.GetLocalizedLabel(LanguageConstants.MY_PROFILE, LanguageConstants.MYProfile.VERIFIED_ACCT_MSG);
+            }
+        }
+
+        private void GetAccountVerifiedStatus()
+        {
+            if (DSUtility.Instance.IsAccountEligible)
+            {
+                ShowGetCodeProgressDialog();
+                this.userActionsListener.GetEKYCStatusOnCall();
+            }
+        }
 
         private ProfileDetailItemComponent GetMyTNBAccountItems()
         {
@@ -188,7 +212,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             List<View> passItems = new List<View>();
 
             ProfileMenuItemSingleContentComponent password = new ProfileMenuItemSingleContentComponent(this);
-            password.SetTitle(Utility.GetLocalizedLabel("Tnb_Profile", "passwordchange")); 
+            password.SetTitle(Utility.GetLocalizedLabel("Tnb_Profile", "passwordchange"));
             password.SetItemActionCall(UpdatePassword);
             passItems.Add(password);
 
@@ -220,7 +244,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 {
                     Intent updateICNo = new Intent(this, typeof(UpdateIDActivity));
                     StartActivityForResult(updateICNo, Constants.UPDATE_IC_REQUEST);
-                   
+
                 }
                 catch (System.Exception e)
                 {
@@ -335,13 +359,13 @@ namespace myTNB_Android.Src.MyAccount.Activity
             base.OnBackPressed();
             Finish();
         }
-        
+
 
         private void ShowMobileUpdateSuccess(string newPhone)
         {
             try
             {
-                mobileNumber.SetValue(newPhone); 
+                mobileNumber.SetValue(newPhone);
                 Snackbar updatePhoneSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "mobileNumberVerified"), Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
@@ -362,9 +386,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
 
-        private void ShowPasswordUpdateSuccess() 
+        private void ShowPasswordUpdateSuccess()
         {
-            
+
             try
             {
                 Snackbar updatePassWordBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "passwordUpdateSuccess"), Snackbar.LengthIndefinite)
@@ -463,7 +487,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        
+
 
         private Snackbar mSnackBar;
         public void ShowError(string errorMessage)
@@ -633,7 +657,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
 
             UserEntity user = UserEntity.GetActive();
-            
+
             if (mCodeApiExceptionSnackBar != null && mCodeApiExceptionSnackBar.IsShown)
             {
                 mCodeApiExceptionSnackBar.Dismiss();
@@ -824,6 +848,15 @@ namespace myTNB_Android.Src.MyAccount.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        public void ShowAccountVerified(bool isVerified)
+        {
+            RunOnUiThread(() =>
+            {
+                verifiedAccountContent.Visibility = isVerified ? ViewStates.Visible : ViewStates.Gone;
+                HideGetCodeProgressDialog();
+            });
         }
     }
 }

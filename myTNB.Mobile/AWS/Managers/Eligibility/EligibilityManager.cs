@@ -47,14 +47,17 @@ namespace myTNB.Mobile
         public async Task<GetEligibilityResponse> PostEligibility(string userID
             , string email
             , List<ContractAccountModel> caList
+            , List<PremiseCriteriaModel> baList
             , string accessToken)
         {
             PostEligibilityResponse postResponse = new PostEligibilityResponse();
             GetEligibilityResponse response = new GetEligibilityResponse();
             int maxAccountList = LanguageManager.Instance.GetConfigTimeout(LanguageManager.ConfigPropertyEnum.MaxAccountList);
             maxAccountList = maxAccountList == 0 ? MobileConstants.MaxAccountList : maxAccountList;
-            if (caList != null
+            if ((caList != null
                 && caList.Count <= maxAccountList)
+                || (baList != null
+                && baList.Count > 0))
             {
                 try
                 {
@@ -64,21 +67,17 @@ namespace myTNB.Mobile
                     {
                         UserID = userID ?? string.Empty,
                         Email = email,
-                        ContractAccounts = caList
+                        ContractAccounts = caList,
+                        PremiseCriteria = baList
                     };
                     Debug.WriteLine("[DEBUG] PostEligibility Request: " + JsonConvert.SerializeObject(request));
                     Debug.WriteLine("[DEBUG] PostEligibility ViewInfo: " + AppInfoManager.Instance.ViewInfo);
-#if MASTER || SIT || DEBUG
+
                     HttpResponseMessage rawResponse = await service.PostEligibility(request
                        , NetworkService.GetCancellationToken(AWSConstants.DebugTimeOut)
                        , accessToken
                        , AppInfoManager.Instance.ViewInfo);
-#else
-                HttpResponseMessage rawResponse = await service.PostEligibility(request
-                       , NetworkService.GetCancellationToken()
-                       , accessToken
-                       , AppInfoManager.Instance.ViewInfo);
-#endif
+
                     //Mark: Check for 404 First
                     if ((int)rawResponse.StatusCode != 200)
                     {
@@ -172,6 +171,8 @@ namespace myTNB.Mobile
                         x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.TNG.ToString().ToUpper()).ToList();
                     List<FeatureCAModel> myHome = postEligibilityResponse.Content.FeatureCAList.FindAll(
                         x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.MyHome.ToString().ToUpper()).ToList();
+                    List<FeatureCAModel> ds = postEligibilityResponse.Content.FeatureCAList.FindAll(
+                        x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.DS.ToString().ToUpper()).ToList();
 
                     if (dbr != null && dbr.Count > 0)
                     {
@@ -285,6 +286,54 @@ namespace myTNB.Mobile
                             });
                         }
                         eligibilityResponse.Content.MyHome = baseContent;
+                    }
+
+                    if (ds != null && ds.Count > 0)
+                    {
+                        BaseCAListModel baseContent = new BaseCAListModel
+                        {
+                            ContractAccounts = new List<ContractAccountsModel>()
+                        };
+                        for (int i = 0; i < ds.Count; i++)
+                        {
+                            FeatureCAModel item = ds[i];
+                            baseContent.ContractAccounts.Add(new ContractAccountsModel
+                            {
+                                ContractAccount = item.ContractAccount,
+                                Acted = item.Acted,
+                                ModifiedDate = item.ModifiedDate
+                            });
+                        }
+                        eligibilityResponse.Content.DS = baseContent;
+                    }
+                }
+                else if (postEligibilityResponse != null
+                    && postEligibilityResponse.Content != null
+                    && postEligibilityResponse.Content.FeatureBAList != null
+                    && postEligibilityResponse.Content.FeatureBAList.Count > 0
+                    && postEligibilityResponse.Content.FeatureBAList.Any(w => !string.IsNullOrEmpty(w.BusinessArea)))
+                {
+                    List<FeatureCAModel> ds = postEligibilityResponse.Content.FeatureBAList.FindAll(
+                        x => x.FeatureName.ToUpper() == EligibilitySessionCache.Features.DS.ToString().ToUpper()).ToList();
+
+                    if (ds != null && ds.Count > 0)
+                    {
+                        BaseCAListModel baseContent = new BaseCAListModel
+                        {
+                            ContractAccounts = new List<ContractAccountsModel>()
+                        };
+                        for (int i = 0; i < ds.Count; i++)
+                        {
+                            FeatureCAModel item = ds[i];
+                            baseContent.ContractAccounts.Add(new ContractAccountsModel
+                            {
+                                ContractAccount = item.ContractAccount,
+                                Acted = item.Acted,
+                                ModifiedDate = item.ModifiedDate,
+                                BusinessArea = item.BusinessArea
+                            });
+                        }
+                        eligibilityResponse.Content.DS = baseContent;
                     }
                 }
             }

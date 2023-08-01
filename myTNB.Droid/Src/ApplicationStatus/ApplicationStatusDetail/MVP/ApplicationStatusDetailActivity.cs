@@ -48,6 +48,10 @@ using myTNB.Mobile.Constants;
 using Xamarin.Facebook;
 using static myTNB_Android.Src.myTNBMenu.Models.SMUsageHistoryData;
 
+using myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity;
+using myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP;
+using myTNB_Android.Src.DigitalSignature;
+
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
     [Activity(Label = "Application Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.AppointmentScheduler")]
@@ -322,6 +326,37 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             })
                             .Build();
                         deleteDraftPopUp.Show();
+                    }
+
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.VerifyNow)
+                    {
+                        DSDynamicLinkParamsModel model = new DSDynamicLinkParamsModel();
+
+                        if (applicationDetailDisplay.ApplicationDetail != null)
+                        {
+                            model.IsContractorApplied = applicationDetailDisplay.ApplicationDetail.IsContractorApplied;
+                            model.AppRef = applicationDetailDisplay.ApplicationDetail.ReferenceNo;
+                            model.IdentificationType = applicationDetailDisplay.ApplicationDetail.IdentificationType;
+                            model.IdentificationNo = applicationDetailDisplay.ApplicationDetail.IdentificationNo;
+                            model.ApplicationModuleID = applicationDetailDisplay.ApplicationDetail.ApplicationModuleId;
+                            model.Email = applicationDetailDisplay.ApplicationDetail.Email;
+                        }
+
+                        Intent ekycVerificationIntent = new Intent(this, typeof(DSIdentityVerificationActivity));
+                        ekycVerificationIntent.PutExtra(DigitalSignatureConstants.DS_DYNAMIC_LINK_PARAMS_MODEL, JsonConvert.SerializeObject(model));
+                        StartActivity(ekycVerificationIntent);
+                    }
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.SignApplication)
+                    {
+                        string url = applicationDetailDisplay.ApplicationDetail.SignApplicationURL;
+                        if (url.IsValid())
+                        {
+                            Intent intent = new Intent(Intent.ActionView);
+                            intent.SetData(Android.Net.Uri.Parse(url));
+                            StartActivity(intent);
+
+                            DynatraceHelper.OnTrack(DynatraceConstants.DS.CTAs.Application.Acknowledge_Now);
+                        }
                     }
                 }
             }
@@ -1242,6 +1277,20 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
                                 DynatraceHelper.OnTrack(DynatraceConstants.ApplicationStatus.Screens.Details.NC_Rate_Our_Service);
                             }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.VerifyNow)
+                            {
+                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+                                btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "verifyNowCTA");
+                            }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.SignApplication)
+                            {
+                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+                                btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "signApplicationCTA");
+                            }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.None)
                             {
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
@@ -1302,6 +1351,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     , btnPrimaryCTA, btnApplicationStatusViewBill, btnApplicationStatusPay);
                 TextViewUtils.SetTextSize25(txtApplicationStatusBottomPayable);
             }
+
+            DynatraceHelper.OnTrack(DynatraceConstants.DS.Screens.Application.Acknowledgement_Required);
         }
 
         private void EvaluateReceipts()
@@ -1382,7 +1433,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
             if (applicationDetailDisplay != null && applicationDetailDisplay.TutorialType != null)
             {
-                if (!UserSessions.HasApplicationDetailShown(PreferenceManager.GetDefaultSharedPreferences(this)))//STUB
+                if (!UserSessions.HasApplicationDetailShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                 {
                     Handler h = new Handler();
                     Action myAction = () =>
@@ -1578,6 +1629,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(string.Empty
                         , applicationDetailDisplay.LinkedWithDisplay.ID
                         , applicationDetailDisplay.LinkedWithDisplay.Type
+                        , UserEntity.GetActive().UserID ?? string.Empty
+                        , UserEntity.GetActive().Email ?? string.Empty
                         , applicationDetailDisplay.LinkedWithDisplay.System);
                     HideProgressDialog();
                     if (response.StatusDetail.IsSuccess)
@@ -1800,6 +1853,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(applicationDetailDisplay.SavedApplicationID
                 , applicationDetailDisplay.ApplicationDetail.ApplicationId
                 , applicationDetailDisplay.ApplicationTypeCode
+                , UserEntity.GetActive().UserID ?? string.Empty
+                , UserEntity.GetActive().Email ?? string.Empty
                 , applicationDetailDisplay.System);
 
             this.RunOnUiThread(() =>

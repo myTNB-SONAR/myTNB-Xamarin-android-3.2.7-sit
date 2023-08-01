@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using Android.Util;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MultipleAccountPayment.Models;
-using myTNB_Android.Src.ManageCards.Models;
-using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
+using System.Threading.Tasks;
+using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.Base.Activity;
+using myTNB.Mobile;
+using myTNB.Mobile.AWS.Models.DS.Status;
+using myTNB.Mobile.AWS.Managers.DS;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Base;
 using Newtonsoft.Json;
@@ -21,10 +20,12 @@ namespace myTNB_Android.Src.MyProfileDetail.MVP
     {
         private ProfileDetailContract.IView mView;
         private readonly string TAG = typeof(ProfileDetailPresenter).Name;
+        private BaseAppCompatActivity mActivity;
 
-        public ProfileDetailPresenter(ProfileDetailContract.IView mView)
+        public ProfileDetailPresenter(ProfileDetailContract.IView mView, BaseAppCompatActivity activity)
         {
             this.mView = mView;
+            this.mActivity = activity;
             this.mView.SetPresenter(this);
         }
 
@@ -160,6 +161,38 @@ namespace myTNB_Android.Src.MyProfileDetail.MVP
                 // UNKNOWN EXCEPTION
                 this.mView.ShowRetryOptionsCodeUnknownException(e);
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void GetEKYCStatusOnCall()
+        {
+            Task.Run(() =>
+            {
+                _ = GetEKYCStatus();
+            });
+        }
+
+        private async Task GetEKYCStatus()
+        {
+            string userId = UserEntity.GetActive().UserID ?? string.Empty;
+
+            if (!AccessTokenCache.Instance.HasTokenSaved(this.mActivity))
+            {
+                string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(userId);
+                AccessTokenCache.Instance.SaveAccessToken(this.mActivity, accessToken);
+            }
+
+            GetEKYCStatusResponse eKYCStatusResponse = await DSManager.Instance.GetEKYCStatus(userId, AccessTokenCache.Instance.GetAccessToken(this.mActivity));
+            if (eKYCStatusResponse != null &&
+                eKYCStatusResponse.StatusDetail != null &&
+                eKYCStatusResponse.StatusDetail.IsSuccess &&
+                eKYCStatusResponse.Content != null)
+            {
+                this.mView.ShowAccountVerified(eKYCStatusResponse.Content.IsVerified);
+            }
+            else
+            {
+                this.mView.ShowAccountVerified(false);
             }
         }
     }

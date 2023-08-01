@@ -8,6 +8,9 @@ using Android.Graphics;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
 using myTNB;
+using Android.Text.Style;
+using System.Text.RegularExpressions;
+using myTNB.Mobile.Constants.DS;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -28,6 +31,9 @@ namespace myTNB_Android.Src.Utils
             MYTNB_DIALOG_IMAGE_BUTTON,
             MYTNB_DIALOG_IMAGE_BUTTON_WITH_HEADER,
             MYTNB_DIALOG_IMAGE_ONE_BUTTON,
+            MYTNB_DIALOG_ICON_ONE_BUTTON,
+            MYTNB_DIALOG_ICON_TWO_BUTTON,
+            MYTNB_DIALOG_ICON_DROPDOWN_TWO_BUTTON
         }
 
         private ToolTipType toolTipType;
@@ -36,7 +42,9 @@ namespace myTNB_Android.Src.Utils
         private string headertitle;
         private string title;
         private string subtitle;
+        private string dropdownTitle;
         private string message;
+        private string dropdownMessage;
         private string ctaLabel;
         private string secondaryCTALabel;
         private string CheckboxTitle;
@@ -110,6 +118,18 @@ namespace myTNB_Android.Src.Utils
             else if (mToolTipType == ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
             {
                 layoutResource = Resource.Layout.MyTNBDialogWithImageAndButton;
+            }
+            else if (mToolTipType == ToolTipType.MYTNB_DIALOG_ICON_TWO_BUTTON)
+            {
+                layoutResource = Resource.Layout.MyTNBDialogWithIconAndTwoButtons;
+            }
+            else if (mToolTipType == ToolTipType.MYTNB_DIALOG_ICON_ONE_BUTTON)
+            {
+                layoutResource = Resource.Layout.MyTNBDialogWithIconAndOneButton;
+            }
+            else if (mToolTipType == ToolTipType.MYTNB_DIALOG_ICON_DROPDOWN_TWO_BUTTON)
+            {
+                layoutResource = Resource.Layout.MyTNBDialogWithIconDropdownAndTwoButtons;
             }
             else if (mToolTipType == ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON_WITH_HEADER)
             {
@@ -186,12 +206,24 @@ namespace myTNB_Android.Src.Utils
             return this;
         }
 
+        public MyTNBAppToolTipBuilder SetDropdownTitle(string dropdownTitle)
+        {
+            this.dropdownTitle = dropdownTitle;
+            return this;
+        }
+
         public MyTNBAppToolTipBuilder SetMessage(string message, Color? color = null, Typeface? typeface = null)
         {
             this.message = message;
 
             this.mClickSpanColor = color ?? new Android.Graphics.Color(ContextCompat.GetColor(mContext, Resource.Color.powerBlue));
             this.mTypeface = typeface ?? Typeface.CreateFromAsset(mContext.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetDropdownMessage(string dropdownMessage)
+        {
+            this.dropdownMessage = dropdownMessage;
             return this;
         }
 
@@ -856,6 +888,231 @@ namespace myTNB_Android.Src.Utils
 
                 tooltipPrimaryCTA.Text = this.ctaLabel;
                 tooltipSecondaryCTA.Text = this.secondaryCTALabel;
+            }
+            else if (this.toolTipType == ToolTipType.MYTNB_DIALOG_ICON_TWO_BUTTON)
+            {
+                ImageView tooltipImageHeader = this.dialog.FindViewById<ImageView>(Resource.Id.dialogHeaderImg);
+                TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.dialogTitle);
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.dialogMessage);
+                TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
+                TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
+
+                TextViewUtils.SetTextSize12(tooltipMessage);
+                TextViewUtils.SetTextSize14(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage, tooltipPrimaryCTA);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipSecondaryCTA);
+
+                tooltipTitle.Gravity = GravityFlags.Center;
+                tooltipMessage.Gravity = GravityFlags.Center;
+
+                if (this.imageResourceBitmap != null)
+                {
+                    tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
+                }
+                else if (this.imageResource > 0)
+                {
+                    tooltipImageHeader.SetImageResource(this.imageResource);
+                }
+                else
+                {
+                    tooltipImageHeader.Visibility = ViewStates.Gone;
+                }
+
+                tooltipPrimaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    this.ctaAction?.Invoke();
+                };
+
+                tooltipSecondaryCTA.Visibility = this.secondaryCTALabel.IsValid() ? ViewStates.Visible : ViewStates.Gone;
+
+                if (this.secondaryCTALabel.IsValid())
+                {
+                    tooltipSecondaryCTA.Click += delegate
+                    {
+                        this.dialog.Dismiss();
+                        if (secondaryCTAAction != null)
+                        {
+                            this.secondaryCTAAction();
+                        }
+                    };
+                }
+
+                tooltipTitle.Text = this.title;
+
+                try
+                {
+                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                tooltipPrimaryCTA.Text = this.ctaLabel;
+                tooltipSecondaryCTA.Text = this.secondaryCTALabel;
+            }
+            else if (this.toolTipType == ToolTipType.MYTNB_DIALOG_ICON_ONE_BUTTON)
+            {
+                ImageView tooltipImageHeader = this.dialog.FindViewById<ImageView>(Resource.Id.dialogHeaderImg);
+                TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.dialogTitle);
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.dialogMessage);
+                TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
+
+                TextViewUtils.SetTextSize12(tooltipMessage);
+                TextViewUtils.SetTextSize14(tooltipTitle, tooltipPrimaryCTA);
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA);
+
+                tooltipTitle.Gravity = GravityFlags.Center;
+                tooltipMessage.Gravity = GravityFlags.Center;
+
+                if (this.imageResourceBitmap != null)
+                {
+                    tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
+                }
+                else if (this.imageResource > 0)
+                {
+                    tooltipImageHeader.SetImageResource(this.imageResource);
+                }
+                else
+                {
+                    tooltipImageHeader.Visibility = ViewStates.Gone;
+                }
+
+                tooltipPrimaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    this.ctaAction?.Invoke();
+                };
+
+                tooltipTitle.Text = this.title;
+
+                try
+                {
+                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                tooltipPrimaryCTA.Text = this.ctaLabel;
+            }
+            else if (this.toolTipType == ToolTipType.MYTNB_DIALOG_ICON_DROPDOWN_TWO_BUTTON)
+            {
+                ImageView tooltipImageHeader = this.dialog.FindViewById<ImageView>(Resource.Id.dialogHeaderImg);
+                TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.dialogTitle);
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.dialogMessage);
+                TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
+                TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
+                LinearLayout dropdownContentLayout = this.dialog.FindViewById<LinearLayout>(Resource.Id.dropdownContentLayout);
+                TextView tooltipDropdownTitle = this.dialog.FindViewById<TextView>(Resource.Id.dialogDropdownTitle);
+                TextView tooltipDropdownMessage = this.dialog.FindViewById<TextView>(Resource.Id.dialogDropdownMessage);
+
+                TextViewUtils.SetTextSize12(tooltipMessage, tooltipDropdownTitle, tooltipDropdownMessage);
+                TextViewUtils.SetTextSize14(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage, tooltipPrimaryCTA, tooltipDropdownTitle, tooltipDropdownMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipSecondaryCTA);
+
+                tooltipTitle.Gravity = GravityFlags.Center;
+                tooltipMessage.Gravity = GravityFlags.Center;
+                tooltipDropdownTitle.Gravity = GravityFlags.Center;
+                tooltipDropdownMessage.Gravity = GravityFlags.Center;
+
+                tooltipDropdownMessage.Visibility = ViewStates.Gone;
+
+                if (this.imageResourceBitmap != null)
+                {
+                    tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
+                }
+                else if (this.imageResource > 0)
+                {
+                    tooltipImageHeader.SetImageResource(this.imageResource);
+                }
+                else
+                {
+                    tooltipImageHeader.Visibility = ViewStates.Gone;
+                }
+
+                tooltipPrimaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    this.ctaAction?.Invoke();
+                };
+
+                tooltipSecondaryCTA.Visibility = this.secondaryCTALabel.IsValid() ? ViewStates.Visible : ViewStates.Gone;
+
+                if (this.secondaryCTALabel.IsValid())
+                {
+                    tooltipSecondaryCTA.Click += delegate
+                    {
+                        this.dialog.Dismiss();
+                        if (secondaryCTAAction != null)
+                        {
+                            this.secondaryCTAAction();
+                        }
+                    };
+                }
+
+                tooltipTitle.Text = this.title;
+                tooltipPrimaryCTA.Text = this.ctaLabel;
+                tooltipSecondaryCTA.Text = this.secondaryCTALabel;
+
+                string dropdownTitleBase = Regex.Replace(this.dropdownTitle, DSConstants.DropDown, string.Empty);
+
+                try
+                {
+                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                        tooltipDropdownTitle.TextFormatted = Html.FromHtml(this.dropdownTitle, FromHtmlOptions.ModeLegacy);
+                        tooltipDropdownMessage.TextFormatted = Html.FromHtml(this.dropdownMessage, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                        tooltipDropdownTitle.TextFormatted = Html.FromHtml(this.dropdownTitle);
+                        tooltipDropdownMessage.TextFormatted = Html.FromHtml(this.dropdownMessage);
+                    }
+
+                    ImageSpan imageSpan = new ImageSpan(this.mContext, Resource.Drawable.Icon_DS_Dropdown_Expand, SpanAlign.Bottom);
+                    SpannableString imageString = new SpannableString(tooltipDropdownTitle.TextFormatted);
+
+                    imageString.SetSpan(imageSpan, dropdownTitleBase.Length, this.dropdownTitle.Length, SpanTypes.ExclusiveExclusive);
+                    tooltipDropdownTitle.TextFormatted = imageString;
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                var expanded = false;
+                tooltipDropdownTitle.Click += delegate
+                {
+                    expanded = !expanded;
+                    tooltipDropdownMessage.Visibility = expanded ? ViewStates.Visible : ViewStates.Gone;
+
+                    ImageSpan imageSpan = new ImageSpan(this.mContext, expanded ? Resource.Drawable.Icon_DS_Dropdown_Collapse : Resource.Drawable.Icon_DS_Dropdown_Expand, SpanAlign.Bottom);
+                    SpannableString imageString = new SpannableString(tooltipDropdownTitle.TextFormatted);
+
+                    imageString.SetSpan(imageSpan, dropdownTitleBase.Length, this.dropdownTitle.Length, SpanTypes.ExclusiveExclusive);
+                    tooltipDropdownTitle.TextFormatted = imageString;
+                };
             }
             else if (this.toolTipType == ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON_WITH_HEADER)
             {

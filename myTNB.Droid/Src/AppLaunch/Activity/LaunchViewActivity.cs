@@ -153,7 +153,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                     : string.Empty;
                                 UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
                             }
-                            else if (notifType.ToUpper() == "DBROWNER")
+                            else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.DBR_Owner)
                             {
                                 string accountNumber = Intent.Extras.GetString("AccountNumber");
                                 UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
@@ -390,6 +390,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 ApplicationDetailDisplay detailResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(notificationObj.SaveApplicationID
                     , notificationObj.ApplicationID
                     , notificationObj.ApplicationType
+                    , UserEntity.GetActive().UserID ?? string.Empty
+                    , UserEntity.GetActive().Email ?? string.Empty
                     , notificationObj.System);
 
                 if (detailResponse.StatusDetail.IsSuccess)
@@ -1277,6 +1279,54 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
+        public void RenderAppLaunchImage(AppLaunchModel item)
+        {
+            try
+            {
+                int secondMilli = 0;
+                try
+                {
+                    secondMilli = (int)(float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000);
+                }
+                catch (Exception nea)
+                {
+                    Utility.LoggingNonFatalError(nea);
+                }
+
+                if (secondMilli == 0)
+                {
+                    try
+                    {
+                        secondMilli = Int32.Parse(item.ShowForSeconds) * 1000;
+                    }
+                    catch (Exception nea)
+                    {
+                        Utility.LoggingNonFatalError(nea);
+                    }
+                }
+
+                var bitmapDrawable = new BitmapDrawable(item.ImageBitmap);
+                RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        this.Window.SetBackgroundDrawable(bitmapDrawable);
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+
+                this.userActionsListener.OnWaitSplashScreenDisplay(secondMilli);
+            }
+            catch (Exception ne)
+            {
+                SetDefaultAppLaunchImage();
+                Utility.LoggingNonFatalError(ne);
+            }
+        }
+
         public void SetCustomAppLaunchImage(AppLaunchModel item)
         {
             try
@@ -1296,50 +1346,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             int endResult = DateTime.Compare(nowDateTime, stopDateTime);
                             if (startResult >= 0 && endResult <= 0)
                             {
-                                try
-                                {
-                                    int secondMilli = 0;
-                                    try
-                                    {
-                                        secondMilli = (int)(float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000);
-                                    }
-                                    catch (Exception nea)
-                                    {
-                                        Utility.LoggingNonFatalError(nea);
-                                    }
-
-                                    if (secondMilli == 0)
-                                    {
-                                        try
-                                        {
-                                            secondMilli = Int32.Parse(item.ShowForSeconds) * 1000;
-                                        }
-                                        catch (Exception nea)
-                                        {
-                                            Utility.LoggingNonFatalError(nea);
-                                        }
-                                    }
-
-                                    var bitmapDrawable = new BitmapDrawable(item.ImageBitmap);
-                                    RunOnUiThread(() =>
-                                    {
-                                        try
-                                        {
-                                            this.Window.SetBackgroundDrawable(bitmapDrawable);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            Utility.LoggingNonFatalError(ex);
-                                        }
-                                    });
-
-                                    this.userActionsListener.OnWaitSplashScreenDisplay(secondMilli);
-                                }
-                                catch (Exception ne)
-                                {
-                                    SetDefaultAppLaunchImage();
-                                    Utility.LoggingNonFatalError(ne);
-                                }
+                                this.userActionsListener.OnDownloadPhoto(item);
                             }
                             else
                             {

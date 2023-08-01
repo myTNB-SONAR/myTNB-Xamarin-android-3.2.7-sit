@@ -342,7 +342,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     alreadyStarted = true;
                 }
             }
-
+           
             // if (extras != null && extras.ContainsKey("urlSchemaData"))
             // {
             //     urlSchemaCalled = true;

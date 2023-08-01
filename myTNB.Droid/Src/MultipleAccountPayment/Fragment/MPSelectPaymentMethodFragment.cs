@@ -33,6 +33,7 @@ using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.Common.Model;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB.Mobile.AWS.Models.DBR;

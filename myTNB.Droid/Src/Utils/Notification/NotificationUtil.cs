@@ -64,6 +64,18 @@ namespace myTNB_Android.Src.Utils.Notification
                     case NotificationTypes.MyHome.MYHOME_NC_OTP_VERIFY:
                         Type = Type.NCOTPVerify;
                         break;
+                    case NotificationTypes.DS.EKYCFIRSTNOTIFICATION:
+                    case NotificationTypes.DS.EKYCSECONDNOTIFICATION:
+                    case NotificationTypes.DS.EKYCSUCCESSFUL:
+                    case NotificationTypes.DS.EKYCFAILED:
+                    case NotificationTypes.DS.EKYCTHREETIMESFAILURE:
+                    case NotificationTypes.DS.EKYCIDNOTMATCHING:
+                    case NotificationTypes.DS.EKYCTHIRDPARTYFAILED:
+                    case NotificationTypes.DS.EKYCTHIRDPARTYTHREETIMESFAILURE:
+                    case NotificationTypes.DS.EKYCTHIRDPARTYSUCCESSFUL:
+                    case NotificationTypes.DS.EKYCTHIRDPARTYIDNOTMATCHING:
+                        Type = Type.EKYC;
+                        break;
                     default:
                         break;
                 }

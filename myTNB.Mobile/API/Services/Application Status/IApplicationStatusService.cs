@@ -80,10 +80,11 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , string urlPrefix = MobileConstants.ApiUrlPath
            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
-        [Get("/{urlPrefix}/ApplicationDetail?lang={language}&applicationType={applicationType}&searchTerm={searchTerm}&system={system}")]
+        [Get("/{urlPrefix}/ApplicationDetailV2?lang={language}&applicationType={applicationType}&searchTerm={searchTerm}&system={system}&isDSEligible={isDSEligible}")]
         Task<HttpResponseMessage> GetApplicationDetail(string applicationType
             , string searchTerm
             , string system
+            , bool isDSEligible
             , [Header(MobileConstants.Header_UserInfo)] string userInfo
             , CancellationToken cancellationToken
             , string language

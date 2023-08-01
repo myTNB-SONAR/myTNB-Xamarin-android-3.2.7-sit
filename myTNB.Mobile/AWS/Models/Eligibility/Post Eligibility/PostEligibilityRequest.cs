@@ -11,6 +11,8 @@ namespace myTNB.Mobile.AWS
         public string Email { set; get; }
         [JsonProperty("contractAccounts")]
         public List<ContractAccountModel> ContractAccounts { set; get; }
+        [JsonProperty("premiseCriteria")]
+        public List<PremiseCriteriaModel> PremiseCriteria { set; get; }
     }
 
     public class ContractAccountModel
@@ -37,5 +39,13 @@ namespace myTNB.Mobile.AWS
         public bool IsHaveAccess { set; get; }
         public string BusinessArea { set; get; }
         public string RateCategory { set; get; }
+    }
+
+    public class PremiseCriteriaModel
+    {
+        public bool IsOwner { set; get; }
+        public string RateCategory { set; get; }
+        public string SmartMeterCode { set; get; }
+        public string BusinessArea { set; get; }
     }
 }

@@ -595,7 +595,7 @@ namespace myTNB_Android.Src.Utils
                         isMDMSEnable = true; //energy budget is not down
                     }
                 }
-                
+
             }
 
             return isMDMSEnable;

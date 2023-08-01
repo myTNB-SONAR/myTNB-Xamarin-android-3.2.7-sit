@@ -594,7 +594,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         internal static readonly int SELECT_SM_ACCOUNT_REQUEST_CODE = 8809;
 
-
         private SMRActivityInfoResponse smrResponse;
 
         private AccountDueAmountResponse amountDueResponse;
@@ -1908,7 +1907,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
                         rmKwhLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.silverChalice)));
                         imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle_disable);
-                        if (isEBUser) //checking if eb down or not
+                        if (isEBUser)
                         {
                             energyBudgetMDMSContainer.Visibility = ViewStates.Visible;
                         }
@@ -8770,7 +8769,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         SetVirtualHeightParams(8f);
                                         DashboardCustomScrolling(0);
                                         energyBudgetMDMSContainer.Visibility = ViewStates.Visible;
-                                    }                                    /*else if (energyBudgetMDMSContainer.Visibility == ViewStates.Visible)
+                                    }
+                                    /*else if (energyBudgetMDMSContainer.Visibility == ViewStates.Visible)
                                     {
                                         rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
                                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
@@ -9793,7 +9793,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         energyBudgetMDMSContainer.Visibility = ViewStates.Visible;
                     }
                 }
-
             }
             else
             {

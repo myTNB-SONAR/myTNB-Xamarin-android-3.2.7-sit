@@ -133,6 +133,14 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                                     {
                                         displayModel.Content.IsOwnApplication = isOwnApplication;
                                     }
+                                    if (GetObjectValue(props, "contractAccountNo") is string contractAccountNo && contractAccountNo.IsValid())
+                                    {
+                                        displayModel.Content.ContractAccountNo = contractAccountNo;
+                                    }
+                                    if (GetObjectValue(props, "businessArea") is string businessArea && businessArea.IsValid())
+                                    {
+                                        displayModel.Content.CABusinessArea = businessArea;
+                                    }
                                 }
                             }
                         }
@@ -286,9 +294,34 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     {
                         displayModel.Content.PremisesAddress = premiseAddress;
                     }
+                    if (GetObjectValue(props, "signApplicationURL") is string signApplicationURL && signApplicationURL.IsValid())
+                    {
+                        displayModel.Content.ApplicationDetail.SignApplicationURL = signApplicationURL;
+                    }
+                    if (GetObjectValue(props, "isVerifyNow") is bool isVerifyNow)
+                    {
+                        displayModel.Content.ApplicationDetail.IsVerifyNow = isVerifyNow;
+                    }
+                    if (GetObjectValue(props, "isContractorApplied") is bool isContractorApplied)
+                    {
+                        displayModel.Content.ApplicationDetail.IsContractorApplied = isContractorApplied;
+                    }
+                    if (GetObjectValue(props, "identificationNo") is string identificationNo && identificationNo.IsValid())
+                    {
+                        displayModel.Content.ApplicationDetail.IdentificationNo = identificationNo;
+                    }
+                    if (GetObjectValue(props, "identificationType") is int identificationType)
+                    {
+                        displayModel.Content.ApplicationDetail.IdentificationType = identificationType;
+                    }
                     if (GetObjectValue(props, "applicationModuleId") is string applicationModuleId && applicationModuleId.IsValid())
                     {
                         displayModel.Content.ApplicationDetail.ApplicationModuleId = applicationModuleId;
+                    }
+                    if (!displayModel.Content.ApplicationDetail.Email.IsValid()
+                        && GetObjectValue(props, "email") is string email && email.IsValid())
+                    {
+                        displayModel.Content.ApplicationDetail.Email = email;
                     }
                     if (GetObjectValue(props, "referenceNo") is string referenceNo && referenceNo.IsValid())
                     {

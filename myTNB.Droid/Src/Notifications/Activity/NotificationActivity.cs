@@ -28,6 +28,7 @@ using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile;
+using myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity;
 
 namespace myTNB_Android.Src.Notifications.Activity
 {
@@ -488,8 +489,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationRecyclerAdapter = new NotificationRecyclerAdapter(this, this, true);
             notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
             notificationSwipeDelete = new NotificationSwipeDeleteCallback(this, GetDrawable(Resource.Drawable.notification_delete_active), GetDrawable(Resource.Drawable.ic_header_markread));
-			notificationSwipeDelete.SetInitialState();
-			itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
+            notificationSwipeDelete.SetInitialState();
+            itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
             itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
         }
 
@@ -660,7 +661,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
 
             mCancelledErrorSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate 
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
                 mCancelledErrorSnackBar.Dismiss();
             }
@@ -800,12 +801,35 @@ namespace myTNB_Android.Src.Notifications.Activity
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details, UserNotificationData notificationData, int position)
         {
             DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Landing.View_Notification_Detail);
-
-            Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
-            notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_LIST_ITEM, JsonConvert.SerializeObject(notificationData));
-            notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
-            notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
-            StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+            switch (details.BCRMNotificationTypeId)
+            {
+                case Constants.BCRM_NOTIFICATION_EKYC_ID_NOT_MATCHING:
+                case Constants.BCRM_NOTIFICATION_EKYC_FAILED:
+                case Constants.BCRM_NOTIFICATION_EKYC_THREE_TIMES_FAILURE:
+                case Constants.BCRM_NOTIFICATION_EKYC_SUCCESSFUL:
+                case Constants.BCRM_NOTIFICATION_EKYC_FIRST_NOTIFICATION:
+                case Constants.BCRM_NOTIFICATION_EKYC_SECOND_NOTIFICATION:
+                case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_FAILED:
+                case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_THREE_TIMES_FAILURE:
+                case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_SUCCESSFUL:
+                case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_ID_NO_TMATCHING:
+                    {
+                        Intent notificationDetails = new Intent(this, typeof(DSNotificationDetailsActivity));
+                        notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+                        notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
+                        StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+                    }
+                    break;
+                default:
+                    {
+                        Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
+                        notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_LIST_ITEM, JsonConvert.SerializeObject(notificationData));
+                        notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+                        notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
+                        StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+                    }
+                    break;
+            }
         }
 
         public void ShowQueryProgress()
@@ -866,7 +890,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
             else
             {
-				UpdatedSelectedNotifications();
+                UpdatedSelectedNotifications();
             }
         }
 
@@ -933,7 +957,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             selectedNotification = notificationPos;
             notificationRecyclerAdapter.GetItemObject(selectedNotification).IsSelected = true;
             this.mPresenter.DeleteAllSelectedNotifications();
-		}
+        }
 
         public void ReadNotificationByPosition(int notificationPos)
         {
@@ -943,7 +967,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         }
 
         public void UpdatedSelectedNotifications()
-		{
+        {
             if (editState == EditNotificationStates.SHOW)
             {
                 int selectedCount = GetSelectedNotificationCount();
@@ -990,14 +1014,14 @@ namespace myTNB_Android.Src.Notifications.Activity
         }
 
         public void ShowNotificationDetails(int itemPosition)
-		{
+        {
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
                 UserNotificationData userNotificationData = notificationRecyclerAdapter.GetAllNotifications()[itemPosition];
                 mPresenter.OnShowNotificationDetails(userNotificationData, itemPosition);
             }
-		}
+        }
 
         public void ShowEditMode()
         {

@@ -26,7 +26,8 @@ namespace myTNB.Mobile
             BR,
             SD,
             TNG,
-            MyHome
+            MyHome,
+            DS
             //Add Other Features
         }
 

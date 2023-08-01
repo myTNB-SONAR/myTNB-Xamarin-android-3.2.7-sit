@@ -29,6 +29,7 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.MyHome;
@@ -823,6 +824,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(application.SavedApplicationId
                 , application.ApplicationId
                 , application.ApplicationType
+                , UserEntity.GetActive().UserID ?? string.Empty
+                , UserEntity.GetActive().Email ?? string.Empty
                 , application.System);
 
             this.RunOnUiThread(() =>
@@ -835,6 +838,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 }
                 else
                 {
+                    this.SetIsClicked(false);
                     ShowApplicationPopupMessage(this, response.StatusDetail);
                 }
                 HideProgressDialog();

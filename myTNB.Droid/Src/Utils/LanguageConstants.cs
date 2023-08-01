@@ -18,6 +18,7 @@
         internal static readonly string DBR_WEBVIEW = "DBRWebview";
         internal static readonly string USAGE = "Usage";
         internal static readonly string MANAGE_DIGITAL_BILL = "ManageDigitalBillLanding";
+        internal static readonly string MY_PROFILE = "Tnb_Profile";
 
         internal struct Common
         {
@@ -177,6 +178,10 @@
             internal static readonly string NOTIF_TITLE_DEFAULT = "notification";
             internal static readonly string NOTIF_TITLE_ENERGY_BUDGET = "EnergyBudgetTitle";
             internal static readonly string NOTIF_TITLE_SRVC_DISTRUPTION = "serviceDistruption";
+            internal static readonly string NOTIF_TITLE_DIGITAL_SIGNATURE = "digitalSignature";
+            internal static readonly string VERIFY_NOW = "verifyNow";
+            internal static readonly string SET_APPOINTMENT_NOW = "setAppointmentNow";
+            internal static readonly string SET_APPOINTMENT_URL = "setAppointmentURL";
         }
 
         internal struct DBRWebview
@@ -216,6 +221,11 @@
             internal static readonly string DBR_INFO_DESC_2 = "dbrInfoDescription2";
             internal static readonly string DBR_INFO_DESC_2_V2 = "dbrInfoDescription2V2";
             internal static readonly string DBR_INFO_DESC_3 = "dbrInfoDescription3";
+        }
+
+        internal struct MYProfile
+        {
+            internal static readonly string VERIFIED_ACCT_MSG = "verifiedAccountMessage";
         }
     }
 }

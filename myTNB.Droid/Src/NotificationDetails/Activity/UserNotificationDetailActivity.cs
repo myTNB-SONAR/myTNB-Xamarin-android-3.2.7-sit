@@ -366,6 +366,10 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 {
                     SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
                 }
+                else
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel(LanguageConstants.PUSH_NOTIF_DETAILS, LanguageConstants.PushNotificationDetails.NOTIF_TITLE_DEFAULT));
+                }
 
                 if (pushFromDashboard)
                 {

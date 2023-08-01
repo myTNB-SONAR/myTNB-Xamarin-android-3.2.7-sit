@@ -1442,12 +1442,22 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     }
                     else
                     {
-                        OnGetPhoto(item);
+                        //OnGetPhoto(item);
+
+                        if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                        {
+                            this.mView.SetCustomAppLaunchImage(item);
+                        }
                     }
                 }
                 else
                 {
-                    OnGetPhoto(item);
+                    //OnGetPhoto(item);
+
+                    if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                    {
+                        this.mView.SetCustomAppLaunchImage(item);
+                    }
                 }
             }
             catch (Exception e)
@@ -1458,6 +1468,83 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     this.mView.SetDefaultAppLaunchImage();
                 }
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnDownloadPhoto(AppLaunchModel item)
+        {
+            if (!IsOnGetPhotoRunning)
+            {
+                IsOnGetPhotoRunning = true;
+                CancellationTokenSource token = new CancellationTokenSource();
+                Bitmap imageCache = null;
+                Stopwatch sw = Stopwatch.StartNew();
+                _ = Task.Run(() =>
+                {
+                    try
+                    {
+                        imageCache = ImageUtils.GetImageBitmapFromUrlWithTimeOut(item.Image);
+                        sw.Stop();
+                        AppLaunchTimeOutMillisecond = 0;
+
+                        if (imageCache != null)
+                        {
+                            item.ImageBitmap = imageCache;
+                            item.ImageB64 = BitmapToBase64(imageCache);
+                            AppLaunchEntity wtManager = new AppLaunchEntity();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                            AppLaunchEntity newItem = new AppLaunchEntity()
+                            {
+                                ID = item.ID,
+                                Image = item.Image,
+                                ImageB64 = item.ImageB64,
+                                Title = item.Title,
+                                Description = item.Description,
+                                StartDateTime = item.StartDateTime,
+                                EndDateTime = item.EndDateTime,
+                                ShowForSeconds = item.ShowForSeconds
+                            };
+                            wtManager.InsertItem(newItem);
+                            AppLaunchUtils.SetAppLaunchBitmap(item);
+                            if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                            {
+                                this.mView.RenderAppLaunchImage(item);
+                            }
+                        }
+                        else
+                        {
+                            if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                            {
+                                this.mView.SetDefaultAppLaunchImage();
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        AppLaunchTimeOutMillisecond = 0;
+                        if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                        {
+                            this.mView.SetDefaultAppLaunchImage();
+                        }
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }, token.Token);
+
+                if (AppLaunchTimeOutMillisecond > 0)
+                {
+                    _ = Task.Delay(AppLaunchTimeOutMillisecond).ContinueWith(_ =>
+                    {
+                        if (AppLaunchTimeOutMillisecond > 0)
+                        {
+                            AppLaunchTimeOutMillisecond = 0;
+                            if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                            {
+                                this.mView.SetDefaultAppLaunchImage();
+                            }
+                        }
+                    });
+                }
             }
         }
 
