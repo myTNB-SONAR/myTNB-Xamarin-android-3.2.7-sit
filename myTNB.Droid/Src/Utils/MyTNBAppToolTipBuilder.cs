@@ -927,7 +927,7 @@ namespace myTNB_Android.Src.Utils
                 TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage,tooltipMessage);
-                TextViewUtils.SetMuseoSans500Typeface(tooltipCTA);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle,tooltipCTA);
                 TextViewUtils.SetTextSize14(tooltipMessage,tooltipMessage);
                 TextViewUtils.SetTextSize16(tooltipTitle,tooltipCTA);
 
