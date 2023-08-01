@@ -585,7 +585,7 @@ namespace myTNB_Android.Src.AddCard.Activity
                        .SetContentGravity(GravityFlags.Center)
                        .SetTitle(RPSCCEntity.DowntimeTextMessage)
                        .SetMessage(RPSCCEntity.DowntimeMessage)
-                       .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                       .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                        .Build().Show();
 
                     saveCard.Checked = false;

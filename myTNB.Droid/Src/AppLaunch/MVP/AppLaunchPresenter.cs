@@ -231,7 +231,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             try
             {
                 UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
-
+                string dt = JsonConvert.SerializeObject(new AppLaunchMasterDataRequest());
                 AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest());
                 /*AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
                       (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));*/

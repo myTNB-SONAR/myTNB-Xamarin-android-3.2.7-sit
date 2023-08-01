@@ -7,6 +7,7 @@ using Android.Text;
 using Android.Graphics;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
+using myTNB;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -138,6 +139,7 @@ namespace myTNB_Android.Src.Utils
                     tooltipBuilder.dialog.Window.Attributes = wlp;
                 }
             }
+
 
             return tooltipBuilder;
         }
@@ -927,7 +929,7 @@ namespace myTNB_Android.Src.Utils
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage,tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipCTA);
                 TextViewUtils.SetTextSize14(tooltipMessage,tooltipMessage);
-                TextViewUtils.SetTextSize16(tooltipCTA);
+                TextViewUtils.SetTextSize16(tooltipTitle,tooltipCTA);
 
                 tooltipTitle.Gravity = this.mGravityFlag;
                 tooltipMessage.Gravity = this.mGravityFlag;
@@ -938,7 +940,7 @@ namespace myTNB_Android.Src.Utils
                     this.ctaAction?.Invoke();
                 };
 
-               
+
                 if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
@@ -964,13 +966,13 @@ namespace myTNB_Android.Src.Utils
                     tooltipImageHeader.SetImageResource(this.imageResource);
                 }
 
-              
-                tooltipTitle = LinkRedirectionUtils
-                    .Create(this.mContext, string.Empty)
-                    .SetTextView(tooltipTitle)
-                    .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
-                    .Build()
-                    .GetProcessedTextView();
+                tooltipTitle.Text = this.title;
+                //tooltipTitle = LinkRedirectionUtils
+                //    .Create(this.mContext, string.Empty)
+                //    .SetTextView(tooltipTitle)
+                //    .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
+                //    .Build()
+                //    .GetProcessedTextView();
 
                 tooltipMessage = LinkRedirectionUtils
                     .Create(this.mContext, string.Empty)

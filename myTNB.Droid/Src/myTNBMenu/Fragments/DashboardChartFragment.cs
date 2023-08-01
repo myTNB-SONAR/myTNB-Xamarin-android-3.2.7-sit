@@ -75,6 +75,7 @@ using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.EnergyBudget.Activity;
 using myTNB.Mobile.AWS.Models.DBR;
 using Dynatrace.Xamarin.Binding.Android;
+using myTNB_Android.Src.myTNBMenu.Async;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -721,7 +722,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         ScaleGestureDetector mScaleDetector;
 
         GetBillRenderingResponse _billRenderingResponse;
-        PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
+        //PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
         PostGetAutoOptInCaResponse getAutoOptInCaResponse;
 
         public override int ResourceId()
@@ -11781,7 +11782,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_Viewmore);
                 Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(_billRenderingResponse));
-                intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
+                //intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                 intent.PutExtra("accountNumber", GetSelectedAccount().AccountNum);
                 StartActivity(intent);
             }
@@ -11880,7 +11881,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                    && _billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
                    && _billRenderingResponse.Content.IsInProgress == false)
                 {
-                    billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                    //billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                    List<PostBREligibilityIndicatorsModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
+
 
                     if (_billRenderingResponse.Content.IsOwner)
                     {
@@ -11889,14 +11892,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     else
                     {
                         //For tenant checking DBR
-                        if (billRenderingTenantResponse != null
-                           && billRenderingTenantResponse.StatusDetail != null
-                           && billRenderingTenantResponse.StatusDetail.IsSuccess
-                           && billRenderingTenantResponse.Content != null)
+                        if (tenantList != null)
                         {
-                            bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
-                            bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
-                            bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
+                            bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
+                            bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
+                            bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
                             bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccount.AccountNum).AccountHasOwner;
 
                             if (AccountHasOwner == true && !isOwnerAlreadyOptIn && !isOwnerOverRule && !isTenantAlreadyOptIn)

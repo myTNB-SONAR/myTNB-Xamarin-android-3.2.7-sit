@@ -454,10 +454,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 TextViewUtils.SetMuseoSans300Typeface(lblTotalAmount);
                 //TextViewUtils.SetMuseoSans500Typeface(lblCreditDebitCard, lblOtherPaymentMethods, txtTotalAmount, lblTNGPayment);
                 TextViewUtils.SetMuseoSans500Typeface(txtTotalAmount);
-                TextViewUtils.SetMuseoSans300Typeface(btnAddCard, btnFPXPayment, btnTNGPayment);
+                TextViewUtils.SetMuseoSans300Typeface(btnAddCard, btnFPXPayment, btnTNGPayment, btnCreditDebitCard);
 
                 TextViewUtils.SetTextSize10(lblTotalAmount);
-                TextViewUtils.SetTextSize16(txtTotalAmount, btnFPXPayment, btnAddCard, btnTNGPayment);
+                TextViewUtils.SetTextSize16(txtTotalAmount, btnFPXPayment, btnAddCard, btnTNGPayment, btnCreditDebitCard);
                 //TextViewUtils.SetTextSize18(lblCreditDebitCard, lblOtherPaymentMethods, lblTNGPayment);
                 TextViewUtils.SetTextSize22(edtNumber1, edtNumber2, edtNumber3, edtNumber4);
 
@@ -553,7 +553,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                    .SetContentGravity(GravityFlags.Center)
                    .SetTitle(RPSCCEntity.DowntimeTextMessage)
                    .SetMessage(RPSCCEntity.DowntimeMessage)
-                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                   .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                    .Build().Show();
                 }
                 else

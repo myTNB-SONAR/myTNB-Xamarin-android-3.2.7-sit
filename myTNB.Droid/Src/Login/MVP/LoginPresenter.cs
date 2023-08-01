@@ -554,8 +554,9 @@ namespace myTNB_Android.Src.Login.MVP
                                         {
                                             AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
                                         }
+                                        MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
 
-                                         _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
+                                        _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
                                         await CustomEligibility.EvaluateEligibilityTenantDBR((Context)this.mView);
 
                                         UserInfo usrinf = new UserInfo();
@@ -649,7 +650,9 @@ namespace myTNB_Android.Src.Login.MVP
                                             AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
                                         }
 
-                                         _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
+                                        MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
+
+                                        _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
                                         await CustomEligibility.EvaluateEligibilityTenantDBR((Context)this.mView);
 
                                         UserInfo usrinf = new UserInfo();

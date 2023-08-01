@@ -89,7 +89,7 @@ namespace myTNB_Android.Src.FloatingButtonMarketing.Activity
         private FloatingButtonMarketingContract.IUserActionsListener userActionsListener;
         public FloatingButtonMarketingPresenter mPresenter;
         private FloatingButtonMarketingModel LocalItem = new FloatingButtonMarketingModel();
-        private PostBREligibilityIndicatorsResponse _billRenderingTenantResponse;
+        //private PostBREligibilityIndicatorsResponse _billRenderingTenantResponse;
         private string _accountNumber = string.Empty;
         private AccountData mSelectedAccountData;
         private string selectedAccountNumber;
@@ -133,10 +133,10 @@ namespace myTNB_Android.Src.FloatingButtonMarketing.Activity
                     }
                 }
                
-                if (extras.ContainsKey("billRenderingTenantResponse"))
-                {
-                    _billRenderingTenantResponse = JsonConvert.DeserializeObject<PostBREligibilityIndicatorsResponse>(extras.GetString("billRenderingTenantResponse"));
-                }
+                //if (extras.ContainsKey("billRenderingTenantResponse"))
+                //{
+                //    _billRenderingTenantResponse = JsonConvert.DeserializeObject<PostBREligibilityIndicatorsResponse>(extras.GetString("billRenderingTenantResponse"));
+                //}
             }
 
             GetBillRenderingAsync(mSelectedAccountData);
@@ -691,7 +691,7 @@ namespace myTNB_Android.Src.FloatingButtonMarketing.Activity
                         Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                         intent.PutExtra("accountNumber", selectedAccountNumber);
                         intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
-                        intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(_billRenderingTenantResponse));
+                        //intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(_billRenderingTenantResponse));
                         intent.PutExtra("FromFloatingButtonMarketing", true);
                         StartActivity(intent);
                     }
