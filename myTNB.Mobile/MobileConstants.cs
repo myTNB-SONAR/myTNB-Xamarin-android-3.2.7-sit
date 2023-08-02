@@ -82,7 +82,7 @@ namespace myTNB.Mobile
         //public static string OvisWebviewBaseUrlSTG = "https://stage-mytnbappwv.ovis.tnb.com.my";
         public static string OvisWebviewBaseUrlPROD = "https://mytnbappwv.ovis.tnb.com.my";
 
-#if DEBUG
+#if DEBUGx
         public static string ApiDomain = DEV5;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
