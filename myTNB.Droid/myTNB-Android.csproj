@@ -66,8 +66,7 @@
     <RunWithWarnings>true</RunWithWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\SIT\</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
@@ -80,12 +79,11 @@
     <EnableLLVM>false</EnableLLVM>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
-    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidPackageFormat>aab</AndroidPackageFormat>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <AndroidLinkTool>r8</AndroidLinkTool>
-    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
