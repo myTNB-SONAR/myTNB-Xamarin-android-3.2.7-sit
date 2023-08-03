@@ -43,6 +43,7 @@ using myTNB_Android.Src.Base.Response;
 using System.Linq;
 using Android.Preferences;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB.Mobile.Business;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -556,7 +557,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                 || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
                                             {
                                                 //If DeviceId is not the same with the saved, call UpdateAppUserDevice service.
-                                                var updateAppDeviceResponse = await updateAppUserDeviceApi.UpdateAppUserDevice(new UpdateAppUserDeviceRequest()
+                                                UpdateAppUserDeviceRequest userDeviceRequest = new UpdateAppUserDeviceRequest()
                                                 {
                                                     apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
                                                     Email = UserEntity.GetActive().Email,
@@ -566,7 +567,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                     OsVersion = DeviceIdUtils.GetAndroidVersion(),
                                                     DeviceIdOld = UserSessions.GetDeviceId(mSharedPref),
                                                     DeviceIdNew = this.mView.GetDeviceId()
-                                                }, CancellationTokenSourceWrapper.GetToken());
+                                                };
+
+                                                EncryptedRequest encryptedUserDeviceRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(userDeviceRequest);
+                                                UpdateAppUserDeviceResponse deviceResponse = await updateAppUserDeviceApi.UpdateAppUserDevice(encryptedUserDeviceRequest, CancellationTokenSourceWrapper.GetToken());
                                             }
                                             GetAccountAWS();
                                         }
