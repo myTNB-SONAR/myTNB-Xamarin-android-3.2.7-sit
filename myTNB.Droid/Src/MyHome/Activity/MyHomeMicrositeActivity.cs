@@ -18,6 +18,7 @@ using CheeseBind;
 using myTNB;
 using myTNB.Mobile;
 using myTNB.Mobile.SessionCache;
+using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -320,6 +321,12 @@ namespace myTNB_Android.Src.MyHome.Activity
             StartActivityForResult(billingDetailIntent, Constants.MYHOME_MICROSITE_REQUEST_CODE);
         }
 
+        public void ShowAddElectricityAccount()
+        {
+            Intent linkAccount = new Intent(this, typeof(LinkAccountActivity));
+            StartActivity(linkAccount);
+        }
+
         private void SetUpWebView(string accessToken)
         {
             string ssoDomain = _model?.SSODomain ?? AWSConstants.Domains.SSO.MyHome;
@@ -575,14 +582,20 @@ namespace myTNB_Android.Src.MyHome.Activity
                 //url = "mytnbapp://action=openPDF&extension=pdf&&title=ICCopy_202211.pdf&file=" + encrypted;
                 //url = "mytnbapp://action=showPayment&accountName=Dummy&premise=DEWAN JLN SK JENDERAK SELATAN FELDA JENDERAK SELATAN KUALA KRAU PAHANG 28050&ca=220283416103&isOwner=true&applicationType=COA&applicationRefNo=COT-000-001-6858";
                 //url = "mytnbapp://action=inAppBrowser/https://www.google.com";
+                //url = "mytnbapp://action=addElectricityAccount";
                 Log.Debug("[DEBUG]", "MyHomeWebViewClient url: " + url);
 
-                if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT))
+                if(url.Contains(MyHomeConstants.ACTION_SHOW_ADD_ELECTRICITY_ACCOUNT))
+                {
+                    shouldOverride = true;
+                    this.mActivity?.ShowAddElectricityAccount();
+                }
+                else if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT))
                 {
                     shouldOverride = true;
                     this.mActivity?.ShowPayment(url);
                 }
-                if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT_HISTORY))
+                else if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT_HISTORY))
                 {
                     shouldOverride = true;
                     this.mActivity?.ShowPaymentHistory(url);

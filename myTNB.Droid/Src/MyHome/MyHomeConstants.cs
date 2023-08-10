@@ -23,6 +23,7 @@ namespace myTNB_Android.Src.MyHome
         internal static readonly string ACTION_SHOW_PAYMENT_HISTORY = "mytnbapp://action=showPaymentHistory";
         internal static readonly string ACTION_SHOW_PAYMENT = "mytnbapp://action=showPayment";
         internal static readonly string ACTION_PAYMENT_SUCCESS_CONTINUE = "mytnbapp://action=paymentSuccessContinueMyHome";
+        internal static readonly string ACTION_SHOW_ADD_ELECTRICITY_ACCOUNT = "mytnbapp://action=addElectricityAccount";
         internal static readonly string PATTERN = "\\b{0}.*\\b";
         internal static readonly string REPLACE_KEY = "{0}/";
         internal static readonly string FULL_STOP = ".";
