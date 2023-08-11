@@ -244,6 +244,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         mainActivity.RunOnUiThread(() =>
                         {
                             mainActivity.ShowGenericErrorPopUp();
+                            NotificationUtil.Instance.ClearData();
                         });
                         return;
                     }
@@ -275,6 +276,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                          .Build();
                         errorPopup.Show();
                     }
+                    NotificationUtil.Instance.ClearData();
                 });
             }
             else
@@ -289,6 +291,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                      .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
                      .Build();
                     errorPopup.Show();
+
+                    NotificationUtil.Instance.ClearData();
                 });
             }
         }
@@ -448,7 +452,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
 
-                        if (notifType.Equals(Notification.TypeEnum.EKYC))
+                        if (NotificationUtil.Instance.Type == Notification.TypeEnum.EKYC)
                         {
                             ShowEKYCNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
                         }
@@ -463,9 +467,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         mainActivity.HideProgressDialog();
                     }
+                    NotificationUtil.Instance.ClearData();
                 });
-                
-                NotificationUtil.Instance.ClearData();
             }
             catch (System.OperationCanceledException e)
             {
