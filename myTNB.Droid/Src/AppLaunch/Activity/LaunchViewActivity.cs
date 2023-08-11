@@ -140,20 +140,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             string notifType = Intent.Extras.GetString("Type");
                             UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
-                            if (notifType.ToUpper() == myTNB.Mobile.Constants.NotificationTypes.APPLICATIONSTATUS
-                                && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID)
-                                && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONID)
-                                && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE))
-                            {
-                                string saveID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID);
-                                string applicationID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONID);
-                                string applicationType = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE);
-                                string system = Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_System)
-                                    ? Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_System)
-                                    : string.Empty;
-                                UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
-                            }
-                            else if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.DBR_Owner)
+                            if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.DBR_Owner)
                             {
                                 string accountNumber = Intent.Extras.GetString("AccountNumber");
                                 UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;

@@ -38,6 +38,7 @@ using myTNB.Mobile.AWS.Models.DBR;
 using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB.Mobile.AWS;
+using ApplicationStatusManager = myTNB.Mobile.ApplicationStatusManager;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -197,8 +198,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             });
         }
 
-        private static async Task OnGetApplicationDetail(DashboardHomeActivity mainActivity)
+        private static async Task OnGetApplicationDetail(DashboardHomeActivity mainActivity, bool isFromPush = false)
         {
+            mainActivity.RunOnUiThread(() =>
+            {
+                mainActivity.ShowProgressDialog();
+            });
+
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
@@ -214,12 +220,41 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 && searchApplicationTypeResponse.StatusDetail != null
                 && searchApplicationTypeResponse.StatusDetail.IsSuccess)
             {
-                ApplicationDetailDisplay detailsResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.GetApplicationDetail(ApplicationDetailsDeeplinkCache.Instance.SaveID
-                    , ApplicationDetailsDeeplinkCache.Instance.ID
-                    , ApplicationDetailsDeeplinkCache.Instance.Type
+                mainActivity.RunOnUiThread(() =>
+                {
+                    mainActivity.ShowProgressDialog();
+                });
+
+                string saveId = ApplicationDetailsDeeplinkCache.Instance.SaveID;
+                string applicationId = ApplicationDetailsDeeplinkCache.Instance.ID;
+                string applicationType = ApplicationDetailsDeeplinkCache.Instance.Type;
+                string applicationSystem = ApplicationDetailsDeeplinkCache.Instance.System;
+
+                if (isFromPush)
+                {
+                    if (NotificationUtil.Instance.ApplicationStatusNotifModel != null)
+                    {
+                        saveId = NotificationUtil.Instance.ApplicationStatusNotifModel.SaveApplicationID;
+                        applicationId = NotificationUtil.Instance.ApplicationStatusNotifModel.ApplicationID;
+                        applicationType = NotificationUtil.Instance.ApplicationStatusNotifModel.ApplicationType;
+                        applicationSystem = NotificationUtil.Instance.ApplicationStatusNotifModel.System;
+                    }
+                    else
+                    {
+                        mainActivity.RunOnUiThread(() =>
+                        {
+                            mainActivity.ShowGenericErrorPopUp();
+                        });
+                        return;
+                    }
+                }
+
+                ApplicationDetailDisplay detailsResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.GetApplicationDetail(saveId
+                    , applicationId
+                    , applicationType
                     , UserEntity.GetActive().UserID ?? string.Empty
                     , UserEntity.GetActive().Email ?? string.Empty
-                    , ApplicationDetailsDeeplinkCache.Instance.System);
+                    , applicationSystem);
 
                 mainActivity.RunOnUiThread(() =>
                 {
@@ -342,6 +377,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (NotificationUtil.Instance.Type == Notification.TypeEnum.NewBillDesign)
             {
                 NavigateToBillRedesign(mainActivity);
+            }
+            else if (NotificationUtil.Instance.Type == Notification.TypeEnum.ApplicationStatus)
+            {
+                mainActivity.RunOnUiThread(() =>
+                {
+                    mainActivity.ShowProgressDialog();
+                });
+
+                Task.Run(() =>
+                {
+                    _ = OnGetApplicationDetail(mainActivity, true);
+                });
             }
             else if (NotificationUtil.Instance.PushMapId.IsValid())
             {

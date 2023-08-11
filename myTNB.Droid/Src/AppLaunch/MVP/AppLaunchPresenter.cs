@@ -518,14 +518,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             GetAccountAWS();
                                         }
                                         else if (UserSessions.GetNotificationType(mSharedPref) != null
-                                            && "APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper())
-                                            && UserSessions.ApplicationStatusNotification != null)
-                                        {
-                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
-                                            this.mView.ShowApplicationStatusDetails();
-                                            UserSessions.RemoveNotificationSession(mSharedPref);
-                                        }
-                                        else if (UserSessions.GetNotificationType(mSharedPref) != null
                                            && "DBROWNER".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper()))
                                         {
                                             DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Notifications.Combined_Comms_Owner);

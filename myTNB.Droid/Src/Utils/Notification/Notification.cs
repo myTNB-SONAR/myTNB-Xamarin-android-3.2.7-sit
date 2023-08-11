@@ -22,6 +22,7 @@
             NCApplicationContractorCompleted,
             NCOTPVerify,
             EKYC,
+            ApplicationStatus,
             None
         }
     }
