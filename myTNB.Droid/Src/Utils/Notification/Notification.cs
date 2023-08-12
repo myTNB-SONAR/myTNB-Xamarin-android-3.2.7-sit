@@ -21,6 +21,7 @@
             NCApplicationCompleted,
             NCApplicationContractorCompleted,
             NCOTPVerify,
+            ApplicationStatus,
             None
         }
     }

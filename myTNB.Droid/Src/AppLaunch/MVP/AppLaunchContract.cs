@@ -40,11 +40,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void ShowExceptionDashboard();
 
             /// <summary>
-            /// Redirects to Application Status Details
-            /// </summary>
-            void ShowApplicationStatusDetails();
-
-            /// <summary>
             /// Reddirect to Manage Bill Delivery Page
             /// </summary>
             void OnShowManageBillDelivery();

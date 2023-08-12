@@ -34,6 +34,7 @@ using myTNB.Mobile.AWS.Models.DBR;
 using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB.Mobile.AWS;
+using ApplicationStatusManager = myTNB.Mobile.ApplicationStatusManager;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -189,8 +190,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             });
         }
 
-        private static async Task OnGetApplicationDetail(DashboardHomeActivity mainActivity)
+        private static async Task OnGetApplicationDetail(DashboardHomeActivity mainActivity, bool isFromPush = false)
         {
+            mainActivity.RunOnUiThread(() =>
+            {
+                mainActivity.ShowProgressDialog();
+            });
+
             SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
@@ -206,11 +212,42 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 && searchApplicationTypeResponse.StatusDetail != null
                 && searchApplicationTypeResponse.StatusDetail.IsSuccess)
             {
-                ApplicationDetailDisplay detailsResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.GetApplicationDetail(ApplicationDetailsDeeplinkCache.Instance.SaveID
-                    , ApplicationDetailsDeeplinkCache.Instance.ID
-                    , ApplicationDetailsDeeplinkCache.Instance.Type
-                    , ApplicationDetailsDeeplinkCache.Instance.System);
+                mainActivity.RunOnUiThread(() =>
+                {
+                    mainActivity.ShowProgressDialog();
+                });
 
+                string saveId = ApplicationDetailsDeeplinkCache.Instance.SaveID;
+                string applicationId = ApplicationDetailsDeeplinkCache.Instance.ID;
+                string applicationType = ApplicationDetailsDeeplinkCache.Instance.Type;
+                string applicationSystem = ApplicationDetailsDeeplinkCache.Instance.System;
+
+                if (isFromPush)
+                {
+                    if (NotificationUtil.Instance.ApplicationStatusNotifModel != null)
+                    {
+                        saveId = NotificationUtil.Instance.ApplicationStatusNotifModel.SaveApplicationID;
+                        applicationId = NotificationUtil.Instance.ApplicationStatusNotifModel.ApplicationID;
+                        applicationType = NotificationUtil.Instance.ApplicationStatusNotifModel.ApplicationType;
+                        applicationSystem = NotificationUtil.Instance.ApplicationStatusNotifModel.System;
+                    }
+                    else
+                    {
+                        mainActivity.RunOnUiThread(() =>
+                        {
+                            mainActivity.ShowGenericErrorPopUp();
+                            NotificationUtil.Instance.ClearData();
+                        });
+                        return;
+                    }
+                }
+
+                ApplicationDetailDisplay detailsResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.GetApplicationDetail(saveId
+                    , applicationId
+                    , applicationType
+                    , applicationSystem);
+
+                NotificationUtil.Instance.ClearData();
                 mainActivity.RunOnUiThread(() =>
                 {
                     mainActivity.HideProgressDialog();
@@ -234,6 +271,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
             else
             {
+                NotificationUtil.Instance.ClearData();
                 mainActivity.RunOnUiThread(() =>
                 {
                     mainActivity.HideProgressDialog();
@@ -333,13 +371,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 NavigateToBillRedesign(mainActivity);
             }
+            else if (NotificationUtil.Instance.Type == Notification.TypeEnum.ApplicationStatus)
+            {
+                Task.Run(() =>
+                {
+                    _ = OnGetApplicationDetail(mainActivity, true);
+                });
+            }
             else if (NotificationUtil.Instance.PushMapId.IsValid())
             {
-                UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
-                mainActivity.RunOnUiThread(() =>
-                {
-                    mainActivity.ShowProgressDialog();
-                });
                 Task.Run(() =>
                 {
                     _ = OnGetNotificationDetails(mainActivity);
@@ -363,6 +403,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
+                mainActivity.RunOnUiThread(() =>
+                {
+                    mainActivity.ShowProgressDialog();
+                });
+                UserSessions.RemoveNotificationSession(PreferenceManager.GetDefaultSharedPreferences(mainActivity));
+
                 string notifType = NotificationUtil.Instance.NotificationType;
                 string pushMapId = NotificationUtil.Instance.PushMapId;
                 UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(string.Empty, notifType)
@@ -392,6 +438,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (mainActivity.IsActive())
                 {
                     mainActivity.HideProgressDialog();
+                    NotificationUtil.Instance.ClearData();
                 }
                 Utility.LoggingNonFatalError(e);
             }
@@ -400,6 +447,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (mainActivity.IsActive())
                 {
                     mainActivity.HideProgressDialog();
+                    NotificationUtil.Instance.ClearData();
                 }
                 Utility.LoggingNonFatalError(apiException);
             }
@@ -408,6 +456,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (mainActivity.IsActive())
                 {
                     mainActivity.HideProgressDialog();
+                    NotificationUtil.Instance.ClearData();
                 }
                 Utility.LoggingNonFatalError(e);
             }

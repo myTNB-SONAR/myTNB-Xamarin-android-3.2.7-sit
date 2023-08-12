@@ -2,6 +2,7 @@
 using Constant = myTNB_Android.Src.Utils.Notification.Notification.Constants;
 using Type = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
 using NotificationTypes = myTNB.Mobile.Constants.NotificationTypes;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.Utils.Notification
 {
@@ -15,6 +16,7 @@ namespace myTNB_Android.Src.Utils.Notification
         public string Email = string.Empty;
         public Type Type = Type.None;
         public bool IsDirectPush = false;
+        public ApplicationStatusNotificationModel ApplicationStatusNotifModel;
 
         public static NotificationUtil Instance
         {
@@ -34,7 +36,7 @@ namespace myTNB_Android.Src.Utils.Notification
             SetIsDirectPush();
         }
 
-        private void SetType(string type)
+        private void SetType(string type, Bundle extras)
         {
             if (type.IsValid())
             {
@@ -64,6 +66,10 @@ namespace myTNB_Android.Src.Utils.Notification
                     case NotificationTypes.MyHome.MYHOME_NC_OTP_VERIFY:
                         Type = Type.NCOTPVerify;
                         break;
+                    case NotificationTypes.APPLICATIONSTATUS:
+                        Type = Type.ApplicationStatus;
+                        SetApplicationStatusData(extras);
+                        break;
                     default:
                         break;
                 }
@@ -76,7 +82,7 @@ namespace myTNB_Android.Src.Utils.Notification
             {
                 if (extras.ContainsKey(Constant.TYPE))
                 {
-                    SetType(extras.GetString(Constant.TYPE));
+                    SetType(extras.GetString(Constant.TYPE), extras);
                 }
                 if (extras.ContainsKey(Constant.ACCOUNT_NUMBER))
                 {
@@ -88,7 +94,11 @@ namespace myTNB_Android.Src.Utils.Notification
                 }
                 if (extras.ContainsKey(Constant.PUSH_MAP_ID))
                 {
-                    PushMapId = extras.GetString(Constant.PUSH_MAP_ID);
+                    string pushMapIdValue = extras.GetString(Constant.PUSH_MAP_ID);
+                    if (pushMapIdValue.IsValid() && pushMapIdValue != "null")
+                    {
+                        PushMapId = pushMapIdValue;
+                    }
                 }
                 if (extras.ContainsKey(Constant.EMAIL))
                 {
@@ -97,9 +107,30 @@ namespace myTNB_Android.Src.Utils.Notification
             }
         }
 
+        private void SetApplicationStatusData(Bundle extras)
+        {
+            ApplicationStatusNotifModel = new ApplicationStatusNotificationModel();
+            if (extras.ContainsKey(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID))
+            {
+                ApplicationStatusNotifModel.SaveApplicationID = extras.GetString(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID);
+            }
+            if (extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONID))
+            {
+                ApplicationStatusNotifModel.ApplicationID = extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONID);
+            }
+            if (extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE))
+            {
+                ApplicationStatusNotifModel.ApplicationType = extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE);
+            }
+            if (extras.ContainsKey(ApplicationStatusNotificationModel.Param_System))
+            {
+                ApplicationStatusNotifModel.System = extras.GetString(ApplicationStatusNotificationModel.Param_System);
+            }
+        }
+
         private void SetIsDirectPush()
         {
-            IsDirectPush = Type == Type.NewBillDesign || PushMapId.IsValid();
+            IsDirectPush = Type == Type.NewBillDesign || Type == Type.ApplicationStatus || PushMapId.IsValid();
         }
 
         public void ClearData()
@@ -110,6 +141,7 @@ namespace myTNB_Android.Src.Utils.Notification
             PushMapId = string.Empty;
             Email = string.Empty;
             IsDirectPush = false;
+            ApplicationStatusNotifModel = null;
         }
     }
 }

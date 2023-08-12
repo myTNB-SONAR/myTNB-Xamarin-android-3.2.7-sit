@@ -140,20 +140,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             string notifType = Intent.Extras.GetString("Type");
                             UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
-                            if (notifType.ToUpper() == myTNB.Mobile.Constants.NotificationTypes.APPLICATIONSTATUS
-                                && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID)
-                                && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONID)
-                                && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE))
-                            {
-                                string saveID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID);
-                                string applicationID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONID);
-                                string applicationType = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE);
-                                string system = Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_System)
-                                    ? Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_System)
-                                    : string.Empty;
-                                UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
-                            }
-                            else if (notifType.ToUpper() == "DBROWNER")
+                            if (notifType.ToUpper() == "DBROWNER")
                             {
                                 string accountNumber = Intent.Extras.GetString("AccountNumber");
                                 UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
@@ -366,48 +353,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
 
-        }
-
-        public async void ShowApplicationStatusDetails()
-        {
-            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
-            if (searchApplicationTypeResponse == null)
-            {
-                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
-                if (searchApplicationTypeResponse != null
-                    && searchApplicationTypeResponse.StatusDetail != null
-                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
-                {
-                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
-                }
-            }
-
-            if (searchApplicationTypeResponse != null
-                && searchApplicationTypeResponse.StatusDetail != null
-                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
-            {
-                ApplicationStatusNotificationModel notificationObj = UserSessions.ApplicationStatusNotification;
-                ApplicationDetailDisplay detailResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(notificationObj.SaveApplicationID
-                    , notificationObj.ApplicationID
-                    , notificationObj.ApplicationType
-                    , notificationObj.System);
-
-                if (detailResponse.StatusDetail.IsSuccess)
-                {
-                    Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
-                    applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(detailResponse.Content));
-                    applicationStatusDetailIntent.PutExtra("isPush", true);
-                    StartActivity(applicationStatusDetailIntent);
-                }
-                else
-                {
-                    ShowDashboard();
-                }
-            }
-            else
-            {
-                ShowDashboard();
-            }
         }
 
         public async void OnShowManageBillDelivery()
