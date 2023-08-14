@@ -214,6 +214,7 @@ namespace myTNB_Android.Src.MyHome.Activity
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+                ShowGenericError();
             }
         }
 
@@ -299,6 +300,10 @@ namespace myTNB_Android.Src.MyHome.Activity
                 myHomePaymentHistoryActivity.PutExtra(MyHomeConstants.PAYMENT_IS_OWNER, bool.Parse(isOwner));
                 myHomePaymentHistoryActivity.PutExtra(MyHomeConstants.PAYMENT_ACCOUNT_TYPE, accountType);
                 this.StartActivity(myHomePaymentHistoryActivity);
+            }
+            else
+            {
+                ShowGenericError();
             }
         }
 
@@ -590,16 +595,17 @@ namespace myTNB_Android.Src.MyHome.Activity
                     shouldOverride = true;
                     this.mActivity?.ShowAddElectricityAccount();
                 }
-                else if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT))
-                {
-                    shouldOverride = true;
-                    this.mActivity?.ShowPayment(url);
-                }
                 else if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT_HISTORY))
                 {
                     shouldOverride = true;
                     this.mActivity?.ShowPaymentHistory(url);
                 }
+                else if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT))
+                {
+                    shouldOverride = true;
+                    this.mActivity?.ShowPayment(url);
+                }
+                
                 else if (url.Contains(MyHomeConstants.ACTION_SHOW_PAYMENT_DETAILS))
                 {
                     shouldOverride = true;
@@ -699,11 +705,7 @@ namespace myTNB_Android.Src.MyHome.Activity
 
             public override void OnReceivedError(WebView view, IWebResourceRequest request, WebResourceError error) { }
 
-            public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error)
-            {
-                //STUB
-                //handler.Proceed();
-            }
+            public override void OnReceivedSslError(WebView view, SslErrorHandler handler, SslError error) { }
         }
     }
 }
