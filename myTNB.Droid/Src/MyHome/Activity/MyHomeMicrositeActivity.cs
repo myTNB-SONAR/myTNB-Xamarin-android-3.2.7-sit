@@ -490,12 +490,10 @@ namespace myTNB_Android.Src.MyHome.Activity
             //};
             //MyHomeUtil.Instance.SetMyHomeDetails(d);
 
-            MyHomeUtil.Instance.ClearCache();
-
             var details = MyHomeUtil.Instance.MyHomeDetails;
             if (details != null)
             {
-                
+                MyHomeUtil.Instance.ClearCache();
                 this.presenter?.OnReloadMicrosite(details);
             }
             else
