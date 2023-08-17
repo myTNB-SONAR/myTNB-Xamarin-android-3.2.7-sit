@@ -1515,7 +1515,7 @@
     ]
   },
   "Tutorial": {
-    "swipeText": "Swipe to see more, tap to skip.",
+    "swipeText": "Swipe to see more or tap to skip.",
     "skip": "Tap to skip.",
     "applicationStatusLandingTitle": "Keep track of your applications.",
     "applicationStatusLandingDescription": "Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily.",
@@ -1545,10 +1545,10 @@
     "manageDeliveryMethodEmailMessage": "View email recipients who are receiving monthly bills for this account.",
     "billStatementTitle": "Download your account statement.",
     "billStatementMessage": "You can now download a summary of your accounts monthly statements and bills by your preferred statement period.",
-    "myHomeTitle": "Introducing myHome.",
+    "myHomeTitle": "Introducing myHome",
     "myHomeMessage": "Manage your electricity connection accounts and applications by selecting the myHome feature.",
-    "connectMyPremiseTitle": "Start Your Application",
-    "connectMyPremiseMessage": "Apply for new electricity connections, change of account ownership and close your electricity accounts here.",
+    "connectMyPremiseTitle": "Start your applications",
+    "connectMyPremiseMessage": "Apply for new electricity connections, change of tenancy and closure of your electricity accounts here.",
     "myHomeChecklistTitle": "Plan your move",
     "myHomeChecklistMessage": "Organise your moving task list for a smoother moving experience."
   },

@@ -1515,8 +1515,8 @@
     ]
   },
   "Tutorial": {
-    "swipeText": "Leret untuk melihat selanjutnya, tekan untuk langkau.",
-    "skip": "Tekan untuk langkau.",
+    "swipeText": "Leret untuk lihat lebih lanjut atau tap untuk langkau.",
+    "skip": "Tap untuk langkau.",
     "applicationStatusLandingTitle": "Ikuti perkembangan permohonan anda.",
     "applicationStatusLandingDescription": "Permohonan yang telah dihantar akan dipaparkan disini secara automatik supaya anda boleh melihat statusnya. Gunakan tapisan untuk mencari menerusi senarai dengan mudah.",
     "applicationStatusLandingEmptyTitle": "Ikuti perkembangan permohonan anda.",
@@ -1545,12 +1545,12 @@
     "manageDeliveryMethodEmailMessage": "Semak penerima e-mel yang menerima bil bulanan untuk akaun ini.",
     "billStatementTitle": "Muat turun penyata akaun anda.",
     "billStatementMessage": "Anda boleh memuat turun ringkasan penyata bulanan dan bil akaun anda mengikut tempoh penyata pilihan anda.",
-    "myHomeTitle": "Memperkenalkan myHome.",
-    "myHomeMessage": "Urus akaun dan permohonan elektrik anda dengan memilih ciri myHome.",
+    "myHomeTitle": "Memperkenalkan myHome",
+    "myHomeMessage": "Urus akaun dan permohonan elektrik anda dengan memilih myHome.",
     "connectMyPremiseTitle": "Mulakan Permohonan Anda",
-    "connectMyPremiseMessage": "Mohon bekalan elekrik baharu, petukaran penghuni dan penamatan akaun elektrik anda di sini.",
-    "myHomeChecklistTitle": "Rancang pemindahan anda",
-    "myHomeChecklistMessage": "Rancang senarai pemindahan anda untuk proses pemindahan yang lebih teratur."
+    "connectMyPremiseMessage": "Permohonan bekalan elektrik baharu, penukaran nama pemilik akaun dan penutupan akaun elektrik di sini.",
+    "myHomeChecklistTitle": "Rancang urusan berpindah anda",
+    "myHomeChecklistMessage": "Susun atur senarai berpindah agar pengalaman anda menjadi lebih lancar."
   },
   "Tnb_Profile": {
     "title": "Profil myTNB",
