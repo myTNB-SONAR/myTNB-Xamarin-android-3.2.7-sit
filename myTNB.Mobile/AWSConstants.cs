@@ -83,7 +83,7 @@
             internal const string GetMultiBillRendering = "https://api.mytnb.com.my/BillRendering/api/v1";
             internal const string StartDigitalBill = "https://dbr.mytnb.com.my/DigitalBill/Start";
             internal const string OptInToPaperBill = "https://dbr.mytnb.com.my/PaperBill/OptIn";
-            internal const string DSRedirect = "https://stagingds.mytnb.com.my/EKYC/StartEKYC";//Staging
+            internal const string DSRedirect = "https://ds.mytnb.com.my/EKYC/StartEKYC";
             internal const string PostBREligibilityIndicators = "https://api.mytnb.com.my/BillRendering/api/v1";
             internal const string GetAutoOptInCa = "https://api.mytnb.com.my/StagedData/api/v1";
             internal const string PatchUpdateAutoOptInCa = "https://api.mytnb.com.my/StagedData/api/v1";
@@ -91,7 +91,7 @@
             {
                 public const string DBR = "https://dbr.mytnb.com.my/Sso?s={0}";
                 public const string MyHome = "https://myhome.mytnb.com.my/Sso?s={0}";
-                public const string DS = "https://stagingds.mytnb.com.my/Sso?s={0}";//Staging
+                public const string DS = "https://ds.mytnb.com.my/Sso?s={0}";
             }
 #endif
         }
