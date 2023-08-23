@@ -28,6 +28,9 @@ using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Adapter;
 using myTNB.Mobile.SessionCache;
 using Android.Content.PM;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB_Android.Src.XDetailRegistrationForm.Models;
+using static myTNB.Mobile.Constants.Notifications.PushNotificationDetails;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
@@ -73,16 +76,27 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         [BindView(Resource.Id.txtSearchApplicationStatusListResult)]
         TextView txtSearchApplicationStatusListResult;
 
+        [BindView(Resource.Id.SMRCodeContainer)]
+        TextInputLayout SMRCodeContainer;
+
+        [BindView(Resource.Id.SMRCodeValue)]
+        EditText SMRCodeValue;
+        
+
         TypeModel selectedType = new TypeModel();
+        SMRTypeModel selectedSMRType;
         const string PAGE_ID = "ApplicationStatus";
 
         private string targetApplicationType = string.Empty;
         private string targetApplicationTypeId = string.Empty;
+        private string targetSMRTypeId = string.Empty;
         private string targetSearchBy = string.Empty;
+        private string targetSMRType = string.Empty;
         private string targetNumber = string.Empty;
         private bool isSearchByCA = false;
         private bool isEdiging = false;
         List<TypeModel> mTypeList = new List<TypeModel>();
+        List<SMRTypeModel> mSMRTypeList = new List<SMRTypeModel>();
         SearchByModel searchByModel = new SearchByModel();
         SearchApplicationStatusPresenter mPresenter;
         private bool isTextChange = false;
@@ -213,7 +227,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 else
                 {
                     searchApplicatioStatuListResult.Visibility = ViewStates.Gone;
-                    ShowApplicaitonPopupMessage(this, applicationsByCAResponse.StatusDetail);
+                    ShowApplicationPopupMessage(this, applicationsByCAResponse.StatusDetail);
                 }
                 HideProgressDialog();
             });
@@ -268,7 +282,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             HideProgressDialog();
             if (!applicationDetailDisplay.StatusDetail.IsSuccess)
             {
-                ShowApplicaitonPopupMessage(this, applicationDetailDisplay.StatusDetail);
+                ShowApplicationPopupMessage(this, applicationDetailDisplay.StatusDetail);
             }
             else
             {
@@ -278,7 +292,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             }
         }
 
-        public async void ShowApplicaitonPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
+        public async void ShowApplicationPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
         {
             MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                 .SetTitle(statusDetail.Title)
@@ -306,14 +320,18 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             txtInputLayoutServiceRequestNum.SetHintTextAppearance(TextViewUtils.IsLargeFonts
                 ? Resource.Style.TextInputLayout_TextAppearance_Large
                 : Resource.Style.TextInputLayout_TextAppearance_Small);
+            SMRCodeContainer.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "type").ToUpper();
+            SMRCodeContainer.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayout_TextAppearance_Large
+                : Resource.Style.TextInputLayout_TextAppearance_Small);
             mPresenter = new SearchApplicationStatusPresenter(this);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutApplicationType, txtInputLayoutSearchBy, txtInputLayoutServiceRequestNum);
-            TextViewUtils.SetMuseoSans300Typeface(txtApplicationType, txtSearchBy, txtServiceRequestNum);
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutApplicationType, txtInputLayoutSearchBy, txtInputLayoutServiceRequestNum, SMRCodeContainer);
+            TextViewUtils.SetMuseoSans300Typeface(txtApplicationType, txtSearchBy, txtServiceRequestNum, SMRCodeValue);
             TextViewUtils.SetMuseoSans500Typeface(btnSearchApplication, txtSearchApplicationTitle);
             TextViewUtils.SetTextSize12(txtWhyAccountsNotHere);
             TextViewUtils.SetTextSize16(txtSearchApplicationTitle, txtApplicationType, txtSearchBy
-                , txtServiceRequestNum, txtSearchApplicationStatusListResult, btnSearchApplication);
+                , txtServiceRequestNum, txtSearchApplicationStatusListResult, btnSearchApplication, SMRCodeValue);
 
             TextViewUtils.SetMuseoSans500Typeface(txtWhyAccountsNotHere);
             txtWhyAccountsNotHere.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumber");
@@ -355,6 +373,12 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             txtServiceRequestNum.SetOnTouchListener(this);
             txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
+
+            SMRCodeValue.EnableClick();
+            SMRCodeValue.SetOnTouchListener(this);
+            SMRCodeContainer.Visibility = ViewStates.Gone;
+
+            PopulateSMRType();
 
             if (extras != null && extras.ContainsKey("searchApplicationType"))
             {
@@ -488,6 +512,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
                         string format = selectedType.SearchApplicationNoInputMask;
 
+                        if (selectedSMRType != null && selectedSMRType.Type == "SMRAPP")
+                        {
+                            format = format.Replace(format.Substring(0, 3), "SMRAPP");
+                        }
                         txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(format.Length) });
                         string inputString = txtServiceRequestNum.Text.ToString();
                         int firstIndex = format.IndexOf("#");
@@ -502,7 +530,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             return;
                         }
 
-                        preffix = format.Substring(0, firstIndex);
+                       preffix = format.Substring(0, firstIndex);
                         if (preffix.Length >= inputString.Length)
                         {
                             inputString = preffix;
@@ -752,29 +780,79 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             if (searchByModel.Type == ApplicationStatusSearchType.ApplicationNo)
                             {
                                 txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
+
+                                SMRCodeContainer.Visibility = ViewStates.Gone;
+
+                                if (selectedType.ApplicationTypeDisplay == "Self Meter Reading")
+                                {
+                                    SMRCodeContainer.Visibility = ViewStates.Visible;
+                                }
                             }
                             else if (searchByModel.Type == ApplicationStatusSearchType.ServiceNotificationNo)
                             {
                                 txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "serviceNotificationNo");
+
+                                SMRCodeContainer.Visibility = ViewStates.Gone;
+
                             }
                             else if (searchByModel.Type == ApplicationStatusSearchType.ServiceRequestNo)
                             {
                                 txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "serviceRequestNumber");
+
+                                SMRCodeContainer.Visibility = ViewStates.Gone;
+
                             }
                             else if (searchByModel.Type == ApplicationStatusSearchType.CA)
                             {
                                 isSearchByCA = true;
                                 txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "electricityAccountNumber");
+
+                                SMRCodeContainer.Visibility = ViewStates.Gone;
+
                             }
                             txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                         }
                     }
                 }
+                else if (requestCode == Constants.APPLICATION_STATUS_FILTER_SMRTYPE_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        Bundle extra = data.Extras;
+                        List<SMRTypeModel> resultSMRTypeList = new List<SMRTypeModel>();
+                        targetSMRType = string.Empty;
+                       
+                        if (extra.ContainsKey(Constants.APPLICATION_STATUS_SMRTYPE_LIST_KEY))
+                        {
+                            resultSMRTypeList = JsonConvert.DeserializeObject<List<SMRTypeModel>>(extra.GetString(Constants.APPLICATION_STATUS_SMRTYPE_LIST_KEY));
+                            selectedSMRType = resultSMRTypeList.Find(x => x.isChecked);
+
+                            if (selectedSMRType != null)
+                            {
+                                targetSMRTypeId = selectedSMRType.Id;
+                                SMRCodeValue.Text = selectedSMRType.Type.ToString();
+                                targetSMRType = selectedSMRType.Type.ToString();
+                            }
+                        }
+
+                    }
+                }
+
                 if (resultCode == Result.Ok)
                 {
-                    Drawable accountNo = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_account_no);
-                    accountNo.SetBounds(0, 0, accountNo.IntrinsicWidth, accountNo.IntrinsicHeight);
-                    txtServiceRequestNum.SetCompoundDrawablesWithIntrinsicBounds(accountNo, null, null, null);
+                    if (requestCode == Constants.APPLICATION_STATUS_FILTER_SMRTYPE_REQUEST_CODE)
+                    {
+                        txtServiceRequestNum.Text = "";
+                        txtServiceRequestNum.ClearFocus();
+                        txtInputLayoutServiceRequestNum.ClearFocus();
+                    }
+                    else
+                    {
+                        Drawable accountNo = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_account_no);
+                        accountNo.SetBounds(0, 0, accountNo.IntrinsicWidth, accountNo.IntrinsicHeight);
+                        txtServiceRequestNum.SetCompoundDrawablesWithIntrinsicBounds(accountNo, null, null, null);
+                    }
+
                 }
                 if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE)
                 {
@@ -927,11 +1005,67 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                     }
                 }
+                else if (eTxtView.Id == Resource.Id.SMRCodeValue) //SMRTYPE
+                {
+                    if (e.Action == MotionEventActions.Up)
+                    {
+                        if (!this.GetIsClicked())
+                        {
+                            this.SetIsClicked(true);
+                            Intent filterIntent = new Intent(this, typeof(SearchApplicationStatusSelectionActivity));
+                            var listShowing = mSMRTypeList;
+
+
+                            for (int i = 0; i < listShowing.Count; i++)
+                            {
+                                listShowing[i].isChecked = false;
+                            }
+                            if (!string.IsNullOrEmpty(targetSMRType))
+                            {
+                                for (int i = 0; i < listShowing.Count; i++)
+                                {
+                                    if (listShowing[i].Type == targetSMRType)
+                                    {
+                                        listShowing[i].isChecked = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            txtServiceRequestNum.Text = null;
+                            txtInputLayoutServiceRequestNum.ClearFocus();
+                            txtServiceRequestNum.ClearFocus();
+                            filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_REQUEST_KEY, Constants.APPLICATION_STATUS_FILTER_SMRTYPE_REQUEST_CODE);
+                            filterIntent.PutExtra(Constants.APPLICATION_STATUS_SMRTYPE_LIST_KEY, JsonConvert.SerializeObject(listShowing));
+                            StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_SMRTYPE_REQUEST_CODE);
+                        }
+                        return true;
+                    }
+                }
             }
             CheckError();
             txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
             txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
             return false;
+        }
+
+        public void PopulateSMRType()
+        {
+            SMRTypeModel SMR = new SMRTypeModel();
+            SMR.Id = "1";
+            SMR.Type = "SMR";
+
+            SMRTypeModel SMRAPP = new SMRTypeModel();
+            SMRAPP.Id = "2";
+            SMRAPP.Type = "SMRAPP";
+
+            SMRTypeModel info = new SMRTypeModel();
+            info.Id = "3";
+            info.Type = "info";
+
+
+            mSMRTypeList.Add(SMR);
+            mSMRTypeList.Add(SMRAPP);
+            mSMRTypeList.Add(info);
         }
     }
 }

@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models
 {
-    public class    SearchByModel : SearchType
+    public class SearchByModel : SearchType
     {
         public SearchByModel(SearchType searchType)
         {
@@ -13,7 +13,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models
             SearchTypeDesc = searchType.SearchTypeDesc;
         }
         public string SearchTypeDisplay { get; set; }
-    
+
 
         public SearchByModel() { }
         public bool isChecked { get; set; }
@@ -30,9 +30,16 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models
             UserRole = searhApplicationTypeModel.UserRole;
             isChecked = false;
         }
-        public TypeModel(){}
+        public TypeModel() { }
         public bool isChecked { get; set; }
-      
+
         public string ApplicationTypeDisplay { get; set; }
+    }
+
+    public class SMRTypeModel
+    {
+        public string Id { get; set; }
+        public string Type { get; set; }
+        public bool isChecked { get; set; }
     }
 }

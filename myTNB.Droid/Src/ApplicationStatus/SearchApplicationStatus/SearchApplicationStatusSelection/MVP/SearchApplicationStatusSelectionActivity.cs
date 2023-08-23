@@ -33,6 +33,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
 
         int mRequestKey = -1;
 
+        bool smrFlag = false;
+
         RecyclerView.LayoutManager layoutManager;
 
         SearchApplicationStatusAdapter mAdapter;
@@ -40,6 +42,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         List<TypeModel> mTypeList = new List<TypeModel>();
 
         List<SearchByModel> mSearchByList = new List<SearchByModel>();
+
+        List<SMRTypeModel> mSMRTypeList = new List<SMRTypeModel>();
 
         public override int ResourceId()
         {
@@ -132,6 +136,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             {
                 finishIntent.PutExtra(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY, JsonConvert.SerializeObject(mSearchByList));
             }
+            else if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_SMRTYPE_REQUEST_CODE)
+            {
+                finishIntent.PutExtra(Constants.APPLICATION_STATUS_SMRTYPE_LIST_KEY, JsonConvert.SerializeObject(mSMRTypeList));
+            }
             SetResult(Result.Ok, finishIntent);
             Finish();
         }
@@ -183,12 +191,23 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                             mSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>(extras.GetString(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY));
                         }
                     }
+                    else if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_SMRTYPE_REQUEST_CODE)
+                    {
+                        //  TODO: ApplicationStatus Multilingual
+                        SetToolBarTitle(Utility.GetLocalizedLabel("SearchByNumber", "title"));
+
+                        if (extras.ContainsKey(Constants.APPLICATION_STATUS_SMRTYPE_LIST_KEY))
+                        {
+                            mSMRTypeList = DeSerialze<List<SMRTypeModel>>(extras.GetString(Constants.APPLICATION_STATUS_SMRTYPE_LIST_KEY));
+                            smrFlag = true;
+                        }
+                    }
                 }
             }
 
             multiSelectBottomLayout.Visibility = ViewStates.Gone;
 
-            mAdapter = new SearchApplicationStatusAdapter(this, mRequestKey, mTypeList, mSearchByList);
+            mAdapter = new SearchApplicationStatusAdapter(this, mRequestKey, mTypeList, mSearchByList, mSMRTypeList, smrFlag);
 
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             filterListView.SetLayoutManager(layoutManager);

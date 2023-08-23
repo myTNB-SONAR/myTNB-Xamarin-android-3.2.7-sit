@@ -18,9 +18,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         public SearchApplicationStatusSelectionActivity mActivity;
         List<TypeModel> mTypeList = new List<TypeModel>();
         List<SearchByModel> mSearchByList = new List<SearchByModel>();
+        List<SMRTypeModel> mSMRTypeList = new List<SMRTypeModel>();
         public event EventHandler<int> ItemClick;
         int mRequestCode = -1;
         int countNumber = 0;
+        bool smrFlag;
 
         public void Clear()
         {
@@ -31,6 +33,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             else if (mRequestCode == Constants.APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE)
             {
                 mSearchByList.Clear();
+            }
+            else if (mRequestCode == Constants.APPLICATION_STATUS_FILTER_SMRTYPE_REQUEST_CODE)
+            {
+                mSMRTypeList.Clear();
             }
             countNumber = 0;
             this.NotifyDataSetChanged();
@@ -46,10 +52,17 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             return mSearchByList;
         }
 
+        public List<SMRTypeModel> GetSMRTypeByList()
+        {
+            return mSMRTypeList;
+        }
+
         public SearchApplicationStatusAdapter(SearchApplicationStatusSelectionActivity activity
             , int requestCode
             , List<TypeModel> typeData = null
-            , List<SearchByModel> searchByData = null)
+            , List<SearchByModel> searchByData = null
+            , List<SMRTypeModel> smrData = null
+            , bool smrFlag = false)
         {
             this.mActivity = activity;
             this.mRequestCode = requestCode;
@@ -76,6 +89,15 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                 }
                 countNumber = mSearchByList.Count;
             }
+            else if (mRequestCode == Constants.APPLICATION_STATUS_FILTER_SMRTYPE_REQUEST_CODE)
+            {
+                mSMRTypeList = new List<SMRTypeModel>();
+                if (smrData != null && smrData.Count > 0)
+                {
+                    mSMRTypeList.AddRange(smrData);
+                }
+                countNumber = mSMRTypeList.Count;
+            }
         }
 
         public override int ItemCount => countNumber;
@@ -94,13 +116,18 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                 var selectedSearchByList = mSearchByList[position];
                 vh.PopulateSearchByData(selectedSearchByList);
             }
+            else if (mRequestCode == Constants.APPLICATION_STATUS_FILTER_SMRTYPE_REQUEST_CODE)
+            {
+                var selectedSMRTypeList = mSMRTypeList[position];
+                vh.PopulateSMRTypeData(selectedSMRTypeList);
+            }
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
             var id = Resource.Layout.ApplicationStatusFilterListItemLayout;
             var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
-            return new ApplicationStatusFilterViewHolder(this.mActivity, this.mSearchByList, itemView, OnClick);
+            return new ApplicationStatusFilterViewHolder(this.mActivity, this.mSearchByList, itemView, smrFlag, OnClick);
         }
 
         void OnClick(int position)
@@ -150,6 +177,27 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                             ItemClick(this, position);
                     }
                 }
+                else if (mRequestCode == Constants.APPLICATION_STATUS_FILTER_SMRTYPE_REQUEST_CODE)
+                {
+                    var selectedTypeList = mSMRTypeList[position];
+                    bool previousSelectedFlag = selectedTypeList.isChecked;
+                   
+                    if (!previousSelectedFlag)
+                        previousSelectedFlag = !previousSelectedFlag;
+
+                    foreach (var item in mSMRTypeList)
+                    {
+                        item.isChecked = false;
+                    }
+
+
+                    selectedTypeList.isChecked = previousSelectedFlag;
+
+                    this.NotifyDataSetChanged();
+
+                    if (ItemClick != null)
+                        ItemClick(this, position);
+                }
             }
         }
     }
@@ -168,6 +216,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         public ApplicationStatusFilterViewHolder(SearchApplicationStatusSelectionActivity activity
             , List<SearchByModel> mSearchByList
             , View itemView
+            , bool smrFlag
             , Action<int> listener) : base(itemView)
         {
             context = itemView.Context;
@@ -182,17 +231,29 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             TextViewUtils.SetMuseoSans500Typeface(whyAccountsNotHere);
             txtFilterName.Click += (sender, e) => listener(base.LayoutPosition);
             chkApplicationFilter.Click += (sender, e) => listener(base.LayoutPosition);
-            whyAccountsNotHere.Click += (sender, e) => ShowWhereIsMyAcc(activity, mSearchByList);
+            whyAccountsNotHere.Click += (sender, e) => ShowWhereIsMyAcc(activity, mSearchByList, smrFlag);
         }
 
-        public async void ShowWhereIsMyAcc(Android.App.Activity context, List<SearchByModel> mSearchByList)
+        public async void ShowWhereIsMyAcc(Android.App.Activity context, List<SearchByModel> mSearchByList, bool smrFlag)
         {
-            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                .SetTitle(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberTitle"))
-                .SetMessage(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberMessage"))
+            if (smrFlag = true)
+            {
+                MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetTitle(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberSMRTitle"))
+                .SetMessage(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberSMRMessage"))
                 .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                 .Build();
-            whereisMyacc.Show();
+                whereisMyacc.Show();
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+               .SetTitle(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberTitle"))
+               .SetMessage(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberMessage"))
+               .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+               .Build();
+                whereisMyacc.Show();
+            }
         }
         public static Bitmap Base64ToBitmap(string base64String)
         {
@@ -273,5 +334,48 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             }
         }
 
+        public void PopulateSMRTypeData(SMRTypeModel item)
+        {
+            try
+            {
+                if (item.Type.Equals("info"))
+                {
+                    ctaSelection.Visibility = ViewStates.Visible;
+                    filterSelection.Visibility = ViewStates.Gone;
+
+                    whyAccountsNotHere.Text = Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberSMRInfoBar");
+                    TextViewUtils.SetTextSize12(whyAccountsNotHere);
+                }
+                else
+                {
+                    ctaSelection.Visibility = ViewStates.Gone;
+                    filterSelection.Visibility = ViewStates.Visible;
+                    TextViewUtils.SetTextSize16(txtFilterName);
+
+
+                    txtFilterName.Text = item.Type.ToString();
+                    TextViewUtils.SetTextSize16(txtFilterName);
+                    imgApplicationFilter.Visibility = ViewStates.Gone;
+                    chkApplicationFilter.Visibility = ViewStates.Gone;
+                    txtFilterName.Clickable = true;
+                    chkApplicationFilter.Clickable = false;
+
+                    if (item.isChecked)
+                    {
+                        imgApplicationFilter.Visibility = ViewStates.Visible;
+                    }
+
+                    txtFilterName.RequestLayout();
+                    imgApplicationFilter.RequestLayout();
+                    chkApplicationFilter.RequestLayout();
+                }
+
+               
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

@@ -516,6 +516,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string APPLICATION_STATUS_DETAIL_TITLE_KEY = "applicationStatusTitle";
         internal static readonly string APPLICATION_STATUS_DETAIL_RELOAD = "applicationStatusToBeReloaded";
         internal static readonly string APPLICATION_STATUS_DETAIL_RATED_TOAST_MESSAGE = "applicationStatusRatedToastMessage";
+        internal static readonly string APPLICATION_STATUS_SMRTYPE_LIST_KEY = "SMRtypeList";
         internal static readonly int APPLICATION_STATUS_FILTER_REQUEST_CODE = 29800;
         internal static readonly int APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE = 29801;
         internal static readonly int APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE = 29802;
@@ -530,6 +531,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APPLICATION_STATUS_DETAILS_FROM_NOTIFICATION_DETAILS_REQUEST_CODE = 29811;
         internal static readonly int APPLICATION_STATUS_LANDING_FROM_DASHBOARD_REQUEST_CODE = 29812;
         internal static readonly int APPLICATION_STATUS_DETAIL_FROM_DASHBOARD_REQUEST_CODE = 29814;
+        internal static readonly int APPLICATION_STATUS_FILTER_SMRTYPE_REQUEST_CODE = 29815;
 
         internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
         internal static readonly string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";
