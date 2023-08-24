@@ -493,8 +493,8 @@ namespace myTNB_Android.Src.MyHome.Activity
             var details = MyHomeUtil.Instance.MyHomeDetails;
             if (details != null)
             {
-                MyHomeUtil.Instance.ClearCache();
                 this.presenter?.OnReloadMicrosite(details);
+                MyHomeUtil.Instance.ClearCache();
             }
             else
             {
