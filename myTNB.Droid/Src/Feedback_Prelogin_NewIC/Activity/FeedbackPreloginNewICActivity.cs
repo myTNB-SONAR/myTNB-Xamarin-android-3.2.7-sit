@@ -762,7 +762,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         void OnDialogClick(object sender, EventArgs eventArgs)
         {
             string title;
-            if (OvisUnderMaintenance == true)
+            if (OvisUnderMaintenance)
             {
                 leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                  .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageMaintenanceTitle"))
@@ -771,10 +771,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                  .SetCTAaction(() => { leaveDialog.DismissDialog(); })
                  .Build();
                 leaveDialog.Show();
+
             }
             else if (IsServerDown)
             {
-                leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                leaveDialog = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON) //NORMAL_WITH_HEADER
                  .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailableTitle"))
                  .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimtemproryUnavailableDescription"))
                  .SetCTALabel(Utility.GetLocalizedLabel("SubmitEnquiry", "Gotit"))

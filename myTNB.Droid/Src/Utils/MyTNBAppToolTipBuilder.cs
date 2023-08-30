@@ -33,7 +33,8 @@ namespace myTNB_Android.Src.Utils
             MYTNB_DIALOG_IMAGE_ONE_BUTTON,
             MYTNB_DIALOG_ICON_ONE_BUTTON,
             MYTNB_DIALOG_ICON_TWO_BUTTON,
-            MYTNB_DIALOG_ICON_DROPDOWN_TWO_BUTTON
+            MYTNB_DIALOG_ICON_DROPDOWN_TWO_BUTTON,
+            MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON
         }
 
         private ToolTipType toolTipType;
@@ -138,6 +139,10 @@ namespace myTNB_Android.Src.Utils
             else if (mToolTipType == ToolTipType.MYTNB_DIALOG_IMAGE_ONE_BUTTON)
             {
                 layoutResource = Resource.Layout.CustomDialogOneButtonWithImage;
+            }
+            else if (mToolTipType == ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
+            {
+                layoutResource = Resource.Layout.MyTNBDialogWithFloatingImageWithOneButton;
             }
             tooltipBuilder.dialog = new MaterialDialog.Builder(context)
                 .CustomView(layoutResource, false)

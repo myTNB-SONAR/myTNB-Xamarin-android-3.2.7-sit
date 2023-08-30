@@ -15,6 +15,7 @@ using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ForgetPassword.Activity;
 using myTNB_Android.Src.Login.MVP;
 using myTNB_Android.Src.Login.Requests;
@@ -92,6 +93,7 @@ namespace myTNB_Android.Src.Login.Activity
         private bool UpdateUserStatusDeactivate = false;
         private bool fromlink = false;
         private string userId;
+        private bool isBCMRDownDialogShow = false;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -182,6 +184,14 @@ namespace myTNB_Android.Src.Login.Activity
                 Utility.LoggingNonFatalError(e);
             }
             SearchApplicationTypeCache.Instance.Clear();
+
+            if (DownTimeEntity.IsBCRMDown())
+            {
+                isBCMRDownDialogShow = true;
+
+                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                OnBCRMDownTimeErrorMessageV2(bcrmEntity);
+            }
         }
 
         public void ClearFields()
@@ -555,7 +565,7 @@ namespace myTNB_Android.Src.Login.Activity
         {
             try
             {
-                if (!this.GetIsClicked())
+                if (!this.GetIsClicked() && !isBCMRDownDialogShow)
                 {
                     this.SetIsClicked(true);
                     string em_str = txtEmail.Text.ToString().Trim();
@@ -572,7 +582,7 @@ namespace myTNB_Android.Src.Login.Activity
         [OnClick(Resource.Id.txtForgotPassword)]
         void OnForgetPassword(object sender, EventArgs eventArgs)
         {
-            if (!this.GetIsClicked())
+            if (!this.GetIsClicked() && !isBCMRDownDialogShow)
             {
                 this.SetIsClicked(true);
                 this.userActionsListener.NavigateToForgetPassword();
@@ -582,7 +592,7 @@ namespace myTNB_Android.Src.Login.Activity
         [OnClick(Resource.Id.txtRegisterAccount)]
         void OnRegisterAccount(object sender, EventArgs eventArgs)
         {
-            if (!this.GetIsClicked())
+            if (!this.GetIsClicked() && !isBCMRDownDialogShow)
             {
                 this.SetIsClicked(true);
                 this.userActionsListener.NavigateToRegistrationForm();
@@ -912,6 +922,18 @@ namespace myTNB_Android.Src.Login.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
+        {
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+            .SetHeaderImage(Resource.Drawable.maintenance_bcrm_v2)
+            .SetTitle(bcrmEntity.DowntimeTextMessage)
+            .SetMessage(bcrmEntity.DowntimeMessage)
+            .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
+            .SetCTAaction(() => { isBCMRDownDialogShow = false; })
+            .Build()
+            .Show();
         }
     }
 }
