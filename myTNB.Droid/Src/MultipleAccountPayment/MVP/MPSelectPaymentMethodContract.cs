@@ -5,6 +5,7 @@ using myTNB_Android.Src.MyTNBService.Response;
 using System.Collections.Generic;
 using static myTNB_Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
 using myTNB.Mobile.API.Models.ApplicationStatus;
+using myTNB_Android.Src.Base.Models;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 {
@@ -107,7 +108,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// <summary>
             /// Service call for initializing payment, this api is called to initiate payment request Api : GetPaymentTransactionId
             /// </summary>
-            void InitializePaymentTransaction(string custName, string custPhone, string platform, string registeredCardId, string paymentMode, string totalAmount, List<PaymentItem> paymentItems);
+            void InitializePaymentTransaction(DeviceInterface deviceInf, string custName, string custPhone, string platform, string registeredCardId, string paymentMode, string totalAmount, List<PaymentItem> paymentItems, string applicationType, string applicationRefNo, bool isMyHomeFlow);
 
             void InitializeApplicationPaymentTransaction(object userInfo
                 , string customerName

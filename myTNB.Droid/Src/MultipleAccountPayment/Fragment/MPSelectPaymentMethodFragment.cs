@@ -149,9 +149,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     .Build();
 
                 ((PaymentActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
-                if (Arguments.ContainsKey("ISAPPLICATIONPAYMENT") && Arguments.GetBoolean("ISAPPLICATIONPAYMENT"))
+                if (Arguments.ContainsKey("ISAPPLICATIONPAYMENT"))
                 {
-                    IsApplicationPayment = true;
+                    IsApplicationPayment = Arguments.GetBoolean("ISAPPLICATIONPAYMENT");
 
                     if (Arguments.ContainsKey("APPLICATIONPAYMENTDETAILS"))
                     {
@@ -703,6 +703,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             {
                 if (IsValidPayableAmount())
                 {
+                    DeviceInterface currentDvdInf = new DeviceInterface()
+                    {
+                        DeviceId = UserSessions.GetDeviceId(),
+                        AppVersion = DeviceIdUtils.GetAppVersionName(),
+                        OsType = Constants.DEVICE_PLATFORM,
+                        OsVersion = DeviceIdUtils.GetAndroidVersion(),
+                        DeviceDesc = LanguageUtil.GetAppLanguage().ToUpper(),
+                        VersionCode = ""
+                    };
+
                     string custName = string.Empty;
                     if (IsApplicationPayment)
                     {
@@ -719,6 +729,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         : UserEntity.GetActive().MobileNo ?? string.Empty;
                     string platform = Constants.DEVICE_PLATFORM; // 1 Android
                     string paymentMode = selectedPaymentMethod;
+                    //myHome
+                    string applicationType = MyHomeUtil.Instance.ApplicationType ?? null;
+                    string applicationRefNo = MyHomeUtil.Instance.ReferenceNo ?? null;
+                    bool isMyHomeFlow = false; 
+                    if (applicationType != null && applicationRefNo != null)
+                    {
+                        isMyHomeFlow = true;
+                    }
                     /* Get user registered cards */
                     string registeredCardId = selectedCard == null ? string.Empty : selectedCard.Id;
                     DeletePaymentHistory();
@@ -742,13 +760,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else
                     {
-                        this.userActionsListener.InitializePaymentTransaction(custName
+                        this.userActionsListener.InitializePaymentTransaction(currentDvdInf
+                            , custName
                             , custPhone
                             , platform
                             , registeredCardId
                             , paymentMode
                             , total
-                            , selectedPaymentItemList);
+                            , selectedPaymentItemList
+                            , applicationType
+                            , applicationRefNo
+                            , isMyHomeFlow);
                     }
                 }
                 else
