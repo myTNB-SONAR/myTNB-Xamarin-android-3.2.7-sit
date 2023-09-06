@@ -295,6 +295,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                     else
                                     {
                                         bool dbrEnable = false;
+                                        bool myHomeEnabled = false;
 
                                         if (item.isOwner)
                                         {
@@ -309,6 +310,18 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                             dbrEnable = false;
                                         }
 
+                                        //myHome: hide dbrBanner & flag for continue button
+                                        MyHomeUtil.Instance.SetMyHomeEnabled();
+                                        if (MyHomeUtil.Instance.myHomeEnabled == true)
+                                        {
+                                            dbrEnable = false;
+                                            myHomeEnabled = true;
+                                        }
+                                        else
+                                        {
+                                            myHomeEnabled = true;
+                                        }
+
                                         PaymentItem payItem = new PaymentItem
                                         {
                                             AccountOwnerName = customerBillingAccount.OwnerName,
@@ -317,7 +330,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                             //dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1
                                             //dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1 //enable for tenant
 
-                                            dbrEnabled = dbrEnable //enable for tenant
+                                            dbrEnabled = dbrEnable, //enable for tenant
+                                            myHomeEnabled = myHomeEnabled
                                         };
                                         selectedPaymentItemList.Add(payItem);
                                     }
@@ -732,11 +746,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     //myHome
                     string applicationType = MyHomeUtil.Instance.ApplicationType ?? null;
                     string applicationRefNo = MyHomeUtil.Instance.ReferenceNo ?? null;
-                    bool isMyHomeFlow = false; 
-                    if (applicationType != null && applicationRefNo != null)
-                    {
-                        isMyHomeFlow = true;
-                    }
                     /* Get user registered cards */
                     string registeredCardId = selectedCard == null ? string.Empty : selectedCard.Id;
                     DeletePaymentHistory();
@@ -769,8 +778,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                             , total
                             , selectedPaymentItemList
                             , applicationType
-                            , applicationRefNo
-                            , isMyHomeFlow);
+                            , applicationRefNo);
                     }
                 }
                 else

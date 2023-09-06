@@ -39,9 +39,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             //InitiatePaymentRequestAsync(apiKeyID, custName, custEmail, custPhone, sspUserID, platform, registeredCardId, paymentMode, totalAmount, paymentItems);
         }
 
-        public void InitializePaymentTransaction(DeviceInterface deviceInf, string custName, string custPhone, string platform, string registeredCardId, string paymentMode, string totalAmount, List<PaymentItem> paymentItems, string applicationType, string applicationRefNo, bool isMyHomeFlow)
+        public void InitializePaymentTransaction(DeviceInterface deviceInf, string custName, string custPhone, string platform, string registeredCardId, string paymentMode, string totalAmount, List<PaymentItem> paymentItems, string applicationType, string applicationRefNo)
         {
-            GetPaymentTransactionId(deviceInf, custName, custPhone, platform, registeredCardId, paymentMode, totalAmount, paymentItems, applicationType, applicationRefNo, isMyHomeFlow);
+            GetPaymentTransactionId(deviceInf, custName, custPhone, platform, registeredCardId, paymentMode, totalAmount, paymentItems, applicationType, applicationRefNo);
         }
 
         public void InitializeApplicationPaymentTransaction(object userInfo
@@ -131,12 +131,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             // NO IMPL
         }
 
-        public async void GetPaymentTransactionId(DeviceInterface deviceInf, string custName, string custPhone, string platform, string registeredCardId, string paymentMode, string totalAmount, List<PaymentItem> paymentItems, string applicationType, string applicationRefNo, bool isMyHomeFlow)
+        public async void GetPaymentTransactionId(DeviceInterface deviceInf, string custName, string custPhone, string platform, string registeredCardId, string paymentMode, string totalAmount, List<PaymentItem> paymentItems, string applicationType, string applicationRefNo)
         {
             try
             {
                 this.mView.ShowPaymentRequestDialog();
-                PaymentTransactionIdRequest paymentTransactionIdRequest = new PaymentTransactionIdRequest(deviceInf, custName, custPhone, platform, registeredCardId, paymentMode, totalAmount, paymentItems, applicationType, applicationRefNo, isMyHomeFlow);
+                PaymentTransactionIdRequest paymentTransactionIdRequest = new PaymentTransactionIdRequest(deviceInf, custName, custPhone, platform, registeredCardId, paymentMode, totalAmount, paymentItems, applicationType, applicationRefNo);
                 Debug.WriteLine("[DEBUG] [GetPaymentTransactionId REQUEST]: " + JsonConvert.SerializeObject(paymentTransactionIdRequest));
                 PaymentTransactionIdResponse response = await ServiceApiImpl.Instance.GetPaymentTransactionId(paymentTransactionIdRequest);
                 Debug.WriteLine("[DEBUG] [GetPaymentTransactionId RESPONSE]: " + JsonConvert.SerializeObject(response));

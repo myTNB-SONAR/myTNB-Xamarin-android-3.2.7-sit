@@ -108,7 +108,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// <summary>
             /// Service call for initializing payment, this api is called to initiate payment request Api : GetPaymentTransactionId
             /// </summary>
-            void InitializePaymentTransaction(DeviceInterface deviceInf, string custName, string custPhone, string platform, string registeredCardId, string paymentMode, string totalAmount, List<PaymentItem> paymentItems, string applicationType, string applicationRefNo, bool isMyHomeFlow);
+            void InitializePaymentTransaction(DeviceInterface deviceInf, string custName, string custPhone, string platform, string registeredCardId, string paymentMode, string totalAmount, List<PaymentItem> paymentItems, string applicationType, string applicationRefNo);
 
             void InitializeApplicationPaymentTransaction(object userInfo
                 , string customerName

@@ -13,6 +13,7 @@ namespace myTNB_Android.Src.MyHome
         public bool IsCOTCOAFlow;
         public string ApplicationType;
         public string ReferenceNo;
+        public bool myHomeEnabled;
 
         public static MyHomeUtil Instance
         {
@@ -52,6 +53,14 @@ namespace myTNB_Android.Src.MyHome
             IsCOTCOAFlow = false;
             ApplicationType = string.Empty;
             ReferenceNo = string.Empty;
+        }
+
+        public void SetMyHomeEnabled()
+        {
+            if ((ApplicationType != null && ApplicationType != "") && (ReferenceNo != null && ReferenceNo != ""))
+            {
+                myHomeEnabled = true;
+            }
         }
     }
 }

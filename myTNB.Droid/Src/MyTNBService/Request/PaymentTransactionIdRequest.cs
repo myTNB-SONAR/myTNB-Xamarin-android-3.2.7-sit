@@ -20,9 +20,8 @@ namespace myTNB_Android.Src.MyTNBService.Request
         public List<PaymentItem> paymentItems { get; set; }
         public string applicationType { get; set; } = string.Empty;
         public string applicationRefNo { get; set; } = string.Empty;
-        public bool isMyHomeFlow { get; set; }
         public PaymentTransactionIdRequest(DeviceInterface deviceInf, string customerName, string phoneNo, string platform, string registeredCardId,
-            string paymentMode, string totalAmount, List<PaymentItem> paymentItems, string applicationType, string applicationRefNo, bool isMyHomeFlow)
+            string paymentMode, string totalAmount, List<PaymentItem> paymentItems, string applicationType, string applicationRefNo)
         {
             this.deviceInf = deviceInf;
             this.customerName = customerName;
@@ -34,7 +33,6 @@ namespace myTNB_Android.Src.MyTNBService.Request
             this.paymentItems = paymentItems;
             this.applicationType = MyHomeUtil.Instance.ApplicationType ?? null;
             this.applicationRefNo = MyHomeUtil.Instance.ReferenceNo ?? null;
-            this.isMyHomeFlow = isMyHomeFlow;
         }
 
         public class PaymentItemAccountPayment : PaymentItem
@@ -48,6 +46,7 @@ namespace myTNB_Android.Src.MyTNBService.Request
             public string AccountNo { get; set; }
             public string AccountAmount { get; set; }
             public bool dbrEnabled { get; set; }
+            public bool myHomeEnabled { get; set; }
         }
 
         public class AccountPayment

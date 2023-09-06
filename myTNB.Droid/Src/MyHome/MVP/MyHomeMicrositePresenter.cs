@@ -34,6 +34,7 @@ using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdRespons
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Billing.MVP;
+using System.Web;
 
 namespace myTNB_Android.Src.MyHome.MVP
 {
@@ -242,8 +243,8 @@ namespace myTNB_Android.Src.MyHome.MVP
                     AccountData selectedAccount = new AccountData()
                     {
                         AccountNum = ca,
-                        AccountNickName = accountName,
-                        AddStreet = accountAddress,
+                        AccountNickName = HttpUtility.UrlDecode(accountName),
+                        AddStreet = HttpUtility.UrlDecode(accountAddress),
                         IsOwner = bool.Parse(isOwnerString)
                     };
 
