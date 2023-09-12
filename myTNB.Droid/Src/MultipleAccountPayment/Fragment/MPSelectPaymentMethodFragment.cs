@@ -310,18 +310,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                             dbrEnable = false;
                                         }
 
-                                        //myHome: hide dbrBanner & flag for continue button
-                                        MyHomeUtil.Instance.SetMyHomeEnabled();
-                                        if (MyHomeUtil.Instance.myHomeEnabled == true)
-                                        {
-                                            dbrEnable = false;
-                                            myHomeEnabled = true;
-                                        }
-                                        else
-                                        {
-                                            myHomeEnabled = true;
-                                        }
-
                                         PaymentItem payItem = new PaymentItem
                                         {
                                             AccountOwnerName = customerBillingAccount.OwnerName,
@@ -330,8 +318,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                             //dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber && customerBillingAccount.isOwned) > -1
                                             //dbrEnabled = PaymentActivity.CAsWithPaperBillList.FindIndex(x => x == item.accountNumber) > -1 //enable for tenant
 
-                                            dbrEnabled = dbrEnable, //enable for tenant
-                                            myHomeEnabled = myHomeEnabled
+                                            dbrEnabled = MyHomeUtil.Instance.IsCOTCOAFlow ? false : dbrEnable, //enable for tenant
+                                            myHomeEnabled = MyHomeUtil.Instance.IsCOTCOAFlow
                                         };
                                         selectedPaymentItemList.Add(payItem);
                                     }
