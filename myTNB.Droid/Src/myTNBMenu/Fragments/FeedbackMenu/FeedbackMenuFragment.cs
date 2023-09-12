@@ -98,6 +98,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         [BindView(Resource.Id.spaceNewEnquiry)]
         View spaceNewEnquiry;
 
+        [BindView(Resource.Id.ImageView_idFeedbackNewIC)]
+        ImageView ImageView_idFeedbackNewIC;
 
         FeedbackMenuContract.IUserActionsListener userActionsListener;
         FeedbackMenuPresenter mPresenter;
@@ -159,8 +161,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
             if (bcrmEntity.IsDown)
             {
+                ImageView_idFeedbackNewIC.SetImageResource(Resource.Drawable.ic_feedback_bill_disable);
                 txtFeedbackBillingAndPayment.SetTextColor(Android.Graphics.Color.Gray);
                 txtFeedbackBillingAndPaymentContent.SetTextColor(Android.Graphics.Color.Gray);
+                txtViewid_FeedbackNewIC.SetTextColor(Android.Graphics.Color.Gray);
+                textviewid_subContent_FeedbackNewIC.SetTextColor(Android.Graphics.Color.Gray);
             }
         }
 
@@ -265,17 +270,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                if (DownTimeEntity.IsBCRMDown())
-                {
-                    this.SetIsClicked(false);
-                    //OnBCRMDownTimeErrorMessage();
-                    DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
-                    OnBCRMDownTimeErrorMessageV2(bcrmEntity);
-                }
-                else
-                {
-                    this.userActionsListener.OnBillingPayment();
-                }
+                this.userActionsListener.OnBillingPayment();
+                
             }
         }
 
@@ -317,17 +313,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                if (DownTimeEntity.IsBCRMDown())
-                {
-                    this.SetIsClicked(false);
-                    //OnBCRMDownTimeErrorMessage();
-                    DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
-                    OnBCRMDownTimeErrorMessageV2(bcrmEntity);
-                }
-                else
-                {
-                    this.userActionsListener.OnFaultyStreetLamps();
-                }
+                this.userActionsListener.OnFaultyStreetLamps();
             }
         }
 
@@ -337,17 +323,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                if (DownTimeEntity.IsBCRMDown())
-                {
-                    this.SetIsClicked(false);
-                    //OnBCRMDownTimeErrorMessage();
-                    DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
-                    OnBCRMDownTimeErrorMessageV2(bcrmEntity);
-                }
-                else
-                {
-                    this.userActionsListener.OnOthers();
-                }
+                this.userActionsListener.OnOthers();
+               
             }
         }
 
@@ -368,6 +345,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 }
                 this.SetIsClicked(true);
                 this.userActionsListener.OnSubmittedFeedback();
+               
+                
             }
         }
 
@@ -600,14 +579,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
         public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
         {
-            MyTNBAppToolTipBuilder.Create(Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
-            .SetHeaderImage(Resource.Drawable.maintenance_bcrm)
-            .SetTitle(bcrmEntity.DowntimeTextMessage)
-            .SetMessage(bcrmEntity.DowntimeMessage)
-            .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
-            .Build()
-            .Show();
-            //MyTNBAccountManagement.GetInstance().SetIsMaintenanceDialogShown(true);
+            MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
+           .SetHeaderImage(Resource.Drawable.maintenance_bcrm_v2)
+           .SetTitle(bcrmEntity.DowntimeTextMessage)
+           .SetMessage(bcrmEntity.DowntimeMessage)
+           .SetCTALabel(Utility.GetLocalizedCommonLabel("close"))
+           //.SetCTAaction(() => { isBCMRDownDialogShow = false; })
+           .Build()
+           .Show();
         }
 
     }

@@ -140,6 +140,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.img_display)]
         ImageView img_display;
 
+        private bool isBCMRDownDialogShow = false;
+
         private void UpdateLabels()
         {
             string textFindUs = Utility.GetLocalizedLabel("Prelogin", "findUs");
@@ -218,6 +220,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 GenerateCallUsCardLayout();
                 GenerateCheckStatusCardLayout();
                 GenerateFeedbackCardLayout();
+                OncheckBCRMDownTime();
 
                 ISharedPreferences preferences = PreferenceManager.GetDefaultSharedPreferences(this);
                 ISharedPreferencesEditor editor = preferences.Edit();
@@ -868,6 +871,29 @@ namespace myTNB_Android.Src.PreLogin.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void OncheckBCRMDownTime()
+        {
+            if (DownTimeEntity.IsBCRMDown())
+            {
+                isBCMRDownDialogShow = true;
+
+                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                OnBCRMDownTimeErrorMessageV2(bcrmEntity);
+            }
+        }
+
+        public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
+        {
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
+            .SetHeaderImage(Resource.Drawable.maintenance_bcrm_v2)
+            .SetTitle(bcrmEntity.DowntimeTextMessage)
+            .SetMessage(bcrmEntity.DowntimeMessage)
+            .SetCTALabel(Utility.GetLocalizedCommonLabel("close"))
+            .SetCTAaction(() => { isBCMRDownDialogShow = false; })
+            .Build()
+            .Show();
         }
     }
 }

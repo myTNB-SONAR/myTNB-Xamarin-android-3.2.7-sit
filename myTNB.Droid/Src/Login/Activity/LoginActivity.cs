@@ -185,13 +185,6 @@ namespace myTNB_Android.Src.Login.Activity
             }
             SearchApplicationTypeCache.Instance.Clear();
 
-            if (DownTimeEntity.IsBCRMDown())
-            {
-                isBCMRDownDialogShow = true;
-
-                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                OnBCRMDownTimeErrorMessageV2(bcrmEntity);
-            }
         }
 
         public void ClearFields()
@@ -924,16 +917,5 @@ namespace myTNB_Android.Src.Login.Activity
             return PAGE_ID;
         }
 
-        public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
-        {
-            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
-            .SetHeaderImage(Resource.Drawable.maintenance_bcrm_v2)
-            .SetTitle(bcrmEntity.DowntimeTextMessage)
-            .SetMessage(bcrmEntity.DowntimeMessage)
-            .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
-            .SetCTAaction(() => { isBCMRDownDialogShow = false; })
-            .Build()
-            .Show();
-        }
     }
 }

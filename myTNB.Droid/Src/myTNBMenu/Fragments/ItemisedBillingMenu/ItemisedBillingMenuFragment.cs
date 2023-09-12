@@ -346,11 +346,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 else
                 {
                     DownTimeEntity pgXEntity = DownTimeEntity.GetByCode(Constants.PG_SYSTEM);
-                    Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
-                    {
-                        this.SetIsClicked(false);
+                    OnBCRMDownTimeErrorMessageV2(pgXEntity);
+                    this.SetIsClicked(false);
+                    //Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
+                    //{
+                    //    this.SetIsClicked(false);
 
-                    });
+                    //});
                 }
             }
         }
@@ -1668,6 +1670,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public bool GetIsIneligiblePopUpActive()
         {
             return isIneligiblePopUpActive;
+        }
+
+        public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
+        {
+            MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
+            .SetHeaderImage(Resource.Drawable.maintenance_bcrm_v2)
+            .SetTitle(bcrmEntity.DowntimeTextMessage)
+            .SetMessage(bcrmEntity.DowntimeMessage)
+            .SetCTALabel(Utility.GetLocalizedCommonLabel("close"))
+            //.SetCTAaction(() => { isBCMRDownDialogShow = false; })
+            .Build()
+            .Show();
         }
     }
 }

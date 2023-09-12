@@ -1890,10 +1890,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 DownTimeEntity pgXEntity = DownTimeEntity.GetByCode(Constants.PG_SYSTEM);
                                 if (pgXEntity != null)
                                 {
-                                    Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
-                                    {
-                                        this.SetIsClicked(false);
-                                    });
+                                    OnBCRMDownTimeErrorMessageV2(pgXEntity);
+                                    this.SetIsClicked(false);
+                                    //Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
+                                    //{
+                                    //    this.SetIsClicked(false);
+                                    //});
                                 }
                             }
                         }
@@ -4369,6 +4371,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Home.Home_Banner);
             ((DashboardHomeActivity)Activity).NavigateToNBR();
+        }
+
+        public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
+        {
+            MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
+            .SetHeaderImage(Resource.Drawable.maintenance_bcrm_v2)
+            .SetTitle(bcrmEntity.DowntimeTextMessage)
+            .SetMessage(bcrmEntity.DowntimeMessage)
+            .SetCTALabel(Utility.GetLocalizedCommonLabel("close"))
+            //.SetCTAaction(() => { isBCRMDown = false; })
+            .Build()
+            .Show();
         }
     }
 }
