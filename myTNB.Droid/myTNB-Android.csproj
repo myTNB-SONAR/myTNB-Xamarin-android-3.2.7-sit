@@ -8108,10 +8108,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\silver_chalice_button_background_whiteText.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\notification_maintenance_banner_V2.png">
       <SubType></SubType>
       <Generator></Generator>
