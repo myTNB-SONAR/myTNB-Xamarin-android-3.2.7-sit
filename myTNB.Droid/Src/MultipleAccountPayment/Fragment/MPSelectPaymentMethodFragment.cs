@@ -720,7 +720,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     DeviceInterface currentDvdInf = new DeviceInterface()
                     {
                         DeviceId = UserSessions.GetDeviceId(),
-                        AppVersion = DeviceIdUtils.GetAppVersionName(),
+                        AppVersion = DeviceIdUtils.GetAppVersionName().Replace("v", string.Empty),
                         OsType = Constants.DEVICE_PLATFORM,
                         OsVersion = DeviceIdUtils.GetAndroidVersion(),
                         DeviceDesc = LanguageUtil.GetAppLanguage().ToUpper(),
