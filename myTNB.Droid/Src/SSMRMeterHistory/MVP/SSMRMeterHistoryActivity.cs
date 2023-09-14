@@ -1009,7 +1009,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
         {
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
-           .SetHeaderImage(Resource.Drawable.maintenance_bcrm_v2)
+           .SetHeaderImage(Resource.Drawable.maintenance_bcrm_new)
            .SetTitle(bcrmEntity.DowntimeTextMessage)
            .SetMessage(bcrmEntity.DowntimeMessage)
            .SetCTALabel(Utility.GetLocalizedCommonLabel("close"))

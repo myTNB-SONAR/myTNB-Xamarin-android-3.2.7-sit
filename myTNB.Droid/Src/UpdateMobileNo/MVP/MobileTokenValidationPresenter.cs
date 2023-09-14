@@ -570,20 +570,12 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
                         if (OldNCAccDate != null)
                         {
-                            DateTime OldNCAccDateTime = Convert.ToDateTime(OldNCAccDate); //old datetime
-                            DateTime NewNCAccDateTime;
-
+                            //listNC[0].CreatedBy = "NC Engine"; //hardcode temp
                             int countNewNCAdded = 0;
                             for (int x = 0; x < listNC.Count; x++)
                             {
-                                NewNCAccDateTime = Convert.ToDateTime(listNC[x].CreatedDate);
-
-                                if (OldNCAccDateTime == NewNCAccDateTime)
-                                {
-                                    //same date
-
-                                }
-                                if (OldNCAccDateTime < NewNCAccDateTime)
+                                //if (listNC[x].CreatedBy != "NC Engine" && listNC[x].CreatedBy != UserEntity.GetActive().Email && listNC[x].CreatedBy != "system")
+                                if (listNC[x].CreatedBy == null)
                                 {
                                     countNewNCAdded++;
                                 }
@@ -592,16 +584,29 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             if (countNewNCAdded > 0)
                             {
                                 UserSessions.UpdateNCFlag(mSharedPref);
-                                UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate);
-                                UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //overlay highlight flag
-                                //trigger home ovelay tutorial
-                                UserSessions.UpdateNCTutorialShown(mSharedPref);
+                                UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save created date
+                                UserSessions.SaveNCFlag(mSharedPref, countNewNCAdded); //count nc ca
+                                UserSessions.UpdateNCTutorialShown(mSharedPref); //trigger home ovelay tutorial
 
                                 try
                                 {
-                                    NCAutoAddAccountsRequest ncAccountRequest = new NCAutoAddAccountsRequest(listNC[0].ICNum);
-                                    string s = JsonConvert.SerializeObject(ncAccountRequest);
+                                    NCAutoAddAccountsRequest ncAccountRequest = new NCAutoAddAccountsRequest(UserEntity.GetActive().IdentificationNo);
+                                    //string s = JsonConvert.SerializeObject(ncAccountRequest);
                                     var ncAccountResponse = await ServiceApiImpl.Instance.NCAutoAddAccounts(ncAccountRequest);
+
+                                    if (mView.IsActive())
+                                    {
+                                        this.mView.HideProgressDialog();
+                                    }
+
+                                    if (ncAccountResponse.IsSuccessResponse())
+                                    {
+                                        this.mView.HideProgressDialog();
+                                    }
+                                    else
+                                    {
+                                        this.mView.HideProgressDialog();
+                                    }
 
                                 }
                                 catch (Exception e)
@@ -610,30 +615,40 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                 }
 
                             }
-
                         }
-                        else
+                        else //first time nc overlay for app launch
                         {
-                            UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save date kalau kosong
-
+                            UserSessions.SetNCDate(mSharedPref, listNC[0].CreatedDate); //save date if null
                             UserSessions.UpdateNCFlag(mSharedPref);
-                            UserSessions.SaveNCFlag(mSharedPref, listNC.Count);
-
-                            //pannggil overlay
-                            UserSessions.UpdateNCTutorialShown(mSharedPref);
+                            UserSessions.SaveNCFlag(mSharedPref, listNC.Count); //assign total count nc ca = 0
+                            UserSessions.UpdateNCTutorialShown(mSharedPref); //trigger home ovelay tutorial
 
                             try
                             {
-                                NCAutoAddAccountsRequest ncAccountRequest = new NCAutoAddAccountsRequest(listNC[0].ICNum);
-                                string s = JsonConvert.SerializeObject(ncAccountRequest);
+                                NCAutoAddAccountsRequest ncAccountRequest = new NCAutoAddAccountsRequest(UserEntity.GetActive().IdentificationNo);
+                                //string s = JsonConvert.SerializeObject(ncAccountRequest);
                                 var ncAccountResponse = await ServiceApiImpl.Instance.NCAutoAddAccounts(ncAccountRequest);
+
+                                if (mView.IsActive())
+                                {
+                                    this.mView.HideProgressDialog();
+                                }
+
+                                if (ncAccountResponse.IsSuccessResponse())
+                                {
+                                    this.mView.HideProgressDialog();
+                                }
+                                else
+                                {
+                                    this.mView.HideProgressDialog();
+                                }
+
 
                             }
                             catch (Exception e)
                             {
                                 Utility.LoggingNonFatalError(e);
                             }
-
                         }
 
                     }

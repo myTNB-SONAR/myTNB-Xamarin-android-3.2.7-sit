@@ -146,7 +146,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_MAINTENANCE_ID:
                         {
-                            imageResourceBanner = Resource.Drawable.notification_maintenance_banner_V2;
+                            imageResourceBanner = Resource.Drawable.notification_maintenance_banner_v2;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_METER_READING_OPEN_ID:

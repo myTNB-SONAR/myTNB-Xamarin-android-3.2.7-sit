@@ -8064,26 +8064,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\maintenance_bcrm_v2.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\maintenance_bcrm_v2.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\maintenance_bcrm_v2.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\maintenance_bcrm_v2.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\maintenance_bcrm_v2.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\MyTNBDialogWithFloatingImageWithOneButton.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -8108,23 +8088,43 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\notification_maintenance_banner_V2.png">
+    <AndroidResource Include="Resources\drawable-hdpi\notification_maintenance_banner_v2.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\notification_maintenance_banner_V2.png">
+    <AndroidResource Include="Resources\drawable-mdpi\notification_maintenance_banner_v2.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\notification_maintenance_banner_V2.png">
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_maintenance_banner_v2.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\notification_maintenance_banner_V2.png">
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_maintenance_banner_v2.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_maintenance_banner_V2.png">
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_maintenance_banner_v2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\maintenance_bcrm_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\maintenance_bcrm_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\maintenance_bcrm_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\maintenance_bcrm_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\maintenance_bcrm_new.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

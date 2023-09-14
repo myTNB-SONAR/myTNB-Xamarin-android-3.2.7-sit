@@ -778,5 +778,17 @@ namespace myTNB_Android.Src.UpdateMobileNo
             tv.SetMaxLines(5);
             mNoInternetSnackbar.Show();
         }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }
