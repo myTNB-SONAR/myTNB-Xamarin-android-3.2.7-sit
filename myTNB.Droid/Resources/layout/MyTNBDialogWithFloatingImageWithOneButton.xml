@@ -104,7 +104,27 @@ For bill payment, you can use alternative payment channels such as JomPAY (Bille
 			</LinearLayout>
 		</ScrollView>
 	</androidx.cardview.widget.CardView>
-</LinearLayout>-->
+-->	<!--<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+		android:layout_marginLeft="18dp"
+		android:layout_marginRight="18dp">
+		
+					<View
+					android:id="@+id/dialogHeaderTransparent"
+					android:layout_width="match_parent"
+					android:layout_height= "70dp"
+					android:layout_marginTop= "50dp"
+					android:background="@color/white"/>
+					<ImageView
+					android:id="@+id/dialogHeaderImg"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:scaleType="center"
+					android:src="@drawable/maintenance_bcrm_v2"/>
+
+	</RelativeLayout>-->
+<!--</LinearLayout>-->
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
@@ -128,14 +148,15 @@ For bill payment, you can use alternative payment channels such as JomPAY (Bille
 			android:id="@+id/rootView"
 			android:background="@drawable/custom_round_white_dialog_shadow">
 			<LinearLayout
+				android:orientation="vertical"
 				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:id="@+id/rootView">
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:id="@+id/rootView">>
 					<ImageView
-						android:id="@+id/dialogHeaderImg"
+						android:id="@+id/imgToolTipHeader"
 						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:scaleType="fitXY"
+						android:layout_height="match_parent"
 						android:adjustViewBounds="true"
 						android:src="@drawable/maintenance_bcrm_new"/>
 			</LinearLayout>
@@ -151,7 +172,22 @@ For bill payment, you can use alternative payment channels such as JomPAY (Bille
 					android:textSize="16dp"
 					android:lineSpacingExtra="3dp"
 					android:gravity="center"/>
-			
+			<!--<TextView
+				android:id="@+id/txtToolTipTitle"
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:layout_gravity="center"
+				android:textColor="@color/tunaGrey"
+				android:layout_marginLeft="16dp"
+				android:layout_marginRight="16dp"
+				android:layout_marginTop="15dp"
+				android:layout_marginBottom="9dp"
+				android:maxLines="12"
+				android:scrollbars="vertical"
+				android:text="Dear valued customer,"
+				android:textSize="14dp"
+				android:textColorLink="@color/powerBlue"
+				android:lineSpacingExtra="3dp"/>-->
 			<TextView
 				android:id="@+id/txtToolTipMessage"
 				android:layout_height="wrap_content"
