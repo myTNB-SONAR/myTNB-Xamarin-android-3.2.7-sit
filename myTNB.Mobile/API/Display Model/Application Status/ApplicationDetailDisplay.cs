@@ -202,7 +202,7 @@ namespace myTNB.Mobile
             get
             {
                 string message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "portalMessage");
-                if (ApplicationTypeCode == "NC")
+                if (ApplicationTypeCode == "NC" || ApplicationTypeCode == "COA" || ApplicationTypeCode == "COT")
                 {
                     if (CTAType == DetailCTAType.DeleteApplication)
                     {
