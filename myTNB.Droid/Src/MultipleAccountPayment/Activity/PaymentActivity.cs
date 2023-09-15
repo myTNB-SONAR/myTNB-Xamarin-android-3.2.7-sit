@@ -152,9 +152,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         accountChargeList = DeSerialze<List<AccountChargeModel>>(extras.GetString("ACCOUNT_CHARGES_LIST"));
                     }
 
-                    if (extras.ContainsKey("ISAPPLICATIONPAYMENT") && Intent.Extras.GetBoolean("ISAPPLICATIONPAYMENT"))
+                    if (extras.ContainsKey("ISAPPLICATIONPAYMENT"))
                     {
-                        IsApplicationPayment = true;
+                        IsApplicationPayment = Intent.Extras.GetBoolean("ISAPPLICATIONPAYMENT");
                         if (extras.ContainsKey("APPLICATIONPAYMENTDETAIL"))
                         {
                             ApplicationPaymentDetail = DeSerialze<ApplicationPaymentDetail>(extras.GetString("APPLICATIONPAYMENTDETAIL"));

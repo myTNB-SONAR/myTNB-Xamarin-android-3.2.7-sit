@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using myTNB;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
+using myTNB_Android.Src.MyHome;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
     public class PaymentTransactionIdRequest : BaseRequest
     {
+        public DeviceInterface deviceInf { get; set; }
         public string customerName { get; set; }
         public string phoneNo { get; set; }
         public string platform { get; set; }
@@ -13,9 +18,12 @@ namespace myTNB_Android.Src.MyTNBService.Request
         public string paymentMode { get; set; }
         public string totalAmount { get; set; }
         public List<PaymentItem> paymentItems { get; set; }
-        public PaymentTransactionIdRequest(string customerName, string phoneNo, string platform, string registeredCardId,
-            string paymentMode, string totalAmount, List<PaymentItem> paymentItems)
+        public string applicationType { get; set; } = string.Empty;
+        public string applicationRefNo { get; set; } = string.Empty;
+        public PaymentTransactionIdRequest(DeviceInterface deviceInf, string customerName, string phoneNo, string platform, string registeredCardId,
+            string paymentMode, string totalAmount, List<PaymentItem> paymentItems, string applicationType, string applicationRefNo)
         {
+            this.deviceInf = deviceInf;
             this.customerName = customerName;
             this.phoneNo = phoneNo;
             this.platform = platform;
@@ -23,6 +31,8 @@ namespace myTNB_Android.Src.MyTNBService.Request
             this.paymentMode = paymentMode;
             this.totalAmount = totalAmount.Replace(",", "");
             this.paymentItems = paymentItems;
+            this.applicationType = MyHomeUtil.Instance.ApplicationType ?? null;
+            this.applicationRefNo = MyHomeUtil.Instance.ReferenceNo ?? null;
         }
 
         public class PaymentItemAccountPayment : PaymentItem
@@ -36,6 +46,7 @@ namespace myTNB_Android.Src.MyTNBService.Request
             public string AccountNo { get; set; }
             public string AccountAmount { get; set; }
             public bool dbrEnabled { get; set; }
+            public bool myHomeEnabled { get; set; }
         }
 
         public class AccountPayment
