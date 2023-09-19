@@ -120,7 +120,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 //    editor.PutBoolean("hasItemizedBillingNMSMTutorialShown", false);
                 //    editor.Apply();
                 //}
-                if (position == newWalkthroughAdapter.Count - 5)
+                if (walkthroughModel.Title.Equals(Utility.GetLocalizedLabel("Onboarding", "title9")))
                 {
                     ShowSubmitButton(true);
                 }
