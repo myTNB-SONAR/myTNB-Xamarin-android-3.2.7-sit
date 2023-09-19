@@ -91,7 +91,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Title = Utility.GetLocalizedLabel("Onboarding", "title9"),
                         Description = Utility.GetLocalizedLabel("Onboarding", "description9"),
                         Image = "walkthrough_img_install_7",
-                        Background = GetBackgroundName(newWalkthroughList)
+                        Background = GetBackgroundName(newWalkthroughList),
+                        Type = NewWalkthroughType.FontSize
                     });
                 }
                 if (!MyTNBAccountManagement.GetInstance().IsAppointmentDisabled)
@@ -187,7 +188,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Title = Utility.GetLocalizedLabel("Onboarding", "title9"),
                         Description = Utility.GetLocalizedLabel("Onboarding", "description9"),
                         Image = "walkthrough_img_update_4",
-                        Background = GetBackgroundName(newWalkthroughList)
+                        Background = GetBackgroundName(newWalkthroughList),
+                        Type = NewWalkthroughType.FontSize
                     });
                 }
                 if (!MyTNBAccountManagement.GetInstance().IsAppointmentDisabled)
