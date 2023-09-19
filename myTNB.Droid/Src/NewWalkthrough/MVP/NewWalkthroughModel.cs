@@ -8,5 +8,12 @@
         public string Background { set; get; }
         public string DynatraceVisitTag { set; get; }
         public string DynatraceActionTag { set; get; }
+        public NewWalkthroughType Type { set; get; } = NewWalkthroughType.None;
+    }
+
+    public enum NewWalkthroughType
+    {
+        FontSize,
+        None
     }
 }

@@ -91,7 +91,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Title = Utility.GetLocalizedLabel("Onboarding", "title9"),
                         Description = Utility.GetLocalizedLabel("Onboarding", "description9"),
                         Image = "walkthrough_img_install_7",
-                        Background = GetBackgroundName(newWalkthroughList)
+                        Background = GetBackgroundName(newWalkthroughList),
+                        Type = NewWalkthroughType.FontSize
                     });
                 }
                 if (!MyTNBAccountManagement.GetInstance().IsAppointmentDisabled)
@@ -111,7 +112,9 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Image = "walkthrough_img_install_9",
                     Background = GetBackgroundName(newWalkthroughList)
                 });
-                newWalkthroughList.Add(new NewWalkthroughModel()
+
+                //commented to hide myhome onboard comms - GTM-2 myHome
+                /*newWalkthroughList.Add(new NewWalkthroughModel()
                 {
                     Title = Utility.GetLocalizedLabel("Onboarding", "title15"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description15"),
@@ -146,7 +149,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Background = GetBackgroundName(newWalkthroughList),
                     DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Manage,
                     DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Manage_Skip
-                });
+                });*/
             }
             else
             {
@@ -185,7 +188,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Title = Utility.GetLocalizedLabel("Onboarding", "title9"),
                         Description = Utility.GetLocalizedLabel("Onboarding", "description9"),
                         Image = "walkthrough_img_update_4",
-                        Background = GetBackgroundName(newWalkthroughList)
+                        Background = GetBackgroundName(newWalkthroughList),
+                        Type = NewWalkthroughType.FontSize
                     });
                 }
                 if (!MyTNBAccountManagement.GetInstance().IsAppointmentDisabled)
@@ -205,7 +209,9 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Image = "walkthrough_img_install_9",
                     Background = GetBackgroundName(newWalkthroughList)
                 });
-                newWalkthroughList.Add(new NewWalkthroughModel()
+
+                //commented to hide myhome onboard comms - GTM-2 myHome
+                /*newWalkthroughList.Add(new NewWalkthroughModel()
                 {
                     Title = Utility.GetLocalizedLabel("Onboarding", "title15"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description15"),
@@ -240,7 +246,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Background = GetBackgroundName(newWalkthroughList),
                     DynatraceVisitTag = DynatraceConstants.MyHome.Screens.OnBoarding.Manage,
                     DynatraceActionTag = DynatraceConstants.MyHome.CTAs.OnBoarding.Manage_Skip
-                });
+                });*/
 
                 /* UserEntity activeUser = UserEntity.GetActive();
 
