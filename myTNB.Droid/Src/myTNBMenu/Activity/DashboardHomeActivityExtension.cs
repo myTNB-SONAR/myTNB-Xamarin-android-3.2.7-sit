@@ -30,6 +30,10 @@ using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using System.Linq;
 using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity;
+using myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity;
+using myTNB.Mobile.AWS.Managers.DS;
+using myTNB_Android.Src.Notifications.Activity;
 using myTNB.Mobile.AWS.Models.DBR;
 using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.MyHome.Model;
@@ -67,6 +71,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     break;
                 case Deeplink.ScreenEnum.ManageBillDelivery:
                     DeeplinkManageBillDeliveryValidation(mainActivity);
+                    break;
+                case Deeplink.ScreenEnum.IdentityVerification:
+                    ShowEKYCVerifyIdentity(mainActivity);
                     break;
                 default:
                     break;
@@ -245,9 +252,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 ApplicationDetailDisplay detailsResponse = await myTNB.Mobile.ApplicationStatusManager.Instance.GetApplicationDetail(saveId
                     , applicationId
                     , applicationType
+                    , UserEntity.GetActive().UserID ?? string.Empty
+                    , UserEntity.GetActive().Email ?? string.Empty
                     , applicationSystem);
 
-                NotificationUtil.Instance.ClearData();
                 mainActivity.RunOnUiThread(() =>
                 {
                     mainActivity.HideProgressDialog();
@@ -267,6 +275,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                          .Build();
                         errorPopup.Show();
                     }
+                    NotificationUtil.Instance.ClearData();
                 });
             }
             else
@@ -282,6 +291,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                      .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
                      .Build();
                     errorPopup.Show();
+
+                    NotificationUtil.Instance.ClearData();
                 });
             }
         }
@@ -373,6 +384,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
             else if (NotificationUtil.Instance.Type == Notification.TypeEnum.ApplicationStatus)
             {
+                mainActivity.RunOnUiThread(() =>
+                {
+                    mainActivity.ShowProgressDialog();
+                });
+
+                Task.Run(() =>
+                {
+                    _ = OnGetApplicationDetail(mainActivity, true);
+                });
+            }
+            else if (NotificationUtil.Instance.PushMapId.IsValid())
+            {
                 Task.Run(() =>
                 {
                     _ = OnGetApplicationDetail(mainActivity, true);
@@ -387,8 +410,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
             else
             {
+                NavigateToNotificationListing(mainActivity);
                 NotificationUtil.Instance.ClearData();
             }
+        }
+
+        internal static void NavigateToNotificationListing(DashboardHomeActivity mainActivity)
+        {
+            Intent notificationIntent = new Intent(mainActivity, typeof(NotificationActivity));
+            mainActivity.StartActivity(notificationIntent);
         }
 
         internal static void NavigateToBillRedesign(DashboardHomeActivity mainActivity)
@@ -422,16 +452,24 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     if (response.IsSuccessResponse())
                     {
                         Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
-                        ShowNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+
+                        if (NotificationUtil.Instance.Type == Notification.TypeEnum.EKYC)
+                        {
+                            ShowEKYCNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+                        }
+                        else
+                        {
+                            ShowNotificationDetails(mainActivity, response.GetData().UserNotificationDetail);
+                        }
+
                         mainActivity.HideProgressDialog();
                     }
                     else
                     {
                         mainActivity.HideProgressDialog();
                     }
+                    NotificationUtil.Instance.ClearData();
                 });
-                
-                NotificationUtil.Instance.ClearData();
             }
             catch (System.OperationCanceledException e)
             {
@@ -467,6 +505,22 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             Intent notificationDetails = new Intent(mainActivity, typeof(UserNotificationDetailActivity));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
             mainActivity.StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
+        }
+
+        internal static void ShowEKYCNotificationDetails(this DashboardHomeActivity mainActivity, NotificationDetails.Models.NotificationDetails details)
+        {
+            Intent notificationDetails = new Intent(mainActivity, typeof(DSNotificationDetailsActivity));
+            notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
+            mainActivity.StartActivity(notificationDetails);
+        }
+
+        internal static void ShowEKYCVerifyIdentity(this DashboardHomeActivity mainActivity)
+        {
+            if (DSUtility.Instance.IsAccountEligible)
+            {
+                Intent ekycVerificationIntent = new Intent(mainActivity, typeof(DSIdentityVerificationActivity));
+                mainActivity.StartActivity(ekycVerificationIntent);
+            }
         }
 
         internal static CustomerBillingAccount GetEligibleDBRAccount()
@@ -567,11 +621,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     //For tenant checking DBR
                     List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                    PostBREligibilityIndicatorsResponse billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(mainActivity));
+                    // PostBREligibilityIndicatorsResponse billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(mainActivity));
 
                     Intent intent = new Intent(mainActivity, typeof(ManageBillDeliveryActivity));
                     intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
-                    intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
+                    // intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                     intent.PutExtra("accountNumber", caNumber);
                     mainActivity.StartActivity(intent);
                 }

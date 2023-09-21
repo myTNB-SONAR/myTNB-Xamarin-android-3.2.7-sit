@@ -39,7 +39,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
         {
             try
             {
-               
+
             }
             catch (Exception e)
             {
@@ -92,7 +92,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
                     try
                     {
                         ManageAccessAccountListResponse manageAccessAccountListResponse = await ServiceApiImpl.Instance.GetAccountAccessRightList(new GetAccountAccessRight(accountData.AccountNum));
-                        
+
                         if (manageAccessAccountListResponse != null && manageAccessAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                         {
                             if (manageAccessAccountListResponse.GetData().Count > 0)
@@ -198,7 +198,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
                             };
                             newAccountList.Add(newRecord);
                             newuser = newRecord;
-                        }                       
+                        }
                     }
 
                     if (newAccountList.Count > 0)

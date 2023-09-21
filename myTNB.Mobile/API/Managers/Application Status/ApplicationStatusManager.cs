@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.API.Services.ApplicationStatus;
 using myTNB.Mobile.Business;
+using myTNB.Mobile.AWS.Managers.DS;
+using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.Extensions;
 using myTNB.Mobile.SessionCache;
 using Newtonsoft.Json;
@@ -389,6 +392,7 @@ namespace myTNB.Mobile
                         //Mark: Increment Query Page Every Success Call
                         AllApplicationsCache.Instance.QueryPage += 1;
                     }
+                    Debug.WriteLine("[DEBUG][AllApplications]: " + JsonConvert.SerializeObject(response));
                     return response;
                 }
                 catch (ApiException apiEx)
@@ -468,6 +472,92 @@ namespace myTNB.Mobile
         public async Task<ApplicationDetailDisplay> GetApplicationDetail(string savedApplicationID
             , string applicationID
             , string applicationType
+            , string userID
+            , string email
+            , string system = "myTNB")
+        {
+            bool isDSEligible = false;
+            ApplicationDetailDisplay displaymodel = await GetApplicationDetailV2(savedApplicationID
+                , applicationID
+                , applicationType
+                , isDSEligible
+                , system);
+            if (displaymodel.StatusDetail != null
+                && displaymodel.StatusDetail.IsSuccess
+                && displaymodel.Content != null)
+            {
+                if (displaymodel.Content.ContractAccountNo is string accountNumber
+                    && displaymodel.Content.ApplicationDetail.IsContractorApplied != true
+                    && accountNumber.IsValid()
+                    && AppInfoManager.Instance.ContractAccountList != null
+                    && AppInfoManager.Instance.ContractAccountList.Count > 0
+                    && AppInfoManager.Instance.ContractAccountList.FindIndex(x => x.accNum == accountNumber) is int index
+                    && index > -1
+                    && AppInfoManager.Instance.ContractAccountList[index] !=null
+                    && AppInfoManager.Instance.ContractAccountList[index].BusinessArea.IsValid())
+                {
+                    isDSEligible = DSUtility.Instance.IsCAEligible(accountNumber);
+                    if (isDSEligible)
+                    {
+                        Debug.WriteLine("[DEBUG][GetApplicationDetail] Check By CA");
+                        displaymodel = await GetApplicationDetailV2(savedApplicationID
+                            , applicationID
+                            , applicationType
+                            , isDSEligible
+                            , system);
+                    }
+                }
+                else if ((displaymodel.Content.CABusinessArea is string businessArea
+                    && businessArea.IsValid())
+                    || (displaymodel.Content.ContractAccountNo is string accNumber
+                    && accNumber.IsValid()))
+                {
+                    GetEligibilityResponse eligibilityResponse =
+                        await EligibilityManager.Instance.PostEligibility(userID ?? string.Empty
+                        , email ?? string.Empty
+                        , !string.IsNullOrEmpty(displaymodel.Content.ContractAccountNo) ? new List<AWS.ContractAccountModel> { new AWS.ContractAccountModel() { accNum = displaymodel.Content.ContractAccountNo,
+                            BusinessArea = displaymodel.Content.CABusinessArea }  } : null
+                        , new List<AWS.PremiseCriteriaModel> { new AWS.PremiseCriteriaModel() { BusinessArea = displaymodel.Content.CABusinessArea } }
+                        , AppInfoManager.Instance.AccessToken);
+
+                    if (eligibilityResponse.Content != null
+                        && eligibilityResponse.Content.DS != null
+                        && eligibilityResponse.Content.DS.ContractAccounts != null
+                        && eligibilityResponse.Content.DS.ContractAccounts.Count > 0)
+                    {
+                        Debug.WriteLine("[DEBUG][GetApplicationDetail] Check By BA");
+                        #region Mitigation Task For myHome & DS
+                        // Mitigation Task For myHome & DS
+                        if (!string.IsNullOrEmpty(applicationType)
+                            && applicationType.Contains("NC")
+                            && "myTNB_API_Mobile".Equals(displaymodel.Content.ApplicationStatusDetail.Channel, StringComparison.OrdinalIgnoreCase))
+                        {
+                            isDSEligible = false;
+                        }
+                        else
+                        {
+                            isDSEligible = true;
+                        }
+                        #endregion
+                    }
+
+                    //isDSEligible = true;
+                    displaymodel = await GetApplicationDetailV2(savedApplicationID
+                           , applicationID
+                           , applicationType
+                           , isDSEligible
+                           , system);
+                }
+            }
+
+            Debug.WriteLine("[DEBUG][GetApplicationDetail] Display Model: " + JsonConvert.SerializeObject(displaymodel));
+            return displaymodel;
+        }
+
+        private async Task<ApplicationDetailDisplay> GetApplicationDetailV2(string savedApplicationID
+            , string applicationID
+            , string applicationType
+            , bool isDSEligible
             , string system = "myTNB")
         {
             string searchTerm = savedApplicationID.IsValid() ? savedApplicationID : applicationID;
@@ -484,6 +574,7 @@ namespace myTNB.Mobile
                     HttpResponseMessage rawResponse = await service.GetApplicationDetail(applicationType
                          , searchTerm
                          , system
+                         , isDSEligible
                          , AppInfoManager.Instance.GetUserInfo()
                          , NetworkService.GetCancellationToken()
                          , AppInfoManager.Instance.Language.ToString()
@@ -547,12 +638,13 @@ namespace myTNB.Mobile
                                     , applicationType);
                                 displaymodel.ParseDisplayModel(paymentResponse);
                             }
+                            displaymodel.Content.ApplicationStatusDetail.Channel = response.Content.newConnectionDetail.channel;
                         }
                     }
                     catch (Exception ex)
                     {
 #if DEBUG
-                        Debug.WriteLine("[DEBUG][GetApplicationDetail ASMX Payment Details]General Exception: " + ex.Message);
+                        Debug.WriteLine("[DEBUG][GetApplicationDetailV2 ASMX Payment Details]General Exception: " + ex.Message);
 #endif
                     }
                     return displaymodel;
@@ -560,13 +652,13 @@ namespace myTNB.Mobile
                 catch (ApiException apiEx)
                 {
 #if DEBUG
-                    Debug.WriteLine("[DEBUG][GetApplicationDetail]Refit Exception: " + apiEx.Message);
+                    Debug.WriteLine("[DEBUG][GetApplicationDetailV2]Refit Exception: " + apiEx.Message);
 #endif
                 }
                 catch (Exception ex)
                 {
 #if DEBUG
-                    Debug.WriteLine("[DEBUG][GetApplicationDetail]General Exception: " + ex.Message);
+                    Debug.WriteLine("[DEBUG][GetApplicationDetailV2]General Exception: " + ex.Message);
 #endif
                 }
             }

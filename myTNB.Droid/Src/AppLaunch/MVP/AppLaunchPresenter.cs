@@ -43,6 +43,7 @@ using myTNB_Android.Src.Base.Response;
 using System.Linq;
 using Android.Preferences;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB.Mobile.Business;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -231,7 +232,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             try
             {
                 UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
-
+                string dt = JsonConvert.SerializeObject(new AppLaunchMasterDataRequest());
                 AppLaunchMasterDataResponseAWS masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterDataAWS(new AppLaunchMasterDataRequest());
                 /*AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
                       (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));*/
@@ -359,6 +360,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                             if (appUpdateAvailable)
                             {
+                                DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Force.ForceUpdate_DisplayPopUp);
+
                                 DeeplinkUtil.Instance.ClearDeeplinkData();
                                 string modalTitle = responseData.ForceUpdateInfo.ModalTitle;
                                 string modalMessage = responseData.ForceUpdateInfo.ModalBody;
@@ -546,7 +549,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                 || !this.mView.GetDeviceId().Equals(UserSessions.GetDeviceId(mSharedPref)))
                                             {
                                                 //If DeviceId is not the same with the saved, call UpdateAppUserDevice service.
-                                                var updateAppDeviceResponse = await updateAppUserDeviceApi.UpdateAppUserDevice(new UpdateAppUserDeviceRequest()
+                                                UpdateAppUserDeviceRequest userDeviceRequest = new UpdateAppUserDeviceRequest()
                                                 {
                                                     apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
                                                     Email = UserEntity.GetActive().Email,
@@ -556,7 +559,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                                     OsVersion = DeviceIdUtils.GetAndroidVersion(),
                                                     DeviceIdOld = UserSessions.GetDeviceId(mSharedPref),
                                                     DeviceIdNew = this.mView.GetDeviceId()
-                                                }, CancellationTokenSourceWrapper.GetToken());
+                                                };
+
+                                                EncryptedRequest encryptedUserDeviceRequest = myTNB.Mobile.APISecurityManager.Instance.GetEncryptedRequest(userDeviceRequest);
+                                                UpdateAppUserDeviceResponse deviceResponse = await updateAppUserDeviceApi.UpdateAppUserDevice(encryptedUserDeviceRequest, CancellationTokenSourceWrapper.GetToken());
                                             }
                                             GetAccountAWS();
                                         }
@@ -1432,12 +1438,22 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     }
                     else
                     {
-                        OnGetPhoto(item);
+                        //OnGetPhoto(item);
+
+                        if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                        {
+                            this.mView.SetCustomAppLaunchImage(item);
+                        }
                     }
                 }
                 else
                 {
-                    OnGetPhoto(item);
+                    //OnGetPhoto(item);
+
+                    if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                    {
+                        this.mView.SetCustomAppLaunchImage(item);
+                    }
                 }
             }
             catch (Exception e)
@@ -1448,6 +1464,83 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     this.mView.SetDefaultAppLaunchImage();
                 }
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnDownloadPhoto(AppLaunchModel item)
+        {
+            if (!IsOnGetPhotoRunning)
+            {
+                IsOnGetPhotoRunning = true;
+                CancellationTokenSource token = new CancellationTokenSource();
+                Bitmap imageCache = null;
+                Stopwatch sw = Stopwatch.StartNew();
+                _ = Task.Run(() =>
+                {
+                    try
+                    {
+                        imageCache = ImageUtils.GetImageBitmapFromUrlWithTimeOut(item.Image);
+                        sw.Stop();
+                        AppLaunchTimeOutMillisecond = 0;
+
+                        if (imageCache != null)
+                        {
+                            item.ImageBitmap = imageCache;
+                            item.ImageB64 = BitmapToBase64(imageCache);
+                            AppLaunchEntity wtManager = new AppLaunchEntity();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                            AppLaunchEntity newItem = new AppLaunchEntity()
+                            {
+                                ID = item.ID,
+                                Image = item.Image,
+                                ImageB64 = item.ImageB64,
+                                Title = item.Title,
+                                Description = item.Description,
+                                StartDateTime = item.StartDateTime,
+                                EndDateTime = item.EndDateTime,
+                                ShowForSeconds = item.ShowForSeconds
+                            };
+                            wtManager.InsertItem(newItem);
+                            AppLaunchUtils.SetAppLaunchBitmap(item);
+                            if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                            {
+                                this.mView.RenderAppLaunchImage(item);
+                            }
+                        }
+                        else
+                        {
+                            if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                            {
+                                this.mView.SetDefaultAppLaunchImage();
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        AppLaunchTimeOutMillisecond = 0;
+                        if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                        {
+                            this.mView.SetDefaultAppLaunchImage();
+                        }
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }, token.Token);
+
+                if (AppLaunchTimeOutMillisecond > 0)
+                {
+                    _ = Task.Delay(AppLaunchTimeOutMillisecond).ContinueWith(_ =>
+                    {
+                        if (AppLaunchTimeOutMillisecond > 0)
+                        {
+                            AppLaunchTimeOutMillisecond = 0;
+                            if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                            {
+                                this.mView.SetDefaultAppLaunchImage();
+                            }
+                        }
+                    });
+                }
             }
         }
 

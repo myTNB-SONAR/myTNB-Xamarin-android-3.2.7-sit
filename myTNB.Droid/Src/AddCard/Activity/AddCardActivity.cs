@@ -9,10 +9,13 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using Card.IO;
+using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB_Android.Src.AddCard.MVP;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -144,11 +147,15 @@ namespace myTNB_Android.Src.AddCard.Activity
 
                 txtCVV.TextChanged += CvvTextChange;
 
+                saveCard.CheckedChange += CheckedChange;
+
                 TextViewUtils.SetTextSize16(txtTitle, saveCard, btnNext);
 
                 SetTheme(TextViewUtils.IsLargeFonts
                     ? Resource.Style.Theme_AddCardLarge
                     : Resource.Style.Theme_AddCard);
+
+                
             }
             catch (Exception e)
             {
@@ -565,6 +572,35 @@ namespace myTNB_Android.Src.AddCard.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+
+        private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            if (e.IsChecked)
+            {
+                DownTimeEntity RPSCCEntity = DownTimeEntity.GetByCode(Constants.RPS_CC_SYSTEM);
+                if (RPSCCEntity.IsDown)
+                {
+
+                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_ONE_BUTTON)
+                       .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
+                       .SetContentGravity(GravityFlags.Center)
+                       .SetTitle(RPSCCEntity.DowntimeTextMessage)
+                       .SetMessage(RPSCCEntity.DowntimeMessage)
+                       .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                       .Build().Show();
+
+                    saveCard.Checked = false;
+                    //DisableCheckSaveCard();
+                }
+            }
+
+        }
+
+        public void DisableCheckSaveCard()
+        {
+            saveCard.Enabled = false;
         }
 
     }

@@ -8,7 +8,7 @@ using static myTNB.Mobile.EligibilitySessionCache;
 
 namespace myTNB.Mobile
 {
-    public class DBRUtility
+    public sealed class DBRUtility
     {
         private static readonly Lazy<DBRUtility> lazy =
            new Lazy<DBRUtility>(() => new DBRUtility());

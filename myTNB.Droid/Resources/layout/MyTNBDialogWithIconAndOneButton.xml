@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:orientation="vertical"
+	android:layout_gravity="center"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+	<androidx.cardview.widget.CardView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:cardCornerRadius="8dp"
+		app:cardBackgroundColor="@color/white"
+		app:cardElevation="0dp"
+		android:layout_marginLeft="18dp"
+		android:layout_marginRight="18dp">
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_weight="1"
+			android:overScrollMode="never"
+			android:scrollbars="none"
+			android:fillViewport="true"
+			android:background="@color/white"
+			android:id="@+id/mytnbDialogScrollView"
+			android:layout_height="wrap_content">
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/rootView">
+				<ImageView
+					android:id="@+id/dialogHeaderImg"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:scaleType="fitXY"
+					android:adjustViewBounds="true"
+					android:layout_gravity="center_horizontal"
+					android:layout_marginTop="30dp"
+					android:src="@drawable/icon_ds_verify_processing_pop_up"
+					android:contentDescription="" />
+				<TextView
+					android:id="@+id/dialogTitle"
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					tools:text="We are processing your verification."
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:layout_marginTop="14dp"
+					android:textColor="@color/charcoalGrey"
+					android:textSize="14dp"
+					android:lineSpacingExtra="3dp"
+					android:textAlignment="center"/>
+				<TextView
+					android:id="@+id/dialogMessage"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:textColor="@color/charcoalGrey"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:layout_marginTop="12dp"
+					tools:text="Your identity verification has been submitted. We’ll notify you once we’re done with your verification. "
+					android:textSize="12dp"
+					android:lineSpacingExtra="3dp"/>
+				<View
+					android:layout_marginTop="24dp"
+					android:layout_height="1dp"
+					android:layout_width="match_parent"
+					android:alpha="0.2"
+					android:background="@color/tunaGrey" />
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+					<TextView
+						android:id="@+id/txtBtnPrimary"
+						android:layout_height="wrap_content"
+						android:layout_width="match_parent"
+						android:layout_alignParentRight="true"
+						android:layout_toRightOf="@+id/divider"
+						android:gravity="center"
+						android:textColor="@color/powerBlue"
+						android:padding="16dp"
+						android:singleLine="true"
+						android:maxLines="1"
+						android:ellipsize="end"
+						tools:text="Verify Now"
+						android:textSize="14dp" />
+				</RelativeLayout>
+			</LinearLayout>
+		</ScrollView>
+	</androidx.cardview.widget.CardView>
+</LinearLayout>

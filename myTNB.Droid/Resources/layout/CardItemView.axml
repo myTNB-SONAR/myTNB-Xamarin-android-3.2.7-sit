@@ -2,118 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white">
-	<RelativeLayout
-        android:id="@+id/btnCard"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="@drawable/solid_border_background"
-        android:padding="16dp">
-
-         <ImageView
-            android:id="@+id/imgCard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/master"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical|left"/>
-
-             <LinearLayout
-		        android:id="@+id/layoutExpired"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-		        android:orientation="vertical"
-                android:layout_centerVertical="true">
-
-                <TextView
-                    android:id="@+id/textCard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:paddingTop="1dp"
-                    android:paddingRight="20dp"
-                    android:text="**** "
-                    android:textSize="16dp"
-                    android:textColor="@color/tunaGrey"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true" />
-
-                <TextView
-			        android:id="@+id/txtExpiredCard"
-			        android:layout_width="match_parent"
-			        android:layout_height="match_parent"
-			        android:text="Credit Card Expired"
-			        android:textSize="8dp"
-			        android:textColor="@color/lightRed"
-			        android:layout_alignParentStart="true"
-                    android:layout_below="@+id/textCard"
-                    android:visibility="gone"/>
-            </LinearLayout>
-		<!--<TextView
+		<RelativeLayout
+			android:id="@+id/btnCard"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="xxxx-xxxx-xxxx-xxxx"
-			android:textColor="@color/tunaGrey"
-			android:paddingLeft="60dp"
-			android:id="@+id/textCard"/>
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
+			android:padding="16dp"
+		    android:background="@drawable/solid_border_light_grey">
+				<ImageView
+					android:id="@+id/imgCard"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentStart="true"
+					android:src="@drawable/master"
+					android:layout_centerVertical="true"
+					android:gravity="center_vertical|left"/>
 
+				<LinearLayout
+					android:id="@+id/layoutExpired"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="40dp"
+					android:orientation="vertical"
+					android:layout_centerVertical="true">
 
-		<TextView
-			android:id="@+id/txtExpiredCard"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:paddingLeft="60dp"
-            android:paddingBottom="10dp"
-			android:text="This card is expired"
-			android:textSize="8dp"
-			android:textColor="@color/lightRed"
-			android:layout_alignParentStart="true"
-            android:layout_below="@+id/textCard"/>-->
+					<TextView
+						android:id="@+id/textCard"
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:gravity="center_vertical"
+						android:paddingTop="1dp"
+						android:paddingRight="20dp"
+						android:text="**** "
+						android:textSize="16dp"
+						android:textColor="@color/tunaGrey"
+						android:layout_centerVertical="true"
+						android:layout_alignParentStart="true" />
 
-		<!-- <Button
-            android:background="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="xxxx-xxxx-xxxx-xxxx"
-            android:textColor="@color/tunaGrey"
-            android:drawableLeft="@drawable/master"
-            android:drawablePadding="4dp"
-            android:paddingTop="18dp"
-            android:paddingLeft="18dp"
-            android:paddingBottom="18dp"
-            android:gravity="center_vertical|left"
-            android:lines="2"
-            android:id="@+id/btnCard" />
-
-        <LinearLayout
-		    android:id="@+id/layoutExpired"
-		    android:layout_width="match_parent"
-		    android:layout_height="30dp"
-		    android:orientation="horizontal"
-            android:background="@color/white"
-            android:layout_below="@+id/btnCard">
-
-             <TextView
-                android:id="@+id/txtExpiredCard"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:paddingTop="1dp"
-                android:paddingRight="20dp"
-                android:paddingLeft="10dp"
-                android:layout_marginLeft="60dp"
-                android:paddingBottom="18dp"
-                android:text="Expired"
-                android:textSize="10dp"
-                android:textColor="@color/lightRed"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true"/>
-
-	    </LinearLayout>-->
-
-	</RelativeLayout>
-    
+					<TextView
+						android:id="@+id/txtExpiredCard"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:text="Credit Card Expired"
+						android:textSize="8dp"
+						android:textColor="@color/lightRed"
+						android:layout_alignParentStart="true"
+						android:layout_below="@+id/textCard"
+						android:visibility="gone"/>
+				</LinearLayout>
+		</RelativeLayout>
 </LinearLayout>

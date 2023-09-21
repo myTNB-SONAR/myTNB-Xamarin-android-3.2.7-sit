@@ -5,6 +5,7 @@ using System.Globalization;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
+using myTNB.Mobile.AWS.Managers.DS;
 using myTNB.Mobile.Extensions;
 using myTNB.Mobile.SessionCache;
 
@@ -163,6 +164,16 @@ namespace myTNB.Mobile
         public bool IsDeleteEnable { set; get; }
 
         public bool IsOwnApplication { set; get; }
+
+        /// <summary>
+        /// CA Number
+        /// </summary>
+        public string ContractAccountNo { set; get; } = string.Empty;
+
+        /// <summary>
+        /// Business Area
+        /// </summary>
+        public string CABusinessArea { set; get; } = string.Empty;
 
         /// <summary>
         /// Determines if BCRM is Offline and if need to show BCRM Downtime
@@ -465,8 +476,15 @@ namespace myTNB.Mobile
                             break;
                     }
                 }
-
-                if (type == DetailCTAType.None)
+                else if (ApplicationDetail.IsVerifyNow)
+                {
+                    type = DetailCTAType.VerifyNow;
+                }
+                else if (ApplicationDetail.SignApplicationURL.IsValid())
+                {
+                    type = DetailCTAType.SignApplication;
+                }
+                else if (ApplicationRatingDetail != null)
                 {
                     if (IsPayment && IsOffLine)
                     {
@@ -804,10 +822,10 @@ namespace myTNB.Mobile
         /// </summary>
         public bool IsCOTExistingOwner { set; get; }
 
-        /// <summary>
+        /*/// <summary>
         /// Use to display in Payment Detail
         /// </summary>
-        public string ContractAccountNo { set; get; }
+        public string ContractAccountNo { set; get; }*/
 
         /// <summary>
         /// Use to display in Payment Detail
@@ -865,6 +883,21 @@ namespace myTNB.Mobile
         public string StatusCode { set; get; }
         public DateTime? CreatedDate { set; get; }
         public DateTime? StatusDate { set; get; }
+        //DS & eKYC
+        public string SignApplicationURL { set; get; }
+        public bool IsVerifyNow { set; get; }
+        public bool IsContractorApplied { set; get; }
+        public string IdentificationNo { set; get; }
+        public int? IdentificationType { set; get; }
+        public int? ApplicationModuleID { set; get; }
+        public string Email { set; get; }
+        public string IdentificationTypeDescription
+        {
+            get
+            {
+                return DSUtility.Instance.GetIdentificationTypeDescription(IdentificationType);
+            }
+        }
 
         /// <summary>
         /// Formatted Created date display
@@ -924,6 +957,7 @@ namespace myTNB.Mobile
         /// Determines if the application requires payment or not
         /// </summary>
         public bool IsPayment { set; get; }
+        public string Channel { set; get; }
     }
 
     public class StatusTrackerDisplay
@@ -1207,7 +1241,9 @@ namespace myTNB.Mobile
         ResumeApplication,
         ReapplyNow,
         ReuploadDocument,
-        SubmitApplicationRating
+        SubmitApplicationRating,
+        VerifyNow,
+        SignApplication
     }
 
     public enum DetailTutorialType

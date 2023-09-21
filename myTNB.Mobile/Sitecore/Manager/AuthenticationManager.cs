@@ -32,13 +32,18 @@ namespace myTNB.Mobile.Sitecore
 
                 try
                 {
-                    HttpResponseMessage response = await service.OnLogin(requestParameter, NetworkService.GetCancellationToken());
-                    HttpResponseHeaders headers = response.Headers;
                     string cookie = string.Empty;
-                    if (headers.TryGetValues("Set-Cookie", out IEnumerable<string> values))
+                    HttpResponseMessage response = await service.OnLogin(requestParameter, NetworkService.GetCancellationToken());
+                    if (response != null && response.Headers != null)
                     {
-                        cookie = values.First();
+                        HttpResponseHeaders headers = response.Headers;
+                        if (headers != null
+                            && headers.TryGetValues("Set-Cookie", out IEnumerable<string> values))
+                        {
+                            cookie = values.First();
+                        }
                     }
+                    Debug.WriteLine("[DEBUG] SiteCore Login cookie: " + cookie);
                     return cookie;
                 }
                 catch (ApiException apiEx)

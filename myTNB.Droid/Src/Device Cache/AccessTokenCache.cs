@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Preferences;
 using Android.Util;
+using myTNB;
 using myTNB.Mobile;
 
 namespace myTNB_Android.Src.DeviceCache
@@ -33,6 +34,7 @@ namespace myTNB_Android.Src.DeviceCache
             editor.PutString(MobileConstants.SharePreferenceKey.AccessToken, token);
             editor.Apply();
             Token = token;
+            AppInfoManager.Instance.AccessToken = token;
         }
 
         internal void SaveUserServiceAccessToken(Context activity, string token)
@@ -55,6 +57,7 @@ namespace myTNB_Android.Src.DeviceCache
                 ISharedPreferences preferences = PreferenceManager.GetDefaultSharedPreferences(activity);
 #pragma warning restore CS0618 // Type or member is obsolete
                 Token = preferences.GetString(MobileConstants.SharePreferenceKey.AccessToken, string.Empty) ?? string.Empty;
+                AppInfoManager.Instance.AccessToken = Token;
             }
             Log.Debug("Access Token", Token);
             return Token;

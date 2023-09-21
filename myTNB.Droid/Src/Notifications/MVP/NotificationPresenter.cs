@@ -21,6 +21,7 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using Android.OS;
 using myTNB_Android.Src.MyHome;
+using myTNB.Mobile.AWS.Managers.DS;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -690,6 +691,31 @@ namespace myTNB_Android.Src.Notifications.MVP
                                             {
                                                 listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                             }
+                                            //other notification types to only check on Email matching with the logged-in user
+                                            else if (UserEntity.GetActive().Email.ToLower().Equals(userNotificationData.Email.ToLower()))
+                                            {
+                                                //EKYC
+                                                switch (userNotificationData.BCRMNotificationTypeId)
+                                                {
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_FIRST_NOTIFICATION:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_SECOND_NOTIFICATION:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_ID_NOT_MATCHING:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_FAILED:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_THREE_TIMES_FAILURE:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_SUCCESSFUL:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_FAILED:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_THREE_TIMES_FAILURE:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_SUCCESSFUL:
+                                                    case Constants.BCRM_NOTIFICATION_EKYC_THIRD_PARTY_ID_NO_TMATCHING:
+                                                        if (DSUtility.Instance.IsNotificationEligible)
+                                                        {
+                                                            listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
+                                                        }
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                            }
                                         }
                                     }
                                     else
@@ -697,7 +723,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                         listOfNotifications.Add(UserNotificationData.Get(entity, entity.NotificationTypeId));
                                     }
                                 }
-                            }                           
+                            }
                         }
                     }
                 }

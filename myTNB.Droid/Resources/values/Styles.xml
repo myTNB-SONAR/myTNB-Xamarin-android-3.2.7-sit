@@ -212,6 +212,13 @@
 		<item name="android:stateListAnimator">@null</item>
 		<item name="android:background">@drawable/solid_border_background</item>
 	</style>
+	<style name="Theme.OnlinePaymentButtonV2" parent="@android:style/Widget.Button">
+		<item name="android:textColor">@color/tunaGrey</item>
+		<item name="android:hint">#FFFFFF</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:stateListAnimator">@null</item>
+		<item name="android:background">@drawable/solid_border_background_V2</item>
+	</style>
 	<style name="DigitValueTextAppearance" parent="@android:style/TextAppearance">
 		<item name="android:textSize">22sp</item>
 		<item name="android:textColor">#000000</item>

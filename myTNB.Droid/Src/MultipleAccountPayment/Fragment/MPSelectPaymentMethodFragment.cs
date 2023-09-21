@@ -33,9 +33,11 @@ using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.DeviceCache;
+using myTNB_Android.Src.Common.Model;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB.Mobile.AWS.Models.DBR;
+using static Android.Icu.Text.CaseMap;
 using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
 using myTNB_Android.Src.MyHome;
 
@@ -60,9 +62,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         FrameLayout baseView;
         EditText txtTotalAmount;
         TextView lblTotalAmount;
-        TextView lblCreditDebitCard;
-        TextView lblOtherPaymentMethods;
-        TextView lblTNGPayment;
+        //TextView lblCreditDebitCard;
+        //TextView lblOtherPaymentMethods;
+        //TextView lblTNGPayment;
 
         TextView lblCvvInfo;
         TextView lblBack;
@@ -88,6 +90,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         Button btnAddCard;
         Button btnFPXPayment;
         Button btnTNGPayment;
+        Button btnCreditDebitCard;
 
         private MaterialDialog mRequestingPaymentDialog;
         private MaterialDialog mGetRegisteredCardsDialog;
@@ -97,6 +100,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         private bool isClicked = false;
+        private bool show = false;
         bool tenantDBR = false;
         //Mark: Application Payment
         private bool IsApplicationPayment;
@@ -344,9 +348,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 baseView = rootView.FindViewById<FrameLayout>(Resource.Id.baseView);
                 txtTotalAmount = rootView.FindViewById<EditText>(Resource.Id.amount_edittext);
                 lblTotalAmount = rootView.FindViewById<TextView>(Resource.Id.lblTotalAmount);
-                lblCreditDebitCard = rootView.FindViewById<TextView>(Resource.Id.lblCreditDebitCard);
-                lblOtherPaymentMethods = rootView.FindViewById<TextView>(Resource.Id.lblOtherPayment);
-                lblTNGPayment = rootView.FindViewById<TextView>(Resource.Id.lblTNGPayment);
+                //lblCreditDebitCard = rootView.FindViewById<TextView>(Resource.Id.lblCreditDebitCard);
+                //lblOtherPaymentMethods = rootView.FindViewById<TextView>(Resource.Id.lblOtherPayment);
+                //lblTNGPayment = rootView.FindViewById<TextView>(Resource.Id.lblTNGPayment);
 
                 lblCvvInfo = rootView.FindViewById<TextView>(Resource.Id.lblCVVInfo);
                 lblBack = rootView.FindViewById<TextView>(Resource.Id.lblBack);
@@ -380,22 +384,31 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     ShowHideKeyboard(edtNumber1, false);
                 };
 
-                btnAddCard = rootView.FindViewById<Button>(Resource.Id.btnAddCard);
-                btnAddCard.Click += delegate
+                btnCreditDebitCard = rootView.FindViewById<Button>(Resource.Id.btnCreditDebitCard);
+                btnCreditDebitCard.Click += delegate
                 {
-                    DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-                    if (pgCCEntity.IsDown)
+                    if (!show)
                     {
-                        Utility.ShowBCRMDOWNTooltip(this.Activity, pgCCEntity, () =>
-                        {
-                        });
+                        listAddedCards.Visibility = ViewStates.Visible;
+                        btnAddCard.Visibility = ViewStates.Visible;
+                        show = true;
                     }
                     else
                     {
-                        HideErrorMessageSnakebar();
-                        AddNewCard();
-                        DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_CC);
+                        listAddedCards.Visibility = ViewStates.Gone;
+                        btnAddCard.Visibility = ViewStates.Gone;
+                        show = false;
                     }
+
+                };
+
+                btnAddCard = rootView.FindViewById<Button>(Resource.Id.btnAddCard);
+                btnAddCard.Click += delegate
+                {
+                    HideErrorMessageSnakebar();
+                    AddNewCard();
+                    DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_CC);
+                   
                 };
 
                 btnFPXPayment = rootView.FindViewById<Button>(Resource.Id.btnFPXPayment);
@@ -444,23 +457,24 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 cardAdapter.OnItemClick += OnItemClick;
 
                 TextViewUtils.SetMuseoSans300Typeface(lblTotalAmount);
-                TextViewUtils.SetMuseoSans500Typeface(lblCreditDebitCard, lblOtherPaymentMethods, txtTotalAmount, lblTNGPayment);
-                TextViewUtils.SetMuseoSans300Typeface(btnAddCard, btnFPXPayment, btnTNGPayment);
+                //TextViewUtils.SetMuseoSans500Typeface(lblCreditDebitCard, lblOtherPaymentMethods, txtTotalAmount, lblTNGPayment);
+                TextViewUtils.SetMuseoSans500Typeface(txtTotalAmount);
+                TextViewUtils.SetMuseoSans300Typeface(btnAddCard, btnFPXPayment, btnTNGPayment, btnCreditDebitCard);
 
                 TextViewUtils.SetTextSize10(lblTotalAmount);
-                TextViewUtils.SetTextSize16(txtTotalAmount, btnFPXPayment, btnAddCard, btnTNGPayment);
-                TextViewUtils.SetTextSize18(lblCreditDebitCard, lblOtherPaymentMethods, lblTNGPayment);
+                TextViewUtils.SetTextSize16(txtTotalAmount, btnFPXPayment, btnAddCard, btnTNGPayment, btnCreditDebitCard);
+                //TextViewUtils.SetTextSize18(lblCreditDebitCard, lblOtherPaymentMethods, lblTNGPayment);
                 TextViewUtils.SetTextSize22(edtNumber1, edtNumber2, edtNumber3, edtNumber4);
 
                 TextViewUtils.SetMuseoSans300Typeface(lblCvvInfo);
                 TextViewUtils.SetMuseoSans300Typeface(edtNumber1, edtNumber2, edtNumber3, edtNumber4);
 
-                lblCreditDebitCard.Text = Utility.GetLocalizedLabel("Common", "cards");
-                lblOtherPaymentMethods.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "otherPaymentMethods");
+                btnCreditDebitCard.Text = Utility.GetLocalizedLabel("Common", "cards");
+                //lblOtherPaymentMethods.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "otherPaymentMethods");
                 lblTotalAmount.Text = Utility.GetLocalizedLabel("Common", "totalAmountRM").ToUpper();
-                lblTNGPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "eWalletPaymentMethods");
+                //lblTNGPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "eWalletPaymentMethods");
                 btnTNGPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "tngTitle");
-                btnAddCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "addCard");
+                btnAddCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "addCardTxt");
                 btnFPXPayment.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "fpxTitle");
 
                 if (TNGUtility.Instance.IsAccountEligible)
@@ -470,26 +484,26 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         if (!MyTNBAccountManagement.GetInstance().IsTNGEnableVerify())
                         {
                             btnTNGPayment.Visibility = ViewStates.Gone;
-                            lblTNGPayment.Visibility = ViewStates.Gone;
+                            //lblTNGPayment.Visibility = ViewStates.Gone;
                         }
                         else
                         {
                             btnTNGPayment.Visibility = ViewStates.Visible;
-                            lblTNGPayment.Visibility = ViewStates.Visible;
+                            //lblTNGPayment.Visibility = ViewStates.Visible;
                             btnTNGPayment.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.tng, 0, 0, 0);
                         }
                     }
                     else
                     {
                         btnTNGPayment.Visibility = ViewStates.Visible;
-                        lblTNGPayment.Visibility = ViewStates.Visible;
+                        //lblTNGPayment.Visibility = ViewStates.Visible;
                         btnTNGPayment.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.tng, 0, 0, 0);
                     }
                 }
                 else
                 {
                     btnTNGPayment.Visibility = ViewStates.Gone;
-                    lblTNGPayment.Visibility = ViewStates.Gone;
+                    //lblTNGPayment.Visibility = ViewStates.Gone;
                 }
 
                 //if(selectedAccount != null){
@@ -528,12 +542,24 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             try
             {
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+                DownTimeEntity RPSCCEntity = DownTimeEntity.GetByCode(Constants.RPS_CC_SYSTEM);
                 if (pgCCEntity.IsDown)
                 {
                     //ShowErrorMessage(pgCCEntity.DowntimeMessage);
                     Utility.ShowBCRMDOWNTooltip(this.Activity, pgCCEntity, () =>
                     {
                     });
+                }
+                else if (RPSCCEntity.IsDown)
+                {
+                  
+                    MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_ONE_BUTTON)
+                   .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
+                   .SetContentGravity(GravityFlags.Center)
+                   .SetTitle(RPSCCEntity.DowntimeTextMessage)
+                   .SetMessage(RPSCCEntity.DowntimeMessage)
+                   .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                   .Build().Show();
                 }
                 else
                 {
@@ -1108,7 +1134,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                                     registerdCards.Add(card);
                                 }
                                 cardAdapter.NotifyDataSetChanged();
-                                listAddedCards.Visibility = ViewStates.Visible;
+                                //listAddedCards.Visibility = ViewStates.Visible;
                                 UpdateListViewHeight(listAddedCards);
                             }
                         }

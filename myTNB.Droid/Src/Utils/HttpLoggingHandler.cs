@@ -1,6 +1,7 @@
 ﻿using Android.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -25,70 +26,68 @@ namespace myTNB_Android.Src.Utils
             var req = request;
             var msg = $"[{req.RequestUri.PathAndQuery} -  Request]";
 
-            Log.Debug(TAG, $"{msg}========Request Start==========");
-            Log.Debug(TAG, $"{msg} {req.Method} {req.RequestUri.PathAndQuery} {req.RequestUri.Scheme}/{req.Version}");
-            Log.Debug(TAG, $"{msg} Host: {req.RequestUri.Scheme}://{req.RequestUri.Host}");
+            Debug.WriteLine(TAG, $"{msg}========Request Start==========");
+            Debug.WriteLine(TAG, $"{msg} {req.Method} {req.RequestUri.PathAndQuery} {req.RequestUri.Scheme}/{req.Version}");
+            Debug.WriteLine(TAG, $"{msg} Host: {req.RequestUri.Scheme}://{req.RequestUri.Host}");
 
             foreach (var header in req.Headers)
             {
-                Log.Debug(TAG, $"{msg} {header.Key}: {string.Join(", ", header.Value)}");
+                Debug.WriteLine(TAG, $"{msg} {header.Key}: {string.Join(", ", header.Value)}");
             }
 
             if (req.Content != null)
             {
                 foreach (var header in req.Content.Headers)
                 {
-                    Log.Debug(TAG, $"{msg} {header.Key}: {string.Join(", ", header.Value)}");
+                    Debug.WriteLine(TAG, $"{msg} {header.Key}: {string.Join(", ", header.Value)}");
                 }
 
-                Log.Debug(TAG, $"{msg} Content:");
+                Debug.WriteLine(TAG, $"{msg} Content:");
 
                 if (req.Content is StringContent || IsTextBasedContentType(req.Headers) || IsTextBasedContentType(req.Content.Headers))
                 {
                     var result = await req.Content.ReadAsStringAsync();
 
-                    //Log.Debug(TAG, $"{msg} {string.Join("", result.Cast<char>().Take(256))}...");
-                    Log.Debug(TAG, $"{msg} {string.Join("", result.Cast<char>())}");
+                    Debug.WriteLine(TAG, $"{msg} {string.Join("", result.Cast<char>())}");
                 }
             }
 
             var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
-            Log.Debug(TAG, $"{msg}==========Request End==========");
+            Debug.WriteLine(TAG, $"{msg}==========Request End==========");
 
             msg = $"[{req.RequestUri.PathAndQuery} - Response]";
 
-            Log.Debug(TAG, $"{msg}=========Response Start=========");
+            Debug.WriteLine(TAG, $"{msg}=========Response Start=========");
 
             var resp = response;
 
-            Log.Debug(TAG, $"{msg} {req.RequestUri.Scheme.ToUpper()}/{resp.Version} {(int)resp.StatusCode} {resp.ReasonPhrase}");
+            Debug.WriteLine(TAG, $"{msg} {req.RequestUri.Scheme.ToUpper()}/{resp.Version} {(int)resp.StatusCode} {resp.ReasonPhrase}");
 
             foreach (var header in resp.Headers)
             {
-                Log.Debug(TAG, $"{msg} {header.Key}: {string.Join(", ", header.Value)}");
+                Debug.WriteLine(TAG, $"{msg} {header.Key}: {string.Join(", ", header.Value)}");
             }
 
             if (resp.Content != null)
             {
                 foreach (var header in resp.Content.Headers)
                 {
-                    Log.Debug(TAG, $"{msg} {header.Key}: {string.Join(", ", header.Value)}");
+                    Debug.WriteLine(TAG, $"{msg} {header.Key}: {string.Join(", ", header.Value)}");
                 }
 
-                Log.Debug(TAG, $"{msg} Content:");
+                Debug.WriteLine(TAG, $"{msg} Content:");
 
                 if (resp.Content is StringContent || IsTextBasedContentType(resp.Headers) || IsTextBasedContentType(resp.Content.Headers))
                 {
                     var result = await resp.Content.ReadAsStringAsync();
 
-                    //Log.Debug(TAG, $"{msg} {string.Join("", result.Cast<char>().Take(256))}...");
-                    Log.Debug(TAG, $"{msg} {string.Join("", result.Cast<char>())}");
+                    Debug.WriteLine(TAG, $"{msg} {string.Join("", result.Cast<char>())}");
                 }
             }
 
-            Log.Debug(TAG, $"{msg} Duration: {DateTime.Now - start}");
-            Log.Debug(TAG, $"{msg}==========Response End==========");
+            Debug.WriteLine(TAG, $"{msg} Duration: {DateTime.Now - start}");
+            Debug.WriteLine(TAG, $"{msg}==========Response End==========");
             return response;
         }
 

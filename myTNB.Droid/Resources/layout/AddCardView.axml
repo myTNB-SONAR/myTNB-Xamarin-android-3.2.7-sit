@@ -137,6 +137,7 @@
                     android:textSize="16dp"
                     android:textColor="@color/tunaGrey"
                     android:button="@drawable/checkbox_selector"
+                    android:drawablePadding="4dp"
                     android:text="@string/save_card_question" />
                 <Button
                     android:layout_width="fill_parent"

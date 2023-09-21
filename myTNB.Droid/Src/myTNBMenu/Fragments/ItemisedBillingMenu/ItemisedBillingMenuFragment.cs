@@ -36,6 +36,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.Bills.AccountStatement.Activity;
 using myTNB.Mobile.AWS.Models.DBR;
+using myTNB_Android.Src.myTNBMenu.Async;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
@@ -166,7 +167,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         AccountData mSelectedAccountData;
 
         GetBillRenderingResponse billRenderingResponse;
-        PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
+        //PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
         List<AccountChargeModel> selectedAccountChargesModelList;
         List<Item> itemFilterList = new List<Item>();
         List<AccountBillPayHistoryModel> selectedBillingHistoryModelList;
@@ -305,7 +306,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 this.SetIsClicked(true);
                 Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
-                intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
+                //intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                 intent.PutExtra("accountNumber", mSelectedAccountData.AccountNum);
                 StartActivity(intent);
             }
@@ -323,7 +324,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 intent.PutExtra("PENDING_PAYMENT", isPendingPayment);
                 intent.PutExtra("IS_VIEW_BILL_DISABLE", isViewBillDisable);
                 intent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(billRenderingResponse));
-                intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
+                //intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
 
                 StartActivity(intent);
             }
@@ -641,17 +642,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                 //For tenant checking DBR 
                                 List<string> dBRCAs = DBRUtility.Instance.GetCAList();
                                 List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
-                                billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                                //billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
                                 bool tenantAllowOptIn = false;
+                                List<PostBREligibilityIndicatorsModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
 
-                                if (billRenderingTenantResponse != null
-                                    && billRenderingTenantResponse.StatusDetail != null
-                                    && billRenderingTenantResponse.StatusDetail.IsSuccess
-                                    && billRenderingTenantResponse.Content != null)
+
+                                //if (billRenderingTenantResponse != null
+                                //    && billRenderingTenantResponse.StatusDetail != null
+                                //    && billRenderingTenantResponse.StatusDetail.IsSuccess
+                                //    && billRenderingTenantResponse.Content != null)
+                                //{
+                                //    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerOverRule;
+                                //    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerAlreadyOptIn;
+                                //    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsTenantAlreadyOptIn;
+                                //    bool AccountHasOwner = accounts.Find(x => x.AccNum == dbrAccount.AccountNum).AccountHasOwner;
+
+                                //    if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                                //    {
+                                //        tenantAllowOptIn = true;
+                                //    }
+                                //}
+
+                                if (tenantList != null)
                                 {
-                                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerOverRule;
-                                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerAlreadyOptIn;
-                                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == dbrAccount.AccountNum).IsTenantAlreadyOptIn;
+                                    bool isOwnerOverRule = tenantList.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerOverRule;
+                                    bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerAlreadyOptIn;
+                                    bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == dbrAccount.AccountNum).IsTenantAlreadyOptIn;
                                     bool AccountHasOwner = accounts.Find(x => x.AccNum == dbrAccount.AccountNum).AccountHasOwner;
 
                                     if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
@@ -659,6 +675,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                         tenantAllowOptIn = true;
                                     }
                                 }
+
 
                                 if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
                                 {
@@ -691,6 +708,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                         }
                                         else
                                         {
+                                            
                                             if (tenantAllowOptIn)
                                             {
                                                 paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
@@ -699,7 +717,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                             {
                                                 paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBillNonOwner"));
                                             }
-
                                         }
                                     }
                                     SetDynatraceScreenTags();

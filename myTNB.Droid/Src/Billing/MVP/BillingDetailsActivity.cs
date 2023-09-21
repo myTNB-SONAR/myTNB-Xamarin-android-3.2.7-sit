@@ -34,6 +34,7 @@ using static myTNB_Android.Src.CompoundView.ExpandableTextViewComponent;
 using myTNB.Mobile.AWS.Models.DBR;
 using Android.Runtime;
 using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 
@@ -139,7 +140,7 @@ namespace myTNB_Android.Src.Billing.MVP
         ImageView bill_paperless_icon;
 
         GetBillRenderingResponse billRenderingResponse;
-        PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
+        // PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
@@ -307,17 +308,17 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 billRenderingResponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billrenderingresponse"));
 
-            }
-            if (extras.ContainsKey("billRenderingTenantResponse"))
-            {
-                billRenderingTenantResponse = JsonConvert.DeserializeObject<PostBREligibilityIndicatorsResponse>(extras.GetString("billRenderingTenantResponse"));
+                List<PostBREligibilityIndicatorsModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
+
                 List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
                 bool tenantAllowOptIn = false;
-                if (billRenderingTenantResponse != null)
+
+                if (tenantList != null)
                 {
-                    bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerOverRule;
-                    bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerAlreadyOptIn;
-                    bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsTenantAlreadyOptIn;
+
+                    bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerOverRule;
+                    bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerAlreadyOptIn;
+                    bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountData.AccountNum).IsTenantAlreadyOptIn;
                     bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccountData.AccountNum).AccountHasOwner;
 
                     if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
@@ -359,7 +360,7 @@ namespace myTNB_Android.Src.Billing.MVP
                             }
                             else
                             {
-                                if (tenantAllowOptIn)
+                                if (tenantAllowOptIn == true)
                                 {
                                     paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
                                 }
@@ -373,7 +374,74 @@ namespace myTNB_Android.Src.Billing.MVP
                         SetDynatraceScreenTags();
                     }
                 }
+
             }
+            //if (extras.ContainsKey("billRenderingTenantResponse"))
+            //{
+            //    billRenderingTenantResponse = JsonConvert.DeserializeObject<PostBREligibilityIndicatorsResponse>(extras.GetString("billRenderingTenantResponse"));
+            //    List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
+            //    bool tenantAllowOptIn = false;
+            //    if (billRenderingTenantResponse != null)
+            //    {
+            //        bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerOverRule;
+            //        bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerAlreadyOptIn;
+            //        bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountData.AccountNum).IsTenantAlreadyOptIn;
+            //        bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccountData.AccountNum).AccountHasOwner;
+
+            //        if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+            //        {
+            //            tenantAllowOptIn = true;
+            //        }
+            //    }
+
+            //    _isOwner = selectedAccountData.IsOwner && DBRUtility.Instance.IsCAEligible(selectedAccountData.AccountNum);
+
+            //    if (billRenderingResponse != null)
+            //    {
+            //        if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.None)
+            //        {
+            //            digital_container.Visibility = ViewStates.Gone;
+            //        }
+            //        else
+            //        {
+            //            digital_container.Visibility = ViewStates.Visible;
+            //            if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBill
+            //                || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EBillWithCTA)
+            //            {
+            //                bill_paperless_icon.SetImageResource(Resource.Drawable.icon_digitalbill);
+            //                paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
+            //            }
+            //            else if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Email
+            //                || billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.EmailWithCTA)
+            //            {
+            //                bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EMail);
+            //                paperlessTitle.TextFormatted = GetFormattedText(billRenderingResponse.Content.SegmentMessage ?? string.Empty);
+            //            }
+            //            if (billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper)
+            //            {
+            //                bill_paperless_icon.SetImageResource(Resource.Drawable.Icon_DBR_EBill);
+
+            //                if (_isOwner)
+            //                {
+            //                    paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
+            //                }
+            //                else
+            //                {
+            //                    if (tenantAllowOptIn)
+            //                    {
+            //                        paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));
+            //                    }
+            //                    else
+            //                    {
+            //                        paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBillNonOwner"));
+            //                    }
+            //                }
+            //            }
+
+            //            SetDynatraceScreenTags();
+            //        }
+            //    }
+            //}
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
@@ -494,7 +562,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 SetDynatraceCTATags();
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
-                intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
+                //intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                 intent.PutExtra("accountNumber", selectedAccountData.AccountNum);
                 StartActivity(intent);
             }

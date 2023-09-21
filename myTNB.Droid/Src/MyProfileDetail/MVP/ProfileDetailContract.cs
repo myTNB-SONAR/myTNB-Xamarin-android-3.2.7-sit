@@ -71,6 +71,12 @@ namespace myTNB_Android.Src.MyProfileDetail.MVP
             void ShowRetryOptionsCodeUnknownException(Exception exception);
 
             /// <summary>
+            /// Determines if Account Verifed banner is to be shown or not
+            /// </summary>
+            /// <param name="isVerified"></param>
+            void ShowAccountVerified(bool isVerified);
+            
+            /// <summary>
             /// Reload the page
             /// </summary>
             void ReloadPage();
@@ -84,6 +90,11 @@ namespace myTNB_Android.Src.MyProfileDetail.MVP
             /// <param name="email"></param>
             void ResendEmailVerify(string apiKeyId, string email);
 
+            /// <summary>
+            /// Triggers API Call to get Account Verified status
+            /// </summary>
+            void GetEKYCStatusOnCall();
+            
             void GetID(); 
         }
     }
