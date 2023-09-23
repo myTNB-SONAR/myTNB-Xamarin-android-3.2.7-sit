@@ -296,15 +296,20 @@ namespace myTNB_Android.Src.Billing.MVP
                 if (tenantList != null)
                 {
 
-                    bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerOverRule;
-                    bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerAlreadyOptIn;
-                    bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountData.AccountNum).IsTenantAlreadyOptIn;
-                    bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccountData.AccountNum).AccountHasOwner;
-
-                    if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                    if (tenantList.Find(x => x.CaNo == selectedAccountData.AccountNum) != null)
                     {
-                        tenantAllowOptIn = true;
+                        bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerOverRule;
+                        bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountData.AccountNum).IsOwnerAlreadyOptIn;
+                        bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountData.AccountNum).IsTenantAlreadyOptIn;
+                        bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccountData.AccountNum).AccountHasOwner;
+
+                        if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                        {
+                            tenantAllowOptIn = true;
+                        }
                     }
+
+           
                 }
 
                 _isOwner = selectedAccountData.IsOwner && DBRUtility.Instance.IsCAEligible(selectedAccountData.AccountNum);

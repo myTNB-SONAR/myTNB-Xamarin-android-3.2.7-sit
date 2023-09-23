@@ -227,14 +227,20 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
                 if (tenantList != null)
                 {
-                    bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
-                    bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
-                    bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
-
-                    if (mSelectedAccountData.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                    if (tenantList.Find(x => x.CaNo == selectedAccountNumber) != null)
                     {
-                        tenantAllowOptIn = true;
+                        bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
+                        bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
+                        bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
+
+                        if (mSelectedAccountData.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                        {
+                            tenantAllowOptIn = true;
+                        }
                     }
+
+
+           
                 }
 
                 GetDeliveryDisplay(_billRenderingResponse, tenantAllowOptIn);
