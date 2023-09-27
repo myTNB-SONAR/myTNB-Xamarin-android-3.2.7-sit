@@ -4374,8 +4374,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     discoverMoreSectionTitle.Visibility = ViewStates.Visible;
                     discoverMoreMyHomeContainer.Visibility = ViewStates.Visible;
                     myHomeBanner.Visibility = ViewStates.Visible;
-                    myHomeBanner.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.Banner_Home_MyHomeGTM2_MS
-                        : Resource.Drawable.Banner_Home_MyHomeGTM2_EN);
+                    myHomeBanner.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.Banner_Home_MyHome_MS
+                        : Resource.Drawable.Banner_Home_MyHome_EN);
                 }
             });
         }
