@@ -990,17 +990,20 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
                         if (tenantList != null)
                         {
-                            //For tenant checking DBR | Get a single data for specific ca from response list
-                            List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
-                            bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
-                            bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
-                            bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
-                            bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
-
-
-                            if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                            if (tenantList.Find(x => x.CaNo == selectedAccountNumber) != null)
                             {
-                                tenantAllowOptIn = true;
+                                //For tenant checking DBR | Get a single data for specific ca from response list
+                                List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
+                                bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
+                                bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
+                                bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
+                                bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
+
+
+                                if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                                {
+                                    tenantAllowOptIn = true;
+                                }
                             }
                         }
 
