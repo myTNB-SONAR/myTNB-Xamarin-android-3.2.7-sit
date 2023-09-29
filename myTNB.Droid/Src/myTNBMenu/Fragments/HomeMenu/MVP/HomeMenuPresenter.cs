@@ -42,6 +42,7 @@ using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.SSMRMeterHistory.Api;
 using Dynatrace.Xamarin;
 using myTNB.Mobile.Business;
+using Android.Nfc;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -3326,6 +3327,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             catch (Exception unknownException)
             {
                 Utility.LoggingNonFatalError(unknownException);
+            }
+        }
+
+        public async void GetDownTime()
+        {
+
+            DSSTableResponse downTimeResponse = await ServiceApiImpl.Instance.GetDSSTableData(new DSSTableRequest());
+
+            if (downTimeResponse != null && downTimeResponse.Response.ErrorCode != null)
+            {
+                if (downTimeResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                {
+                    DownTimeEntity.RemoveActive();
+                    foreach (DownTime cat in downTimeResponse.Response.data)
+                    {
+                       int newRecord = DownTimeEntity.InsertOrReplace(cat);
+                    }
+
+                    if (DownTimeEntity.IsBCRMDown())
+                    {
+                        //this.mView.OnCheckBCRMDowntime();
+
+                    }
+                }
             }
         }
     }

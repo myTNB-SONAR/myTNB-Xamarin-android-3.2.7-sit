@@ -1351,6 +1351,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, message);
                         StartActivity(maintenanceScreen);
                     }
+                    else if (response.Response.ErrorCode == "8400")
+                    {
+                       OnCheckBCRMDowntime();
+                    }
                     else
                     {
                         string txt = "";
@@ -1387,6 +1391,27 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     .SetCTAaction(() => { isClicked = false; })
                     .Build();
             eppTooltip.Show();
+        }
+
+        public void OnCheckBCRMDowntime()
+        {
+            //this.SetIsClicked(false);
+            //OnBCRMDownTimeErrorMessage();
+            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
+            OnBCRMDownTimeErrorMessageV2(bcrmEntity);
+
+        }
+
+        public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
+        {
+            MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
+           .SetHeaderImage(Resource.Drawable.maintenance_bcrm_new)
+           .SetTitle(bcrmEntity.DowntimeTextMessage)
+           .SetMessage(bcrmEntity.DowntimeMessage)
+           .SetCTALabel(Utility.GetLocalizedCommonLabel("close"))
+           //.SetCTAaction(() => { isBCMRDownDialogShow = false; })
+           .Build()
+           .Show();
         }
     }
 }

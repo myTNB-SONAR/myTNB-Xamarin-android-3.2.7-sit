@@ -181,7 +181,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void OnCheckNewFAQState();
 
-
+            void GetDownTime();
             //void UserNotificationsCount();
         }
 

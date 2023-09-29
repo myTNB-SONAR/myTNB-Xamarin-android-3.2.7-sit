@@ -21,6 +21,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             void ShowContactNotAvailableTooltip(string title, string content, string cta);
             string GetSMRActionKey();
             void OnShowSMRMeterReadingDialog();
+            void OnCheckBCRMDowntime();
+            void ShowSSMRTerminateActivity();
+            void ShowSubmitMeterReadingActivity();
+            void ShowSSMRStartActivity();
+            void RestartSMRActivity();
         }
 
         public interface IPresenter
@@ -31,6 +36,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             void GetCARegisteredContactInfoAsync(AccountData selectedAccount);
             List<NewAppModel> OnGeneraNewAppTutorialList(bool isSMR);
             void CheckIsBtnSubmitHide(SMRActivityInfoResponse SMRAccountActivityInfoResponse);
+            void GetDownTime(string smrtypeBtn);
         }
 
         public interface IApiNotification

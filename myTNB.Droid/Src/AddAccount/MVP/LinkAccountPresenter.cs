@@ -101,6 +101,10 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     this.mView.HideGetAccountsProgressDialog();
                     this.mView.ShowServiceError(result.Response.DisplayTitle, result.Response.DisplayMessage);
                 }
+                else if (result.Response.ErrorCode == "8400")
+                {
+                    this.mView.OnCheckBCRMDowntime();
+                }
                 else
                 {
                     this.mView.HideGetAccountsProgressDialog();

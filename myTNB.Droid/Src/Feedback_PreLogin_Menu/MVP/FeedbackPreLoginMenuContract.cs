@@ -47,6 +47,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.MVP
             /// </summary>
             /// <param name="exception"></param>
             void ShowRetryOptionsUnknownException(Exception exception);
+
+            void OnCheckBCRMDowntime();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -63,6 +65,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.MVP
             void OnSubmittedFeedback();
 
             void OnResume();
+
+            void GetDownTime();
         }
     }
 }

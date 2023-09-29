@@ -360,6 +360,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnCreate(savedInstanceState);
             DynatraceHelper.OnTrack(DynatraceConstants.MyHome.Screens.Home.Dashboard);
             presenter = new HomeMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+            this.presenter.GetDownTime();
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

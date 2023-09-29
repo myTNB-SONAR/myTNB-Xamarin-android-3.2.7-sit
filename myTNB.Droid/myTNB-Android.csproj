@@ -8128,6 +8128,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\MyTNBService\Response\DSSTableResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\DSSTableRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">

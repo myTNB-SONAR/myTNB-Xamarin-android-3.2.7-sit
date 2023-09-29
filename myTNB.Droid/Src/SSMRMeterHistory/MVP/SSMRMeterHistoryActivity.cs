@@ -24,7 +24,9 @@ using CheeseBind;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.NotificationSettings.Activity;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMR.Util;
@@ -62,7 +64,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         private bool isSMR = false;
         private bool noMeterAccess = false;
         private bool IsTenant = false;
-
+        private string smrtypeBtn;
         SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
 
         [BindView(Resource.Id.smr_submitted_img)]
@@ -391,12 +393,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             if (DownTimeEntity.IsBCRMDown())
             {
                 // this.SetIsClicked(false);
-                btnEnableSubmitMeter.Enabled = true;
+                btnEnableSubmitMeter.Enabled = false;
                 btnEnableSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
             }
             else
             {
-                btnEnableSubmitMeter.Enabled = true;
+                btnEnableSubmitMeter.Enabled = false;
                 btnEnableSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
             }
            
@@ -487,7 +489,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 if (DownTimeEntity.IsBCRMDown())
                 {
                     // this.SetIsClicked(false);
-                    //btnSubmitMeter.Enabled = false;
+                    btnSubmitMeter.Enabled = false;
                     btnSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
                 }
             }
@@ -613,33 +615,38 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                if (DownTimeEntity.IsBCRMDown())
-                {
-                    // this.SetIsClicked(false);
-                    //OnBCRMDownTimeErrorMessage();
-                    DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
-                    OnBCRMDownTimeErrorMessageV2(bcrmEntity);
-                }
-                else
-                {
-                    if (smrResponse != null && smrResponse.Response != null && smrResponse.Response.Data != null &&
-                                       smrResponse.Response.Data.SMRMROValidateRegisterDetails != null && smrResponse.Response.Data.SMRMROValidateRegisterDetails.Count > 0)
-                    {
-                        AccountData accountData = new AccountData();
-                        SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
-                        accountData.AccountNum = selectedAccountNumber;
+                smrtypeBtn = "Submit";
 
-                        Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
-                        ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-                        ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
-                        StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
-                    }
-                    else
-                    {
-                        ShowEmptyMeterValidationPopup();
-                        this.SetIsClicked(false);
-                    }
-                }
+                this.mPresenter.GetDownTime(smrtypeBtn);
+
+                //if (DownTimeEntity.IsBCRMDown())
+                //{
+                //    // this.SetIsClicked(false);
+                //    //OnBCRMDownTimeErrorMessage();
+                //    DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
+                //    OnBCRMDownTimeErrorMessageV2(bcrmEntity);
+                //    this.SetIsClicked(false);
+                //}
+                //else
+                //{
+                //    if (smrResponse != null && smrResponse.Response != null && smrResponse.Response.Data != null &&
+                //                       smrResponse.Response.Data.SMRMROValidateRegisterDetails != null && smrResponse.Response.Data.SMRMROValidateRegisterDetails.Count > 0)
+                //    {
+                //        AccountData accountData = new AccountData();
+                //        SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+                //        accountData.AccountNum = selectedAccountNumber;
+
+                //        Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
+                //        ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+                //        ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
+                //        StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
+                //    }
+                //    else
+                //    {
+                //        ShowEmptyMeterValidationPopup();
+                //        this.SetIsClicked(false);
+                //    }
+                //}
                
             }
         }
@@ -685,28 +692,33 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             if (!this.GetIsClicked())
             {
-                if (DownTimeEntity.IsBCRMDown())
-                {
-                    // this.SetIsClicked(false);
-                    //OnBCRMDownTimeErrorMessage();
-                    DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
-                    OnBCRMDownTimeErrorMessageV2(bcrmEntity);
-                }
-                else
-                {
-                    this.SetIsClicked(true);
-                    AccountData accountData = new AccountData();
-                    SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
-                    accountData.AccountNum = selectedAccountNumber;
-                    accountData.AddStreet = eligibleAccount.accountAddress;
-                    accountData.AccountNickName = eligibleAccount.accountName;
-                    SMR_ACTION_KEY = Constants.SMR_DISABLE_FLAG;
-                    Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
-                    SSMRTerminateActivity.PutExtra("SMR_ACTION", SMR_ACTION_KEY);
-                    SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-                    StartActivity(SSMRTerminateActivity);
-                }
-               
+                this.SetIsClicked(true);
+                smrtypeBtn = "Stop";
+
+                this.mPresenter.GetDownTime(smrtypeBtn);
+
+                //if (DownTimeEntity.IsBCRMDown())
+                //{
+                //    // this.SetIsClicked(false);
+                //    //OnBCRMDownTimeErrorMessage();
+                //    DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
+                //    OnBCRMDownTimeErrorMessageV2(bcrmEntity);
+                //    this.SetIsClicked(false);
+                //}
+                //else
+                //{
+                //    this.SetIsClicked(true);
+                //    AccountData accountData = new AccountData();
+                //    SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+                //    accountData.AccountNum = selectedAccountNumber;
+                //    accountData.AddStreet = eligibleAccount.accountAddress;
+                //    accountData.AccountNickName = eligibleAccount.accountName;
+                //    SMR_ACTION_KEY = Constants.SMR_DISABLE_FLAG;
+                //    Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
+                //    SSMRTerminateActivity.PutExtra("SMR_ACTION", SMR_ACTION_KEY);
+                //    SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+                //    StartActivity(SSMRTerminateActivity);
+                //}
             }
         }
 
@@ -719,51 +731,56 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             }
             else
             {
-                Finish();
+                StartActivity(new Intent(this, typeof(DashboardHomeActivity)));
             }
         }
 
         [OnClick(Resource.Id.btnEnableSubmitMeter)]
         void OnEnableSubmitMeter(object sender, EventArgs eventArgs)
         {
-            if (DownTimeEntity.IsBCRMDown())
-            {
-                // this.SetIsClicked(false);
-                //OnBCRMDownTimeErrorMessage();
-                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
-                OnBCRMDownTimeErrorMessageV2(bcrmEntity);
-            }
-            else
-            {
-                if (noMeterAccess)
-                {
-                    if (!this.GetIsClicked())
-                    {
-                        this.SetIsClicked(true);
-                        MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                            .SetTitle(Utility.GetLocalizedErrorLabel("noMeterAccessErrorTitle"))
-                            .SetMessage(Utility.GetLocalizedErrorLabel("noMeterAccessErrorMessage"))
-                            .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                            .SetCTAaction(() => { this.SetIsClicked(false); })
-                            .Build().Show();
-                    }
-                }
-                else
-                {
-                    if (!this.GetIsClicked())
-                    {
-                        this.SetIsClicked(true);
-                        AccountData accountData = new AccountData();
-                        SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
-                        accountData.AccountNum = selectedAccountNumber;
-                        accountData.AddStreet = eligibleAccount.accountAddress;
-                        accountData.AccountNickName = eligibleAccount.accountName;
-                        SMR_ACTION_KEY = Constants.SMR_ENABLE_FLAG;
-                        this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
-                    }
-                }
+            this.SetIsClicked(true);
+            smrtypeBtn = "Start";
+            this.mPresenter.GetDownTime(smrtypeBtn);
 
-            }
+            //if (DownTimeEntity.IsBCRMDown())
+            //{
+            //    // this.SetIsClicked(false);
+            //    //OnBCRMDownTimeErrorMessage();
+            //    DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
+            //    OnBCRMDownTimeErrorMessageV2(bcrmEntity);
+            //    this.SetIsClicked(false);
+            //}
+            //else
+            //{
+            //    if (noMeterAccess)
+            //    {
+            //        if (!this.GetIsClicked())
+            //        {
+            //            this.SetIsClicked(true);
+            //            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+            //                .SetTitle(Utility.GetLocalizedErrorLabel("noMeterAccessErrorTitle"))
+            //                .SetMessage(Utility.GetLocalizedErrorLabel("noMeterAccessErrorMessage"))
+            //                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+            //                .SetCTAaction(() => { this.SetIsClicked(false); })
+            //                .Build().Show();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (!this.GetIsClicked())
+            //        {
+            //            this.SetIsClicked(true);
+            //            AccountData accountData = new AccountData();
+            //            SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+            //            accountData.AccountNum = selectedAccountNumber;
+            //            accountData.AddStreet = eligibleAccount.accountAddress;
+            //            accountData.AccountNickName = eligibleAccount.accountName;
+            //            SMR_ACTION_KEY = Constants.SMR_ENABLE_FLAG;
+            //            this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
+            //        }
+            //    }
+
+            //}
            
         }
 
@@ -1006,6 +1023,88 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             return height;
         }
 
+        public void OnCheckBCRMDowntime()
+        {
+            this.SetIsClicked(false);
+            //btnDisableSubmitMeter.Enabled = false;
+            btnDisableSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            btnDisableSubmitMeter.SetTextColor(Android.Graphics.Color.White);
+            //btnEnableSubmitMeter.Enabled = false;
+            btnEnableSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            //btnSubmitMeter.Enabled = false;
+            btnSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            //OnBCRMDownTimeErrorMessage();
+            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
+            OnBCRMDownTimeErrorMessageV2(bcrmEntity);
+        }
+
+        public void ShowSSMRTerminateActivity()
+        {
+            this.SetIsClicked(true);
+            AccountData accountData = new AccountData();
+            SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+            accountData.AccountNum = selectedAccountNumber;
+            accountData.AddStreet = eligibleAccount.accountAddress;
+            accountData.AccountNickName = eligibleAccount.accountName;
+            SMR_ACTION_KEY = Constants.SMR_DISABLE_FLAG;
+            Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
+            SSMRTerminateActivity.PutExtra("SMR_ACTION", SMR_ACTION_KEY);
+            SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            StartActivity(SSMRTerminateActivity);
+        }
+
+        public void ShowSubmitMeterReadingActivity()
+        {
+            if (smrResponse != null && smrResponse.Response != null && smrResponse.Response.Data != null &&
+                                        smrResponse.Response.Data.SMRMROValidateRegisterDetails != null && smrResponse.Response.Data.SMRMROValidateRegisterDetails.Count > 0)
+            {
+                AccountData accountData = new AccountData();
+                SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+                accountData.AccountNum = selectedAccountNumber;
+
+                Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
+                ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+                ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
+                StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
+            }
+            else
+            {
+                ShowEmptyMeterValidationPopup();
+                this.SetIsClicked(false);
+            }
+        }
+
+        public void ShowSSMRStartActivity()
+        {
+            if (noMeterAccess)
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(Utility.GetLocalizedErrorLabel("noMeterAccessErrorTitle"))
+                        .SetMessage(Utility.GetLocalizedErrorLabel("noMeterAccessErrorMessage"))
+                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                        .SetCTAaction(() => { this.SetIsClicked(false); })
+                        .Build().Show();
+                }
+            }
+            else
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    AccountData accountData = new AccountData();
+                    SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+                    accountData.AccountNum = selectedAccountNumber;
+                    accountData.AddStreet = eligibleAccount.accountAddress;
+                    accountData.AccountNickName = eligibleAccount.accountName;
+                    SMR_ACTION_KEY = Constants.SMR_ENABLE_FLAG;
+                    this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
+                }
+            }
+        }
+
         public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
         {
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
@@ -1016,6 +1115,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
            //.SetCTAaction(() => { isBCMRDownDialogShow = false; })
            .Build()
            .Show();
+        }
+
+        public void RestartSMRActivity()
+        {
+            StartActivity(new Intent(this, typeof(SSMRMeterHistoryActivity)));
         }
     }
 }

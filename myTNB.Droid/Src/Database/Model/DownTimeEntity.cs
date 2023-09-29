@@ -52,8 +52,8 @@ namespace myTNB_Android.Src.Database.Model
                 DowntimeEnd = downTime.DowntimeEnd
             };
 
-            if (newRecord.System == "BCRM") //temp hardcode BCRM down
-                newRecord.IsDown = true;
+            //if (newRecord.System == "BCRM") //temp hardcode BCRM down
+            //    newRecord.IsDown = true;
 
             return db.InsertOrReplace(newRecord);
             //}

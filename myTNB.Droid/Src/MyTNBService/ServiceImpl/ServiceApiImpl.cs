@@ -37,7 +37,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
 
             // httpClientAwsIsUserAuth = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT_ISUSERAUTH_AWS) };
             // apiAwsIsUserAuth = RestService.For<IServiceV6>(httpClientAwsIsUserAuth);
-            
+
 #else
             api = RestService.For<IServiceV6>(Constants.SERVER_URL.END_POINT);
             apiAws = RestService.For<IServiceV6>(Constants.SERVER_URL.END_POINT_AWS);
@@ -90,7 +90,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<CustomerAccountListResponse> GetCustomerAccountList([Body] Request.BaseRequestV4 request)
         {
-            return api.GetCustomerAccountList<CustomerAccountListResponse>(EncryptRequest(request),CancellationTokenSourceWrapper.GetToken());
+            return api.GetCustomerAccountList<CustomerAccountListResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -142,9 +142,9 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <param name="request"></param>
         /// <returns></returns>
         public Task<ValidateManualAccountResponse> ValidateManualAccount([Body] Request.BaseRequest request)
-		{
+        {
             return api.ValidateManualAccount_OT<ValidateManualAccountResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
-		}
+        }
 
         /// <summary>
         /// Call ValidateAccisExist with default timeout.
@@ -938,6 +938,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<GetIdentificationNoResponse> GetIdentificationNo([Body] Request.BaseRequestV4 request)
         {
             return apiAws.GetIdentificationNo<GetIdentificationNoResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call DSSTableData with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<DSSTableResponse> GetDSSTableData([Body] Request.BaseRequest request)
+        {
+            return api.GetDSSTableData<DSSTableResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         #endregion

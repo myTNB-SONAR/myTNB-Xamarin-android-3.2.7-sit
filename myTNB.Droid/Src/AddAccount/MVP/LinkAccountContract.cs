@@ -88,6 +88,8 @@ namespace myTNB_Android.Src.AddAccount.MVP
             void EnableConfirmButton();
 
             void DisableConfirmButton();
+
+            void OnCheckBCRMDowntime();
         }
 
         public interface IUserActionsListener : IBasePresenter
