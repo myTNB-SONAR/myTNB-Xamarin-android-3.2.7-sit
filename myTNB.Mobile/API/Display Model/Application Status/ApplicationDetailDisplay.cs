@@ -448,12 +448,22 @@ namespace myTNB.Mobile
                                         {
                                             type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
                                         }
+                                        else if (ApplicationRatingDetail.SubmissionRating != null
+                                        && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
+                                        {
+                                            type = DetailCTAType.SubmitApplicationRating;
+                                        }
                                     }
                                     else
                                     {
                                         if (IsActionableStatusID(ApplicationStatusDetail.StatusId, "COTDraft"))
                                         {
                                             type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
+                                        }
+                                        else if (ApplicationRatingDetail.SubmissionRating != null
+                                        && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
+                                        {
+                                            type = DetailCTAType.SubmitApplicationRating;
                                         }
                                     }
                                 }
@@ -467,6 +477,11 @@ namespace myTNB.Mobile
                                     if (IsActionableStatusID(ApplicationStatusDetail.StatusId, "COADraft"))
                                     {
                                         type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
+                                    }
+                                    else if (ApplicationRatingDetail.SubmissionRating != null
+                                        && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
+                                    {
+                                        type = DetailCTAType.SubmitApplicationRating;
                                     }
                                 }
                             }
