@@ -75,6 +75,7 @@ using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.EnergyBudget.Activity;
 using myTNB.Mobile.AWS.Models.DBR;
 using Dynatrace.Xamarin.Binding.Android;
+using myTNB_Android.Src.myTNBMenu.Async;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
@@ -593,7 +594,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         internal static readonly int SELECT_SM_ACCOUNT_REQUEST_CODE = 8809;
 
-
         private SMRActivityInfoResponse smrResponse;
 
         private AccountDueAmountResponse amountDueResponse;
@@ -721,7 +721,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         ScaleGestureDetector mScaleDetector;
 
         GetBillRenderingResponse _billRenderingResponse;
-        PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
+        //PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
         PostGetAutoOptInCaResponse getAutoOptInCaResponse;
 
         public override int ResourceId()
@@ -1907,7 +1907,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
                         rmKwhLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.silverChalice)));
                         imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle_disable);
-                        if (isEBUser) //checking if eb down or not
+                        if (isEBUser)
                         {
                             energyBudgetMDMSContainer.Visibility = ViewStates.Visible;
                         }
@@ -8769,7 +8769,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         SetVirtualHeightParams(8f);
                                         DashboardCustomScrolling(0);
                                         energyBudgetMDMSContainer.Visibility = ViewStates.Visible;
-                                    }                                    /*else if (energyBudgetMDMSContainer.Visibility == ViewStates.Visible)
+                                    }
+                                    /*else if (energyBudgetMDMSContainer.Visibility == ViewStates.Visible)
                                     {
                                         rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
                                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
@@ -9792,7 +9793,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         energyBudgetMDMSContainer.Visibility = ViewStates.Visible;
                     }
                 }
-
             }
             else
             {
@@ -11781,7 +11781,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.Usage.Reminder_Popup_Viewmore);
                 Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(_billRenderingResponse));
-                intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
+                //intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                 intent.PutExtra("accountNumber", GetSelectedAccount().AccountNum);
                 StartActivity(intent);
             }
@@ -11880,7 +11880,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                    && _billRenderingResponse.Content.DBRType == MobileEnums.DBRTypeEnum.Paper
                    && _billRenderingResponse.Content.IsInProgress == false)
                 {
-                    billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                    //billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+                    List<PostBREligibilityIndicatorsModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
+
 
                     if (_billRenderingResponse.Content.IsOwner)
                     {
@@ -11889,20 +11891,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     else
                     {
                         //For tenant checking DBR
-                        if (billRenderingTenantResponse != null
-                           && billRenderingTenantResponse.StatusDetail != null
-                           && billRenderingTenantResponse.StatusDetail.IsSuccess
-                           && billRenderingTenantResponse.Content != null)
+                        if (tenantList != null)
                         {
-                            bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
-                            bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
-                            bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
-                            bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccount.AccountNum).AccountHasOwner;
 
-                            if (AccountHasOwner == true && !isOwnerAlreadyOptIn && !isOwnerOverRule && !isTenantAlreadyOptIn)
+                            if (tenantList.Find(x => x.CaNo == selectedAccount.AccountNum) != null)
                             {
-                                ShowMarketingTooltip();
+                                bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
+                                bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
+                                bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
+                                bool AccountHasOwner = accounts.Find(x => x.AccNum == selectedAccount.AccountNum).AccountHasOwner;
+
+                                if (AccountHasOwner == true && !isOwnerAlreadyOptIn && !isOwnerOverRule && !isTenantAlreadyOptIn)
+                                {
+                                    ShowMarketingTooltip();
+                                }
                             }
+
+
+                           
                         }
                     }
                     //ShowMarketingTooltip();

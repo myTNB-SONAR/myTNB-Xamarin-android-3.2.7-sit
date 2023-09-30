@@ -70,86 +70,68 @@
                     android:paddingRight="32dp"
                     android:paddingBottom="16dp"
                     android:paddingTop="16dp">
-                    <TextView
-                        android:id="@+id/lblCreditDebitCard"
-                        android:text="@string/credit_debit_card"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp"
-                        android:textColor="@color/blue" />
-                    <ListView
-                        android:id="@+id/listAddedCards"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:divider="@android:color/transparent"
-                        android:dividerHeight="4.0dp"
-                        android:visibility="gone" />
                     <Button
-                        style="@style/Theme.AddCardButton"
+                        style="@style/Theme.OnlinePaymentButtonV2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/add_card"
-                        android:drawableLeft="@drawable/ic_add_card"
+                        android:layout_height="80dp"
+                        android:text="TNG eWallet"
+                        android:drawableLeft="@drawable/tng"
                         android:drawablePadding="4dp"
-                        android:layout_marginTop="4dp"
                         android:padding="16dp"
+                        android:layout_marginBottom="4dp"
                         android:gravity="center_vertical|left"
-                        android:id="@+id/btnAddCard" />
-                </LinearLayout>
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="32dp"
-                    android:paddingRight="32dp"
-                    android:paddingBottom="16dp"
-                    android:paddingTop="16dp">
-                    <TextView
-                        android:id="@+id/lblOtherPayment"
-                        android:text="@string/other_payment_methods"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:paddingBottom="16dp"
-                        android:textColor="@color/blue" />
+                        android:id="@+id/btnTNGPayment" />
                     <Button
-                        style="@style/Theme.OnlinePaymentButton"
+                        style="@style/Theme.OnlinePaymentButtonV2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="80dp"
                         android:text="@string/fpx_online_payment"
                         android:drawableLeft="@drawable/fpx"
                         android:drawablePadding="4dp"
                         android:padding="16dp"
+                        android:layout_marginBottom="4dp"
                         android:gravity="center_vertical|left"
                         android:id="@+id/btnFPXPayment" />
-                </LinearLayout>
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="32dp"
-                    android:paddingRight="32dp"
-                    android:paddingBottom="16dp"
-                    android:paddingTop="16dp">
-                    <TextView
-                        android:id="@+id/lblTNGPayment"
-                        android:text="eWallet"
+
+                     <Button
+                        style="@style/Theme.OnlinePaymentButtonV2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="18dp"
+                        android:layout_height="80dp"
+                        android:text="@string/credit_debit_card"
+                        android:drawableLeft="@drawable/ic_creditcard"
+                        android:paddingRight="16dp"
                         android:paddingBottom="16dp"
-                        android:textColor="@color/blue" />
-                    <Button
-                        style="@style/Theme.OnlinePaymentButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/fpx_online_payment"
-                        android:drawablePadding="4dp"
-                        android:padding="16dp"
+                        android:paddingTop="16dp"
                         android:gravity="center_vertical|left"
-                        android:id="@+id/btnTNGPayment" />
+                        android:id="@+id/btnCreditDebitCard" />
+                        
+                      <LinearLayout
+                            android:id="@+id/LayoutCards"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white">
+                            <ListView
+                                android:id="@+id/listAddedCards"
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:divider="@android:color/transparent"
+                                android:visibility="gone"/>
+                            <Button
+                                style="@style/Theme.AddCardButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/add_cards"
+                                android:drawableLeft="@drawable/ic_add_card"
+                                android:drawablePadding="4dp"
+                                android:padding="16dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="6dp"
+                                android:gravity="center_vertical|left"
+                                android:visibility="gone"
+                                android:id="@+id/btnAddCard" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
             <View

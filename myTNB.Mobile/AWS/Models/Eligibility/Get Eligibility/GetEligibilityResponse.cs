@@ -25,6 +25,8 @@ namespace myTNB.Mobile.AWS.Models
         public BaseCAListModel TNG { set; get; }
         [JsonProperty("myHome")]
         public BaseCAListModel MyHome { set; get; }
+        [JsonProperty("ds")]
+        public BaseCAListModel DS { set; get; }
     }
 
     public class EligibileFeaturesModel
@@ -59,11 +61,12 @@ namespace myTNB.Mobile.AWS.Models
     }
 
     public class EBModel
+
     {
         [JsonProperty("contractAccounts")]
         public List<ContractAccountsModel> ContractAccounts { set; get; }
     }
-     */
+    */
 
     public class ContractAccountsModel
     {
@@ -73,5 +76,6 @@ namespace myTNB.Mobile.AWS.Models
         public bool Acted { set; get; }
         [JsonProperty("modifiedDate")]
         public DateTime? ModifiedDate { set; get; }
+        public string BusinessArea { set; get; }
     }
 }

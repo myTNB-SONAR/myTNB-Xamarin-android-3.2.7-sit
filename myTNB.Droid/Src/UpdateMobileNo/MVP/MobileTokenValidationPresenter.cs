@@ -308,7 +308,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             {
                 UserAuthenticateRequest userAuthenticateRequest = new UserAuthenticateRequest(request.ClientType, request.Password);
                 userAuthenticateRequest.SetUserName(request.UserName);
-                var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthenticateRequest);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthenticateRequest);
 
                 if (!userResponse.IsSuccessResponse())
                 {

@@ -140,7 +140,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         {
                             string notifType = Intent.Extras.GetString("Type");
                             UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
-                            if (notifType.ToUpper() == "DBROWNER")
+                            if (notifType.ToUpper() == MobileConstants.PushNotificationTypes.DBR_Owner)
                             {
                                 string accountNumber = Intent.Extras.GetString("AccountNumber");
                                 UserSessions.DBROwnerNotificationAccountNumber = accountNumber ?? string.Empty;
@@ -355,6 +355,50 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         }
 
+        public async void ShowApplicationStatusDetails()
+        {
+            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+            if (searchApplicationTypeResponse == null)
+            {
+                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                if (searchApplicationTypeResponse != null
+                    && searchApplicationTypeResponse.StatusDetail != null
+                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                {
+                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                }
+            }
+
+            if (searchApplicationTypeResponse != null
+                && searchApplicationTypeResponse.StatusDetail != null
+                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+            {
+                ApplicationStatusNotificationModel notificationObj = UserSessions.ApplicationStatusNotification;
+                ApplicationDetailDisplay detailResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(notificationObj.SaveApplicationID
+                    , notificationObj.ApplicationID
+                    , notificationObj.ApplicationType
+                    , UserEntity.GetActive().UserID ?? string.Empty
+                    , UserEntity.GetActive().Email ?? string.Empty
+                    , notificationObj.System);
+
+                if (detailResponse.StatusDetail.IsSuccess)
+                {
+                    Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                    applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(detailResponse.Content));
+                    applicationStatusDetailIntent.PutExtra("isPush", true);
+                    StartActivity(applicationStatusDetailIntent);
+                }
+                else
+                {
+                    ShowDashboard();
+                }
+            }
+            else
+            {
+                ShowDashboard();
+            }
+        }
+
         public async void OnShowManageBillDelivery()
         {
             bool isDBREnabled = DBRUtility.Instance.IsAccountEligible;
@@ -407,11 +451,11 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         //For tenant checking DBR
                         List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                        PostBREligibilityIndicatorsResponse billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+                        // PostBREligibilityIndicatorsResponse billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
 
                         Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                         intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(billRenderingResponse));
-                        intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
+                        // intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                         intent.PutExtra("accountNumber", UserSessions.DBROwnerNotificationAccountNumber);
                         StartActivity(intent);
                     }
@@ -992,6 +1036,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtDialogTitle, btnUpdateNow);
                 btnUpdateNow.Click += delegate
                 {
+                    var versionNow = new string(DeviceIdUtils.GetAppVersionName().Where(c => !char.IsLetter(c)).ToArray());
+                    DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Force.ForceUpdate_ClickUpdate);
+                    DynatraceHelper.OnTrack(DynatraceConstants.AppUpdate.Force.ForceUpdate_VersionBeforeUpdate + " " + versionNow);
+
                     OnAppUpdateClick();
                 };
 
@@ -1222,6 +1270,54 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
+        public void RenderAppLaunchImage(AppLaunchModel item)
+        {
+            try
+            {
+                int secondMilli = 0;
+                try
+                {
+                    secondMilli = (int)(float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000);
+                }
+                catch (Exception nea)
+                {
+                    Utility.LoggingNonFatalError(nea);
+                }
+
+                if (secondMilli == 0)
+                {
+                    try
+                    {
+                        secondMilli = Int32.Parse(item.ShowForSeconds) * 1000;
+                    }
+                    catch (Exception nea)
+                    {
+                        Utility.LoggingNonFatalError(nea);
+                    }
+                }
+
+                var bitmapDrawable = new BitmapDrawable(item.ImageBitmap);
+                RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        this.Window.SetBackgroundDrawable(bitmapDrawable);
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+
+                this.userActionsListener.OnWaitSplashScreenDisplay(secondMilli);
+            }
+            catch (Exception ne)
+            {
+                SetDefaultAppLaunchImage();
+                Utility.LoggingNonFatalError(ne);
+            }
+        }
+
         public void SetCustomAppLaunchImage(AppLaunchModel item)
         {
             try
@@ -1241,50 +1337,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             int endResult = DateTime.Compare(nowDateTime, stopDateTime);
                             if (startResult >= 0 && endResult <= 0)
                             {
-                                try
-                                {
-                                    int secondMilli = 0;
-                                    try
-                                    {
-                                        secondMilli = (int)(float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000);
-                                    }
-                                    catch (Exception nea)
-                                    {
-                                        Utility.LoggingNonFatalError(nea);
-                                    }
-
-                                    if (secondMilli == 0)
-                                    {
-                                        try
-                                        {
-                                            secondMilli = Int32.Parse(item.ShowForSeconds) * 1000;
-                                        }
-                                        catch (Exception nea)
-                                        {
-                                            Utility.LoggingNonFatalError(nea);
-                                        }
-                                    }
-
-                                    var bitmapDrawable = new BitmapDrawable(item.ImageBitmap);
-                                    RunOnUiThread(() =>
-                                    {
-                                        try
-                                        {
-                                            this.Window.SetBackgroundDrawable(bitmapDrawable);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            Utility.LoggingNonFatalError(ex);
-                                        }
-                                    });
-
-                                    this.userActionsListener.OnWaitSplashScreenDisplay(secondMilli);
-                                }
-                                catch (Exception ne)
-                                {
-                                    SetDefaultAppLaunchImage();
-                                    Utility.LoggingNonFatalError(ne);
-                                }
+                                this.userActionsListener.OnDownloadPhoto(item);
                             }
                             else
                             {

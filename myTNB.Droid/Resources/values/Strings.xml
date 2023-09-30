@@ -610,9 +610,11 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="total_amount">TOTAL AMOUNT(RM)</string>
   <string name="credit_debit_card">Credit / Debit Card</string>
   <string name="add_card">Add Card</string>
+  <string name="add_cards">Use a new credit/debit card</string>
   <string name="other_payment_methods">Other Payment Methods</string>
   <string name="card_payment">Card Payment</string>
   <string name="fpx_online_payment">Online Banking via FPX</string>
+  <string name="tng_online_payment">TNG eWallet</string>
   <string name="save_card_question">I want to save this card for future use.</string>
   <string name="cvv_info_3_digit">Please enter the 3-digit CVV/CVC located at the back of your credit card.</string>
   <string name="cvv_info_4_digit">Please enter the 4-digit CVV/CVC located at the front of your credit card.</string>

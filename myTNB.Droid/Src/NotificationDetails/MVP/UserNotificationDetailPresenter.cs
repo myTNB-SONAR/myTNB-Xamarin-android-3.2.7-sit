@@ -30,6 +30,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.NotificationDetails.Models;
+using myTNB_Android.Src.NotificationDetails.Activity;
 using myTNB_Android.Src.ServiceDistruptionRating.Model;
 using myTNB_Android.Src.ServiceDistruptionRating.Request;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
@@ -916,6 +917,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(notificationDetails.ApplicationStatusDetail.SaveApplicationId
                             , notificationDetails.ApplicationStatusDetail.ApplicationID
                             , notificationDetails.ApplicationStatusDetail.ApplicationType
+                            , UserEntity.GetActive().UserID ?? string.Empty
+                            , UserEntity.GetActive().Email ?? string.Empty
                             , notificationDetails.ApplicationStatusDetail.System);
 
                         this.mActivity.RunOnUiThread(() =>

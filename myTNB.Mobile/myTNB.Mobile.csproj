@@ -43,7 +43,7 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\SIT\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0\netstandard2.0</OutputPath>
+    <OutputPath>bin\SIT\netstandard2.0</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />
@@ -82,6 +82,21 @@
     <Folder Include="AWS\Models\Application Status\Post Delete COT Draft\" />
     <Folder Include="AWS\Models\Application Status\Post Delete COA Draft\" />
     <Folder Include="Resources\Keys\" />
+    <Folder Include="AWS\Managers\DS\" />
+    <Folder Include="AWS\Services\DS\" />
+    <Folder Include="AWS\Models\DS\" />
+    <Folder Include="AWS\Models\DS\Status\" />
+    <Folder Include="AWS\Models\DS\Identification\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
+    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1004.json" />
+    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1003.json" />
+    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1099.json" />
+    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10011.json" />
+    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10010.json" />
+    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10009.json" />
+    <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10051.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Language\Language_MS.json" />
@@ -133,6 +148,12 @@
     <None Remove="AWS\Models\Application Status\Post NC Draft Applications\" />
     <None Remove="AWS\Models\Application Status\Post Delete COT Draft\" />
     <None Remove="AWS\Models\Application Status\Post Delete COA Draft\" />
+    <None Remove="AWS\Managers\DS\" />
+    <None Remove="AWS\Services\DS\" />
+    <None Remove="AWS\Models\DS\" />
+    <None Remove="AWS\Models\DS\EKYCStatus\" />
+    <None Remove="AWS\Models\DS\EKYCIdentification\" />
+    <None Remove="Refit" />
     <None Remove="Resources\Keys\" />
     <None Remove="Resources\Keys\SKey.txt" />
     <None Remove="Resources\Keys\PKey.txt" />
@@ -140,5 +161,9 @@
   <ItemGroup>
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />
     <Compile Remove="Business\Managers\AccountUsageManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Refit" Version="4.6.58" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
 </Project>

@@ -66,6 +66,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string mobileNo { set; get; }
         public string businessArea { set; get; }
         public bool isOwnApplication { set; get; }
+        public string channel { set; get; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
@@ -102,9 +103,16 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string loadRequirement { set; get; }
         public string linkedAsrId { set; get; }
         public string linkedAsrReferenceNo { set; get; }
+        public string signApplicationURL { set; get; }
+        public bool isVerifyNow { set; get; }
         public bool? isPremiseServiceReady { set; get; } = false;
         public DateTime? electricityStartDate { set; get; }
         public int premiseTypeHeaderId { set; get; }
+
+        public bool isContractorApplied { set; get; }
+        public string identificationNo { get; set; }
+        public int? identificationType { get; set; }
+
         [JsonIgnore]
         public string electricityStartDateDisplay
         {
@@ -224,6 +232,10 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string currentVoltage { set; get; }
         public string newVoltage { set; get; }
         public string electricityStartDate { set; get; }
+        public string signApplicationURL { set; get; }
+        public bool isVerifyNow { set; get; }
+        public bool isContractorApplied { set; get; }
+        public int? identificationType { get; set; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]

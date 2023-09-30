@@ -21,5 +21,20 @@
             public const string MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED = "NCAPPLICATIONCONTRACTORCOMPLETED";
             public const string MYHOME_NC_OTP_VERIFY = "NCOTPVERIFY";
         }
+
+        public struct DS
+        {
+            public const string DIGITAL_SIGNATURE = "EKYCVERIFICATION";
+            public const string EKYCIDNOTMATCHING = "EKYCIDNOTMATCHING";
+            public const string EKYCFAILED = "EKYCFAILED";
+            public const string EKYCTHREETIMESFAILURE = "EKYCTHREETIMESFAILURE";
+            public const string EKYCSUCCESSFUL = "EKYCVERIFICATIONSUCCESS";
+            public const string EKYCFIRSTNOTIFICATION = "EKYCFIRSTNOTIFICATION";
+            public const string EKYCSECONDNOTIFICATION = "EKYCSECONDNOTIFICATION";
+            public const string EKYCTHIRDPARTYFAILED = "EKYCTHIRDPARTYFAILED";
+            public const string EKYCTHIRDPARTYSUCCESSFUL = "EKYCTHIRDPARTYVERIFICATIONSUCCESS";
+            public const string EKYCTHIRDPARTYTHREETIMESFAILURE = "EKYCTHIRDPARTYMTHREETIMESFAILURE";
+            public const string EKYCTHIRDPARTYIDNOTMATCHING = "EKYCTHIRDPARTYIDNOTMATCHING";
+        }
     }
 }

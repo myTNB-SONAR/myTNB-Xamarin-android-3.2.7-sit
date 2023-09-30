@@ -63,7 +63,6 @@
     <BundleAssemblies>false</BundleAssemblies>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
-    <RunWithWarnings>true</RunWithWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -138,10 +137,10 @@
     <AndroidHttpClientHandlerType></AndroidHttpClientHandlerType>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
     <AndroidKeyStore></AndroidKeyStore>
-    <AndroidSigningKeyStore></AndroidSigningKeyStore>
+    <AndroidKeyStore></AndroidKeyStore>
     <AndroidSigningStorePass></AndroidSigningStorePass>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
-    <ExternalConsole>false</ExternalConsole>
+    <AndroidSigningKeyStore></AndroidSigningKeyStore>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AndroidEasingFunctions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -788,18 +787,6 @@
     <Reference Include="System.IdentityModel.Tokens.Jwt">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.26.1\lib\netstandard2.0\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
-    <Reference Include="Dynatrace.Xamarin.Abstraction">
-      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Abstraction.dll</HintPath>
-    </Reference>
-    <Reference Include="Dynatrace.Xamarin.Android">
-      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Dynatrace.Xamarin.Base">
-      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="Dynatrace.Xamarin.Binding.Android">
-      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Binding.Android.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Binding.InstallReferrer">
       <HintPath>..\packages\Xamarin.Android.Binding.InstallReferrer.2.2.0\lib\MonoAndroid10\Xamarin.Android.Binding.InstallReferrer.dll</HintPath>
     </Reference>
@@ -844,6 +831,18 @@
     </Reference>
     <Reference Include="Xamarin.Facebook.Android">
       <HintPath>..\packages\Xamarin.Facebook.Android.11.2.0.1\lib\monoandroid90\Xamarin.Facebook.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.Xamarin.Abstraction">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Abstraction.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.Xamarin.Android">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.Xamarin.Base">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynatrace.Xamarin.Binding.Android">
+      <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Binding.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -6969,6 +6968,286 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Notification_Details_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Notification_Details_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Notification_Details_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Notification_Details_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Notification_Details_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Notification_Details_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Notification_Details_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Notification_Details_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Notification_Details_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Notification_Details_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Notification_Details_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Notification_Details_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Notification_Details_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Notification_Details_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Notification_Details_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Notification_Details_Header.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Notification_Details_Header.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Notification_Details_Header.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Notification_Details_Header.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Notification_Details_Header.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\DSNotificationDetailsView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\DigitalSignature\DSNotificationDetails\Activity\DSNotificationDetailsActivity.cs" />
+    <AndroidResource Include="Resources\layout\DSIdentityVerificationListItemView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\DSIdentityVerificationView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\DSWebView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\DigitalSignature\IdentityVerification\Activity\DSIdentityVerificationActivity.cs" />
+    <Compile Include="Src\DigitalSignature\IdentityVerification\Fragment\DSIdentityVerificationListItemComponent.cs" />
+    <Compile Include="Src\DigitalSignature\IdentityVerification\MVP\DSIdentityVerificationContract.cs" />
+    <Compile Include="Src\DigitalSignature\IdentityVerification\MVP\DSIdentityVerificationPresenter.cs" />
+    <Compile Include="Src\DigitalSignature\WebView\Activity\DSWebViewActivity.cs" />
+    <Compile Include="Src\DigitalSignature\WebView\MVP\DSWebViewContract.cs" />
+    <Compile Include="Src\DigitalSignature\WebView\MVP\DSWebViewPresenter.cs" />
+    <AndroidResource Include="Resources\layout\MyTNBDialogWithIconAndOneButton.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MyTNBDialogWithIconAndTwoButtons.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MyTNBDialogWithIconDropdownAndTwoButtons.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\DigitalSignature\DigitalSignatureConstants.cs" />
+    <Compile Include="Src\DigitalSignature\IdentityVerification\MVP\DSIdentityVerificationModel.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_DS_Dropdown_Collapse.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_DS_Dropdown_Collapse.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_DS_Dropdown_Collapse.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_DS_Dropdown_Collapse.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_DS_Dropdown_Collapse.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_DS_Dropdown_Expand.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_DS_Dropdown_Expand.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_DS_Dropdown_Expand.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_DS_Dropdown_Expand.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_DS_Dropdown_Expand.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_DS_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_DS_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_DS_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_DS_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_DS_Notification_Detail.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_DS_Verify_Pop_Up.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_DS_Verify_Pop_Up.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_DS_Verify_Pop_Up.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_DS_Verify_Pop_Up.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_DS_Verify_Pop_Up.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_DS_Verify_Processing_Pop_Up.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_DS_Verify_Processing_Pop_Up.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_DS_Verify_Processing_Pop_Up.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_DS_Verify_Processing_Pop_Up.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_DS_Verify_Processing_Pop_Up.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Profile_Verified.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Profile_Verified.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Profile_Verified.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Profile_Verified.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Profile_Verified.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\DigitalSignature\DSNotificationDetails\MVP\DSNotificationDetailsPresenter.cs" />
+    <Compile Include="Src\DigitalSignature\DSNotificationDetails\MVP\DSNotificationDetailsContract.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_Notification_EKYC_Failed.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Banner_Notification_EKYC_Success.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_Notification_EKYC_Success.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Banner_Notification_EKYC_Failed.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_Notification_EKYC_Failed.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Banner_Notification_EKYC_Success.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_Notification_EKYC_Success.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Banner_Notification_EKYC_Failed.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_Notification_EKYC_Failed.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Banner_Notification_EKYC_Success.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\MyTNBDialogWithHeaderImageAndButton.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -6990,7 +7269,71 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\MyTNBDrawer.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon_Identity_Verification_3.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_1.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_2.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Identity_Verification_3.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -7419,10 +7762,6 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\Icon_Notif_List_Resume_Application.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_launcher.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -7897,6 +8236,58 @@
     </AndroidResource>
     <Compile Include="Src\myTNBMenu\Async\SiteCoreFloatingButtonAPI.cs" />
     <Compile Include="Src\myTNBMenu\Async\SiteCoreFloatingButtonContentAPI.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_creditcard.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_creditcard.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_creditcard.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_creditcard.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_creditcard.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_exclaimationMark.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_exclaimationMark.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_exclaimationMark.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_exclaimationMark.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_exclaimationMark.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\CustomDialogOneButtonWithImage.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\solid_border_background_V2.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\solid_border_light_grey.xml">
+    <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\Banner_Home_MyHome_EN.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -10419,6 +10810,17 @@
     <Folder Include="Src\Helper\" />
     <Folder Include="Src\OverVoltageClaim\Model\" />
     <Folder Include="Src\Utils\Notification\" />
+    <Folder Include="Src\DigitalSignature\" />
+    <Folder Include="Src\DigitalSignature\DSNotificationDetails\" />
+    <Folder Include="Src\DigitalSignature\DSNotificationDetails\Activity\" />
+    <Folder Include="Src\DigitalSignature\IdentityVerification\" />
+    <Folder Include="Src\DigitalSignature\WebView\" />
+    <Folder Include="Src\DigitalSignature\IdentityVerification\Activity\" />
+    <Folder Include="Src\DigitalSignature\IdentityVerification\Fragment\" />
+    <Folder Include="Src\DigitalSignature\IdentityVerification\MVP\" />
+    <Folder Include="Src\DigitalSignature\WebView\Activity\" />
+    <Folder Include="Src\DigitalSignature\WebView\MVP\" />
+    <Folder Include="Src\DigitalSignature\DSNotificationDetails\MVP\" />
     <Folder Include="Src\ServiceDistruptionRating\" />
     <Folder Include="Src\ServiceDistruptionRating\Activity\" />
     <Folder Include="Src\ServiceDistruptionRating\Adapter\" />
@@ -14058,11 +14460,11 @@
   <Import Project="..\packages\Xamarin.Firebase.Auth.121.0.1\build\MonoAndroid90\Xamarin.Firebase.Auth.targets" Condition="Exists('..\packages\Xamarin.Firebase.Auth.121.0.1\build\MonoAndroid90\Xamarin.Firebase.Auth.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Dynamic.Links.120.1.0\build\MonoAndroid90\Xamarin.Firebase.Dynamic.Links.targets" Condition="Exists('..\packages\Xamarin.Firebase.Dynamic.Links.120.1.0\build\MonoAndroid90\Xamarin.Firebase.Dynamic.Links.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Iid.121.1.0\build\MonoAndroid90\Xamarin.Firebase.Iid.targets" Condition="Exists('..\packages\Xamarin.Firebase.Iid.121.1.0\build\MonoAndroid90\Xamarin.Firebase.Iid.targets')" />
-  <Import Project="..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets" Condition="Exists('..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets')" />
   <Import Project="..\packages\Xamarin.AndroidX.Annotation.1.2.0.1\build\monoandroid90\Xamarin.AndroidX.Annotation.targets" Condition="Exists('..\packages\Xamarin.AndroidX.Annotation.1.2.0.1\build\monoandroid90\Xamarin.AndroidX.Annotation.targets')" />
   <Import Project="..\packages\Xamarin.Jetbrains.Annotations.24.0.1\build\monoandroid12.0\Xamarin.Jetbrains.Annotations.targets" Condition="Exists('..\packages\Xamarin.Jetbrains.Annotations.24.0.1\build\monoandroid12.0\Xamarin.Jetbrains.Annotations.targets')" />
   <Import Project="..\packages\Xamarin.Kotlin.StdLib.Common.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.Common.targets" Condition="Exists('..\packages\Xamarin.Kotlin.StdLib.Common.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.Common.targets')" />
   <Import Project="..\packages\Xamarin.Kotlin.StdLib.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.targets" Condition="Exists('..\packages\Xamarin.Kotlin.StdLib.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.targets')" />
   <Import Project="..\packages\Xamarin.Kotlin.StdLib.Jdk7.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.Jdk7.targets" Condition="Exists('..\packages\Xamarin.Kotlin.StdLib.Jdk7.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.Jdk7.targets')" />
   <Import Project="..\packages\Xamarin.Kotlin.StdLib.Jdk8.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.Jdk8.targets" Condition="Exists('..\packages\Xamarin.Kotlin.StdLib.Jdk8.1.8.20\build\monoandroid12.0\Xamarin.Kotlin.StdLib.Jdk8.targets')" />
+  <Import Project="..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets" Condition="Exists('..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets')" />
 </Project>

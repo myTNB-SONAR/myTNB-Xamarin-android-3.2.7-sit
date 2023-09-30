@@ -207,6 +207,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(statusDisplay.SavedApplicationID
                 , statusDisplay.ApplicationDetail.ApplicationId
                 , statusDisplay.ApplicationTypeCode
+                , UserEntity.GetActive().UserID ?? string.Empty
+                , statusDisplay.ApplicationDetail.Email ?? string.Empty
                 , statusDisplay.System);
 
             this.mActivity.RunOnUiThread(() =>

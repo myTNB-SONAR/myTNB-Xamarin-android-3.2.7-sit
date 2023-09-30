@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	android:theme="@style/Theme.Dashboard"
+	android:id="@+id/rootView"
+	android:background="@color/lightGrey">
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:background="@color/lightGrey">
+		<include
+			layout="@layout/toolbar"
+			id="@+id/toolbar" />
+		<android.webkit.WebView
+			android:id="@+id/digitalSignatureWebView"
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:background="@color/white" />
+	</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

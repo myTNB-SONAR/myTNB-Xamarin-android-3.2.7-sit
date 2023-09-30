@@ -18,6 +18,7 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.AppointmentScheduler.AppointmentSetLanding.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Database.Model;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
@@ -129,6 +130,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
                     ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(string.Empty
                         , applicationDetailDisplay.ApplicationDetail.ApplicationId
                         , applicationDetailDisplay.ApplicationTypeCode
+                        , UserEntity.GetActive().UserID ?? string.Empty
+                        , UserEntity.GetActive().Email ?? string.Empty
                         , applicationDetailDisplay.System);
 
                     if (response.StatusDetail.IsSuccess)

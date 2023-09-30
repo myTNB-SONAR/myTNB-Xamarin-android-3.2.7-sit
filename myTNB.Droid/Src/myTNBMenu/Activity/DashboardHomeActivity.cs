@@ -169,7 +169,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         ISharedPreferences mPref;
 
-        PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
+        //PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
 
         public bool IsActive()
         {
@@ -343,7 +343,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     alreadyStarted = true;
                 }
             }
-
+           
             // if (extras != null && extras.ContainsKey("urlSchemaData"))
             // {
             //     urlSchemaCalled = true;
@@ -387,7 +387,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 RouteToApplicationLanding();
             }
 
-            GetBillTenantRenderingAsync();
+            //GetBillTenantRenderingAsync();
 
             try
             {
@@ -430,57 +430,57 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         }
 
-        private async void GetBillTenantRenderingAsync()
-        {
-            try
-            {
-                if (!AccessTokenCache.Instance.HasTokenSaved(this))
-                {
-                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
-                    AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
-                }
-                List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+        //private async void GetBillTenantRenderingAsync()
+        //{
+        //    try
+        //    {
+        //        if (!AccessTokenCache.Instance.HasTokenSaved(this))
+        //        {
+        //            string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+        //            AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
+        //        }
+        //        List<string> dBRCAs = DBRUtility.Instance.GetCAList();
+        //        billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
 
-                HideProgressDialog();
+        //        HideProgressDialog();
 
-                //Nullity Check
-                //    if (billRenderingTenantResponse == null
-                //       && billRenderingTenantResponse.StatusDetail == null
-                //       && !billRenderingTenantResponse.StatusDetail.IsSuccess
-                //       && billRenderingTenantResponse.Content == null
-                //      )
-                //    {
+        //        //Nullity Check
+        //        //    if (billRenderingTenantResponse == null
+        //        //       && billRenderingTenantResponse.StatusDetail == null
+        //        //       && !billRenderingTenantResponse.StatusDetail.IsSuccess
+        //        //       && billRenderingTenantResponse.Content == null
+        //        //      )
+        //        //    {
 
 
-                //        string title = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Title.IsValid()
-                //            ? billRenderingTenantResponse?.StatusDetail?.Title
-                //            : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE);
+        //        //        string title = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Title.IsValid()
+        //        //            ? billRenderingTenantResponse?.StatusDetail?.Title
+        //        //            : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE);
 
-                //        string message = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Message.IsValid()
-                //           ? billRenderingTenantResponse?.StatusDetail?.Message
-                //           : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG);
+        //        //        string message = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.Message.IsValid()
+        //        //           ? billRenderingTenantResponse?.StatusDetail?.Message
+        //        //           : Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG);
 
-                //        string cta = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.PrimaryCTATitle.IsValid()
-                //           ? billRenderingTenantResponse?.StatusDetail?.PrimaryCTATitle
-                //           : Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK);
+        //        //        string cta = billRenderingTenantResponse != null && billRenderingTenantResponse.StatusDetail != null && billRenderingTenantResponse.StatusDetail.PrimaryCTATitle.IsValid()
+        //        //           ? billRenderingTenantResponse?.StatusDetail?.PrimaryCTATitle
+        //        //           : Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK);
 
-                //        this.RunOnUiThread(() =>
-                //        {
-                //            MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                //                .SetTitle(title ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
-                //                .SetMessage(message ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
-                //                .SetCTALabel(cta ?? Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK))
-                //                .Build();
-                //            errorPopup.Show();
-                //        });
-                //    }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
+        //        //        this.RunOnUiThread(() =>
+        //        //        {
+        //        //            MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+        //        //                .SetTitle(title ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_TITLE))
+        //        //                .SetMessage(message ?? Utility.GetLocalizedLabel(LanguageConstants.ERROR, LanguageConstants.Error.DEFAULT_ERROR_MSG))
+        //        //                .SetCTALabel(cta ?? Utility.GetLocalizedLabel(LanguageConstants.COMMON, LanguageConstants.Common.OK))
+        //        //                .Build();
+        //        //            errorPopup.Show();
+        //        //        });
+        //        //    }
+        //    }
+        //    catch (System.Exception e)
+        //    {
+        //        Utility.LoggingNonFatalError(e);
+        //    }
+        //}
 
         public void RouteToApplicationLanding(string toastMessage = "")
         {
@@ -812,7 +812,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         DynatraceHelper.OnTrack(DynatraceConstants.FloatingIcon.FloatingModule.DBR);
                         Intent intent = new Intent(this, typeof(FloatingButtonMarketingActivity));
-                        intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
+                        //intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                         intent.PutExtra("accountNumber", dbrAccount.AccNum);
                         StartActivity(intent);
                     }
@@ -1046,13 +1046,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             List<string> dBRCAs = DBRUtility.Instance.GetCAList();
             List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
             CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
+            List<PostBREligibilityIndicatorsModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
 
 
-            if (billRenderingTenantResponse != null
-                && billRenderingTenantResponse.StatusDetail != null
-                && billRenderingTenantResponse.StatusDetail.IsSuccess
-                && billRenderingTenantResponse.Content != null
-               )
+            if (tenantList != null)
             {
                 foreach (CustomerBillingAccount item in accounts)
                 {
@@ -1064,13 +1061,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                 for (int j = 0; j < accounts.Count; j++)
                 {
-                    for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
+                    for (int i = 0; i < tenantList.Count; i++)
                     {
                         if (flagOwner
-                            && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
-                            && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
-                            && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
-                            && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
+                            && tenantList[i].CaNo == accounts[j].AccNum
+                            && !tenantList[i].IsOwnerOverRule
+                            && !tenantList[i].IsOwnerAlreadyOptIn
+                            && !tenantList[i].IsTenantAlreadyOptIn)
                         {
                             countCA++;
                         }
@@ -1121,11 +1118,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         List<string> dBRCAs = DBRUtility.Instance.GetCAList();
                         List<CustomerBillingAccount> accounts = CustomerBillingAccount.List();
                         CustomerBillingAccount tenantOwnerInfo = new CustomerBillingAccount();
+                        List<PostBREligibilityIndicatorsModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
 
-                        if (billRenderingTenantResponse != null
-                            && billRenderingTenantResponse.StatusDetail != null
-                            && billRenderingTenantResponse.StatusDetail.IsSuccess
-                            && billRenderingTenantResponse.Content != null)
+                        if (tenantList != null)
                         {
                             foreach (CustomerBillingAccount item in accounts)
                             {
@@ -1137,13 +1132,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                             for (int j = 0; j < accounts.Count; j++)
                             {
-                                for (int i = 0; i < billRenderingTenantResponse.Content.Count; i++)
+                                for (int i = 0; i < tenantList.Count; i++)
                                 {
                                     if (flagOwner
-                                        && billRenderingTenantResponse.Content[i].CaNo == accounts[j].AccNum
-                                        && !billRenderingTenantResponse.Content[i].IsOwnerOverRule
-                                        && !billRenderingTenantResponse.Content[i].IsOwnerAlreadyOptIn
-                                        && !billRenderingTenantResponse.Content[i].IsTenantAlreadyOptIn)
+                                        && tenantList[i].CaNo == accounts[j].AccNum
+                                        && !tenantList[i].IsOwnerOverRule
+                                        && !tenantList[i].IsOwnerAlreadyOptIn
+                                        && !tenantList[i].IsTenantAlreadyOptIn)
                                     {
                                         countCA++;
                                     }

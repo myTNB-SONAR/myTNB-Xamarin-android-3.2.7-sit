@@ -102,7 +102,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
 
                     UserAuthenticateRequest userAuthenticateRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), newPassword);
                     userAuthenticateRequest.SetUserName(username);
-                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthenticateRequest);
+                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthenticateRequest);
 
                     if (userResponse.IsSuccessResponse())
                     {

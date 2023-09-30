@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical"
+	android:layout_gravity="center"
+	android:layout_width="350dp"
+	android:layout_height="wrap_content">
+	<androidx.cardview.widget.CardView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		app:cardCornerRadius="6dp"
+		app:cardBackgroundColor="@color/white"
+		app:cardElevation="0dp">
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:id="@+id/rootView"
+			android:background="@drawable/custom_round_white_dialog_shadow">
+			<ImageView
+				android:id="@+id/imgToolTipHeader"
+				android:layout_width="30dp"
+				android:layout_height="30dp"
+				android:layout_marginTop="16dp"
+				android:layout_gravity="center"
+				android:src="@drawable/ic_display_validation_success"/>
+			<TextView
+				android:id="@+id/txtToolTipTitle"
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:layout_gravity="center"
+				android:textColor="@color/tunaGrey"
+				android:layout_marginLeft="16dp"
+				android:layout_marginRight="16dp"
+				android:layout_marginTop="15dp"
+				android:layout_marginBottom="9dp"
+				android:maxLines="12"
+				android:scrollbars="vertical"
+				android:text="Dear valued customer,"
+				android:textSize="14dp"
+				android:textColorLink="@color/powerBlue"
+				android:lineSpacingExtra="3dp"/>
+			<TextView
+				android:id="@+id/txtToolTipMessage"
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:layout_gravity="center"
+				android:textColor="@color/tunaGrey"
+				android:layout_marginLeft="16dp"
+				android:layout_marginRight="16dp"
+				android:layout_marginTop="15dp"
+				android:layout_marginBottom="9dp"
+				android:maxLines="12"
+				android:scrollbars="vertical"
+				android:text="Be sure to upload a clear, straight-facing photo of the entire meter box with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable."
+				android:textSize="14dp"
+				android:textColorLink="@color/powerBlue"
+				android:lineSpacingExtra="3dp"/>
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:clickable="true"
+				android:id="@+id/btnFirst">
+				<View
+					android:layout_height="1dp"
+					android:layout_width="match_parent"
+					android:alpha="0.2"
+					android:background="@color/tunaGrey" />
+				<TextView
+					android:id="@+id/txtToolTipCTA"
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					android:gravity="center"
+					android:textColor="@color/powerBlue"
+					android:layout_marginTop="16dp"
+					android:paddingBottom="18dp"
+					android:text="Got it!"
+					android:textSize="16dp" />
+			</LinearLayout>
+		</LinearLayout>
+	</androidx.cardview.widget.CardView>
+</LinearLayout>

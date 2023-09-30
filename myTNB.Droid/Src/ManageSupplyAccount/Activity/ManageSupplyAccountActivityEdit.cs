@@ -28,6 +28,7 @@ using myTNB.Mobile.AWS.Models;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB.Mobile.AWS.Models.DBR;
+using myTNB_Android.Src.myTNBMenu.Async;
 
 namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 {
@@ -98,7 +99,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         const string PAGE_ID = "ManageAccount";
         private bool _isOwner;
         private GetBillRenderingResponse _billRenderingResponse;
-        private PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
+        //private PostBREligibilityIndicatorsResponse billRenderingTenantResponse;
 
         ISharedPreferences mPref;
 
@@ -238,7 +239,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             intent.PutExtra("isOwner", _isOwner);
             intent.PutExtra("accountNumber", accountData.AccountNum);
             intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(_billRenderingResponse));
-            intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
+            //intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
             StartActivity(intent);
         }
 
@@ -420,7 +421,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
                     List<string> dBRCAs = DBRUtility.Instance.GetCAList();
                     bool tenantAllowOptIn = false;
-                    billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+                    //billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+                    List<PostBREligibilityIndicatorsModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
 
                     //Nullity Check
                     if (_billRenderingResponse != null
@@ -429,20 +431,24 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                         && _billRenderingResponse.Content != null
                         && _billRenderingResponse.Content.DBRType != MobileEnums.DBRTypeEnum.None)
                     {
-                        if (billRenderingTenantResponse != null
-                           && billRenderingTenantResponse.StatusDetail != null
-                           && billRenderingTenantResponse.StatusDetail.IsSuccess
-                           && billRenderingTenantResponse.Content != null)
+                        if (tenantList != null)
                         {
-                            bool isOwnerOverRule = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
-                            bool isOwnerAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
-                            bool isTenantAlreadyOptIn = billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
-
-                            if (selectedAccount.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                            if (tenantList.Find(x => x.CaNo == selectedAccount.AccountNum) != null)
                             {
-                                tenantAllowOptIn = true;
+                                bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
+                                bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
+                                bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
+
+                                if (selectedAccount.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                                {
+                                    tenantAllowOptIn = true;
+                                }
                             }
+
+
+                            
                         }
+                       
                         manageBillTitle.Text = Utility.GetLocalizedLabel("ManageAccount", _isOwner || tenantAllowOptIn
                             ? "dbrManageDeliveryMethod"
                             : "dbrViewBillDelivery");
@@ -466,7 +472,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     }
                     else
                     {
-                        ManageBill_container.Visibility = ViewStates.Gone;
+                      ManageBill_container.Visibility = ViewStates.Gone;
                     }
                 }
             }

@@ -220,11 +220,11 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                 {
                     //For tenant checking DBR
                     List<string> dBRCAs = DBRUtility.Instance.GetCAList();
-                    PostBREligibilityIndicatorsResponse billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
+                    // PostBREligibilityIndicatorsResponse billRenderingTenantResponse = await DBRManager.Instance.PostBREligibilityIndicators(dBRCAs, UserEntity.GetActive().UserID, AccessTokenCache.Instance.GetAccessToken(this));
 
                     Intent returnIntent = new Intent();
                     returnIntent.PutExtra("billrenderingresponse", JsonConvert.SerializeObject(response));
-                    returnIntent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
+                    // returnIntent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
                     returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
                     SetResult(Result.Ok, returnIntent);
                     Finish();

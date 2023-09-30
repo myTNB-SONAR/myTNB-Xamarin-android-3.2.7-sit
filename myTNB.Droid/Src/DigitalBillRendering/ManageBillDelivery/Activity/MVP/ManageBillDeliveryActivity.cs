@@ -30,6 +30,7 @@ using static myTNB.Mobile.MobileEnums;
 using myTNB_Android.Src.DigitalBillRendering.ManageBillDelivery.Activity.MVP;
 using myTNB.Mobile.AWS.Models.DBR;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Async;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -122,7 +123,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         private const string PAGE_ID = "ManageDigitalBillLanding";
         private ManageBillDeliveryEmailListAdapter manageBillDeliveryEmailListAdapter;
         private GetBillRenderingResponse _billRenderingResponse;
-        private PostBREligibilityIndicatorsResponse _billRenderingTenantResponse;
+        // private PostBREligibilityIndicatorsResponse _billRenderingTenantResponse;
         private RecyclerView.LayoutManager layoutManager;
         private ISharedPreferences mPref;
         private bool _isOwner { get; set; }
@@ -189,10 +190,10 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 {
                     _billRenderingResponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(extras.GetString("billRenderingResponse"));
                 }
-                if (extras.ContainsKey("billRenderingTenantResponse"))
-                {
-                    _billRenderingTenantResponse = JsonConvert.DeserializeObject<PostBREligibilityIndicatorsResponse>(extras.GetString("billRenderingTenantResponse"));
-                }
+                //if (extras.ContainsKey("billRenderingTenantResponse"))
+                //{
+                //    _billRenderingTenantResponse = JsonConvert.DeserializeObject<PostBREligibilityIndicatorsResponse>(extras.GetString("billRenderingTenantResponse"));
+                //}
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
                 {
                     currentAppNavigation = extras.GetString(Constants.APP_NAVIGATION_KEY);
@@ -207,20 +208,39 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
                 List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
                 bool tenantAllowOptIn = false;
-                if (_billRenderingTenantResponse != null
-                    && _billRenderingTenantResponse.StatusDetail != null
-                    && _billRenderingTenantResponse.StatusDetail.IsSuccess
-                    && _billRenderingTenantResponse.Content != null)
-                {
-                    bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
-                    bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
-                    bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
-                    // bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
+                List<PostBREligibilityIndicatorsModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
+                //if (_billRenderingTenantResponse != null
+                //    && _billRenderingTenantResponse.StatusDetail != null
+                //    && _billRenderingTenantResponse.StatusDetail.IsSuccess
+                //    && _billRenderingTenantResponse.Content != null)
+                //{
+                //    bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
+                //    bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
+                //    bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
+                //    // bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
 
-                    if (mSelectedAccountData.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                //    if (mSelectedAccountData.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                //    {
+                //        tenantAllowOptIn = true;
+                //    }
+                //}
+
+                if (tenantList != null)
+                {
+                    if (tenantList.Find(x => x.CaNo == selectedAccountNumber) != null)
                     {
-                        tenantAllowOptIn = true;
+                        bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
+                        bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
+                        bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
+
+                        if (mSelectedAccountData.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                        {
+                            tenantAllowOptIn = true;
+                        }
                     }
+
+
+           
                 }
 
                 GetDeliveryDisplay(_billRenderingResponse, tenantAllowOptIn);
@@ -953,7 +973,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     NewAppTutorialUtils.ForceCloseNewAppTutorial();
                     selectedAccountNumber = data.GetStringExtra("SELECTED_ACCOUNT_NUMBER");
                     _billRenderingResponse = JsonConvert.DeserializeObject<GetBillRenderingResponse>(data.GetStringExtra("billrenderingresponse"));
-                    _billRenderingTenantResponse = JsonConvert.DeserializeObject<PostBREligibilityIndicatorsResponse>(data.GetStringExtra("billRenderingTenantResponse"));
+                    //_billRenderingTenantResponse = JsonConvert.DeserializeObject<PostBREligibilityIndicatorsResponse>(data.GetStringExtra("billRenderingTenantResponse"));
+                    List<PostBREligibilityIndicatorsModel> tenantList = TenantDBRCache.Instance.IsTenantDBREligible();
+
 
                     if (_billRenderingResponse != null
                         && _billRenderingResponse.StatusDetail != null
@@ -966,22 +988,22 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
                         bool tenantAllowOptIn = false;
 
-                        if (_billRenderingTenantResponse != null
-                            && _billRenderingTenantResponse.StatusDetail != null
-                            && _billRenderingTenantResponse.StatusDetail.IsSuccess
-                            && _billRenderingTenantResponse.Content != null)
+                        if (tenantList != null)
                         {
-                            //For tenant checking DBR | Get a single data for specific ca from response list
-                            List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
-                            bool isOwnerOverRule = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
-                            bool isOwnerAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
-                            bool isTenantAlreadyOptIn = _billRenderingTenantResponse.Content.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
-                            bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
-
-
-                            if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                            if (tenantList.Find(x => x.CaNo == selectedAccountNumber) != null)
                             {
-                                tenantAllowOptIn = true;
+                                //For tenant checking DBR | Get a single data for specific ca from response list
+                                List<CustomerBillingAccount> AccountList = CustomerBillingAccount.List();
+                                bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
+                                bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
+                                bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
+                                bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
+
+
+                                if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                                {
+                                    tenantAllowOptIn = true;
+                                }
                             }
                         }
 
