@@ -539,23 +539,28 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             {
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity RPSCCEntity = DownTimeEntity.GetByCode(Constants.RPS_CC_SYSTEM);
-                if (pgCCEntity.IsDown)
+                if (pgCCEntity != null)
                 {
-                    //ShowErrorMessage(pgCCEntity.DowntimeMessage);
-                    Utility.ShowBCRMDOWNTooltip(this.Activity, pgCCEntity, () =>
+                    if (pgCCEntity.IsDown)
                     {
-                    });
+                        //ShowErrorMessage(pgCCEntity.DowntimeMessage);
+                        Utility.ShowBCRMDOWNTooltip(this.Activity, pgCCEntity, () =>
+                        {
+                        });
+                    }
                 }
-                else if (RPSCCEntity.IsDown)
+                else if (RPSCCEntity != null)
                 {
-                  
-                    MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_ONE_BUTTON)
-                   .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
-                   .SetContentGravity(GravityFlags.Center)
-                   .SetTitle(RPSCCEntity.DowntimeTextMessage)
-                   .SetMessage(RPSCCEntity.DowntimeMessage)
-                   .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
-                   .Build().Show();
+                    if (RPSCCEntity.IsDown)
+                    {
+                        MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_ONE_BUTTON)
+                          .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
+                          .SetContentGravity(GravityFlags.Center)
+                          .SetTitle(RPSCCEntity.DowntimeTextMessage)
+                          .SetMessage(RPSCCEntity.DowntimeMessage)
+                          .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                          .Build().Show();
+                    }
                 }
                 else
                 {
