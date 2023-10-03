@@ -1397,7 +1397,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         {
             //this.SetIsClicked(false);
             //OnBCRMDownTimeErrorMessage();
-            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
+            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.PG_SYSTEM);
             OnBCRMDownTimeErrorMessageV2(bcrmEntity);
 
         }
