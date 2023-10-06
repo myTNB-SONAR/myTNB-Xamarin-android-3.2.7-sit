@@ -1572,6 +1572,30 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             mUknownExceptionSnackBar.Show();
             this.SetIsClicked(false);
         }
+
+        public override bool NotificationPemissionRequired()
+        {
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Tiramisu)                                          //Starting android 13 asking notification permission
+            {
+                if (!UserSessions.GetUserNotificationFirstTimeInstallFlag(PreferenceManager.GetDefaultSharedPreferences(this)))
+                {
+                    return true;
+                }
+                else if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.PostNotifications) == (int)Permission.Granted)
+                {
+                    UserSessions.SaveUserNotificationFirstTimeInstallFlag(PreferenceManager.GetDefaultSharedPreferences(this), true);
+                    return false;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
 }

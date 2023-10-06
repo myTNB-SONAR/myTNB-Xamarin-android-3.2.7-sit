@@ -1350,5 +1350,17 @@ namespace myTNB_Android.Src.Utils
             editor.Remove("FBContentLangIsUpdated");
             editor.Apply();
         }
+
+        public static void SaveUserNotificationFirstTimeInstallFlag(ISharedPreferences prefs, bool flag)           //Save need to ask notification permission popup
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("NotificationFirstTime", flag);
+            editor.Apply();
+        }
+
+        public static bool GetUserNotificationFirstTimeInstallFlag(ISharedPreferences preferences)                  //Get flag to ask notification permission popup
+        {
+            return preferences.GetBoolean("NotificationFirstTime", false);
+        }
     }
 }

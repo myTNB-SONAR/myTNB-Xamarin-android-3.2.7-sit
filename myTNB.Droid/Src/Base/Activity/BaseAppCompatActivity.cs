@@ -214,6 +214,22 @@ namespace myTNB_Android.Src.Base.Activity
                     return;
                 }
             }
+
+            if (NotificationPemissionRequired())
+            {
+                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.PostNotifications) != (int)Permission.Granted)
+                {
+                    if (ShouldShowRequestPermissionRationale(Manifest.Permission.PostNotifications))
+                    {
+                        RequestPermissions(new string[] { Manifest.Permission.PostNotifications }, Constants.RUNTIME_PERMISSION_NOTIFICATION_REQUEST_CODE);
+                    }
+                    else
+                    {
+                        RequestPermissions(new string[] { Manifest.Permission.PostNotifications }, Constants.RUNTIME_PERMISSION_NOTIFICATION_REQUEST_CODE);
+                    }
+                    return;
+                }
+            }
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
@@ -239,6 +255,16 @@ namespace myTNB_Android.Src.Base.Activity
                 }
             }
             else if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
+            {
+                if (Utility.IsPermissionHasCount(grantResults))
+                {
+                    if (grantResults[0] == Permission.Denied)
+                    {
+
+                    }
+                }
+            }
+            else if (requestCode == Constants.RUNTIME_PERMISSION_NOTIFICATION_REQUEST_CODE)
             {
                 if (Utility.IsPermissionHasCount(grantResults))
                 {
@@ -282,6 +308,11 @@ namespace myTNB_Android.Src.Base.Activity
                                         else if (requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
                                         {
                                             RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation, Manifest.Permission.AccessCoarseLocation }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+
+                                        }
+                                        else if (requestCode == Constants.RUNTIME_PERMISSION_NOTIFICATION_REQUEST_CODE)
+                                        {
+                                            RequestPermissions(new string[] { Manifest.Permission.PostNotifications }, Constants.RUNTIME_PERMISSION_NOTIFICATION_REQUEST_CODE);
 
                                         }
                                     },
@@ -336,6 +367,11 @@ namespace myTNB_Android.Src.Base.Activity
                          RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation
                              , Manifest.Permission.AccessCoarseLocation }
                          , Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+                     }
+                     else if (requestCode == Constants.RUNTIME_PERMISSION_NOTIFICATION_REQUEST_CODE)
+                     {
+                         RequestPermissions(new string[] { Manifest.Permission.PostNotifications }
+                         , Constants.RUNTIME_PERMISSION_NOTIFICATION_REQUEST_CODE);
                      }
                  })
                 .Show();
@@ -399,6 +435,11 @@ namespace myTNB_Android.Src.Base.Activity
         }
 
         public virtual bool LocationPermissionRequired()
+        {
+            return false;
+        }
+
+        public virtual bool NotificationPemissionRequired()
         {
             return false;
         }
