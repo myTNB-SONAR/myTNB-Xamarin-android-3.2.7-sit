@@ -11,7 +11,7 @@ namespace myTNB_Android.Src.AppLaunch.Api
     public interface IUpdateAppUserDeviceApi
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v7/my_billingssp.asmx/UpdateAppUserDevices")]
+        [Post("/v7/mytnbws.asmx/UpdateAppUserDevices")]
         Task<UpdateAppUserDeviceResponse> UpdateAppUserDevice([Body] EncryptedRequest request, CancellationToken token);
     }
 }
