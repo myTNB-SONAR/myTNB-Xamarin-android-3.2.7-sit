@@ -448,10 +448,14 @@ namespace myTNB.Mobile
                                         {
                                             type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
                                         }
-                                        else if (ApplicationRatingDetail.SubmissionRating != null
+                                        else if (ApplicationRatingDetail?.SubmissionRating != null
                                         && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
                                         {
                                             type = DetailCTAType.SubmitApplicationRating;
+                                        }
+                                        else if (ApplicationStatusDetail.IsPayment && IsPaymentEnabled)
+                                        {
+                                            type = DetailCTAType.Pay;
                                         }
                                     }
                                     else
@@ -460,10 +464,14 @@ namespace myTNB.Mobile
                                         {
                                             type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
                                         }
-                                        else if (ApplicationRatingDetail.SubmissionRating != null
+                                        else if (ApplicationRatingDetail?.SubmissionRating != null 
                                         && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
                                         {
                                             type = DetailCTAType.SubmitApplicationRating;
+                                        }
+                                        else if (ApplicationStatusDetail.IsPayment && IsPaymentEnabled)
+                                        {
+                                            type = DetailCTAType.Pay;
                                         }
                                     }
                                 }
