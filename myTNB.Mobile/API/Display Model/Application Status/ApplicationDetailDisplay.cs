@@ -429,7 +429,7 @@ namespace myTNB.Mobile
                                     {
                                         type = DetailCTAType.ReuploadDocument;
                                     }
-                                    else if (ApplicationRatingDetail.SubmissionRating != null
+                                    else if (ApplicationRatingDetail?.SubmissionRating != null
                                         && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
                                     {
                                         type = DetailCTAType.SubmitApplicationRating;
@@ -448,10 +448,14 @@ namespace myTNB.Mobile
                                         {
                                             type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
                                         }
-                                        else if (ApplicationRatingDetail.SubmissionRating != null
+                                        else if (ApplicationRatingDetail?.SubmissionRating != null
                                         && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
                                         {
                                             type = DetailCTAType.SubmitApplicationRating;
+                                        }
+                                        else if (ApplicationStatusDetail.IsPayment && IsPaymentEnabled)
+                                        {
+                                            type = DetailCTAType.Pay;
                                         }
                                     }
                                     else
@@ -460,10 +464,14 @@ namespace myTNB.Mobile
                                         {
                                             type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
                                         }
-                                        else if (ApplicationRatingDetail.SubmissionRating != null
+                                        else if (ApplicationRatingDetail?.SubmissionRating != null 
                                         && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
                                         {
                                             type = DetailCTAType.SubmitApplicationRating;
+                                        }
+                                        else if (ApplicationStatusDetail.IsPayment && IsPaymentEnabled)
+                                        {
+                                            type = DetailCTAType.Pay;
                                         }
                                     }
                                 }
@@ -478,7 +486,7 @@ namespace myTNB.Mobile
                                     {
                                         type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
                                     }
-                                    else if (ApplicationRatingDetail.SubmissionRating != null
+                                    else if (ApplicationRatingDetail?.SubmissionRating != null
                                         && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
                                     {
                                         type = DetailCTAType.SubmitApplicationRating;
@@ -552,12 +560,12 @@ namespace myTNB.Mobile
                                 int index = tracker.FindIndex(x => x.StatusMode.IsValid() && x.StatusMode.ToUpper() == "COMPLETED");
                                 if (index > -1)
                                 {
-                                    if (ApplicationRatingDetail.CustomerRating != null
+                                    if (ApplicationRatingDetail?.CustomerRating != null
                                         && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
                                     {
                                         type = DetailCTAType.CustomerRating;
                                     }
-                                    else if (ApplicationRatingDetail.ContractorRating != null
+                                    else if (ApplicationRatingDetail?.ContractorRating != null
                                         && ApplicationRatingDetail.ContractorRating.ContractorRatingUrl.IsValid())
                                     {
                                         type = DetailCTAType.ContractorRating;
