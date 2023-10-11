@@ -453,10 +453,6 @@ namespace myTNB.Mobile
                                         {
                                             type = DetailCTAType.SubmitApplicationRating;
                                         }
-                                        else if (ApplicationStatusDetail.IsPayment && IsPaymentEnabled)
-                                        {
-                                            type = DetailCTAType.Pay;
-                                        }
                                     }
                                     else
                                     {
@@ -468,10 +464,6 @@ namespace myTNB.Mobile
                                         && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
                                         {
                                             type = DetailCTAType.SubmitApplicationRating;
-                                        }
-                                        else if (ApplicationStatusDetail.IsPayment && IsPaymentEnabled)
-                                        {
-                                            type = DetailCTAType.Pay;
                                         }
                                     }
                                 }
@@ -507,7 +499,8 @@ namespace myTNB.Mobile
                 {
                     type = DetailCTAType.SignApplication;
                 }
-                else if (ApplicationRatingDetail != null)
+
+                if (type == DetailCTAType.None)
                 {
                     if (IsPayment && IsOffLine)
                     {
