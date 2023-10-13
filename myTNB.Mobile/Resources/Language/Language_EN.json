@@ -1703,9 +1703,9 @@
     "ncSubmissionRateUs": "Rate Our Service",
     "otpReadyMessage": "We will let you know once your application's OTP is ready to be verified again.",
     "ncActionMessage": "You can take the action to continue or update your application using the myTNB Portal or App.",
+    "downloadApplication": "Download Your Application",
     "verifyNowCTA": "Verify Now",
-    "signApplicationCTA": "Proceed",
-    "downloadApplication": "Download Your Application"
+    "signApplicationCTA": "Proceed"
   },
   "UserAccess": {
     "title": "User Access",
