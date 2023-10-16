@@ -113,6 +113,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void OnSetNotificationNewLabel(bool hasNoti, int noticount);
 
             void FilterCOMCLandNEM();
+
+            void NavigateToSSMRPage();
+            
+            bool ClickQuickActionSMR();
         }
 
         public interface IHomeMenuPresenter
@@ -181,6 +185,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void OnCheckNewFAQState();
 
+            Task OnCheckSMRAccount(List<string> smrAccountListOwnerOnly, string r);
+
+            Task GetIsSmrApplyAllowedService(List<string> customerBillingAccountListOwnerOnly);
 
             //void UserNotificationsCount();
         }

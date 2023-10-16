@@ -17,6 +17,7 @@ using Refit;
 using static myTNB_Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibilityResponse;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using System.Linq;
 
 namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 {
@@ -287,21 +288,17 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             List<CustomerBillingAccount> eligibleSMRAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
 
-            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenantV2())
             {
-                List<CustomerBillingAccount> eligibleSMRAccountListWithTenant = CustomerBillingAccount.GetEligibleAndSMRAccountListWithTenant();
-                List<CustomerBillingAccount> NewEligibleSMRAccountListWithTenant = new List<CustomerBillingAccount>();
+                List<CustomerBillingAccount> eligibleSMRAccountListWithTenant = CustomerBillingAccount.EligibleSMRAccountListWithTenant();
                 if (eligibleSMRAccountListWithTenant != null && eligibleSMRAccountListWithTenant.Count > 0)
                 {
-                    foreach (var ca in eligibleSMRAccountListWithTenant)
-                    {
-                        if (ca.IsTaggedSMR)
-                        {
-                            NewEligibleSMRAccountListWithTenant.Add(ca);
-                        }
-                    }
+                    eligibleSMRAccountList = eligibleSMRAccountList
+                                            .Concat(eligibleSMRAccountListWithTenant)
+                                            .GroupBy(account => account.AccNum)
+                                            .Select(group => group.First())
+                                            .ToList();
                 }
-                eligibleSMRAccountList.AddRange(NewEligibleSMRAccountListWithTenant);
             }
 
             List<SMRAccount> smrEligibleAccountList = new List<SMRAccount>();

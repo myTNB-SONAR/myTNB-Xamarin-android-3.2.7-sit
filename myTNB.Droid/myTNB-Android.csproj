@@ -65,6 +65,7 @@
     <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
     <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\SIT\</OutputPath>
@@ -8062,6 +8063,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\AppLaunch\Requests\AccountSMRStatusRequestV2.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">
