@@ -1362,5 +1362,24 @@ namespace myTNB_Android.Src.Utils
         {
             return preferences.GetBoolean("NotificationFirstTime", false);
         }
+        
+        public static void SetSMRAccountListOwner(List<SMRAccount> sMRAccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+            editor.PutString("SMR_ACCOUNT_LIST_OWNER", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<SMRAccount> GetSMRAccountListOwner()
+        {
+            string accountList = mPreferences.GetString("SMR_ACCOUNT_LIST_OWNER", null);
+            List<SMRAccount> selectAccountList = new List<SMRAccount>();
+            if (accountList != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<SMRAccount>>(accountList);
+            }
+            return selectAccountList;
+        }
     }
 }

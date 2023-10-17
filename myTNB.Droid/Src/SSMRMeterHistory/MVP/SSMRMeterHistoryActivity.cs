@@ -349,7 +349,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             NonSMRActionContainer.Visibility = hasNoSMREligibleAccount ? ViewStates.Visible : ViewStates.Gone;
             bottomLayout.Visibility = hasNoSMREligibleAccount ? ViewStates.Visible : ViewStates.Gone;
 
-            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant() && IsTenant)
+            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenantV2() && IsTenant)
             {
                 DisableSMRBtnContainer.Visibility = ViewStates.Gone;
                 NonSMRActionContainer.Visibility = ViewStates.Gone;
