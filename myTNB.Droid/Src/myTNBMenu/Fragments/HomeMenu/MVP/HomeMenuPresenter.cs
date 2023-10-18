@@ -1548,20 +1548,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.mView.UpdateCurrentSMRAccountList();
                         this.mView.UpdateEligibilitySMRAccountList();
                     }
-
-                    if (this.mView.ClickQuickActionSMR())
-                    {
-                        if (UserSessions.GetSMRAccountListOwner().Count > 0)
-                        {
-                            List<string> smrAccountListApply = new List<string>();
-                            foreach (SMRAccount smrAccount in UserSessions.GetSMRAccountListOwner())
-                            {
-                                smrAccountListApply.Add(smrAccount.accountNumber);
-                            }
-                            await GetIsSmrApplyAllowedService(smrAccountListApply);
-                        }
-                        this.mView.NavigateToSSMRPage();
-                    }
                 }
                 else
                 {
@@ -1841,10 +1827,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             smrAccountList.Add(customerBillingAccountList[i].AccNum);
                         }
                     }
-                    //await OnCheckSMRAccount(smrAccountList, "T");   //to call api sent all listing //for testing //remove this
 
                     List<List<string>> splitList = new List<List<string>>();
-
                     if (smrAccountList.Count > 0)
                     {
                         for (int i = 0; i < smrAccountList.Count; i += 5)
@@ -1872,11 +1856,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             }
                         }
 
-                        if (UserSessions.GetSMRAccountList().Count == 0 && !isSMRApplyAllowFlag)
+                        if (UserSessions.GetSMRAccountList() != null && UserSessions.GetSMRAccountList().Count == 0  && !isSMRApplyAllowFlag)
                         {
                             List<CustomerBillingAccount> customerBillingAccountListOwnerOnly = CustomerBillingAccount.CurrentSMRAccountListOwnerOnly();
                             MyTNBAccountManagement.GetInstance().SetSMRStatusCheckOwnerCanApply(true);
-                            if (customerBillingAccountListOwnerOnly.Count > 0)
+                            if (customerBillingAccountListOwnerOnly != null && customerBillingAccountListOwnerOnly.Count > 0)
                             {
                                 List<string> smrAccountListOwnerOnly = new List<string>();
                                 for (int i = 0; i < customerBillingAccountListOwnerOnly.Count; i++)
@@ -2302,14 +2286,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 if (isSMRApplyResponse.Data.ErrorCode == "7200" && isSMRApplyResponse.Data.Data.Count > 0)
                 {
+                    List<string> smrAccountListOwnerCanApply = new List<string>();
                     for (int i = 0; i < isSMRApplyResponse.Data.Data.Count; i++)
                     {
                         if (isSMRApplyResponse.Data.Data[i].AllowApply)
                         {
+                            smrAccountListOwnerCanApply.Add(isSMRApplyResponse.Data.Data[i].ContractAccount);
                             isSMRApplyAllowFlag = true;
-                            break;
                         }
                     }
+
+                    if (smrAccountListOwnerCanApply.Count > 0)
+                    {
+                        UserSessions.SetSMRAccountListOwnerCanApply(smrAccountListOwnerCanApply);
+                    }
+                    this.mView.NavigateToSSMRPage();
                 }
             }
             catch (System.OperationCanceledException cancelledException)

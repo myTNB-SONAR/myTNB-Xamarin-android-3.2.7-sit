@@ -1571,7 +1571,7 @@ namespace myTNB_Android.Src.Database.Model
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
                         List<CustomerBillingAccount> list = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
-                        eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && x.isOwned));
+                        eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && !x.IsTaggedSMR && x.isOwned));
 
                         return eligibleSMRAccounts;
                     }
@@ -1583,7 +1583,7 @@ namespace myTNB_Android.Src.Database.Model
             }
 
             var db = DBHelper.GetSQLiteConnection();
-            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isOwned = 1").ToList().OrderBy(x => x.AccDesc).ToList();
+            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 0 AND isOwned = 1").ToList().OrderBy(x => x.AccDesc).ToList();
             return eligibleSMRAccounts;
         }
 

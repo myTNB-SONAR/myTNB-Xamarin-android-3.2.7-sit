@@ -1871,36 +1871,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 UserSessions.DoSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
                             }
 
-                            if (!MyTNBAccountManagement.GetInstance().SMRStatusCheckOwnerCanApply())
-                            {
-                                List<CustomerBillingAccount> customerBillingAccountListOwnerOnly = CustomerBillingAccount.CurrentSMRAccountListOwnerOnly();
-                                MyTNBAccountManagement.GetInstance().SetSMRStatusCheckOwnerCanApply(true);
-                                isClickFromQuickActionSMR = true;
-                                if (customerBillingAccountListOwnerOnly.Count > 0)
-                                {
-                                    List<string> smrAccountListOwnerOnly = new List<string>();
-                                    for (int i = 0; i < customerBillingAccountListOwnerOnly.Count; i++)
-                                    {
-                                        if (!string.IsNullOrEmpty(customerBillingAccountListOwnerOnly[i].AccNum))
-                                        {
-                                            smrAccountListOwnerOnly.Add(customerBillingAccountListOwnerOnly[i].AccNum);
-                                        }
-                                    }
-
-                                    if (smrAccountListOwnerOnly.Count > 0)
-                                    {
-                                        Task.Run(async () =>
-                                        {
-                                            await this.presenter.OnCheckSMRAccount(smrAccountListOwnerOnly, "R");
-                                        });
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                Intent applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
-                                StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
-                            }
+                            Intent applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
+                            StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
                         else if (selectedService.ServiceType == MobileEnums.ServiceEnum.PAYBILL)
                         {
@@ -4449,11 +4421,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             DynatraceHelper.OnTrack(DynatraceConstants.BR.CTAs.Home.Home_Banner);
             ((DashboardHomeActivity)Activity).NavigateToNBR();
-        }
-
-        public bool ClickQuickActionSMR()
-        {
-            return isClickFromQuickActionSMR;
         }
     }
 }
