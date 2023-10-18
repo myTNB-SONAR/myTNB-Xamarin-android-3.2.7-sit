@@ -14,6 +14,7 @@ using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models;
 using Newtonsoft.Json;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
+using System.ComponentModel;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.MVP
 {
@@ -32,8 +33,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         const string PAGE_ID = "ApplicationStatus";
 
         int mRequestKey = -1;
-
-        bool smrFlag = false;
 
         RecyclerView.LayoutManager layoutManager;
 
@@ -198,16 +197,14 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
 
                         if (extras.ContainsKey(Constants.APPLICATION_STATUS_SMRTYPE_LIST_KEY))
                         {
-                            mSMRTypeList = DeSerialze<List<SMRTypeModel>>(extras.GetString(Constants.APPLICATION_STATUS_SMRTYPE_LIST_KEY));
-                            smrFlag = true;
+                            mSMRTypeList = DeSerialze<List<SMRTypeModel>>(extras.GetString(Constants.APPLICATION_STATUS_SMRTYPE_LIST_KEY)); 
                         }
                     }
                 }
             }
 
             multiSelectBottomLayout.Visibility = ViewStates.Gone;
-
-            mAdapter = new SearchApplicationStatusAdapter(this, mRequestKey, mTypeList, mSearchByList, mSMRTypeList, smrFlag);
+            mAdapter = new SearchApplicationStatusAdapter(this, mRequestKey, mTypeList, mSearchByList, mSMRTypeList);
 
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             filterListView.SetLayoutManager(layoutManager);

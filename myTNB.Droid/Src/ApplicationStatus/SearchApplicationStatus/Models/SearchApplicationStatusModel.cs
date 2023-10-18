@@ -17,6 +17,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models
 
         public SearchByModel() { }
         public bool isChecked { get; set; }
+        public bool smrFlag { get; set; }
     }
 
     public class TypeModel : SearchApplicationTypeModel
@@ -41,5 +42,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models
         public string Id { get; set; }
         public string Type { get; set; }
         public bool isChecked { get; set; }
+       
     }
 }

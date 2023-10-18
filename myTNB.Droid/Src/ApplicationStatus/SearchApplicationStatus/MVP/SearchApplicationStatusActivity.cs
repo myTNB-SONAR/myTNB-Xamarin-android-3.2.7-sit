@@ -715,6 +715,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             targetApplicationType = selectedType.SearchApplicationTypeDescDisplay;
                             targetApplicationTypeId = selectedType.SearchApplicationTypeId;
                             txtApplicationType.Text = targetApplicationType;
+                            SMRCodeContainer.Visibility = ViewStates.Gone;
 
                             if (selectedType.SearchTypes.Count <= 1)
                             {
@@ -783,7 +784,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
                                 SMRCodeContainer.Visibility = ViewStates.Gone;
 
-                                if (selectedType.ApplicationTypeDisplay == "Self Meter Reading")
+                                if (selectedType.ApplicationTypeDisplay == "Self Meter Reading" || selectedType.ApplicationTypeDisplay == "Bacaan Meter Sendiri")
                                 {
                                     SMRCodeContainer.Visibility = ViewStates.Visible;
                                 }
@@ -941,6 +942,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
                             for (int i = 0; i < mList.Count; i++)
                             {
+                                if (selectedType.ApplicationTypeDisplay == "Self Meter Reading" || selectedType.ApplicationTypeDisplay == "Bacaan Meter Sendiri")
+                                {
+                                    mList[i].smrFlag = true;
+                                }
+
                                 mList[i].isChecked = false;
                             }
 

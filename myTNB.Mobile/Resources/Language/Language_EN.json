@@ -2382,10 +2382,10 @@
     "title": "Search By",
     "whereToGetTheseNumber": "Where do I get these numbers?",
     "whereToGetTheseNumberTitle": "Where do I get these numbers?",
-    "whereToGetTheseNumberMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at ‘Application Status’ page. These details are also available upon request by contacting TNB CareLine.",
-    "whereToGetTheseNumberSMRInfoBar": "Where do I get these numbers?",
-    "whereToGetTheseNumberSMRTitle": "Where do I get these numbers of SMR?",
-    "whereToGetTheseNumberSMRMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at ‘Application Status’ page. These details are also available upon request by contacting TNB CareLine."
+    "whereToGetTheseNumberMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at 'Application Status' page. These details are also available upon request by contacting TNB CareLine.",
+    "whereToGetTheseNumberSMRTitle": "Where do I get these number of SMR & SMRAPP?",
+    "whereToGetTheseNumberSMRMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at 'Application Status' page. These details are also available upon request by contacting TNB CareLine.",
+    "whereToGetTheseNumberSMRInfoBar": "Where do I get these numbers?"
   },
   "manageUser": {
     "title": "Manage User",

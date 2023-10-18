@@ -10,6 +10,7 @@ using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicat
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.Adapter
 {
@@ -22,7 +23,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         public event EventHandler<int> ItemClick;
         int mRequestCode = -1;
         int countNumber = 0;
-        bool smrFlag;
 
         public void Clear()
         {
@@ -61,8 +61,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             , int requestCode
             , List<TypeModel> typeData = null
             , List<SearchByModel> searchByData = null
-            , List<SMRTypeModel> smrData = null
-            , bool smrFlag = false)
+            , List<SMRTypeModel> smrData = null)
         {
             this.mActivity = activity;
             this.mRequestCode = requestCode;
@@ -127,7 +126,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         {
             var id = Resource.Layout.ApplicationStatusFilterListItemLayout;
             var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
-            return new ApplicationStatusFilterViewHolder(this.mActivity, this.mSearchByList, itemView, smrFlag, OnClick);
+            return new ApplicationStatusFilterViewHolder(this.mActivity, this.mSearchByList, itemView, OnClick);
         }
 
         void OnClick(int position)
@@ -216,7 +215,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         public ApplicationStatusFilterViewHolder(SearchApplicationStatusSelectionActivity activity
             , List<SearchByModel> mSearchByList
             , View itemView
-            , bool smrFlag
             , Action<int> listener) : base(itemView)
         {
             context = itemView.Context;
@@ -231,12 +229,12 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             TextViewUtils.SetMuseoSans500Typeface(whyAccountsNotHere);
             txtFilterName.Click += (sender, e) => listener(base.LayoutPosition);
             chkApplicationFilter.Click += (sender, e) => listener(base.LayoutPosition);
-            whyAccountsNotHere.Click += (sender, e) => ShowWhereIsMyAcc(activity, mSearchByList, smrFlag);
+            whyAccountsNotHere.Click += (sender, e) => ShowWhereIsMyAcc(activity, mSearchByList);
         }
 
-        public async void ShowWhereIsMyAcc(Android.App.Activity context, List<SearchByModel> mSearchByList, bool smrFlag)
+        public async void ShowWhereIsMyAcc(Android.App.Activity context, List<SearchByModel> mSearchByList)
         {
-            if (smrFlag = true)
+            if (mSearchByList[0].smrFlag == true)
             {
                 MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                 .SetTitle(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberSMRTitle"))

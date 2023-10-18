@@ -2383,9 +2383,9 @@
     "whereToGetTheseNumber": "Di manakah boleh saya perolehi nombor ini?",
     "whereToGetTheseNumberTitle": "Di manakah boleh saya perolehi nombor ini?",
     "whereToGetTheseNumberMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> dan <b>Nombor Notifikasi Perkhidmatan</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine.",
-    "whereToGetTheseNumberSMRInfoBar": "Di manakah boleh saya perolehi nombor ini?",
-    "whereToGetTheseNumberSMRTitle": "Di manakah boleh saya perolehi nombor ini?",
-    "whereToGetTheseNumberSMRMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> dan <b>Nombor Notifikasi Perkhidmatan</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine."
+    "whereToGetTheseNumberSMRTitle": "Di manakah boleh saya perolehi nombor bagi SMR & SMRAPP?",
+    "whereToGetTheseNumberSMRMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> dan <b>Nombor Notifikasi Perkhidmatan</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine.",
+    "whereToGetTheseNumberSMRInfoBar": "Di manakah boleh saya perolehi nombor ini?"
   },
   "manageUser": {
     "title": "Urus Pengguna",
