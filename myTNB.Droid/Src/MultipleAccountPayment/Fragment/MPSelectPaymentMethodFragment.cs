@@ -552,7 +552,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 }
                 else if (RPSCCEntity.IsDown)
                 {
-                  
+
                     MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_ONE_BUTTON)
                    .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
                    .SetContentGravity(GravityFlags.Center)
