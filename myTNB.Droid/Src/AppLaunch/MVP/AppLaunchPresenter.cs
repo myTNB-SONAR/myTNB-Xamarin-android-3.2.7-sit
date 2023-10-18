@@ -114,8 +114,17 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             }
                         }
                     }
-                    LoadAppMasterData();
-                    GetCountryList();
+
+                    if (Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.Tiramisu)                                          //Starting android 13 asking notification permission
+                    {
+                        LoadAppMasterData();
+                        GetCountryList();
+                    }
+                    else if (UserSessions.GetUserNotificationFirstTimeInstallFlag(mSharedPref))
+                    {
+                        LoadAppMasterData();
+                        GetCountryList();
+                    }
                 }
             }
             catch (Exception e)
@@ -1778,6 +1787,19 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                     }
 
+                }
+                else if (requestCode == Constants.RUNTIME_PERMISSION_NOTIFICATION_REQUEST_CODE)
+                {
+                    if (Utility.IsPermissionHasCount(grantResults))
+                    {
+                        if (grantResults[0] == Permission.Granted)
+                        {
+
+                        }
+                    }
+                    UserSessions.SaveUserNotificationFirstTimeInstallFlag(mSharedPref, true);
+                    LoadAppMasterData();
+                    GetCountryList();
                 }
             }
             catch (Exception e)

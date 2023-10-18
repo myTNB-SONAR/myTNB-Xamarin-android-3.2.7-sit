@@ -270,7 +270,7 @@ namespace myTNB_Android.Src.Login.MVP
                 Log.Debug(TAG, "[DEBUG] FCM TOKEN: " + fcmToken);
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
                 userAuthRequest.SetUserName(usrNme);
-                string s = JsonConvert.SerializeObject(userAuthRequest);
+                //string s = JsonConvert.SerializeObject(userAuthRequest);
                 var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthRequest); //OT
                 //var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthRequest); //CEP DBR
 
