@@ -114,9 +114,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void FilterCOMCLandNEM();
 
-            void NavigateToSSMRPage();
-            
-            bool ClickQuickActionSMR();
+            void NavigateToSSMRPage();            
         }
 
         public interface IHomeMenuPresenter
@@ -187,7 +185,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             Task OnCheckSMRAccount(List<string> smrAccountListOwnerOnly, string r);
 
-            Task GetIsSmrApplyAllowedService(List<string> customerBillingAccountListOwnerOnly);
+            Task GetIsSmrApplyAllowedService(List<string> smrAccountListOwnerOnly);
 
             //void UserNotificationsCount();
         }

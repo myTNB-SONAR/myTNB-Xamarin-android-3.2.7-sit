@@ -1381,5 +1381,24 @@ namespace myTNB_Android.Src.Utils
             }
             return selectAccountList;
         }
+
+        public static void SetSMRAccountListOwnerCanApply(List<string> sMRAccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+            editor.PutString("SMR_ACCOUNT_LIST_OWNER_APPLY", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<string> GetSMRAccountListOwnerCanApply()
+        {
+            string accountList = mPreferences.GetString("SMR_ACCOUNT_LIST_OWNER_APPLY", null);
+            List<string> selectAccountList = new List<string>();
+            if (accountList != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<string>>(accountList);
+            }
+            return selectAccountList;
+        }
     }
 }

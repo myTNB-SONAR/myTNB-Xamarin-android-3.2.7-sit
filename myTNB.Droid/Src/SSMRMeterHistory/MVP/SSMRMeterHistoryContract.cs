@@ -21,16 +21,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             void ShowContactNotAvailableTooltip(string title, string content, string cta);
             string GetSMRActionKey();
             void OnShowSMRMeterReadingDialog();
+            void ProceedToIU(List<SMRAccount> smrEligibleAccountList);
+            string GetDeviceId();
         }
 
         public interface IPresenter
         {
-            List<SMRAccount> GetEligibleSMRAccountList();
             void CheckSMRAccountEligibility(List<SMRAccount> smrAccountList);
             void GetSSMRAccountStatus(string accountNumber);
             void GetCARegisteredContactInfoAsync(AccountData selectedAccount);
             List<NewAppModel> OnGeneraNewAppTutorialList(bool isSMR);
             void CheckIsBtnSubmitHide(SMRActivityInfoResponse SMRAccountActivityInfoResponse);
+            void GetEligibleSMRAccountList();
         }
 
         public interface IApiNotification

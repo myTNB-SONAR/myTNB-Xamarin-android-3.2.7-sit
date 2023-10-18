@@ -12,6 +12,8 @@ using myTNB_Android.Src.Utils;
 using Org.Json;
 using Refit;
 using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
 
 namespace myTNB_Android.Src.MyTNBService.ServiceImpl
 {
@@ -951,6 +953,17 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<AccountSMRStatusResponse> GetAccountsSMRIcon([Body] AccountSMRStatusRequestV2 request)
         {
             return api.GetAccountsSMRIcon<AccountSMRStatusResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetIsSmrApplyAllowed with timeout set.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public Task<GetIsSmrApplyAllowedResponse> GetIsSmrApplyAllowed([Body] GetIsSmrApplyAllowedRequest request)
+        {
+            return api.GetIsSmrApplyAllowed<GetIsSmrApplyAllowedResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         #endregion
