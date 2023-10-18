@@ -1119,6 +1119,8 @@ namespace myTNB_Android.Src.Utils
             SetSMRAccountList(new List<SMRAccount>());
             SetSMREligibilityAccountList(new List<SMRAccount>());
             SetRealSMREligibilityAccountList(new List<SMRAccount>());
+            SetSMRAccountListOwner(new List<SMRAccount>());
+            SetSMRAccountListOwnerCanApply(new List<string>());
         }
 
         public static void SetAccountActivityInfoList(List<SMRAccountActivityInfo> smrAccountActivityList)

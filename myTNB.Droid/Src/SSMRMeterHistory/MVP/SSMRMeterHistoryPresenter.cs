@@ -336,21 +336,24 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                                                 .Select(group => group.First())
                                                 .ToList();
                 }
+            }
 
-                if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenantV2())
+            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenantV2())
+            {
+                List<CustomerBillingAccount> eligibleSMRAccountListWithTenant = CustomerBillingAccount.EligibleSMRAccountListWithTenant();
+                if (eligibleSMRAccountListWithTenant != null && eligibleSMRAccountListWithTenant.Count > 0)
                 {
-                    List<CustomerBillingAccount> eligibleSMRAccountListWithTenant = CustomerBillingAccount.EligibleSMRAccountListWithTenant();
-                    if (eligibleSMRAccountListWithTenant != null && eligibleSMRAccountListWithTenant.Count > 0)
-                    {
-                        eligibleSMRAccountList = eligibleSMRAccountList
-                                                .Concat(eligibleSMRAccountListWithTenant)
-                                                .GroupBy(account => account.AccNum)
-                                                .Select(group => group.First())
-                                                .ToList();
-                    }
+                    eligibleSMRAccountList = eligibleSMRAccountList
+                                            .Concat(eligibleSMRAccountListWithTenant)
+                                            .GroupBy(account => account.AccNum)
+                                            .Select(group => group.First())
+                                            .ToList();
                 }
+            }
 
-                SMRAccount smrEligibleAccount;
+            SMRAccount smrEligibleAccount;
+            if (eligibleSMRAccountList.Count > 0)
+            {
                 eligibleSMRAccountList.ForEach(account =>
                 {
                     smrEligibleAccount = new SMRAccount();
@@ -363,13 +366,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     smrEligibleAccount.IsTenant = account.isOwned ? false : true;
                     smrEligibleAccountList.Add(smrEligibleAccount);
                 });
-
-                this.mView.ProceedToIU(smrEligibleAccountList);
             }
-            else
-            {
-                this.mView.ProceedToIU(smrEligibleAccountList);
-            }
+            this.mView.ProceedToIU(smrEligibleAccountList);
         }
 
         public void CheckIsBtnSubmitHide(SMRActivityInfoResponse SMRAccountActivityInfoResponse)

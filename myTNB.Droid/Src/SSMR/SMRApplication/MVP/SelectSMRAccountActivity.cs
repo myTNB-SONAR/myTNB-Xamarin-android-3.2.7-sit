@@ -37,7 +37,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
     {
         List<SMRAccount> accountList = new List<SMRAccount>();
         private SelectAccountAdapter selectAccountAdapter;
-        const string PAGE_ID = "SelectElectricityAccounts";
+        const string PAGE_ID = "SSMRReadingHistory";
 
         [BindView(Resource.Id.account_list_view)]
         ListView accountSMRList;
