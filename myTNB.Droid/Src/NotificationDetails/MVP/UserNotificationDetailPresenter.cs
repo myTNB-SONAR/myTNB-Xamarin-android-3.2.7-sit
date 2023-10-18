@@ -41,6 +41,8 @@ using Refit;
 using static Android.Graphics.ColorSpace;
 using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
+using myTNB;
+using myTNB.Mobile.SessionCache;
 
 namespace myTNB_Android.Src.NotificationDetails.MVP
 {
@@ -56,6 +58,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         bool isSixHaveQuestion = false;
         bool isSevenHaveQuestion = false;
         private BaseAppCompatActivity mActivity;
+
+        SearchApplicationTypeResponse _searchApplicationTypeResponse;
 
         public UserNotificationDetailPresenter(UserNotificationDetailContract.IView view, ISharedPreferences mSharedPref, BaseAppCompatActivity activity)
         {
@@ -809,6 +813,10 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             {
                 if (notificationDetails != null && notificationDetails.ApplicationStatusDetail != null)
                 {
+                    _searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+
+                    SearchApplicationTypeCache.Instance.SetData(_searchApplicationTypeResponse);
+
                     if (ConnectionUtils.HasInternetConnection(this.mActivity))
                     {
                         this.mActivity.RunOnUiThread(() =>
