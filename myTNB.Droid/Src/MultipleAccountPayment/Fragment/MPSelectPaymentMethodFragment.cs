@@ -539,28 +539,25 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             {
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity RPSCCEntity = DownTimeEntity.GetByCode(Constants.RPS_CC_SYSTEM);
-                if (pgCCEntity != null)
+                if (pgCCEntity != null && pgCCEntity.IsDown)
                 {
-                    if (pgCCEntity.IsDown)
+                    //ShowErrorMessage(pgCCEntity.DowntimeMessage);
+                    Utility.ShowBCRMDOWNTooltip(this.Activity, pgCCEntity, () =>
                     {
-                        //ShowErrorMessage(pgCCEntity.DowntimeMessage);
-                        Utility.ShowBCRMDOWNTooltip(this.Activity, pgCCEntity, () =>
-                        {
-                        });
-                    }
+                    });
+                    
                 }
-                else if (RPSCCEntity != null)
+                else if (RPSCCEntity != null && RPSCCEntity.IsDown)
                 {
-                    if (RPSCCEntity.IsDown)
-                    {
-                        MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_ONE_BUTTON)
-                          .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
-                          .SetContentGravity(GravityFlags.Center)
-                          .SetTitle(RPSCCEntity.DowntimeTextMessage)
-                          .SetMessage(RPSCCEntity.DowntimeMessage)
-                          .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
-                          .Build().Show();
-                    }
+                    
+                    MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_ONE_BUTTON)
+                        .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
+                        .SetContentGravity(GravityFlags.Center)
+                        .SetTitle(RPSCCEntity.DowntimeTextMessage)
+                        .SetMessage(RPSCCEntity.DowntimeMessage)
+                        .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                        .Build().Show();
+                  
                 }
                 else
                 {
