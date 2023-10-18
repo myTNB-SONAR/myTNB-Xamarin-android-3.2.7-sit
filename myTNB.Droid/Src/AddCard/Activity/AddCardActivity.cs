@@ -578,26 +578,32 @@ namespace myTNB_Android.Src.AddCard.Activity
             {
                 DownTimeEntity RPSCCEntity = DownTimeEntity.GetByCode(Constants.RPS_CC_SYSTEM);
 
-                if (RPSCCEntity != null && RPSCCEntity.IsDown)
+                if (RPSCCEntity != null)
                 {
+                    if (RPSCCEntity.IsDown)
+                    {
 
-                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_ONE_BUTTON)
-                        .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
-                        .SetContentGravity(GravityFlags.Center)
-                        .SetTitle(RPSCCEntity.DowntimeTextMessage)
-                        .SetMessage(RPSCCEntity.DowntimeMessage)
-                        .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
-                        .Build().Show();
+                        MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_ONE_BUTTON)
+                           .SetHeaderImage(Resource.Drawable.ic_display_validation_success)
+                           .SetContentGravity(GravityFlags.Center)
+                           .SetTitle(RPSCCEntity.DowntimeTextMessage)
+                           .SetMessage(RPSCCEntity.DowntimeMessage)
+                           .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                           .Build().Show();
 
-                    saveCard.Checked = false;
-                   
+                        saveCard.Checked = false;
+                    }
                 }
                 else
                 {
                     saveCard.Checked = true;
                 }
             }
+        }
 
+        public void DisableCheckSaveCard()
+        {
+            saveCard.Enabled = false;
         }
 
     }
