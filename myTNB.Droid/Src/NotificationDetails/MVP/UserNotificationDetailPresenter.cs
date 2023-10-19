@@ -41,6 +41,8 @@ using Refit;
 using static Android.Graphics.ColorSpace;
 using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
+using myTNB;
+using myTNB.Mobile.SessionCache;
 
 namespace myTNB_Android.Src.NotificationDetails.MVP
 {
@@ -56,6 +58,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         bool isSixHaveQuestion = false;
         bool isSevenHaveQuestion = false;
         private BaseAppCompatActivity mActivity;
+
+        SearchApplicationTypeResponse _searchApplicationTypeResponse;
 
         public UserNotificationDetailPresenter(UserNotificationDetailContract.IView view, ISharedPreferences mSharedPref, BaseAppCompatActivity activity)
         {
@@ -82,8 +86,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
                 string cancelURL = AWSConstants.BackToHomeCancelURL;
                 if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST
-                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_REMINDER
-                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_OTP_VERIFY)
+                    || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_REMINDER)
                 {
                     cancelURL = AWSConstants.BackToHomeCancelCOTURL;
                 }
@@ -422,7 +425,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             break;
 
                         }
-                    case Constants.BCRM_NOTIFICATION_MYHOME_APP_UPDATE:
+                    case Constants.BCRM_NOTIFICATION_MYHOME_APP_UPDATE_GTM2:
+                    case Constants.BCRM_NOTIFICATION_MYHOME_APP_UPDATE_GTM2_FOLLOW_UP_NOT_UPDATE:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "updateNow"),
                                    delegate () { UpdateNow(); });
@@ -430,17 +434,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
                             imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_App_Update;
-                            break;
-                        }
-                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED:
-                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED:
-                        {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewApplicationDetails"),
-                                   delegate () { ViewApplicationDetails(notificationDetails); });
-                            primaryCTA.SetSolidCTA(true);
-                            primaryCTA.SetIsRoundedButton(true);
-                            ctaList.Add(primaryCTA);
-                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Success;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION:
@@ -453,16 +446,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA.SetIsRoundedButton(true);
                             ctaList.Add(primaryCTA);
                             imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Resume_Application;
-                            break;
-                        }
-                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_ADDRESS_SEARCH_COMPLETED:
-                        {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "continueApplication"),
-                                   delegate () { ViewMyHomeMicrosite(notificationDetails); });
-                            primaryCTA.SetSolidCTA(true);
-                            primaryCTA.SetIsRoundedButton(true);
-                            ctaList.Add(primaryCTA);
-                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Address_Search_Success;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY:
@@ -479,71 +462,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_OTP_Verify;
                             break;
                         }
-                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_ACCEPTED:
-                        {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewApplicationDetails"),
-                                   delegate () { ViewApplicationDetails(notificationDetails); });
-                            primaryCTA.SetSolidCTA(true);
-                            primaryCTA.SetIsRoundedButton(true);
-                            ctaList.Add(primaryCTA);
-                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Contractor_Accepted;
-                            break;
-                        }
-                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED:
-                        {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reapplyNow"),
-                                   delegate ()
-                                   {
-                                       DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Reappoint_Contractor_Reapply_Now);
-                                       ViewApplicationDetails(notificationDetails);
-                                   });
-                            primaryCTA.SetSolidCTA(true);
-                            primaryCTA.SetIsRoundedButton(true);
-                            ctaList.Add(primaryCTA);
-                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Contractor_Rejected;
-                            break;
-                        }
-                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_NO_RESPONSE:
-                        {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "reapplyNow"),
-                                   delegate () { ViewApplicationDetails(notificationDetails); });
-                            primaryCTA.SetSolidCTA(true);
-                            primaryCTA.SetIsRoundedButton(true);
-                            ctaList.Add(primaryCTA);
-                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Contractor_Rejected;
-                            break;
-                        }
-                    case Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_REQUIRES_UPDATE:
-                        {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewApplicationDetails"),
-                                   delegate () { ViewApplicationDetails(notificationDetails); });
-                            primaryCTA.SetSolidCTA(true);
-                            primaryCTA.SetIsRoundedButton(true);
-                            ctaList.Add(primaryCTA);
-                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Application_Requires_Update;
-                            break;
-                        }
-                    case Constants.BCRM_NOTIFICATION_MYHOME_COA_APPLICATION_COMPLETED:
-                        {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewApplicationDetails"),
-                                   delegate () { ViewApplicationDetails(notificationDetails); });
-                            primaryCTA.SetSolidCTA(true);
-                            primaryCTA.SetIsRoundedButton(true);
-                            ctaList.Add(primaryCTA);
-                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_Success;
-                            break;
-                        }
-                    case Constants.BCRM_NOTIFICATION_MYHOME_COA_APPLICATION_CANCELLED:
-                        {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewApplicationDetails"),
-                                   delegate () { ViewApplicationDetails(notificationDetails); });
-                            primaryCTA.SetSolidCTA(true);
-                            primaryCTA.SetIsRoundedButton(true);
-                            ctaList.Add(primaryCTA);
-                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_COA_Application_Cancelled;
-                            break;
-                        }
                     case Constants.BCRM_NOTIFICATION_MYHOME_COA_OTP_VERIFY:
+                    case Constants.BCRM_NOTIFICATION_MYHOME_COT_EO_OTP_VERIFY:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "otpVerifyNow"),
                                    delegate () { ViewApplicationDetails(notificationDetails); });
@@ -573,20 +493,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                                    delegate ()
                                    {
                                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.COT_OTP_Verify_Now);
-                                       ViewApplicationDetails(notificationDetails);
-                                   });
-                            primaryCTA.SetSolidCTA(true);
-                            primaryCTA.SetIsRoundedButton(true);
-                            ctaList.Add(primaryCTA);
-                            imageResourceBanner = Resource.Drawable.Banner_Notif_MyHome_NC_OTP_Verify;
-                            break;
-                        }
-                    case Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_OTP_VERIFY:
-                        {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "otpVerifyNow"),
-                                   delegate ()
-                                   {
-                                       DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.COT_Current_Owner_OTP_Verify_Now);
                                        ViewApplicationDetails(notificationDetails);
                                    });
                             primaryCTA.SetSolidCTA(true);
@@ -907,6 +813,10 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             {
                 if (notificationDetails != null && notificationDetails.ApplicationStatusDetail != null)
                 {
+                    _searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+
+                    SearchApplicationTypeCache.Instance.SetData(_searchApplicationTypeResponse);
+
                     if (ConnectionUtils.HasInternetConnection(this.mActivity))
                     {
                         this.mActivity.RunOnUiThread(() =>
@@ -925,17 +835,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             if (response.StatusDetail.IsSuccess)
                             {
-                                if (notificationDetails != null)
-                                {
-                                    if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED)
-                                    {
-                                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Non_Contractor_Completed_View_Application_Details);
-                                    }
-                                    else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED)
-                                    {
-                                        DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Contractor_Completed_View_Application_Details);
-                                    }
-                                }
                                 this.mView.NavigateToApplicationDetails(response.Content);
                             }
                             else

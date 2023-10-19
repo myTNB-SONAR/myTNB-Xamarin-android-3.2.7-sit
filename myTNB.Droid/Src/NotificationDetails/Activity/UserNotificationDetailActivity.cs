@@ -191,29 +191,13 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             if (notificationDetails != null)
             {
-                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED)
-                {
-                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Non_Contractor_Completed_Back);
-                }
-                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED)
-                {
-                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Contractor_Completed_Back);
-                }
-                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED)
-                {
-                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.NC_Reappoint_Contractor_Back);
-                }
-                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST)
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST)
                 {
                     DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.COT_Request_Back);
                 }
                 else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_OTP_VERIFY)
                 {
                     DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.COT_OTP_Verify_Back);
-                }
-                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_OTP_VERIFY)
-                {
-                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.CTAs.Details.COT_Current_Owner_OTP_Verify_Back);
                 }
                 else
                 {
@@ -405,21 +389,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             if (notificationDetails != null)
             {
-                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_COMPLETED)
-                {
-                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.NC_Non_Contractor_Completed);
-                }
-                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_APPLICATION_CONTRACTOR_COMPLETED)
-                {
-                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.NC_Contractor_Completed);
-                }
-                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY)
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY)
                 {
                     DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.NC_OTP_Verify);
-                }
-                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_NC_CONTRACTOR_REJECTED)
-                {
-                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.NC_Reappoint_Contractor);
                 }
                 else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_OTP_VERIFY)
                 {
@@ -432,10 +404,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_REQUEST)
                 {
                     DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.COT_Request);
-                }
-                else if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_MYHOME_COT_CURRENT_OWNER_OTP_VERIFY)
-                {
-                    DynatraceHelper.OnTrack(DynatraceConstants.PushNotification.Screens.Details.COT_Current_Owner_OTP_Verify);
                 }
                 else
                 {
