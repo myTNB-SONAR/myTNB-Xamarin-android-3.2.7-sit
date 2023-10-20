@@ -567,6 +567,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string EB_view_budget_duration = "EB_view_budget_duration";
         internal static readonly string EB_view_tips = "EB_view_tips";
         internal static readonly string EB_initiate_Duration = "EB_initiate_Duration";
+        internal static readonly string SMR_icon_click = "SMR_ICON_CLICKED";
 #else
         internal static readonly string EB_in_app_notification = "EB_in_app_notification";
         internal static readonly string EB_view_tips_reached = "EB_view_tips_reached";
@@ -584,6 +585,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string EB_view_budget_duration = "EB_view_budget_duration";
         internal static readonly string EB_view_tips = "EB_view_tips";
         internal static readonly string EB_initiate_Duration = "EB_initiate_Duration";
+        internal static readonly string SMR_icon_click = "SMR_ICON_CLICKED";
 #endif
 
         //Dynatrce Test

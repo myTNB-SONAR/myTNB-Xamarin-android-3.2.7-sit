@@ -1866,6 +1866,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         else if (selectedService.ServiceType == MobileEnums.ServiceEnum.SELFMETERREADING)
                         {
+                            try
+                            {
+                                var myAction = Agent.Instance.EnterAction(Constants.SMR_icon_click);  // DYNA
+                                myAction.ReportValue("session_id", LaunchViewActivity.DynatraceSessionUUID);
+                                myAction.LeaveAction();
+                            }
+                            catch (System.Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+
                             if (!UserSessions.HasSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
                                 UserSessions.DoSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
