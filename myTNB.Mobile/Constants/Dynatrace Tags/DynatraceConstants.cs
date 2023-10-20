@@ -294,17 +294,13 @@
                 public struct Details
                 {
                     public const string Visit = "App_Visit_Notification";
-                    public const string NC_Contractor_Completed = "myHome_App_Visit_ContractorCompletedNotificationScreen";
-                    public const string NC_Non_Contractor_Completed = "myHome_App_Visit_NonContractorCompletedNotificationScreen";
                     public const string EB_Reaching = "EB_view_notification_duration_reaching";
                     public const string EB_Reached = "EB_view_notification_duration_reached";
                     public const string NC_OTP_Verify = "myHome_App_Visit_VerifyAgainNotification";
 
-                    public const string NC_Reappoint_Contractor = "myHome_App_Visit_ReappointContractorNotificationScreen";
                     public const string COT_OTP_Verify = "myHome_App_Visit_VerifyAgainNotification_COT";
                     public const string COT_Submitted = "myHome_App_Visit_ApplicationSubmittedAppNotification_ExistingOwner_COT";
                     public const string COT_Request = "myHome_App_Visit_ExistingOwner_COTRequest_WithTNB_AppNotification";
-                    public const string COT_Current_Owner_OTP_Verify = "myHome_App_Visit_VerifyAgainNotification_COTExistingOwner";
                 }
             }
 
@@ -318,20 +314,14 @@
                 public struct Details
                 {
                     public const string Back = "App_Action_Notification_Back";
-                    public const string NC_Contractor_Completed_Back = "myHome_App_Action_ContractorCompletedNotificationScreen_Back";
-                    public const string NC_Non_Contractor_Completed_Back = "myHome_App_Action_NonContractorCompletedNotificationScreen_Back";
-                    public const string NC_Contractor_Completed_View_Application_Details = "myHome_App_Action_ContractorCompletedNotificationScreen_ViewApplicationDetails";
-                    public const string NC_Non_Contractor_Completed_View_Application_Details = "myHome_App_Action_NonContractorCompletedNotificationScreen_ViewApplicationDetails";
                     public const string NC_Submit_Now = "myHome_App_Action_Notification_SubmitNow";
                     public const string NC_Reappoint_Contractor_Reapply_Now = "myHome_App_Action_ReappointContractorNotificationScreen_ReapplyNow";
-                    public const string NC_Reappoint_Contractor_Back = "myHome_App_Action_ReappointContractorNotificationScreen_Back";
                     public const string NC_OTP_Verify_Now = "myHome_App_Action_VerifyAgainNotification_VerifyNow";
                     public const string COT_OTP_Verify_Now = "myHome_App_Action_VerifyAgainNotification_COT_VerifyNow";
                     public const string COT_OTP_Verify_Back = "myHome_App_Action_VerifyAgainNotification_COT_Back";
                     public const string COT_Submitted_View_Application_Details = "myHome_App_Action_ApplicationSubmittedAppNotification_ExistingOwner_COT_ViewApplicationDetails";
                     public const string COT_Request_Submit_Now = "myHome_App_Action_ExistingOwner_COTRequest_WithTNB_AppNotification_SubmitNow";
                     public const string COT_Request_Back = "myHome_App_Action_ExistingOwner_COTRequest_WithTNB_AppNotification_Back";
-                    public const string COT_Current_Owner_OTP_Verify_Back = "myHome_App_Action_VerifyAgainNotification_COTExistingOwner_Back";
                     public const string COT_Current_Owner_OTP_Verify_Now = "myHome_App_Action_VerifyAgainNotification_COTExistingOwner_VerifyNow";
                 }
             }
