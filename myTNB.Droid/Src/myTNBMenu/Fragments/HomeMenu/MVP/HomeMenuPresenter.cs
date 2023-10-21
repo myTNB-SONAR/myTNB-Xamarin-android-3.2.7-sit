@@ -1859,7 +1859,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         if (UserSessions.GetSMRAccountList() != null && UserSessions.GetSMRAccountList().Count == 0  && !isSMRApplyAllowFlag)
                         {
                             List<CustomerBillingAccount> customerBillingAccountListOwnerOnly = CustomerBillingAccount.CurrentSMRAccountListOwnerOnly();
-                            MyTNBAccountManagement.GetInstance().SetSMRStatusCheckOwnerCanApply(true);
+                            //MyTNBAccountManagement.GetInstance().SetSMRStatusCheckOwnerCanApply(true);
                             if (customerBillingAccountListOwnerOnly != null && customerBillingAccountListOwnerOnly.Count > 0)
                             {
                                 List<string> smrAccountListOwnerOnly = new List<string>();
