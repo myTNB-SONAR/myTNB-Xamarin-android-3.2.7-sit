@@ -315,14 +315,12 @@
                 {
                     public const string Back = "App_Action_Notification_Back";
                     public const string NC_Submit_Now = "myHome_App_Action_Notification_SubmitNow";
-                    public const string NC_Reappoint_Contractor_Reapply_Now = "myHome_App_Action_ReappointContractorNotificationScreen_ReapplyNow";
                     public const string NC_OTP_Verify_Now = "myHome_App_Action_VerifyAgainNotification_VerifyNow";
                     public const string COT_OTP_Verify_Now = "myHome_App_Action_VerifyAgainNotification_COT_VerifyNow";
                     public const string COT_OTP_Verify_Back = "myHome_App_Action_VerifyAgainNotification_COT_Back";
                     public const string COT_Submitted_View_Application_Details = "myHome_App_Action_ApplicationSubmittedAppNotification_ExistingOwner_COT_ViewApplicationDetails";
                     public const string COT_Request_Submit_Now = "myHome_App_Action_ExistingOwner_COTRequest_WithTNB_AppNotification_SubmitNow";
                     public const string COT_Request_Back = "myHome_App_Action_ExistingOwner_COTRequest_WithTNB_AppNotification_Back";
-                    public const string COT_Current_Owner_OTP_Verify_Now = "myHome_App_Action_VerifyAgainNotification_COTExistingOwner_VerifyNow";
                 }
             }
 
