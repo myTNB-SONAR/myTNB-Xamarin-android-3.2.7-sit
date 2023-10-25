@@ -1119,6 +1119,8 @@ namespace myTNB_Android.Src.Utils
             SetSMRAccountList(new List<SMRAccount>());
             SetSMREligibilityAccountList(new List<SMRAccount>());
             SetRealSMREligibilityAccountList(new List<SMRAccount>());
+            SetSMRAccountListOwner(new List<SMRAccount>());
+            SetSMRAccountListOwnerCanApply(new List<string>());
         }
 
         public static void SetAccountActivityInfoList(List<SMRAccountActivityInfo> smrAccountActivityList)
@@ -1361,6 +1363,56 @@ namespace myTNB_Android.Src.Utils
             ISharedPreferencesEditor editor = mSharedPref.Edit();
             editor.Remove("FBContentLangIsUpdated");
             editor.Apply();
+        }
+
+        public static void SaveUserNotificationFirstTimeInstallFlag(ISharedPreferences prefs, bool flag)           //Save need to ask notification permission popup
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("NotificationFirstTime", flag);
+            editor.Apply();
+        }
+
+        public static bool GetUserNotificationFirstTimeInstallFlag(ISharedPreferences preferences)                  //Get flag to ask notification permission popup
+        {
+            return preferences.GetBoolean("NotificationFirstTime", false);
+        }
+        
+        public static void SetSMRAccountListOwner(List<SMRAccount> sMRAccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+            editor.PutString("SMR_ACCOUNT_LIST_OWNER", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<SMRAccount> GetSMRAccountListOwner()
+        {
+            string accountList = mPreferences.GetString("SMR_ACCOUNT_LIST_OWNER", null);
+            List<SMRAccount> selectAccountList = new List<SMRAccount>();
+            if (accountList != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<SMRAccount>>(accountList);
+            }
+            return selectAccountList;
+        }
+
+        public static void SetSMRAccountListOwnerCanApply(List<string> sMRAccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+            editor.PutString("SMR_ACCOUNT_LIST_OWNER_APPLY", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<string> GetSMRAccountListOwnerCanApply()
+        {
+            string accountList = mPreferences.GetString("SMR_ACCOUNT_LIST_OWNER_APPLY", null);
+            List<string> selectAccountList = new List<string>();
+            if (accountList != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<string>>(accountList);
+            }
+            return selectAccountList;
         }
     }
 }

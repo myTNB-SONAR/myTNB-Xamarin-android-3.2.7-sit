@@ -993,23 +993,19 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 try
                 {
                     List<CustomerBillingAccount> eligibleSMRAccountList = new List<CustomerBillingAccount>();
+                    eligibleSMRAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
 
-                    if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                    if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenantV2())
                     {
-                        List<CustomerBillingAccount> eligibleSMRAccountListOwner = CustomerBillingAccount.GetEligibleAndSMRAccountList();
                         List<CustomerBillingAccount> eligibleSMRBillingAccountsWithTenant = CustomerBillingAccount.EligibleSMRAccountListWithTenant();
-                        if (eligibleSMRAccountListOwner != null && eligibleSMRAccountListOwner.Count > 0)
-                        {
-                            eligibleSMRAccountList.AddRange(eligibleSMRAccountListOwner);
-                        }
                         if (eligibleSMRBillingAccountsWithTenant != null && eligibleSMRBillingAccountsWithTenant.Count > 0)
                         {
-                            eligibleSMRAccountList.AddRange(eligibleSMRBillingAccountsWithTenant);
+                            eligibleSMRAccountList = eligibleSMRAccountList
+                                            .Concat(eligibleSMRBillingAccountsWithTenant)
+                                            .GroupBy(account => account.AccNum)
+                                            .Select(group => group.First())
+                                            .ToList();
                         }
-                    }
-                    else
-                    {
-                        eligibleSMRAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
                     }
                     foreach (CustomerBillingAccount account in eligibleSMRAccountList)
                     {
@@ -1068,12 +1064,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                                     }
                                 }
                                 List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
-                                if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                                if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenantV2())
                                 {
                                     List<CustomerBillingAccount> currentSMRBillingAccountsWithTenant = CustomerBillingAccount.CurrentSMRAccountListWithTenant();
                                     if (currentSMRBillingAccountsWithTenant != null && currentSMRBillingAccountsWithTenant.Count > 0)
                                     {
-                                        currentSMRBillingAccounts.AddRange(currentSMRBillingAccountsWithTenant);
+                                        currentSMRBillingAccounts = currentSMRBillingAccounts
+                                            .Concat(currentSMRBillingAccountsWithTenant)
+                                            .GroupBy(account => account.AccNum)
+                                            .Select(group => group.First())
+                                            .ToList();
                                     }
                                 }
                                 List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
@@ -1092,12 +1092,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                                 UserSessions.SetSMRAccountList(currentSmrAccountList);
 
                                 List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
-                                if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+                                if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenantV2())
                                 {
                                     List<CustomerBillingAccount> eligibleSMRBillingAccountsWithTenant = CustomerBillingAccount.EligibleSMRAccountListWithTenant();
                                     if (eligibleSMRBillingAccountsWithTenant != null && eligibleSMRBillingAccountsWithTenant.Count > 0)
                                     {
-                                        eligibleSMRBillingAccounts.AddRange(eligibleSMRBillingAccountsWithTenant);
+                                        eligibleSMRBillingAccounts = eligibleSMRBillingAccounts
+                                            .Concat(eligibleSMRBillingAccountsWithTenant)
+                                            .GroupBy(account => account.AccNum)
+                                            .Select(group => group.First())
+                                            .ToList();
                                     }
                                 }
                                 List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();

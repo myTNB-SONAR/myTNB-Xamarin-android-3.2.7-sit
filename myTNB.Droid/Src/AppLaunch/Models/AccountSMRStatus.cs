@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace myTNB_Android.Src.AppLaunch.Models
 {
-    public class AccountSMRStatus
+    public class AccountSMRStatus : SMREligibilityModel
     {
         [JsonProperty(PropertyName = "ContractAccount")]
         [AliasAs("ContractAccount")]
@@ -18,5 +18,11 @@ namespace myTNB_Android.Src.AppLaunch.Models
         [AliasAs("IsPeriodOpen")]
         public string IsPeriodOpen { get; set; }
 
+    }
+
+    public class SMREligibilityModel
+    {
+        [JsonProperty(PropertyName = "SMREligibility")]
+        public string SMREligibility { get; set; }
     }
 }

@@ -57,6 +57,7 @@ namespace myTNB_Android.Src.Base
         private bool IsTNGEnable = false;
         private static PostGetDraftResponse postGetDraftResponse = null;
         private string resumeDraftRefNos = string.Empty;
+        private bool isDoneChecking = false;
 
         private MyTNBAccountManagement()
         {
@@ -340,6 +341,11 @@ namespace myTNB_Android.Src.Base
         public bool IsSMROpenToTenant()
         {
             return appMasterDataResponse.IsSMROpenToTenant;
+        }
+
+        public bool IsSMROpenToTenantV2()
+        {
+            return appMasterDataResponse.IsSMROpenToTenantV2;
         }
 
         public bool IsOCRDown()
@@ -822,6 +828,16 @@ namespace myTNB_Android.Src.Base
         public string GetResumeDraftRefNos()
         {
             return resumeDraftRefNos;
+        }
+
+        public void SetSMRStatusCheckOwnerCanApply(bool str)
+        {
+            isDoneChecking = str;
+        }
+
+        public bool SMRStatusCheckOwnerCanApply()
+        {
+            return isDoneChecking;
         }
     }
 }

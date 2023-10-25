@@ -70,6 +70,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         private string displayDate = string.Empty;
         private string fromDate = string.Empty;
         private string toDate = string.Empty;
+        bool clearDate = false;
 
         public override int ResourceId()
         {
@@ -126,6 +127,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_DATE_KEY))
                 {
                     filterDate = extras.GetString(Constants.APPLICATION_STATUS_FILTER_DATE_KEY);
+                    //if (clearDate) //yana
+                    //{
+                    //    fromDate = string.Empty;
+                    //    toDate = string.Empty;
+                    //    AllApplicationsCache.Instance.CreatedDateFrom = string.Empty;
+                    //    AllApplicationsCache.Instance.CreatedDateTo = string.Empty;
+                    //}
                     filterDateSubTitle.Text = filterDate;
                 }
                 if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_FROM_DATE_KEY))
@@ -486,12 +494,26 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         {
             if (!this.GetIsClicked())
             {
+
                 this.SetIsClicked(true);
+
+                if (clearDate) //yana
+                {
+                    fromDate = string.Empty;
+                    toDate = string.Empty;
+                    AllApplicationsCache.Instance.CreatedDateFrom = fromDate;
+                    AllApplicationsCache.Instance.CreatedDateTo = toDate;
+                    filterDate = string.Empty;
+                    displayDate = string.Empty;
+                    isClearedDate = true;
+                }
+
                 Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterDateSelectionActivity));
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_DATE_KEY, filterDate);
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_FROM_DATE_KEY, fromDate);
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_TO_DATE_KEY, toDate);
                 StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_DATE_REQUEST_CODE);
+                clearDate = true;
             }
         }
 
