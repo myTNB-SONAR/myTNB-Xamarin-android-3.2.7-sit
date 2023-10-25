@@ -515,9 +515,19 @@ namespace myTNB.Mobile
                     GetEligibilityResponse eligibilityResponse =
                         await EligibilityManager.Instance.PostEligibility(userID ?? string.Empty
                         , email ?? string.Empty
-                        , !string.IsNullOrEmpty(displaymodel.Content.ContractAccountNo) ? new List<AWS.ContractAccountModel> { new AWS.ContractAccountModel() { accNum = displaymodel.Content.ContractAccountNo,
-                            BusinessArea = displaymodel.Content.CABusinessArea }  } : null
-                        , new List<AWS.PremiseCriteriaModel> { new AWS.PremiseCriteriaModel() { BusinessArea = displaymodel.Content.CABusinessArea } }
+                        , !string.IsNullOrEmpty(displaymodel.Content.ContractAccountNo)
+                            ? new List<AWS.ContractAccountModel> {
+                                new AWS.ContractAccountModel() {
+                                    accNum = displaymodel.Content.ContractAccountNo
+                                    , BusinessArea = displaymodel.Content.CABusinessArea
+                                }
+                            }
+                            : null
+                        , new List<AWS.PremiseCriteriaModel> {
+                            new AWS.PremiseCriteriaModel() {
+                                BusinessArea = displaymodel.Content.CABusinessArea
+                            }
+                        }
                         , AppInfoManager.Instance.AccessToken);
 
                     if (eligibilityResponse.Content != null
