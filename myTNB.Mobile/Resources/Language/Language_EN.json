@@ -1617,7 +1617,8 @@
     "whereToGetThisNumberTitleCAV2": "Where do I get these numbers?",
     "whereToGetThisNumberMessageCAV2": "Your 12-digit account number can be found at the top right corner of your monthly paper bill.",
     "whereToGetThisNumberTitle": "Where do I get these numbers?",
-    "whereToGetThisNumberMessage": "You can find the <b>{0}</b> in your submitted application details at ‘Application Status’ page and is available upon request by contacting TNB CareLine."
+    "whereToGetThisNumberMessage": "You can find the <b>{0}</b> in your submitted application details at ‘Application Status’ page and is available upon request by contacting TNB CareLine.",
+    "type": "Type"
   },
   "LearnMoreAboutTnb": {
     "title": "TNB Help & Support",
@@ -2394,7 +2395,10 @@
     "title": "Search By",
     "whereToGetTheseNumber": "Where do I get these numbers?",
     "whereToGetTheseNumberTitle": "Where do I get these numbers?",
-    "whereToGetTheseNumberMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at ‘Application Status’ page. These details are also available upon request by contacting TNB CareLine."
+    "whereToGetTheseNumberMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at 'Application Status' page. These details are also available upon request by contacting TNB CareLine.",
+    "whereToGetTheseNumberSMRTitle": "Where do I get these number of SMR & SMRAPP?",
+    "whereToGetTheseNumberSMRMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at 'Application Status' page. These details are also available upon request by contacting TNB CareLine.",
+    "whereToGetTheseNumberSMRInfoBar": "Where do I get these numbers?"
   },
   "manageUser": {
     "title": "Manage User",
