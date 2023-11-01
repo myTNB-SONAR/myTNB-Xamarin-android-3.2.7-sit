@@ -334,5 +334,77 @@
     "Question": "Bagaimanakah cara untuk menghubungi TNB?",
     "Answer": "<p><span>Kini lebih mudah untuk menghubungi kami. Hubungi kami di talian 1<a href=\"tel:15454\">15454</a> for untuk Gangguan Bekalan dan <a href=\"tel:1-300-88-5454\"></a><1-300-88-5454></1-300-88-5454> untuk Pertanyaan Pengebilan mengenai akaun anda. Anda juga boleh menghantar e-mel kepada kami di tnbcareline@tnb.com.my atau menghantar mesej kepada kami di Facebook di <a href=\"http://www.facebook.com/TNBCareline\">http://www.facebook.com/TNBCareline </a>. Ataupun, tekan pada butang &ldquo;Hantar Maklum Balas&rdquo; dalam Halaman Utama untuk menghantar pertanyaan kepada pasukan kami.</span></p>",
     "ID": "{4881694F-61E8-4C9C-AC0C-F79005B3AC97}"
+  },
+  {
+    "Image": "",
+    "Question": "Apakah myHome?​",
+    "Answer": "myHome adalah ciri yang membolehkan anda memohon bekalan elektrik baharu, penukaran nama pemilik akaun, dan penutupan akaun elektrik melalui perkhidmatan Connect My Premises. Anda juga boleh merancang urusan berpindah dengan perkhidmatan myHome Checklist.<br />\n<br />\nBuat masa ini, myHome hanya tersedia kepada pelanggan kediaman yang mempunyai akaun berdaftar di Kuala Lumpur sahaja dan tidak mempunyai akaun di tempat lain.<br />\n<br />\nJika anda tidak melihat ikon myHome, sila kemas kini aplikasi ke versi terkini dan lancarkan semula aplikasi.<br />",
+    "ID": "{A7C39274-240D-403B-B981-60FBE07ABCDA}"
+  },
+  {
+    "Image": "",
+    "Question": "Bilakah saya perlu memilih 'Connect My Premises - Move In’?​",
+    "Answer": "Pilih 'Move In' jika anda baru membeli hartanah atau berpindah ke premis yang disewa. Anda boleh membuka akaun elektrik untuk premis anda atau menukar nama pemilik akaun elektrik yang sedia ada.<br />",
+    "ID": "{B5938AA9-23FA-4FE4-A435-9307CD827552}"
+  },
+  {
+    "Image": "",
+    "Question": "Bilakah saya perlu memilih 'Connect My Premises - Move Out’?​",
+    "Answer": "Jika anda akan berpindah keluar dari premis dan ingin menutup akaun elektrik di premis tersebut. Apabila anda menutup akaun elektrik anda, bekalan elektrik ke premis anda akan dihentikan.<br />",
+    "ID": "{D4DAA56C-F20E-4EA0-B43F-5D9022BDF780}"
+  },
+  {
+    "Image": "",
+    "Question": "Bagaimanakah saya akan tahu jika kontraktor menerima permintaan untuk permohonan bekalan elektrik baharu?​",
+    "Answer": "Anda akan mendapat push notification dan e-mel jika kontraktor menerima permohonan, menolak permohonan, dan setelah permohonan anda selesai.<br />",
+    "ID": "{ECFEF05D-1F15-4866-B366-A93E1CE9954C}"
+  },
+  {
+    "Image": "",
+    "Question": "​​Apakah yang akan berlaku selepas saya memohon penukaran nama pemilik akaun?",
+    "Answer": "Pemilik akaun sedia ada akan menerima push notification dan e-mel mengenai permohonan penukaran nama pemilik akaun dan tindakan yang perlu diambil.&nbsp;<br />\n<br />\nPemilik akaun sedia ada juga akan dimaklumkan mengenai caj tertunggak dan diminta memilih cara pembayaran balik deposit sekuriti.<br />",
+    "ID": "{55B91F76-24FF-4D9C-B1BA-D33BDDF5637D}"
+  },
+  {
+    "Image": "",
+    "Question": "Bolehkah saya memilih cara pembayaran balik deposit sekuriti dan apakah pilihan yang ada?",
+    "Answer": "Ya, anda akan dapat memilih cara pembayaran balik deposit sekuriti pilihan anda di paparan Pembayaran dan Pembayaran Balik. Pilihan yang ada adalah pemindahan bank, pemindahan ke akaun TNB lain anda, cek, dan pemindahan bank asing.<br />",
+    "ID": "{68130B72-7B14-4A0C-8936-46985640475A}"
+  },
+  {
+    "Image": "",
+    "Question": "Bagaimanakah saya boleh membayar caj yang berkaitan dengan permohonan myHome melalui Aplikasi myTNB?​",
+    "Answer": "Anda boleh membuat pembayaran yang diperlukan dengan mudah melalui Aplikasi myTNB. Jenis-jenis kaedah pembayaran adalah kad kredit/debit, perbankan dalam talian melalui FPX, dan e-Dompet TNG.<br />",
+    "ID": "{D5FDDDEA-E559-4895-9E42-0E3FC362CF98}"
+  },
+  {
+    "Image": "",
+    "Question": "Bolehkah saya menyimpan permohonan sebagai draf dan menghantarnya kemudian?​",
+    "Answer": "Ya, anda boleh menyimpan permohonan anda sebagai draf dan sambung kemudian. Apabila anda klik X di sudut kanan atas skrin, anda akan dipaparkan dengan mesej pop-up sama ada anda mahu membatalkannya atau menyimpannya sebagai draf.<br />",
+    "ID": "{CCC18C64-AD9C-40D3-8D56-7E6E858109D4}"
+  },
+  {
+    "Image": "",
+    "Question": "Bagaimanakah saya boleh mendapat manfaat daripada myHome Checklist?​",
+    "Answer": "Anda boleh membuat senarai semak tertentu bagi premis anda untuk merancang urusan berpindah. Gunakan senarai dan tugasan yang disyorkan untuk nikmati pengalaman berpindah dengan lancar.<br />",
+    "ID": "{44EC894F-A669-45F2-B01B-A05390C7E6DA}"
+  },
+  {
+    "Image": "",
+    "Question": "Bolehkan saya memautkan beberapa premis kepada senarai semak yang sama di bawah perkhidmatan myHome Checklist?​",
+    "Answer": "Tidak, hanya untuk satu senarai semak sahaja bagi setiap premis. Sebaik sahaja 'Nombor Permohonan' telah dipilih dan dipautkan kepada premis tertentu, &lsquo;Nombor Permohonan&rsquo; tidak akan muncul lagi di dropdown menu.<br />",
+    "ID": "{4BDD2E6F-2A1E-40B1-B682-B9FDDED76A59}"
+  },
+  {
+    "Image": "",
+    "Question": "Bagaimanakah saya menyahpaut permohonan daripada senarai semak?​​",
+    "Answer": "Anda tidak akan dapat menyahpaut permohonan selepas memautkannya.<br />\n<br />\nJika anda ingin membatalkan pautan, anda perlu memadam premis dan mulakan semula.<br />\nUntuk memadamkan premis, pergi ke skrin myHome Checklist - Premis Saya. Di premis yang ingin anda padamkan, leret ke kiri dan klik pada ikon padam.<br />",
+    "ID": "{B6B5AA5E-F297-4614-A723-CFA1BD433CA9}"
+  },
+  {
+    "Image": "",
+    "Question": "Bolehkah saya memadam pre-set senarai dan tugasan yang telah ditetapkan?",
+    "Answer": "Untuk pre-set senarai dan tugasan, anda tidak akan dapat memadam atau mengeditnya. Walau bagaimanapun, anda boleh mengatur senarai dan tugasan berdasarkan keutamaan.<br />",
+    "ID": "{0CD0E9F9-3C89-40BE-8F3C-32AACB0637C0}"
   }
 ]
