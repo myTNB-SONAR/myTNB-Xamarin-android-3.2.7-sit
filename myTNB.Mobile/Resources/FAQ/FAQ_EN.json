@@ -334,5 +334,77 @@
     "Question": "How can I contact TNB?",
     "Answer": "<p>Getting in touch has never been easier. Call us on <a href=\"tel:15454\">15454</a> for Outages &amp; Breakdowns and <a href=\"tel:1-300-88-5454\"></a><1-300-88-5454></1-300-88-5454> for Billing &amp; General enquiries about your account. You can also drop us an email at tnbcareline@tnb.com.my or message us on Facebook at <a href=\"http://www.facebook.com/TNBCareline\">http://www.facebook.com/TNBCareline </a> Alternatively, tap on &lsquo;Submit Feedback&rsquo; on the &ldquo;Home&rdquo; page in the app to send an enquiry to our team.</p>",
     "ID": "{4881694F-61E8-4C9C-AC0C-F79005B3AC97}"
+  },
+  {
+    "Image": "",
+    "Question": "What is myHome?",
+    "Answer": "myHome is a feature that allows you to apply for new electricity connection, change of account ownership and close an electricity account via the Connect My Premises service. You can also plan your move effectively with the myHome Checklist service.<br />\n<br />\nCurrently, myHome is only available to residential customers who have accounts registered in Kuala Lumpur only and who do not have accounts elsewhere.<br />\n<br />\nIf you do not see the myHome icon, please update the app to the latest version and relaunch it.<br />",
+    "ID": "{A7C39274-240D-403B-B981-60FBE07ABCDA}"
+  },
+  {
+    "Image": "",
+    "Question": "When do I select Connect My Premises - Move In?​",
+    "Answer": "Select &lsquo;Move In&rsquo; if you recently purchased a property or moved into a rented premises. You can open an electricity account for your premises or change ownership of an existing electricity account.<br />",
+    "ID": "{B5938AA9-23FA-4FE4-A435-9307CD827552}"
+  },
+  {
+    "Image": "",
+    "Question": "When do I select Connect My Premises - Move Out?​",
+    "Answer": "If you are moving out of the premises and want to permanently close/terminate your electricity account in that premises. When you close your electricity account, your premises electricity supply will be cut off.<br />",
+    "ID": "{D4DAA56C-F20E-4EA0-B43F-5D9022BDF780}"
+  },
+  {
+    "Image": "",
+    "Question": "How will I know if the contractor accepts the request for new electricity connection application?",
+    "Answer": "You will get push notification and email if the contractor accepted the request, rejected the request and once your application has been completed.<br />",
+    "ID": "{ECFEF05D-1F15-4866-B366-A93E1CE9954C}"
+  },
+  {
+    "Image": "",
+    "Question": "What happens after I applied for change of account ownership?​",
+    "Answer": "The current account owner, will receive push notification and email regarding the change of account ownership request and the relevant actions needed.<br />\n<br />\nThe current account owner will also be informed of the outstanding charges and asked to select the security deposit refund method.<br />",
+    "ID": "{55B91F76-24FF-4D9C-B1BA-D33BDDF5637D}"
+  },
+  {
+    "Image": "",
+    "Question": "Can I select the security deposit refund method and what are the options?",
+    "Answer": "Yes, you will be able to select the security deposit refund method of your choice during the Payment and Refund stage. The options are bank transfer, transfer to your other TNB account, cheque and foreign bank transfer.<br />",
+    "ID": "{68130B72-7B14-4A0C-8936-46985640475A}"
+  },
+  {
+    "Image": "",
+    "Question": "How do I pay for the charges related to myHome application via the myTNB App?",
+    "Answer": "You can make the necessary payments via the myTNB App directly. The types of payment methods are credit/debit cards, online banking via FPX and TNG eWallet.<br />",
+    "ID": "{D5FDDDEA-E559-4895-9E42-0E3FC362CF98}"
+  },
+  {
+    "Image": "",
+    "Question": "Can I save the application as a draft and submit it later?​",
+    "Answer": "Yes, you can save your application as draft and continue it next time. At any point, when you click X at the top right-hand corner of the screen, you will be prompted with a pop-up message whether you want to cancel or save it as draft.<br />",
+    "ID": "{CCC18C64-AD9C-40D3-8D56-7E6E858109D4}"
+  },
+  {
+    "Image": "",
+    "Question": "How can I benefit from myHome Checklist?​",
+    "Answer": "You can create a specific checklist for your premises to plan for your move. You can utilise the recommended lists and tasks to enjoy a smooth moving experience.<br />",
+    "ID": "{44EC894F-A669-45F2-B01B-A05390C7E6DA}"
+  },
+  {
+    "Image": "",
+    "Question": "Under the myHome Checklist service, can I link multiple premises to the same checklist?",
+    "Answer": "No, there can only be one checklist per premises. Once the &lsquo;Application Number&rsquo; has been selected and linked to a particular premises, the Application Number will not appear again in the dropdown menu.<br />",
+    "ID": "{4BDD2E6F-2A1E-40B1-B682-B9FDDED76A59}"
+  },
+  {
+    "Image": "",
+    "Question": "How can I unlink an application to the myHome checklist?​",
+    "Answer": "You will not be able to unlink an application after linking it. If you want to remove the linkage, you will need to delete the premises and start again.<br />\n<br />\nTo delete the premises, go to the myHome Checklist- My Premises screen. On the premises you want to delete, swipe left and click on the delete icon.<br />",
+    "ID": "{B6B5AA5E-F297-4614-A723-CFA1BD433CA9}"
+  },
+  {
+    "Image": "",
+    "Question": "Will I be able to delete my Home Checklist pre-set lists and tasks?",
+    "Answer": "For pre-set lists and tasks, you will not be able to delete or edit them. However, you can arrange the lists and tasks based on priority.<br />",
+    "ID": "{0CD0E9F9-3C89-40BE-8F3C-32AACB0637C0}"
   }
 ]
