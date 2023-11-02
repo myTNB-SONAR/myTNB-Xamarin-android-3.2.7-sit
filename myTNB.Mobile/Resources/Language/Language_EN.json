@@ -3218,7 +3218,9 @@
     "nonOwnerEBillTitle": "Your account is environmentally friendly with myTNB Bill!",
     "nonOwnerEmailBillTitle": "You’re receiving myTNB & Email Bills.",
     "nonOwnerEBillDescription": "Your bills are being delivered on myTNB App & Portal. Thank you for playing your part!",
-    "nonOwnerEmailBillDescription": "Your bills are being delivered on myTNB App & Portal and email for this account."
+    "nonOwnerEmailBillDescription": "Your bills are being delivered on myTNB App & Portal and email for this account.",
+    "notEligibleAccountNoOwnerText": "Sorry, your account is not eligible for Paperless due to your owner dont have myTNB account",
+    "notEligibleOwnerOverRuleText": "Sorry, your account is not eligible for Paperless due to you previously opt in to paperless and your owner opt back to the paper bill"
   },
   "DBRWebview": {
     "goPaperless": "Go Paperless!",

@@ -207,6 +207,8 @@ namespace myTNB_Android.Src.Database.Model
                 InstallationType = accountResponse.InstallationType == null ? "0" : accountResponse.InstallationType,
                 AMSIDCategory = accountResponse.AMSIDCategory == null ? "0" : accountResponse.AMSIDCategory,
                 CreatedDate = accountResponse.CreatedDate,
+                BusinessArea = accountResponse.BusinessArea,
+                RateCategory = accountResponse.RateCategory,
                 IsInManageAccessList = accountResponse.IsInManageAccessList,
                 CreatedBy = accountResponse.CreatedBy,
                 IsHaveAccess = accountResponse.IsHaveAccess,

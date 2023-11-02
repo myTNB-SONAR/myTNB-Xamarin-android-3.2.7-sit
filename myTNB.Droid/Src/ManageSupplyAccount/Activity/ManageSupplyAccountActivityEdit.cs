@@ -89,6 +89,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         private IMenu ManageSupplyAccountMenu;
         AccountData accountData;
         int position;
+        bool fromProfile;
 
         private ManageSupplyItemContentComponent manageUser;
         ManageSupplyAccountContract.IUserActionsListener userActionsListener;
@@ -234,11 +235,13 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [OnClick(Resource.Id.ManageBill_container)]
         void OnManageBillDelivery(object sender, EventArgs eventArgs)
         {
+            fromProfile = true;
             DynatraceHelper.OnTrack(DynatraceConstants.DBR.CTAs.ManageElectricityAccount.Manage);
             Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
             intent.PutExtra("isOwner", _isOwner);
             intent.PutExtra("accountNumber", accountData.AccountNum);
             intent.PutExtra("billRenderingResponse", JsonConvert.SerializeObject(_billRenderingResponse));
+            intent.PutExtra("fromProfile", JsonConvert.SerializeObject(fromProfile));
             //intent.PutExtra("billRenderingTenantResponse", JsonConvert.SerializeObject(billRenderingTenantResponse));
             StartActivity(intent);
         }
