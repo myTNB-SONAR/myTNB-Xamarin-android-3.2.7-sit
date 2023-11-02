@@ -217,21 +217,29 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             return base.OnCreateOptionsMenu(menu);
         }
 
-        public override bool OnOptionsItemSelected(IMenuItem item)
+       public override bool OnOptionsItemSelected(IMenuItem item)
         {
             switch (item.ItemId)
             {
                 case Resource.Id.action_download:
-                    if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Tiramisu)                                          //Starting android 13 asking notification permission
                     {
-                      
-                        RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-
+                         downloadClicked = true;
+                         OnDownloadPDF();
                     }
                     else
                     {
-                        downloadClicked = true;
-                        OnDownloadPDF();
+                        if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
+                        {
+                        
+                            RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+
+                        }
+                        else
+                        {
+                            downloadClicked = true;
+                            OnDownloadPDF();
+                        }
                     }
                     return true;
             }
