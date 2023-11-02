@@ -1121,12 +1121,7 @@ namespace myTNB_Android.Src.Database.Model
                     {
                         List<CustomerBillingAccount> list = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
 
-                        eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && x.IsTaggedSMR));
-                        List<CustomerBillingAccount> existingList = GetEligibleAndSMRAccountListExcludeWithTenant(eligibleSMRAccounts);
-                        if (existingList != null && existingList.Count > 0)
-                        {
-                            eligibleSMRAccounts.AddRange(existingList);
-                        }
+                        eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && !x.isOwned));
                         return eligibleSMRAccounts;
                     }
                 }
@@ -1138,31 +1133,6 @@ namespace myTNB_Android.Src.Database.Model
             var db = DBHelper.GetSQLiteConnection();
             eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isOwned = 0").ToList().OrderBy(x => x.AccDesc).ToList();
             return eligibleSMRAccounts;
-        }
-
-        public static List<CustomerBillingAccount> GetEligibleAndSMRAccountListExcludeWithTenant(List<CustomerBillingAccount> accList)
-        {
-            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
-            if (accList != null && accList.Count > 0)
-            {
-                string excludeList = "";
-                int i = 0;
-                foreach (CustomerBillingAccount acc in accList)
-                {
-                    if (i == accList.Count - 1)
-                    {
-                        excludeList += "'" + acc.AccNum + "'";
-                    }
-                    else
-                    {
-                        excludeList += "'" + acc.AccNum + "',";
-                    }
-                    i++;
-                }
-                var db = DBHelper.GetSQLiteConnection();
-                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isOwned = 0 AND isTaggedSMR = 1 AND accNum NOT IN (" + excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
-            }
-            return reAccountList;
         }
 
         public static List<CustomerBillingAccount> EligibleSMRAccountListWithTenant()
@@ -1177,14 +1147,7 @@ namespace myTNB_Android.Src.Database.Model
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
                         List<CustomerBillingAccount> list = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
-
-                        eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && x.IsTaggedSMR));
-                        List<CustomerBillingAccount> existingList = EligibleSMRAccountListExcludeWithTenant(eligibleSMRAccounts);
-                        if (existingList != null && existingList.Count > 0)
-                        {
-                            eligibleSMRAccounts.AddRange(existingList);
-                        }
-
+                        eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && x.IsTaggedSMR && !x.isOwned));
                         return eligibleSMRAccounts;
                     }
                 }
@@ -1199,30 +1162,6 @@ namespace myTNB_Android.Src.Database.Model
             return eligibleSMRAccounts;
         }
 
-        public static List<CustomerBillingAccount> EligibleSMRAccountListExcludeWithTenant(List<CustomerBillingAccount> accList)
-        {
-            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
-            if (accList != null && accList.Count > 0)
-            {
-                string excludeList = "";
-                int i = 0;
-                foreach (CustomerBillingAccount acc in accList)
-                {
-                    if (i == accList.Count - 1)
-                    {
-                        excludeList += "'" + acc.AccNum + "'";
-                    }
-                    else
-                    {
-                        excludeList += "'" + acc.AccNum + "',";
-                    }
-                    i++;
-                }
-                var db = DBHelper.GetSQLiteConnection();
-                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 1 AND isOwned = 0 AND accNum NOT IN (" + excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
-            }
-            return reAccountList;
-        }
 
         public static List<CustomerBillingAccount> CurrentSMRAccountListWithTenant()
         {
@@ -1237,12 +1176,7 @@ namespace myTNB_Android.Src.Database.Model
                     {
                         List<CustomerBillingAccount> list = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
 
-                        eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && x.IsTaggedSMR));
-                        List<CustomerBillingAccount> existingList = CurrentSMRAccountListExcludeWithTenant(eligibleSMRAccounts);
-                        if (existingList != null && existingList.Count > 0)
-                        {
-                            eligibleSMRAccounts.AddRange(existingList);
-                        }
+                        eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && x.IsTaggedSMR && !x.isOwned));
                         return eligibleSMRAccounts;
                     }
                 }
@@ -1257,30 +1191,6 @@ namespace myTNB_Android.Src.Database.Model
             return eligibleSMRAccounts;
         }
 
-        public static List<CustomerBillingAccount> CurrentSMRAccountListExcludeWithTenant(List<CustomerBillingAccount> accList)
-        {
-            List<CustomerBillingAccount> reAccountList = new List<CustomerBillingAccount>();
-            if (accList != null && accList.Count > 0)
-            {
-                string excludeList = "";
-                int i = 0;
-                foreach (CustomerBillingAccount acc in accList)
-                {
-                    if (i == accList.Count - 1)
-                    {
-                        excludeList += "'" + acc.AccNum + "'";
-                    }
-                    else
-                    {
-                        excludeList += "'" + acc.AccNum + "',";
-                    }
-                    i++;
-                }
-                var db = DBHelper.GetSQLiteConnection();
-                reAccountList = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 1 AND isOwned = 0 AND accNum NOT IN (" + excludeList + ") ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
-            }
-            return reAccountList;
-        }
 
         public static void MakeFirstAsSelected()
         {
@@ -1648,5 +1558,34 @@ namespace myTNB_Android.Src.Database.Model
             List<CustomerBillingAccount> allAccountList = List();
             return allAccountList.Find(x => x.AccNum == ca).isOwned;
         }
+
+        public static List<CustomerBillingAccount> CurrentSMRAccountListOwnerOnly()
+        {
+            List<CustomerBillingAccount> eligibleSMRAccounts = new List<CustomerBillingAccount>();
+
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    {
+                        List<CustomerBillingAccount> list = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
+                        eligibleSMRAccounts = list.FindAll(x => (x.AccountCategoryId != "2" && x.SmartMeterCode == "0" && !x.IsTaggedSMR && x.isOwned));
+
+                        return eligibleSMRAccounts;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            var db = DBHelper.GetSQLiteConnection();
+            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 0 AND isOwned = 1").ToList().OrderBy(x => x.AccDesc).ToList();
+            return eligibleSMRAccounts;
+        }
+
     }
 }

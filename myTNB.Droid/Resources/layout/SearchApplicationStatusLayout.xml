@@ -101,25 +101,112 @@
 					<com.google.android.material.textfield.TextInputLayout
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:layout_marginBottom="16dp"
 						app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-						android:id="@+id/txtInputLayoutServiceRequestNum"
+						android:id="@+id/SMRCodeContainer"
 						app:errorEnabled="true"
-						android:layout_marginRight="17dp">
+						android:layout_marginRight="17dp"
+						android:visibility="gone">
 						<EditText
 							android:hint=""
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:drawableLeft="@drawable/ic_field_account_no"
-							android:id="@+id/txtServiceRequestNum"
+							android:drawableRight="@drawable/ic_action_dropdown1"
+							android:id="@+id/SMRCodeValue"
 							android:textSize="16dp"
+							android:text="SMR"
 							android:maxLines="1"
 							android:singleLine="true"
 							android:paddingTop="5dp"
-							android:drawablePadding="6dp"
-							android:inputType="number"
-							android:longClickable="false"/>
+							android:focusable="false"
+							android:paddingLeft="6dp"
+							android:inputType="textNoSuggestions|text" />
 					</com.google.android.material.textfield.TextInputLayout>
+					<com.google.android.material.textfield.TextInputLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+							android:id="@+id/txtInputLayoutServiceRequestNum"
+							app:errorEnabled="true"
+							android:layout_marginRight="17dp">
+							<EditText
+								android:hint=""
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:drawableLeft="@drawable/ic_field_account_no"
+								android:id="@+id/txtServiceRequestNum"
+								android:textSize="16dp"
+								android:maxLines="1"
+								android:singleLine="true"
+								android:paddingTop="5dp"
+								android:drawablePadding="6dp"
+								android:inputType="number"
+								android:longClickable="false"/>
+						</com.google.android.material.textfield.TextInputLayout>
+					<!--<LinearLayout
+						android:id="@+id/SMRContainer"
+						android:orientation="horizontal"
+						android:layout_gravity="left"
+						android:gravity="center"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="16dp"
+						android:layout_marginTop="10dp">
+						<com.google.android.material.textfield.TextInputLayout
+							android:orientation="horizontal"
+							android:layout_gravity="center"
+							android:gravity="center"
+							android:layout_width="wrap_content"
+							android:layout_height="match_parent"
+							app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+							android:id="@+id/SMRCodeContainer"
+							app:errorEnabled="true"
+							android:visibility="visible">
+							<EditText
+								android:hint=""
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:drawableRight="@drawable/ic_action_dropdown1"
+								android:id="@+id/SMRCodeValue"
+								android:textSize="16dp"
+								android:text="SMR"
+								android:maxLines="1"
+								android:singleLine="true"
+								android:paddingTop="5dp"
+								android:drawablePadding="6dp"
+								android:focusable="false"
+								android:inputType="textNoSuggestions|text" />
+						</com.google.android.material.textfield.TextInputLayout>
+						<LinearLayout
+							android:id="@+id/SMRTxtContainer"
+							android:orientation="horizontal"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_gravity="center"
+							android:gravity="center">
+							<com.google.android.material.textfield.TextInputLayout
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+								android:id="@+id/txtInputLayoutServiceRequestNum"
+								app:errorEnabled="true"
+								android:layout_marginRight="17dp"
+								android:visibility="visible">
+								<EditText
+									android:hint=""
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:drawableLeft="@drawable/ic_field_account_no"
+									android:id="@+id/txtServiceRequestNum"
+									android:textSize="16dp"
+									android:maxLines="1"
+									android:singleLine="true"
+									android:paddingTop="5dp"
+									android:drawablePadding="6dp"
+									android:inputType="number"
+									android:longClickable="false"/>
+							</com.google.android.material.textfield.TextInputLayout>
+						</LinearLayout>
+					</LinearLayout>-->
 					<LinearLayout
 						android:id="@+id/whyAccountsNotHereLayOut"
 						android:layout_width="match_parent"
