@@ -1522,8 +1522,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
            .SetHeaderImage(Resource.Drawable.maintenance_bcrm_new)
            .SetTitle(bcrmEntity.DowntimeTextMessage)
            .SetMessage(bcrmEntity.DowntimeMessage)
-           .SetCTALabel(Utility.GetLocalizedCommonLabel("close"))
-           //.SetCTAaction(() => { isBCMRDownDialogShow = false; })
+           .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
+           .SetCTAaction(() => { Finish(); })
            .Build()
            .Show();
         }

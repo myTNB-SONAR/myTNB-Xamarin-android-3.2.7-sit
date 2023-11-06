@@ -625,7 +625,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
            .SetHeaderImage(Resource.Drawable.maintenance_bcrm_new)
            .SetTitle(bcrmEntity.DowntimeTextMessage)
            .SetMessage(bcrmEntity.DowntimeMessage)
-           .SetCTALabel(Utility.GetLocalizedCommonLabel("close"))
+           .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
            //.SetCTAaction(() => { isBCMRDownDialogShow = false; })
            .Build()
            .Show();
