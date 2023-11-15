@@ -18,8 +18,10 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageSupplyAccount.Activity;
+using myTNB_Android.Src.MyHome;
 using myTNB_Android.Src.MyProfileDetail.Adapter;
 using myTNB_Android.Src.MyProfileDetail.MVP;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.NotificationSettings.Activity;
@@ -68,6 +70,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         private bool fromEmailVerify = false;
 
+        private bool fromMyHome = false;
+
         // private bool fromDashboard = false;
 
         ISharedPreferences mPref;
@@ -96,6 +100,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 if (Intent.HasExtra("IdFlag"))
                 {
                     IdFlag = Intent.Extras.GetBoolean("IdFlag", IdFlag);
+                }
+
+                if (Intent.HasExtra(MyHomeConstants.MYHOME))
+                {
+                    fromMyHome = true;
                 }
 
 
@@ -356,8 +365,17 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         public override void OnBackPressed()
         {
-            base.OnBackPressed();
-            Finish();
+            if (fromMyHome)
+            {
+                Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(DashboardIntent);
+            }
+            else
+            {
+                base.OnBackPressed();
+                Finish();
+            }
         }
 
 
