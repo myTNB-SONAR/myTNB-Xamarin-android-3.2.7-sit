@@ -503,10 +503,9 @@ namespace myTNB_Android.Src.MyHome.Activity
             }
         }
 
-        public void RedirectMyTNBProfile(string origin)
+        public void RedirectMyTNBProfile()
         {
             Intent myTNBProfileIntent = new Intent(this, typeof(MyProfileActivity));
-            myTNBProfileIntent.PutExtra(MyHomeConstants.MYHOME, origin);
             StartActivityForResult(myTNBProfileIntent, Constants.UPDATE_IC_REQUEST);
         }
 
@@ -704,7 +703,7 @@ namespace myTNB_Android.Src.MyHome.Activity
                 else if (url.Contains(MyHomeConstants.ACTION_TO_MYTNB_PROFILE))
                 {
                     shouldOverride = true;
-                    this.mActivity?.RedirectMyTNBProfile(MyHomeConstants.MYHOME);
+                    this.mActivity?.RedirectMyTNBProfile();
                 }
 
                 return shouldOverride;
