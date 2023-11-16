@@ -30,6 +30,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.Login.Models;
+using myTNB_Android.Src.MyAccount.Activity;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.MyHome.MVP;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -502,6 +503,12 @@ namespace myTNB_Android.Src.MyHome.Activity
             }
         }
 
+        public void RedirectMyTNBProfile()
+        {
+            Intent myTNBProfileIntent = new Intent(this, typeof(MyProfileActivity));
+            StartActivityForResult(myTNBProfileIntent, Constants.UPDATE_IC_REQUEST);
+        }
+
         internal class MyHomeWebChromeClient : WebChromeClient
         {
             MyHomeMicrositeActivity _micrositeWebViewActivity;
@@ -692,6 +699,11 @@ namespace myTNB_Android.Src.MyHome.Activity
                 {
                     shouldOverride = true;
                     mActivity.OnShowDashboard();
+                }
+                else if (url.Contains(MyHomeConstants.ACTION_TO_MYTNB_PROFILE))
+                {
+                    shouldOverride = true;
+                    this.mActivity?.RedirectMyTNBProfile();
                 }
 
                 return shouldOverride;

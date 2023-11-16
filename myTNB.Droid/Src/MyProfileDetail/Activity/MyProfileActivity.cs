@@ -68,6 +68,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         private bool fromEmailVerify = false;
 
+
         // private bool fromDashboard = false;
 
         ISharedPreferences mPref;
