@@ -677,7 +677,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                         .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "notEligibleAccountsTitlePilot"))
-                        .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "notEligibleAccountsMessagePilot"))
+                        .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "notEligibleFeatureToogleText"))
                         .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                         .SetCTAaction(() => { this.SetIsClicked(false); })
                         .Build()
@@ -1020,8 +1020,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 discoverView.Visibility = ViewStates.Visible;
                 img_discover_digital_bill.Visibility = ViewStates.Visible;
                 img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS"
-                    ? Resource.Drawable.Banner_Home_DBR_MS
-                    : Resource.Drawable.Banner_Home_DBR_EN);
+                    ? Resource.Drawable.Banner_Home_DBR_MS_New
+                    : Resource.Drawable.Banner_Home_DBR_EN_New);
             }
             else
             {

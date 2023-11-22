@@ -3223,8 +3223,9 @@
     "nonOwnerEmailBillTitle": "Anda menerima Bil myTNB & E-mel.",
     "nonOwnerEBillDescription": "Bil anda dihantar di Aplikasi & Portal myTNB. Terima kasih di atas sokongan anda!",
     "nonOwnerEmailBillDescription": "Bil anda dihantar di Aplikasi & Portal myTNB dan e-mel untuk akaun ini.",
-    "notEligibleAccountNoOwnerText": "BM_Sorry, your account not eligible for DBR due to your owner dont have myTNB account",
-    "notEligibleOwnerOverRuleText": "BM_Sorry, your account not eligible for DBR due to your owner already apply for paperless then apply back to paper"
+    "notEligibleAccountNoOwnerText": "Anda menerima Bil Bercetak untuk akaun ini. Akaun ini tidak layak untuk 'paperless' kerana pemilik akaun berdaftar tidak berada di aplikasi myTNB.",
+    "notEligibleOwnerOverRuleText": "Anda menerima Bil Bercetak untuk akaun ini. Pemilik berdaftar akaun ini telah bertukar ke bil bercetak.",
+    "notEligibleFeatureToogleText": "Hanya akaun Kediaman akan dibolehkan untuk 'paperless' melalui myTNB. Ciri ini akan berkembang ke akaun Komersial tidak lama lagi. Nantikan!"
   },
   "DBRWebview": {
     "goPaperless": "Jom Paperless!",
