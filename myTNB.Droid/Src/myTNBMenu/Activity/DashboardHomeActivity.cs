@@ -3186,7 +3186,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         }
                         else if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
                         {
-                            OnShowBCRMPopup(bcrmEntity);
+                            Handler h = new Handler();
+                            Action myAction = () =>
+                            {
+                                OnShowBCRMPopup(bcrmEntity);
+                            };
+                            h.PostDelayed(myAction, 8000);
+                           //OnShowBCRMPopup(bcrmEntity);
                         }
                         else
                         {
@@ -3263,7 +3269,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         private void OnShowBCRMPopup(DownTimeEntity bcrmEntity)
         {
             //MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
-            //        .SetHeaderImage(Resource.Drawable.maintenance_bcrm)
+            //        .SetHeaderImage(Resource.Drawable.maintenance_bcrm_new)
             //        .SetTitle(bcrmEntity.DowntimeTextMessage)
             //        .SetMessage(bcrmEntity.DowntimeMessage)
             //        .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
@@ -3274,11 +3280,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                .SetHeaderImage(Resource.Drawable.maintenance_bcrm_new)
                .SetTitle(bcrmEntity.DowntimeTextMessage)
                .SetMessage(bcrmEntity.DowntimeMessage)
-               .SetCTALabel(Utility.GetLocalizedCommonLabel("close"))
-               //.SetCTAaction(() => { isBCRMDown = false; })
+               .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
                .Build()
                .Show();
-            MyTNBAccountManagement.GetInstance().SetIsMaintenanceDialogShown(true);
+            //MyTNBAccountManagement.GetInstance().SetIsMaintenanceDialogShown(true);
         }
 
         public void ReloadProfileMenu()

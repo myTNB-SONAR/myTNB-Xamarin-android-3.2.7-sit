@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.Business;
+using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Response;
 using myTNB_Android.Src.Login.Models;
 using myTNB_Android.Src.MyTNBService.InterfaceAPI;
@@ -10,6 +11,9 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
 using Org.Json;
 using Refit;
+using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
 
 namespace myTNB_Android.Src.MyTNBService.ServiceImpl
 {
@@ -161,9 +165,9 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<PhoneVerifyStatusResponse> PhoneVerifyStatus([Body] Request.BaseRequest request)
+        public Task<Response.PhoneVerifyStatusResponse> PhoneVerifyStatus([Body] Request.BaseRequest request)
         {
-            return api.PhoneVerifyStatus<PhoneVerifyStatusResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
+            return api.PhoneVerifyStatus<Response.PhoneVerifyStatusResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
@@ -948,6 +952,27 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<DSSTableResponse> GetDSSTableData([Body] Request.BaseRequest request)
         {
             return api.GetDSSTableData<DSSTableResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
+        }
+        
+        /// Call GetAccountsSMRIcon with timeout set.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public Task<AccountSMRStatusResponse> GetAccountsSMRIcon([Body] AccountSMRStatusRequestV2 request)
+        {
+            return api.GetAccountsSMRIcon<AccountSMRStatusResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call GetIsSmrApplyAllowed with timeout set.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public Task<GetIsSmrApplyAllowedResponse> GetIsSmrApplyAllowed([Body] GetIsSmrApplyAllowedRequest request)
+        {
+            return api.GetIsSmrApplyAllowed<GetIsSmrApplyAllowedResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
 
         #endregion

@@ -201,95 +201,56 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 mPresenter = new SSMRMeterHistoryPresenter(this);
                 mPref = PreferenceManager.GetDefaultSharedPreferences(this);
                 mSMRRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
-                smrAccountList = this.mPresenter.GetEligibleSMRAccountList();
+                this.mPresenter.GetEligibleSMRAccountList();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
-                if (smrAccountList != null && smrAccountList.Count > 0)
+        public void ProceedToIU(List<SMRAccount> smrAccountListNew)
+        {
+            smrAccountList = smrAccountListNew;
+            if (smrAccountList != null && smrAccountList.Count > 0)
+            {
+                foreach (SMRAccount account in smrAccountList)
                 {
-                    foreach (SMRAccount account in smrAccountList)
+                    account.accountSelected = false;
+                }
+
+                Bundle extras = Intent.Extras;
+                //If has selected account - means coming from inner dashboard
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                     {
-                        account.accountSelected = false;
-                    }
-
-                    Bundle extras = Intent.Extras;
-                    //If has selected account - means coming from inner dashboard
-                    if (extras != null)
-                    {
-                        if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                        selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                        selectedAccountNumber = selectedAccount.AccountNum;
+                        selectedAccountNickName = selectedAccount.AccountNickName;
+                        CustomerBillingAccount.RemoveSelected();
+                        CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
+                        SMRAccount smrSelectedAccount = smrAccountList.Find(account => account.accountNumber == selectedAccountNumber);
+                        if (extras.ContainsKey(Constants.SMR_RESPONSE_KEY))
                         {
-                            selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-                            selectedAccountNumber = selectedAccount.AccountNum;
-                            selectedAccountNickName = selectedAccount.AccountNickName;
-                            CustomerBillingAccount.RemoveSelected();
-                            CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
-                            SMRAccount smrSelectedAccount = smrAccountList.Find(account => account.accountNumber == selectedAccountNumber);
-                            if (extras.ContainsKey(Constants.SMR_RESPONSE_KEY))
-                            {
-                                IsTenant = smrSelectedAccount.IsTenant;
-                                smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
-                                UpdateUIForSMR(smrResponse);
-                                this.mPresenter.CheckIsBtnSubmitHide(smrResponse);
-                                isSMR = true;
-                                isTutorialShown = true;
-                            }
-
-                            if (extras.ContainsKey("fromNotificationDetails"))
-                            {
-                                IsTenant = smrSelectedAccount.IsTenant;
-                                UpdateUIForNonSMR();
-                                isSMR = false;
-                                isTutorialShown = true;
-                            }
-                        }
-                        else
-                        {
-                            SMRAccount smrSelectedAccount = smrAccountList.Find(account =>
-                            {
-                                return account.isTaggedSMR;
-                            });
-
-                            if (smrSelectedAccount == null)
-                            {
-                                smrSelectedAccount = smrAccountList[0];
-                            }
-
-                            selectedAccountNumber = smrSelectedAccount.accountNumber;
-                            CustomerBillingAccount.RemoveSelected();
-                            CustomerBillingAccount.SetSelected(smrSelectedAccount.accountNumber);
-                            if (smrSelectedAccount != null)
-                            {
-                                selectedAccountNickName = smrSelectedAccount.accountName;
-                                IsTenant = smrSelectedAccount.IsTenant;
-                                if (smrSelectedAccount.isTaggedSMR)
-                                {
-                                    isSMR = true;
-                                    this.mPresenter.GetSSMRAccountStatus(smrSelectedAccount.accountNumber);
-                                }
-                                else
-                                {
-                                    UpdateUIForNonSMR();
-                                    isSMR = false;
-                                    isTutorialShown = true;
-                                }
-                            }
-                            else
-                            {
-                                ShowNonSMRVisible(true, false);
-                            }
+                            IsTenant = smrSelectedAccount.IsTenant;
+                            smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
+                            UpdateUIForSMR(smrResponse);
+                            this.mPresenter.CheckIsBtnSubmitHide(smrResponse);
+                            isSMR = true;
+                            isTutorialShown = true;
                         }
 
-                        if (extras.ContainsKey("fromUsage"))
+                        if (extras.ContainsKey("fromNotificationDetails"))
                         {
-                            IsFromUsage = extras.GetBoolean("fromUsage");
-                        }
-                        else
-                        {
-                            IsFromUsage = false;
+                            IsTenant = smrSelectedAccount.IsTenant;
+                            UpdateUIForNonSMR();
+                            isSMR = false;
+                            isTutorialShown = true;
                         }
                     }
-                    //Else from HomeScreen
                     else
                     {
-                        IsFromUsage = false;
                         SMRAccount smrSelectedAccount = smrAccountList.Find(account =>
                         {
                             return account.isTaggedSMR;
@@ -324,11 +285,53 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                             ShowNonSMRVisible(true, false);
                         }
                     }
+
+                    if (extras.ContainsKey("fromUsage"))
+                    {
+                        IsFromUsage = extras.GetBoolean("fromUsage");
+                    }
+                    else
+                    {
+                        IsFromUsage = false;
+                    }
                 }
+                //Else from HomeScreen
                 else
                 {
                     IsFromUsage = false;
-                    ShowNonSMRVisible(true, false);
+                    SMRAccount smrSelectedAccount = smrAccountList.Find(account =>
+                    {
+                        return account.isTaggedSMR;
+                    });
+
+                    if (smrSelectedAccount == null)
+                    {
+                        smrSelectedAccount = smrAccountList[0];
+                    }
+
+                    selectedAccountNumber = smrSelectedAccount.accountNumber;
+                    CustomerBillingAccount.RemoveSelected();
+                    CustomerBillingAccount.SetSelected(smrSelectedAccount.accountNumber);
+                    if (smrSelectedAccount != null)
+                    {
+                        selectedAccountNickName = smrSelectedAccount.accountName;
+                        IsTenant = smrSelectedAccount.IsTenant;
+                        if (smrSelectedAccount.isTaggedSMR)
+                        {
+                            isSMR = true;
+                            this.mPresenter.GetSSMRAccountStatus(smrSelectedAccount.accountNumber);
+                        }
+                        else
+                        {
+                            UpdateUIForNonSMR();
+                            isSMR = false;
+                            isTutorialShown = true;
+                        }
+                    }
+                    else
+                    {
+                        ShowNonSMRVisible(true, false);
+                    }
                 }
 
                 if (DownTimeEntity.IsBCRMDown())
@@ -339,9 +342,10 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     btnDisableSubmitMeter.SetTextColor(Android.Graphics.Color.White);
                 }
             }
-            catch (Exception e)
+            else
             {
-                Utility.LoggingNonFatalError(e);
+                IsFromUsage = false;
+                ShowNonSMRVisible(true, false);
             }
         }
 
@@ -359,7 +363,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             NonSMRActionContainer.Visibility = hasNoSMREligibleAccount ? ViewStates.Visible : ViewStates.Gone;
             bottomLayout.Visibility = hasNoSMREligibleAccount ? ViewStates.Visible : ViewStates.Gone;
 
-            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant() && IsTenant)
+            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenantV2() && IsTenant)
             {
                 DisableSMRBtnContainer.Visibility = ViewStates.Gone;
                 NonSMRActionContainer.Visibility = ViewStates.Gone;
@@ -1120,6 +1124,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         public void RestartSMRActivity()
         {
             StartActivity(new Intent(this, typeof(SSMRMeterHistoryActivity)));
+        }
+        
+        public string GetDeviceId()
+        {
+            return this.DeviceId();
         }
     }
 }

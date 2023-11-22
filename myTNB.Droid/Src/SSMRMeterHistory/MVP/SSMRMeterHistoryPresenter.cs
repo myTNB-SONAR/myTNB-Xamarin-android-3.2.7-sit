@@ -21,6 +21,14 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using System.Linq;
+using System.Threading.Tasks;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.AppLaunch.Requests;
 
 namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 {
@@ -287,42 +295,83 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         }
 
-        public List<SMRAccount> GetEligibleSMRAccountList()
+        public async void GetEligibleSMRAccountList()
         {
             List<CustomerBillingAccount> eligibleSMRAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
+            List<CustomerBillingAccount> smrOwnerAlreadyApply = CustomerBillingAccount.CurrentSMRAccountList();
+            List<SMRAccount> smrEligibleAccountList = new List<SMRAccount>();
 
-            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenant())
+            if (!MyTNBAccountManagement.GetInstance().SMRStatusCheckOwnerCanApply())
             {
-                List<CustomerBillingAccount> eligibleSMRAccountListWithTenant = CustomerBillingAccount.GetEligibleAndSMRAccountListWithTenant();
-                List<CustomerBillingAccount> NewEligibleSMRAccountListWithTenant = new List<CustomerBillingAccount>();
-                if (eligibleSMRAccountListWithTenant != null && eligibleSMRAccountListWithTenant.Count > 0)
+                List<CustomerBillingAccount> customerBillingAccountListOwnerOnly = CustomerBillingAccount.CurrentSMRAccountListOwnerOnly();
+                MyTNBAccountManagement.GetInstance().SetSMRStatusCheckOwnerCanApply(true);
+                if (customerBillingAccountListOwnerOnly != null && customerBillingAccountListOwnerOnly.Count > 0)
                 {
-                    foreach (var ca in eligibleSMRAccountListWithTenant)
+                    List<string> smrAccountListOwnerOnly = new List<string>();
+                    for (int i = 0; i < customerBillingAccountListOwnerOnly.Count; i++)
                     {
-                        if (ca.IsTaggedSMR)
+                        if (!string.IsNullOrEmpty(customerBillingAccountListOwnerOnly[i].AccNum))
                         {
-                            NewEligibleSMRAccountListWithTenant.Add(ca);
+                            smrAccountListOwnerOnly.Add(customerBillingAccountListOwnerOnly[i].AccNum);
                         }
                     }
+
+                    if (smrAccountListOwnerOnly.Count > 0)
+                    {
+                        await OnCheckSMRAccount(smrAccountListOwnerOnly);
+                    }
                 }
-                eligibleSMRAccountList.AddRange(NewEligibleSMRAccountListWithTenant);
             }
 
-            List<SMRAccount> smrEligibleAccountList = new List<SMRAccount>();
-            SMRAccount smrEligibleAccount;
-            eligibleSMRAccountList.ForEach(account =>
+            if ((UserSessions.GetSMRAccountListOwnerCanApply().Count > 0 && eligibleSMRAccountList.Count > 0) || smrOwnerAlreadyApply.Count > 0)
             {
-                smrEligibleAccount = new SMRAccount();
-                smrEligibleAccount.accountNumber = account.AccNum;
-                smrEligibleAccount.accountName = account.AccDesc;
-                smrEligibleAccount.accountSelected = account.IsSelected;
-                smrEligibleAccount.isTaggedSMR = account.IsTaggedSMR;
-                smrEligibleAccount.accountAddress = account.AccountStAddress;
-                smrEligibleAccount.accountOwnerName = account.OwnerName;
-                smrEligibleAccount.IsTenant = account.isOwned ? false:true;
-                smrEligibleAccountList.Add(smrEligibleAccount);
-            });
-            return smrEligibleAccountList;
+                List<string> smrAccountListOwnerCanApply = UserSessions.GetSMRAccountListOwnerCanApply();
+                List<CustomerBillingAccount> matchedAccounts = eligibleSMRAccountList
+                        .Where(account => smrAccountListOwnerCanApply.Contains(account.AccNum))
+                        .ToList();
+
+                eligibleSMRAccountList = matchedAccounts;
+
+                if (smrOwnerAlreadyApply.Count > 0)
+                {
+                    eligibleSMRAccountList = eligibleSMRAccountList
+                                                .Concat(smrOwnerAlreadyApply)
+                                                .GroupBy(account => account.AccNum)
+                                                .Select(group => group.First())
+                                                .ToList();
+                }
+            }
+
+            if (MyTNBAccountManagement.GetInstance().IsSMROpenToTenantV2())
+            {
+                List<CustomerBillingAccount> eligibleSMRAccountListWithTenant = CustomerBillingAccount.EligibleSMRAccountListWithTenant();
+                if (eligibleSMRAccountListWithTenant != null && eligibleSMRAccountListWithTenant.Count > 0)
+                {
+                    eligibleSMRAccountList = eligibleSMRAccountList
+                                            .Concat(eligibleSMRAccountListWithTenant)
+                                            .GroupBy(account => account.AccNum)
+                                            .Select(group => group.First())
+                                            .ToList();
+                }
+            }
+
+            SMRAccount smrEligibleAccount;
+            if (eligibleSMRAccountList.Count > 0)
+            {
+                eligibleSMRAccountList.ForEach(account =>
+                {
+                    smrEligibleAccount = new SMRAccount();
+                    smrEligibleAccount.accountNumber = account.AccNum;
+                    smrEligibleAccount.accountName = account.AccDesc;
+                    smrEligibleAccount.accountSelected = account.IsSelected;
+                    smrEligibleAccount.isTaggedSMR = account.IsTaggedSMR;
+                    smrEligibleAccount.accountAddress = account.AccountStAddress;
+                    smrEligibleAccount.accountOwnerName = account.OwnerName;
+                    smrEligibleAccount.IsTenant = account.isOwned ? false : true;
+                    smrEligibleAccountList.Add(smrEligibleAccount);
+                });
+            }
+            this.mView.ProceedToIU(smrEligibleAccountList);
         }
 
         public void CheckIsBtnSubmitHide(SMRActivityInfoResponse SMRAccountActivityInfoResponse)
@@ -398,8 +447,101 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     }
                 }
             }
+        }
 
 
+        public async Task OnCheckSMRAccount(List<string> accountList)
+        {
+            List<AccountSMRStatus> updateSMRStatus = new List<AccountSMRStatus>();
+            try
+            {
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = this.mView.GetDeviceId(),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
+                };
+
+                AccountSMRStatusResponse accountSMRResponse = await ServiceApiImpl.Instance.GetAccountsSMRIcon(new AccountSMRStatusRequestV2()
+                {
+                    ContractAccounts = accountList,
+                    UserInterface = currentUsrInf,
+                    Indicator = "R"
+                });
+
+                if (accountSMRResponse.Response.ErrorCode == "7200" && accountSMRResponse.Response.Data.Count > 0)
+                {
+                    updateSMRStatus = accountSMRResponse.Response.Data;
+                    List<SMRAccount> currentOwnerSmrAccountList = new List<SMRAccount>();
+                    foreach (AccountSMRStatus status in updateSMRStatus)
+                    {
+                        CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(status.ContractAccount);
+                        if (status.SMREligibility == "true")
+                        {
+                            SMRAccount smrAccount = new SMRAccount();
+                            smrAccount.accountNumber = cbAccount.AccNum;
+                            smrAccount.accountName = cbAccount.AccDesc;
+                            smrAccount.accountAddress = cbAccount.AccountStAddress;
+                            smrAccount.accountSelected = false;
+                            currentOwnerSmrAccountList.Add(smrAccount);
+                        }
+                    }
+                    UserSessions.SetSMRAccountListOwner(currentOwnerSmrAccountList);
+
+                    List<string> smrAccountListOwnerOnly = new List<string>();
+                    for (int i = 0; i < currentOwnerSmrAccountList.Count; i++)
+                    {
+                        if (!string.IsNullOrEmpty(currentOwnerSmrAccountList[i].accountNumber))
+                        {
+                            smrAccountListOwnerOnly.Add(currentOwnerSmrAccountList[i].accountNumber);
+                        }
+                    }
+
+                    if (smrAccountListOwnerOnly.Count > 0)
+                    {
+                        GetIsSmrApplyAllowedResponse isSMRApplyResponse = await ServiceApiImpl.Instance.GetIsSmrApplyAllowed(new GetIsSmrApplyAllowedRequest()
+                        {
+                            usrInf = currentUsrInf,
+                            contractAccounts = smrAccountListOwnerOnly
+                        });
+
+                        if (isSMRApplyResponse.Data.ErrorCode == "7200" && isSMRApplyResponse.Data.Data.Count > 0)
+                        {
+                            List<string> smrAccountListOwnerCanApply = new List<string>();
+                            for (int i = 0; i < isSMRApplyResponse.Data.Data.Count; i++)
+                            {
+                                if (isSMRApplyResponse.Data.Data[i].AllowApply)
+                                {
+                                    smrAccountListOwnerCanApply.Add(isSMRApplyResponse.Data.Data[i].ContractAccount);
+                                }
+                            }
+
+                            if (smrAccountListOwnerCanApply.Count > 0)
+                            {
+                                UserSessions.SetSMRAccountListOwnerCanApply(smrAccountListOwnerCanApply);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
+            }
         }
     }
 }

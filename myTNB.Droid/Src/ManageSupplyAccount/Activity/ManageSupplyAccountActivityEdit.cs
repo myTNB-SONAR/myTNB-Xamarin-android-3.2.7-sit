@@ -433,14 +433,20 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     {
                         if (tenantList != null)
                         {
-                            bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
-                            bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
-                            bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
-
-                            if (selectedAccount.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                            if (tenantList.Find(x => x.CaNo == selectedAccount.AccountNum) != null)
                             {
-                                tenantAllowOptIn = true;
+                                bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerOverRule;
+                                bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsOwnerAlreadyOptIn;
+                                bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccount.AccountNum).IsTenantAlreadyOptIn;
+
+                                if (selectedAccount.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                                {
+                                    tenantAllowOptIn = true;
+                                }
                             }
+
+
+                            
                         }
                        
                         manageBillTitle.Text = Utility.GetLocalizedLabel("ManageAccount", _isOwner || tenantAllowOptIn

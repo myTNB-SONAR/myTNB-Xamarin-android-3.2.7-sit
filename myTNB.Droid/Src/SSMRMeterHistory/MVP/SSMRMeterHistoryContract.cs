@@ -26,17 +26,19 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             void ShowSubmitMeterReadingActivity();
             void ShowSSMRStartActivity();
             void RestartSMRActivity();
+            void ProceedToIU(List<SMRAccount> smrEligibleAccountList);
+            string GetDeviceId();
         }
 
         public interface IPresenter
         {
-            List<SMRAccount> GetEligibleSMRAccountList();
             void CheckSMRAccountEligibility(List<SMRAccount> smrAccountList);
             void GetSSMRAccountStatus(string accountNumber);
             void GetCARegisteredContactInfoAsync(AccountData selectedAccount);
             List<NewAppModel> OnGeneraNewAppTutorialList(bool isSMR);
             void CheckIsBtnSubmitHide(SMRActivityInfoResponse SMRAccountActivityInfoResponse);
             void GetDownTime(string smrtypeBtn);
+            void GetEligibleSMRAccountList();
         }
 
         public interface IApiNotification

@@ -1605,7 +1605,8 @@
     "whereToGetThisNumberTitleCAV2": "Di manakah boleh saya perolehi nombor ini?",
     "whereToGetThisNumberMessageCAV2": "Nombor akaun 12 digit boleh didapati di sudut kanan bil kertas bulanan anda.",
     "whereToGetThisNumberTitle": "Di manakah boleh saya perolehi nombor ini?",
-    "whereToGetThisNumberMessage": "Anda boleh memperolehi <b>{0}</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’ dan juga boleh diperolehi dengan menghubungi TNB CareLine."
+    "whereToGetThisNumberMessage": "Anda boleh memperolehi <b>{0}</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’ dan juga boleh diperolehi dengan menghubungi TNB CareLine.",
+    "type": "Jenis"
   },
   "LearnMoreAboutTnb": {
     "title": "Bantuan & Sokongan TNB",
@@ -2381,7 +2382,10 @@
     "title": "Cari Dengan",
     "whereToGetTheseNumber": "Di manakah boleh saya perolehi nombor ini?",
     "whereToGetTheseNumberTitle": "Di manakah boleh saya perolehi nombor ini?",
-    "whereToGetTheseNumberMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> dan <b>Nombor Notifikasi Perkhidmatan</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine."
+    "whereToGetTheseNumberMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> dan <b>Nombor Notifikasi Perkhidmatan</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine.",
+    "whereToGetTheseNumberSMRTitle": "Di manakah boleh saya perolehi nombor bagi SMR & SMRAPP?",
+    "whereToGetTheseNumberSMRMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> dan <b>Nombor Notifikasi Perkhidmatan</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine.",
+    "whereToGetTheseNumberSMRInfoBar": "Di manakah boleh saya perolehi nombor ini?"
   },
   "manageUser": {
     "title": "Urus Pengguna",

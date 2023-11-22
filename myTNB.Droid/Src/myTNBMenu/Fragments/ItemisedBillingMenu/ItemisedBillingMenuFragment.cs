@@ -667,15 +667,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
                                 if (tenantList != null)
                                 {
-                                    bool isOwnerOverRule = tenantList.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerOverRule;
-                                    bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerAlreadyOptIn;
-                                    bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == dbrAccount.AccountNum).IsTenantAlreadyOptIn;
-                                    bool AccountHasOwner = accounts.Find(x => x.AccNum == dbrAccount.AccountNum).AccountHasOwner;
 
-                                    if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                                    if (tenantList.Find(x => x.CaNo == dbrAccount.AccountNum) != null)
                                     {
-                                        tenantAllowOptIn = true;
+                                        bool isOwnerOverRule = tenantList.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerOverRule;
+                                        bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == dbrAccount.AccountNum).IsOwnerAlreadyOptIn;
+                                        bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == dbrAccount.AccountNum).IsTenantAlreadyOptIn;
+                                        bool AccountHasOwner = accounts.Find(x => x.AccNum == dbrAccount.AccountNum).AccountHasOwner;
+
+                                        if (AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
+                                        {
+                                            tenantAllowOptIn = true;
+                                        }
                                     }
+
+
                                 }
 
 

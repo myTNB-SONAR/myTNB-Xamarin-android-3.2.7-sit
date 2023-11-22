@@ -146,6 +146,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int RUNTIME_PERMISSION_LOCATION_REQUEST_CODE = 0x08;
         internal static readonly int RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE = 0x10;
         internal static readonly int RUNTIME_PERMISSION_CALENDAR_REQUEST_CODE = 0x11;
+        internal static readonly int RUNTIME_PERMISSION_NOTIFICATION_REQUEST_CODE = 0x12;
         internal static readonly int SELECT_ENQUIRY_REQUEST_CODE = 0x13;
 
         internal static readonly int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -518,6 +519,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string APPLICATION_STATUS_DETAIL_TITLE_KEY = "applicationStatusTitle";
         internal static readonly string APPLICATION_STATUS_DETAIL_RELOAD = "applicationStatusToBeReloaded";
         internal static readonly string APPLICATION_STATUS_DETAIL_RATED_TOAST_MESSAGE = "applicationStatusRatedToastMessage";
+        internal static readonly string APPLICATION_STATUS_SMRTYPE_LIST_KEY = "SMRtypeList";
         internal static readonly int APPLICATION_STATUS_FILTER_REQUEST_CODE = 29800;
         internal static readonly int APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE = 29801;
         internal static readonly int APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE = 29802;
@@ -532,6 +534,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APPLICATION_STATUS_DETAILS_FROM_NOTIFICATION_DETAILS_REQUEST_CODE = 29811;
         internal static readonly int APPLICATION_STATUS_LANDING_FROM_DASHBOARD_REQUEST_CODE = 29812;
         internal static readonly int APPLICATION_STATUS_DETAIL_FROM_DASHBOARD_REQUEST_CODE = 29814;
+        internal static readonly int APPLICATION_STATUS_FILTER_SMRTYPE_REQUEST_CODE = 29815;
 
         internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
         internal static readonly string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";
@@ -566,6 +569,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string EB_view_budget_duration = "EB_view_budget_duration";
         internal static readonly string EB_view_tips = "EB_view_tips";
         internal static readonly string EB_initiate_Duration = "EB_initiate_Duration";
+        internal static readonly string SMR_icon_click = "SMR_ICON_CLICKED";
 #else
         internal static readonly string EB_in_app_notification = "EB_in_app_notification";
         internal static readonly string EB_view_tips_reached = "EB_view_tips_reached";
@@ -583,6 +587,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string EB_view_budget_duration = "EB_view_budget_duration";
         internal static readonly string EB_view_tips = "EB_view_tips";
         internal static readonly string EB_initiate_Duration = "EB_initiate_Duration";
+        internal static readonly string SMR_icon_click = "SMR_ICON_CLICKED";
 #endif
 
         //Dynatrce Test

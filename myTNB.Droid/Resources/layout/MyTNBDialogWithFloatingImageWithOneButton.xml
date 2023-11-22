@@ -1,209 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:orientation="vertical"
 	android:layout_gravity="center"
 	android:layout_width="match_parent"
 	android:layout_marginLeft="18dp"
 	android:layout_marginRight="18dp"
 	android:layout_height="wrap_content">
-	<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-		android:layout_marginLeft="18dp"
-		android:layout_marginRight="18dp">
-		
-					<RelativeLayout
-					android:id="@+id/dialogHeaderTransparent"
-					android:layout_width="match_parent"
-					android:layout_height= "50dp"
-					android:layout_marginTop= "50dp"
-					android:background="@color/white"/>
-					<ImageView
-					android:id="@+id/dialogHeaderImg"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:scaleType="center"
-					android:src="@drawable/maintenance_bcrm_v2"/>
-
-	</RelativeLayout>
 	<androidx.cardview.widget.CardView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		app:cardCornerRadius="8dp"
-		app:cardBackgroundColor="@color/white"
-		app:cardElevation="0dp"
-		android:layout_marginLeft="18dp"
-		android:layout_marginRight="18dp">
-		<ScrollView
-			android:layout_width="match_parent"
-			android:layout_weight="1"
-			android:overScrollMode="never"
-			android:scrollbars="none"
-			android:fillViewport="true"
-			android:background="@color/white"
-			android:id="@+id/mytnbDialogScrollView"
-			android:layout_height="wrap_content">
-			<LinearLayout
-				android:orientation="vertical"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:id="@+id/rootView">
-				<TextView
-					android:id="@+id/dialogHeaderTitle"
-					android:layout_height="wrap_content"
-					android:layout_width="match_parent"
-					android:text="We’ll Be Right Shortly!"
-					android:layout_marginLeft="16dp"
-					android:layout_marginRight="16dp"
-					android:layout_marginTop="16dp"
-					android:textColor="@color/powerBlue"
-					android:textSize="16dp"
-					android:lineSpacingExtra="3dp"
-					android:gravity="center"/>
-				<TextView
-					android:id="@+id/dialogMessage"
-					android:layout_height="wrap_content"
-					android:layout_width="match_parent"
-					android:textColor="@color/charcoalGrey"
-					android:layout_marginLeft="16dp"
-					android:layout_marginRight="16dp"
-					android:layout_marginTop="12dp"
-					android:maxLines="12"
-					android:scrollbars="vertical"
-					android:text="Dear valued customer,
-
-myTNB system maintenance is currently in 
-progress. We’ll be right back at 6.30 AM on 15 April 2023 (Saturday)
-
-For bill payment, you can use alternative payment channels such as JomPAY (Biller code: 5454, Ref-1: 12-digit TNB A/C number). Boost or Touch’n Go eWallet; or various online banking websites (Payee: Tenaga Nasional Berhad)"
-					android:textSize="14dp"
-					android:lineSpacingExtra="3dp"/>
-					<View
-						android:layout_height="1dp"
-						android:layout_width="match_parent"
-						android:alpha="0.2"
-						android:layout_marginTop="8dp"
-						android:background="@color/tunaGrey" />
-					<RelativeLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content">
-						<TextView
-							android:id="@+id/txtBtnFirst"
-							android:layout_height="wrap_content"
-							android:layout_width="match_parent"
-							android:layout_alignParentLeft="true"
-							android:layout_toLeftOf="@+id/divider"
-							android:gravity="center"
-							android:textColor="@color/powerBlue"
-							android:layout_marginTop="16dp"
-							android:paddingBottom="16dp"
-							android:text="@string/itemized_bill_got_it"
-							android:textSize="16dp" />
-					</RelativeLayout>
-			</LinearLayout>
-		</ScrollView>
-	</androidx.cardview.widget.CardView>
--->	<!--<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-		android:layout_marginLeft="18dp"
-		android:layout_marginRight="18dp">
-		
-					<View
-					android:id="@+id/dialogHeaderTransparent"
-					android:layout_width="match_parent"
-					android:layout_height= "70dp"
-					android:layout_marginTop= "50dp"
-					android:background="@color/white"/>
-					<ImageView
-					android:id="@+id/dialogHeaderImg"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:scaleType="center"
-					android:src="@drawable/maintenance_bcrm_v2"/>
-
-	</RelativeLayout>-->
-<!--</LinearLayout>-->
-
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:orientation="vertical"
-	android:layout_gravity="center"
-	android:layout_width="350dp"
-	android:layout_height="wrap_content">
-	<androidx.cardview.widget.CardView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		app:cardCornerRadius="6dp"
 		app:cardBackgroundColor="@color/white"
 		app:cardElevation="0dp">
 		<LinearLayout
 			android:orientation="vertical"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:id="@+id/rootView"
-			android:background="@drawable/custom_round_white_dialog_shadow">
-			<LinearLayout
-				android:orientation="vertical"
+			android:id="@+id/rootView">
+			<ImageView
+				android:id="@+id/imgToolTipHeader"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:id="@+id/rootView">>
-					<ImageView
-						android:id="@+id/imgToolTipHeader"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"
-						android:adjustViewBounds="true"
-						android:src="@drawable/maintenance_bcrm_new"/>
-			</LinearLayout>
+				android:adjustViewBounds="true"
+				android:src="@drawable/maintenance_bcrm_new"
+				android:layout_marginBottom="16dp"/>
 			<TextView
-					android:id="@+id/txtToolTipTitle"
-					android:layout_height="wrap_content"
-					android:layout_width="match_parent"
-					android:text="We’ll Be Right Shortly!"
-					android:layout_marginLeft="16dp"
-					android:layout_marginRight="16dp"
-					android:layout_marginTop="16dp"
-					android:textColor="@color/powerBlue"
-					android:textSize="16dp"
-					android:lineSpacingExtra="3dp"
-					android:gravity="center"/>
-			<!--<TextView
 				android:id="@+id/txtToolTipTitle"
 				android:layout_height="wrap_content"
 				android:layout_width="match_parent"
-				android:layout_gravity="center"
-				android:textColor="@color/tunaGrey"
+				android:text="We’ll Be Right Shortly!"
 				android:layout_marginLeft="16dp"
 				android:layout_marginRight="16dp"
-				android:layout_marginTop="15dp"
-				android:layout_marginBottom="9dp"
-				android:maxLines="12"
-				android:scrollbars="vertical"
-				android:text="Dear valued customer,"
-				android:textSize="14dp"
-				android:textColorLink="@color/powerBlue"
-				android:lineSpacingExtra="3dp"/>-->
-			<TextView
-				android:id="@+id/txtToolTipMessage"
-				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:textColor="@color/powerBlue"
+				android:textSize="16dp"
+				android:lineSpacingExtra="3dp"
+				android:gravity="center"/>
+			<ScrollView
 				android:layout_width="match_parent"
-				android:layout_gravity="center"
-				android:textColor="@color/tunaGrey"
-				android:layout_marginLeft="16dp"
-				android:layout_marginRight="16dp"
-				android:layout_marginTop="15dp"
-				android:layout_marginBottom="9dp"
-				android:maxLines="12"
-				android:scrollbars="vertical"
-				android:text="Be sure to upload a clear, straight-facing photo of the entire meter box with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable."
-				android:textSize="14dp"
-				android:textColorLink="@color/powerBlue"
-				android:lineSpacingExtra="3dp"/>
+				android:layout_weight="1"
+				android:overScrollMode="never"
+				android:scrollbars="none"
+				android:fillViewport="true"
+				android:background="@color/white"
+				android:id="@+id/mytnbDialogScrollView"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="15dp">
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/scrollView">
+					<TextView
+						android:id="@+id/txtToolTipMessage"
+						android:layout_height="wrap_content"
+						android:layout_width="match_parent"
+						android:textColor="@color/tunaGrey"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:scrollbars="vertical"
+						tools:text="Be the first to make an impact today and choose to go paperless for your next bill onwards! With myTNB, you have a better and more environmentally friendly way to receive your paperless bills digitally via myTNB App and Portal."
+						android:textSize="14dp"
+						android:lineSpacingExtra="3dp"/>
+				</LinearLayout>
+			</ScrollView>
 			<LinearLayout
 				android:orientation="vertical"
 				android:layout_width="match_parent"
@@ -218,13 +81,13 @@ For bill payment, you can use alternative payment channels such as JomPAY (Bille
 					android:background="@color/tunaGrey" />
 				<TextView
 					android:id="@+id/txtToolTipCTA"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:layout_width="match_parent"
 					android:gravity="center"
 					android:textColor="@color/powerBlue"
 					android:layout_marginTop="16dp"
 					android:paddingBottom="18dp"
-					android:text="Got it!"
+					android:text="Close"
 					android:textSize="16dp" />
 			</LinearLayout>
 		</LinearLayout>

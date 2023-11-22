@@ -113,6 +113,22 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
             Utility.SetAppUpdateId(this);
             LanguageUtil.SetInitialAppLanguage();
+
+            try
+            {
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Tiramisu)                                          //Starting android 13 asking notification permission
+                {
+                    if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.PostNotifications) == (int)Permission.Granted)
+                    {
+                        UserSessions.SaveUserNotificationFirstTimeInstallFlag(PreferenceManager.GetDefaultSharedPreferences(this), true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+
             try
             {
                 FirebaseDynamicLinks.Instance
@@ -1571,6 +1587,30 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             tv.SetMaxLines(5);
             mUknownExceptionSnackBar.Show();
             this.SetIsClicked(false);
+        }
+
+        public override bool NotificationPemissionRequired()
+        {
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Tiramisu)                                          //Starting android 13 asking notification permission
+            {
+                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.PostNotifications) == (int)Permission.Granted)
+                {
+                    UserSessions.SaveUserNotificationFirstTimeInstallFlag(PreferenceManager.GetDefaultSharedPreferences(this), true);
+                    return false;
+                }
+                else if (!UserSessions.GetUserNotificationFirstTimeInstallFlag(PreferenceManager.GetDefaultSharedPreferences(this)))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
