@@ -89,6 +89,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private SMRregistrationApi api;
 
+        private static List<MyServiceModel> myServicesListNewArrange = new List<MyServiceModel>();
+
         private CancellationTokenSource normalTokenSource = new CancellationTokenSource();
 
         public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view, ISharedPreferences pref)
@@ -2004,6 +2006,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private void ProcessMyServices()
         {
             List<MyServiceModel> filteredServices = new List<MyServiceModel>();
+            List<MyServiceModel> newfilteredServices = new List<MyServiceModel>();
             foreach (MyServiceModel model in myServicesList)
             {
                 if (model.ServiceType == ServiceEnum.SELFMETERREADING)
@@ -2041,10 +2044,39 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }
 
-            myServicesList = filteredServices;
+            if (filteredServices.Count > 6)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    newfilteredServices.Add(filteredServices[i]);
+                }
+
+                var modelViewMore = new MyServiceModel()
+                {
+                    ServiceId = "1111",
+                    ServiceName = "VIEWMORE",
+                    ServiceIconUrl = "",
+                    DisabledServiceIconUrl = "",
+                    ServiceBannerUrl = "",
+                    Enabled = true,
+                    SSODomain = "",
+                    OriginURL = "",
+                    RedirectURL = "",
+                    DisplayType = 0,
+                    ServiceType = ServiceEnum.VIEWMORE,
+                    Children = new List<MyServiceModel>()
+                };
+                newfilteredServices.Add(modelViewMore);
+            }
+            else
+            {
+                newfilteredServices = filteredServices;
+            }
+
+            //myServicesList = filteredServices;
 
             this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-            this.mView.SetMyServicesResult(myServicesList);
+            this.mView.SetMyServicesResult(newfilteredServices);
 
             isMyServiceDone = true;
             OnCheckToCallHomeMenuTutorial();
@@ -2138,6 +2170,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             myServicesList = cachedList;
             isMyServiceExpanded = true;// HomeMenuUtils.GetIsMyServiceExpanded();
+            if (cachedList.Count > 6)
+            {
+                isMyServiceExpanded = false;
+            }
+
             List<MyServiceModel> fetchList = new List<MyServiceModel>();
             if (isMyServiceExpanded)
             {
@@ -2148,18 +2185,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             else
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     fetchList.Add(myServicesList[i]);
                 }
-                if (myServicesList.Count > 3)
+
+                var modelViewMore = new MyServiceModel()
                 {
-                    this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
-                }
-                else
-                {
-                    this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-                }
+                    ServiceId = "1111",
+                    ServiceName = "VIEWMORE",
+                    ServiceIconUrl = "",
+                    DisabledServiceIconUrl = "",
+                    ServiceBannerUrl = "",
+                    Enabled = true,
+                    SSODomain = "",
+                    OriginURL = "",
+                    RedirectURL = "",
+                    DisplayType = 0,
+                    ServiceType = ServiceEnum.VIEWMORE,
+                    Children = new List<MyServiceModel>()
+                };
+                fetchList.Add(modelViewMore);
+
+                //if (myServicesList.Count > 3)
+                //{
+                //    this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
+                //}
+                //else
+                //{
+                //    this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+                //}
                 this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
                 this.mView.SetMyServicesResult(fetchList);
             }
@@ -2240,6 +2295,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void ListAfterRearrangeIcon(List<MyServiceModel> fetchList)
+        {
+            try
+            {
+                if (fetchList.Count > 0)
+                {
+                    myServicesList = fetchList;
+                    ProcessMyServices();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void DoMySerivceLoadMoreAccount()
         {
             try
@@ -2247,9 +2318,69 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 List<MyServiceModel> fetchList = new List<MyServiceModel>();
                 isMyServiceExpanded = true;
                 HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
+                myServicesList.RemoveAll(item => item?.ServiceType == ServiceEnum.VIEWMORE);
+
+                var modelViewLess = new MyServiceModel()
+                {
+                    ServiceId = "1112",
+                    ServiceName = "VIEWLESS",
+                    ServiceIconUrl = "",
+                    DisabledServiceIconUrl = "",
+                    ServiceBannerUrl = "",
+                    Enabled = true,
+                    SSODomain = "",
+                    OriginURL = "",
+                    RedirectURL = "",
+                    DisplayType = 0,
+                    ServiceType = ServiceEnum.VIEWLESS,
+                    Children = new List<MyServiceModel>()
+                };
+                myServicesList.Add(modelViewLess);
+
                 fetchList = myServicesList;
                 this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
                 this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                this.mView.SetMyServicesResult(fetchList);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void DoMyServiceLoadLessAccount()
+        {
+            try
+            {
+                List<MyServiceModel> fetchList = new List<MyServiceModel>();
+                isMyServiceExpanded = true;
+                HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
+                myServicesList.RemoveAll(item => item.ServiceType == ServiceEnum.VIEWLESS);
+
+                for (int i = 0; i < 5; i++)
+                {
+                    fetchList.Add(myServicesList[i]);
+                }
+
+                var modelViewMore = new MyServiceModel()
+                {
+                    ServiceId = "1111",
+                    ServiceName = "VIEWMORE",
+                    ServiceIconUrl = "",
+                    DisabledServiceIconUrl = "",
+                    ServiceBannerUrl = "",
+                    Enabled = true,
+                    SSODomain = "",
+                    OriginURL = "",
+                    RedirectURL = "",
+                    DisplayType = 0,
+                    ServiceType = ServiceEnum.VIEWMORE,
+                    Children = new List<MyServiceModel>()
+                };
+                fetchList.Add(modelViewMore);
+
+                //fetchList = myServicesList;
+                this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
                 this.mView.SetMyServicesResult(fetchList);
             }
             catch (Exception e)
@@ -3406,6 +3537,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(unknownException);
             }
+        }
+
+        public List<MyServiceModel> GetCurrentQuickActionList()
+        {
+            return myServicesList;
         }
     }
 }

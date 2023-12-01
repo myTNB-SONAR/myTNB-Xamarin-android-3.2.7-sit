@@ -384,6 +384,33 @@
 									android:layout_height="wrap_content"/>
 							</LinearLayout>
 							<LinearLayout
+								android:id="@+id/ContainerQuickAction"
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:orientation="horizontal"
+								android:visibility="gone">
+								<TextView
+									android:id="@+id/quickActionTitle"
+									android:layout_width="500px"
+									android:layout_height="wrap_content"
+									android:textColor="@color/powerBlue"
+									android:textSize="12dp"
+									android:paddingLeft="10dp"
+									android:gravity="left"
+									android:layout_gravity="left"
+									android:text="Quick Action"/>
+								<TextView
+									android:id="@+id/quickActionIcon"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:textColor="@color/powerBlue"
+									android:textSize="12dp"
+									android:paddingRight="10dp"
+									android:gravity="right"
+									android:layout_gravity="right"
+									android:text="Customize"/>
+							</LinearLayout>
+							<LinearLayout
 								android:id="@+id/myServiceView"
 								android:layout_width="match_parent"
 								android:layout_height="match_parent"

@@ -566,4 +566,11 @@
 		<item name="android:stateListAnimator">@null</item>
 		<item name="android:background">@drawable/silver_chalice_round_button_background</item>
 	</style>
+	<style name="Theme.AddIconButton" parent="@android:style/Widget.Button">
+		<item name="android:textColor">@color/tunaGrey</item>
+		<item name="android:hint">#FFFFFF</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:stateListAnimator">@null</item>
+		<item name="android:background">@drawable/dasher_border_palegrey</item>
+	</style>
 </resources>

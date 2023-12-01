@@ -66,6 +66,7 @@ using myTNB.Mobile.AWS.Models.DBR;
 using Android.Graphics;
 using Dynatrace.Xamarin.Binding.Android;
 using myTNB_Android.Src.myTNBMenu.Async;
+using myTNB_Android.Src.QuickActionArrange.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -297,6 +298,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.discovercontainer)]
         LinearLayout discovercontainer;
 
+        [BindView(Resource.Id.ContainerQuickAction)]
+        LinearLayout containerQuickAction;
+
+        [BindView(Resource.Id.quickActionTitle)]
+        TextView quickActionTitle;
+
+        [BindView(Resource.Id.quickActionIcon)]
+        TextView quickActionIcon;
+
         bool IsAccountDBREligible;
         AccountsRecyclerViewAdapter accountsAdapter;
 
@@ -309,6 +319,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
 
         public readonly static int REARRANGE_ACTIVITY_CODE = 8806;
+
+        public readonly static int REARRANGE_QUICK_ACTION_ACTIVITY_CODE = 8811;
 
         internal static readonly int SELECT_SM_ACCOUNT_REQUEST_CODE = 8809;
 
@@ -362,6 +374,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         const string GSL_TAG = "GSL";
 
         SearchApplicationTypeResponse _searchApplicationTypeResponse;
+
+        List<MyServiceModel> listCurrentQuickAction = new List<MyServiceModel>();
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -495,7 +509,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                 }
             }
-
+            else if (requestCode == REARRANGE_QUICK_ACTION_ACTIVITY_CODE)
+            {
+                if (resultCode == (int)Result.Ok)
+                {
+                    Bundle extras = data.Extras;
+                    this.SetIsClicked(false);
+                    if (extras != null)
+                    {
+                        if (extras.ContainsKey("IconList"))
+                        {
+                            listCurrentQuickAction = JsonConvert.DeserializeObject<List<MyServiceModel>>(extras.GetString("IconList"));
+                            this.presenter.ListAfterRearrangeIcon(listCurrentQuickAction);
+                            //SetMyServicesResult(listCurrentQuickAction);
+                        }
+                    }
+                }
+            }
         }
 
         public void SetNotificationIndicator()
@@ -535,10 +565,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
-                    , myServiceLoadMoreLabel, txtNewLabel, btnMyServiceRefresh);
+                    , myServiceLoadMoreLabel, txtNewLabel, btnMyServiceRefresh, quickActionTitle);
                 TextViewUtils.SetTextSize8(txtNewLabel);
                 TextViewUtils.SetTextSize12(addActionLabel, searchActionLabel, rearrangeLabel
-                    , loadMoreLabel, myServiceLoadMoreLabel, txtMyServiceRefreshMessage);
+                    , loadMoreLabel, myServiceLoadMoreLabel, txtMyServiceRefreshMessage, quickActionTitle);
                 TextViewUtils.SetTextSize14(refreshMsg, txtAdd, newFAQTitle, accountHeaderTitle);
                 TextViewUtils.SetTextSize16(accountGreeting, accountGreetingName, btnMyServiceRefresh, btnRefresh);
                 SearchView searchView = new SearchView(this.Context);
@@ -555,6 +585,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 rearrangeLabel.Text = GetLabelByLanguage("rearrangeAccts");
                 loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
                 myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
+                quickActionTitle.Text = GetLabelByLanguage("quickActionTitle");
 
                 addActionContainer.SetOnClickListener(null);
                 notificationHeaderIcon.SetOnClickListener(null);
@@ -592,6 +623,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Utility.LoggingNonFatalError(err);
                         }
                         this.Activity.StartActivityForResult(new Intent(this.Activity, typeof(NotificationActivity)), Constants.NOTIFICATION_LISTING_REQUEST_CODE);
+                    }
+                };
+                quickActionIcon.Click += delegate
+                {
+                    if (!this.GetIsClicked())
+                    {
+                        try
+                        {
+                            FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Arrange Icon");
+                        }
+                        catch (System.Exception err)
+                        {
+                            Utility.LoggingNonFatalError(err);
+                        }
+                        this.SetIsClicked(true);
+                        listCurrentQuickAction = this.presenter.GetCurrentQuickActionList();
+                        Intent rearrangeQuickAction = new Intent(this.Activity, typeof(QuickActionArrangeActivity));
+                        rearrangeQuickAction.PutExtra("RearrangeQuickAction", JsonConvert.SerializeObject(listCurrentQuickAction));
+                        StartActivityForResult(rearrangeQuickAction, REARRANGE_QUICK_ACTION_ACTIVITY_CODE);
                     }
                 };
 
@@ -1074,6 +1124,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             myServiceContainer.Visibility = ViewStates.Visible;
             myServiceHideView.Visibility = ViewStates.Gone;
             myServiceRefreshContainer.Visibility = ViewStates.Gone;
+            containerQuickAction.Visibility = ViewStates.Gone;
 
             GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
             layoutManager.Orientation = RecyclerView.Vertical;
@@ -1135,6 +1186,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 myServiceShimmerView.Visibility = ViewStates.Visible;
                 myServiceView.Visibility = ViewStates.Gone;
+                containerQuickAction.Visibility = ViewStates.Gone;
             });
 
             Task.Run(() =>
@@ -1169,6 +1221,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         myServiceShimmerView.Visibility = ViewStates.Gone;
 
                         myServiceView.Visibility = ViewStates.Visible;
+                        containerQuickAction.Visibility = ViewStates.Visible;
 
                         SetupMyHomeBanner();
                     }
@@ -2098,6 +2151,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                             this.SetIsClicked(false);
                         }
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.VIEWMORE)
+                        {
+                            this.presenter.DoMySerivceLoadMoreAccount();
+                            this.SetIsClicked(false);
+                        }
+                        else if (selectedService.ServiceType == MobileEnums.ServiceEnum.VIEWLESS)
+                        {
+                            this.presenter.DoMyServiceLoadLessAccount();
+                            this.SetIsClicked(false);
+                        }
                         else
                         {
                             this.SetIsClicked(false);
@@ -2323,6 +2386,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
+            containerQuickAction.Visibility = ViewStates.Gone;
 
             this.presenter.RetryMyService();
         }
@@ -3143,6 +3207,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             myServiceContainer.Visibility = ViewStates.Visible;
             myServiceHideView.Visibility = ViewStates.Gone;
             myServiceRefreshContainer.Visibility = ViewStates.Gone;
+            containerQuickAction.Visibility = ViewStates.Gone;
 
             isRefreshShown = false;
 
@@ -3325,6 +3390,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             myServiceContainer.Visibility = ViewStates.Visible;
             myServiceHideView.Visibility = ViewStates.Gone;
             myServiceRefreshContainer.Visibility = ViewStates.Gone;
+            containerQuickAction.Visibility = ViewStates.Gone;
 
             IsMyServiceLoadMoreButtonVisible(false, false);
 
@@ -4132,6 +4198,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         myServiceHideView.Visibility = ViewStates.Visible;
                         myServiceContainer.Visibility = ViewStates.Gone;
                         myServiceRefreshContainer.Visibility = ViewStates.Gone;
+                        containerQuickAction.Visibility = ViewStates.Gone;
 
                         if (isBCRMDown)
                         {
@@ -4167,6 +4234,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         myServiceHideView.Visibility = ViewStates.Gone;
                         myServiceContainer.Visibility = ViewStates.Gone;
                         myServiceRefreshContainer.Visibility = ViewStates.Visible;
+                        containerQuickAction.Visibility = ViewStates.Gone;
 
                         if (string.IsNullOrEmpty(buttonTxt))
                         {

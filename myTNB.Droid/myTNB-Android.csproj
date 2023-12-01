@@ -170,9 +170,6 @@
     <Reference Include="FastAndroidCamera, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FastAndroidCamera.2.0.0\lib\MonoAndroid403\FastAndroidCamera.dll</HintPath>
     </Reference>
-    <Reference Include="iTextSharpLGPL-MonoForAndroid, Version=4.1.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xam.iTextSharpLGPL.0.1.0\lib\MonoAndroid10\iTextSharpLGPL-MonoForAndroid.dll</HintPath>
-    </Reference>
     <Reference Include="Java.Interop" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -843,6 +840,9 @@
     </Reference>
     <Reference Include="Dynatrace.Xamarin.Binding.Android">
       <HintPath>..\packages\Dynatrace.OneAgent.Xamarin.8.261.1\lib\monoandroid410\Dynatrace.Xamarin.Binding.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="iTextSharpLGPL-MonoForAndroid, Version=4.1.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xam.iTextSharpLGPL.0.1.0\lib\MonoAndroid10\iTextSharpLGPL-MonoForAndroid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -8329,6 +8329,35 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\AppLaunch\Requests\AccountSMRStatusRequestV2.cs" />
+    <Compile Include="Src\QuickActionArrange\Activity\QuickActionArrangeActivity.cs" />
+    <AndroidResource Include="Resources\layout\AccountStatementLoadingView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\QuickActionRearrangeLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\QuickActionOtherItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\QuickActionArrange\Adapter\RearrangeQuickActionListAdapter.cs" />
+    <Compile Include="Src\QuickActionArrange\Adapter\RearrangeSwipeItemTouchHelperCallback.cs" />
+    <Compile Include="Src\QuickActionArrange\Model\ArrangeQuickActionModel.cs" />
+    <Compile Include="Src\QuickActionArrange\Adapter\QuickActionLockedAndExtraAdapter.cs" />
+    <AndroidResource Include="Resources\layout\ProfileMenuItemLayoutNew.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\QuickActionRearrangeItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\dasher_border_palegrey.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">
@@ -8458,10 +8487,6 @@
     <Compile Include="Src\Enquiry\GSL\Fragment\GSLInfoItemListComponent.cs" />
     <Compile Include="Src\Bills\AccountStatement\Activity\AccountStatementSelectionActivity.cs" />
     <Compile Include="Src\Bills\AccountStatement\Activity\AccountStatementLoadingActivity.cs" />
-    <AndroidResource Include="Resources\layout\AccountStatementLoadingView.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <Compile Include="Src\Bills\AccountStatement\MVP\AccountStatementLoadingContract.cs" />
     <Compile Include="Src\Bills\AccountStatement\MVP\AccountStatementLoadingPresenter.cs" />
     <AndroidResource Include="Resources\layout\AccountStatementTimeOutView.xml">
@@ -10838,6 +10863,10 @@
     <Folder Include="Src\FloatingButtonMarketing\" />
     <Folder Include="Src\FloatingButtonMarketing\Activity\" />
     <Folder Include="Src\FloatingButtonMarketing\MVP\" />
+    <Folder Include="Src\QuickActionArrange\" />
+    <Folder Include="Src\QuickActionArrange\Activity\" />
+    <Folder Include="Src\QuickActionArrange\Adapter\" />
+    <Folder Include="Src\QuickActionArrange\Model\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
@@ -14153,12 +14182,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\ActivityLogUserListview.axml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\ProfileMenuItemLayoutNew.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
