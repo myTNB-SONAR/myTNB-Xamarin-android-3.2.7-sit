@@ -676,7 +676,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 this.Activity.RunOnUiThread(() =>
                 {
                     MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                        .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "notEligibleAccountsTitlePilot"))
+                        .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "notEligibleFeatureToogleTitle"))
                         .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "notEligibleFeatureToogleText"))
                         .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                         .SetCTAaction(() => { this.SetIsClicked(false); })

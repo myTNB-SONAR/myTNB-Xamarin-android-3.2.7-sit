@@ -1066,8 +1066,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 EligibilitySessionCache.FeatureProperty.TargetGroup);
 
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", isPilot ? "notEligibleAccountsTitlePilot" : "notEligibleAccountsTitleNationwide"))
-                .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", isPilot ? "notEligibleAccountsMessagePilot" : "notEligibleAccountsMessageNationwide"))
+                .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", isPilot ? "notEligibleAccountsTitleNationwideV2" : "notEligibleAccountsTitleNationwideV2"))
+                .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", isPilot ? "notEligibleAccountsTitleNationwideV2" : "notEligibleAccountsMessageNationwideV2"))
                 .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                 .SetCTAaction(() => { this.SetIsClicked(false); })
                 .Build()
