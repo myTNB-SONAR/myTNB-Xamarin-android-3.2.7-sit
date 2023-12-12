@@ -81,6 +81,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void ShowSubmitNewEnquiry();
 
             void ShowSubmittedFeedbackNew();
+
+            void OnCheckBCRMDowntime();
+
+            void RestartFeedbackMenu();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -123,6 +127,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             void onSubmittedFeedbackNew();
 
+            void GetDownTime();
 
         }
     }

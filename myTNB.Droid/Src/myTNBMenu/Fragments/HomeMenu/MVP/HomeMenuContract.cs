@@ -185,6 +185,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void OnCheckNewFAQState();
 
+            void GetDownTime();
+            
             Task OnCheckSMRAccount(List<string> smrAccountListOwnerOnly, string r);
 
             Task GetIsSmrApplyAllowedService(List<string> smrAccountListOwnerOnly);

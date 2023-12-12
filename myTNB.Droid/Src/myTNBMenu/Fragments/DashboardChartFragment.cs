@@ -1084,6 +1084,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (bcrmEntity != null && bcrmEntity.IsDown)
                 {
                     isBCRMDown = true;
+                    this.SetIsClicked(false);
+                    btnSetNewBudget.Enabled = false;
+                    btnSetNewBudget.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
+                    btnEditBudget.Enabled = false;
+                    btnEditBudget.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
                 }
                 else
                 {
@@ -5335,11 +5340,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (pgXEntity != null)
                     {
-                        Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
-                        {
-                            this.SetIsClicked(false);
+                        //Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
+                        //{
+                        //    this.SetIsClicked(false);
 
-                        });
+                        //});
+                        OnBCRMDownTimeErrorMessageV2(pgXEntity);
                     }
                 }
                 else
@@ -5527,24 +5533,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [OnClick(Resource.Id.btnEditBudget)]
         internal void OnsetFocusEditBudget(object sender, EventArgs e)
         {
-
-            if (!this.GetIsClicked())
+            if (isBCRMDown)
             {
-                this.SetIsClicked(true);
-                editBudget = true;
-                saveBtn = false;
-                editBtn = true;
-                setEnergyBudgetlayout = true;
-                HideAndDisable();
-                try
+                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                OnBCRMDownTimeErrorMessageV2(bcrmEntity);
+            }
+            else
+            {
+                if (!this.GetIsClicked())
                 {
-                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Set New Budget Buttom Clicked");
-                    CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_edit_budget);
-                    FirebaseAnalyticsUtils.SetFragmentScreenName(this, Constants.EB_edit_budget);
-                }
-                catch (System.Exception ne)
-                {
-                    Utility.LoggingNonFatalError(ne);
+                    this.SetIsClicked(true);
+                    editBudget = true;
+                    saveBtn = false;
+                    editBtn = true;
+                    setEnergyBudgetlayout = true;
+                    HideAndDisable();
+                    try
+                    {
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Set New Budget Buttom Clicked");
+                        CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_edit_budget);
+                        FirebaseAnalyticsUtils.SetFragmentScreenName(this, Constants.EB_edit_budget);
+                    }
+                    catch (System.Exception ne)
+                    {
+                        Utility.LoggingNonFatalError(ne);
+                    }
                 }
             }
             this.SetIsClicked(false);
@@ -5557,61 +5570,71 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             try
             {
                 this.SetIsClicked(false);
-                if (!this.GetIsClicked() && btnSetNewBudget.Text == Utility.GetLocalizedLabel("Usage", "setEnergyButton"))
+                if (isBCRMDown)
                 {
-                    this.SetIsClicked(true);
-                    editBudget = true;
-                    setBtn = true;
-                    energyBudgetbodytxt.Visibility = ViewStates.Gone;
-                    layEnergyBudgetRMtxt.Visibility = ViewStates.Visible;
-                    energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "myMonthlyBudget");
-                    energyBudgetAccountStatusText.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.charcoalGrey));
-                    HideAndDisable();
-                    try
-                    {
-                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Set New Budget Buttom Clicked");
-                        CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_start);
-                        FirebaseAnalyticsUtils.SetFragmentScreenName(this, Constants.EB_start);
-                    }
-                    catch (System.Exception ne)
-                    {
-                        Utility.LoggingNonFatalError(ne);
-                    }
+                    DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                    OnBCRMDownTimeErrorMessageV2(bcrmEntity);
                 }
-                else if (!this.GetIsClicked() && btnSetNewBudget.Text == Utility.GetLocalizedLabel("Usage", "saveEnergyButton"))
+                else
                 {
-                    if (!GetIsMDMSDown())
+
+
+                    if (!this.GetIsClicked() && btnSetNewBudget.Text == Utility.GetLocalizedLabel("Usage", "setEnergyButton"))
                     {
-                        CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_setup_success);
-                        FirebaseAnalyticsUtils.SetFragmentScreenName(this, Constants.EB_setup_success);
                         this.SetIsClicked(true);
-                        setEnergyBudgetlayout = false;
-                        setBtn = false;
-                        saveBtn = true;
-                        string amount = energyBudgetRMinput.Text;
-                        int saveamount = Convert.ToInt32(amount);
+                        editBudget = true;
+                        setBtn = true;
+                        energyBudgetbodytxt.Visibility = ViewStates.Gone;
+                        layEnergyBudgetRMtxt.Visibility = ViewStates.Visible;
+                        energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "myMonthlyBudget");
+                        energyBudgetAccountStatusText.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.charcoalGrey));
+                        HideAndDisable();
+                        try
+                        {
+                            FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Set New Budget Buttom Clicked");
+                            CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_start);
+                            FirebaseAnalyticsUtils.SetFragmentScreenName(this, Constants.EB_start);
+                        }
+                        catch (System.Exception ne)
+                        {
+                            Utility.LoggingNonFatalError(ne);
+                        }
+                    }
+                    else if (!this.GetIsClicked() && btnSetNewBudget.Text == Utility.GetLocalizedLabel("Usage", "saveEnergyButton"))
+                    {
+                        if (!GetIsMDMSDown())
+                        {
+                            CustomClassAnalytics.SetScreenNameDynaTrace(Constants.EB_setup_success);
+                            FirebaseAnalyticsUtils.SetFragmentScreenName(this, Constants.EB_setup_success);
+                            this.SetIsClicked(true);
+                            setEnergyBudgetlayout = false;
+                            setBtn = false;
+                            saveBtn = true;
+                            string amount = energyBudgetRMinput.Text;
+                            int saveamount = Convert.ToInt32(amount);
 
-                        List<CustomerBillingAccount> EnergybudgetAmount = new List<CustomerBillingAccount>();
-                        EnergybudgetAmount = CustomerBillingAccount.EnergyBudgetRM(selectedAccount.AccountNum);
+                            List<CustomerBillingAccount> EnergybudgetAmount = new List<CustomerBillingAccount>();
+                            EnergybudgetAmount = CustomerBillingAccount.EnergyBudgetRM(selectedAccount.AccountNum);
 
-                        if (EnergybudgetAmount[0].BudgetAmount != null && EnergybudgetAmount[0].BudgetAmount.Equals(saveamount.ToString()))
-                        {
-                            editBtn = false;
-                            ShowEnergyBudgetSuccess();
+                            if (EnergybudgetAmount[0].BudgetAmount != null && EnergybudgetAmount[0].BudgetAmount.Equals(saveamount.ToString()))
+                            {
+                                editBtn = false;
+                                ShowEnergyBudgetSuccess();
+                            }
+                            else if (saveamount.Equals(0))
+                            {
+                                isHaveEnergyBudget = false;
+                                saveBtn = false;
+                                editBtn = false;
+                                userActionsListener.SaveEnergyBudgetAmmount(selectedAccount.AccountNum, saveamount);
+                            }
+                            else
+                            {
+                                editBtn = false;
+                                userActionsListener.SaveEnergyBudgetAmmount(selectedAccount.AccountNum, saveamount);
+                            }
+                            ShowHideKeyboard(energyBudgetRMinput, false);
                         }
-                        else if (saveamount.Equals(0))
-                        {
-                            isHaveEnergyBudget = false;
-                            saveBtn = false;
-                            editBtn = false;
-                            userActionsListener.SaveEnergyBudgetAmmount(selectedAccount.AccountNum, saveamount);
-                        }
-                        else
-                        {
-                            editBtn = false;
-                            userActionsListener.SaveEnergyBudgetAmmount(selectedAccount.AccountNum, saveamount);
-                        }
-                        ShowHideKeyboard(energyBudgetRMinput, false);
                     }
                 }
             }
@@ -11982,6 +12005,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
+        {
+            MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
+            .SetHeaderImage(Resource.Drawable.maintenance_bcrm_new)
+            .SetTitle(bcrmEntity.DowntimeTextMessage)
+            .SetMessage(bcrmEntity.DowntimeMessage)
+            .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
+            .SetCTAaction(() => { isBCRMDown = false; })
+            .Build()
+            .Show();
         }
     }
 }

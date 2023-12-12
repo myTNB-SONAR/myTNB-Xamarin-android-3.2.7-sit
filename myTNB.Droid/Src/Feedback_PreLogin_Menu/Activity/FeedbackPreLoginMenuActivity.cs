@@ -80,6 +80,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         [BindView(Resource.Id.feedbackMenuHeaderImage)]
         ImageView feedbackMenuHeaderImage;
 
+        [BindView(Resource.Id.billRelatedIcon)]
+        ImageView billRelatedIcon;
+
 
         FeedbackPreLoginMenuContract.IUserActionsListener userActionsListener;
         FeedbackPreLoginMenuPresenter mPresenter;
@@ -140,6 +143,14 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                 feedbackMenuHeaderImage.Visibility = ViewStates.Gone;
 
                 this.userActionsListener.Start();
+
+                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                if (bcrmEntity.IsDown)
+                {
+                    txtFeedbackBillingAndPayment.SetTextColor(Android.Graphics.Color.Gray);
+                    txtFeedbackBillingAndPaymentContent.SetTextColor(Android.Graphics.Color.Gray);
+                }
+
             }
             catch (Exception e)
             {
@@ -191,15 +202,21 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                if (DownTimeEntity.IsBCRMDown())
-                {
-                    OnBCRMDownTimeErrorMessage();
-                    this.SetIsClicked(false);
-                }
-                else
-                {
-                    this.userActionsListener.OnBillingPayment();
-                }
+                this.userActionsListener.GetDownTime();
+
+                // if (DownTimeEntity.IsBCRMDown())
+                // {
+                //     //OnBCRMDownTimeErrorMessage();
+                //     this.SetIsClicked(false);
+
+                //     DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
+                //     OnBCRMDownTimeErrorMessageV2(bcrmEntity);
+
+                // }
+                // else
+                // {
+                //     this.userActionsListener.OnBillingPayment();
+                // }
             }
         }
 
@@ -209,15 +226,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                if (DownTimeEntity.IsBCRMDown())
-                {
-                    OnBCRMDownTimeErrorMessage();
-                    this.SetIsClicked(false);
-                }
-                else
-                {
-                    this.userActionsListener.OnFaultyStreetLamps();
-                }
+                this.userActionsListener.OnFaultyStreetLamps();
+            
             }
         }
 
@@ -227,15 +237,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                if (DownTimeEntity.IsBCRMDown())
-                {
-                    OnBCRMDownTimeErrorMessage();
-                    this.SetIsClicked(false);
-                }
-                else
-                {
-                    this.userActionsListener.OnOthers();
-                }
+                this.userActionsListener.OnOthers();
+                
             }
         }
 
@@ -469,8 +472,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
             this.SetIsClicked(false);
         }
 
-
-
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);
@@ -491,6 +492,29 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+         public void OnCheckBCRMDowntime()
+        {
+            this.SetIsClicked(false);
+            //OnBCRMDownTimeErrorMessage();
+            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
+            OnBCRMDownTimeErrorMessageV2(bcrmEntity);
+
+            billRelatedIcon.SetImageResource(Resource.Drawable.ic_feedback_bill_disable);
+            txtFeedbackBillingAndPayment.SetTextColor(Android.Graphics.Color.Gray);
+            txtFeedbackBillingAndPaymentContent.SetTextColor(Android.Graphics.Color.Gray);
+        }
+
+        public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
+        {
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_IMAGE_BUTTON)
+            .SetHeaderImage(Resource.Drawable.maintenance_bcrm)
+            .SetTitle(bcrmEntity.DowntimeTextMessage)
+            .SetMessage(bcrmEntity.DowntimeMessage)
+            .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
+            .Build()
+            .Show();
         }
     }
 }

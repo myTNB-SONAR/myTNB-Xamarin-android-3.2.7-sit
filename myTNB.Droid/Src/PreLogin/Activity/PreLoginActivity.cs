@@ -140,6 +140,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.img_display)]
         ImageView img_display;
 
+        private bool isBCMRDownDialogShow = false;
+
         private void UpdateLabels()
         {
             string textFindUs = Utility.GetLocalizedLabel("Prelogin", "findUs");

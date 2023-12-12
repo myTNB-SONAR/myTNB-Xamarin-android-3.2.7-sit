@@ -33,7 +33,8 @@ namespace myTNB_Android.Src.Utils
             MYTNB_DIALOG_IMAGE_ONE_BUTTON,
             MYTNB_DIALOG_ICON_ONE_BUTTON,
             MYTNB_DIALOG_ICON_TWO_BUTTON,
-            MYTNB_DIALOG_ICON_DROPDOWN_TWO_BUTTON
+            MYTNB_DIALOG_ICON_DROPDOWN_TWO_BUTTON,
+            MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON
         }
 
         private ToolTipType toolTipType;
@@ -139,6 +140,10 @@ namespace myTNB_Android.Src.Utils
             {
                 layoutResource = Resource.Layout.CustomDialogOneButtonWithImage;
             }
+            else if (mToolTipType == ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
+            {
+                layoutResource = Resource.Layout.MyTNBDialogWithFloatingImageWithOneButton;
+            }
             tooltipBuilder.dialog = new MaterialDialog.Builder(context)
                 .CustomView(layoutResource, false)
                 .Cancelable(false)
@@ -150,7 +155,8 @@ namespace myTNB_Android.Src.Utils
             {
                 dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
                 if (mToolTipType != ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON && mToolTipType != ToolTipType.NORMAL_WITH_HEADER
-                    && mToolTipType != ToolTipType.MYTNB_DIALOG_IMAGE_ONE_BUTTON)
+                    && mToolTipType != ToolTipType.MYTNB_DIALOG_IMAGE_ONE_BUTTON
+                    && mToolTipType != ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
                 {
                     WindowManagerLayoutParams wlp = tooltipBuilder.dialog.Window.Attributes;
                     wlp.Gravity = GravityFlags.Center;
@@ -1234,6 +1240,66 @@ namespace myTNB_Android.Src.Utils
                 tooltipMessage = LinkRedirectionUtils
                     .Create(this.mContext, string.Empty)
                     .SetTextView(tooltipMessage)
+                    .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
+                    .Build()
+                    .GetProcessedTextView();
+
+                tooltipCTA.Text = this.ctaLabel;
+            }
+            else if (this.toolTipType == ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
+            {
+                ImageView tooltipImageHeader = this.dialog.FindViewById<ImageView>(Resource.Id.imgToolTipHeader);
+                TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
+                TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
+                //TextView tooltipHeaderTitle = this.dialog.FindViewById<TextView>(Resource.Id.dialogHeaderTitle);
+
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage, tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
+                TextViewUtils.SetTextSize14(tooltipMessage, tooltipMessage);
+                TextViewUtils.SetTextSize16(tooltipTitle, tooltipCTA);
+
+                //tooltipHeaderTitle.Gravity = this.mGravityFlag;
+                tooltipTitle.Gravity = GravityFlags.Center;
+                tooltipMessage.Gravity = this.mGravityFlag;
+
+                tooltipCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    this.ctaAction?.Invoke();
+                };
+
+
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                }
+
+
+                if (this.imageResourceBitmap != null)
+                {
+                    float currentImgWidth = DPUtils.ConvertDPToPx(284f);
+                    float calImgRatio = currentImgWidth / this.imageResourceBitmap.Width;
+                    int currentImgHeight = (int)(this.imageResourceBitmap.Height * calImgRatio);
+
+                    tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
+                    tooltipImageHeader.LayoutParameters.Height = currentImgHeight;
+                    tooltipImageHeader.RequestLayout();
+                }
+                else
+                {
+                    tooltipImageHeader.SetImageResource(this.imageResource);
+                }
+
+                tooltipTitle.Text = this.title;
+                //tooltipHeaderTitle.Text = this.headertitle;
+                tooltipTitle = LinkRedirectionUtils
+                    .Create(this.mContext, string.Empty)
+                    .SetTextView(tooltipTitle)
                     .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
                     .Build()
                     .GetProcessedTextView();

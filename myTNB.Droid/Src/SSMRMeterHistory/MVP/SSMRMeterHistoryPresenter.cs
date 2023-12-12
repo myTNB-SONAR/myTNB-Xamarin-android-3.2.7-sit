@@ -17,6 +17,10 @@ using Refit;
 using static myTNB_Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibilityResponse;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using System.Linq;
 using System.Threading.Tasks;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
@@ -399,6 +403,52 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
             return newList;
         }
+
+        public async void GetDownTime(string smrtypeBtn)
+        {
+
+            DSSTableResponse downTimeResponse = await ServiceApiImpl.Instance.GetDSSTableData(new DSSTableRequest());
+
+            if (downTimeResponse != null && downTimeResponse.Response.ErrorCode != null)
+            {
+                if (downTimeResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                {
+                    DownTimeEntity.RemoveActive();
+                    foreach (DownTime cat in downTimeResponse.Response.data)
+                    {
+                        int newRecord = DownTimeEntity.InsertOrReplace(cat);
+                    }
+
+                    if (DownTimeEntity.IsBCRMDown())
+                    {
+                        this.mView.OnCheckBCRMDowntime();
+
+                    }
+                    else
+                    {
+                        this.mView.RestartSMRActivity();
+
+                        if (smrtypeBtn == "Stop")
+                        {
+                            //this.mView.RestartFeedbackMenu();
+                            this.mView.ShowSSMRTerminateActivity();
+                        }
+                        else if (smrtypeBtn == "Start")
+                        {
+                            //this.mView.RestartFeedbackMenu();
+                            this.mView.ShowSSMRStartActivity();
+                        }
+                        else if (smrtypeBtn == "Submit")
+                        {
+                            //this.mView.RestartFeedbackMenu();
+                            this.mView.ShowSubmitMeterReadingActivity();
+                        }
+                        
+                    }
+                }
+            }
+        }
+
 
         public async Task OnCheckSMRAccount(List<string> accountList)
         {

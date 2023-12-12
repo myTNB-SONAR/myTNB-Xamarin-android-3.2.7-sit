@@ -1506,5 +1506,26 @@ namespace myTNB_Android.Src.AddAccount.Activity
             tv.SetMaxLines(5);
             mNoInternetSnackbar.Show();
         }
+
+        public void OnCheckBCRMDowntime()
+        {
+            this.SetIsClicked(false);
+            //OnBCRMDownTimeErrorMessage();
+            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_RS_SYSTEM);
+            OnBCRMDownTimeErrorMessageV2(bcrmEntity);
+
+        }
+
+        public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
+        {
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
+           .SetHeaderImage(Resource.Drawable.maintenance_bcrm_new)
+           .SetTitle(bcrmEntity.DowntimeTextMessage)
+           .SetMessage(bcrmEntity.DowntimeMessage)
+           .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
+           .SetCTAaction(() => { Finish(); })
+           .Build()
+           .Show();
+        }
     }
 }

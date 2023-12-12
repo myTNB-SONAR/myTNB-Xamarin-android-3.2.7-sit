@@ -368,6 +368,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnCreate(savedInstanceState);
             DynatraceHelper.OnTrack(DynatraceConstants.MyHome.Screens.Home.Dashboard);
             presenter = new HomeMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+            this.presenter.GetDownTime();
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -1893,6 +1894,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         else if (selectedService.ServiceType == MobileEnums.ServiceEnum.PAYBILL)
                         {
+                            //if (myServicesList.Count > 0)
+                            //{
+                            //    SetMyServicesResult(myServicesList);
+                            //}
+
+                            //SetMyServiceRecycleView();
+
+                            //this.presenter.InitiateService(); //refresh icon
+
                             if (Utility.IsEnablePayment()
                             && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded())
                             {
@@ -1909,10 +1919,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 DownTimeEntity pgXEntity = DownTimeEntity.GetByCode(Constants.PG_SYSTEM);
                                 if (pgXEntity != null)
                                 {
-                                    Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
-                                    {
-                                        this.SetIsClicked(false);
-                                    });
+                                    OnBCRMDownTimeErrorMessageV2(pgXEntity);
+                                    this.SetIsClicked(false);
+                                    //Utility.ShowBCRMDOWNTooltip(this.Activity, pgXEntity, () =>
+                                    //{
+                                    //    this.SetIsClicked(false);
+                                    //});
                                 }
                             }
                         }
@@ -4496,6 +4508,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                 }
             }
+        }
+        
+        public void OnBCRMDownTimeErrorMessageV2(DownTimeEntity bcrmEntity)
+        {
+            MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_WITH_FLOATING_IMAGE_ONE_BUTTON)
+            .SetHeaderImage(Resource.Drawable.maintenance_bcrm_new)
+            .SetTitle(bcrmEntity.DowntimeTextMessage)
+            .SetMessage(bcrmEntity.DowntimeMessage)
+            .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
+            //.SetCTAaction(() => { isBCRMDown = false; })
+            .Build()
+            .Show();
         }
     }
 }

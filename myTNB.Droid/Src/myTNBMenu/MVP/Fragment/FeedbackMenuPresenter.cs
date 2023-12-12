@@ -1,6 +1,8 @@
-﻿using myTNB_Android.Src.Base.Api;
+﻿using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
@@ -219,6 +221,38 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 Utility.LoggingNonFatalError(e);
             }
 
+        }
+
+        public async void GetDownTime()
+        {
+           
+            DSSTableResponse downTimeResponse = await ServiceApiImpl.Instance.GetDSSTableData(new DSSTableRequest());
+
+            if (downTimeResponse != null && downTimeResponse.Response.ErrorCode != null)
+            {
+                if (downTimeResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                {
+                    DownTimeEntity.RemoveActive();
+                    foreach (DownTime cat in downTimeResponse.Response.data)
+                    {
+                      int newRecord = DownTimeEntity.InsertOrReplace(cat);
+                    }
+
+                    if (DownTimeEntity.IsBCRMDown())
+                    {
+                        this.mView.OnCheckBCRMDowntime();
+                       
+                    }
+                    else
+                    {
+
+                        this.mView.RestartFeedbackMenu();
+                        OnSubmitNewEnquiry();
+                    }
+                }
+            }
+
+           
         }
     }
 }

@@ -96,7 +96,12 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
                 var result = await ServiceApiImpl.Instance.CustomerAccountsForICNum(new CustomerAccountsForICNumRequest(currentAccountList, identificationNo));
 
-                if (!result.IsSuccessResponse())
+                if (result.Response.ErrorCode == "8400")
+                {
+                    this.mView.HideGetAccountsProgressDialog();
+                    this.mView.OnCheckBCRMDowntime();
+                }
+                else if (!result.IsSuccessResponse())
                 {
                     this.mView.HideGetAccountsProgressDialog();
                     this.mView.ShowServiceError(result.Response.DisplayTitle, result.Response.DisplayMessage);

@@ -29,10 +29,13 @@ using myTNB_Android.Src.Feedback_Login_BillRelated.Activity;
 using myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP;
 using myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.NotificationSettings.Activity;
 using myTNB_Android.Src.OverVoltageClaim.Activity;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity;
@@ -771,6 +774,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                  .SetCTAaction(() => { leaveDialog.DismissDialog(); })
                  .Build();
                 leaveDialog.Show();
+
             }
             else if (IsServerDown)
             {
@@ -1508,5 +1512,40 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             newErrorMessageSnackBar.Show();
             this.SetIsClicked(false);
         }
+
+        //public override void OnBackPressed()
+        //{
+        //    RestartHomeMenu();
+        //}
+
+        //public void GetStarted()
+        //{
+        //    Finish();
+        //    StartActivity(new Intent(this, typeof(NotificationSettingsActivity)));
+        //    FeedbackMenuFragment fragment = new FeedbackMenuFragment();
+
+        //    if (((DashboardHomeActivity) != null)
+        //    {
+        //        DashboardHomeActivity.SetCurrentFragment(fragment);
+        //        ((DashboardHomeActivity)Activity).HideAccountName();
+        //        ((DashboardHomeActivity)Activity).SetToolbarTitle(Resource.String.feedback_menu_activity_title);
+        //    }
+        //    FragmentManager.BeginTransaction()
+        //                   .Replace(Resource.Id.content_layout, fragment)
+        //             .CommitAllowingStateLoss();
+        //}
+
+        //public void RestartHomeMenu()
+        //{
+        //    try
+        //    {
+        //        DashboardHomeActivity.ShowHomeDashBoard();
+        //    }
+        //    catch (System.Exception e)
+        //    {
+        //        Utility.LoggingNonFatalError(e);
+        //    }
+        //}
     }
+    
 }

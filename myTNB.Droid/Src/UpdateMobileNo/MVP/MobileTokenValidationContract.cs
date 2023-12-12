@@ -167,6 +167,11 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             void ShowDashboard();
 
             void ShowEmptyErrorPin();
+
+            /// <summary>
+            /// Hide progress dialog
+            /// </summary>
+            void HideProgressDialog();
         }
 
         public interface IUserActionsListener : IBasePresenter

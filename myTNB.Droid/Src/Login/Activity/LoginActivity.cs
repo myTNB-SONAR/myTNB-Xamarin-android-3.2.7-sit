@@ -15,6 +15,7 @@ using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ForgetPassword.Activity;
 using myTNB_Android.Src.Login.MVP;
 using myTNB_Android.Src.Login.Requests;
@@ -92,6 +93,7 @@ namespace myTNB_Android.Src.Login.Activity
         private bool UpdateUserStatusDeactivate = false;
         private bool fromlink = false;
         private string userId;
+        private bool isBCMRDownDialogShow = false;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -182,6 +184,7 @@ namespace myTNB_Android.Src.Login.Activity
                 Utility.LoggingNonFatalError(e);
             }
             SearchApplicationTypeCache.Instance.Clear();
+
         }
 
         public void ClearFields()
@@ -555,7 +558,7 @@ namespace myTNB_Android.Src.Login.Activity
         {
             try
             {
-                if (!this.GetIsClicked())
+                if (!this.GetIsClicked() && !isBCMRDownDialogShow)
                 {
                     this.SetIsClicked(true);
                     string em_str = txtEmail.Text.ToString().Trim();
@@ -572,7 +575,7 @@ namespace myTNB_Android.Src.Login.Activity
         [OnClick(Resource.Id.txtForgotPassword)]
         void OnForgetPassword(object sender, EventArgs eventArgs)
         {
-            if (!this.GetIsClicked())
+            if (!this.GetIsClicked() && !isBCMRDownDialogShow)
             {
                 this.SetIsClicked(true);
                 this.userActionsListener.NavigateToForgetPassword();
@@ -582,7 +585,7 @@ namespace myTNB_Android.Src.Login.Activity
         [OnClick(Resource.Id.txtRegisterAccount)]
         void OnRegisterAccount(object sender, EventArgs eventArgs)
         {
-            if (!this.GetIsClicked())
+            if (!this.GetIsClicked() && !isBCMRDownDialogShow)
             {
                 this.SetIsClicked(true);
                 this.userActionsListener.NavigateToRegistrationForm();
@@ -913,5 +916,6 @@ namespace myTNB_Android.Src.Login.Activity
         {
             return PAGE_ID;
         }
+
     }
 }

@@ -440,6 +440,10 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetIdentificationNo<T>([Body] EncryptedRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v7/mytnbws.asmx/GetDSSTableData")]
+        Task<T> GetDSSTableData<T>([Body] EncryptedRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v7/mytnbws.asmx/GetAccountsSMRIcon")]
         Task<T> GetAccountsSMRIcon<T>([Body] EncryptedRequest request, CancellationToken token);
 
