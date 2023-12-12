@@ -38,7 +38,7 @@ namespace myTNB.Mobile
         private const string DEV3 = "http://10.215.128.191:99";
         private const string DEV4 = "http://10.215.128.191:97";
         private const string DEV5 = "http://10.215.128.162:99";
-        private const string DEV7 = "http://10.215.128.162:88";
+        private const string DEV6 = "http://10.215.128.162:88";
 
         private const string SIT_AWS = "https://stagingapi.mytnb.com.my/asmx";
         //ASMX
@@ -93,7 +93,7 @@ namespace myTNB.Mobile
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlSTG;
         internal const string SignKey = SignKey_Staging;
 #elif MASTER || SIT || DEBUG
-        public static string ApiDomain = DEV5;
+        public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;

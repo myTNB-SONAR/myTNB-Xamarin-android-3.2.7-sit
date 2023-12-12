@@ -5,6 +5,7 @@ using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageCards.Models;
+using myTNB_Android.Src.myTNBMenu.Async;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
@@ -123,6 +124,9 @@ namespace myTNB_Android.Src.MyAccount.MVP
                     MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                     HomeMenuUtils.ResetAll();
                     this.mView.showsuccessDelete();
+
+                    _ = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView, true);
+                    await CustomEligibility.EvaluateEligibilityTenantDBR((Context)this.mView);
                 }
                 else
                 {
