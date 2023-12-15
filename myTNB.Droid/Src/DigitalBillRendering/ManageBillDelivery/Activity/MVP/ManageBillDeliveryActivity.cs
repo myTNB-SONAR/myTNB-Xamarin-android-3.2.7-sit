@@ -1059,6 +1059,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             ShowManageBillDeliveryPopup();
         }
+
         [OnClick(Resource.Id.ic_ca_info)]
         void OnDisplayNotEligibleTooltip(object sender, EventArgs eventArgs)
         {
@@ -1067,7 +1068,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                 .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", isPilot ? "notEligibleAccountsTitleNationwideV2" : "notEligibleAccountsTitleNationwideV2"))
-                .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", isPilot ? "notEligibleAccountsTitleNationwideV2" : "notEligibleAccountsMessageNationwideV2"))
+                .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", isPilot ? "notEligibleAccountsMessageNationwideV2" : "notEligibleAccountsMessageNationwideV2"))
                 .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                 .SetCTAaction(() => { this.SetIsClicked(false); })
                 .Build()

@@ -3150,6 +3150,17 @@
             "type": "none"
           }
         ],
+        "GetNCDraftApplications": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": ".",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
         "EKYCStatus": [
           {
             "code": "7200",

@@ -155,9 +155,33 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             {
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title6"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description6"),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title1"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description1"),
                     Image = "walkthrough_img_install_0",
+                    Background = GetBackgroundName(newWalkthroughList)
+                });
+
+                newWalkthroughList.Add(new NewWalkthroughModel()
+                {
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title2"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description2"),
+                    Image = "walkthrough_img_install_1",
+                    Background = GetBackgroundName(newWalkthroughList)
+                });
+
+                newWalkthroughList.Add(new NewWalkthroughModel()
+                {
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title3"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description3"),
+                    Image = "walkthrough_img_install_2",
+                    Background = GetBackgroundName(newWalkthroughList)
+                });
+
+                newWalkthroughList.Add(new NewWalkthroughModel()
+                {
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title4"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description4"),
+                    Image = "walkthrough_img_install_3",
                     Background = GetBackgroundName(newWalkthroughList)
                 });
 
@@ -168,7 +192,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     {
                         Title = Utility.GetLocalizedLabel("Onboarding", "title5"),
                         Description = Utility.GetLocalizedLabel("Onboarding", "description5"),
-                        Image = "walkthrough_img_update_1",
+                        Image = "walkthrough_img_install_4",
                         Background = GetBackgroundName(newWalkthroughList)
                     });
                 }
@@ -177,17 +201,16 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 {
                     Title = Utility.GetLocalizedLabel("Onboarding", "title7"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description7"),
-                    Image = "walkthrough_img_update_2",
+                    Image = "walkthrough_img_install_5",
                     Background = GetBackgroundName(newWalkthroughList)
                 });
-                
                 if (!MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
                 {
                     newWalkthroughList.Add(new NewWalkthroughModel()
                     {
                         Title = Utility.GetLocalizedLabel("Onboarding", "title9"),
                         Description = Utility.GetLocalizedLabel("Onboarding", "description9"),
-                        Image = "walkthrough_img_update_4",
+                        Image = "walkthrough_img_install_7",
                         Background = GetBackgroundName(newWalkthroughList),
                         Type = NewWalkthroughType.FontSize
                     });
@@ -198,7 +221,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     {
                         Title = Utility.GetLocalizedLabel("Onboarding", "title10"),
                         Description = Utility.GetLocalizedLabel("Onboarding", "description10"),
-                        Image = "walkthrough_img_update_5",
+                        Image = "walkthrough_img_install_8",
                         Background = GetBackgroundName(newWalkthroughList)
                     });
                 }
@@ -209,6 +232,66 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Image = "walkthrough_img_install_9",
                     Background = GetBackgroundName(newWalkthroughList)
                 });
+
+                //previous code
+                //newWalkthroughList.Add(new NewWalkthroughModel()
+                //{
+                //    Title = Utility.GetLocalizedLabel("Onboarding", "title6"),
+                //    Description = Utility.GetLocalizedLabel("Onboarding", "description6"),
+                //    Image = "walkthrough_img_install_0",
+                //    Background = GetBackgroundName(newWalkthroughList)
+                //});
+
+                //bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
+                //if (!IsRewardsDisabled)
+                //{
+                //    newWalkthroughList.Add(new NewWalkthroughModel()
+                //    {
+                //        Title = Utility.GetLocalizedLabel("Onboarding", "title5"),
+                //        Description = Utility.GetLocalizedLabel("Onboarding", "description5"),
+                //        Image = "walkthrough_img_update_1",
+                //        Background = GetBackgroundName(newWalkthroughList)
+                //    });
+                //}
+
+                //newWalkthroughList.Add(new NewWalkthroughModel()
+                //{
+                //    Title = Utility.GetLocalizedLabel("Onboarding", "title7"),
+                //    Description = Utility.GetLocalizedLabel("Onboarding", "description7"),
+                //    Image = "walkthrough_img_update_2",
+                //    Background = GetBackgroundName(newWalkthroughList)
+                //});
+
+                //if (!MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
+                //{
+                //    newWalkthroughList.Add(new NewWalkthroughModel()
+                //    {
+                //        Title = Utility.GetLocalizedLabel("Onboarding", "title9"),
+                //        Description = Utility.GetLocalizedLabel("Onboarding", "description9"),
+                //        Image = "walkthrough_img_update_4",
+                //        Background = GetBackgroundName(newWalkthroughList),
+                //        Type = NewWalkthroughType.FontSize
+                //    });
+                //}
+                //if (!MyTNBAccountManagement.GetInstance().IsAppointmentDisabled)
+                //{
+                //    newWalkthroughList.Add(new NewWalkthroughModel()
+                //    {
+                //        Title = Utility.GetLocalizedLabel("Onboarding", "title10"),
+                //        Description = Utility.GetLocalizedLabel("Onboarding", "description10"),
+                //        Image = "walkthrough_img_update_5",
+                //        Background = GetBackgroundName(newWalkthroughList)
+                //    });
+                //}
+                //newWalkthroughList.Add(new NewWalkthroughModel()
+                //{
+                //    Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
+                //    Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
+                //    Image = "walkthrough_img_install_9",
+                //    Background = GetBackgroundName(newWalkthroughList)
+                //});
+
+                //----------------------------------------------------------------------------
 
                 //commented to hide myhome onboard comms - GTM-2 myHome
                 /*newWalkthroughList.Add(new NewWalkthroughModel()
