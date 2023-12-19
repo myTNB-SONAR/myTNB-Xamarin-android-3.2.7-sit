@@ -243,6 +243,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 //    }
                 //}
 
+
                 if (tenantList != null)
                 {
                     if (tenantList.Find(x => x.CaNo == selectedAccountNumber) != null)
@@ -250,31 +251,40 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         bool isOwnerOverRule = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerOverRule;
                         bool isOwnerAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsOwnerAlreadyOptIn;
                         bool isTenantAlreadyOptIn = tenantList.Find(x => x.CaNo == selectedAccountNumber).IsTenantAlreadyOptIn;
-                       
+                        bool AccountHasOwner = AccountList.Find(x => x.AccNum == selectedAccountNumber).AccountHasOwner;
+
                         if (mSelectedAccountData.AccountHasOwner && !isOwnerOverRule && !isOwnerAlreadyOptIn && !isTenantAlreadyOptIn)
                         {
                             tenantAllowOptIn = true;
                         }
 
-                        if (!mSelectedAccountData.AccountHasOwner)
+
+                        if (!AccountHasOwner)
                         {
                             //copywriting display
                             //message = "Sorry, your account not eligible for DBR due to your owner dont have myTNB account";
                             paperTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "notEligibleAccountNoOwnerText");
-                            notEligible = true;
                         }
 
                         if (isOwnerOverRule)
                         {
                             //copywriting display
                             paperTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "notEligibleOwnerOverRuleText");
-                            notEligible = true;
                         }
                     }
-
-
-           
+                    else
+                    {
+                        //default copywriting when api null";
+                        paperTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "defaultTenantApiText");
+                    
+                    }
                 }
+                else
+                {
+                    //default copywriting when api null";
+                    paperTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "defaultTenantApiText");
+                }
+
 
                 GetDeliveryDisplay(_billRenderingResponse, tenantAllowOptIn, fromProfile, message, notEligible);
 
@@ -1154,22 +1164,30 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                                     tenantAllowOptIn = true;
                                 }
 
-                                if (!mSelectedAccountData.AccountHasOwner)
+                                if (!AccountHasOwner)
                                 {
                                     //copywriting display
                                     //message = "Sorry, your account not eligible for DBR due to your owner dont have myTNB account";
                                     paperTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "notEligibleAccountNoOwnerText");
-                                    notEligible = true;
                                 }
 
                                 if (isOwnerOverRule)
                                 {
                                     //copywriting display
                                     paperTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "notEligibleOwnerOverRuleText");
-                                    notEligible = true;
                                 }
 
                             }
+                            else
+                            {
+                                 //default copywriting when api null";
+                                 paperTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "defaultTenantApiText");
+                            }
+                        }
+                        else
+                        {
+                            //default copywriting when api null";
+                            paperTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "defaultTenantApiText");
                         }
 
                         SetToolBarTitle(GetLabelByLanguage(_isOwner || tenantAllowOptIn ? "title" : "dbrViewBillDelivery"));

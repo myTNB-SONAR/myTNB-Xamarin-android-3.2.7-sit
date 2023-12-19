@@ -150,10 +150,10 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                     EligibilitySessionCache.FeatureProperty.TargetGroup);
 
                 MyTNBAppToolTipBuilder dbrTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                    .SetTitle(Utility.GetLocalizedLabel("SelectElectricityAccounts", isPilot ? "dbrAccountsMissingTitlePilot" : "dbrAccountsMissingTitleNationwide"))
-                    .SetMessage(Utility.GetLocalizedLabel("SelectElectricityAccounts", isPilot ? "dbrMissingAccountsMessagePilot" : "dbrMissingAccountsMessageNationwide"))
-                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                    .Build();
+                     .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", isPilot ? "notEligibleAccountsTitleNationwideV2" : "notEligibleAccountsTitleNationwideV2"))
+                     .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", isPilot ? "notEligibleAccountsMessageNationwideV2" : "notEligibleAccountsMessageNationwideV2"))
+                     .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                     .Build();
                 dbrTooltip.Show();
             }
             else

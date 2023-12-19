@@ -3272,9 +3272,10 @@
     "notEligibleAccountNoOwnerText": "Anda menerima Bil Bercetak untuk akaun ini. Akaun ini tidak layak untuk 'paperless' kerana pemilik akaun berdaftar tidak berada di aplikasi myTNB.",
     "notEligibleOwnerOverRuleText": "Anda menerima Bil Bercetak untuk akaun ini. Pemilik berdaftar akaun ini telah bertukar ke bil bercetak.",
     "notEligibleFeatureToogleTitle": "Akaun elektrik anda tidak layak",
-    "notEligibleFeatureToogleText": "Akaun elektrik ini tidak layak untuk 'paperless' melalui myTNB kerana pemilik akaun berdaftar bukan pengguna myTNB.  Sila maklumkan kepada pemilik akaun berdaftar untuk mendaftar myTNB dan melanggan 'paperless' melalui aplikasi atau portal myTNB.",
+    "notEligibleFeatureToogleText": "Kaedah penghantaran bil ini akan diperkenalkan secara berfasa. Buat masa ini, hanya akaun yang terpilih layak untuk 'paperless'.",
     "notEligibleAccountsTitleNationwideV2": "Mengapa akaun saya tidak ada di sini?",
-    "notEligibleAccountsMessageNationwideV2": "Kaedah penghantaran bil ini akan diperkenalkan secara berfasa. Buat masa ini, hanya akaun yang disenaraikan layak untuk 'paperless'."
+    "notEligibleAccountsMessageNationwideV2": "Kaedah penghantaran bil ini akan diperkenalkan secara berfasa. Buat masa ini, hanya akaun yang disenaraikan layak untuk 'paperless'.",
+    "defaultTenantApiText": "Anda menerima Bil Bercetak untuk akaun ini."
   },
   "DBRWebview": {
     "goPaperless": "Jom Paperless!",
