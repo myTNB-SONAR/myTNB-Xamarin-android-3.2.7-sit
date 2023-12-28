@@ -1447,22 +1447,22 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     }
                     else
                     {
-                        //OnGetPhoto(item);
+                        OnGetPhoto(item);
 
-                        if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
-                        {
-                            this.mView.SetCustomAppLaunchImage(item);
-                        }
+                        //if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                        //{
+                        //    this.mView.SetCustomAppLaunchImage(item);
+                        //}
                     }
                 }
                 else
                 {
-                    //OnGetPhoto(item);
+                    OnGetPhoto(item);
 
-                    if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
-                    {
-                        this.mView.SetCustomAppLaunchImage(item);
-                    }
+                    //if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                    //{
+                    //    this.mView.SetCustomAppLaunchImage(item);
+                    //}
                 }
             }
             catch (Exception e)

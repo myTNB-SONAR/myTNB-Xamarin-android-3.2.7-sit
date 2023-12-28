@@ -1353,7 +1353,50 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             int endResult = DateTime.Compare(nowDateTime, stopDateTime);
                             if (startResult >= 0 && endResult <= 0)
                             {
-                                this.userActionsListener.OnDownloadPhoto(item);
+                                try
+                                {
+                                    int secondMilli = 0;
+                                    try
+                                    {
+                                        secondMilli = (int)(float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000);
+                                    }
+                                    catch (Exception nea)
+                                    {
+                                        Utility.LoggingNonFatalError(nea);
+                                    }
+
+                                    if (secondMilli == 0)
+                                    {
+                                        try
+                                        {
+                                            secondMilli = Int32.Parse(item.ShowForSeconds) * 1000;
+                                        }
+                                        catch (Exception nea)
+                                        {
+                                            Utility.LoggingNonFatalError(nea);
+                                        }
+                                    }
+
+                                    var bitmapDrawable = new BitmapDrawable(item.ImageBitmap);
+                                    RunOnUiThread(() =>
+                                    {
+                                        try
+                                        {
+                                            this.Window.SetBackgroundDrawable(bitmapDrawable);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Utility.LoggingNonFatalError(ex);
+                                        }
+                                    });
+
+                                    this.userActionsListener.OnWaitSplashScreenDisplay(secondMilli);
+                                }
+                                catch (Exception ne)
+                                {
+                                    SetDefaultAppLaunchImage();
+                                    Utility.LoggingNonFatalError(ne);
+                                }
                             }
                             else
                             {
