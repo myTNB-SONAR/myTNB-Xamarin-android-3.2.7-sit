@@ -3411,26 +3411,42 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public async void GetDownTime()
         {
-
-            DSSTableResponse downTimeResponse = await ServiceApiImpl.Instance.GetDSSTableData(new DSSTableRequest());
-
-            if (downTimeResponse != null && downTimeResponse.Response.ErrorCode != null)
+            try
             {
-                if (downTimeResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                DSSTableResponse downTimeResponse = await ServiceApiImpl.Instance.GetDSSTableData(new DSSTableRequest());
+
+                if (downTimeResponse.Response.data != null && downTimeResponse != null && downTimeResponse.Response.ErrorCode != null)
                 {
-                    DownTimeEntity.RemoveActive();
-                    foreach (DownTime cat in downTimeResponse.Response.data)
+                    if (downTimeResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                     {
-                       int newRecord = DownTimeEntity.InsertOrReplace(cat);
-                    }
+                        DownTimeEntity.RemoveActive();
+                        foreach (DownTime cat in downTimeResponse.Response.data)
+                        {
+                            int newRecord = DownTimeEntity.InsertOrReplace(cat);
+                        }
 
-                    if (DownTimeEntity.IsBCRMDown())
-                    {
-                        //this.mView.OnCheckBCRMDowntime();
+                        if (DownTimeEntity.IsBCRMDown())
+                        {
+                            //this.mView.OnCheckBCRMDowntime();
 
+                        }
                     }
                 }
             }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
+            }
+
+            
         }
     }
 }
