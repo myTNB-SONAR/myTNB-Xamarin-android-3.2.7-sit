@@ -52,19 +52,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
         </LinearLayout>
-        <ImageButton
-            android:id="@+id/btnNewIcon"
-            style="@style/Theme.AddIconButton"
-            android:layout_width="match_parent"
+		<LinearLayout
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:layout_width="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="6dp"
-            android:src="@drawable/ic_add_card"
-            android:visibility="visible"
-            android:gravity="center_vertical"/>
+            android:background="@color/background_pale_grey" 
+            android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewAddIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+		</LinearLayout>
         <TextView
             android:id="@+id/txttitleExtraIcon"
             android:layout_width="match_parent"

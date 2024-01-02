@@ -26,7 +26,7 @@ using static myTNB_Android.Src.QuickActionArrange.Adapter.QuickActionLockedAndEx
 namespace myTNB_Android.Src.QuickActionArrange.Activity
 {
     [Activity(Label = "Rearrange Quick Action Icon", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
-    public class QuickActionArrangeActivity : BaseActivityCustom, RearrangeQuickActionListAdapter.OnItemDismissListener, IItemClickListener, RearrangeQuickActionListAdapter.OnItemDragAndMoveListener
+    public class QuickActionArrangeActivity : BaseActivityCustom, RearrangeQuickActionListAdapter.OnItemDismissListener, IItemClickListener, RearrangeQuickActionListAdapter.OnItemDragAndMoveListener, AddIconAdapter.IItemClickListener
     {
         [BindView(Resource.Id.rootView)]
         RelativeLayout rootView;
@@ -43,34 +43,38 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
         [BindView(Resource.Id.recyclerViewExtraIcon)]
         RecyclerView recyclerViewExtraIcon;
 
+        [BindView(Resource.Id.recyclerViewAddIcon)]
+        RecyclerView recyclerViewAddIcon;
+
         [BindView(Resource.Id.txttitleRearrangeQuickAction)]
         TextView txttitleRearrangeQuickAction;
 
         [BindView(Resource.Id.txttitleExtraIcon)]
         TextView txttitleExtraIcon;
 
-        [BindView(Resource.Id.btnNewIcon)]
-        ImageButton btnNewIcon;
-
         public readonly static int REARRANGE_QUICK_ACTION_ACTIVITY_CODE = 8811;
 
-        private List<MyServiceModel> listExistingQuickAction;
+        List<MyServiceModel> masterDataListIcon = new List<MyServiceModel>();
 
-        List<MyServiceModel> listCurrentQuickAction = new List<MyServiceModel>();
+        List<MyServiceModel> currentIconList = new List<MyServiceModel>();
 
-        List<MyServiceModel> listLockedQuickAction = new List<MyServiceModel>();
+        List<MyServiceModel> masterDataListIconFiltered = new List<MyServiceModel>();
 
-        List<MyServiceModel> listExtraQuickAction = new List<MyServiceModel>();
+        List<Feature> lockedListFeatureIcon = new List<Feature>();
 
-        List<ArrangeQuickActionModel> updatedListCurrentIcon = new List<ArrangeQuickActionModel>();
+        List<Feature> extraListFeatureIcon = new List<Feature>();
 
-        List<ArrangeQuickActionModel> lockedListCurrentIcon = new List<ArrangeQuickActionModel>();
+        List<Feature> listIconNew = new List<Feature>();
 
-        List<ArrangeQuickActionModel> extraListCurrentIcon = new List<ArrangeQuickActionModel>();
+        List<Feature> masterDataListFeatureModel = new List<Feature>();
+
+        List<int> listAddIconCard = new List<int>();
 
         private RearrangeQuickActionListAdapter RearrangeQuickActionListAdapter;
 
         private QuickActionLockedAndExtraAdapter quickActionLockedAndExtraAdapter;
+
+        private AddIconAdapter addIconAdapter;
 
         RecyclerView.LayoutManager layoutManager;
 
@@ -86,8 +90,8 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
                 {
                     if (extras.ContainsKey("RearrangeQuickAction"))
                     {
-                        listCurrentQuickAction = DeSerialze<List<MyServiceModel>>(extras.GetString("RearrangeQuickAction"));
-                        listExistingQuickAction = listCurrentQuickAction;
+                        masterDataListIcon = DeSerialze<List<MyServiceModel>>(extras.GetString("RearrangeQuickAction"));
+                        currentIconList = masterDataListIcon;
                     }
                 }
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
@@ -99,7 +103,6 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
                 txttitleRearrangeQuickAction.Text = GetLabelByLanguage("defaultIconTitle");
                 btnSubmit.Text = GetLabelByLanguage("saveChangesBtn");
 
-                btnNewIcon.Click += BtnNewIcon_Click;
                 PopulateQuickActionList();
             }
             catch (Exception e)
@@ -108,172 +111,119 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
             }
         }
 
-        private void BtnNewIcon_Click(object sender, EventArgs e)
+        public void PopulateQuickActionList()
         {
-            if (listExtraQuickAction != null && listExtraQuickAction.Count > 0)
+            try
             {
-                MyServiceModel item = listExtraQuickAction?.ElementAtOrDefault(0);
-                extraListCurrentIcon?.RemoveAt(0);
-                listExtraQuickAction?.RemoveAt(0);
-                listCurrentQuickAction.Add(item);
-                RearrangeQuickActionListAdapter.NotifyDataSetChanged();
-                extraList();
-                if (extraListCurrentIcon.Count == 0 && listExtraQuickAction.Count == 0)
+                List<MyServiceModel> tempCurrentIconList = new List<MyServiceModel>();
+                Feature tempCurrentModel;
+                currentIconList.RemoveAll(x => x.ServiceType == MobileEnums.ServiceEnum.VIEWLESS);
+                currentIconList.RemoveAll(x => x.ServiceType == MobileEnums.ServiceEnum.VIEWMORE);
+
+                listIconNew = UserSessions.GetQuickActionList();
+
+                masterDataListIconFiltered = masterDataListIcon
+                                    .Join(listIconNew, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                                    {
+                                        OriginalItem = item1,
+                                        Order = listIconNew.IndexOf(item2)
+                                    })
+                                    .OrderBy(pair => pair.Order)
+                                    .Select(pair => pair.OriginalItem)
+                                    .ToList();
+
+                if (currentIconList != null && currentIconList.Count > 0 && currentIconList.Count <= 8)
                 {
-                    ButtonEnableDisable();
-                }
-                else if (listCurrentQuickAction.Count + listLockedQuickAction.Count <= 8
-                    && (extraListCurrentIcon.Count > 0 && listExtraQuickAction.Count > 0))
-                {
-                    DisableSaveButton();
+                    foreach (var item in currentIconList)
+                    {
+                        var iconModelLocked = listIconNew?.Find(x => x.ServiceId == item.ServiceId);
+                        if (iconModelLocked != null)
+                        {
+                            if (iconModelLocked.isLocked == "true")
+                            {
+                                lockedListFeatureIcon.Add(iconModelLocked);
+                            }
+                            else
+                            {
+                                tempCurrentIconList.Add(item);
+                            }
+                            masterDataListFeatureModel.Add(iconModelLocked);
+                        }
+                        else
+                        {
+                            tempCurrentModel = new Feature
+                            {
+                                isAvailable = "false",
+                                isLocked = "false",
+                                ServiceName = item.ServiceName,
+                                ServiceId = item.ServiceId
+                            };
+
+                            masterDataListFeatureModel.Add(tempCurrentModel);
+                            extraListFeatureIcon.Add(tempCurrentModel);
+                        }   
+                    }
+
+                    listAddIconCard.Clear();
+                    int totalAfterDeduct = 8 - listIconNew.Count;
+                    for (int i = 0; i < totalAfterDeduct; i++)
+                    {
+                        listAddIconCard.Add(i);
+                    }
+
+                    var updatedList = tempCurrentIconList
+                            .Join(listIconNew, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                            {
+                                OriginalItem = item1,
+                                Order = listIconNew.IndexOf(item2)
+                            })
+                            .OrderBy(pair => pair.Order)
+                            .Select(pair => pair.OriginalItem)
+                            .ToList();
+
+                    currentIconList = updatedList;
                 }
                 else
                 {
-                    ButtonEnableDisable();
-                }
-            }
-        }
-
-        public void PopulateQuickActionList()
-        {
-            List<MyServiceModel> lockedList = new List<MyServiceModel>();
-            List<MyServiceModel> tempCurrentIconList = new List<MyServiceModel>();
-            MyServiceModel tempModel = new MyServiceModel();
-            ArrangeQuickActionModel tempCurrentModel;
-            listCurrentQuickAction.RemoveAll(x => x.ServiceType == MobileEnums.ServiceEnum.VIEWLESS);
-            listCurrentQuickAction.RemoveAll(x => x.ServiceType == MobileEnums.ServiceEnum.VIEWMORE);
-
-            if (listCurrentQuickAction != null && listCurrentQuickAction.Count > 0 && listCurrentQuickAction.Count <= 8)
-            {
-                foreach (var item in listCurrentQuickAction)
-                {
-                    if (item.ServiceType == MobileEnums.ServiceEnum.VIEWBILL || item.ServiceType == MobileEnums.ServiceEnum.PAYBILL)
+                    for (int i = 8; i <= currentIconList.Count; i++)
                     {
-                        tempCurrentModel = new ArrangeQuickActionModel
+                        var iconModel = listIconNew?.Find(x => x.ServiceId == currentIconList[i].ServiceId);
+
+                        tempCurrentModel = new Feature
                         {
-                            IsDeleted = false,
-                            IsLocked = true,
-                            IsUserDeleted = false,
-                            ServiceName = item.ServiceName,
-                            ServiceType = item.ServiceType
+                            isAvailable = "false",
+                            isLocked = iconModel.isLocked,
+                            ServiceName = iconModel.ServiceName,
+                            ServiceId = iconModel.ServiceId
                         };
 
-                        lockedListCurrentIcon.Add(tempCurrentModel);
-                        listLockedQuickAction.Add(item);
+                        extraListFeatureIcon.Add(tempCurrentModel);
+                        //extraListFeatureIcon.Add(currentIconList[i]);
+                        currentIconList.RemoveAt(i);
                     }
-                    else
-                    {
-                        tempCurrentIconList.Add(item);
-                    }
-                }
-                listCurrentQuickAction = tempCurrentIconList;
-            }
-            else if (listCurrentQuickAction != null && listCurrentQuickAction.Count > 0 && listCurrentQuickAction.Count >= 9)
-            {
-                for (int i = 8; i <= listCurrentQuickAction.Count; i++)
-                {
-                    tempCurrentModel = new ArrangeQuickActionModel
-                    {
-                        IsDeleted = false,
-                        IsLocked = true,
-                        IsUserDeleted = false,
-                        ServiceName = listCurrentQuickAction[i].ServiceName,
-                        ServiceType = listCurrentQuickAction[i].ServiceType
-                    };
 
-                    extraListCurrentIcon.Add(tempCurrentModel);
-                    listExtraQuickAction.Add(listCurrentQuickAction[i]);
-                    listCurrentQuickAction.RemoveAt(i);
-                }
-
-                foreach (var item in listCurrentQuickAction)
-                {
-                    if (item.ServiceType == MobileEnums.ServiceEnum.VIEWBILL || item.ServiceType == MobileEnums.ServiceEnum.PAYBILL)
+                    foreach (var item in currentIconList)
                     {
-                        tempCurrentModel = new ArrangeQuickActionModel
+                        var iconModel = listIconNew?.Find(x => x.ServiceId == item.ServiceId);
+
+                        if (iconModel.isLocked == "true")
                         {
-                            IsDeleted = false,
-                            IsLocked = true,
-                            IsUserDeleted = false,
-                            ServiceName = item.ServiceName,
-                            ServiceType = item.ServiceType
-                        };
-
-                        lockedListCurrentIcon.Add(tempCurrentModel);
-                        listLockedQuickAction.Add(item);
+                            lockedListFeatureIcon.Add(iconModel);
+                            //listLockedQuickAction.Add(item);
+                        }
+                        else
+                        {
+                            tempCurrentIconList.Add(item);
+                        }
                     }
-                    else
-                    {
-                        tempCurrentIconList.Add(item);
-                    }
+                    currentIconList = tempCurrentIconList;
                 }
-                listCurrentQuickAction = tempCurrentIconList;
+                DisableSaveButton();
+                PopulateView();
             }
-            DisableSaveButton();
-            PopulateView();
-        }
-
-        public void lockedList()
-        {
-            if (listLockedQuickAction != null && listLockedQuickAction.Count > 0)
+            catch (Exception e)
             {
-                // Initialize RecyclerView
-                layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-                recyclerViewLockIcon.SetLayoutManager(layoutManager);
-
-                // Initialize and set adapter
-                quickActionLockedAndExtraAdapter = new QuickActionLockedAndExtraAdapter(this, lockedListCurrentIcon);
-                recyclerViewLockIcon.SetAdapter(quickActionLockedAndExtraAdapter);
-            }
-            else
-            {
-                recyclerViewLockIcon.Visibility = ViewStates.Gone;
-            }
-        }
-
-        public void canRemoveOrRearrangeList()
-        {
-            if (listCurrentQuickAction != null && listCurrentQuickAction.Count > 0)
-            {
-                // Initialize RecyclerView
-                layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-                recyclerView.SetLayoutManager(layoutManager);
-
-                // Initialize and set adapter
-                RearrangeQuickActionListAdapter = new RearrangeQuickActionListAdapter(listCurrentQuickAction, this, recyclerView);
-                RearrangeQuickActionListAdapter.SetOnItemDismissListener(this);
-                RearrangeQuickActionListAdapter.SetOnItemDragAndMoveListener(this);
-                recyclerView.SetAdapter(RearrangeQuickActionListAdapter);
-
-                // Set up ItemTouchHelper
-                ItemTouchHelper.Callback callback = new RearrangeSwipeItemTouchHelperCallback(RearrangeQuickActionListAdapter, this);
-                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-                itemTouchHelper.AttachToRecyclerView(recyclerView);
-            }
-        }
-
-        public void extraList()
-        {
-            if (listExtraQuickAction != null && listExtraQuickAction.Count > 0 && extraListCurrentIcon.Count == listExtraQuickAction.Count)
-            {
-                txttitleExtraIcon.Visibility = ViewStates.Visible;
-                recyclerViewExtraIcon.Visibility = ViewStates.Visible;
-
-                // Initialize RecyclerView
-                layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-                recyclerViewExtraIcon.SetLayoutManager(layoutManager);
-
-                // Initialize and set adapter
-                quickActionLockedAndExtraAdapter = new QuickActionLockedAndExtraAdapter(this, extraListCurrentIcon);
-                quickActionLockedAndExtraAdapter.SetItemClickListener(this);
-                recyclerViewExtraIcon.SetAdapter(quickActionLockedAndExtraAdapter);
-                quickActionLockedAndExtraAdapter.NotifyDataSetChanged();
-            }
-            else
-            {
-                btnNewIcon.Visibility = ViewStates.Gone;
-                txttitleExtraIcon.Visibility = ViewStates.Gone;
-                recyclerViewExtraIcon.Visibility = ViewStates.Gone;
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -288,6 +238,7 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
                         lockedList();
                         canRemoveOrRearrangeList();
                         extraList();
+                        AddIconCard(listAddIconCard);
                     }
                     catch (Exception ex)
                     {
@@ -301,80 +252,170 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
             }
         }
 
-        public void OnItemDismiss(int adapterPosition)
+        public void lockedList()
         {
-            ArrangeQuickActionModel tempCurrentModel;
-            for (int i = 0; i < listCurrentQuickAction.Count; i++)
+            if (lockedListFeatureIcon != null && lockedListFeatureIcon.Count > 0)
             {
-                if (i == adapterPosition)
-                {
-                    tempCurrentModel = new ArrangeQuickActionModel
-                    {
-                        IsDeleted = true,
-                        IsLocked = false,
-                        IsUserDeleted = true,
-                        ServiceName = listCurrentQuickAction[i].ServiceName,
-                        ServiceType = listCurrentQuickAction[i].ServiceType
-                    };
-                    extraListCurrentIcon.Add(tempCurrentModel);
-                    listExtraQuickAction.Add(listCurrentQuickAction[i]);
-                    RearrangeQuickActionListAdapter.removeItemFromList(adapterPosition);
-                }
-            }
-            extraList();
-            if ((listCurrentQuickAction.Count + listLockedQuickAction.Count <= 8) &&
-                listExtraQuickAction != null && listExtraQuickAction.Count > 0 &&
-                extraListCurrentIcon.Count == listExtraQuickAction.Count)
-            {
-                btnNewIcon.Visibility = ViewStates.Visible;
-                DisableSaveButton();
+                // Initialize RecyclerView
+                layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                recyclerViewLockIcon.SetLayoutManager(layoutManager);
+
+                // Initialize and set adapter
+                quickActionLockedAndExtraAdapter = new QuickActionLockedAndExtraAdapter(this, lockedListFeatureIcon);
+                recyclerViewLockIcon.SetAdapter(quickActionLockedAndExtraAdapter);
             }
             else
             {
+                recyclerViewLockIcon.Visibility = ViewStates.Gone;
+            }
+        }
+
+        public void canRemoveOrRearrangeList()
+        {
+            if (currentIconList != null && currentIconList.Count > 0)
+            {
+                // Initialize RecyclerView
+                layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                recyclerView.SetLayoutManager(layoutManager);
+
+                // Initialize and set adapter
+                RearrangeQuickActionListAdapter = new RearrangeQuickActionListAdapter(currentIconList, this, recyclerView);
+                RearrangeQuickActionListAdapter.SetOnItemDismissListener(this);
+                RearrangeQuickActionListAdapter.SetOnItemDragAndMoveListener(this);
+                recyclerView.SetAdapter(RearrangeQuickActionListAdapter);
+
+                // Set up ItemTouchHelper
+                ItemTouchHelper.Callback callback = new RearrangeSwipeItemTouchHelperCallback(RearrangeQuickActionListAdapter, this);
+                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+                itemTouchHelper.AttachToRecyclerView(recyclerView);
+            }
+        }
+
+        public void extraList()
+        {
+            if (extraListFeatureIcon != null && extraListFeatureIcon.Count > 0)
+            {
+                txttitleExtraIcon.Visibility = ViewStates.Visible;
+                recyclerViewExtraIcon.Visibility = ViewStates.Visible;
+
+                // Initialize RecyclerView
+                layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                recyclerViewExtraIcon.SetLayoutManager(layoutManager);
+
+                // Initialize and set adapter
+                quickActionLockedAndExtraAdapter = new QuickActionLockedAndExtraAdapter(this, extraListFeatureIcon);
+                quickActionLockedAndExtraAdapter.SetItemClickListener(this);
+                recyclerViewExtraIcon.SetAdapter(quickActionLockedAndExtraAdapter);
+                quickActionLockedAndExtraAdapter.NotifyDataSetChanged();
+            }
+            else
+            {
+                //btnNewIcon.Visibility = ViewStates.Gone;
+                //txttitleExtraIcon.Visibility = ViewStates.Gone;
+                recyclerViewExtraIcon.Visibility = ViewStates.Gone;
+            }
+        }
+
+        public void AddIconCard(List<int> totalAddIconCard)
+        {
+            // Initialize RecyclerView
+            layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+            recyclerViewAddIcon.SetLayoutManager(layoutManager);
+
+            // Initialize and set adapter
+            addIconAdapter = new AddIconAdapter(this, totalAddIconCard);
+            addIconAdapter.SetItemClickListener(this);
+            recyclerViewAddIcon.SetAdapter(addIconAdapter);
+            addIconAdapter.NotifyDataSetChanged();
+        }
+
+        public void OnItemClickAddIcon()
+        {
+            if (extraListFeatureIcon != null && extraListFeatureIcon.Count > 0)
+            {
+                var iconModel = extraListFeatureIcon[0];
+                MyServiceModel item = masterDataListIcon?.Find(x => x.ServiceId == iconModel.ServiceId);
+                extraListFeatureIcon?.RemoveAt(0);
+                currentIconList.Add(item);
+
+                if (currentIconList.Count == 1)
+                {
+                    canRemoveOrRearrangeList();
+                }
+                RearrangeQuickActionListAdapter.NotifyDataSetChanged();
+                AddItemCardReset();
+                extraList();
                 ButtonEnableDisable();
+            }
+        }
+
+        public void OnItemDismiss(int adapterPosition)
+        {
+            Feature tempCurrentModel;
+            for (int i = 0; i < currentIconList.Count; i++)
+            {
+                if (i == adapterPosition)
+                {
+                    var iconModel = masterDataListFeatureModel?.Find(x => x.ServiceId == currentIconList[i].ServiceId);
+
+                    tempCurrentModel = new Feature
+                    {
+                        isAvailable = "false",
+                        isLocked = iconModel.isLocked,
+                        ServiceName = iconModel.ServiceName,
+                        ServiceId = iconModel.ServiceId
+                    };
+
+                    extraListFeatureIcon.Add(tempCurrentModel);
+                    RearrangeQuickActionListAdapter.removeItemFromList(adapterPosition);
+                }
+            }
+            AddItemCardReset();
+            extraList();
+            ButtonEnableDisable();
+        }
+
+        public void AddItemCardReset()
+        {
+            listAddIconCard.Clear();
+            int totalIconList = 8 - (currentIconList.Count + lockedListFeatureIcon.Count);
+            if (totalIconList > 0)
+            {
+                for (int i = 0; i < totalIconList; i++)
+                {
+                    listAddIconCard.Add(i);
+                }
+                AddIconCard(listAddIconCard);
             }
         }
 
         public void OnItemClick(int position)
         {
-            if (listExtraQuickAction != null && listExtraQuickAction.Count > 0)
+            if (extraListFeatureIcon != null && extraListFeatureIcon.Count > 0)
             {
-                MyServiceModel item = listExtraQuickAction?.ElementAtOrDefault(position);
-                extraListCurrentIcon.RemoveAt(position);
-                listExtraQuickAction.RemoveAt(position);
-                listCurrentQuickAction.Add(item);
+                var iconModel = extraListFeatureIcon[position];
+                MyServiceModel item = masterDataListIcon?.Find(x => x.ServiceId == iconModel.ServiceId);
+
+                extraListFeatureIcon.RemoveAt(position);
+                currentIconList.Add(item);
+
+                if (currentIconList.Count == 1)
+                {
+                    canRemoveOrRearrangeList();
+                }
                 RearrangeQuickActionListAdapter.NotifyDataSetChanged();
                 extraList();
-                if (extraListCurrentIcon.Count == 0 && listExtraQuickAction.Count == 0)
-                {
-                    ButtonEnableDisable();
-                }
-                else if (listCurrentQuickAction.Count + listLockedQuickAction.Count <= 8
-                    && (extraListCurrentIcon.Count > 0 && listExtraQuickAction.Count > 0))
-                {
-                    DisableSaveButton();
-                }
-                else
-                {
-                    ButtonEnableDisable();
-                }
+                ButtonEnableDisable();
             }
+
+            AddItemCardReset();
         }
 
         public void OnItemDragAndMove(bool flag)
         {
             if (flag)
             {
-                listCurrentQuickAction = RearrangeQuickActionListAdapter.GetCurrentList();
-                if ((listCurrentQuickAction.Count + listLockedQuickAction.Count <= 8) &&
-                    listExtraQuickAction != null && listExtraQuickAction.Count > 0)
-                {
-                    DisableSaveButton();
-                }
-                else
-                {
-                    ButtonEnableDisable();
-                }
+                ButtonEnableDisable();
             }
         }
 
@@ -392,9 +433,9 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
 
         public bool CompareListChanges()
         {
-           int indexStartSkip = listLockedQuickAction.Count;
-           return listExistingQuickAction.Count >= indexStartSkip &&
-                  listExistingQuickAction.Skip(indexStartSkip).SequenceEqual(listCurrentQuickAction);
+           int indexStartSkip = lockedListFeatureIcon.Count;
+           return masterDataListIconFiltered.Count >= indexStartSkip &&
+                  masterDataListIconFiltered.Skip(indexStartSkip).SequenceEqual(currentIconList);
         }
 
         public override Boolean ShowCustomToolbarTitle()
@@ -452,10 +493,30 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
                     {
                         ShowProgressDialog();
                         // Concatenate the lists and assign the result to a new list
-                        List<MyServiceModel> concatenatedList = listLockedQuickAction.Concat(listCurrentQuickAction).ToList();
+                        List<Feature> listFinal = new List<Feature>();
+                        //<MyServiceModel> concatenatedList = listLockedQuickAction.Concat(currentIconList).ToList();
+
+                        var concatenatedList = lockedListFeatureIcon.Cast<dynamic>().Concat(currentIconList.Cast<dynamic>()).ToList();
+
+                        //fixListCurrentIcon
+                        var updatedList = masterDataListFeatureModel
+                                    .Join(concatenatedList, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                                    {
+                                        OriginalItem = item1,
+                                        Order = concatenatedList.IndexOf(item2)
+                                    })
+                                    .OrderBy(pair => pair.Order)
+                                    .Select(pair => pair.OriginalItem)
+                                    .ToList();
+
+                        // Update myServicesList with the sorted order
+                        listFinal.Clear();
+                        listFinal.AddRange(updatedList);
+                        UserSessions.RemoveQuickActionList();
+                        UserSessions.SetQuickActionList(listFinal);
 
                         Intent result = new Intent();
-                        result.PutExtra("IconList", JsonConvert.SerializeObject(concatenatedList));
+                        result.PutExtra("IconList", "true");
                         SetResult(Result.Ok, result);
                         Finish();
                     }

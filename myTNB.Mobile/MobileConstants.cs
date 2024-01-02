@@ -92,7 +92,7 @@ namespace myTNB.Mobile
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlSTG;
         internal const string SignKey = SignKey_Staging;
 #elif MASTER || SIT || DEBUG
-        public static string ApiDomain = DEV5;
+        public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
         internal const string SaltKey = SaltKey_DEV;

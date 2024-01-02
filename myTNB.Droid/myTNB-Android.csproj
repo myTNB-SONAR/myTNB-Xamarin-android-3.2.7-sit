@@ -8358,6 +8358,11 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\QuickActionAddIconItemLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\QuickActionArrange\Adapter\AddIconCardAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">

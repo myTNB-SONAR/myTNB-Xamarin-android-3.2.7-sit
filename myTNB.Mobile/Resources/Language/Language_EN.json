@@ -3604,5 +3604,49 @@
     "extraIconTitle": "Add a action to your Quick Action",
     "defaultIconTitle": "Simply hold and drag to rearrange the actions.",
     "saveChangesBtn": "Save Changes"
-  }
+  },
+  "Feature": [
+    {
+      "ServiceName": "Pay My Bills",
+      "ServiceId": "1004",
+      "isLocked": "true",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "View My e-Bills / Advice",
+      "ServiceId": "1005",
+      "isLocked": "true",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "My Energy Budget",
+      "ServiceId": "1007",
+      "isLocked": "false",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "myHome",
+      "ServiceId": "1008",
+      "isLocked": "false",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "Self Meter Reading",
+      "ServiceId": "1001",
+      "isLocked": "false",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "Submit & Track Enquiry",
+      "ServiceId": "1003",
+      "isLocked": "false",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "Application Status",
+      "ServiceId": "1006",
+      "isLocked": "false",
+      "isAvailable": "true"
+    }
+  ]
 }

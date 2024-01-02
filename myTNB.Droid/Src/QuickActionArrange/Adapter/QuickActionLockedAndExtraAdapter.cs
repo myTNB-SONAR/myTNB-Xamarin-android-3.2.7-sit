@@ -13,8 +13,6 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.QuickActionArrange.Model;
 using myTNB_Android.Src.Utils;
-using static myTNB.Mobile.MobileEnums;
-using static myTNB_Android.Src.QuickActionArrange.Adapter.RearrangeQuickActionListAdapter;
 
 namespace myTNB_Android.Src.QuickActionArrange.Adapter
 {
@@ -23,7 +21,7 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
         private Android.App.Activity mActivity;
         public event EventHandler<int> ItemClick;
         public event EventHandler<int> IconClick;
-        private List<ArrangeQuickActionModel> IconList = new List<ArrangeQuickActionModel>();
+        private List<Feature> IconList = new List<Feature>();
         private IItemClickListener listener;
 
         public override int ItemCount => IconList.Count;
@@ -34,19 +32,19 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
             this.NotifyDataSetChanged();
         }
 
-        public void Add(ArrangeQuickActionModel newData)
+        public void Add(Feature newData)
         {
             this.IconList.Add(newData);
             this.NotifyItemInserted(IconList.IndexOf(newData));
         }
 
-        public void AddAll(List<ArrangeQuickActionModel> allData)
+        public void AddAll(List<Feature> allData)
         {
             this.IconList.AddRange(allData);
             this.NotifyDataSetChanged();
         }
 
-        public QuickActionLockedAndExtraAdapter(Android.App.Activity activity, List<ArrangeQuickActionModel> data)
+        public QuickActionLockedAndExtraAdapter(Android.App.Activity activity, List<Feature> data)
         {
             this.mActivity = activity;
             this.IconList = data;
@@ -57,11 +55,11 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
         {
             QuickActionLockedAndExtraViewHolder vh = holder as QuickActionLockedAndExtraViewHolder;
 
-            ArrangeQuickActionModel item = IconList[position];
+            Feature item = IconList[position];
             try
             {
                 vh.IconName.Text = filterServiceName(item.ServiceName);
-                if (item.IsUserDeleted)
+                if (item.isAvailable == "false")
                 {
                     vh.Icon.SetImageResource(Resource.Drawable.ic_add_card);
                     vh.Icon.Clickable = true;
@@ -73,27 +71,27 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
 
                 try
                 {
-                    switch (item.ServiceType)
+                    switch (item.ServiceId)
                     {
-                        case ServiceEnum.SELFMETERREADING:
+                        case "1001":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.submit_meter);
                             break;
-                        case ServiceEnum.SUBMITFEEDBACK:
+                        case "1003":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.feedback);
                             break;
-                        case ServiceEnum.PAYBILL:
+                        case "1004":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.bills);
                             break;
-                        case ServiceEnum.VIEWBILL:
+                        case "1005":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.pdf_bill);
                             break;
-                        case ServiceEnum.APPLICATIONSTATUS:
+                        case "1006":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.check_status);
                             break;
-                        case ServiceEnum.ENERGYBUDGET:
+                        case "1007":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.Check_Status_Icon);
                             break;
-                        case ServiceEnum.MYHOME:
+                        case "1008":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.Icon_Quick_Access_MyHome);
                             break;
                     }
@@ -145,7 +143,7 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
 
             private readonly string EG_ACCOUNT_LABEL = "";
 
-            private ArrangeQuickActionModel item = null;
+            private Feature item = null;
 
             public QuickActionLockedAndExtraViewHolder(View itemView) : base(itemView)
             {

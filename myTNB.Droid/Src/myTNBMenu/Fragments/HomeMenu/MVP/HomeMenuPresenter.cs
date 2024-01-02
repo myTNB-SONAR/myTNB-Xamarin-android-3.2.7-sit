@@ -42,6 +42,7 @@ using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.SSMRMeterHistory.Api;
 using Dynatrace.Xamarin;
 using myTNB.Mobile.Business;
+using myTNB_Android.Src.QuickActionArrange.Model;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1958,7 +1959,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             myServicesList.Add(model);
                         }
 
-                        ProcessMyServices();
+                        //ProcessMyServices();
+                        var task = Task.Run(async () => await QuickActionRearrangeData());
+                        await task;
                         FirstTimeMyServiceInitiate = false;
                     }
                     else
@@ -2044,6 +2047,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }
 
+            if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0
+                && UserSessions.GetUserEmailQuickAction(this.mPref) != null && !string.IsNullOrEmpty(UserSessions.GetUserEmailQuickAction(this.mPref))
+                && UserSessions.GetUserEmailQuickAction(this.mPref) == UserEntity.GetActive().Email)
+            {
+                List<Feature> listIconNew = new List<Feature>();
+                listIconNew = UserSessions.GetQuickActionList();
+
+                var updatedList = myServicesList
+                    .Join(listIconNew, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                    {
+                        OriginalItem = item1,
+                        Order = listIconNew.IndexOf(item2)
+                    })
+                    .OrderBy(pair => pair.Order)
+                    .Select(pair => pair.OriginalItem)
+                    .ToList();
+
+                // Update myServicesList with the sorted order
+                filteredServices.Clear();
+                filteredServices.AddRange(updatedList);
+            }
+
             if (filteredServices.Count > 6)
             {
                 for (int i = 0; i < 5; i++)
@@ -2051,7 +2076,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     newfilteredServices.Add(filteredServices[i]);
                 }
 
-                var modelViewMore = new MyServiceModel()
+                var modelViewMore = new MyServiceModel()       //can remove after modelviewmore have in API
                 {
                     ServiceId = "1111",
                     ServiceName = "VIEWMORE",
@@ -2080,6 +2105,200 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             isMyServiceDone = true;
             OnCheckToCallHomeMenuTutorial();
+        }
+
+        private async Task QuickActionRearrangeData()
+        {
+            try
+            {
+                DateTime localTimestamp = DateTime.Now;
+                bool needToCallAPI = false;
+                if (UserSessions.GetTimeStampQuickAction(this.mPref) != null && !string.IsNullOrEmpty(UserSessions.GetTimeStampQuickAction(this.mPref))
+                    && UserSessions.GetUserEmailQuickAction(this.mPref) != null && !string.IsNullOrEmpty(UserSessions.GetUserEmailQuickAction(this.mPref)))
+                {
+                    string timestamp = UserSessions.GetTimeStampQuickAction(this.mPref);
+                    string email = UserSessions.GetUserEmailQuickAction(this.mPref);
+
+                    DateTime.TryParseExact(timestamp, "dd/MM/yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime sessionStartDateTime);
+                    bool within30Minutes = IsWithin30Minutes(sessionStartDateTime, localTimestamp);
+
+                    if (!within30Minutes && (email == UserEntity.GetActive().Email))
+                    {
+                        needToCallAPI = true;
+                    }
+                }
+                else
+                {
+                    UserSessions.RemoveQuickActionList();
+                    needToCallAPI = true;
+                }
+
+                needToCallAPI = false; //  this // hardcode
+                if (needToCallAPI)
+                {
+                    UserSessions.RemoveQuickActionList();
+                    string getSErvicesTimeStamp = UserSessions.GetServicesTimeStamp(this.mPref);
+                    PostServicesResponse servicesResponse = await HomeManager.Instance.PostServices(getSErvicesTimeStamp);
+
+                    if (servicesResponse != null
+                        && servicesResponse.Data != null
+                        && servicesResponse.Data.StatusDetail != null
+                        && servicesResponse.Data.StatusDetail.IsSuccess)
+                    {
+                        Log.Debug("SUCCESS servicesResponse:", servicesResponse.Data.ToString());
+                        MyServiceEntity.RemoveAll();
+                        MyServiceChildEntity.RemoveAll();
+                        myServicesList.Clear();
+
+                        List<ServicesModel> servicesList = servicesResponse.Data.Content.Services;
+                        bool shouldUpdateImages = servicesResponse.Data.Content.ShouldUpdateImages;
+                        string timeStamp = servicesResponse.Data.Content.TimeStamp;
+
+                        UserSessions.SetGetServicesTimeStamp(this.mPref, timeStamp);
+
+                        if (servicesList.Count > 0)
+                        {
+                            foreach (ServicesModel service in servicesList)
+                            {
+                                MyServiceModel model = new MyServiceModel()
+                                {
+                                    ServiceId = service.ServiceId,
+                                    ServiceName = service.ServiceName,
+                                    ServiceIconUrl = service.ServiceIconUrl,
+                                    DisabledServiceIconUrl = service.DisabledServiceIconUrl,
+                                    ServiceBannerUrl = service.ServiceBannerUrl,
+                                    Enabled = service.Enabled,
+                                    SSODomain = service.SSODomain,
+                                    OriginURL = service.OriginURL,
+                                    RedirectURL = service.RedirectURL,
+                                    DisplayType = service.DisplayType,
+                                    ServiceType = service.ServiceType,
+                                    Children = new List<MyServiceModel>()
+                                };
+
+                                if (service.Children != null
+                                    && service.Children.Count > 0)
+                                {
+                                    foreach (ServicesBaseModel child in service.Children)
+                                    {
+                                        MyServiceModel children = new MyServiceModel()
+                                        {
+                                            ParentServiceId = model.ServiceId,
+                                            ServiceId = child.ServiceId,
+                                            ServiceName = child.ServiceName,
+                                            ServiceIconUrl = child.ServiceIconUrl,
+                                            DisabledServiceIconUrl = child.DisabledServiceIconUrl,
+                                            ServiceBannerUrl = child.ServiceBannerUrl,
+                                            Enabled = child.Enabled,
+                                            SSODomain = child.SSODomain,
+                                            OriginURL = child.OriginURL,
+                                            RedirectURL = child.RedirectURL,
+                                            ServiceType = child.ServiceType
+                                        };
+                                        model.Children.Add(children);
+                                    }
+                                }
+                                myServicesList.Add(model);
+                            }
+
+                            ProcessMyServices();
+                        }
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        List<Feature> listIconNew = new List<Feature>();
+                        List<Feature> listIconSiteCore = new List<Feature>();
+                        List<Feature> listIconSavedData = new List<Feature>();
+                        var jTokenMasterList = myTNB.LanguageManager.Instance.GetReArrangeMasterValue();
+                        listIconSiteCore = jTokenMasterList.ToObject<List<Feature>>();
+
+                        if (listIconSiteCore != null && listIconSiteCore.Count > 0)
+                        {
+                            if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
+                            {
+                                listIconSavedData = UserSessions.GetQuickActionList();
+
+                                var updatedList = listIconSiteCore
+                                    .Join(myServicesList, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                                    {
+                                        OriginalItem = item1,
+                                        Order = myServicesList.IndexOf(item2)
+                                    })
+                                    .OrderBy(pair => pair.Order)
+                                    .Select(pair => pair.OriginalItem)
+                                    .ToList();
+
+                                var changedItems = updatedList
+                                    .Join(listIconSavedData, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                                    {
+                                        OriginalItem = item1,
+                                        SavedItem = item2
+                                    })
+                                    .Where(pair => !pair.OriginalItem.Equals(pair.SavedItem)) // You need to implement Equals in Feature class
+                                    .ToList();
+
+                                // Update myServicesList with the sorted order
+                                listIconNew.AddRange(listIconSavedData);
+                                UserSessions.RemoveQuickActionList();
+                                UserSessions.SetQuickActionList(listIconNew);
+                            }
+                            else
+                            {
+                                // Assuming myServicesList and listIconNew have a common property (e.g., ServiceId) for matching
+                                var updatedList = listIconSiteCore
+                                    .Join(myServicesList, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                                    {
+                                        OriginalItem = item1,
+                                        Order = myServicesList.IndexOf(item2)
+                                    })
+                                    .OrderBy(pair => pair.Order)
+                                    .Select(pair => pair.OriginalItem)
+                                    .ToList();
+
+                                // Update myServicesList with the sorted order
+                                listIconNew.AddRange(updatedList);
+                                UserSessions.RemoveQuickActionList();
+                                UserSessions.SetQuickActionList(listIconNew);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    ProcessMyServices();
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                ProcessMyServices();
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                ProcessMyServices();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                ProcessMyServices();
+                Utility.LoggingNonFatalError(unknownException);
+            }
+        }
+
+        private bool IsWithin30Minutes(DateTime timestamp1, DateTime timestamp2)
+        {
+            // Define the duration (30 minutes)
+            TimeSpan duration = TimeSpan.FromMinutes(30);
+
+            // Calculate the time difference
+            TimeSpan timeDifference = timestamp1 - timestamp2;
+
+            // Compare the absolute value of the time difference with the duration
+            return Math.Abs(timeDifference.TotalMinutes) <= duration.TotalMinutes;
         }
 
         public void RestoreCurrentAccountState()
@@ -2175,10 +2394,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 isMyServiceExpanded = false;
             }
 
+            List<MyServiceModel> newIconListArrangge = new List<MyServiceModel>();
+            if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
+            {
+                List<Feature> listIconNew = new List<Feature>();
+
+                listIconNew = UserSessions.GetQuickActionList();
+
+                var updatedList = myServicesList
+                            .Join(listIconNew, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                            {
+                                OriginalItem = item1,
+                                Order = listIconNew.IndexOf(item2)
+                            })
+                            .OrderBy(pair => pair.Order)
+                            .Select(pair => pair.OriginalItem)
+                            .ToList();
+
+                // Update myServicesList with the sorted order
+                newIconListArrangge.AddRange(updatedList);
+            }
+            else
+            {
+                newIconListArrangge = myServicesList;
+            }
+
+            if (newIconListArrangge.Count < 7)
+            {
+                isMyServiceExpanded = true;
+            }
+
             List<MyServiceModel> fetchList = new List<MyServiceModel>();
             if (isMyServiceExpanded)
             {
-                fetchList = myServicesList;
+                fetchList = newIconListArrangge;
                 this.mView.IsMyServiceLoadMoreButtonVisible(true, true);
                 this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
                 this.mView.SetMyServicesResult(fetchList);
@@ -2187,10 +2436,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    fetchList.Add(myServicesList[i]);
+                    fetchList.Add(newIconListArrangge[i]);
                 }
 
-                var modelViewMore = new MyServiceModel()
+                var modelViewMore = new MyServiceModel()    //can remove after modelviewmore have in API
                 {
                     ServiceId = "1111",
                     ServiceName = "VIEWMORE",
@@ -2295,15 +2544,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        public void ListAfterRearrangeIcon(List<MyServiceModel> fetchList)
+        public void ListAfterRearrangeIcon()
         {
             try
             {
-                if (fetchList.Count > 0)
-                {
-                    myServicesList = fetchList;
-                    ProcessMyServices();
-                }
+                ProcessMyServices();
             }
             catch (Exception e)
             {
@@ -2320,7 +2565,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
                 myServicesList.RemoveAll(item => item?.ServiceType == ServiceEnum.VIEWMORE);
 
-                var modelViewLess = new MyServiceModel()
+                List<MyServiceModel> newIconListArrangge = new List<MyServiceModel>();
+                if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
+                {
+                    List<Feature> listIconNew = new List<Feature>();
+
+                    listIconNew = UserSessions.GetQuickActionList();
+
+                    var updatedList = myServicesList
+                                .Join(listIconNew, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                                {
+                                    OriginalItem = item1,
+                                    Order = listIconNew.IndexOf(item2)
+                                })
+                                .OrderBy(pair => pair.Order)
+                                .Select(pair => pair.OriginalItem)
+                                .ToList();
+
+                    // Update myServicesList with the sorted order
+                    newIconListArrangge.AddRange(updatedList);
+                }
+                else
+                {
+                    newIconListArrangge = myServicesList;
+                }
+
+                var modelViewLess = new MyServiceModel()   //can remove after modelviewless have in API
                 {
                     ServiceId = "1112",
                     ServiceName = "VIEWLESS",
@@ -2335,9 +2605,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ServiceType = ServiceEnum.VIEWLESS,
                     Children = new List<MyServiceModel>()
                 };
-                myServicesList.Add(modelViewLess);
+                newIconListArrangge.Add(modelViewLess);
 
-                fetchList = myServicesList;
+                fetchList = newIconListArrangge;
                 this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
                 this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
                 this.mView.SetMyServicesResult(fetchList);
@@ -2357,12 +2627,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
                 myServicesList.RemoveAll(item => item.ServiceType == ServiceEnum.VIEWLESS);
 
-                for (int i = 0; i < 5; i++)
+                List<MyServiceModel> newIconListArrangge = new List<MyServiceModel>();
+                if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
                 {
-                    fetchList.Add(myServicesList[i]);
+                    List<Feature> listIconNew = new List<Feature>();
+
+                    listIconNew = UserSessions.GetQuickActionList();
+
+                    var updatedList = myServicesList
+                                .Join(listIconNew, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                                {
+                                    OriginalItem = item1,
+                                    Order = listIconNew.IndexOf(item2)
+                                })
+                                .OrderBy(pair => pair.Order)
+                                .Select(pair => pair.OriginalItem)
+                                .ToList();
+
+                    // Update myServicesList with the sorted order
+                    newIconListArrangge.AddRange(updatedList);
+                }
+                else
+                {
+                    newIconListArrangge = myServicesList;
                 }
 
-                var modelViewMore = new MyServiceModel()
+                for (int i = 0; i < 5; i++)
+                {
+                    fetchList.Add(newIconListArrangge[i]);
+                }
+
+                var modelViewMore = new MyServiceModel()     //can remove after modelviewmore have in API
                 {
                     ServiceId = "1111",
                     ServiceName = "VIEWMORE",

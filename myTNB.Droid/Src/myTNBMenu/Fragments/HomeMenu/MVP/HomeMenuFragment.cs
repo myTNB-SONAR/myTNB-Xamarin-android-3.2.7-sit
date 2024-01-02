@@ -354,6 +354,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private bool isClickFromQuickActionSMR = false;
 
+        private bool isFromPageRearrangeIcon = false;
+
         HomeMenuContract.IHomeMenuPresenter presenter;
         ISummaryFragmentToDashBoardActivtyListener mCallBack;
 
@@ -519,9 +521,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         if (extras.ContainsKey("IconList"))
                         {
-                            listCurrentQuickAction = JsonConvert.DeserializeObject<List<MyServiceModel>>(extras.GetString("IconList"));
-                            this.presenter.ListAfterRearrangeIcon(listCurrentQuickAction);
-                            //SetMyServicesResult(listCurrentQuickAction);
+                            isFromPageRearrangeIcon = true;
+                            this.presenter.ListAfterRearrangeIcon();
                         }
                     }
                 }
@@ -639,6 +640,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         this.SetIsClicked(true);
                         listCurrentQuickAction = this.presenter.GetCurrentQuickActionList();
+                        UserSessions.SaveUserEmailQuickAction(PreferenceManager.GetDefaultSharedPreferences(this.Activity), UserEntity.GetActive().Email);
                         Intent rearrangeQuickAction = new Intent(this.Activity, typeof(QuickActionArrangeActivity));
                         rearrangeQuickAction.PutExtra("RearrangeQuickAction", JsonConvert.SerializeObject(listCurrentQuickAction));
                         StartActivityForResult(rearrangeQuickAction, REARRANGE_QUICK_ACTION_ACTIVITY_CODE);
@@ -1205,6 +1207,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
                         myServiceListRecycleView.SetAdapter(myServiceAdapter);
+                        //myServiceAdapter.NotifyDataSetChanged();
                         myServicesList.Clear();
                         myServicesList.AddRange(list);
                         myServiceAdapter.ClickChanged += OnClickChanged;
@@ -1812,7 +1815,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 if (this.presenter != null)
                 {
-                    if (this.presenter.GetIsLoadedHomeDone())
+                    if (this.presenter.GetIsLoadedHomeDone() && !isFromPageRearrangeIcon)
                     {
                         this.presenter.OnCheckMyServiceNewFAQState();
                     }

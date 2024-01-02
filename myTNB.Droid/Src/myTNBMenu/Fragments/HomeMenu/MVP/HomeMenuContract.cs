@@ -193,7 +193,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             List<MyServiceModel> GetCurrentQuickActionList();
 
-            void ListAfterRearrangeIcon(List<MyServiceModel> listCurrentQuickAction);
+            void ListAfterRearrangeIcon();
 
             //void UserNotificationsCount();
         }

@@ -89,27 +89,27 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
 
                 try
                 {
-                    switch (model.ServiceType)
+                    switch (model.ServiceId)
                     {
-                        case ServiceEnum.SELFMETERREADING:
+                        case "1001":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.submit_meter);
                             break;
-                        case ServiceEnum.SUBMITFEEDBACK:
+                        case "1003":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.feedback);
                             break;
-                        case ServiceEnum.PAYBILL:
+                        case "1004":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.bills);
                             break;
-                        case ServiceEnum.VIEWBILL:
+                        case "1005":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.pdf_bill);
                             break;
-                        case ServiceEnum.APPLICATIONSTATUS:
+                        case "1006":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.check_status);
                             break;
-                        case ServiceEnum.ENERGYBUDGET:
+                        case "1007":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.Check_Status_Icon);
                             break;
-                        case ServiceEnum.MYHOME:
+                        case "1008":
                             vh.QuickActionIcon.SetImageResource(Resource.Drawable.Icon_Quick_Access_MyHome);
                             break;
                     }

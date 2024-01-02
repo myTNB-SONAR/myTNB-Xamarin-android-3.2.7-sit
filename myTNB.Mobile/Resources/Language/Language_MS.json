@@ -3604,5 +3604,49 @@
     "extraIconTitle": "BM_Add a action to your Quick Action",
     "defaultIconTitle": "BM_Simply hold and drag to rearrange the actions.",
     "saveChangesBtn": "BM_Save Changes"
-  }
+  },
+  "Feature": [
+    {
+      "ServiceName": "Bayar Bill Saya",
+      "ServiceId": "1004",
+      "isLocked": "true",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "Lihat e-Bil / Makluman Saya",
+      "ServiceId": "1005",
+      "isLocked": "true",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "Energy Budget Saya",
+      "ServiceId": "1007",
+      "isLocked": "false",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "myHome",
+      "ServiceId": "1008",
+      "isLocked": "false",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "Self Meter Reading",
+      "ServiceId": "1001",
+      "isLocked": "false",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "Hantar & Semak Pertanyaan",
+      "ServiceId": "1003",
+      "isLocked": "false",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "Status Permohonan",
+      "ServiceId": "1006",
+      "isLocked": "false",
+      "isAvailable": "true"
+    }
+  ]
 }
