@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background_pale_grey"
+    android:gravity="center_vertical">
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="6dp"
+		android:background="@color/background_pale_grey"
+		android:layout_marginRight="0.0dp">
+        <ImageButton
+            android:id="@+id/btnNewIcon"
+            style="@style/Theme.AddIconButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:src="@drawable/ic_add_card"
+            android:visibility="visible"
+            android:gravity="center_vertical"/>
+	</RelativeLayout>
+</LinearLayout>
+
+

@@ -190,6 +190,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnCheckSMRAccount(List<string> smrAccountListOwnerOnly, string r);
 
             Task GetIsSmrApplyAllowedService(List<string> smrAccountListOwnerOnly);
+            
+            void DoMyServiceLoadLessAccount();
+
+            List<MyServiceModel> GetCurrentQuickActionList();
+
+            void ListAfterRearrangeIcon();
 
             //void UserNotificationsCount();
         }

@@ -345,5 +345,25 @@ namespace myTNB
             pageName += SELECTOR;
             return GetValues<Dictionary<string, List<T>>>(pageName);
         }
+
+        public JToken GetReArrangeMasterValue()
+        {
+            try
+            {
+                JObject jsonObj = JObject.Parse(JSONLang);
+                if (jsonObj != null
+                    && jsonObj["Feature"] is JToken pageJToken
+                    && pageJToken != null
+                    )
+                {
+                    return pageJToken;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] get featuresRearrange Error: ", e.Message);
+            }
+            return null;
+        }
     }
 }

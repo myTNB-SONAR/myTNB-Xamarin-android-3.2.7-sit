@@ -428,6 +428,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
                             break;
+                        case ServiceEnum.VIEWMORE:
+                            DynamicIconHandling(vh, model, Resource.Drawable.Icon_Move_In);
+
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "showMore"), FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "showMore"));
+                            }
+                            break;
+                        case ServiceEnum.VIEWLESS:
+                            DynamicIconHandling(vh, model, Resource.Drawable.Icon_Profile_Verified);
+
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "showLess"), FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "showLess"));
+                            }
+                            break;
                     }
 
                     ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;
