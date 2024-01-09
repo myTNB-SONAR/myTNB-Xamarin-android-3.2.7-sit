@@ -429,7 +429,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             }
                             break;
                         case ServiceEnum.VIEWMORE:
-                            DynamicIconHandling(vh, model, Resource.Drawable.Icon_Move_In);
+                            DynamicIconHandling(vh, model, Resource.Drawable.ic_less_more);
 
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                             {
@@ -439,9 +439,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             {
                                 vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "showMore"));
                             }
+                            vh.newLabel.Visibility = ViewStates.Gone;
                             break;
                         case ServiceEnum.VIEWLESS:
-                            DynamicIconHandling(vh, model, Resource.Drawable.Icon_Profile_Verified);
+                            DynamicIconHandling(vh, model, Resource.Drawable.ic_less_more);
 
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                             {
@@ -451,6 +452,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             {
                                 vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "showLess"));
                             }
+                            vh.newLabel.Visibility = ViewStates.Gone;
                             break;
                     }
 

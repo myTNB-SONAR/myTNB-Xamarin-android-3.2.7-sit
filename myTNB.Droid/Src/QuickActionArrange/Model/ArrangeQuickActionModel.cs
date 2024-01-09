@@ -13,8 +13,8 @@ namespace myTNB_Android.Src.QuickActionArrange.Model
     {
         public string ServiceName { get; set; }
         public string ServiceId { get; set; }
-        public string isLocked { get; set; }
-        public string isAvailable { get; set; }
+        public bool isLocked { get; set; }
+        public bool isAvailable { get; set; }
     }
 
     public class QuickActionReArrange

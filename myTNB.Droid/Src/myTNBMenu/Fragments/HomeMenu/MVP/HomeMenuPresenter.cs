@@ -44,6 +44,9 @@ using Dynatrace.Xamarin;
 using myTNB.Mobile.Business;
 using Android.Nfc;
 using myTNB_Android.Src.QuickActionArrange.Model;
+using myTNB.Mobile.AWS.Managers.MoreIcon;
+using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile.AWS.Models.MoreIcon;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1961,8 +1964,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
 
                         //ProcessMyServices();
-                        var task = Task.Run(async () => await QuickActionRearrangeData());
-                        await task;
+                        QuickActionRearrangeData();
                         FirstTimeMyServiceInitiate = false;
                     }
                     else
@@ -2007,7 +2009,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private void ProcessMyServices()
+        public void ProcessMyServices()
         {
             List<MyServiceModel> filteredServices = new List<MyServiceModel>();
             List<MyServiceModel> newfilteredServices = new List<MyServiceModel>();
@@ -2108,7 +2110,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             OnCheckToCallHomeMenuTutorial();
         }
 
-        private async Task QuickActionRearrangeData()
+        private void QuickActionRearrangeData()
         {
             try
             {
@@ -2120,10 +2122,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     string timestamp = UserSessions.GetTimeStampQuickAction(this.mPref);
                     string email = UserSessions.GetUserEmailQuickAction(this.mPref);
 
-                    DateTime.TryParseExact(timestamp, "dd/MM/yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime sessionStartDateTime);
+                    DateTime.TryParseExact(timestamp, "dd/MM/yyyy HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out DateTime sessionStartDateTime);
                     bool within30Minutes = IsWithin30Minutes(sessionStartDateTime, localTimestamp);
 
                     if (!within30Minutes && (email == UserEntity.GetActive().Email))
+                    {
+                        needToCallAPI = true;
+                    }
+                    else if (email != UserEntity.GetActive().Email)
                     {
                         needToCallAPI = true;
                     }
@@ -2134,143 +2140,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     needToCallAPI = true;
                 }
 
-                needToCallAPI = false; //  this // hardcode
                 if (needToCallAPI)
                 {
-                    UserSessions.RemoveQuickActionList();
-                    string getSErvicesTimeStamp = UserSessions.GetServicesTimeStamp(this.mPref);
-                    PostServicesResponse servicesResponse = await HomeManager.Instance.PostServices(getSErvicesTimeStamp);
-
-                    if (servicesResponse != null
-                        && servicesResponse.Data != null
-                        && servicesResponse.Data.StatusDetail != null
-                        && servicesResponse.Data.StatusDetail.IsSuccess)
-                    {
-                        Log.Debug("SUCCESS servicesResponse:", servicesResponse.Data.ToString());
-                        MyServiceEntity.RemoveAll();
-                        MyServiceChildEntity.RemoveAll();
-                        myServicesList.Clear();
-
-                        List<ServicesModel> servicesList = servicesResponse.Data.Content.Services;
-                        bool shouldUpdateImages = servicesResponse.Data.Content.ShouldUpdateImages;
-                        string timeStamp = servicesResponse.Data.Content.TimeStamp;
-
-                        UserSessions.SetGetServicesTimeStamp(this.mPref, timeStamp);
-
-                        if (servicesList.Count > 0)
-                        {
-                            foreach (ServicesModel service in servicesList)
-                            {
-                                MyServiceModel model = new MyServiceModel()
-                                {
-                                    ServiceId = service.ServiceId,
-                                    ServiceName = service.ServiceName,
-                                    ServiceIconUrl = service.ServiceIconUrl,
-                                    DisabledServiceIconUrl = service.DisabledServiceIconUrl,
-                                    ServiceBannerUrl = service.ServiceBannerUrl,
-                                    Enabled = service.Enabled,
-                                    SSODomain = service.SSODomain,
-                                    OriginURL = service.OriginURL,
-                                    RedirectURL = service.RedirectURL,
-                                    DisplayType = service.DisplayType,
-                                    ServiceType = service.ServiceType,
-                                    Children = new List<MyServiceModel>()
-                                };
-
-                                if (service.Children != null
-                                    && service.Children.Count > 0)
-                                {
-                                    foreach (ServicesBaseModel child in service.Children)
-                                    {
-                                        MyServiceModel children = new MyServiceModel()
-                                        {
-                                            ParentServiceId = model.ServiceId,
-                                            ServiceId = child.ServiceId,
-                                            ServiceName = child.ServiceName,
-                                            ServiceIconUrl = child.ServiceIconUrl,
-                                            DisabledServiceIconUrl = child.DisabledServiceIconUrl,
-                                            ServiceBannerUrl = child.ServiceBannerUrl,
-                                            Enabled = child.Enabled,
-                                            SSODomain = child.SSODomain,
-                                            OriginURL = child.OriginURL,
-                                            RedirectURL = child.RedirectURL,
-                                            ServiceType = child.ServiceType
-                                        };
-                                        model.Children.Add(children);
-                                    }
-                                }
-                                myServicesList.Add(model);
-                            }
-
-                            ProcessMyServices();
-                        }
-                    }
+                    this.mView.GetMoreIconAPI();
                 }
                 else
                 {
-                    try
-                    {
-                        List<Feature> listIconNew = new List<Feature>();
-                        List<Feature> listIconSiteCore = new List<Feature>();
-                        List<Feature> listIconSavedData = new List<Feature>();
-                        var jTokenMasterList = myTNB.LanguageManager.Instance.GetReArrangeMasterValue();
-                        listIconSiteCore = jTokenMasterList.ToObject<List<Feature>>();
-
-                        if (listIconSiteCore != null && listIconSiteCore.Count > 0)
-                        {
-                            if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
-                            {
-                                listIconSavedData = UserSessions.GetQuickActionList();
-
-                                var updatedList = listIconSiteCore
-                                    .Join(myServicesList, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
-                                    {
-                                        OriginalItem = item1,
-                                        Order = myServicesList.IndexOf(item2)
-                                    })
-                                    .OrderBy(pair => pair.Order)
-                                    .Select(pair => pair.OriginalItem)
-                                    .ToList();
-
-                                var changedItems = updatedList
-                                    .Join(listIconSavedData, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
-                                    {
-                                        OriginalItem = item1,
-                                        SavedItem = item2
-                                    })
-                                    .Where(pair => !pair.OriginalItem.Equals(pair.SavedItem)) // You need to implement Equals in Feature class
-                                    .ToList();
-
-                                // Update myServicesList with the sorted order
-                                listIconNew.AddRange(listIconSavedData);
-                                UserSessions.RemoveQuickActionList();
-                                UserSessions.SetQuickActionList(listIconNew);
-                            }
-                            else
-                            {
-                                // Assuming myServicesList and listIconNew have a common property (e.g., ServiceId) for matching
-                                var updatedList = listIconSiteCore
-                                    .Join(myServicesList, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
-                                    {
-                                        OriginalItem = item1,
-                                        Order = myServicesList.IndexOf(item2)
-                                    })
-                                    .OrderBy(pair => pair.Order)
-                                    .Select(pair => pair.OriginalItem)
-                                    .ToList();
-
-                                // Update myServicesList with the sorted order
-                                listIconNew.AddRange(updatedList);
-                                UserSessions.RemoveQuickActionList();
-                                UserSessions.SetQuickActionList(listIconNew);
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Utility.LoggingNonFatalError(e);
-                    }
-                    ProcessMyServices();
+                    DataSortIconList();
                 }
             }
             catch (System.OperationCanceledException cancelledException)
@@ -2290,10 +2166,79 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void DataSortIconList()
+        {
+            try
+            {
+                List<Feature> listIconNew = new List<Feature>();
+                List<Feature> listIconSiteCore = new List<Feature>();
+                List<Feature> listIconSavedData = new List<Feature>();
+                var jTokenMasterList = myTNB.LanguageManager.Instance.GetReArrangeMasterValue();
+                listIconSiteCore = jTokenMasterList.ToObject<List<Feature>>();
+
+                if (listIconSiteCore != null && listIconSiteCore.Count > 0)
+                {
+                    if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
+                    {
+                        listIconSavedData = UserSessions.GetQuickActionList();
+
+                        var updatedList = listIconSiteCore
+                            .Join(myServicesList, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                            {
+                                OriginalItem = item1,
+                                Order = myServicesList.IndexOf(item2)
+                            })
+                            .OrderBy(pair => pair.Order)
+                            .Select(pair => pair.OriginalItem)
+                            .ToList();
+
+                        var changedItems = updatedList
+                            .Join(listIconSavedData, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                            {
+                                OriginalItem = item1,
+                                SavedItem = item2
+                            })
+                            .Where(pair => !pair.OriginalItem.Equals(pair.SavedItem)) // You need to implement Equals in Feature class
+                            .ToList();
+
+                        // Update myServicesList with the sorted order
+                        listIconNew.AddRange(listIconSavedData);
+                        UserSessions.RemoveQuickActionList();
+                        UserSessions.SetQuickActionList(listIconNew);
+                    }
+                    else
+                    {
+                        // Assuming myServicesList and listIconNew have a common property (e.g., ServiceId) for matching
+                        var updatedList = listIconSiteCore
+                            .Join(myServicesList, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                            {
+                                OriginalItem = item1,
+                                Order = myServicesList.IndexOf(item2)
+                            })
+                            .OrderBy(pair => pair.Order)
+                            .Select(pair => pair.OriginalItem)
+                            .ToList();
+
+                        // Update myServicesList with the sorted order
+                        listIconNew.AddRange(updatedList);
+                        UserSessions.RemoveQuickActionList();
+                        UserSessions.SetQuickActionList(listIconNew);
+                    }
+                }
+                ProcessMyServices();
+            }
+            catch (Exception e)
+            {
+                ProcessMyServices();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         private bool IsWithin30Minutes(DateTime timestamp1, DateTime timestamp2)
         {
+            int timeIntervalToCall = myTNB.LanguageManager.Instance.GetConfigIntValue(myTNB.LanguageManager.ConfigPropertyEnum.QuickActionTimeRangeInMin);
             // Define the duration (30 minutes)
-            TimeSpan duration = TimeSpan.FromMinutes(30);
+            TimeSpan duration = TimeSpan.FromMinutes(timeIntervalToCall);
 
             // Calculate the time difference
             TimeSpan timeDifference = timestamp1 - timestamp2;

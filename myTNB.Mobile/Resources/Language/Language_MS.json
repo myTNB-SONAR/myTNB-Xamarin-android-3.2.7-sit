@@ -3183,6 +3183,17 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "MoreIconList": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -3319,7 +3330,8 @@
     ],
     "IsMyHomeMarketingPopupEnable": true,
     "ForceHidemyHomeBanner": false,
-    "IsDSNotificationEnable": true
+    "IsDSNotificationEnable": true,
+    "QuickActionTimeRangeInMin": 30
   },
   "StatementPeriod": {
     "title": "Penyata Akaun",

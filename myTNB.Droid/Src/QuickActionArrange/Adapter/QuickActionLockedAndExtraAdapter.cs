@@ -59,14 +59,19 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
             try
             {
                 vh.IconName.Text = filterServiceName(item.ServiceName);
-                if (item.isAvailable == "false")
+                if (item.isAvailable == false)
                 {
-                    vh.Icon.SetImageResource(Resource.Drawable.ic_add_card);
+                    vh.Icon.SetImageResource(Resource.Drawable.ic_plusround_black);
                     vh.Icon.Clickable = true;
                     vh.Icon.Click += (sender, e) =>
                     {
                         listener?.OnItemClick(position);
                     };
+                }
+
+                if (item.isLocked)
+                {
+                    vh.Icon.SetImageResource(Resource.Drawable.ic_locked_white);
                 }
 
                 try

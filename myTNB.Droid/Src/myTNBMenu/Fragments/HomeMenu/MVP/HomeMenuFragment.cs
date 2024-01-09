@@ -70,6 +70,10 @@ using myTNB_Android.Src.Common.Model;
 using static Android.Icu.Text.CaseMap;
 using static myTNB.Mobile.Constants.Notifications.PushNotificationDetails;
 using myTNB_Android.Src.QuickActionArrange.Activity;
+using myTNB.Mobile.API.Models.Home.PostServices;
+using myTNB.Mobile.AWS.Models.MoreIcon;
+using myTNB.Mobile.AWS.Managers.MoreIcon;
+using myTNB_Android.Src.QuickActionArrange.Model;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -631,6 +635,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.Activity.StartActivityForResult(new Intent(this.Activity, typeof(NotificationActivity)), Constants.NOTIFICATION_LISTING_REQUEST_CODE);
                     }
                 };
+
+                try
+                {
+                    //Android.Graphics.Drawables.Drawable d = ContextCompat.GetDrawable(this.Context, Resource.Drawable.ic_pen_blue);
+                    //// Set the bounds to define the size (adjust width and height as needed)
+                    //int iconSize = 16;
+                    //d.SetBounds(0, 0, iconSize, iconSize);
+                    //quickActionIcon.SetCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
+
+                    // Load the drawable
+                    Android.Graphics.Drawables.Drawable d = ContextCompat.GetDrawable(this.Context, Resource.Drawable.ic_pen_blue);
+
+                    // Set the bounds to define the size (adjust width and height as needed)
+                    int iconSize = 48; // Specify your desired size in pixels
+                    d.SetBounds(0, 0, iconSize, iconSize);
+
+                    // Set the compound drawables with specified bounds and optional padding
+                    quickActionIcon.SetCompoundDrawables(d, null, null, null);
+                    //quickActionIcon.CompoundDrawablePadding = 4;
+                }
+                catch (System.Exception err)
+                {
+                    Utility.LoggingNonFatalError(err);
+                }
+
                 quickActionIcon.Click += delegate
                 {
                     if (!this.GetIsClicked())
@@ -1135,7 +1164,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
                         myServiceListRecycleView.SetAdapter(myServiceAdapter);
-                        //myServiceAdapter.NotifyDataSetChanged();
+                        myServiceAdapter.NotifyDataSetChanged();
                         myServicesList.Clear();
                         myServicesList.AddRange(list);
                         myServiceAdapter.ClickChanged += OnClickChanged;
@@ -4520,5 +4549,96 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             .Build()
             .Show();
         }
+
+        public void GetMoreIconAPI()
+        {
+            //ShowProgressDialog();
+            Task.Run(() =>
+            {
+                _ = GetMoreIconListAsync();
+            });
+        }
+
+        private async Task GetMoreIconListAsync()
+        {
+            try
+            {
+                if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
+                }
+
+                UserInfoExtra usrinf = new UserInfoExtra();
+                usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
+                usrinf.DeviceID = GetDeviceId();
+                usrinf.FCMToken = FirebaseTokenEntity.GetLatest().FBToken;
+                usrinf.Language = LanguageUtil.GetAppLanguage().ToUpper();
+                usrinf.sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID;
+                //usrinf.UserID = UserEntity.GetActive().UserID;   //uncomment when already exist data
+                usrinf.UserName = UserEntity.GetActive().Email;
+                usrinf.UserID = "D364591A-218B-426C-AE95-100129767EAC";
+
+                DeviceInfoExtra currentDeviceInf = new DeviceInfoExtra()
+                {
+                    DeviceId = GetDeviceId(),
+                    AppVersion = DeviceIdUtils.GetAppVersionName(),
+                    OsType = Constants.DEVICE_PLATFORM,
+                    OsVersion = DeviceIdUtils.GetAndroidVersion(),
+                    DeviceDesc = Constants.DEFAULT_LANG,
+                    VersionCode = ""
+                };
+                MoreIconResponse moreiconResponse = await MoreIconManager.Instance.GetMoreIconList(currentDeviceInf, usrinf, AccessTokenCache.Instance.GetAccessToken(this.Activity));
+
+                if (moreiconResponse != null
+               && moreiconResponse.StatusDetail != null
+               && moreiconResponse.StatusDetail.IsSuccess
+               && moreiconResponse.Content != null
+               && moreiconResponse.Content.featureIcon != null)
+                {
+                    List<Feature> listIconNew = new List<Feature>();
+                    foreach (var item in moreiconResponse.Content.featureIcon)
+                    {
+                        var itemSort = new Feature
+                        {
+                            ServiceName = item.serviceName,
+                            ServiceId = item.serviceId,
+                            isAvailable = item.isAvailable,
+                            isLocked = item.isLocked
+                        };
+                        listIconNew.Add(itemSort);
+                    }
+
+                    UserSessions.RemoveQuickActionList();
+                    UserSessions.SetQuickActionList(listIconNew);
+
+                    try
+                    {
+                        // Format as string
+                        string formattedDateString = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        UserSessions.SaveTimeStampQuickAction(PreferenceManager.GetDefaultSharedPreferences(this.Activity), formattedDateString);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+
+                    UserSessions.SaveUserEmailQuickAction(PreferenceManager.GetDefaultSharedPreferences(this.Activity), UserEntity.GetActive().Email);
+                    this.presenter.DataSortIconList();
+                }
+                else
+                {
+                    UserSessions.RemoveQuickActionList();
+                    this.presenter.ProcessMyServices();
+                }
+                //HideProgressDialog();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                this.presenter.ProcessMyServices();
+            }
+        }
+
     }
 }

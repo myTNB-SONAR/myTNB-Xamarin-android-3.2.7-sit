@@ -337,7 +337,8 @@ namespace myTNB
             ResidentialRateCategory,
             IsMyHomeMarketingPopupEnable,
             ForceHidemyHomeBanner,
-            IsDSNotificationEnable
+            IsDSNotificationEnable,
+            QuickActionTimeRangeInMin
         }
 
         public Dictionary<string, List<T>> GetSelectorsByPage<T>(string pageName) where T : new()
@@ -364,6 +365,27 @@ namespace myTNB
                 Debug.WriteLine("[DEBUG] get featuresRearrange Error: ", e.Message);
             }
             return null;
+        }
+
+        public int GetConfigIntValue(ConfigPropertyEnum toggleProperty)
+        {
+            try
+            {
+                JObject jsonObj = JObject.Parse(JSONLang);
+                if (jsonObj != null
+                    && jsonObj["ServiceConfiguration"] is JToken pageJToken
+                    && pageJToken != null
+                    && pageJToken[toggleProperty.ToString()] is JToken serviceToken
+                    && serviceToken != null)
+                {
+                    return serviceToken.ToObject<int>();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] GetParsedJson Error: ", e.Message);
+            }
+            return 0;
         }
     }
 }

@@ -139,7 +139,7 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
                         var iconModelLocked = listIconNew?.Find(x => x.ServiceId == item.ServiceId);
                         if (iconModelLocked != null)
                         {
-                            if (iconModelLocked.isLocked == "true")
+                            if (iconModelLocked.isLocked)
                             {
                                 lockedListFeatureIcon.Add(iconModelLocked);
                             }
@@ -153,8 +153,8 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
                         {
                             tempCurrentModel = new Feature
                             {
-                                isAvailable = "false",
-                                isLocked = "false",
+                                isAvailable = false,
+                                isLocked = false,
                                 ServiceName = item.ServiceName,
                                 ServiceId = item.ServiceId
                             };
@@ -191,7 +191,7 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
 
                         tempCurrentModel = new Feature
                         {
-                            isAvailable = "false",
+                            isAvailable = false,
                             isLocked = iconModel.isLocked,
                             ServiceName = iconModel.ServiceName,
                             ServiceId = iconModel.ServiceId
@@ -206,7 +206,7 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
                     {
                         var iconModel = listIconNew?.Find(x => x.ServiceId == item.ServiceId);
 
-                        if (iconModel.isLocked == "true")
+                        if (iconModel.isLocked)
                         {
                             lockedListFeatureIcon.Add(iconModel);
                             //listLockedQuickAction.Add(item);
@@ -360,7 +360,7 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
 
                     tempCurrentModel = new Feature
                     {
-                        isAvailable = "false",
+                        isAvailable = false,
                         isLocked = iconModel.isLocked,
                         ServiceName = iconModel.ServiceName,
                         ServiceId = iconModel.ServiceId

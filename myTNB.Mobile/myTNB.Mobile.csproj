@@ -87,6 +87,8 @@
     <Folder Include="AWS\Models\DS\" />
     <Folder Include="AWS\Models\DS\Status\" />
     <Folder Include="AWS\Models\DS\Identification\" />
+    <Folder Include="AWS\Managers\MoreIcon\" />
+    <Folder Include="AWS\Models\MoreIcon\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -157,6 +159,8 @@
     <None Remove="Resources\Keys\" />
     <None Remove="Resources\Keys\SKey.txt" />
     <None Remove="Resources\Keys\PKey.txt" />
+    <None Remove="AWS\Managers\MoreIcon\" />
+    <None Remove="AWS\Models\MoreIcon\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />

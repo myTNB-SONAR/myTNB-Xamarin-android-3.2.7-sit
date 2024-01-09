@@ -69,6 +69,7 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
 
             try
             {
+                vh.btnNewIcon.SetImageResource(Resource.Drawable.ic_plusround_black);
                 vh.btnNewIcon.Click += (sender, e) =>
                 {
                     listener?.OnItemClickAddIcon();
