@@ -84,5 +84,48 @@ namespace myTNB_Android.Src.ViewBill.Activity
         {
             //
         }
+
+        public async Task OnGetPathUrl(string ca, string billNo, bool isowner, string lang)
+        {
+            try
+            {
+                this.mView.ShowProgressDialog();
+                GetBillMaskingResponse getBillMaskingResponse = await ServiceApiImpl.Instance.GetBillMaskingPDFV2(new GetBillMaskingRequest()
+                {
+                    apiKeyID = Constants.APP_CONFIG.API_KEY_ID,
+                    contractAccount = ca,
+                    billingNo = billNo,
+                    isOwnerBill = isowner,
+                    lang = lang
+                });
+
+                if (getBillMaskingResponse.Response.ErrorCode == "7200" && getBillMaskingResponse.Response.binaryBill != null)
+                {
+                    this.mView.GetFileGenerateData(billNo, getBillMaskingResponse.Response.binaryBill);
+                }
+                else
+                {
+                    this.mView.ShowViewBillError(getBillMaskingResponse.Response.DisplayTitle, getBillMaskingResponse.Response.DisplayMessage);
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideProgressDialog();
+                this.mView.ShowBillErrorSnackBar();
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideProgressDialog();
+                this.mView.ShowBillErrorSnackBar();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideProgressDialog();
+                this.mView.ShowBillErrorSnackBar();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

@@ -450,5 +450,9 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v7/mytnbws.asmx/GetIsSmrApplyAllowed")]
         Task<T> GetIsSmrApplyAllowed<T>([Body] EncryptedRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v7/mytnbws.asmx/GetBillMaskingPDFV2")]
+        Task<T> GetBillMaskingPDFV2<T>([Body] EncryptedRequest request, CancellationToken token);
     }
 }

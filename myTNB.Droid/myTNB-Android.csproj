@@ -8472,6 +8472,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\ViewBill\Model\GetBillMaskingRequest.cs" />
+    <Compile Include="Src\ViewBill\Model\GetBillMaskingResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Icon_GSL_Rebate_Enquiry.png">
@@ -10981,6 +10983,7 @@
     <Folder Include="Src\FloatingButtonMarketing\" />
     <Folder Include="Src\FloatingButtonMarketing\Activity\" />
     <Folder Include="Src\FloatingButtonMarketing\MVP\" />
+    <Folder Include="Src\ViewBill\Model\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

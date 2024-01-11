@@ -14,6 +14,7 @@ using Refit;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
+using myTNB_Android.Src.ViewBill.Model;
 
 namespace myTNB_Android.Src.MyTNBService.ServiceImpl
 {
@@ -990,5 +991,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         #endregion
+
+        /// <summary>
+        /// Call GetBillMaskingPDF with timeout set.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public Task<GetBillMaskingResponse> GetBillMaskingPDFV2([Body] GetBillMaskingRequest request)
+        {
+            return api.GetBillMaskingPDFV2<GetBillMaskingResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
+        }
     }
 }

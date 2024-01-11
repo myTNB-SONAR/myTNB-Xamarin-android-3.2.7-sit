@@ -25,6 +25,7 @@ using System.Net;
 using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
+using FileUtils = myTNB_Android.Src.Utils.FileUtils;
 
 namespace myTNB_Android.Src.ViewBill.Activity
 {
@@ -63,6 +64,8 @@ namespace myTNB_Android.Src.ViewBill.Activity
         ISharedPreferences mPref;
 
         string savedPDFPath = string.Empty;
+
+        string filePath = string.Empty;
 
         public override int ResourceId()
         {
@@ -200,9 +203,14 @@ namespace myTNB_Android.Src.ViewBill.Activity
                                 {
                                     selectedAccount.IsOwner = true;
                                 }
+
+                                RunOnUiThread(() =>
+                                {
+                                    GetFileData(selectedAccount.AccountNum, "", selectedAccount.IsOwner, LanguageUtil.GetAppLanguage().ToUpper());
+                                });
                                 //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                                 //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
-                                getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&contractAccount=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString();
+                                ////getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&contractAccount=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString();
                                 //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString(), "utf-8");
                             }
                             else
@@ -211,16 +219,21 @@ namespace myTNB_Android.Src.ViewBill.Activity
                                 {
                                     selectedAccount.IsOwner = true;
                                 }
+
+                                RunOnUiThread(() =>
+                                {
+                                    GetFileData(selectedAccount.AccountNum, selectedBill.NrBill, selectedAccount.IsOwner, LanguageUtil.GetAppLanguage().ToUpper());
+                                });
                                 //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                                 //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
-                                getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill" + selectedAccount.IsOwner.ToString();
+                                ////getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill" + selectedAccount.IsOwner.ToString();
                                 //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&contractAccount=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString(), "utf-8");
                             }
                         }
-                        RunOnUiThread(() =>
-                        {
-                            GetPDF();
-                        });
+                        //RunOnUiThread(() =>
+                        //{
+                        //    GetPDF();
+                        //});
                     }
                 }
                 catch (Exception e)
@@ -231,6 +244,71 @@ namespace myTNB_Android.Src.ViewBill.Activity
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void GetFileData(string accNum, string Nrbill, bool isOwner, string lang)
+        {
+            //ShowProgressDialog();
+            Task.Run(() =>
+            {
+                _ = this.mPresenter.OnGetPathUrl(accNum, Nrbill, isOwner, lang);
+            });
+        }
+
+        public void GetFileGenerateData(string Nrbill, byte[] byteData)
+        {
+            //ShowProgressDialog();
+            Task.Run(() =>
+            {
+                _ = GenerateFileAsync(Nrbill, byteData);
+            });
+        }
+
+        public async Task GenerateFileAsync(string billNo, byte[] billData)
+        {
+            try
+            {
+                string filename = string.Empty;
+                if (isTaxInvoice)
+                {
+                    filename = srNumber + ".pdf";
+                }
+                else if (!string.IsNullOrEmpty(selectedAccount?.AccountNum))
+                {
+                    filename = selectedAccount?.AccountNum + ".pdf";
+                    if (!string.IsNullOrEmpty(selectedBill?.NrBill))
+                    {
+                        filename = selectedAccount?.AccountNum + "_" + selectedBill?.NrBill + ".pdf";
+                    }
+                }
+
+                filePath = await FileUtils.SaveAsyncPDF(this, billData, FileUtils.PDF_FOLDER, filename);
+                RunOnUiThread(() => RenderPDF(filePath));
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void RenderPDF(string pdfFilePath)
+        {
+            if (pdfFilePath.IsValid())
+            {
+                HideProgressDialog();
+                try
+                {
+                    Java.IO.File file = new Java.IO.File(pdfFilePath);
+                    pdfViewer
+                        .FromFile(file)
+                        .Show();
+                    isLoadedDocument = true;
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
         }
 
@@ -396,9 +474,9 @@ namespace myTNB_Android.Src.ViewBill.Activity
         {
             try
             {
-                if (!string.IsNullOrEmpty(savedPDFPath))
+                if (!string.IsNullOrEmpty(filePath))
                 {
-                    Java.IO.File file = new Java.IO.File(savedPDFPath);
+                    Java.IO.File file = new Java.IO.File(filePath);
                     Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
                                                 ApplicationContext.PackageName + ".fileprovider", file);
 
@@ -522,15 +600,19 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 bool isWhiteList = UserSessions.GetWhiteList(PreferenceManager.GetDefaultSharedPreferences(this));
                 if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
                 {
-                   
+
                     if (selectedAccount.IsHaveAccess == true || isWhiteList)
                     {
                         selectedAccount.IsOwner = true;
                     }
-                    
+
+                    RunOnUiThread(() =>
+                    {
+                        GetFileData(selectedAccount.AccountNum, selectedBill.NrBill, selectedAccount.IsOwner, LanguageUtil.GetAppLanguage().ToUpper());
+                    });
                     //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                     //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
-                    getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&contractAccount=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString();
+                    ///getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&contractAccount=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString();
                     //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString(), "utf-8");
                 }
                 else
@@ -539,9 +621,14 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     {
                         selectedAccount.IsOwner = true;
                     }
+
+                    RunOnUiThread(() =>
+                    {
+                        GetFileData(selectedAccount.AccountNum, "", selectedAccount.IsOwner, LanguageUtil.GetAppLanguage().ToUpper());
+                    });
                     //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                     //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
-                    getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill" + selectedAccount.IsOwner.ToString();
+                    ///getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill" + selectedAccount.IsOwner.ToString();
                     //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&contractAccount=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString(), "utf-8");
                 }
 
@@ -588,10 +675,10 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     this.SetToolBarTitle(title);
                 });
 
-                RunOnUiThread(() =>
-                {
-                    _ = GetPDF();
-                });
+                //RunOnUiThread(() =>
+                //{
+                //    _ = GetPDF();
+                //});
             }
             catch (Exception e)
             {
