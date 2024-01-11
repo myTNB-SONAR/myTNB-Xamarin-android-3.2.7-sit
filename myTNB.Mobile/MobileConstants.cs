@@ -83,6 +83,11 @@ namespace myTNB.Mobile
         //public static string OvisWebviewBaseUrlSTG = "https://stage-mytnbappwv.ovis.tnb.com.my";
         public static string OvisWebviewBaseUrlPROD = "https://mytnbappwv.ovis.tnb.com.my";
 
+        public static string SaltKeyPDF_DEV = "MYTNB@)@$DEV";
+        public static string SaltKeyPDF_STG = "MYTNB@)@$";
+        public static string SaltKeyPDF_PROD = "MYTNB@)@$";
+
+
 #if DEBUGx
         public static string ApiDomain = DEV5;
         public const string ApiKeyId = ApiKeyIdDEV;
@@ -92,6 +97,7 @@ namespace myTNB.Mobile
         public static string AWSApiDomain = AWSApiDomainSIT;
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlSTG;
         internal const string SignKey = SignKey_Staging;
+        public static string SaltKeyPDF = SaltKeyPDF_DEV;
 #elif MASTER || SIT || DEBUG
         public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
@@ -101,6 +107,7 @@ namespace myTNB.Mobile
         public static string AWSApiDomain = AWSApiDomainSIT;
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlSTG;
         internal const string SignKey = SignKey_Staging;
+        public static string SaltKeyPDF = SaltKeyPDF_STG;
 #else
         public static string ApiDomain = PROD;
         public const string ApiKeyId = ApiKeyIdPROD;
@@ -110,6 +117,7 @@ namespace myTNB.Mobile
         public static string AWSApiDomain = AWSApiDomainPROD;
         public static string OvisWebviewBaseUrl = OvisWebviewBaseUrlPROD;
         internal const string SignKey = SignKey_Prod;
+        public static string SaltKeyPDF = SaltKeyPDF_PROD;
 #endif
 
         //Service Name

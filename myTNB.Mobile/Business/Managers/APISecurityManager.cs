@@ -52,6 +52,26 @@ namespace myTNB.Mobile
             return encryptedRequest;
         }
 
+        public static string AES256_Encrypt(string salt, string rawContent)
+        {
+            byte[] clearBytes = Encoding.Unicode.GetBytes(rawContent);
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(salt, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (var stream = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(stream, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(clearBytes, 0, clearBytes.Length);
+                    }
+                    rawContent = Convert.ToBase64String(stream.ToArray());
+                }
+            }
+            return rawContent;
+        }
+
         private byte[] RSAEncrypt(byte[] data)
         {
 #if DEBUG || MASTER || SIT

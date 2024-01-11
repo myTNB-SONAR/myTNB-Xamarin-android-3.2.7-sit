@@ -439,7 +439,7 @@ namespace myTNB.Mobile
             , string createdDateTo
             , bool isFilter = false)
         {
-            GetAllApplicationsResponse response = await AllApplications(page
+            GetAllApplicationsResponse response = await AllApplicationsV2(page
                , applicationType
                , statusDescription
                , createdDateFrom
@@ -450,7 +450,7 @@ namespace myTNB.Mobile
 
         public async Task<GetAllApplicationsResponse> GetNCDraftApplications(int page)
         {
-            GetAllApplicationsResponse response = await AllApplications(page
+            GetAllApplicationsResponse response = await AllApplicationsV2(page
                , "NC"
                , "Draft"
                , string.Empty
@@ -893,6 +893,125 @@ namespace myTNB.Mobile
             };
             res.StatusDetail = MobileConstants.Service_SyncSRApplication.GetStatusDetails(MobileConstants.DEFAULT);
             return res;
+        }
+        #endregion
+
+        #region GetAllApplicationV2
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page">Page starts from 1 and incrementing</param>
+        /// <param name="applicationType">Application Type ID</param>
+        /// <param name="statusDescription">Full description of status.</param>
+        /// <param name="createdDateFrom">yyyy/mm/dd Format</param>
+        /// <param name="createdDateTo">yyyy/mm/dd Format</param>
+        /// <returns></returns>
+        private async Task<GetAllApplicationsResponse> AllApplicationsV2(int page
+            , string applicationType
+            , string statusDescription
+            , string createdDateFrom
+            , string createdDateTo
+            , bool isFilter)
+        {
+            GetAllApplicationsResponse response;
+            try
+            {
+                applicationType = applicationType.IsValid() && applicationType == "ALL" ? string.Empty : applicationType;
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(MobileConstants.ApiDomain);
+                try
+                {
+                    HttpResponseMessage rawResponse = await service.GetAllApplicationsV2(page
+                        , AllApplicationsCache.Instance.Limit
+                        , string.Empty
+                        , string.Empty
+                        , string.Empty
+                        , string.Empty
+                        , applicationType
+                        , string.Empty
+                        , statusDescription
+                        , createdDateFrom
+                        , createdDateTo
+                        , APISecurityManager.AES256_Encrypt(MobileConstants.SaltKeyPDF, MobileConstants.ApiKeyId)
+                        , AppInfoManager.Instance.GetUserInfo()
+                        , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString()
+                        , AppInfoManager.Instance.Language.ToString());
+
+                    string responseString = await rawResponse.Content.ReadAsStringAsync();
+                    //Mark: Check for 404 First
+                    NotFoundModel notFoundModel = JsonConvert.DeserializeObject<NotFoundModel>(responseString);
+                    if (notFoundModel != null && notFoundModel.Status.IsValid())
+                    {
+                        response = new GetAllApplicationsResponse
+                        {
+                            Content = null,
+                            StatusDetail = MobileConstants.Service_GetAllApplications.GetStatusDetails(isFilter ? "Constants. EMPTYFilter" : MobileConstants.EMPTY)
+                        };
+                        return response;
+                    }
+
+                    response = JsonConvert.DeserializeObject<GetAllApplicationsResponse>(responseString);
+                    if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    {
+                        //Mark: Check for 0 Applications
+                        if (response.Content != null && response.Content.Applications != null
+                            && response.Content.Applications.Count == 0 && response.StatusDetail.Code == MobileConstants.SUCCESS_CODE)
+                        {
+                            response.StatusDetail = MobileConstants.Service_GetAllApplications.GetStatusDetails(isFilter ? MobileConstants.EMPTY_FILTER : MobileConstants.EMPTY);
+                        }
+                        else
+                        {
+                            response.StatusDetail = MobileConstants.Service_GetAllApplications.GetStatusDetails(response.StatusDetail.Code);
+                        }
+                    }
+                    else
+                    {
+                        response = new GetAllApplicationsResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
+                        response.StatusDetail = MobileConstants.Service_GetAllApplications.GetStatusDetails(MobileConstants.DEFAULT);
+                    }
+                    if (response.StatusDetail.IsSuccess)
+                    {
+                        AllApplicationsCache.Instance.SetData(response.Content, isFilter);
+                        if (isFilter)
+                        {
+                            //Mark: If this is filter, always set to 1.
+                            AllApplicationsCache.Instance.QueryPage = 1;
+                            AllApplicationsCache.Instance.IsFiltertriggered = true;
+                        }
+                        //Mark: Increment Query Page Every Success Call
+                        AllApplicationsCache.Instance.QueryPage += 1;
+                    }
+                    Debug.WriteLine("[DEBUG][AllApplications]: " + JsonConvert.SerializeObject(response));
+                    return response;
+                }
+                catch (ApiException apiEx)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][GetAllApplications]Refit Exception: " + apiEx.Message);
+#endif
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][GetAllApplications]General Exception: " + ex.Message);
+#endif
+                }
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine(e.Message);
+#endif
+            }
+            response = new GetAllApplicationsResponse
+            {
+                StatusDetail = new StatusDetail()
+            };
+            response.StatusDetail = MobileConstants.Service_GetAllApplications.GetStatusDetails(MobileConstants.DEFAULT);
+            return response;
         }
         #endregion
     }

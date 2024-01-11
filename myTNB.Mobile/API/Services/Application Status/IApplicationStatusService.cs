@@ -115,5 +115,25 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , [Header(MobileConstants.Header_Lang)] string lang
            , string urlPrefix = MobileConstants.ApiUrlPath
            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
+
+        [Get("/{urlPrefix}/AllApplicationsV2?lang={language}&Page={page}&Limit={limit}&SortBy={sortBy}&SortDirection={sortDirection}&ReferenceNo={referenceNo}&SrNo={srNo}&ApplicationType={applicationType}&StatusId={statusId}&StatusDescription={statusDescription}&CreatedDateFrom={createdDateFrom}&CreatedDateTo={createdDateTo}")]
+        Task<HttpResponseMessage> GetAllApplicationsV2(int page
+           , int limit
+           , string sortBy
+           , string sortDirection
+           , string referenceNo
+           , string srNo
+           , string applicationType
+           , string statusId
+           , string statusDescription
+           , string createdDateFrom
+           , string createdDateTo
+           , [Header(MobileConstants.Header_SecureKey)] string secureKey
+           , [Header(MobileConstants.Header_UserInfo)] string userInfo
+           , CancellationToken cancellationToken
+           , string language
+           , [Header(MobileConstants.Header_Lang)] string lang
+           , string urlPrefix = MobileConstants.ApiUrlPath);
+
     }
 }
