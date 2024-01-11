@@ -206,7 +206,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
                                 RunOnUiThread(() =>
                                 {
-                                    GetFileData(selectedAccount.AccountNum, "", selectedAccount.IsOwner, LanguageUtil.GetAppLanguage().ToUpper());
+                                    GetFileData(selectedAccount.AccountNum, selectedBill.NrBill, selectedAccount.IsOwner, LanguageUtil.GetAppLanguage().ToUpper());
                                 });
                                 //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                                 //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
@@ -222,7 +222,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
                                 RunOnUiThread(() =>
                                 {
-                                    GetFileData(selectedAccount.AccountNum, selectedBill.NrBill, selectedAccount.IsOwner, LanguageUtil.GetAppLanguage().ToUpper());
+                                    GetFileData(selectedAccount.AccountNum, "", selectedAccount.IsOwner, LanguageUtil.GetAppLanguage().ToUpper());
                                 });
                                 //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                                 //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
