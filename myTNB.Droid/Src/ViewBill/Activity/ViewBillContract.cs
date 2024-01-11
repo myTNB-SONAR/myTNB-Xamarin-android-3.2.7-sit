@@ -19,6 +19,8 @@ namespace myTNB_Android.Src.ViewBill.Activity
             void ShowViewBillError(string title, string message);
 
             void ShowBillErrorSnackBar();
+
+            void GetFileGenerateData(string billNo, byte[] binaryBill);
         }
 
         public interface IUserActionsListener : IBasePresenter

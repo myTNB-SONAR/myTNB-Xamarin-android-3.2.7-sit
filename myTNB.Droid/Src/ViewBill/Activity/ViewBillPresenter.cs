@@ -5,6 +5,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.ViewBill.Model;
 using Newtonsoft.Json;
 using Refit;
 using System;
