@@ -85,7 +85,7 @@ namespace myTNB.Mobile
 
         public static string SaltKeyPDF_DEV = "MYTNB@)@$DEV";
         public static string SaltKeyPDF_STG = "MYTNB@)@$";
-        public static string SaltKeyPDF_PROD = "MYTNB@)@$";
+        public static string SaltKeyPDF_PROD = "MYTNB@)@$PRD";
 
 
 #if DEBUGx
